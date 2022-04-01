@@ -270,13 +270,13 @@ This release adds experimental support for the import assertions stage 3 proposa
 To keep Node.js ESM implementation as compatible as possible with the HTML spec, import assertions are now required to import JSON modules (still behind the `--experimental-json-modules` CLI flag):
 
 ```mjs
-import info from "./package.json" assert { type: 'json' };
+import info from './package.json' assert { type: 'json' };
 ```
 
 Or use dynamic import:
 
 ```mjs
-const info = await import("./package.json", { assert: { type: 'json' } });
+const info = await import('./package.json', { assert: { type: 'json' } });
 ```
 
 Contributed by Antoine du Hamel and Geoffrey Booth [#40250](https://github.com/nodejs/node/pull/40250)
@@ -1282,7 +1282,7 @@ V8 is updated to version [9.3](https://v8.dev/blog/v8-release-93), which include
 `Object.hasOwn` is a static alias for `Object.prototype.hasOwnProperty.call`:
 
 ```js
-Object.hasOwn({ value: 42 }, "value"); // Returns `true`.
+Object.hasOwn({ value: 42 }, 'value'); // Returns `true`.
 ```
 
 #### [Error cause](https://v8.dev/features/error-cause)
@@ -1291,8 +1291,8 @@ Errors can now be optionally constructed with a `cause` option, pointing to anot
 This adds a `cause` property on the new error:
 
 ```js
-const error1 = new Error("Error one");
-const error2 = new Error("Error two", { cause: error1 });
+const error1 = new Error('Error one');
+const error2 = new Error('Error two', { cause: error1 });
 // error2.cause === error1
 ```
 
@@ -1761,7 +1761,7 @@ While it is experimental, the API is not exposed on the global object and is onl
 accessible using the new `stream/web` core module:
 
 ```mjs
-import { ReadableStream, WritableStream } from "stream/web";
+import { ReadableStream, WritableStream } from 'stream/web';
 // Or from 'node:stream/web'
 ```
 

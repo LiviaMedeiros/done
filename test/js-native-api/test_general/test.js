@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 // Flags: --expose-gc
 
-const common = require("../../common");
+const common = require('../../common');
 const test_general = require(`./build/${common.buildType}/test_general`);
-const assert = require("assert");
+const assert = require('assert');
 
-const val1 = "1";
+const val1 = '1';
 const val2 = 1;
 const val3 = 1;
 
@@ -36,26 +36,26 @@ assert.notStrictEqual(test_general.testGetPrototype(baseObject),
 assert.strictEqual(test_general.testGetVersion(), 8);
 
 [
- 123,
- "test string",
- function() {},
- new Object(),
- true,
- undefined,
- Symbol(),
+  123,
+  'test string',
+  function() {},
+  new Object(),
+  true,
+  undefined,
+  Symbol(),
 ].forEach((val) => {
- assert.strictEqual(test_general.testNapiTypeof(val), typeof val);
+  assert.strictEqual(test_general.testNapiTypeof(val), typeof val);
 });
 
 // Since typeof in js return object need to validate specific case
 // for null
-assert.strictEqual(test_general.testNapiTypeof(null), "null");
+assert.strictEqual(test_general.testNapiTypeof(null), 'null');
 
 // Assert that wrapping twice fails.
 const x = {};
 test_general.wrap(x);
 assert.throws(() => test_general.wrap(x),
-              { name: "Error", message: "Invalid argument" });
+              { name: 'Error', message: 'Invalid argument' });
 // Clean up here, otherwise derefItemWasCalled() will be polluted.
 test_general.removeWrap(x);
 
@@ -70,27 +70,27 @@ test_general.removeWrap(y);
 
 // Test napi_adjust_external_memory
 const adjustedValue = test_general.testAdjustExternalMemory();
-assert.strictEqual(typeof adjustedValue, "number");
+assert.strictEqual(typeof adjustedValue, 'number');
 assert(adjustedValue > 0);
 
 async function runGCTests() {
- // Ensure that garbage collecting an object with a wrapped native item results
- // in the finalize callback being called.
- assert.strictEqual(test_general.derefItemWasCalled(), false);
+  // Ensure that garbage collecting an object with a wrapped native item results
+  // in the finalize callback being called.
+  assert.strictEqual(test_general.derefItemWasCalled(), false);
 
- (() => test_general.wrap({}))();
- await common.gcUntil("deref_item() was called upon garbage collecting a " +
-                       "wrapped object.",
-                      () => test_general.derefItemWasCalled());
+  (() => test_general.wrap({}))();
+  await common.gcUntil('deref_item() was called upon garbage collecting a ' +
+                       'wrapped object.',
+                       () => test_general.derefItemWasCalled());
 
- // Ensure that removing a wrap and garbage collecting does not fire the
- // finalize callback.
- let z = {};
- test_general.testFinalizeWrap(z);
- test_general.removeWrap(z);
- z = null;
- await common.gcUntil(
-  "finalize callback was not called upon garbage collection.",
-  () => (!test_general.finalizeWasCalled()));
+  // Ensure that removing a wrap and garbage collecting does not fire the
+  // finalize callback.
+  let z = {};
+  test_general.testFinalizeWrap(z);
+  test_general.removeWrap(z);
+  z = null;
+  await common.gcUntil(
+    'finalize callback was not called upon garbage collection.',
+    () => (!test_general.finalizeWasCalled()));
 }
 runGCTests();

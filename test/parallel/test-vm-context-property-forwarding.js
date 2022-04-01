@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const vm = require("vm");
+'use strict';
+require('../common');
+const assert = require('assert');
+const vm = require('vm');
 
 const sandbox = { x: 3 };
 
 const ctx = vm.createContext(sandbox);
 
-assert.strictEqual(vm.runInContext("x;", ctx), 3);
-vm.runInContext("y = 4;", ctx);
+assert.strictEqual(vm.runInContext('x;', ctx), 3);
+vm.runInContext('y = 4;', ctx);
 assert.strictEqual(sandbox.y, 4);
 assert.strictEqual(ctx.y, 4);
 
@@ -46,20 +46,20 @@ assert.strictEqual(ctx2[1], undefined);
 
 // https://github.com/nodejs/node/issues/33806
 {
- const ctx = vm.createContext();
+  const ctx = vm.createContext();
 
- Object.defineProperty(ctx, "prop", {
-  get() {
-   return undefined;
-  },
-  set(val) {
-   throw new Error("test error");
-  },
- });
+  Object.defineProperty(ctx, 'prop', {
+    get() {
+      return undefined;
+    },
+    set(val) {
+      throw new Error('test error');
+    },
+  });
 
- assert.throws(() => {
-  vm.runInContext("prop = 42", ctx);
- }, {
-  message: "test error",
- });
+  assert.throws(() => {
+    vm.runInContext('prop = 42', ctx);
+  }, {
+    message: 'test error',
+  });
 }

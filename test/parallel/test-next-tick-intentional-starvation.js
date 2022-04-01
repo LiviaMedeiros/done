@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
 // This is the inverse of test-next-tick-starvation. it verifies
 // that process.nextTick will *always* come before other events
@@ -32,30 +32,30 @@ const start = +new Date();
 let timerRan = false;
 
 function spin() {
- ran = true;
- const now = +new Date();
- if (now - start > 100) {
-  console.log("The timer is starving, just as we planned.");
-  starved = true;
+  ran = true;
+  const now = +new Date();
+  if (now - start > 100) {
+    console.log('The timer is starving, just as we planned.');
+    starved = true;
 
-  // now let it out.
-  return;
- }
+    // now let it out.
+    return;
+  }
 
- process.nextTick(spin);
+  process.nextTick(spin);
 }
 
 function onTimeout() {
- if (!starved) throw new Error("The timer escaped!");
- console.log("The timer ran once the ban was lifted");
- timerRan = true;
+  if (!starved) throw new Error('The timer escaped!');
+  console.log('The timer ran once the ban was lifted');
+  timerRan = true;
 }
 
 spin();
 setTimeout(onTimeout, 50);
 
-process.on("exit", function() {
- assert.ok(ran);
- assert.ok(starved);
- assert.ok(timerRan);
+process.on('exit', function() {
+  assert.ok(ran);
+  assert.ok(starved);
+  assert.ok(timerRan);
 });

@@ -19,40 +19,40 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const domain = require("domain");
-const assert = require("assert");
+'use strict';
+const common = require('../common');
+const domain = require('domain');
+const assert = require('assert');
 
 const timeoutd = domain.create();
 
-timeoutd.on("error", common.mustCall(function(e) {
- assert.strictEqual(e.message, "Timeout UNREFd");
+timeoutd.on('error', common.mustCall(function(e) {
+  assert.strictEqual(e.message, 'Timeout UNREFd');
 }, 2));
 
 let t;
 timeoutd.run(function() {
- setTimeout(function() {
-  throw new Error("Timeout UNREFd");
- }, 0).unref();
+  setTimeout(function() {
+    throw new Error('Timeout UNREFd');
+  }, 0).unref();
 
- t = setTimeout(function() {
-  clearTimeout(timeout);
-  throw new Error("Timeout UNREFd");
- }, 0);
+  t = setTimeout(function() {
+    clearTimeout(timeout);
+    throw new Error('Timeout UNREFd');
+  }, 0);
 });
 t.unref();
 
 const immediated = domain.create();
 
-immediated.on("error", common.mustCall(function(e) {
- assert.strictEqual(e.message, "Immediate Error");
+immediated.on('error', common.mustCall(function(e) {
+  assert.strictEqual(e.message, 'Immediate Error');
 }));
 
 immediated.run(function() {
- setImmediate(function() {
-  throw new Error("Immediate Error");
- });
+  setImmediate(function() {
+    throw new Error('Immediate Error');
+  });
 });
 
 const timeout = setTimeout(common.mustNotCall(), 10 * 1000);

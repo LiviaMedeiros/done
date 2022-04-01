@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
 Error.stackTraceLimit = 0;
 
-console.error("before");
+console.error('before');
 
 // Trigger stack overflow by stringifying a deeply nested array.
 let array = [];
 for (let i = 0; i < 100000; i++) {
- array = [ array ];
+  array = [ array ];
 }
 
 JSON.stringify(array);
 
-console.error("after");
+console.error('after');

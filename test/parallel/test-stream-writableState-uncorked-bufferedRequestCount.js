@@ -1,18 +1,18 @@
-"use strict";
+'use strict';
 
-const common = require("../common");
-const assert = require("assert");
-const stream = require("stream");
+const common = require('../common');
+const assert = require('assert');
+const stream = require('stream');
 
 const writable = new stream.Writable();
 
 writable._writev = common.mustCall((chunks, cb) => {
- assert.strictEqual(chunks.length, 2);
- cb();
+  assert.strictEqual(chunks.length, 2);
+  cb();
 }, 1);
 
 writable._write = common.mustCall((chunk, encoding, cb) => {
- cb();
+  cb();
 }, 1);
 
 // first cork
@@ -25,7 +25,7 @@ writable.cork();
 assert.strictEqual(writable._writableState.corked, 2);
 
 // The first chunk is buffered
-writable.write("first chunk");
+writable.write('first chunk');
 assert.strictEqual(writable._writableState.bufferedRequestCount, 1);
 
 // First uncork does nothing
@@ -36,22 +36,22 @@ assert.strictEqual(writable._writableState.bufferedRequestCount, 1);
 process.nextTick(uncork);
 
 // The second chunk is buffered, because we uncork at the end of tick
-writable.write("second chunk");
+writable.write('second chunk');
 assert.strictEqual(writable._writableState.corked, 1);
 assert.strictEqual(writable._writableState.bufferedRequestCount, 2);
 
 function uncork() {
- // Second uncork flushes the buffer
- writable.uncork();
- assert.strictEqual(writable._writableState.corked, 0);
- assert.strictEqual(writable._writableState.bufferedRequestCount, 0);
+  // Second uncork flushes the buffer
+  writable.uncork();
+  assert.strictEqual(writable._writableState.corked, 0);
+  assert.strictEqual(writable._writableState.bufferedRequestCount, 0);
 
- // Verify that end() uncorks correctly
- writable.cork();
- writable.write("third chunk");
- writable.end();
+  // Verify that end() uncorks correctly
+  writable.cork();
+  writable.write('third chunk');
+  writable.end();
 
- // End causes an uncork() as well
- assert.strictEqual(writable._writableState.corked, 0);
- assert.strictEqual(writable._writableState.bufferedRequestCount, 0);
+  // End causes an uncork() as well
+  assert.strictEqual(writable._writableState.corked, 0);
+  assert.strictEqual(writable._writableState.bufferedRequestCount, 0);
 }

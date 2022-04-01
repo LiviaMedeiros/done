@@ -19,68 +19,68 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 // Server sends a large string. Client counts bytes and pauses every few
 // seconds. Makes sure that pause and resume work properly.
 
-const common = require("../common");
+const common = require('../common');
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
-const assert = require("assert");
-const tls = require("tls");
-const fixtures = require("../common/fixtures");
+const assert = require('assert');
+const tls = require('tls');
+const fixtures = require('../common/fixtures');
 
-process.stdout.write("build body...");
-const body = "hello world\n".repeat(1024 * 1024);
-process.stdout.write("done\n");
+process.stdout.write('build body...');
+const body = 'hello world\n'.repeat(1024 * 1024);
+process.stdout.write('done\n');
 
 const options = {
- key: fixtures.readKey("agent2-key.pem"),
- cert: fixtures.readKey("agent2-cert.pem"),
+  key: fixtures.readKey('agent2-key.pem'),
+  cert: fixtures.readKey('agent2-cert.pem')
 };
 
 const server = tls.Server(options, common.mustCall(function(socket) {
- socket.end(body);
+  socket.end(body);
 }));
 
 let recvCount = 0;
 
 server.listen(0, function() {
- const client = tls.connect({
-  port: server.address().port,
-  rejectUnauthorized: false,
- });
-
- client.on("data", function(d) {
-  process.stdout.write(".");
-  recvCount += d.length;
-
-  client.pause();
-  process.nextTick(function() {
-   client.resume();
+  const client = tls.connect({
+    port: server.address().port,
+    rejectUnauthorized: false
   });
- });
+
+  client.on('data', function(d) {
+    process.stdout.write('.');
+    recvCount += d.length;
+
+    client.pause();
+    process.nextTick(function() {
+      client.resume();
+    });
+  });
 
 
- client.on("close", function() {
-  console.error("close");
-  server.close();
-  clearTimeout(timeout);
- });
+  client.on('close', function() {
+    console.error('close');
+    server.close();
+    clearTimeout(timeout);
+  });
 });
 
 
 function displayCounts() {
- console.log(`body.length: ${body.length}`);
- console.log(`  recvCount: ${recvCount}`);
+  console.log(`body.length: ${body.length}`);
+  console.log(`  recvCount: ${recvCount}`);
 }
 
 
 const timeout = setTimeout(displayCounts, 10 * 1000);
 
 
-process.on("exit", function() {
- displayCounts();
- assert.strictEqual(body.length, recvCount);
+process.on('exit', function() {
+  displayCounts();
+  assert.strictEqual(body.length, recvCount);
 });

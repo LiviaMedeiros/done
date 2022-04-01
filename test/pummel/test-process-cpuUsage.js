@@ -1,6 +1,6 @@
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
 const start = process.cpuUsage();
 

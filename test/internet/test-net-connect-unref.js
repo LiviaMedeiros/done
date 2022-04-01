@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const net = require("net");
+'use strict';
+const common = require('../common');
+const net = require('net');
 
-const client = net.createConnection(53, "8.8.8.8", function() {
- client.unref();
+const client = net.createConnection(53, '8.8.8.8', function() {
+  client.unref();
 });
 
-client.on("close", common.mustNotCall());
+client.on('close', common.mustNotCall());

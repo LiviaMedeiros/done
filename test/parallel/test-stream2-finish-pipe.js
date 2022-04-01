@@ -19,26 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const stream = require("stream");
+'use strict';
+require('../common');
+const stream = require('stream');
 
 const r = new stream.Readable();
 r._read = function(size) {
- r.push(Buffer.allocUnsafe(size));
+  r.push(Buffer.allocUnsafe(size));
 };
 
 const w = new stream.Writable();
 w._write = function(data, encoding, cb) {
- process.nextTick(cb, null);
+  process.nextTick(cb, null);
 };
 
 r.pipe(w);
 
 // end() must be called in nextTick or a WRITE_AFTER_END error occurs.
 process.nextTick(() => {
- // This might sound unrealistic, but it happens in net.js. When
- // socket.allowHalfOpen === false, EOF will cause .destroySoon() call which
- // ends the writable side of net.Socket.
- w.end();
+  // This might sound unrealistic, but it happens in net.js. When
+  // socket.allowHalfOpen === false, EOF will cause .destroySoon() call which
+  // ends the writable side of net.Socket.
+  w.end();
 });

@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
 // Regression test for https://github.com/nodejs/node-v0.x-archive/issues/8897.
 
 // Test some private implementation details that should not be
 // considered public interface.
-const common = require("../common");
-const timers = require("timers");
+const common = require('../common');
+const timers = require('timers');
 
 const foo = {
- _onTimeout: common.mustNotCall("_onTimeout should not be called"),
+  _onTimeout: common.mustNotCall('_onTimeout should not be called')
 };
 
 const bar = {
- _onTimeout: common.mustCall(function() {
-  timers.unenroll(foo);
- }),
+  _onTimeout: common.mustCall(function() {
+    timers.unenroll(foo);
+  })
 };
 
 // We use timers with expiration times that are sufficiently apart to make

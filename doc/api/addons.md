@@ -53,7 +53,7 @@ This "Hello world" example is a simple addon, written in C++, that is the
 equivalent of the following JavaScript code:
 
 ```js
-module.exports.hello = () => "world";
+module.exports.hello = () => 'world';
 ```
 
 First, create the file `hello.cc`:
@@ -323,7 +323,7 @@ Test in JavaScript by running:
 
 ```js
 // test.js
-require("./build/Release/addon");
+require('./build/Release/addon');
 ```
 
 ### Building
@@ -370,7 +370,7 @@ Once built, the binary addon can be used from within Node.js by pointing
 
 ```js
 // hello.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
 console.log(addon.hello());
 // Prints: 'world'
@@ -385,9 +385,9 @@ locates addon modules, it is essentially using a `try…catch` pattern similar t
 
 ```js
 try {
- return require("./build/Release/addon.node");
+  return require('./build/Release/addon.node');
 } catch (err) {
- return require("./build/Debug/addon.node");
+  return require('./build/Debug/addon.node');
 }
 ```
 
@@ -604,9 +604,9 @@ Once compiled, the example addon can be required and used from within Node.js:
 
 ```js
 // test.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
-console.log("This should be eight:", addon.add(3, 5));
+console.log('This should be eight:', addon.add(3, 5));
 ```
 
 ### Callbacks
@@ -660,10 +660,10 @@ To test it, run the following JavaScript:
 
 ```js
 // test.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
 addon((msg) => {
- console.log(msg);
+  console.log(msg);
 // Prints: 'hello world'
 });
 ```
@@ -717,10 +717,10 @@ To test it in JavaScript:
 
 ```js
 // test.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
-const obj1 = addon("hello");
-const obj2 = addon("world");
+const obj1 = addon('hello');
+const obj2 = addon('world');
 console.log(obj1.msg, obj2.msg);
 // Prints: 'hello world'
 ```
@@ -779,7 +779,7 @@ To test:
 
 ```js
 // test.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
 const fn = addon();
 console.log(fn());
@@ -949,7 +949,7 @@ Test it with:
 
 ```js
 // test.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
 const obj = new addon.MyObject(10);
 console.log(obj.plusOne());
@@ -1164,7 +1164,7 @@ Test it with:
 
 ```js
 // test.js
-const createObject = require("./build/Release/addon");
+const createObject = require('./build/Release/addon');
 
 const obj = createObject(10);
 console.log(obj.plusOne());
@@ -1356,7 +1356,7 @@ Test it with:
 
 ```js
 // test.js
-const addon = require("./build/Release/addon");
+const addon = require('./build/Release/addon');
 
 const obj1 = addon.createObject(10);
 const obj2 = addon.createObject(20);

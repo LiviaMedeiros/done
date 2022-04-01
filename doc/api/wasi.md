@@ -11,16 +11,16 @@ specification. WASI gives sandboxed WebAssembly applications access to the
 underlying operating system via a collection of POSIX-like functions.
 
 ```mjs
-import { readFile } from "fs/promises";
-import { WASI } from "wasi";
-import { argv, env } from "process";
+import { readFile } from 'fs/promises';
+import { WASI } from 'wasi';
+import { argv, env } from 'process';
 
 const wasi = new WASI({
- args: argv,
- env,
- preopens: {
-  "/sandbox": "/some/real/path/that/wasm/can/access",
- },
+  args: argv,
+  env,
+  preopens: {
+    '/sandbox': '/some/real/path/that/wasm/can/access'
+  }
 });
 
 // Some WASI binaries require:
@@ -28,7 +28,7 @@ const wasi = new WASI({
 const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
 
 const wasm = await WebAssembly.compile(
- await readFile(new URL("./demo.wasm", import.meta.url)),
+  await readFile(new URL('./demo.wasm', import.meta.url))
 );
 const instance = await WebAssembly.instantiate(wasm, importObject);
 
@@ -36,18 +36,18 @@ wasi.start(instance);
 ```
 
 ```cjs
-"use strict";
-const { readFile } = require("fs/promises");
-const { WASI } = require("wasi");
-const { argv, env } = require("process");
-const { join } = require("path");
+'use strict';
+const { readFile } = require('fs/promises');
+const { WASI } = require('wasi');
+const { argv, env } = require('process');
+const { join } = require('path');
 
 const wasi = new WASI({
- args: argv,
- env,
- preopens: {
-  "/sandbox": "/some/real/path/that/wasm/can/access",
- },
+  args: argv,
+  env,
+  preopens: {
+    '/sandbox': '/some/real/path/that/wasm/can/access'
+  }
 });
 
 // Some WASI binaries require:
@@ -55,12 +55,12 @@ const wasi = new WASI({
 const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
 
 (async () => {
- const wasm = await WebAssembly.compile(
-  await readFile(join(__dirname, "demo.wasm")),
- );
- const instance = await WebAssembly.instantiate(wasm, importObject);
+  const wasm = await WebAssembly.compile(
+    await readFile(join(__dirname, 'demo.wasm'))
+  );
+  const instance = await WebAssembly.instantiate(wasm, importObject);
 
- wasi.start(instance);
+  wasi.start(instance);
 })();
 ```
 

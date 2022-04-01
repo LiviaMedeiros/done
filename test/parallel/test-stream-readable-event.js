@@ -19,110 +19,110 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const assert = require("assert");
+'use strict';
+const common = require('../common');
+const assert = require('assert');
 
-const Readable = require("stream").Readable;
-
-{
- // First test, not reading when the readable is added.
- // make sure that on('readable', ...) triggers a readable event.
- const r = new Readable({
-  highWaterMark: 3,
- });
-
- r._read = common.mustNotCall();
-
- // This triggers a 'readable' event, which is lost.
- r.push(Buffer.from("blerg"));
-
- setTimeout(function() {
-  // We're testing what we think we are
-  assert(!r._readableState.reading);
-  r.on("readable", common.mustCall());
- }, 1);
-}
+const Readable = require('stream').Readable;
 
 {
- // Second test, make sure that readable is re-emitted if there's
- // already a length, while it IS reading.
-
- const r = new Readable({
-  highWaterMark: 3,
- });
-
- r._read = common.mustCall();
-
- // This triggers a 'readable' event, which is lost.
- r.push(Buffer.from("bl"));
-
- setTimeout(function() {
-  // Assert we're testing what we think we are
-  assert(r._readableState.reading);
-  r.on("readable", common.mustCall());
- }, 1);
-}
-
-{
- // Third test, not reading when the stream has not passed
- // the highWaterMark but *has* reached EOF.
- const r = new Readable({
-  highWaterMark: 30,
- });
-
- r._read = common.mustNotCall();
-
- // This triggers a 'readable' event, which is lost.
- r.push(Buffer.from("blerg"));
- r.push(null);
-
- setTimeout(function() {
-  // Assert we're testing what we think we are
-  assert(!r._readableState.reading);
-  r.on("readable", common.mustCall());
- }, 1);
-}
-
-{
- // Pushing an empty string in non-objectMode should
- // trigger next `read()`.
- const underlyingData = ["", "x", "y", "", "z"];
- const expected = underlyingData.filter((data) => data);
- const result = [];
-
- const r = new Readable({
-  encoding: "utf8",
- });
- r._read = function() {
-  process.nextTick(() => {
-   if (!underlyingData.length) {
-    this.push(null);
-   } else {
-    this.push(underlyingData.shift());
-   }
+  // First test, not reading when the readable is added.
+  // make sure that on('readable', ...) triggers a readable event.
+  const r = new Readable({
+    highWaterMark: 3
   });
- };
 
- r.on("readable", () => {
-  const data = r.read();
-  if (data !== null) result.push(data);
- });
+  r._read = common.mustNotCall();
 
- r.on("end", common.mustCall(() => {
-  assert.deepStrictEqual(result, expected);
- }));
+  // This triggers a 'readable' event, which is lost.
+  r.push(Buffer.from('blerg'));
+
+  setTimeout(function() {
+    // We're testing what we think we are
+    assert(!r._readableState.reading);
+    r.on('readable', common.mustCall());
+  }, 1);
 }
 
 {
- // #20923
- const r = new Readable();
- r._read = function() {
-  // Actually doing thing here
- };
- r.on("data", function() {});
+  // Second test, make sure that readable is re-emitted if there's
+  // already a length, while it IS reading.
 
- r.removeAllListeners();
+  const r = new Readable({
+    highWaterMark: 3
+  });
 
- assert.strictEqual(r.eventNames().length, 0);
+  r._read = common.mustCall();
+
+  // This triggers a 'readable' event, which is lost.
+  r.push(Buffer.from('bl'));
+
+  setTimeout(function() {
+    // Assert we're testing what we think we are
+    assert(r._readableState.reading);
+    r.on('readable', common.mustCall());
+  }, 1);
+}
+
+{
+  // Third test, not reading when the stream has not passed
+  // the highWaterMark but *has* reached EOF.
+  const r = new Readable({
+    highWaterMark: 30
+  });
+
+  r._read = common.mustNotCall();
+
+  // This triggers a 'readable' event, which is lost.
+  r.push(Buffer.from('blerg'));
+  r.push(null);
+
+  setTimeout(function() {
+    // Assert we're testing what we think we are
+    assert(!r._readableState.reading);
+    r.on('readable', common.mustCall());
+  }, 1);
+}
+
+{
+  // Pushing an empty string in non-objectMode should
+  // trigger next `read()`.
+  const underlyingData = ['', 'x', 'y', '', 'z'];
+  const expected = underlyingData.filter((data) => data);
+  const result = [];
+
+  const r = new Readable({
+    encoding: 'utf8',
+  });
+  r._read = function() {
+    process.nextTick(() => {
+      if (!underlyingData.length) {
+        this.push(null);
+      } else {
+        this.push(underlyingData.shift());
+      }
+    });
+  };
+
+  r.on('readable', () => {
+    const data = r.read();
+    if (data !== null) result.push(data);
+  });
+
+  r.on('end', common.mustCall(() => {
+    assert.deepStrictEqual(result, expected);
+  }));
+}
+
+{
+  // #20923
+  const r = new Readable();
+  r._read = function() {
+    // Actually doing thing here
+  };
+  r.on('data', function() {});
+
+  r.removeAllListeners();
+
+  assert.strictEqual(r.eventNames().length, 0);
 }

@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const http = require("http");
+'use strict';
+require('../common');
+const http = require('http');
 
 // Simple test of Node's HTTP Client choking on a response
 // with a 'Content-Length: 0 ' response header.
@@ -29,16 +29,16 @@ const http = require("http");
 
 
 const s = http.createServer(function(req, res) {
- res.writeHead(200, { "Content-Length": "0 " });
- res.end();
+  res.writeHead(200, { 'Content-Length': '0 ' });
+  res.end();
 });
 s.listen(0, function() {
 
- const request = http.request({ port: this.address().port }, (response) => {
-  console.log(`STATUS: ${response.statusCode}`);
-  s.close();
-  response.resume();
- });
+  const request = http.request({ port: this.address().port }, (response) => {
+    console.log(`STATUS: ${response.statusCode}`);
+    s.close();
+    response.resume();
+  });
 
- request.end();
+  request.end();
 });

@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const http = require("http");
+'use strict';
+const common = require('../common');
+const http = require('http');
 
 const server = http.createServer(common.mustCall((req, res) => {
- res.end();
+  res.end();
 })).listen(0, common.mustCall(() => {
- const options = {
-  agent: null,
-  port: server.address().port,
- };
- http.get(options, common.mustCall((res) => {
-  res.resume();
-  server.close();
- }));
+  const options = {
+    agent: null,
+    port: server.address().port
+  };
+  http.get(options, common.mustCall((res) => {
+    res.resume();
+    server.close();
+  }));
 }));

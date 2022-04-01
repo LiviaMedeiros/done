@@ -17,7 +17,7 @@ While the `Buffer` class is available within the global scope, it is still
 recommended to explicitly reference it via an import or require statement.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Creates a zero-filled Buffer of length 10.
 const buf1 = Buffer.alloc(10);
@@ -38,19 +38,19 @@ const buf4 = Buffer.from([1, 2, 3]);
 
 // Creates a Buffer containing the bytes [1, 1, 1, 1] – the entries
 // are all truncated using `(value & 255)` to fit into the range 0–255.
-const buf5 = Buffer.from([257, 257.5, -255, "1"]);
+const buf5 = Buffer.from([257, 257.5, -255, '1']);
 
 // Creates a Buffer containing the UTF-8-encoded bytes for the string 'tést':
 // [0x74, 0xc3, 0xa9, 0x73, 0x74] (in hexadecimal notation)
 // [116, 195, 169, 115, 116] (in decimal notation)
-const buf6 = Buffer.from("tést");
+const buf6 = Buffer.from('tést');
 
 // Creates a Buffer containing the Latin-1 bytes [0x74, 0xe9, 0x73, 0x74].
-const buf7 = Buffer.from("tést", "latin1");
+const buf7 = Buffer.from('tést', 'latin1');
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Creates a zero-filled Buffer of length 10.
 const buf1 = Buffer.alloc(10);
@@ -71,15 +71,15 @@ const buf4 = Buffer.from([1, 2, 3]);
 
 // Creates a Buffer containing the bytes [1, 1, 1, 1] – the entries
 // are all truncated using `(value & 255)` to fit into the range 0–255.
-const buf5 = Buffer.from([257, 257.5, -255, "1"]);
+const buf5 = Buffer.from([257, 257.5, -255, '1']);
 
 // Creates a Buffer containing the UTF-8-encoded bytes for the string 'tést':
 // [0x74, 0xc3, 0xa9, 0x73, 0x74] (in hexadecimal notation)
 // [116, 195, 169, 115, 116] (in decimal notation)
-const buf6 = Buffer.from("tést");
+const buf6 = Buffer.from('tést');
 
 // Creates a Buffer containing the Latin-1 bytes [0x74, 0xe9, 0x73, 0x74].
-const buf7 = Buffer.from("tést", "latin1");
+const buf7 = Buffer.from('tést', 'latin1');
 ```
 
 ## Buffers and character encodings
@@ -104,34 +104,34 @@ specified. If no character encoding is specified, UTF-8 will be used as the
 default.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("hello world", "utf8");
+const buf = Buffer.from('hello world', 'utf8');
 
-console.log(buf.toString("hex"));
+console.log(buf.toString('hex'));
 // Prints: 68656c6c6f20776f726c64
-console.log(buf.toString("base64"));
+console.log(buf.toString('base64'));
 // Prints: aGVsbG8gd29ybGQ=
 
-console.log(Buffer.from("fhqwhgads", "utf8"));
+console.log(Buffer.from('fhqwhgads', 'utf8'));
 // Prints: <Buffer 66 68 71 77 68 67 61 64 73>
-console.log(Buffer.from("fhqwhgads", "utf16le"));
+console.log(Buffer.from('fhqwhgads', 'utf16le'));
 // Prints: <Buffer 66 00 68 00 71 00 77 00 68 00 67 00 61 00 64 00 73 00>
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("hello world", "utf8");
+const buf = Buffer.from('hello world', 'utf8');
 
-console.log(buf.toString("hex"));
+console.log(buf.toString('hex'));
 // Prints: 68656c6c6f20776f726c64
-console.log(buf.toString("base64"));
+console.log(buf.toString('base64'));
 // Prints: aGVsbG8gd29ybGQ=
 
-console.log(Buffer.from("fhqwhgads", "utf8"));
+console.log(Buffer.from('fhqwhgads', 'utf8'));
 // Prints: <Buffer 66 68 71 77 68 67 61 64 73>
-console.log(Buffer.from("fhqwhgads", "utf16le"));
+console.log(Buffer.from('fhqwhgads', 'utf16le'));
 // Prints: <Buffer 66 00 68 00 71 00 77 00 68 00 67 00 61 00 64 00 73 00>
 ```
 
@@ -199,30 +199,30 @@ The following legacy character encodings are also supported:
   U+FFFF. In Node.js, these code points are always supported.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-Buffer.from("1ag123", "hex");
+Buffer.from('1ag123', 'hex');
 // Prints <Buffer 1a>, data truncated when first non-hexadecimal value
 // ('g') encountered.
 
-Buffer.from("1a7", "hex");
+Buffer.from('1a7', 'hex');
 // Prints <Buffer 1a>, data truncated when data ends in single digit ('7').
 
-Buffer.from("1634", "hex");
+Buffer.from('1634', 'hex');
 // Prints <Buffer 16 34>, all data represented.
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-Buffer.from("1ag123", "hex");
+Buffer.from('1ag123', 'hex');
 // Prints <Buffer 1a>, data truncated when first non-hexadecimal value
 // ('g') encountered.
 
-Buffer.from("1a7", "hex");
+Buffer.from('1a7', 'hex');
 // Prints <Buffer 1a>, data truncated when data ends in single digit ('7').
 
-Buffer.from("1634", "hex");
+Buffer.from('1634', 'hex');
 // Prints <Buffer 16 34>, all data represented.
 ```
 
@@ -265,7 +265,7 @@ There are two ways to create new [`TypedArray`][] instances from a `Buffer`:
   of the target type.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, 2, 3, 4]);
 const uint32array = new Uint32Array(buf);
@@ -276,7 +276,7 @@ console.log(uint32array);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, 2, 3, 4]);
 const uint32array = new Uint32Array(buf);
@@ -290,13 +290,13 @@ console.log(uint32array);
   [`TypedArray`][] that shares its memory with the `Buffer`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("hello", "utf16le");
+const buf = Buffer.from('hello', 'utf16le');
 const uint16array = new Uint16Array(
- buf.buffer,
- buf.byteOffset,
- buf.length / Uint16Array.BYTES_PER_ELEMENT);
+  buf.buffer,
+  buf.byteOffset,
+  buf.length / Uint16Array.BYTES_PER_ELEMENT);
 
 console.log(uint16array);
 
@@ -304,13 +304,13 @@ console.log(uint16array);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("hello", "utf16le");
+const buf = Buffer.from('hello', 'utf16le');
 const uint16array = new Uint16Array(
- buf.buffer,
- buf.byteOffset,
- buf.length / Uint16Array.BYTES_PER_ELEMENT);
+  buf.buffer,
+  buf.byteOffset,
+  buf.length / Uint16Array.BYTES_PER_ELEMENT);
 
 console.log(uint16array);
 
@@ -323,7 +323,7 @@ memory as a [`TypedArray`][] instance by using the `TypedArray` object’s
 behaves like `new Uint8Array()` in this context.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const arr = new Uint16Array(2);
 
@@ -350,7 +350,7 @@ console.log(buf2);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const arr = new Uint16Array(2);
 
@@ -381,7 +381,7 @@ possible to use only a portion of the underlying [`ArrayBuffer`][] by passing in
 `byteOffset` and `length` parameters.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const arr = new Uint16Array(20);
 const buf = Buffer.from(arr.buffer, 0, 16);
@@ -391,7 +391,7 @@ console.log(buf.length);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const arr = new Uint16Array(20);
 const buf = Buffer.from(arr.buffer, 0, 16);
@@ -420,12 +420,12 @@ function:
 `Buffer` instances can be iterated over using `for..of` syntax:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, 2, 3]);
 
 for (const b of buf) {
- console.log(b);
+  console.log(b);
 }
 // Prints:
 //   1
@@ -434,12 +434,12 @@ for (const b of buf) {
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, 2, 3]);
 
 for (const b of buf) {
- console.log(b);
+  console.log(b);
 }
 // Prints:
 //   1
@@ -579,23 +579,23 @@ contained by the `Blob` is copied only when the `arrayBuffer()` or `text()`
 methods are called.
 
 ```mjs
-import { Blob, Buffer } from "buffer";
-import { setTimeout as delay } from "timers/promises";
+import { Blob, Buffer } from 'buffer';
+import { setTimeout as delay } from 'timers/promises';
 
-const blob = new Blob(["hello there"]);
+const blob = new Blob(['hello there']);
 
 const mc1 = new MessageChannel();
 const mc2 = new MessageChannel();
 
 mc1.port1.onmessage = async ({ data }) => {
- console.log(await data.arrayBuffer());
- mc1.port1.close();
+  console.log(await data.arrayBuffer());
+  mc1.port1.close();
 };
 
 mc2.port1.onmessage = async ({ data }) => {
- await delay(1000);
- console.log(await data.arrayBuffer());
- mc2.port1.close();
+  await delay(1000);
+  console.log(await data.arrayBuffer());
+  mc2.port1.close();
 };
 
 mc1.port2.postMessage(blob);
@@ -606,23 +606,23 @@ blob.text().then(console.log);
 ```
 
 ```cjs
-const { Blob, Buffer } = require("buffer");
-const { setTimeout: delay } = require("timers/promises");
+const { Blob, Buffer } = require('buffer');
+const { setTimeout: delay } = require('timers/promises');
 
-const blob = new Blob(["hello there"]);
+const blob = new Blob(['hello there']);
 
 const mc1 = new MessageChannel();
 const mc2 = new MessageChannel();
 
 mc1.port1.onmessage = async ({ data }) => {
- console.log(await data.arrayBuffer());
- mc1.port1.close();
+  console.log(await data.arrayBuffer());
+  mc1.port1.close();
 };
 
 mc2.port1.onmessage = async ({ data }) => {
- await delay(1000);
- console.log(await data.arrayBuffer());
- mc2.port1.close();
+  await delay(1000);
+  console.log(await data.arrayBuffer());
+  mc2.port1.close();
 };
 
 mc1.port2.postMessage(blob);
@@ -670,7 +670,7 @@ Allocates a new `Buffer` of `size` bytes. If `fill` is `undefined`, the
 `Buffer` will be zero-filled.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.alloc(5);
 
@@ -679,7 +679,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.alloc(5);
 
@@ -695,18 +695,18 @@ If `fill` is specified, the allocated `Buffer` will be initialized by calling
 [`buf.fill(fill)`][`buf.fill()`].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.alloc(5, "a");
+const buf = Buffer.alloc(5, 'a');
 
 console.log(buf);
 // Prints: <Buffer 61 61 61 61 61>
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.alloc(5, "a");
+const buf = Buffer.alloc(5, 'a');
 
 console.log(buf);
 // Prints: <Buffer 61 61 61 61 61>
@@ -716,18 +716,18 @@ If both `fill` and `encoding` are specified, the allocated `Buffer` will be
 initialized by calling [`buf.fill(fill, encoding)`][`buf.fill()`].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.alloc(11, "aGVsbG8gd29ybGQ=", "base64");
+const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
 
 console.log(buf);
 // Prints: <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.alloc(11, "aGVsbG8gd29ybGQ=", "base64");
+const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
 
 console.log(buf);
 // Prints: <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
@@ -766,7 +766,7 @@ _may contain sensitive data_. Use [`Buffer.alloc()`][] instead to initialize
 `Buffer` instances with zeroes.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(10);
 
@@ -780,7 +780,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(10);
 
@@ -845,42 +845,42 @@ to create an un-pooled `Buffer` instance using `Buffer.allocUnsafeSlow()` and
 then copying out the relevant bits.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Need to keep around a few small chunks of memory.
 const store = [];
 
-socket.on("readable", () => {
- let data;
- while (null !== (data = readable.read())) {
-  // Allocate for retained data.
-  const sb = Buffer.allocUnsafeSlow(10);
+socket.on('readable', () => {
+  let data;
+  while (null !== (data = readable.read())) {
+    // Allocate for retained data.
+    const sb = Buffer.allocUnsafeSlow(10);
 
-  // Copy the data into the new allocation.
-  data.copy(sb, 0, 0, 10);
+    // Copy the data into the new allocation.
+    data.copy(sb, 0, 0, 10);
 
-  store.push(sb);
- }
+    store.push(sb);
+  }
 });
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Need to keep around a few small chunks of memory.
 const store = [];
 
-socket.on("readable", () => {
- let data;
- while (null !== (data = readable.read())) {
-  // Allocate for retained data.
-  const sb = Buffer.allocUnsafeSlow(10);
+socket.on('readable', () => {
+  let data;
+  while (null !== (data = readable.read())) {
+    // Allocate for retained data.
+    const sb = Buffer.allocUnsafeSlow(10);
 
-  // Copy the data into the new allocation.
-  data.copy(sb, 0, 0, 10);
+    // Copy the data into the new allocation.
+    data.copy(sb, 0, 0, 10);
 
-  store.push(sb);
- }
+    store.push(sb);
+  }
 });
 ```
 
@@ -916,22 +916,22 @@ return value might be greater than the length of a `Buffer` created from the
 string.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const str = "\u00bd + \u00bc = \u00be";
+const str = '\u00bd + \u00bc = \u00be';
 
 console.log(`${str}: ${str.length} characters, ` +
-            `${Buffer.byteLength(str, "utf8")} bytes`);
+            `${Buffer.byteLength(str, 'utf8')} bytes`);
 // Prints: ½ + ¼ = ¾: 9 characters, 12 bytes
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const str = "\u00bd + \u00bc = \u00be";
+const str = '\u00bd + \u00bc = \u00be';
 
 console.log(`${str}: ${str.length} characters, ` +
-            `${Buffer.byteLength(str, "utf8")} bytes`);
+            `${Buffer.byteLength(str, 'utf8')} bytes`);
 // Prints: ½ + ¼ = ¾: 9 characters, 12 bytes
 ```
 
@@ -959,10 +959,10 @@ Compares `buf1` to `buf2`, typically for the purpose of sorting arrays of
 [`buf1.compare(buf2)`][`buf.compare()`].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf1 = Buffer.from("1234");
-const buf2 = Buffer.from("0123");
+const buf1 = Buffer.from('1234');
+const buf2 = Buffer.from('0123');
 const arr = [buf1, buf2];
 
 console.log(arr.sort(Buffer.compare));
@@ -971,10 +971,10 @@ console.log(arr.sort(Buffer.compare));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf1 = Buffer.from("1234");
-const buf2 = Buffer.from("0123");
+const buf1 = Buffer.from('1234');
+const buf2 = Buffer.from('0123');
 const arr = [buf1, buf2];
 
 console.log(arr.sort(Buffer.compare));
@@ -1012,7 +1012,7 @@ combined length of the `Buffer`s in `list` exceeds `totalLength`, the result is
 truncated to `totalLength`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Create a single `Buffer` from a list of three `Buffer` instances.
 
@@ -1033,7 +1033,7 @@ console.log(bufA.length);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Create a single `Buffer` from a list of three `Buffer` instances.
 
@@ -1068,14 +1068,14 @@ Allocates a new `Buffer` using an `array` of bytes in the range `0` – `255`.
 Array entries outside that range will be truncated to fit into it.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Creates a new Buffer containing the UTF-8 bytes of the string 'buffer'.
 const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Creates a new Buffer containing the UTF-8 bytes of the string 'buffer'.
 const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
@@ -1106,7 +1106,7 @@ memory. For example, when passed a reference to the `.buffer` property of a
 allocated memory as the [`TypedArray`][]'s underlying `ArrayBuffer`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const arr = new Uint16Array(2);
 
@@ -1127,7 +1127,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const arr = new Uint16Array(2);
 
@@ -1151,7 +1151,7 @@ The optional `byteOffset` and `length` arguments specify a memory range within
 the `arrayBuffer` that will be shared by the `Buffer`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const ab = new ArrayBuffer(10);
 const buf = Buffer.from(ab, 0, 2);
@@ -1161,7 +1161,7 @@ console.log(buf.length);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const ab = new ArrayBuffer(10);
 const buf = Buffer.from(ab, 0, 2);
@@ -1180,7 +1180,7 @@ of memory that extends beyond the bounds of a `TypedArray` view. A new
 beyond the range of the `TypedArray`:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const arrA = Uint8Array.from([0x63, 0x64, 0x65, 0x66]); // 4 elements
 const arrB = new Uint8Array(arrA.buffer, 1, 2); // 2 elements
@@ -1192,7 +1192,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const arrA = Uint8Array.from([0x63, 0x64, 0x65, 0x66]); // 4 elements
 const arrB = new Uint8Array(arrA.buffer, 1, 2); // 2 elements
@@ -1215,9 +1215,9 @@ added: v5.10.0
 Copies the passed `buffer` data onto a new `Buffer` instance.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf1 = Buffer.from("buffer");
+const buf1 = Buffer.from('buffer');
 const buf2 = Buffer.from(buf1);
 
 buf1[0] = 0x61;
@@ -1229,9 +1229,9 @@ console.log(buf2.toString());
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf1 = Buffer.from("buffer");
+const buf1 = Buffer.from('buffer');
 const buf2 = Buffer.from(buf1);
 
 buf1[0] = 0x61;
@@ -1259,16 +1259,16 @@ For objects whose `valueOf()` function returns a value not strictly equal to
 `object`, returns `Buffer.from(object.valueOf(), offsetOrEncoding, length)`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from(new String("this is a test"));
+const buf = Buffer.from(new String('this is a test'));
 // Prints: <Buffer 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from(new String("this is a test"));
+const buf = Buffer.from(new String('this is a test'));
 // Prints: <Buffer 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
 ```
 
@@ -1276,28 +1276,28 @@ For objects that support `Symbol.toPrimitive`, returns
 `Buffer.from(object[Symbol.toPrimitive]('string'), offsetOrEncoding)`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 class Foo {
- [Symbol.toPrimitive]() {
-  return "this is a test";
- }
+  [Symbol.toPrimitive]() {
+    return 'this is a test';
+  }
 }
 
-const buf = Buffer.from(new Foo(), "utf8");
+const buf = Buffer.from(new Foo(), 'utf8');
 // Prints: <Buffer 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 class Foo {
- [Symbol.toPrimitive]() {
-  return "this is a test";
- }
+  [Symbol.toPrimitive]() {
+    return 'this is a test';
+  }
 }
 
-const buf = Buffer.from(new Foo(), "utf8");
+const buf = Buffer.from(new Foo(), 'utf8');
 // Prints: <Buffer 74 68 69 73 20 69 73 20 61 20 74 65 73 74>
 ```
 
@@ -1317,30 +1317,30 @@ Creates a new `Buffer` containing `string`. The `encoding` parameter identifies
 the character encoding to be used when converting `string` into bytes.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf1 = Buffer.from("this is a tést");
-const buf2 = Buffer.from("7468697320697320612074c3a97374", "hex");
+const buf1 = Buffer.from('this is a tést');
+const buf2 = Buffer.from('7468697320697320612074c3a97374', 'hex');
 
 console.log(buf1.toString());
 // Prints: this is a tést
 console.log(buf2.toString());
 // Prints: this is a tést
-console.log(buf1.toString("latin1"));
+console.log(buf1.toString('latin1'));
 // Prints: this is a tÃ©st
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf1 = Buffer.from("this is a tést");
-const buf2 = Buffer.from("7468697320697320612074c3a97374", "hex");
+const buf1 = Buffer.from('this is a tést');
+const buf2 = Buffer.from('7468697320697320612074c3a97374', 'hex');
 
 console.log(buf1.toString());
 // Prints: this is a tést
 console.log(buf2.toString());
 // Prints: this is a tést
-console.log(buf1.toString("latin1"));
+console.log(buf1.toString('latin1'));
 // Prints: this is a tÃ©st
 ```
 
@@ -1359,21 +1359,21 @@ added: v0.1.101
 Returns `true` if `obj` is a `Buffer`, `false` otherwise.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 Buffer.isBuffer(Buffer.alloc(10)); // true
-Buffer.isBuffer(Buffer.from("foo")); // true
-Buffer.isBuffer("a string"); // false
+Buffer.isBuffer(Buffer.from('foo')); // true
+Buffer.isBuffer('a string'); // false
 Buffer.isBuffer([]); // false
 Buffer.isBuffer(new Uint8Array(1024)); // false
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 Buffer.isBuffer(Buffer.alloc(10)); // true
-Buffer.isBuffer(Buffer.from("foo")); // true
-Buffer.isBuffer("a string"); // false
+Buffer.isBuffer(Buffer.from('foo')); // true
+Buffer.isBuffer('a string'); // false
 Buffer.isBuffer([]); // false
 Buffer.isBuffer(new Uint8Array(1024)); // false
 ```
@@ -1391,34 +1391,34 @@ Returns `true` if `encoding` is the name of a supported character encoding,
 or `false` otherwise.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-console.log(Buffer.isEncoding("utf8"));
+console.log(Buffer.isEncoding('utf8'));
 // Prints: true
 
-console.log(Buffer.isEncoding("hex"));
+console.log(Buffer.isEncoding('hex'));
 // Prints: true
 
-console.log(Buffer.isEncoding("utf/8"));
+console.log(Buffer.isEncoding('utf/8'));
 // Prints: false
 
-console.log(Buffer.isEncoding(""));
+console.log(Buffer.isEncoding(''));
 // Prints: false
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-console.log(Buffer.isEncoding("utf8"));
+console.log(Buffer.isEncoding('utf8'));
 // Prints: true
 
-console.log(Buffer.isEncoding("hex"));
+console.log(Buffer.isEncoding('hex'));
 // Prints: true
 
-console.log(Buffer.isEncoding("utf/8"));
+console.log(Buffer.isEncoding('utf/8'));
 // Prints: false
 
-console.log(Buffer.isEncoding(""));
+console.log(Buffer.isEncoding(''));
 // Prints: false
 ```
 
@@ -1448,38 +1448,38 @@ access is the same as `Uint8Array`. In other words, `buf[index]` returns
 `>= buf.length`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Copy an ASCII string into a `Buffer` one byte at a time.
 // (This only works for ASCII-only strings. In general, one should use
 // `Buffer.from()` to perform this conversion.)
 
-const str = "Node.js";
+const str = 'Node.js';
 const buf = Buffer.allocUnsafe(str.length);
 
 for (let i = 0; i < str.length; i++) {
- buf[i] = str.charCodeAt(i);
+  buf[i] = str.charCodeAt(i);
 }
 
-console.log(buf.toString("utf8"));
+console.log(buf.toString('utf8'));
 // Prints: Node.js
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Copy an ASCII string into a `Buffer` one byte at a time.
 // (This only works for ASCII-only strings. In general, one should use
 // `Buffer.from()` to perform this conversion.)
 
-const str = "Node.js";
+const str = 'Node.js';
 const buf = Buffer.allocUnsafe(str.length);
 
 for (let i = 0; i < str.length; i++) {
- buf[i] = str.charCodeAt(i);
+  buf[i] = str.charCodeAt(i);
 }
 
-console.log(buf.toString("utf8"));
+console.log(buf.toString('utf8'));
 // Prints: Node.js
 ```
 
@@ -1492,7 +1492,7 @@ This `ArrayBuffer` is not guaranteed to correspond exactly to the original
 `Buffer`. See the notes on `buf.byteOffset` for details.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const arrayBuffer = new ArrayBuffer(16);
 const buffer = Buffer.from(arrayBuffer);
@@ -1502,7 +1502,7 @@ console.log(buffer.buffer === arrayBuffer);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const arrayBuffer = new ArrayBuffer(16);
 const buffer = Buffer.from(arrayBuffer);
@@ -1527,7 +1527,7 @@ A common issue when creating a `TypedArray` object that shares its memory with
 a `Buffer` is that in this case one needs to specify the `byteOffset` correctly:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Create a buffer smaller than `Buffer.poolSize`.
 const nodeBuffer = new Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -1539,7 +1539,7 @@ new Int8Array(nodeBuffer.buffer, nodeBuffer.byteOffset, nodeBuffer.length);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Create a buffer smaller than `Buffer.poolSize`.
 const nodeBuffer = new Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -1584,11 +1584,11 @@ Comparison is based on the actual sequence of bytes in each `Buffer`.
 * `-1` is returned if `target` should come _after_ `buf` when sorted.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf1 = Buffer.from("ABC");
-const buf2 = Buffer.from("BCD");
-const buf3 = Buffer.from("ABCD");
+const buf1 = Buffer.from('ABC');
+const buf2 = Buffer.from('BCD');
+const buf3 = Buffer.from('ABCD');
 
 console.log(buf1.compare(buf1));
 // Prints: 0
@@ -1606,11 +1606,11 @@ console.log([buf1, buf2, buf3].sort(Buffer.compare));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf1 = Buffer.from("ABC");
-const buf2 = Buffer.from("BCD");
-const buf3 = Buffer.from("ABCD");
+const buf1 = Buffer.from('ABC');
+const buf2 = Buffer.from('BCD');
+const buf3 = Buffer.from('ABCD');
 
 console.log(buf1.compare(buf1));
 // Prints: 0
@@ -1632,7 +1632,7 @@ arguments can be used to limit the comparison to specific ranges within `target`
 and `buf` respectively.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
@@ -1646,7 +1646,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
@@ -1685,15 +1685,15 @@ for all TypedArrays, including Node.js `Buffer`s, although it takes
 different function arguments.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Create two `Buffer` instances.
 const buf1 = Buffer.allocUnsafe(26);
-const buf2 = Buffer.allocUnsafe(26).fill("!");
+const buf2 = Buffer.allocUnsafe(26).fill('!');
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf1[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
 }
 
 // Copy `buf1` bytes 16 through 19 into `buf2` starting at byte 8 of `buf2`.
@@ -1701,20 +1701,20 @@ buf1.copy(buf2, 8, 16, 20);
 // This is equivalent to:
 // buf2.set(buf1.subarray(16, 20), 8);
 
-console.log(buf2.toString("ascii", 0, 25));
+console.log(buf2.toString('ascii', 0, 25));
 // Prints: !!!!!!!!qrst!!!!!!!!!!!!!
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Create two `Buffer` instances.
 const buf1 = Buffer.allocUnsafe(26);
-const buf2 = Buffer.allocUnsafe(26).fill("!");
+const buf2 = Buffer.allocUnsafe(26).fill('!');
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf1[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
 }
 
 // Copy `buf1` bytes 16 through 19 into `buf2` starting at byte 8 of `buf2`.
@@ -1722,12 +1722,12 @@ buf1.copy(buf2, 8, 16, 20);
 // This is equivalent to:
 // buf2.set(buf1.subarray(16, 20), 8);
 
-console.log(buf2.toString("ascii", 0, 25));
+console.log(buf2.toString('ascii', 0, 25));
 // Prints: !!!!!!!!qrst!!!!!!!!!!!!!
 ```
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Create a `Buffer` and copy data from one region to an overlapping region
 // within the same `Buffer`.
@@ -1735,8 +1735,8 @@ import { Buffer } from "buffer";
 const buf = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf[i] = i + 97;
 }
 
 buf.copy(buf, 0, 4, 10);
@@ -1746,7 +1746,7 @@ console.log(buf.toString());
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Create a `Buffer` and copy data from one region to an overlapping region
 // within the same `Buffer`.
@@ -1754,8 +1754,8 @@ const { Buffer } = require("buffer");
 const buf = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf[i] = i + 97;
 }
 
 buf.copy(buf, 0, 4, 10);
@@ -1776,14 +1776,14 @@ Creates and returns an [iterator][] of `[index, byte]` pairs from the contents
 of `buf`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Log the entire contents of a `Buffer`.
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 for (const pair of buf.entries()) {
- console.log(pair);
+  console.log(pair);
 }
 // Prints:
 //   [0, 98]
@@ -1795,14 +1795,14 @@ for (const pair of buf.entries()) {
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Log the entire contents of a `Buffer`.
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 for (const pair of buf.entries()) {
- console.log(pair);
+  console.log(pair);
 }
 // Prints:
 //   [0, 98]
@@ -1832,11 +1832,11 @@ Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,
 [`buf.compare(otherBuffer) === 0`][`buf.compare()`].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf1 = Buffer.from("ABC");
-const buf2 = Buffer.from("414243", "hex");
-const buf3 = Buffer.from("ABCD");
+const buf1 = Buffer.from('ABC');
+const buf2 = Buffer.from('414243', 'hex');
+const buf3 = Buffer.from('ABCD');
 
 console.log(buf1.equals(buf2));
 // Prints: true
@@ -1845,11 +1845,11 @@ console.log(buf1.equals(buf3));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf1 = Buffer.from("ABC");
-const buf2 = Buffer.from("414243", "hex");
-const buf3 = Buffer.from("ABCD");
+const buf1 = Buffer.from('ABC');
+const buf2 = Buffer.from('414243', 'hex');
+const buf3 = Buffer.from('ABCD');
 
 console.log(buf1.equals(buf2));
 // Prints: true
@@ -1894,22 +1894,22 @@ Fills `buf` with the specified `value`. If the `offset` and `end` are not given,
 the entire `buf` will be filled:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Fill a `Buffer` with the ASCII character 'h'.
 
-const b = Buffer.allocUnsafe(50).fill("h");
+const b = Buffer.allocUnsafe(50).fill('h');
 
 console.log(b.toString());
 // Prints: hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Fill a `Buffer` with the ASCII character 'h'.
 
-const b = Buffer.allocUnsafe(50).fill("h");
+const b = Buffer.allocUnsafe(50).fill('h');
 
 console.log(b.toString());
 // Prints: hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
@@ -1923,20 +1923,20 @@ If the final write of a `fill()` operation falls on a multi-byte character,
 then only the bytes of that character that fit into `buf` are written:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Fill a `Buffer` with character that takes up two bytes in UTF-8.
 
-console.log(Buffer.allocUnsafe(5).fill("\u0222"));
+console.log(Buffer.allocUnsafe(5).fill('\u0222'));
 // Prints: <Buffer c8 a2 c8 a2 c8>
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Fill a `Buffer` with character that takes up two bytes in UTF-8.
 
-console.log(Buffer.allocUnsafe(5).fill("\u0222"));
+console.log(Buffer.allocUnsafe(5).fill('\u0222'));
 // Prints: <Buffer c8 a2 c8 a2 c8>
 ```
 
@@ -1944,28 +1944,28 @@ If `value` contains invalid characters, it is truncated; if no valid
 fill data remains, an exception is thrown:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(5);
 
-console.log(buf.fill("a"));
+console.log(buf.fill('a'));
 // Prints: <Buffer 61 61 61 61 61>
-console.log(buf.fill("aazz", "hex"));
+console.log(buf.fill('aazz', 'hex'));
 // Prints: <Buffer aa aa aa aa aa>
-console.log(buf.fill("zz", "hex"));
+console.log(buf.fill('zz', 'hex'));
 // Throws an exception.
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(5);
 
-console.log(buf.fill("a"));
+console.log(buf.fill('a'));
 // Prints: <Buffer 61 61 61 61 61>
-console.log(buf.fill("aazz", "hex"));
+console.log(buf.fill('aazz', 'hex'));
 // Prints: <Buffer aa aa aa aa aa>
-console.log(buf.fill("zz", "hex"));
+console.log(buf.fill('zz', 'hex'));
 // Throws an exception.
 ```
 
@@ -1985,44 +1985,44 @@ added: v5.3.0
 Equivalent to [`buf.indexOf() !== -1`][`buf.indexOf()`].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("this is a buffer");
+const buf = Buffer.from('this is a buffer');
 
-console.log(buf.includes("this"));
+console.log(buf.includes('this'));
 // Prints: true
-console.log(buf.includes("is"));
+console.log(buf.includes('is'));
 // Prints: true
-console.log(buf.includes(Buffer.from("a buffer")));
+console.log(buf.includes(Buffer.from('a buffer')));
 // Prints: true
 console.log(buf.includes(97));
 // Prints: true (97 is the decimal ASCII value for 'a')
-console.log(buf.includes(Buffer.from("a buffer example")));
+console.log(buf.includes(Buffer.from('a buffer example')));
 // Prints: false
-console.log(buf.includes(Buffer.from("a buffer example").slice(0, 8)));
+console.log(buf.includes(Buffer.from('a buffer example').slice(0, 8)));
 // Prints: true
-console.log(buf.includes("this", 4));
+console.log(buf.includes('this', 4));
 // Prints: false
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("this is a buffer");
+const buf = Buffer.from('this is a buffer');
 
-console.log(buf.includes("this"));
+console.log(buf.includes('this'));
 // Prints: true
-console.log(buf.includes("is"));
+console.log(buf.includes('is'));
 // Prints: true
-console.log(buf.includes(Buffer.from("a buffer")));
+console.log(buf.includes(Buffer.from('a buffer')));
 // Prints: true
 console.log(buf.includes(97));
 // Prints: true (97 is the decimal ASCII value for 'a')
-console.log(buf.includes(Buffer.from("a buffer example")));
+console.log(buf.includes(Buffer.from('a buffer example')));
 // Prints: false
-console.log(buf.includes(Buffer.from("a buffer example").slice(0, 8)));
+console.log(buf.includes(Buffer.from('a buffer example').slice(0, 8)));
 // Prints: true
-console.log(buf.includes("this", 4));
+console.log(buf.includes('this', 4));
 // Prints: false
 ```
 
@@ -2061,54 +2061,54 @@ If `value` is:
   value between `0` and `255`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("this is a buffer");
+const buf = Buffer.from('this is a buffer');
 
-console.log(buf.indexOf("this"));
+console.log(buf.indexOf('this'));
 // Prints: 0
-console.log(buf.indexOf("is"));
+console.log(buf.indexOf('is'));
 // Prints: 2
-console.log(buf.indexOf(Buffer.from("a buffer")));
+console.log(buf.indexOf(Buffer.from('a buffer')));
 // Prints: 8
 console.log(buf.indexOf(97));
 // Prints: 8 (97 is the decimal ASCII value for 'a')
-console.log(buf.indexOf(Buffer.from("a buffer example")));
+console.log(buf.indexOf(Buffer.from('a buffer example')));
 // Prints: -1
-console.log(buf.indexOf(Buffer.from("a buffer example").slice(0, 8)));
+console.log(buf.indexOf(Buffer.from('a buffer example').slice(0, 8)));
 // Prints: 8
 
-const utf16Buffer = Buffer.from("\u039a\u0391\u03a3\u03a3\u0395", "utf16le");
+const utf16Buffer = Buffer.from('\u039a\u0391\u03a3\u03a3\u0395', 'utf16le');
 
-console.log(utf16Buffer.indexOf("\u03a3", 0, "utf16le"));
+console.log(utf16Buffer.indexOf('\u03a3', 0, 'utf16le'));
 // Prints: 4
-console.log(utf16Buffer.indexOf("\u03a3", -4, "utf16le"));
+console.log(utf16Buffer.indexOf('\u03a3', -4, 'utf16le'));
 // Prints: 6
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("this is a buffer");
+const buf = Buffer.from('this is a buffer');
 
-console.log(buf.indexOf("this"));
+console.log(buf.indexOf('this'));
 // Prints: 0
-console.log(buf.indexOf("is"));
+console.log(buf.indexOf('is'));
 // Prints: 2
-console.log(buf.indexOf(Buffer.from("a buffer")));
+console.log(buf.indexOf(Buffer.from('a buffer')));
 // Prints: 8
 console.log(buf.indexOf(97));
 // Prints: 8 (97 is the decimal ASCII value for 'a')
-console.log(buf.indexOf(Buffer.from("a buffer example")));
+console.log(buf.indexOf(Buffer.from('a buffer example')));
 // Prints: -1
-console.log(buf.indexOf(Buffer.from("a buffer example").slice(0, 8)));
+console.log(buf.indexOf(Buffer.from('a buffer example').slice(0, 8)));
 // Prints: 8
 
-const utf16Buffer = Buffer.from("\u039a\u0391\u03a3\u03a3\u0395", "utf16le");
+const utf16Buffer = Buffer.from('\u039a\u0391\u03a3\u03a3\u0395', 'utf16le');
 
-console.log(utf16Buffer.indexOf("\u03a3", 0, "utf16le"));
+console.log(utf16Buffer.indexOf('\u03a3', 0, 'utf16le'));
 // Prints: 4
-console.log(utf16Buffer.indexOf("\u03a3", -4, "utf16le"));
+console.log(utf16Buffer.indexOf('\u03a3', -4, 'utf16le'));
 // Prints: 6
 ```
 
@@ -2121,9 +2121,9 @@ of coercion is `NaN` or `0`, then the entire buffer will be searched. This
 behavior matches [`String.prototype.indexOf()`][].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const b = Buffer.from("abcdef");
+const b = Buffer.from('abcdef');
 
 // Passing a value that's a number, but not a valid byte.
 // Prints: 2, equivalent to searching for 99 or 'c'.
@@ -2132,16 +2132,16 @@ console.log(b.indexOf(256 + 99));
 
 // Passing a byteOffset that coerces to NaN or 0.
 // Prints: 1, searching the whole buffer.
-console.log(b.indexOf("b", undefined));
-console.log(b.indexOf("b", {}));
-console.log(b.indexOf("b", null));
-console.log(b.indexOf("b", []));
+console.log(b.indexOf('b', undefined));
+console.log(b.indexOf('b', {}));
+console.log(b.indexOf('b', null));
+console.log(b.indexOf('b', []));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const b = Buffer.from("abcdef");
+const b = Buffer.from('abcdef');
 
 // Passing a value that's a number, but not a valid byte.
 // Prints: 2, equivalent to searching for 99 or 'c'.
@@ -2150,10 +2150,10 @@ console.log(b.indexOf(256 + 99));
 
 // Passing a byteOffset that coerces to NaN or 0.
 // Prints: 1, searching the whole buffer.
-console.log(b.indexOf("b", undefined));
-console.log(b.indexOf("b", {}));
-console.log(b.indexOf("b", null));
-console.log(b.indexOf("b", []));
+console.log(b.indexOf('b', undefined));
+console.log(b.indexOf('b', {}));
+console.log(b.indexOf('b', null));
+console.log(b.indexOf('b', []));
 ```
 
 If `value` is an empty string or empty `Buffer` and `byteOffset` is less
@@ -2171,12 +2171,12 @@ added: v1.1.0
 Creates and returns an [iterator][] of `buf` keys (indices).
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 for (const key of buf.keys()) {
- console.log(key);
+  console.log(key);
 }
 // Prints:
 //   0
@@ -2188,12 +2188,12 @@ for (const key of buf.keys()) {
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 for (const key of buf.keys()) {
- console.log(key);
+  console.log(key);
 }
 // Prints:
 //   0
@@ -2228,58 +2228,58 @@ Identical to [`buf.indexOf()`][], except the last occurrence of `value` is found
 rather than the first occurrence.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("this buffer is a buffer");
+const buf = Buffer.from('this buffer is a buffer');
 
-console.log(buf.lastIndexOf("this"));
+console.log(buf.lastIndexOf('this'));
 // Prints: 0
-console.log(buf.lastIndexOf("buffer"));
+console.log(buf.lastIndexOf('buffer'));
 // Prints: 17
-console.log(buf.lastIndexOf(Buffer.from("buffer")));
+console.log(buf.lastIndexOf(Buffer.from('buffer')));
 // Prints: 17
 console.log(buf.lastIndexOf(97));
 // Prints: 15 (97 is the decimal ASCII value for 'a')
-console.log(buf.lastIndexOf(Buffer.from("yolo")));
+console.log(buf.lastIndexOf(Buffer.from('yolo')));
 // Prints: -1
-console.log(buf.lastIndexOf("buffer", 5));
+console.log(buf.lastIndexOf('buffer', 5));
 // Prints: 5
-console.log(buf.lastIndexOf("buffer", 4));
+console.log(buf.lastIndexOf('buffer', 4));
 // Prints: -1
 
-const utf16Buffer = Buffer.from("\u039a\u0391\u03a3\u03a3\u0395", "utf16le");
+const utf16Buffer = Buffer.from('\u039a\u0391\u03a3\u03a3\u0395', 'utf16le');
 
-console.log(utf16Buffer.lastIndexOf("\u03a3", undefined, "utf16le"));
+console.log(utf16Buffer.lastIndexOf('\u03a3', undefined, 'utf16le'));
 // Prints: 6
-console.log(utf16Buffer.lastIndexOf("\u03a3", -5, "utf16le"));
+console.log(utf16Buffer.lastIndexOf('\u03a3', -5, 'utf16le'));
 // Prints: 4
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("this buffer is a buffer");
+const buf = Buffer.from('this buffer is a buffer');
 
-console.log(buf.lastIndexOf("this"));
+console.log(buf.lastIndexOf('this'));
 // Prints: 0
-console.log(buf.lastIndexOf("buffer"));
+console.log(buf.lastIndexOf('buffer'));
 // Prints: 17
-console.log(buf.lastIndexOf(Buffer.from("buffer")));
+console.log(buf.lastIndexOf(Buffer.from('buffer')));
 // Prints: 17
 console.log(buf.lastIndexOf(97));
 // Prints: 15 (97 is the decimal ASCII value for 'a')
-console.log(buf.lastIndexOf(Buffer.from("yolo")));
+console.log(buf.lastIndexOf(Buffer.from('yolo')));
 // Prints: -1
-console.log(buf.lastIndexOf("buffer", 5));
+console.log(buf.lastIndexOf('buffer', 5));
 // Prints: 5
-console.log(buf.lastIndexOf("buffer", 4));
+console.log(buf.lastIndexOf('buffer', 4));
 // Prints: -1
 
-const utf16Buffer = Buffer.from("\u039a\u0391\u03a3\u03a3\u0395", "utf16le");
+const utf16Buffer = Buffer.from('\u039a\u0391\u03a3\u03a3\u0395', 'utf16le');
 
-console.log(utf16Buffer.lastIndexOf("\u03a3", undefined, "utf16le"));
+console.log(utf16Buffer.lastIndexOf('\u03a3', undefined, 'utf16le'));
 // Prints: 6
-console.log(utf16Buffer.lastIndexOf("\u03a3", -5, "utf16le"));
+console.log(utf16Buffer.lastIndexOf('\u03a3', -5, 'utf16le'));
 // Prints: 4
 ```
 
@@ -2292,9 +2292,9 @@ that coerce to `NaN`, like `{}` or `undefined`, will search the whole buffer.
 This behavior matches [`String.prototype.lastIndexOf()`][].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const b = Buffer.from("abcdef");
+const b = Buffer.from('abcdef');
 
 // Passing a value that's a number, but not a valid byte.
 // Prints: 2, equivalent to searching for 99 or 'c'.
@@ -2303,19 +2303,19 @@ console.log(b.lastIndexOf(256 + 99));
 
 // Passing a byteOffset that coerces to NaN.
 // Prints: 1, searching the whole buffer.
-console.log(b.lastIndexOf("b", undefined));
-console.log(b.lastIndexOf("b", {}));
+console.log(b.lastIndexOf('b', undefined));
+console.log(b.lastIndexOf('b', {}));
 
 // Passing a byteOffset that coerces to 0.
 // Prints: -1, equivalent to passing 0.
-console.log(b.lastIndexOf("b", null));
-console.log(b.lastIndexOf("b", []));
+console.log(b.lastIndexOf('b', null));
+console.log(b.lastIndexOf('b', []));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const b = Buffer.from("abcdef");
+const b = Buffer.from('abcdef');
 
 // Passing a value that's a number, but not a valid byte.
 // Prints: 2, equivalent to searching for 99 or 'c'.
@@ -2324,13 +2324,13 @@ console.log(b.lastIndexOf(256 + 99));
 
 // Passing a byteOffset that coerces to NaN.
 // Prints: 1, searching the whole buffer.
-console.log(b.lastIndexOf("b", undefined));
-console.log(b.lastIndexOf("b", {}));
+console.log(b.lastIndexOf('b', undefined));
+console.log(b.lastIndexOf('b', {}));
 
 // Passing a byteOffset that coerces to 0.
 // Prints: -1, equivalent to passing 0.
-console.log(b.lastIndexOf("b", null));
-console.log(b.lastIndexOf("b", []));
+console.log(b.lastIndexOf('b', null));
+console.log(b.lastIndexOf('b', []));
 ```
 
 If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
@@ -2346,7 +2346,7 @@ added: v0.1.90
 Returns the number of bytes in `buf`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Create a `Buffer` and write a shorter string to it using UTF-8.
 
@@ -2355,14 +2355,14 @@ const buf = Buffer.alloc(1234);
 console.log(buf.length);
 // Prints: 1234
 
-buf.write("some string", 0, "utf8");
+buf.write('some string', 0, 'utf8');
 
 console.log(buf.length);
 // Prints: 1234
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Create a `Buffer` and write a shorter string to it using UTF-8.
 
@@ -2371,7 +2371,7 @@ const buf = Buffer.alloc(1234);
 console.log(buf.length);
 // Prints: 1234
 
-buf.write("some string", 0, "utf8");
+buf.write('some string', 0, 'utf8');
 
 console.log(buf.length);
 // Prints: 1234
@@ -2446,7 +2446,7 @@ Reads an unsigned, big-endian 64-bit integer from `buf` at the specified
 This function is also available under the `readBigUint64BE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]);
 
@@ -2455,7 +2455,7 @@ console.log(buf.readBigUInt64BE(0));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]);
 
@@ -2487,7 +2487,7 @@ Reads an unsigned, little-endian 64-bit integer from `buf` at the specified
 This function is also available under the `readBigUint64LE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]);
 
@@ -2496,7 +2496,7 @@ console.log(buf.readBigUInt64LE(0));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]);
 
@@ -2522,7 +2522,7 @@ changes:
 Reads a 64-bit, big-endian double from `buf` at the specified `offset`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
 
@@ -2531,7 +2531,7 @@ console.log(buf.readDoubleBE(0));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
 
@@ -2557,7 +2557,7 @@ changes:
 Reads a 64-bit, little-endian double from `buf` at the specified `offset`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
 
@@ -2568,7 +2568,7 @@ console.log(buf.readDoubleLE(1));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
 
@@ -2596,7 +2596,7 @@ changes:
 Reads a 32-bit, big-endian float from `buf` at the specified `offset`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, 2, 3, 4]);
 
@@ -2605,7 +2605,7 @@ console.log(buf.readFloatBE(0));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, 2, 3, 4]);
 
@@ -2631,7 +2631,7 @@ changes:
 Reads a 32-bit, little-endian float from `buf` at the specified `offset`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, 2, 3, 4]);
 
@@ -2642,7 +2642,7 @@ console.log(buf.readFloatLE(1));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, 2, 3, 4]);
 
@@ -2672,7 +2672,7 @@ Reads a signed 8-bit integer from `buf` at the specified `offset`.
 Integers read from a `Buffer` are interpreted as two's complement signed values.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([-1, 5]);
 
@@ -2685,7 +2685,7 @@ console.log(buf.readInt8(2));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([-1, 5]);
 
@@ -2717,7 +2717,7 @@ Reads a signed, big-endian 16-bit integer from `buf` at the specified `offset`.
 Integers read from a `Buffer` are interpreted as two's complement signed values.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0, 5]);
 
@@ -2726,7 +2726,7 @@ console.log(buf.readInt16BE(0));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0, 5]);
 
@@ -2755,7 +2755,7 @@ Reads a signed, little-endian 16-bit integer from `buf` at the specified
 Integers read from a `Buffer` are interpreted as two's complement signed values.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0, 5]);
 
@@ -2766,7 +2766,7 @@ console.log(buf.readInt16LE(1));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0, 5]);
 
@@ -2796,7 +2796,7 @@ Reads a signed, big-endian 32-bit integer from `buf` at the specified `offset`.
 Integers read from a `Buffer` are interpreted as two's complement signed values.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0, 0, 0, 5]);
 
@@ -2805,7 +2805,7 @@ console.log(buf.readInt32BE(0));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0, 0, 0, 5]);
 
@@ -2834,7 +2834,7 @@ Reads a signed, little-endian 32-bit integer from `buf` at the specified
 Integers read from a `Buffer` are interpreted as two's complement signed values.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0, 0, 0, 5]);
 
@@ -2845,7 +2845,7 @@ console.log(buf.readInt32LE(1));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0, 0, 0, 5]);
 
@@ -2877,7 +2877,7 @@ and interprets the result as a big-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -2890,7 +2890,7 @@ console.log(buf.readIntBE(1, 0).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -2924,7 +2924,7 @@ and interprets the result as a little-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -2933,7 +2933,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -2966,7 +2966,7 @@ Reads an unsigned 8-bit integer from `buf` at the specified `offset`.
 This function is also available under the `readUint8` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([1, -2]);
 
@@ -2979,7 +2979,7 @@ console.log(buf.readUInt8(2));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([1, -2]);
 
@@ -3017,7 +3017,7 @@ Reads an unsigned, big-endian 16-bit integer from `buf` at the specified
 This function is also available under the `readUint16BE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56]);
 
@@ -3028,7 +3028,7 @@ console.log(buf.readUInt16BE(1).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56]);
 
@@ -3064,7 +3064,7 @@ Reads an unsigned, little-endian 16-bit integer from `buf` at the specified
 This function is also available under the `readUint16LE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56]);
 
@@ -3077,7 +3077,7 @@ console.log(buf.readUInt16LE(2).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56]);
 
@@ -3115,7 +3115,7 @@ Reads an unsigned, big-endian 32-bit integer from `buf` at the specified
 This function is also available under the `readUint32BE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78]);
 
@@ -3124,7 +3124,7 @@ console.log(buf.readUInt32BE(0).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78]);
 
@@ -3158,7 +3158,7 @@ Reads an unsigned, little-endian 32-bit integer from `buf` at the specified
 This function is also available under the `readUint32LE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78]);
 
@@ -3169,7 +3169,7 @@ console.log(buf.readUInt32LE(1).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78]);
 
@@ -3208,7 +3208,7 @@ up to 48 bits of accuracy.
 This function is also available under the `readUintBE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -3219,7 +3219,7 @@ console.log(buf.readUIntBE(1, 6).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -3258,7 +3258,7 @@ up to 48 bits of accuracy.
 This function is also available under the `readUintLE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -3267,7 +3267,7 @@ console.log(buf.readUIntLE(0, 6).toString(16));
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -3298,7 +3298,7 @@ Modifying the new `Buffer` slice will modify the memory in the original `Buffer`
 because the allocated memory of the two objects overlap.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 // Create a `Buffer` with the ASCII alphabet, take a slice, and modify one byte
 // from the original `Buffer`.
@@ -3306,23 +3306,23 @@ import { Buffer } from "buffer";
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf1[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
 }
 
 const buf2 = buf1.subarray(0, 3);
 
-console.log(buf2.toString("ascii", 0, buf2.length));
+console.log(buf2.toString('ascii', 0, buf2.length));
 // Prints: abc
 
 buf1[0] = 33;
 
-console.log(buf2.toString("ascii", 0, buf2.length));
+console.log(buf2.toString('ascii', 0, buf2.length));
 // Prints: !bc
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 // Create a `Buffer` with the ASCII alphabet, take a slice, and modify one byte
 // from the original `Buffer`.
@@ -3330,18 +3330,18 @@ const { Buffer } = require("buffer");
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf1[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
 }
 
 const buf2 = buf1.subarray(0, 3);
 
-console.log(buf2.toString("ascii", 0, buf2.length));
+console.log(buf2.toString('ascii', 0, buf2.length));
 // Prints: abc
 
 buf1[0] = 33;
 
-console.log(buf2.toString("ascii", 0, buf2.length));
+console.log(buf2.toString('ascii', 0, buf2.length));
 // Prints: !bc
 ```
 
@@ -3349,9 +3349,9 @@ Specifying negative indexes causes the slice to be generated relative to the
 end of `buf` rather than the beginning.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 console.log(buf.subarray(-6, -1).toString());
 // Prints: buffe
@@ -3367,9 +3367,9 @@ console.log(buf.subarray(-5, -2).toString());
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 console.log(buf.subarray(-6, -1).toString());
 // Prints: buffe
@@ -3419,9 +3419,9 @@ which is a superclass of `Buffer`. To copy the slice, use
 `Uint8Array.prototype.slice()`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 const copiedBuf = Uint8Array.prototype.slice.call(buf);
 copiedBuf[0]++;
@@ -3441,9 +3441,9 @@ console.log(buf.toString());
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 const copiedBuf = Uint8Array.prototype.slice.call(buf);
 copiedBuf[0]++;
@@ -3475,7 +3475,7 @@ byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`][] if [`buf.length`][]
 is not a multiple of 2.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -3494,7 +3494,7 @@ buf2.swap16();
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -3516,16 +3516,16 @@ One convenient use of `buf.swap16()` is to perform a fast in-place conversion
 between UTF-16 little-endian and UTF-16 big-endian:
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("This is little-endian UTF-16", "utf16le");
+const buf = Buffer.from('This is little-endian UTF-16', 'utf16le');
 buf.swap16(); // Convert to big-endian UTF-16 text.
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("This is little-endian UTF-16", "utf16le");
+const buf = Buffer.from('This is little-endian UTF-16', 'utf16le');
 buf.swap16(); // Convert to big-endian UTF-16 text.
 ```
 
@@ -3542,7 +3542,7 @@ byte order _in-place_. Throws [`ERR_INVALID_BUFFER_SIZE`][] if [`buf.length`][]
 is not a multiple of 4.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -3561,7 +3561,7 @@ buf2.swap32();
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -3591,7 +3591,7 @@ Interprets `buf` as an array of 64-bit numbers and swaps byte order _in-place_.
 Throws [`ERR_INVALID_BUFFER_SIZE`][] if [`buf.length`][] is not a multiple of 8.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -3610,7 +3610,7 @@ buf2.swap64();
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -3643,7 +3643,7 @@ this function when stringifying a `Buffer` instance.
 In particular, `Buffer.from(buf.toJSON())` works like `Buffer.from(buf)`.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5]);
 const json = JSON.stringify(buf);
@@ -3652,9 +3652,9 @@ console.log(json);
 // Prints: {"type":"Buffer","data":[1,2,3,4,5]}
 
 const copy = JSON.parse(json, (key, value) => {
- return value && value.type === "Buffer" ?
-  Buffer.from(value) :
-  value;
+  return value && value.type === 'Buffer' ?
+    Buffer.from(value) :
+    value;
 });
 
 console.log(copy);
@@ -3662,7 +3662,7 @@ console.log(copy);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5]);
 const json = JSON.stringify(buf);
@@ -3671,9 +3671,9 @@ console.log(json);
 // Prints: {"type":"Buffer","data":[1,2,3,4,5]}
 
 const copy = JSON.parse(json, (key, value) => {
- return value && value.type === "Buffer" ?
-  Buffer.from(value) :
-  value;
+  return value && value.type === 'Buffer' ?
+    Buffer.from(value) :
+    value;
 });
 
 console.log(copy);
@@ -3702,50 +3702,50 @@ The maximum length of a string instance (in UTF-16 code units) is available
 as [`buffer.constants.MAX_STRING_LENGTH`][].
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf1[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
 }
 
-console.log(buf1.toString("utf8"));
+console.log(buf1.toString('utf8'));
 // Prints: abcdefghijklmnopqrstuvwxyz
-console.log(buf1.toString("utf8", 0, 5));
+console.log(buf1.toString('utf8', 0, 5));
 // Prints: abcde
 
-const buf2 = Buffer.from("tést");
+const buf2 = Buffer.from('tést');
 
-console.log(buf2.toString("hex"));
+console.log(buf2.toString('hex'));
 // Prints: 74c3a97374
-console.log(buf2.toString("utf8", 0, 3));
+console.log(buf2.toString('utf8', 0, 3));
 // Prints: té
 console.log(buf2.toString(undefined, 0, 3));
 // Prints: té
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
- // 97 is the decimal ASCII value for 'a'.
- buf1[i] = i + 97;
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
 }
 
-console.log(buf1.toString("utf8"));
+console.log(buf1.toString('utf8'));
 // Prints: abcdefghijklmnopqrstuvwxyz
-console.log(buf1.toString("utf8", 0, 5));
+console.log(buf1.toString('utf8', 0, 5));
 // Prints: abcde
 
-const buf2 = Buffer.from("tést");
+const buf2 = Buffer.from('tést');
 
-console.log(buf2.toString("hex"));
+console.log(buf2.toString('hex'));
 // Prints: 74c3a97374
-console.log(buf2.toString("utf8", 0, 3));
+console.log(buf2.toString('utf8', 0, 3));
 // Prints: té
 console.log(buf2.toString(undefined, 0, 3));
 // Prints: té
@@ -3763,12 +3763,12 @@ Creates and returns an [iterator][] for `buf` values (bytes). This function is
 called automatically when a `Buffer` is used in a `for..of` statement.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 for (const value of buf.values()) {
- console.log(value);
+  console.log(value);
 }
 // Prints:
 //   98
@@ -3779,7 +3779,7 @@ for (const value of buf.values()) {
 //   114
 
 for (const value of buf) {
- console.log(value);
+  console.log(value);
 }
 // Prints:
 //   98
@@ -3791,12 +3791,12 @@ for (const value of buf) {
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
-const buf = Buffer.from("buffer");
+const buf = Buffer.from('buffer');
 
 for (const value of buf.values()) {
- console.log(value);
+  console.log(value);
 }
 // Prints:
 //   98
@@ -3807,7 +3807,7 @@ for (const value of buf.values()) {
 //   114
 
 for (const value of buf) {
- console.log(value);
+  console.log(value);
 }
 // Prints:
 //   98
@@ -3838,38 +3838,38 @@ not contain enough space to fit the entire string, only part of `string` will be
 written. However, partially encoded characters will not be written.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.alloc(256);
 
-const len = buf.write("\u00bd + \u00bc = \u00be", 0);
+const len = buf.write('\u00bd + \u00bc = \u00be', 0);
 
-console.log(`${len} bytes: ${buf.toString("utf8", 0, len)}`);
+console.log(`${len} bytes: ${buf.toString('utf8', 0, len)}`);
 // Prints: 12 bytes: ½ + ¼ = ¾
 
 const buffer = Buffer.alloc(10);
 
-const length = buffer.write("abcd", 8);
+const length = buffer.write('abcd', 8);
 
-console.log(`${length} bytes: ${buffer.toString("utf8", 8, 10)}`);
+console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 // Prints: 2 bytes : ab
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.alloc(256);
 
-const len = buf.write("\u00bd + \u00bc = \u00be", 0);
+const len = buf.write('\u00bd + \u00bc = \u00be', 0);
 
-console.log(`${len} bytes: ${buf.toString("utf8", 0, len)}`);
+console.log(`${len} bytes: ${buf.toString('utf8', 0, len)}`);
 // Prints: 12 bytes: ½ + ¼ = ¾
 
 const buffer = Buffer.alloc(10);
 
-const length = buffer.write("abcd", 8);
+const length = buffer.write('abcd', 8);
 
-console.log(`${length} bytes: ${buffer.toString("utf8", 8, 10)}`);
+console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 // Prints: 2 bytes : ab
 ```
 
@@ -3891,7 +3891,7 @@ Writes `value` to `buf` at the specified `offset` as big-endian.
 `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -3902,7 +3902,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -3930,7 +3930,7 @@ Writes `value` to `buf` at the specified `offset` as little-endian.
 `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -3941,7 +3941,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -3975,7 +3975,7 @@ Writes `value` to `buf` at the specified `offset` as big-endian.
 This function is also available under the `writeBigUint64BE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -3986,7 +3986,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4018,7 +4018,7 @@ changes:
 Writes `value` to `buf` at the specified `offset` as little-endian
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4029,7 +4029,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4062,7 +4062,7 @@ must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4073,7 +4073,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4104,7 +4104,7 @@ must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4115,7 +4115,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -4145,7 +4145,7 @@ Writes `value` to `buf` at the specified `offset` as big-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4156,7 +4156,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4186,7 +4186,7 @@ Writes `value` to `buf` at the specified `offset` as little-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4197,7 +4197,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4230,7 +4230,7 @@ a signed 8-bit integer.
 `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(2);
 
@@ -4242,7 +4242,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(2);
 
@@ -4276,7 +4276,7 @@ anything other than a signed 16-bit integer.
 The `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(2);
 
@@ -4287,7 +4287,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(2);
 
@@ -4320,7 +4320,7 @@ anything other than a signed 16-bit integer.
 The `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(2);
 
@@ -4331,7 +4331,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(2);
 
@@ -4364,7 +4364,7 @@ anything other than a signed 32-bit integer.
 The `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4375,7 +4375,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4408,7 +4408,7 @@ anything other than a signed 32-bit integer.
 The `value` is interpreted and written as a two's complement signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4419,7 +4419,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4452,7 +4452,7 @@ as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined when
 `value` is anything other than a signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4463,7 +4463,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4496,7 +4496,7 @@ as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than a signed integer.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4507,7 +4507,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4545,7 +4545,7 @@ other than an unsigned 8-bit integer.
 This function is also available under the `writeUint8` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4559,7 +4559,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4600,7 +4600,7 @@ is anything other than an unsigned 16-bit integer.
 This function is also available under the `writeUint16BE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4612,7 +4612,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4651,7 +4651,7 @@ anything other than an unsigned 16-bit integer.
 This function is also available under the `writeUint16LE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4663,7 +4663,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4702,7 +4702,7 @@ is anything other than an unsigned 32-bit integer.
 This function is also available under the `writeUint32BE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4713,7 +4713,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4751,7 +4751,7 @@ anything other than an unsigned 32-bit integer.
 This function is also available under the `writeUint32LE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4762,7 +4762,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -4802,7 +4802,7 @@ when `value` is anything other than an unsigned integer.
 This function is also available under the `writeUintBE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4813,7 +4813,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4853,7 +4853,7 @@ when `value` is anything other than an unsigned integer.
 This function is also available under the `writeUintLE` alias.
 
 ```mjs
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -4864,7 +4864,7 @@ console.log(buf);
 ```
 
 ```cjs
-const { Buffer } = require("buffer");
+const { Buffer } = require('buffer');
 
 const buf = Buffer.allocUnsafe(6);
 
@@ -5138,18 +5138,18 @@ The transcoding process will use substitution characters if a given byte
 sequence cannot be adequately represented in the target encoding. For instance:
 
 ```mjs
-import { Buffer, transcode } from "buffer";
+import { Buffer, transcode } from 'buffer';
 
-const newBuf = transcode(Buffer.from("€"), "utf8", "ascii");
-console.log(newBuf.toString("ascii"));
+const newBuf = transcode(Buffer.from('€'), 'utf8', 'ascii');
+console.log(newBuf.toString('ascii'));
 // Prints: '?'
 ```
 
 ```cjs
-const { Buffer, transcode } = require("buffer");
+const { Buffer, transcode } = require('buffer');
 
-const newBuf = transcode(Buffer.from("€"), "utf8", "ascii");
-console.log(newBuf.toString("ascii"));
+const newBuf = transcode(Buffer.from('€'), 'utf8', 'ascii');
+console.log(newBuf.toString('ascii'));
 // Prints: '?'
 ```
 

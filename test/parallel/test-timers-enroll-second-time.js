@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-const common = require("../common");
+const common = require('../common');
 
-const assert = require("assert");
-const timers = require("timers");
+const assert = require('assert');
+const timers = require('timers');
 
 const enrollObj = {
- _onTimeout: common.mustCall(),
+  _onTimeout: common.mustCall(),
 };
 
 timers.enroll(enrollObj, 1);

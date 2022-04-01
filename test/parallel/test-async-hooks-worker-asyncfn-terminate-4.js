@@ -1,7 +1,7 @@
-"use strict";
-const common = require("../common");
-const assert = require("assert");
-const { Worker } = require("worker_threads");
+'use strict';
+const common = require('../common');
+const assert = require('assert');
+const { Worker } = require('worker_threads');
 
 // Like test-async-hooks-worker-promise.js but doing a trivial counter increase
 // after process.exit(). This should not make a difference, but apparently it
@@ -21,4 +21,4 @@ setImmediate(async () => {
 });
 `, { eval: true, workerData });
 
-w.on("exit", common.mustCall(() => assert.strictEqual(workerData[0], 0)));
+w.on('exit', common.mustCall(() => assert.strictEqual(workerData[0], 0)));

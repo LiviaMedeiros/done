@@ -19,26 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
-const http = require("http");
+const http = require('http');
 
 
 let serverSocket = null;
 const server = http.createServer(function(req, res) {
- // They should all come in on the same server socket.
- if (serverSocket) {
-  assert.strictEqual(req.socket, serverSocket);
- } else {
-  serverSocket = req.socket;
- }
+  // They should all come in on the same server socket.
+  if (serverSocket) {
+    assert.strictEqual(req.socket, serverSocket);
+  } else {
+    serverSocket = req.socket;
+  }
 
- res.end(req.url);
+  res.end(req.url);
 });
 server.listen(0, function() {
- makeRequest(expectRequests);
+  makeRequest(expectRequests);
 });
 
 const agent = http.Agent({ keepAlive: true });
@@ -50,45 +50,45 @@ let actualRequests = 0;
 
 
 function makeRequest(n) {
- if (n === 0) {
-  server.close();
-  agent.destroy();
-  return;
- }
-
- const req = http.request({
-  port: server.address().port,
-  path: `/${n}`,
-  agent: agent,
- });
-
- req.end();
-
- req.on("socket", function(sock) {
-  if (clientSocket) {
-   assert.strictEqual(sock, clientSocket);
-  } else {
-   clientSocket = sock;
+  if (n === 0) {
+    server.close();
+    agent.destroy();
+    return;
   }
- });
 
- req.on("response", function(res) {
-  let data = "";
-  res.setEncoding("utf8");
-  res.on("data", function(c) {
-   data += c;
+  const req = http.request({
+    port: server.address().port,
+    path: `/${n}`,
+    agent: agent
   });
-  res.on("end", function() {
-   assert.strictEqual(data, `/${n}`);
-   setTimeout(function() {
-    actualRequests++;
-    makeRequest(n - 1);
-   }, 1);
+
+  req.end();
+
+  req.on('socket', function(sock) {
+    if (clientSocket) {
+      assert.strictEqual(sock, clientSocket);
+    } else {
+      clientSocket = sock;
+    }
   });
- });
+
+  req.on('response', function(res) {
+    let data = '';
+    res.setEncoding('utf8');
+    res.on('data', function(c) {
+      data += c;
+    });
+    res.on('end', function() {
+      assert.strictEqual(data, `/${n}`);
+      setTimeout(function() {
+        actualRequests++;
+        makeRequest(n - 1);
+      }, 1);
+    });
+  });
 }
 
-process.on("exit", function() {
- assert.strictEqual(actualRequests, expectRequests);
- console.log("ok");
+process.on('exit', function() {
+  assert.strictEqual(actualRequests, expectRequests);
+  console.log('ok');
 });

@@ -1,30 +1,30 @@
-"use strict";
+'use strict';
 
-const common = require("../common");
+const common = require('../common');
 if (!common.hasCrypto)
- common.skip("missing crypto");
-const assert = require("assert");
-const http2 = require("http2");
+  common.skip('missing crypto');
+const assert = require('assert');
+const http2 = require('http2');
 
 const checkWeight = (actual, expect) => {
- const server = http2.createServer();
- server.on("stream", common.mustCall((stream, headers, flags) => {
-  assert.strictEqual(stream.state.weight, expect);
-  stream.respond();
-  stream.end("test");
- }));
-
- server.listen(0, common.mustCall(() => {
-  const client = http2.connect(`http://localhost:${server.address().port}`);
-  const req = client.request({}, { weight: actual });
-
-  req.on("data", common.mustCall());
-  req.on("end", common.mustCall());
-  req.on("close", common.mustCall(() => {
-   server.close();
-   client.close();
+  const server = http2.createServer();
+  server.on('stream', common.mustCall((stream, headers, flags) => {
+    assert.strictEqual(stream.state.weight, expect);
+    stream.respond();
+    stream.end('test');
   }));
- }));
+
+  server.listen(0, common.mustCall(() => {
+    const client = http2.connect(`http://localhost:${server.address().port}`);
+    const req = client.request({}, { weight: actual });
+
+    req.on('data', common.mustCall());
+    req.on('end', common.mustCall());
+    req.on('close', common.mustCall(() => {
+      server.close();
+      client.close();
+    }));
+  }));
 };
 
 // When client weight is lower than 1, weight is 1

@@ -269,16 +269,16 @@ returned Promises will be rejected with an `'AbortError'`.
 For `setImmediate()`:
 
 ```js
-const { setImmediate: setImmediatePromise } = require("timers/promises");
+const { setImmediate: setImmediatePromise } = require('timers/promises');
 
 const ac = new AbortController();
 const signal = ac.signal;
 
-setImmediatePromise("foobar", { signal })
+setImmediatePromise('foobar', { signal })
   .then(console.log)
   .catch((err) => {
-  	if (err.name === "AbortError")
-  		console.log("The immediate was aborted");
+    if (err.name === 'AbortError')
+      console.log('The immediate was aborted');
   });
 
 ac.abort();
@@ -287,16 +287,16 @@ ac.abort();
 For `setTimeout()`:
 
 ```js
-const { setTimeout: setTimeoutPromise } = require("timers/promises");
+const { setTimeout: setTimeoutPromise } = require('timers/promises');
 
 const ac = new AbortController();
 const signal = ac.signal;
 
-setTimeoutPromise(1000, "foobar", { signal })
+setTimeoutPromise(1000, 'foobar', { signal })
   .then(console.log)
   .catch((err) => {
-  	if (err.name === "AbortError")
-  		console.log("The timeout was aborted");
+    if (err.name === 'AbortError')
+      console.log('The timeout was aborted');
   });
 
 ac.abort();
@@ -351,18 +351,18 @@ that return `Promise` objects. The API is accessible via
 
 ```mjs
 import {
- setImmediate,
- setInterval,
- setTimeout,
-} from "timers/promises";
+  setTimeout,
+  setImmediate,
+  setInterval,
+} from 'timers/promises';
 ```
 
 ```cjs
 const {
- setTimeout,
- setImmediate,
- setInterval,
-} = require("timers/promises");
+  setTimeout,
+  setImmediate,
+  setInterval,
+} = require('timers/promises');
 ```
 
 ### `timersPromises.setTimeout([delay[, value[, options]]])`
@@ -383,21 +383,21 @@ added: v15.0.0
 
 ```mjs
 import {
- setTimeout,
-} from "timers/promises";
+  setTimeout,
+} from 'timers/promises';
 
-const res = await setTimeout(100, "result");
+const res = await setTimeout(100, 'result');
 
 console.log(res);  // Prints 'result'
 ```
 
 ```cjs
 const {
- setTimeout,
-} = require("timers/promises");
+  setTimeout,
+} = require('timers/promises');
 
-setTimeout(100, "result").then((res) => {
- console.log(res);  // Prints 'result'
+setTimeout(100, 'result').then((res) => {
+  console.log(res);  // Prints 'result'
 });
 ```
 
@@ -417,21 +417,21 @@ added: v15.0.0
 
 ```mjs
 import {
- setImmediate,
-} from "timers/promises";
+  setImmediate,
+} from 'timers/promises';
 
-const res = await setImmediate("result");
+const res = await setImmediate('result');
 
 console.log(res);  // Prints 'result'
 ```
 
 ```cjs
 const {
- setImmediate,
-} = require("timers/promises");
+  setImmediate,
+} = require('timers/promises');
 
-setImmediate("result").then((res) => {
- console.log(res);  // Prints 'result'
+setImmediate('result').then((res) => {
+  console.log(res);  // Prints 'result'
 });
 ```
 
@@ -456,33 +456,33 @@ Returns an async iterator that generates values in an interval of `delay` ms.
 
 ```mjs
 import {
- setInterval,
-} from "timers/promises";
+  setInterval,
+} from 'timers/promises';
 
 const interval = 100;
 for await (const startTime of setInterval(interval, Date.now())) {
- const now = Date.now();
- console.log(now);
- if ((now - startTime) > 1000)
-  break;
+  const now = Date.now();
+  console.log(now);
+  if ((now - startTime) > 1000)
+    break;
 }
 console.log(Date.now());
 ```
 
 ```cjs
 const {
- setInterval,
-} = require("timers/promises");
+  setInterval,
+} = require('timers/promises');
 const interval = 100;
 
 (async function() {
- for await (const startTime of setInterval(interval, Date.now())) {
-  const now = Date.now();
-  console.log(now);
-  if ((now - startTime) > 1000)
-   break;
- }
- console.log(Date.now());
+  for await (const startTime of setInterval(interval, Date.now())) {
+    const now = Date.now();
+    console.log(now);
+    if ((now - startTime) > 1000)
+      break;
+  }
+  console.log(Date.now());
 })();
 ```
 
@@ -511,7 +511,7 @@ to calling `timersPromises.setTimeout(delay, undefined, options)` except that
 the `ref` option is not supported.
 
 ```mjs
-import { scheduler } from "timers/promises";
+import { scheduler } from 'timers/promises';
 
 await scheduler.wait(1000); // Wait one second before continuing
 ```

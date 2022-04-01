@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 // Fix for https://github.com/nodejs/node/issues/8266
 //
 // Zero length Buffer objects should expose the `buffer` property of the
 // TypedArrays, via the `parent` property.
-require("../common");
-const assert = require("assert");
+require('../common');
+const assert = require('assert');
 
 // If the length of the buffer object is zero
 assert((new Buffer(0)).parent instanceof ArrayBuffer);

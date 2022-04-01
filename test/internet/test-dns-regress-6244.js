@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const dns = require("dns");
+'use strict';
+const common = require('../common');
+const dns = require('dns');
 
 // Should not segfault.
 // Ref: https://github.com/nodejs/node-v0.x-archive/issues/6244
-dns.resolve4("127.0.0.1", common.mustCall());
+dns.resolve4('127.0.0.1', common.mustCall());

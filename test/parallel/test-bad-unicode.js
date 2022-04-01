@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 let exception = null;
 
 try {
- eval('"\\uc/ef"');
+  eval('"\\uc/ef"');
 } catch (e) {
- exception = e;
+  exception = e;
 }
 
 assert(exception instanceof SyntaxError);

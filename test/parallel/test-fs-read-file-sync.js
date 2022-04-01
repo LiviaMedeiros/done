@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const fs = require("fs");
-const fixtures = require("../common/fixtures");
+'use strict';
+require('../common');
+const assert = require('assert');
+const fs = require('fs');
+const fixtures = require('../common/fixtures');
 
-const fn = fixtures.path("elipses.txt");
+const fn = fixtures.path('elipses.txt');
 
-const s = fs.readFileSync(fn, "utf8");
+const s = fs.readFileSync(fn, 'utf8');
 for (let i = 0; i < s.length; i++) {
- assert.strictEqual(s[i], "\u2026");
+  assert.strictEqual(s[i], '\u2026');
 }
 assert.strictEqual(s.length, 10000);

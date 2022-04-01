@@ -30,27 +30,27 @@ For example, look for `test-streams` when writing a test for `lib/streams.js`.
 Let's analyze this basic test from the Node.js test suite:
 
 ```js
-"use strict";                                                          // 1
-const common = require("../common");                                   // 2
-const fixtures = require("../common/fixtures");                        // 3
+'use strict';                                                          // 1
+const common = require('../common');                                   // 2
+const fixtures = require('../common/fixtures');                        // 3
 
 // This test ensures that the http-parser can handle UTF-8 characters  // 5
 // in the http header.                                                 // 6
 
-const assert = require("assert");                                      // 8
-const http = require("http");                                          // 9
+const assert = require('assert');                                      // 8
+const http = require('http');                                          // 9
 
 const server = http.createServer(common.mustCall((req, res) => {       // 11
- res.end("ok");                                                       // 12
+  res.end('ok');                                                       // 12
 }));                                                                   // 13
 server.listen(0, () => {                                               // 14
- http.get({                                                           // 15
-  port: server.address().port,                                       // 16
-  headers: { "Test": "Düsseldorf" },                                  // 17
- }, common.mustCall((res) => {                                        // 18
-  assert.strictEqual(res.statusCode, 200);                           // 19
-  server.close();                                                    // 20
- }));                                                                 // 21
+  http.get({                                                           // 15
+    port: server.address().port,                                       // 16
+    headers: { 'Test': 'Düsseldorf' }                                  // 17
+  }, common.mustCall((res) => {                                        // 18
+    assert.strictEqual(res.statusCode, 200);                           // 19
+    server.close();                                                    // 20
+  }));                                                                 // 21
 });                                                                    // 22
 // ...                                                                 // 23
 ```
@@ -58,9 +58,9 @@ server.listen(0, () => {                                               // 14
 ### **Lines 1-3**
 
 ```js
-"use strict";
-const common = require("../common");
-const fixtures = require("../common/fixtures");
+'use strict';
+const common = require('../common');
+const fixtures = require('../common/fixtures');
 ```
 
 The first line enables strict mode. All tests should be in strict mode unless
@@ -79,7 +79,7 @@ no functions or other properties exported by `common`, include it without
 assigning it to an identifier:
 
 ```js
-require("../common");
+require('../common');
 ```
 
 ### **Lines 5-6**
@@ -95,8 +95,8 @@ designed to test.
 ### **Lines 8-9**
 
 ```js
-const assert = require("assert");
-const http = require("http");
+const assert = require('assert');
+const http = require('http');
 ```
 
 The test checks functionality in the `http` module.
@@ -111,16 +111,16 @@ case, `_`, lower case).
 
 ```js
 const server = http.createServer(common.mustCall((req, res) => {
- res.end("ok");
+  res.end('ok');
 }));
 server.listen(0, () => {
- http.get({
-  port: server.address().port,
-  headers: { "Test": "Düsseldorf" },
- }, common.mustCall((res) => {
-  assert.strictEqual(res.statusCode, 200);
-  server.close();
- }));
+  http.get({
+    port: server.address().port,
+    headers: { 'Test': 'Düsseldorf' }
+  }, common.mustCall((res) => {
+    assert.strictEqual(res.statusCode, 200);
+    server.close();
+  }));
 });
 ```
 
@@ -171,55 +171,55 @@ avoid the use of extra variables and the corresponding assertions. Let's
 explain this with a real test from the test suite.
 
 ```js
-"use strict";
-require("../common");
-const assert = require("assert");
-const http = require("http");
+'use strict';
+require('../common');
+const assert = require('assert');
+const http = require('http');
 
 let request = 0;
 let listening = 0;
 let response = 0;
-process.on("exit", () => {
- assert.equal(request, 1, 'http server "request" callback was not called');
- assert.equal(listening, 1, 'http server "listening" callback was not called');
- assert.equal(response, 1, 'http request "response" callback was not called');
+process.on('exit', () => {
+  assert.equal(request, 1, 'http server "request" callback was not called');
+  assert.equal(listening, 1, 'http server "listening" callback was not called');
+  assert.equal(response, 1, 'http request "response" callback was not called');
 });
 
 const server = http.createServer((req, res) => {
- request++;
- res.end();
+  request++;
+  res.end();
 }).listen(0, () => {
- listening++;
- const options = {
-  agent: null,
-  port: server.address().port,
- };
- http.get(options, (res) => {
-  response++;
-  res.resume();
-  server.close();
- });
+  listening++;
+  const options = {
+    agent: null,
+    port: server.address().port
+  };
+  http.get(options, (res) => {
+    response++;
+    res.resume();
+    server.close();
+  });
 });
 ```
 
 This test could be greatly simplified by using `common.mustCall` like this:
 
 ```js
-"use strict";
-const common = require("../common");
-const http = require("http");
+'use strict';
+const common = require('../common');
+const http = require('http');
 
 const server = http.createServer(common.mustCall((req, res) => {
- res.end();
+  res.end();
 })).listen(0, common.mustCall(() => {
- const options = {
-  agent: null,
-  port: server.address().port,
- };
- http.get(options, common.mustCall((res) => {
-  res.resume();
-  server.close();
- }));
+  const options = {
+    agent: null,
+    port: server.address().port
+  };
+  http.get(options, common.mustCall((res) => {
+    res.resume();
+    server.close();
+  }));
 }));
 ```
 
@@ -236,10 +236,10 @@ action to be taken after a given number of completed tasks (for instance,
 shutting down an HTTP server after a specific number of requests).
 
 ```js
-const Countdown = require("../common/countdown");
+const Countdown = require('../common/countdown');
 
 const countdown = new Countdown(2, () => {
- console.log(".");
+  console.log('.');
 });
 
 countdown.dec();
@@ -255,15 +255,15 @@ Node.js automatically crashes - and hence, the test fails - in the case of an
 `unhandledRejection` event.
 
 ```js
-const common = require("../common");
-const assert = require("assert");
-const fs = require("fs").promises;
+const common = require('../common');
+const assert = require('assert');
+const fs = require('fs').promises;
 
 // Wrap the `onFulfilled` handler in `common.mustCall()`.
-fs.readFile("test-file").then(
- common.mustCall(
-  (content) => assert.strictEqual(content.toString(), "test2"),
- ));
+fs.readFile('test-file').then(
+  common.mustCall(
+    (content) => assert.strictEqual(content.toString(), 'test2')
+  ));
 ```
 
 ### Flags
@@ -275,13 +275,13 @@ test followed by the flags. For example, to allow a test to require some of the
 A test that would require `internal/freelist` could start like this:
 
 ```js
-"use strict";
+'use strict';
 
 // Flags: --expose-internals
 
-require("../common");
-const assert = require("assert");
-const freelist = require("internal/freelist");
+require('../common');
+const assert = require('assert');
+const freelist = require('internal/freelist');
 ```
 
 In specific scenarios it may be useful to get a hold of `primordials` or
@@ -304,10 +304,10 @@ When using `assert.throws()`, if possible, provide the full error message:
 
 ```js
 assert.throws(
- () => {
-  throw new Error("Wrong value");
- },
- /^Error: Wrong value$/, // Instead of something like /Wrong value/
+  () => {
+    throw new Error('Wrong value');
+  },
+  /^Error: Wrong value$/ // Instead of something like /Wrong value/
 );
 ```
 

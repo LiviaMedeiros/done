@@ -19,69 +19,69 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const fixtures = require("../common/fixtures");
+'use strict';
+const common = require('../common');
+const fixtures = require('../common/fixtures');
 
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
-const assert = require("assert");
-const tls = require("tls");
+const assert = require('assert');
+const tls = require('tls');
 
 const buf = Buffer.allocUnsafe(10000);
 let received = 0;
 const maxChunk = 768;
 
 const invalidArgumentError = {
- name: "TypeError",
- code: "ERR_INVALID_ARG_TYPE",
+  name: 'TypeError',
+  code: 'ERR_INVALID_ARG_TYPE'
 };
 
 const server = tls.createServer({
- key: fixtures.readKey("agent1-key.pem"),
- cert: fixtures.readKey("agent1-cert.pem"),
+  key: fixtures.readKey('agent1-key.pem'),
+  cert: fixtures.readKey('agent1-cert.pem')
 }, function(c) {
 
- // No size is passed.
- assert.throws(() => c.setMaxSendFragment(), invalidArgumentError);
+  // No size is passed.
+  assert.throws(() => c.setMaxSendFragment(), invalidArgumentError);
 
- // Invalid arg is passed.
- [null, undefined, "", {}, false, true, []].forEach((arg) => {
-  assert.throws(() => c.setMaxSendFragment(arg), invalidArgumentError);
- });
-
- [NaN, Infinity, 2 ** 31].forEach((arg) => {
-  assert.throws(() => c.setMaxSendFragment(arg), {
-   name: "RangeError",
-   code: "ERR_OUT_OF_RANGE",
+  // Invalid arg is passed.
+  [null, undefined, '', {}, false, true, []].forEach((arg) => {
+    assert.throws(() => c.setMaxSendFragment(arg), invalidArgumentError);
   });
- });
 
- assert.throws(() => c.setMaxSendFragment(Symbol()), { name: "TypeError" });
+  [NaN, Infinity, 2 ** 31].forEach((arg) => {
+    assert.throws(() => c.setMaxSendFragment(arg), {
+      name: 'RangeError',
+      code: 'ERR_OUT_OF_RANGE'
+    });
+  });
 
- // Lower and upper limits.
- assert(!c.setMaxSendFragment(511));
- assert(!c.setMaxSendFragment(16385));
+  assert.throws(() => c.setMaxSendFragment(Symbol()), { name: 'TypeError' });
 
- // Correct fragment size.
- assert(c.setMaxSendFragment(maxChunk));
+  // Lower and upper limits.
+  assert(!c.setMaxSendFragment(511));
+  assert(!c.setMaxSendFragment(16385));
 
- c.end(buf);
+  // Correct fragment size.
+  assert(c.setMaxSendFragment(maxChunk));
+
+  c.end(buf);
 }).listen(0, common.mustCall(function() {
- const c = tls.connect(this.address().port, {
-  rejectUnauthorized: false,
- }, common.mustCall(function() {
-  c.on("data", function(chunk) {
-   assert(chunk.length <= maxChunk);
-   received += chunk.length;
-  });
+  const c = tls.connect(this.address().port, {
+    rejectUnauthorized: false
+  }, common.mustCall(function() {
+    c.on('data', function(chunk) {
+      assert(chunk.length <= maxChunk);
+      received += chunk.length;
+    });
 
-  // Ensure that we receive 'end' event anyway
-  c.on("end", common.mustCall(function() {
-   c.destroy();
-   server.close();
-   assert.strictEqual(received, buf.length);
+    // Ensure that we receive 'end' event anyway
+    c.on('end', common.mustCall(function() {
+      c.destroy();
+      server.close();
+      assert.strictEqual(received, buf.length);
+    }));
   }));
- }));
 }));

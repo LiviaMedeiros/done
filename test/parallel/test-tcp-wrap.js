@@ -20,24 +20,24 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
-const { internalBinding } = require("internal/test/binding");
-const { TCP, constants: TCPConstants } = internalBinding("tcp_wrap");
-const { UV_EINVAL } = internalBinding("uv");
+const { internalBinding } = require('internal/test/binding');
+const { TCP, constants: TCPConstants } = internalBinding('tcp_wrap');
+const { UV_EINVAL } = internalBinding('uv');
 
 const handle = new TCP(TCPConstants.SOCKET);
 
 // Should be able to bind to the port
-let err = handle.bind("0.0.0.0", 0);
+let err = handle.bind('0.0.0.0', 0);
 assert.strictEqual(err, 0);
 
 // Should not be able to bind to the same port again
 const out = {};
 handle.getsockname(out);
-err = handle.bind("0.0.0.0", out.port);
+err = handle.bind('0.0.0.0', out.port);
 assert.strictEqual(err, UV_EINVAL);
 
 handle.close();

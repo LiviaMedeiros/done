@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 
 // This test verifies that having a single nextTick statement and nothing else
 // does not hang the event loop. If this test times out it has failed.
 
-require("../common");
+require('../common');
 process.nextTick(function() {
- // Nothing
+  // Nothing
 });

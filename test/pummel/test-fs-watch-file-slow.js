@@ -19,64 +19,64 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const path = require("path");
-const fs = require("fs");
+'use strict';
+require('../common');
+const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
 
-const tmpdir = require("../common/tmpdir");
+const tmpdir = require('../common/tmpdir');
 
 tmpdir.refresh();
-const FILENAME = path.join(tmpdir.path, "watch-me");
+const FILENAME = path.join(tmpdir.path, 'watch-me');
 const TIMEOUT = 1300;
 
 let nevents = 0;
 
 try {
- fs.unlinkSync(FILENAME);
+  fs.unlinkSync(FILENAME);
 } catch {
- // swallow
+  // swallow
 }
 
 fs.watchFile(FILENAME, { interval: TIMEOUT - 250 }, function(curr, prev) {
- console.log([curr, prev]);
- switch (++nevents) {
-  case 1:
-   assert.strictEqual(fs.existsSync(FILENAME), false);
-   break;
-  case 2:
-  case 3:
-   assert.strictEqual(fs.existsSync(FILENAME), true);
-   break;
-  case 4:
-   assert.strictEqual(fs.existsSync(FILENAME), false);
-   fs.unwatchFile(FILENAME);
-   break;
-  default:
-   assert(0);
- }
+  console.log([curr, prev]);
+  switch (++nevents) {
+    case 1:
+      assert.strictEqual(fs.existsSync(FILENAME), false);
+      break;
+    case 2:
+    case 3:
+      assert.strictEqual(fs.existsSync(FILENAME), true);
+      break;
+    case 4:
+      assert.strictEqual(fs.existsSync(FILENAME), false);
+      fs.unwatchFile(FILENAME);
+      break;
+    default:
+      assert(0);
+  }
 });
 
-process.on("exit", function() {
- assert.strictEqual(nevents, 4);
+process.on('exit', function() {
+  assert.strictEqual(nevents, 4);
 });
 
 setTimeout(createFile, TIMEOUT);
 
 function createFile() {
- console.log("creating file");
- fs.writeFileSync(FILENAME, "test");
- setTimeout(touchFile, TIMEOUT);
+  console.log('creating file');
+  fs.writeFileSync(FILENAME, 'test');
+  setTimeout(touchFile, TIMEOUT);
 }
 
 function touchFile() {
- console.log("touch file");
- fs.writeFileSync(FILENAME, "test");
- setTimeout(removeFile, TIMEOUT);
+  console.log('touch file');
+  fs.writeFileSync(FILENAME, 'test');
+  setTimeout(removeFile, TIMEOUT);
 }
 
 function removeFile() {
- console.log("remove file");
- fs.unlinkSync(FILENAME);
+  console.log('remove file');
+  fs.unlinkSync(FILENAME);
 }

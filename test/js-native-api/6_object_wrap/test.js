@@ -1,23 +1,23 @@
-"use strict";
-const common = require("../../common");
-const assert = require("assert");
+'use strict';
+const common = require('../../common');
+const assert = require('assert');
 const addon = require(`./build/${common.buildType}/6_object_wrap`);
 
 const getterOnlyErrorRE =
   /^TypeError: Cannot set property .* of #<.*> which has only a getter$/;
 
 const valueDescriptor = Object.getOwnPropertyDescriptor(
- addon.MyObject.prototype, "value");
+  addon.MyObject.prototype, 'value');
 const valueReadonlyDescriptor = Object.getOwnPropertyDescriptor(
- addon.MyObject.prototype, "valueReadonly");
+  addon.MyObject.prototype, 'valueReadonly');
 const plusOneDescriptor = Object.getOwnPropertyDescriptor(
- addon.MyObject.prototype, "plusOne");
-assert.strictEqual(typeof valueDescriptor.get, "function");
-assert.strictEqual(typeof valueDescriptor.set, "function");
+  addon.MyObject.prototype, 'plusOne');
+assert.strictEqual(typeof valueDescriptor.get, 'function');
+assert.strictEqual(typeof valueDescriptor.set, 'function');
 assert.strictEqual(valueDescriptor.value, undefined);
 assert.strictEqual(valueDescriptor.enumerable, false);
 assert.strictEqual(valueDescriptor.configurable, false);
-assert.strictEqual(typeof valueReadonlyDescriptor.get, "function");
+assert.strictEqual(typeof valueReadonlyDescriptor.get, 'function');
 assert.strictEqual(valueReadonlyDescriptor.set, undefined);
 assert.strictEqual(valueReadonlyDescriptor.value, undefined);
 assert.strictEqual(valueReadonlyDescriptor.enumerable, false);
@@ -25,7 +25,7 @@ assert.strictEqual(valueReadonlyDescriptor.configurable, false);
 
 assert.strictEqual(plusOneDescriptor.get, undefined);
 assert.strictEqual(plusOneDescriptor.set, undefined);
-assert.strictEqual(typeof plusOneDescriptor.value, "function");
+assert.strictEqual(typeof plusOneDescriptor.value, 'function');
 assert.strictEqual(plusOneDescriptor.enumerable, false);
 assert.strictEqual(plusOneDescriptor.configurable, false);
 

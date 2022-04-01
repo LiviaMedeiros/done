@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const http = require("http");
+'use strict';
+require('../common');
+const assert = require('assert');
+const http = require('http');
 
 const testServer = new http.Server(function(req, res) {
- res.writeHead(200);
- res.end("Hello world");
+  res.writeHead(200);
+  res.end('Hello world');
 });
 
 testServer.listen(0, function() {
- http.get({ port: this.address().port }, function(res) {
-  assert.strictEqual(res.readable, true);
-  res.on("end", function() {
-   assert.strictEqual(res.readable, false);
-   testServer.close();
+  http.get({ port: this.address().port }, function(res) {
+    assert.strictEqual(res.readable, true);
+    res.on('end', function() {
+      assert.strictEqual(res.readable, false);
+      testServer.close();
+    });
+    res.resume();
   });
-  res.resume();
- });
 });

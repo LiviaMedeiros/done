@@ -1,5 +1,5 @@
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
 // This test ensures Math functions don't fail with an "illegal instruction"
 // error on ARM devices (primarily on the Raspberry Pi 1)
@@ -8,8 +8,8 @@ require("../common");
 
 // Iterate over all Math functions
 Object.getOwnPropertyNames(Math).forEach((functionName) => {
- if (!/[A-Z]/.test(functionName)) {
-  // The function names don't have capital letters.
-  Math[functionName](-0.5);
- }
+  if (!/[A-Z]/.test(functionName)) {
+    // The function names don't have capital letters.
+    Math[functionName](-0.5);
+  }
 });

@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const { mustNotCall } = require("../common");
+'use strict';
+const { mustNotCall } = require('../common');
 
-process.on("beforeExit", mustNotCall("exit should not allow this to occur"));
+process.on('beforeExit', mustNotCall('exit should not allow this to occur'));
 
 process.exit();

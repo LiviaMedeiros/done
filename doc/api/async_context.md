@@ -18,11 +18,11 @@ The `AsyncLocalStorage` and `AsyncResource` classes are part of the
 `async_hooks` module:
 
 ```mjs
-import { AsyncLocalStorage, AsyncResource } from "async_hooks";
+import { AsyncLocalStorage, AsyncResource } from 'async_hooks';
 ```
 
 ```cjs
-const { AsyncLocalStorage, AsyncResource } = require("async_hooks");
+const { AsyncLocalStorage, AsyncResource } = require('async_hooks');
 ```
 
 ## Class: `AsyncLocalStorage`
@@ -49,30 +49,30 @@ that assigns IDs to incoming HTTP requests and includes them in messages
 logged within each request.
 
 ```mjs
-import http from "http";
-import { AsyncLocalStorage } from "async_hooks";
+import http from 'http';
+import { AsyncLocalStorage } from 'async_hooks';
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
 function logWithId(msg) {
- const id = asyncLocalStorage.getStore();
- console.log(`${id !== undefined ? id : "-"}:`, msg);
+  const id = asyncLocalStorage.getStore();
+  console.log(`${id !== undefined ? id : '-'}:`, msg);
 }
 
 let idSeq = 0;
 http.createServer((req, res) => {
- asyncLocalStorage.run(idSeq++, () => {
-  logWithId("start");
-  // Imagine any chain of async operations here
-  setImmediate(() => {
-   logWithId("finish");
-   res.end();
+  asyncLocalStorage.run(idSeq++, () => {
+    logWithId('start');
+    // Imagine any chain of async operations here
+    setImmediate(() => {
+      logWithId('finish');
+      res.end();
+    });
   });
- });
 }).listen(8080);
 
-http.get("http://localhost:8080");
-http.get("http://localhost:8080");
+http.get('http://localhost:8080');
+http.get('http://localhost:8080');
 // Prints:
 //   0: start
 //   1: start
@@ -81,30 +81,30 @@ http.get("http://localhost:8080");
 ```
 
 ```cjs
-const http = require("http");
-const { AsyncLocalStorage } = require("async_hooks");
+const http = require('http');
+const { AsyncLocalStorage } = require('async_hooks');
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
 function logWithId(msg) {
- const id = asyncLocalStorage.getStore();
- console.log(`${id !== undefined ? id : "-"}:`, msg);
+  const id = asyncLocalStorage.getStore();
+  console.log(`${id !== undefined ? id : '-'}:`, msg);
 }
 
 let idSeq = 0;
 http.createServer((req, res) => {
- asyncLocalStorage.run(idSeq++, () => {
-  logWithId("start");
-  // Imagine any chain of async operations here
-  setImmediate(() => {
-   logWithId("finish");
-   res.end();
+  asyncLocalStorage.run(idSeq++, () => {
+    logWithId('start');
+    // Imagine any chain of async operations here
+    setImmediate(() => {
+      logWithId('finish');
+      res.end();
+    });
   });
- });
 }).listen(8080);
 
-http.get("http://localhost:8080");
-http.get("http://localhost:8080");
+http.get('http://localhost:8080');
+http.get('http://localhost:8080');
 // Prints:
 //   0: start
 //   1: start
@@ -191,7 +191,7 @@ const store = { id: 1 };
 asyncLocalStorage.enterWith(store);
 asyncLocalStorage.getStore(); // Returns the store object
 someAsyncOperation(() => {
- asyncLocalStorage.getStore(); // Returns the same object
+  asyncLocalStorage.getStore(); // Returns the same object
 });
 ```
 
@@ -205,15 +205,15 @@ to use the latter method.
 ```js
 const store = { id: 1 };
 
-emitter.on("my-event", () => {
- asyncLocalStorage.enterWith(store);
+emitter.on('my-event', () => {
+  asyncLocalStorage.enterWith(store);
 });
-emitter.on("my-event", () => {
- asyncLocalStorage.getStore(); // Returns the same object
+emitter.on('my-event', () => {
+  asyncLocalStorage.getStore(); // Returns the same object
 });
 
 asyncLocalStorage.getStore(); // Returns undefined
-emitter.emit("my-event");
+emitter.emit('my-event');
 asyncLocalStorage.getStore(); // Returns the same object
 ```
 
@@ -244,16 +244,16 @@ Example:
 ```js
 const store = { id: 2 };
 try {
- asyncLocalStorage.run(store, () => {
-  asyncLocalStorage.getStore(); // Returns the store object
-  setTimeout(() => {
-   asyncLocalStorage.getStore(); // Returns the store object
-  }, 200);
-  throw new Error();
- });
+  asyncLocalStorage.run(store, () => {
+    asyncLocalStorage.getStore(); // Returns the store object
+    setTimeout(() => {
+      asyncLocalStorage.getStore(); // Returns the store object
+    }, 200);
+    throw new Error();
+  });
 } catch (e) {
- asyncLocalStorage.getStore(); // Returns undefined
- // The error will be caught here
+  asyncLocalStorage.getStore(); // Returns undefined
+  // The error will be caught here
 }
 ```
 
@@ -285,14 +285,14 @@ Example:
 ```js
 // Within a call to run
 try {
- asyncLocalStorage.getStore(); // Returns the store object or value
- asyncLocalStorage.exit(() => {
-  asyncLocalStorage.getStore(); // Returns undefined
-  throw new Error();
- });
+  asyncLocalStorage.getStore(); // Returns the store object or value
+  asyncLocalStorage.exit(() => {
+    asyncLocalStorage.getStore(); // Returns undefined
+    throw new Error();
+  });
 } catch (e) {
- asyncLocalStorage.getStore(); // Returns the same object or value
- // The error will be caught here
+  asyncLocalStorage.getStore(); // Returns the same object or value
+  // The error will be caught here
 }
 ```
 
@@ -303,10 +303,10 @@ the following pattern should be used:
 
 ```js
 async function fn() {
- await asyncLocalStorage.run(new Map(), () => {
-  asyncLocalStorage.getStore().set("key", value);
-  return foo(); // The return value of foo will be awaited
- });
+  await asyncLocalStorage.run(new Map(), () => {
+    asyncLocalStorage.getStore().set('key', value);
+    return foo(); // The return value of foo will be awaited
+  });
 }
 ```
 
@@ -348,13 +348,13 @@ The `init` hook will trigger when an `AsyncResource` is instantiated.
 The following is an overview of the `AsyncResource` API.
 
 ```mjs
-import { AsyncResource, executionAsyncId } from "async_hooks";
+import { AsyncResource, executionAsyncId } from 'async_hooks';
 
 // AsyncResource() is meant to be extended. Instantiating a
 // new AsyncResource() also triggers init. If triggerAsyncId is omitted then
 // async_hook.executionAsyncId() is used.
 const asyncResource = new AsyncResource(
- type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false },
+  type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false }
 );
 
 // Run a function in the execution context of the resource. This will
@@ -376,13 +376,13 @@ asyncResource.triggerAsyncId();
 ```
 
 ```cjs
-const { AsyncResource, executionAsyncId } = require("async_hooks");
+const { AsyncResource, executionAsyncId } = require('async_hooks');
 
 // AsyncResource() is meant to be extended. Instantiating a
 // new AsyncResource() also triggers init. If triggerAsyncId is omitted then
 // async_hook.executionAsyncId() is used.
 const asyncResource = new AsyncResource(
- type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false },
+  type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false }
 );
 
 // Run a function in the execution context of the resource. This will
@@ -421,21 +421,21 @@ Example usage:
 
 ```js
 class DBQuery extends AsyncResource {
- constructor(db) {
-  super("DBQuery");
-  this.db = db;
- }
+  constructor(db) {
+    super('DBQuery');
+    this.db = db;
+  }
 
- getInfo(query, callback) {
-  this.db.get(query, (err, data) => {
-   this.runInAsyncScope(callback, null, err, data);
-  });
- }
+  getInfo(query, callback) {
+    this.db.get(query, (err, data) => {
+      this.runInAsyncScope(callback, null, err, data);
+    });
+  }
 
- close() {
-  this.db = null;
-  this.emitDestroy();
- }
+  close() {
+    this.db = null;
+    this.emitDestroy();
+  }
 }
 ```
 
@@ -535,194 +535,194 @@ Assuming that the task is adding two numbers, using a file named
 `task_processor.js` with the following content:
 
 ```mjs
-import { parentPort } from "worker_threads";
-parentPort.on("message", (task) => {
- parentPort.postMessage(task.a + task.b);
+import { parentPort } from 'worker_threads';
+parentPort.on('message', (task) => {
+  parentPort.postMessage(task.a + task.b);
 });
 ```
 
 ```cjs
-const { parentPort } = require("worker_threads");
-parentPort.on("message", (task) => {
- parentPort.postMessage(task.a + task.b);
+const { parentPort } = require('worker_threads');
+parentPort.on('message', (task) => {
+  parentPort.postMessage(task.a + task.b);
 });
 ```
 
 a Worker pool around it could use the following structure:
 
 ```mjs
-import { AsyncResource } from "async_hooks";
-import { EventEmitter } from "events";
-import path from "path";
-import { Worker } from "worker_threads";
+import { AsyncResource } from 'async_hooks';
+import { EventEmitter } from 'events';
+import path from 'path';
+import { Worker } from 'worker_threads';
 
-const kTaskInfo = Symbol("kTaskInfo");
-const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
+const kTaskInfo = Symbol('kTaskInfo');
+const kWorkerFreedEvent = Symbol('kWorkerFreedEvent');
 
 class WorkerPoolTaskInfo extends AsyncResource {
- constructor(callback) {
-  super("WorkerPoolTaskInfo");
-  this.callback = callback;
- }
+  constructor(callback) {
+    super('WorkerPoolTaskInfo');
+    this.callback = callback;
+  }
 
- done(err, result) {
-  this.runInAsyncScope(this.callback, null, err, result);
-  this.emitDestroy();  // `TaskInfo`s are used only once.
- }
+  done(err, result) {
+    this.runInAsyncScope(this.callback, null, err, result);
+    this.emitDestroy();  // `TaskInfo`s are used only once.
+  }
 }
 
 export default class WorkerPool extends EventEmitter {
- constructor(numThreads) {
-  super();
-  this.numThreads = numThreads;
-  this.workers = [];
-  this.freeWorkers = [];
-  this.tasks = [];
+  constructor(numThreads) {
+    super();
+    this.numThreads = numThreads;
+    this.workers = [];
+    this.freeWorkers = [];
+    this.tasks = [];
 
-  for (let i = 0; i < numThreads; i++)
-   this.addNewWorker();
+    for (let i = 0; i < numThreads; i++)
+      this.addNewWorker();
 
-  // Any time the kWorkerFreedEvent is emitted, dispatch
-  // the next task pending in the queue, if any.
-  this.on(kWorkerFreedEvent, () => {
-   if (this.tasks.length > 0) {
-    const { task, callback } = this.tasks.shift();
-    this.runTask(task, callback);
-   }
-  });
- }
-
- addNewWorker() {
-  const worker = new Worker(new URL("task_processer.js", import.meta.url));
-  worker.on("message", (result) => {
-   // In case of success: Call the callback that was passed to `runTask`,
-   // remove the `TaskInfo` associated with the Worker, and mark it as free
-   // again.
-   worker[kTaskInfo].done(null, result);
-   worker[kTaskInfo] = null;
-   this.freeWorkers.push(worker);
-   this.emit(kWorkerFreedEvent);
-  });
-  worker.on("error", (err) => {
-   // In case of an uncaught exception: Call the callback that was passed to
-   // `runTask` with the error.
-   if (worker[kTaskInfo])
-    worker[kTaskInfo].done(err, null);
-   else
-    this.emit("error", err);
-   // Remove the worker from the list and start a new Worker to replace the
-   // current one.
-   this.workers.splice(this.workers.indexOf(worker), 1);
-   this.addNewWorker();
-  });
-  this.workers.push(worker);
-  this.freeWorkers.push(worker);
-  this.emit(kWorkerFreedEvent);
- }
-
- runTask(task, callback) {
-  if (this.freeWorkers.length === 0) {
-   // No free threads, wait until a worker thread becomes free.
-   this.tasks.push({ task, callback });
-   return;
+    // Any time the kWorkerFreedEvent is emitted, dispatch
+    // the next task pending in the queue, if any.
+    this.on(kWorkerFreedEvent, () => {
+      if (this.tasks.length > 0) {
+        const { task, callback } = this.tasks.shift();
+        this.runTask(task, callback);
+      }
+    });
   }
 
-  const worker = this.freeWorkers.pop();
-  worker[kTaskInfo] = new WorkerPoolTaskInfo(callback);
-  worker.postMessage(task);
- }
+  addNewWorker() {
+    const worker = new Worker(new URL('task_processer.js', import.meta.url));
+    worker.on('message', (result) => {
+      // In case of success: Call the callback that was passed to `runTask`,
+      // remove the `TaskInfo` associated with the Worker, and mark it as free
+      // again.
+      worker[kTaskInfo].done(null, result);
+      worker[kTaskInfo] = null;
+      this.freeWorkers.push(worker);
+      this.emit(kWorkerFreedEvent);
+    });
+    worker.on('error', (err) => {
+      // In case of an uncaught exception: Call the callback that was passed to
+      // `runTask` with the error.
+      if (worker[kTaskInfo])
+        worker[kTaskInfo].done(err, null);
+      else
+        this.emit('error', err);
+      // Remove the worker from the list and start a new Worker to replace the
+      // current one.
+      this.workers.splice(this.workers.indexOf(worker), 1);
+      this.addNewWorker();
+    });
+    this.workers.push(worker);
+    this.freeWorkers.push(worker);
+    this.emit(kWorkerFreedEvent);
+  }
 
- close() {
-  for (const worker of this.workers) worker.terminate();
- }
+  runTask(task, callback) {
+    if (this.freeWorkers.length === 0) {
+      // No free threads, wait until a worker thread becomes free.
+      this.tasks.push({ task, callback });
+      return;
+    }
+
+    const worker = this.freeWorkers.pop();
+    worker[kTaskInfo] = new WorkerPoolTaskInfo(callback);
+    worker.postMessage(task);
+  }
+
+  close() {
+    for (const worker of this.workers) worker.terminate();
+  }
 }
 ```
 
 ```cjs
-const { AsyncResource } = require("async_hooks");
-const { EventEmitter } = require("events");
-const path = require("path");
-const { Worker } = require("worker_threads");
+const { AsyncResource } = require('async_hooks');
+const { EventEmitter } = require('events');
+const path = require('path');
+const { Worker } = require('worker_threads');
 
-const kTaskInfo = Symbol("kTaskInfo");
-const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
+const kTaskInfo = Symbol('kTaskInfo');
+const kWorkerFreedEvent = Symbol('kWorkerFreedEvent');
 
 class WorkerPoolTaskInfo extends AsyncResource {
- constructor(callback) {
-  super("WorkerPoolTaskInfo");
-  this.callback = callback;
- }
+  constructor(callback) {
+    super('WorkerPoolTaskInfo');
+    this.callback = callback;
+  }
 
- done(err, result) {
-  this.runInAsyncScope(this.callback, null, err, result);
-  this.emitDestroy();  // `TaskInfo`s are used only once.
- }
+  done(err, result) {
+    this.runInAsyncScope(this.callback, null, err, result);
+    this.emitDestroy();  // `TaskInfo`s are used only once.
+  }
 }
 
 class WorkerPool extends EventEmitter {
- constructor(numThreads) {
-  super();
-  this.numThreads = numThreads;
-  this.workers = [];
-  this.freeWorkers = [];
-  this.tasks = [];
+  constructor(numThreads) {
+    super();
+    this.numThreads = numThreads;
+    this.workers = [];
+    this.freeWorkers = [];
+    this.tasks = [];
 
-  for (let i = 0; i < numThreads; i++)
-   this.addNewWorker();
+    for (let i = 0; i < numThreads; i++)
+      this.addNewWorker();
 
-  // Any time the kWorkerFreedEvent is emitted, dispatch
-  // the next task pending in the queue, if any.
-  this.on(kWorkerFreedEvent, () => {
-   if (this.tasks.length > 0) {
-    const { task, callback } = this.tasks.shift();
-    this.runTask(task, callback);
-   }
-  });
- }
-
- addNewWorker() {
-  const worker = new Worker(path.resolve(__dirname, "task_processor.js"));
-  worker.on("message", (result) => {
-   // In case of success: Call the callback that was passed to `runTask`,
-   // remove the `TaskInfo` associated with the Worker, and mark it as free
-   // again.
-   worker[kTaskInfo].done(null, result);
-   worker[kTaskInfo] = null;
-   this.freeWorkers.push(worker);
-   this.emit(kWorkerFreedEvent);
-  });
-  worker.on("error", (err) => {
-   // In case of an uncaught exception: Call the callback that was passed to
-   // `runTask` with the error.
-   if (worker[kTaskInfo])
-    worker[kTaskInfo].done(err, null);
-   else
-    this.emit("error", err);
-   // Remove the worker from the list and start a new Worker to replace the
-   // current one.
-   this.workers.splice(this.workers.indexOf(worker), 1);
-   this.addNewWorker();
-  });
-  this.workers.push(worker);
-  this.freeWorkers.push(worker);
-  this.emit(kWorkerFreedEvent);
- }
-
- runTask(task, callback) {
-  if (this.freeWorkers.length === 0) {
-   // No free threads, wait until a worker thread becomes free.
-   this.tasks.push({ task, callback });
-   return;
+    // Any time the kWorkerFreedEvent is emitted, dispatch
+    // the next task pending in the queue, if any.
+    this.on(kWorkerFreedEvent, () => {
+      if (this.tasks.length > 0) {
+        const { task, callback } = this.tasks.shift();
+        this.runTask(task, callback);
+      }
+    });
   }
 
-  const worker = this.freeWorkers.pop();
-  worker[kTaskInfo] = new WorkerPoolTaskInfo(callback);
-  worker.postMessage(task);
- }
+  addNewWorker() {
+    const worker = new Worker(path.resolve(__dirname, 'task_processor.js'));
+    worker.on('message', (result) => {
+      // In case of success: Call the callback that was passed to `runTask`,
+      // remove the `TaskInfo` associated with the Worker, and mark it as free
+      // again.
+      worker[kTaskInfo].done(null, result);
+      worker[kTaskInfo] = null;
+      this.freeWorkers.push(worker);
+      this.emit(kWorkerFreedEvent);
+    });
+    worker.on('error', (err) => {
+      // In case of an uncaught exception: Call the callback that was passed to
+      // `runTask` with the error.
+      if (worker[kTaskInfo])
+        worker[kTaskInfo].done(err, null);
+      else
+        this.emit('error', err);
+      // Remove the worker from the list and start a new Worker to replace the
+      // current one.
+      this.workers.splice(this.workers.indexOf(worker), 1);
+      this.addNewWorker();
+    });
+    this.workers.push(worker);
+    this.freeWorkers.push(worker);
+    this.emit(kWorkerFreedEvent);
+  }
 
- close() {
-  for (const worker of this.workers) worker.terminate();
- }
+  runTask(task, callback) {
+    if (this.freeWorkers.length === 0) {
+      // No free threads, wait until a worker thread becomes free.
+      this.tasks.push({ task, callback });
+      return;
+    }
+
+    const worker = this.freeWorkers.pop();
+    worker[kTaskInfo] = new WorkerPoolTaskInfo(callback);
+    worker.postMessage(task);
+  }
+
+  close() {
+    for (const worker of this.workers) worker.terminate();
+  }
 }
 
 module.exports = WorkerPool;
@@ -737,34 +737,34 @@ were scheduled.
 This pool could be used as follows:
 
 ```mjs
-import WorkerPool from "./worker_pool.js";
-import os from "os";
+import WorkerPool from './worker_pool.js';
+import os from 'os';
 
 const pool = new WorkerPool(os.cpus().length);
 
 let finished = 0;
 for (let i = 0; i < 10; i++) {
- pool.runTask({ a: 42, b: 100 }, (err, result) => {
-  console.log(i, err, result);
-  if (++finished === 10)
-   pool.close();
- });
+  pool.runTask({ a: 42, b: 100 }, (err, result) => {
+    console.log(i, err, result);
+    if (++finished === 10)
+      pool.close();
+  });
 }
 ```
 
 ```cjs
-const WorkerPool = require("./worker_pool.js");
-const os = require("os");
+const WorkerPool = require('./worker_pool.js');
+const os = require('os');
 
 const pool = new WorkerPool(os.cpus().length);
 
 let finished = 0;
 for (let i = 0; i < 10; i++) {
- pool.runTask({ a: 42, b: 100 }, (err, result) => {
-  console.log(i, err, result);
-  if (++finished === 10)
-   pool.close();
- });
+  pool.runTask({ a: 42, b: 100 }, (err, result) => {
+    console.log(i, err, result);
+    if (++finished === 10)
+      pool.close();
+  });
 }
 ```
 
@@ -779,32 +779,32 @@ associate an event listener with the correct execution context. The same
 approach can be applied to a [`Stream`][] or a similar event-driven class.
 
 ```mjs
-import { createServer } from "http";
-import { AsyncResource, executionAsyncId } from "async_hooks";
+import { createServer } from 'http';
+import { AsyncResource, executionAsyncId } from 'async_hooks';
 
 const server = createServer((req, res) => {
- req.on("close", AsyncResource.bind(() => {
-  // Execution context is bound to the current outer scope.
- }));
- req.on("close", () => {
-  // Execution context is bound to the scope that caused 'close' to emit.
- });
- res.end();
+  req.on('close', AsyncResource.bind(() => {
+    // Execution context is bound to the current outer scope.
+  }));
+  req.on('close', () => {
+    // Execution context is bound to the scope that caused 'close' to emit.
+  });
+  res.end();
 }).listen(3000);
 ```
 
 ```cjs
-const { createServer } = require("http");
-const { AsyncResource, executionAsyncId } = require("async_hooks");
+const { createServer } = require('http');
+const { AsyncResource, executionAsyncId } = require('async_hooks');
 
 const server = createServer((req, res) => {
- req.on("close", AsyncResource.bind(() => {
-  // Execution context is bound to the current outer scope.
- }));
- req.on("close", () => {
-  // Execution context is bound to the scope that caused 'close' to emit.
- });
- res.end();
+  req.on('close', AsyncResource.bind(() => {
+    // Execution context is bound to the current outer scope.
+  }));
+  req.on('close', () => {
+    // Execution context is bound to the scope that caused 'close' to emit.
+  });
+  res.end();
 }).listen(3000);
 ```
 

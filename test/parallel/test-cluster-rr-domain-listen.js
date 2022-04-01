@@ -19,33 +19,33 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const cluster = require("cluster");
-const domain = require("domain");
+'use strict';
+require('../common');
+const cluster = require('cluster');
+const domain = require('domain');
 
 // RR is the default for v0.11.9+ so the following line is redundant:
 // cluster.schedulingPolicy = cluster.SCHED_RR;
 
 if (cluster.isWorker) {
- const d = domain.create();
- d.run(() => {});
+  const d = domain.create();
+  d.run(() => {});
 
- const http = require("http");
- http.Server(() => {}).listen(0, "127.0.0.1");
+  const http = require('http');
+  http.Server(() => {}).listen(0, '127.0.0.1');
 
 } else if (cluster.isPrimary) {
 
- // Kill worker when listening
- cluster.on("listening", function() {
-  worker.kill();
- });
+  // Kill worker when listening
+  cluster.on('listening', function() {
+    worker.kill();
+  });
 
- // Kill process when worker is killed
- cluster.on("exit", function() {
-  process.exit(0);
- });
+  // Kill process when worker is killed
+  cluster.on('exit', function() {
+    process.exit(0);
+  });
 
- // Create worker
- const worker = cluster.fork();
+  // Create worker
+  const worker = cluster.fork();
 }

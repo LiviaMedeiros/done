@@ -1,6 +1,6 @@
-"use strict";
-const common = require("../common");
-const net = require("net");
+'use strict';
+const common = require('../common');
+const net = require('net');
 const server = net.createServer();
 
 // Unref before listening

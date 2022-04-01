@@ -1,10 +1,10 @@
 // Flags: --expose-internals
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 common.skipIfInspectorDisabled();
 common.skipIf32Bits();
-const { NodeInstance } = require("../common/inspector-helper.js");
-const assert = require("assert");
+const { NodeInstance } = require('../common/inspector-helper.js');
+const assert = require('assert');
 
 common.skipIfWorker(); // Signal starts a server for a main thread inspector
 
@@ -36,49 +36,49 @@ function setupTimeoutWithBreak() {
 `;
 
 async function waitForInitialSetup(session) {
- console.error("[test]", "Waiting for initial setup");
- await session.waitForBreakOnLine(16, "[eval]");
+  console.error('[test]', 'Waiting for initial setup');
+  await session.waitForBreakOnLine(16, '[eval]');
 }
 
 async function setupTimeoutForStackTrace(session) {
- console.error("[test]", "Setting up timeout for async stack trace");
- await session.send([
-  { "method": "Runtime.evaluate",
-    "params": { expression: "setupTimeoutWithBreak()" } },
-  { "method": "Debugger.resume" },
- ]);
+  console.error('[test]', 'Setting up timeout for async stack trace');
+  await session.send([
+    { 'method': 'Runtime.evaluate',
+      'params': { expression: 'setupTimeoutWithBreak()' } },
+    { 'method': 'Debugger.resume' },
+  ]);
 }
 
 async function checkAsyncStackTrace(session) {
- console.error("[test]", "Verify basic properties of asyncStackTrace");
- const paused = await session.waitForBreakOnLine(23, "[eval]");
- assert(paused.params.asyncStackTrace,
-        `${Object.keys(paused.params)} contains "asyncStackTrace" property`);
- assert(paused.params.asyncStackTrace.description, "Timeout");
- assert(paused.params.asyncStackTrace.callFrames
-           .some((frame) => frame.functionName === "setupTimeoutWithBreak"));
+  console.error('[test]', 'Verify basic properties of asyncStackTrace');
+  const paused = await session.waitForBreakOnLine(23, '[eval]');
+  assert(paused.params.asyncStackTrace,
+         `${Object.keys(paused.params)} contains "asyncStackTrace" property`);
+  assert(paused.params.asyncStackTrace.description, 'Timeout');
+  assert(paused.params.asyncStackTrace.callFrames
+           .some((frame) => frame.functionName === 'setupTimeoutWithBreak'));
 }
 
 async function runTests() {
- const instance = await NodeInstance.startViaSignal(script);
- const session = await instance.connectInspectorSession();
- await session.send([
-  { "method": "Runtime.enable" },
-  { "method": "Debugger.enable" },
-  { "method": "Debugger.setAsyncCallStackDepth",
-    "params": { "maxDepth": 10 } },
-  { "method": "Debugger.setBlackboxPatterns",
-    "params": { "patterns": [] } },
-  { "method": "Runtime.runIfWaitingForDebugger" },
- ]);
+  const instance = await NodeInstance.startViaSignal(script);
+  const session = await instance.connectInspectorSession();
+  await session.send([
+    { 'method': 'Runtime.enable' },
+    { 'method': 'Debugger.enable' },
+    { 'method': 'Debugger.setAsyncCallStackDepth',
+      'params': { 'maxDepth': 10 } },
+    { 'method': 'Debugger.setBlackboxPatterns',
+      'params': { 'patterns': [] } },
+    { 'method': 'Runtime.runIfWaitingForDebugger' },
+  ]);
 
- await waitForInitialSetup(session);
- await setupTimeoutForStackTrace(session);
- await checkAsyncStackTrace(session);
+  await waitForInitialSetup(session);
+  await setupTimeoutForStackTrace(session);
+  await checkAsyncStackTrace(session);
 
- console.error("[test]", "Stopping child instance");
- session.disconnect();
- instance.kill();
+  console.error('[test]', 'Stopping child instance');
+  session.disconnect();
+  instance.kill();
 }
 
 runTests().then(common.mustCall());

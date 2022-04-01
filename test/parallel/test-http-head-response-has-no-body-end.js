@@ -19,30 +19,30 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const http = require("http");
+'use strict';
+const common = require('../common');
+const http = require('http');
 
 // This test is to make sure that when the HTTP server
 // responds to a HEAD request with data to res.end,
 // it does not send any body.
 
 const server = http.createServer(function(req, res) {
- res.writeHead(200);
- res.end("FAIL"); // broken: sends FAIL from hot path.
+  res.writeHead(200);
+  res.end('FAIL'); // broken: sends FAIL from hot path.
 });
 server.listen(0);
 
-server.on("listening", common.mustCall(function() {
- const req = http.request({
-  port: this.address().port,
-  method: "HEAD",
-  path: "/",
- }, common.mustCall(function(res) {
-  res.on("end", common.mustCall(function() {
-   server.close();
+server.on('listening', common.mustCall(function() {
+  const req = http.request({
+    port: this.address().port,
+    method: 'HEAD',
+    path: '/'
+  }, common.mustCall(function(res) {
+    res.on('end', common.mustCall(function() {
+      server.close();
+    }));
+    res.resume();
   }));
-  res.resume();
- }));
- req.end();
+  req.end();
 }));

@@ -1,21 +1,21 @@
-"use strict";
+'use strict';
 
 // Tests below are not from WPT.
 
-const common = require("../common");
+const common = require('../common');
 if (!common.hasIntl) {
- // A handful of the tests fail when ICU is not included.
- common.skip("missing Intl");
+  // A handful of the tests fail when ICU is not included.
+  common.skip('missing Intl');
 }
 
-const util = require("util");
-const assert = require("assert");
+const util = require('util');
+const assert = require('assert');
 
-const url = new URL("https://username:password@host.name:8080/path/name/?que=ry#hash");
+const url = new URL('https://username:password@host.name:8080/path/name/?que=ry#hash');
 
 assert.strictEqual(
- util.inspect(url),
- `URL {
+  util.inspect(url),
+  `URL {
   href: 'https://username:password@host.name:8080/path/name/?que=ry#hash',
   origin: 'https://host.name:8080',
   protocol: 'https:',
@@ -31,8 +31,8 @@ assert.strictEqual(
 }`);
 
 assert.strictEqual(
- util.inspect(url, { showHidden: true }),
- `URL {
+  util.inspect(url, { showHidden: true }),
+  `URL {
   href: 'https://username:password@host.name:8080/path/name/?que=ry#hash',
   origin: 'https://host.name:8080',
   protocol: 'https:',
@@ -61,8 +61,8 @@ assert.strictEqual(
 }`);
 
 assert.strictEqual(
- util.inspect({ a: url }, { depth: 0 }),
- "{ a: [URL] }");
+  util.inspect({ a: url }, { depth: 0 }),
+  '{ a: [URL] }');
 
 class MyURL extends URL {}
-assert(util.inspect(new MyURL(url.href)).startsWith("MyURL {"));
+assert(util.inspect(new MyURL(url.href)).startsWith('MyURL {'));

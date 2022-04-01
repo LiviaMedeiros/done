@@ -1,190 +1,190 @@
 // Flags: --no-warnings
-"use strict";
-require("../common");
-const assert = require("node:assert");
-const test = require("node:test");
+'use strict';
+require('../common');
+const assert = require('node:assert');
+const test = require('node:test');
 
-test("sync pass todo", (t) => {
- t.todo();
+test('sync pass todo', (t) => {
+  t.todo();
 });
 
-test("sync pass todo with message", (t) => {
- t.todo("this is a passing todo");
+test('sync pass todo with message', (t) => {
+  t.todo('this is a passing todo');
 });
 
-test("sync fail todo", (t) => {
- t.todo();
- throw new Error("thrown from sync fail todo");
+test('sync fail todo', (t) => {
+  t.todo();
+  throw new Error('thrown from sync fail todo');
 });
 
-test("sync fail todo with message", (t) => {
- t.todo("this is a failing todo");
- throw new Error("thrown from sync fail todo with message");
+test('sync fail todo with message', (t) => {
+  t.todo('this is a failing todo');
+  throw new Error('thrown from sync fail todo with message');
 });
 
-test("sync skip pass", (t) => {
- t.skip();
+test('sync skip pass', (t) => {
+  t.skip();
 });
 
-test("sync skip pass with message", (t) => {
- t.skip("this is skipped");
+test('sync skip pass with message', (t) => {
+  t.skip('this is skipped');
 });
 
-test("sync pass", (t) => {
- t.diagnostic("this test should pass");
+test('sync pass', (t) => {
+  t.diagnostic('this test should pass');
 });
 
-test("sync throw fail", () => {
- throw new Error("thrown from sync throw fail");
+test('sync throw fail', () => {
+  throw new Error('thrown from sync throw fail');
 });
 
-test("async skip pass", async (t) => {
- t.skip();
+test('async skip pass', async (t) => {
+  t.skip();
 });
 
-test("async pass", async () => {
+test('async pass', async () => {
 
 });
 
-test("async throw fail", async () => {
- throw new Error("thrown from async throw fail");
+test('async throw fail', async () => {
+  throw new Error('thrown from async throw fail');
 });
 
-test("async skip fail", async (t) => {
- t.skip();
- throw new Error("thrown from async throw fail");
+test('async skip fail', async (t) => {
+  t.skip();
+  throw new Error('thrown from async throw fail');
 });
 
-test("async assertion fail", async () => {
- // Make sure the assert module is handled.
- assert.strictEqual(true, false);
+test('async assertion fail', async () => {
+  // Make sure the assert module is handled.
+  assert.strictEqual(true, false);
 });
 
-test("resolve pass", () => {
- return Promise.resolve();
+test('resolve pass', () => {
+  return Promise.resolve();
 });
 
-test("reject fail", () => {
- return Promise.reject(new Error("rejected from reject fail"));
+test('reject fail', () => {
+  return Promise.reject(new Error('rejected from reject fail'));
 });
 
-test("unhandled rejection - passes but warns", () => {
- Promise.reject(new Error("rejected from unhandled rejection fail"));
+test('unhandled rejection - passes but warns', () => {
+  Promise.reject(new Error('rejected from unhandled rejection fail'));
 });
 
-test("async unhandled rejection - passes but warns", async () => {
- Promise.reject(new Error("rejected from async unhandled rejection fail"));
+test('async unhandled rejection - passes but warns', async () => {
+  Promise.reject(new Error('rejected from async unhandled rejection fail'));
 });
 
-test("immediate throw - passes but warns", () => {
- setImmediate(() => {
-  throw new Error("thrown from immediate throw fail");
- });
-});
-
-test("immediate reject - passes but warns", () => {
- setImmediate(() => {
-  Promise.reject(new Error("rejected from immediate reject fail"));
- });
-});
-
-test("immediate resolve pass", () => {
- return new Promise((resolve) => {
+test('immediate throw - passes but warns', () => {
   setImmediate(() => {
-   resolve();
+    throw new Error('thrown from immediate throw fail');
   });
- });
 });
 
-test("subtest sync throw fail", async (t) => {
- await t.test("+sync throw fail", (t) => {
-  t.diagnostic("this subtest should make its parent test fail");
-  throw new Error("thrown from subtest sync throw fail");
- });
+test('immediate reject - passes but warns', () => {
+  setImmediate(() => {
+    Promise.reject(new Error('rejected from immediate reject fail'));
+  });
 });
 
-test("sync throw non-error fail", async (t) => {
- throw Symbol("thrown symbol from sync throw non-error fail");
+test('immediate resolve pass', () => {
+  return new Promise((resolve) => {
+    setImmediate(() => {
+      resolve();
+    });
+  });
 });
 
-test("level 0a", { concurrency: 4 }, async (t) => {
- t.test("level 1a", async (t) => {
-  const p1a = new Promise((resolve) => {
-   setTimeout(() => {
-    resolve();
-   }, 1000);
+test('subtest sync throw fail', async (t) => {
+  await t.test('+sync throw fail', (t) => {
+    t.diagnostic('this subtest should make its parent test fail');
+    throw new Error('thrown from subtest sync throw fail');
   });
+});
 
-  return p1a;
- });
+test('sync throw non-error fail', async (t) => {
+  throw Symbol('thrown symbol from sync throw non-error fail');
+});
 
- t.test("level 1b", async (t) => {
-  const p1b = new Promise((resolve) => {
-   resolve();
-  });
+test('level 0a', { concurrency: 4 }, async (t) => {
+  t.test('level 1a', async (t) => {
+    const p1a = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
 
-  return p1b;
- });
-
- t.test("level 1c", async (t) => {
-  const p1c = new Promise((resolve) => {
-   setTimeout(() => {
-    resolve();
-   }, 2000);
+    return p1a;
   });
 
-  return p1c;
- });
+  t.test('level 1b', async (t) => {
+    const p1b = new Promise((resolve) => {
+      resolve();
+    });
 
- t.test("level 1d", async (t) => {
-  const p1c = new Promise((resolve) => {
-   setTimeout(() => {
-    resolve();
-   }, 1500);
+    return p1b;
   });
 
-  return p1c;
- });
+  t.test('level 1c', async (t) => {
+    const p1c = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 2000);
+    });
 
- const p0a = new Promise((resolve) => {
-  setTimeout(() => {
-   resolve();
-  }, 3000);
- });
-
- return p0a;
-});
-
-test("top level", { concurrency: 2 }, async (t) => {
- t.test("+long running", async (t) => {
-  return new Promise((resolve, reject) => {
-   setTimeout(resolve, 3000).unref();
+    return p1c;
   });
- });
 
- t.test("+short running", async (t) => {
-  t.test("++short running", async (t) => {});
- });
-});
+  t.test('level 1d', async (t) => {
+    const p1c = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1500);
+    });
 
-test("invalid subtest - pass but subtest fails", (t) => {
- setImmediate(() => {
-  t.test("invalid subtest fail", () => {
-   throw new Error("this should not be thrown");
+    return p1c;
   });
- });
+
+  const p0a = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 3000);
+  });
+
+  return p0a;
 });
 
-test("sync skip option", { skip: true }, (t) => {
- throw new Error("this should not be executed");
+test('top level', { concurrency: 2 }, async (t) => {
+  t.test('+long running', async (t) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, 3000).unref();
+    });
+  });
+
+  t.test('+short running', async (t) => {
+    t.test('++short running', async (t) => {});
+  });
 });
 
-test("sync skip option with message", { skip: "this is skipped" }, (t) => {
- throw new Error("this should not be executed");
+test('invalid subtest - pass but subtest fails', (t) => {
+  setImmediate(() => {
+    t.test('invalid subtest fail', () => {
+      throw new Error('this should not be thrown');
+    });
+  });
 });
 
-test("sync skip option is false fail", { skip: false }, (t) => {
- throw new Error("this should be executed");
+test('sync skip option', { skip: true }, (t) => {
+  throw new Error('this should not be executed');
+});
+
+test('sync skip option with message', { skip: 'this is skipped' }, (t) => {
+  throw new Error('this should not be executed');
+});
+
+test('sync skip option is false fail', { skip: false }, (t) => {
+  throw new Error('this should be executed');
 });
 
 // A test with no arguments provided.
@@ -197,92 +197,92 @@ test(function functionOnly() {});
 test(() => {});
 
 // A test with only a name provided.
-test("test with only a name provided");
+test('test with only a name provided');
 
 // A test with an empty string name.
-test("");
+test('');
 
 // A test with only options provided.
 test({ skip: true });
 
 // A test with only a name and options provided.
-test("test with a name and options provided", { skip: true });
+test('test with a name and options provided', { skip: true });
 
 // A test with only options and a function provided.
 test({ skip: true }, function functionAndOptions() {});
 
 // A test whose description needs to be escaped.
-test("escaped description \\ # \\#\\");
+test('escaped description \\ # \\#\\');
 
 // A test whose skip message needs to be escaped.
-test("escaped skip message", { skip: "#skip" });
+test('escaped skip message', { skip: '#skip' });
 
 // A test whose todo message needs to be escaped.
-test("escaped todo message", { todo: "#todo" });
+test('escaped todo message', { todo: '#todo' });
 
 // A test with a diagnostic message that needs to be escaped.
-test("escaped diagnostic", (t) => {
- t.diagnostic("#diagnostic");
+test('escaped diagnostic', (t) => {
+  t.diagnostic('#diagnostic');
 });
 
-test("callback pass", (t, done) => {
- setImmediate(done);
+test('callback pass', (t, done) => {
+  setImmediate(done);
 });
 
-test("callback fail", (t, done) => {
- setImmediate(() => {
-  done(new Error("callback failure"));
- });
+test('callback fail', (t, done) => {
+  setImmediate(() => {
+    done(new Error('callback failure'));
+  });
 });
 
-test("sync t is this in test", function(t) {
- assert.strictEqual(this, t);
+test('sync t is this in test', function(t) {
+  assert.strictEqual(this, t);
 });
 
-test("async t is this in test", async function(t) {
- assert.strictEqual(this, t);
+test('async t is this in test', async function(t) {
+  assert.strictEqual(this, t);
 });
 
-test("callback t is this in test", function(t, done) {
- assert.strictEqual(this, t);
- done();
+test('callback t is this in test', function(t, done) {
+  assert.strictEqual(this, t);
+  done();
 });
 
-test("callback also returns a Promise", async (t, done) => {
- throw new Error("thrown from callback also returns a Promise");
+test('callback also returns a Promise', async (t, done) => {
+  throw new Error('thrown from callback also returns a Promise');
 });
 
-test("callback throw", (t, done) => {
- throw new Error("thrown from callback throw");
+test('callback throw', (t, done) => {
+  throw new Error('thrown from callback throw');
 });
 
-test("callback called twice", (t, done) => {
- done();
- done();
-});
-
-test("callback called twice in different ticks", (t, done) => {
- setImmediate(done);
- done();
-});
-
-test("callback called twice in future tick", (t, done) => {
- setImmediate(() => {
+test('callback called twice', (t, done) => {
   done();
   done();
- });
 });
 
-test("callback async throw", (t, done) => {
- setImmediate(() => {
-  throw new Error("thrown from callback async throw");
- });
+test('callback called twice in different ticks', (t, done) => {
+  setImmediate(done);
+  done();
 });
 
-test("callback async throw after done", (t, done) => {
- setImmediate(() => {
-  throw new Error("thrown from callback async throw after done");
- });
+test('callback called twice in future tick', (t, done) => {
+  setImmediate(() => {
+    done();
+    done();
+  });
+});
 
- done();
+test('callback async throw', (t, done) => {
+  setImmediate(() => {
+    throw new Error('thrown from callback async throw');
+  });
+});
+
+test('callback async throw after done', (t, done) => {
+  setImmediate(() => {
+    throw new Error('thrown from callback async throw after done');
+  });
+
+  done();
 });

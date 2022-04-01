@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-const common = require("../common");
+const common = require('../common');
 
 if (!common.isMainThread) {
- // Note that test-timers-immediate-unref-nested-once works instead.
- common.skip("Worker bootstrapping works differently -> different timing");
+  // Note that test-timers-immediate-unref-nested-once works instead.
+  common.skip('Worker bootstrapping works differently -> different timing');
 }
 
 // This immediate should not execute as it was unrefed

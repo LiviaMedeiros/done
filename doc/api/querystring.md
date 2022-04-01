@@ -12,7 +12,7 @@ The `querystring` module provides utilities for parsing and formatting URL
 query strings. It can be accessed using:
 
 ```js
-const querystring = require("querystring");
+const querystring = require('querystring');
 ```
 
 The `querystring` API is considered Legacy. While it is still maintained,
@@ -107,7 +107,7 @@ alternative `decodeURIComponent` option will need to be specified:
 ```js
 // Assuming gbkDecodeURIComponent function already exists...
 
-querystring.parse("w=%D6%D0%CE%C4&foo=bar", null, null,
+querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null,
                   { decodeURIComponent: gbkDecodeURIComponent });
 ```
 
@@ -136,10 +136,10 @@ The numeric values must be finite. Any other input values will be coerced to
 empty strings.
 
 ```js
-querystring.stringify({ foo: "bar", baz: ["qux", "quux"], corge: "" });
+querystring.stringify({ foo: 'bar', baz: ['qux', 'quux'], corge: '' });
 // Returns 'foo=bar&baz=qux&baz=quux&corge='
 
-querystring.stringify({ foo: "bar", baz: "qux" }, ";", ":");
+querystring.stringify({ foo: 'bar', baz: 'qux' }, ';', ':');
 // Returns 'foo:bar;baz:qux'
 ```
 
@@ -150,7 +150,7 @@ be encoded as UTF-8. If an alternative encoding is required, then an alternative
 ```js
 // Assuming gbkEncodeURIComponent function already exists,
 
-querystring.stringify({ w: "中文", foo: "bar" }, null, null,
+querystring.stringify({ w: '中文', foo: 'bar' }, null, null,
                       { encodeURIComponent: gbkEncodeURIComponent });
 ```
 

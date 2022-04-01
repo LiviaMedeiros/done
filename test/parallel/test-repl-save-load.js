@@ -19,36 +19,36 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const ArrayStream = require("../common/arraystream");
-const assert = require("assert");
-const join = require("path").join;
-const fs = require("fs");
+'use strict';
+const common = require('../common');
+const ArrayStream = require('../common/arraystream');
+const assert = require('assert');
+const join = require('path').join;
+const fs = require('fs');
 
-const tmpdir = require("../common/tmpdir");
+const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
-const repl = require("repl");
+const repl = require('repl');
 
-const works = [["inner.one"], "inner.o"];
+const works = [['inner.one'], 'inner.o'];
 
 const putIn = new ArrayStream();
-const testMe = repl.start("", putIn);
+const testMe = repl.start('', putIn);
 
 // Some errors might be passed to the domain.
-testMe._domain.on("error", function(reason) {
- const err = new Error("Test failed");
- err.reason = reason;
- throw err;
+testMe._domain.on('error', function(reason) {
+  const err = new Error('Test failed');
+  err.reason = reason;
+  throw err;
 });
 
 const testFile = [
- "let inner = (function() {",
- "  return {one:1};",
- "})()",
+  'let inner = (function() {',
+  '  return {one:1};',
+  '})()',
 ];
-const saveFileName = join(tmpdir.path, "test.save.js");
+const saveFileName = join(tmpdir.path, 'test.save.js');
 
 // Add some data.
 putIn.run(testFile);
@@ -57,81 +57,81 @@ putIn.run(testFile);
 putIn.run([`.save ${saveFileName}`]);
 
 // The file should have what I wrote.
-assert.strictEqual(fs.readFileSync(saveFileName, "utf8"),
-                   testFile.join("\n"));
+assert.strictEqual(fs.readFileSync(saveFileName, 'utf8'),
+                   testFile.join('\n'));
 
 // Make sure that the REPL data is "correct".
-testMe.complete("inner.o", common.mustSucceed((data) => {
- assert.deepStrictEqual(data, works);
+testMe.complete('inner.o', common.mustSucceed((data) => {
+  assert.deepStrictEqual(data, works);
 }));
 
 // Clear the REPL.
-putIn.run([".clear"]);
+putIn.run(['.clear']);
 
 // Load the file back in.
 putIn.run([`.load ${saveFileName}`]);
 
 // Make sure that the REPL data is "correct".
-testMe.complete("inner.o", common.mustSucceed((data) => {
- assert.deepStrictEqual(data, works);
+testMe.complete('inner.o', common.mustSucceed((data) => {
+  assert.deepStrictEqual(data, works);
 }));
 
 // Clear the REPL.
-putIn.run([".clear"]);
+putIn.run(['.clear']);
 
-let loadFile = join(tmpdir.path, "file.does.not.exist");
+let loadFile = join(tmpdir.path, 'file.does.not.exist');
 
 // Should not break.
 putIn.write = common.mustCall(function(data) {
- // Make sure I get a failed to load message and not some crazy error.
- assert.strictEqual(data, `Failed to load: ${loadFile}\n`);
- // Eat me to avoid work.
- putIn.write = () => {};
+  // Make sure I get a failed to load message and not some crazy error.
+  assert.strictEqual(data, `Failed to load: ${loadFile}\n`);
+  // Eat me to avoid work.
+  putIn.write = () => {};
 });
 putIn.run([`.load ${loadFile}`]);
 
 // Throw error on loading directory.
 loadFile = tmpdir.path;
 putIn.write = common.mustCall(function(data) {
- assert.strictEqual(data, `Failed to load: ${loadFile} is not a valid file\n`);
- putIn.write = () => {};
+  assert.strictEqual(data, `Failed to load: ${loadFile} is not a valid file\n`);
+  putIn.write = () => {};
 });
 putIn.run([`.load ${loadFile}`]);
 
 // Clear the REPL.
-putIn.run([".clear"]);
+putIn.run(['.clear']);
 
 // NUL (\0) is disallowed in filenames in UNIX-like operating systems and
 // Windows so we can use that to test failed saves.
-const invalidFileName = join(tmpdir.path, "\0\0\0\0\0");
+const invalidFileName = join(tmpdir.path, '\0\0\0\0\0');
 
 // Should not break.
 putIn.write = common.mustCall(function(data) {
- // Make sure I get a failed to save message and not some other error.
- assert.strictEqual(data, `Failed to save: ${invalidFileName}\n`);
- // Reset to no-op.
- putIn.write = () => {};
+  // Make sure I get a failed to save message and not some other error.
+  assert.strictEqual(data, `Failed to save: ${invalidFileName}\n`);
+  // Reset to no-op.
+  putIn.write = () => {};
 });
 
 // Save it to a file.
 putIn.run([`.save ${invalidFileName}`]);
 
 {
- // Save .editor mode code.
- const cmds = [
-  "function testSave() {",
-  'return "saved";',
-  "}",
- ];
- const putIn = new ArrayStream();
- const replServer = repl.start({ terminal: true, stream: putIn });
+  // Save .editor mode code.
+  const cmds = [
+    'function testSave() {',
+    'return "saved";',
+    '}',
+  ];
+  const putIn = new ArrayStream();
+  const replServer = repl.start({ terminal: true, stream: putIn });
 
- putIn.run([".editor"]);
- putIn.run(cmds);
- replServer.write("", { ctrl: true, name: "d" });
+  putIn.run(['.editor']);
+  putIn.run(cmds);
+  replServer.write('', { ctrl: true, name: 'd' });
 
- putIn.run([`.save ${saveFileName}`]);
- replServer.close();
- assert.strictEqual(fs.readFileSync(saveFileName, "utf8"),
-                    `${cmds.join("\n")}\n`);
+  putIn.run([`.save ${saveFileName}`]);
+  replServer.close();
+  assert.strictEqual(fs.readFileSync(saveFileName, 'utf8'),
+                     `${cmds.join('\n')}\n`);
 }

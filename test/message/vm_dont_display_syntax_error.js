@@ -19,26 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const vm = require("vm");
+'use strict';
+require('../common');
+const vm = require('vm');
 
-console.error("beginning");
+console.error('beginning');
 
 try {
- vm.runInThisContext("var 5;", {
-  filename: "test.vm",
-  displayErrors: false,
- });
+  vm.runInThisContext('var 5;', {
+    filename: 'test.vm',
+    displayErrors: false
+  });
 } catch {
- // Continue regardless of error.
+  // Continue regardless of error.
 }
 
-console.error("middle");
+console.error('middle');
 
-vm.runInThisContext("var 5;", {
- filename: "test.vm",
- displayErrors: false,
+vm.runInThisContext('var 5;', {
+  filename: 'test.vm',
+  displayErrors: false
 });
 
-console.error("end");
+console.error('end');

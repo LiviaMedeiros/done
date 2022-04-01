@@ -1,5 +1,5 @@
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 
 // This test ensures that console.log
 // will not crash the process if there
@@ -8,13 +8,13 @@ const common = require("../common");
 const done = common.mustCall(() => {});
 
 async function test() {
- await test();
+  await test();
 }
 
 (async () => {
- try {
-  await test();
- } catch (err) {
-  console.log(err);
- }
+  try {
+    await test();
+  } catch (err) {
+    console.log(err);
+  }
 })().then(done, done);

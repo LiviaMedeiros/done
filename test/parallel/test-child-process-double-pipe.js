@@ -19,32 +19,32 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 const {
- isWindows,
- mustCall,
- mustCallAtLeast,
-} = require("../common");
-const assert = require("assert");
-const os = require("os");
-const spawn = require("child_process").spawn;
-const debug = require("util").debuglog("test");
+  isWindows,
+  mustCall,
+  mustCallAtLeast,
+} = require('../common');
+const assert = require('assert');
+const os = require('os');
+const spawn = require('child_process').spawn;
+const debug = require('util').debuglog('test');
 
 // We're trying to reproduce:
 // $ echo "hello\nnode\nand\nworld" | grep o | sed s/o/a/
 
-let echo, grep, sed;
+let grep, sed, echo;
 
 if (isWindows) {
- grep = spawn("grep", ["--binary", "o"]);
- sed = spawn("sed", ["--binary", "s/o/O/"]);
- echo = spawn("cmd.exe",
-              ["/c", "echo", "hello&&", "echo",
-               "node&&", "echo", "and&&", "echo", "world"]);
+  grep = spawn('grep', ['--binary', 'o']);
+  sed = spawn('sed', ['--binary', 's/o/O/']);
+  echo = spawn('cmd.exe',
+               ['/c', 'echo', 'hello&&', 'echo',
+                'node&&', 'echo', 'and&&', 'echo', 'world']);
 } else {
- grep = spawn("grep", ["o"]);
- sed = spawn("sed", ["s/o/O/"]);
- echo = spawn("echo", ["hello\nnode\nand\nworld\n"]);
+  grep = spawn('grep', ['o']);
+  sed = spawn('sed', ['s/o/O/']);
+  echo = spawn('echo', ['hello\nnode\nand\nworld\n']);
 }
 
 // If the spawn function leaks file descriptors to subprocesses, grep and sed
@@ -57,66 +57,66 @@ if (isWindows) {
 
 
 // pipe echo | grep
-echo.stdout.on("data", mustCallAtLeast((data) => {
- debug(`grep stdin write ${data.length}`);
- if (!grep.stdin.write(data)) {
-  echo.stdout.pause();
- }
+echo.stdout.on('data', mustCallAtLeast((data) => {
+  debug(`grep stdin write ${data.length}`);
+  if (!grep.stdin.write(data)) {
+    echo.stdout.pause();
+  }
 }));
 
 // TODO(@jasnell): This does not appear to ever be
 // emitted. It's not clear if it is necessary.
-grep.stdin.on("drain", (data) => {
- echo.stdout.resume();
+grep.stdin.on('drain', (data) => {
+  echo.stdout.resume();
 });
 
 // Propagate end from echo to grep
-echo.stdout.on("end", mustCall((code) => {
- grep.stdin.end();
+echo.stdout.on('end', mustCall((code) => {
+  grep.stdin.end();
 }));
 
-echo.on("exit", mustCall(() => {
- debug("echo exit");
+echo.on('exit', mustCall(() => {
+  debug('echo exit');
 }));
 
-grep.on("exit", mustCall(() => {
- debug("grep exit");
+grep.on('exit', mustCall(() => {
+  debug('grep exit');
 }));
 
-sed.on("exit", mustCall(() => {
- debug("sed exit");
+sed.on('exit', mustCall(() => {
+  debug('sed exit');
 }));
 
 
 // pipe grep | sed
-grep.stdout.on("data", mustCallAtLeast((data) => {
- debug(`grep stdout ${data.length}`);
- if (!sed.stdin.write(data)) {
-  grep.stdout.pause();
- }
+grep.stdout.on('data', mustCallAtLeast((data) => {
+  debug(`grep stdout ${data.length}`);
+  if (!sed.stdin.write(data)) {
+    grep.stdout.pause();
+  }
 }));
 
 // TODO(@jasnell): This does not appear to ever be
 // emitted. It's not clear if it is necessary.
-sed.stdin.on("drain", (data) => {
- grep.stdout.resume();
+sed.stdin.on('drain', (data) => {
+  grep.stdout.resume();
 });
 
 // Propagate end from grep to sed
-grep.stdout.on("end", mustCall((code) => {
- debug("grep stdout end");
- sed.stdin.end();
+grep.stdout.on('end', mustCall((code) => {
+  debug('grep stdout end');
+  sed.stdin.end();
 }));
 
 
-let result = "";
+let result = '';
 
 // print sed's output
-sed.stdout.on("data", mustCallAtLeast((data) => {
- result += data.toString("utf8", 0, data.length);
- debug(data);
+sed.stdout.on('data', mustCallAtLeast((data) => {
+  result += data.toString('utf8', 0, data.length);
+  debug(data);
 }));
 
-sed.stdout.on("end", mustCall((code) => {
- assert.strictEqual(result, `hellO${os.EOL}nOde${os.EOL}wOrld${os.EOL}`);
+sed.stdout.on('end', mustCall((code) => {
+  assert.strictEqual(result, `hellO${os.EOL}nOde${os.EOL}wOrld${os.EOL}`);
 }));

@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 // Flags: --expose-internals
 
-require("../common");
-const assert = require("assert");
-const { internalBinding } = require("internal/test/binding");
-const { safeGetenv } = internalBinding("credentials");
+require('../common');
+const assert = require('assert');
+const { internalBinding } = require('internal/test/binding');
+const { safeGetenv } = internalBinding('credentials');
 
 // FIXME(joyeecheung): this test is not entirely useful. To properly
 // test this we could create a mismatch between the effective/real
@@ -12,8 +12,8 @@ const { safeGetenv } = internalBinding("credentials");
 // are no longer available - but that might be tricky to set up reliably.
 
 for (const oneEnv in process.env) {
- assert.strictEqual(
-  safeGetenv(oneEnv),
-  process.env[oneEnv],
- );
+  assert.strictEqual(
+    safeGetenv(oneEnv),
+    process.env[oneEnv]
+  );
 }

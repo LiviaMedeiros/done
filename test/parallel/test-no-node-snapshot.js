@@ -1,5 +1,5 @@
-"use strict";
+'use strict';
 
 // Flags: --no-node-snapshot
 
-require("../common");
+require('../common');

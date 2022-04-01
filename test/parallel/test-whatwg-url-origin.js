@@ -1,17 +1,17 @@
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 if (!common.hasIntl) {
- // A handful of the tests fail when ICU is not included.
- common.skip("missing Intl");
+  // A handful of the tests fail when ICU is not included.
+  common.skip('missing Intl');
 }
 
-const fixtures = require("../common/fixtures");
-const { test, assert_equals } = require("../common/wpt").harness;
+const fixtures = require('../common/fixtures');
+const { test, assert_equals } = require('../common/wpt').harness;
 
 const request = {
- response: require(
-  fixtures.path("wpt", "url", "resources", "urltestdata.json"),
- ),
+  response: require(
+    fixtures.path('wpt', 'url', 'resources', 'urltestdata.json')
+  )
 };
 
 // The following tests are copied from WPT. Modifications to them should be

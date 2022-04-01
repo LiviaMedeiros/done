@@ -1,16 +1,16 @@
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
-const { Duplex, finished } = require("stream");
+const { Duplex, finished } = require('stream');
 
 assert.throws(
- () => {
-  // Passing empty object to mock invalid stream
-  // should throw error
-  finished({}, () => {});
- },
- { code: "ERR_INVALID_ARG_TYPE" },
+  () => {
+    // Passing empty object to mock invalid stream
+    // should throw error
+    finished({}, () => {});
+  },
+  { code: 'ERR_INVALID_ARG_TYPE' }
 );
 
 const streamObj = new Duplex();

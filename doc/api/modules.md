@@ -10,7 +10,7 @@ In the Node.js module system, each file is treated as a separate module. For
 example, consider a file named `foo.js`:
 
 ```js
-const circle = require("./circle.js");
+const circle = require('./circle.js');
 console.log(`The area of a circle of radius 4 is ${circle.area(4)}`);
 ```
 
@@ -41,7 +41,7 @@ or object).
 Below, `bar.js` makes use of the `square` module, which exports a Square class:
 
 ```js
-const Square = require("./square.js");
+const Square = require('./square.js');
 const mySquare = new Square(2);
 console.log(`The area of mySquare is ${mySquare.area()}`);
 ```
@@ -51,13 +51,13 @@ The `square` module is defined in `square.js`:
 ```js
 // Assigning to exports will not modify module, must use module.exports
 module.exports = class Square {
- constructor(width) {
-  this.width = width;
- }
+  constructor(width) {
+    this.width = width;
+  }
 
- area() {
-  return this.width ** 2;
- }
+  area() {
+    return this.width ** 2;
+  }
 };
 ```
 
@@ -350,32 +350,32 @@ Consider this situation:
 `a.js`:
 
 ```js
-console.log("a starting");
+console.log('a starting');
 exports.done = false;
-const b = require("./b.js");
-console.log("in a, b.done = %j", b.done);
+const b = require('./b.js');
+console.log('in a, b.done = %j', b.done);
 exports.done = true;
-console.log("a done");
+console.log('a done');
 ```
 
 `b.js`:
 
 ```js
-console.log("b starting");
+console.log('b starting');
 exports.done = false;
-const a = require("./a.js");
-console.log("in b, a.done = %j", a.done);
+const a = require('./a.js');
+console.log('in b, a.done = %j', a.done);
 exports.done = true;
-console.log("b done");
+console.log('b done');
 ```
 
 `main.js`:
 
 ```js
-console.log("main starting");
-const a = require("./a.js");
-const b = require("./b.js");
-console.log("in main, a.done = %j, b.done = %j", a.done, b.done);
+console.log('main starting');
+const a = require('./a.js');
+const b = require('./b.js');
+console.log('in main, a.done = %j, b.done = %j', a.done, b.done);
 ```
 
 When `main.js` loads `a.js`, then `a.js` in turn loads `b.js`. At that
@@ -678,13 +678,13 @@ Windows in the same way they would on Unix systems.
 ```js
 // Importing a local module with a path relative to the `__dirname` or current
 // working directory. (On Windows, this would resolve to .\path\myLocalModule.)
-const myLocalModule = require("./path/myLocalModule");
+const myLocalModule = require('./path/myLocalModule');
 
 // Importing a JSON file:
-const jsonData = require("./path/filename.json");
+const jsonData = require('./path/filename.json');
 
 // Importing a module from node_modules or Node.js built-in module:
-const crypto = require("crypto");
+const crypto = require('crypto');
 ```
 
 #### `require.cache`
@@ -708,14 +708,14 @@ Use with care!
 <!-- eslint-disable node-core/no-duplicate-requires -->
 
 ```js
-const assert = require("assert");
-const realFs = require("fs");
+const assert = require('assert');
+const realFs = require('fs');
 
 const fakeFs = {};
 require.cache.fs = { exports: fakeFs };
 
-assert.strictEqual(require("fs"), fakeFs);
-assert.strictEqual(require("node:fs"), realFs);
+assert.strictEqual(require('fs'), fakeFs);
+assert.strictEqual(require('node:fs'), realFs);
 ```
 
 #### `require.extensions`
@@ -734,7 +734,7 @@ Instruct `require` on how to handle certain file extensions.
 Process files with the extension `.sjs` as `.js`:
 
 ```js
-require.extensions[".sjs"] = require.extensions[".js"];
+require.extensions['.sjs'] = require.extensions['.js'];
 ```
 
 **Deprecated.** In the past, this list has been used to load non-JavaScript
@@ -867,23 +867,23 @@ which is probably not what is desired.
 For example, suppose we were making a module called `a.js`:
 
 ```js
-const EventEmitter = require("events");
+const EventEmitter = require('events');
 
 module.exports = new EventEmitter();
 
 // Do some work, and after some time emit
 // the 'ready' event from the module itself.
 setTimeout(() => {
- module.exports.emit("ready");
+  module.exports.emit('ready');
 }, 1000);
 ```
 
 Then in another file we could do:
 
 ```js
-const a = require("./a");
-a.on("ready", () => {
- console.log('module "a" is ready');
+const a = require('./a');
+a.on('ready', () => {
+  console.log('module "a" is ready');
 });
 ```
 
@@ -894,14 +894,14 @@ done in any callbacks. This does not work:
 
 ```js
 setTimeout(() => {
- module.exports = { a: "hello" };
+  module.exports = { a: 'hello' };
 }, 0);
 ```
 
 `y.js`:
 
 ```js
-const x = require("./x");
+const x = require('./x');
 console.log(x.a);
 ```
 
@@ -930,7 +930,7 @@ object, it is common to also reassign `exports`:
 
 ```js
 module.exports = exports = function Constructor() {
- // ... etc.
+  // ... etc.
 };
 ```
 
@@ -939,18 +939,18 @@ To illustrate the behavior, imagine this hypothetical implementation of
 
 ```js
 function require(/* ... */) {
- const module = { exports: {} };
- ((module, exports) => {
-  // Module code here. In this example, define a function.
-  function someFunc() {}
-  exports = someFunc;
-  // At this point, exports is no longer a shortcut to module.exports, and
-  // this module will still export an empty default object.
-  module.exports = someFunc;
-  // At this point, the module will now export someFunc, instead of the
-  // default object.
- })(module, module.exports);
- return module.exports;
+  const module = { exports: {} };
+  ((module, exports) => {
+    // Module code here. In this example, define a function.
+    function someFunc() {}
+    exports = someFunc;
+    // At this point, exports is no longer a shortcut to module.exports, and
+    // this module will still export an empty default object.
+    module.exports = someFunc;
+    // At this point, the module will now export someFunc, instead of the
+    // default object.
+  })(module, module.exports);
+  return module.exports;
 }
 ```
 

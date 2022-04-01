@@ -58,8 +58,8 @@ node --trace-event-categories v8,node,node.async_hooks
 Alternatively, trace events may be enabled using the `trace_events` module:
 
 ```js
-const trace_events = require("trace_events");
-const tracing = trace_events.createTracing({ categories: ["node.perf"] });
+const trace_events = require('trace_events');
+const tracing = trace_events.createTracing({ categories: ['node.perf'] });
 tracing.enable();  // Enable trace event capture for the 'node.perf' category
 
 // do work
@@ -85,9 +85,9 @@ To guarantee that the log file is properly generated after signal events like
 in your code, such as:
 
 ```js
-process.on("SIGINT", function onSigint() {
- console.info("Received SIGINT.");
- process.exit(130);  // Or applicable exit code depending on OS and signal
+process.on('SIGINT', function onSigint() {
+  console.info('Received SIGINT.');
+  process.exit(130);  // Or applicable exit code depending on OS and signal
 });
 ```
 
@@ -142,9 +142,9 @@ Only trace event categories _not_ covered by other enabled `Tracing` objects
 and _not_ specified by the `--trace-event-categories` flag will be disabled.
 
 ```js
-const trace_events = require("trace_events");
-const t1 = trace_events.createTracing({ categories: ["node", "v8"] });
-const t2 = trace_events.createTracing({ categories: ["node.perf", "node"] });
+const trace_events = require('trace_events');
+const t1 = trace_events.createTracing({ categories: ['node', 'v8'] });
+const t2 = trace_events.createTracing({ categories: ['node.perf', 'node'] });
 t1.enable();
 t2.enable();
 
@@ -189,8 +189,8 @@ added: v10.0.0
 Creates and returns a `Tracing` object for the given set of `categories`.
 
 ```js
-const trace_events = require("trace_events");
-const categories = ["node.perf", "node.async_hooks"];
+const trace_events = require('trace_events');
+const categories = ['node.perf', 'node.async_hooks'];
 const tracing = trace_events.createTracing({ categories });
 tracing.enable();
 // do stuff
@@ -215,10 +215,10 @@ Given the file `test.js` below, the command
 `'node.async_hooks,node.perf'` to the console.
 
 ```js
-const trace_events = require("trace_events");
-const t1 = trace_events.createTracing({ categories: ["node.async_hooks"] });
-const t2 = trace_events.createTracing({ categories: ["node.perf"] });
-const t3 = trace_events.createTracing({ categories: ["v8"] });
+const trace_events = require('trace_events');
+const t1 = trace_events.createTracing({ categories: ['node.async_hooks'] });
+const t2 = trace_events.createTracing({ categories: ['node.perf'] });
+const t3 = trace_events.createTracing({ categories: ['v8'] });
 
 t1.enable();
 t2.enable();

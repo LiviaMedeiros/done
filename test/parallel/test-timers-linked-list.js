@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 
 // Flags: --expose-internals
 
-require("../common");
-const assert = require("assert");
-const L = require("internal/linkedlist");
+require('../common');
+const assert = require('assert');
+const L = require('internal/linkedlist');
 
-const list = { name: "list" };
-const A = { name: "A" };
-const B = { name: "B" };
-const C = { name: "C" };
-const D = { name: "D" };
+const list = { name: 'list' };
+const A = { name: 'A' };
+const B = { name: 'B' };
+const C = { name: 'C' };
+const D = { name: 'D' };
 
 
 L.init(list);

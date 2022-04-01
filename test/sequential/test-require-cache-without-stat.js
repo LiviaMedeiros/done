@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 // We've experienced a regression where the module loader stats a bunch of
 // directories on require() even if it's been called before. The require()
 // should caching the request.
-require("../common");
-const fs = require("fs");
-const assert = require("assert");
-const { fixturesDir } = require("../common/fixtures");
+require('../common');
+const fs = require('fs');
+const assert = require('assert');
+const { fixturesDir } = require('../common/fixtures');
 
 let counter = 0;
 
@@ -37,20 +37,20 @@ const _statSync = fs.statSync;
 const _stat = fs.stat;
 
 fs.statSync = function() {
- counter++;
- return _statSync.apply(this, arguments);
+  counter++;
+  return _statSync.apply(this, arguments);
 };
 
 fs.stat = function() {
- counter++;
- return _stat.apply(this, arguments);
+  counter++;
+  return _stat.apply(this, arguments);
 };
 
 // Load the module 'a' and 'http' once. It should become cached.
 require(`${fixturesDir}/a`);
-require("../fixtures/a.js");
-require("./../fixtures/a.js");
-require("http");
+require('../fixtures/a.js');
+require('./../fixtures/a.js');
+require('http');
 
 console.log(`counterBefore = ${counter}`);
 const counterBefore = counter;
@@ -58,14 +58,14 @@ const counterBefore = counter;
 // Now load the module a bunch of times with equivalent paths.
 // stat should not be called.
 for (let i = 0; i < 100; i++) {
- require(`${fixturesDir}/a`);
- require("../fixtures/a.js");
- require("./../fixtures/a.js");
+  require(`${fixturesDir}/a`);
+  require('../fixtures/a.js');
+  require('./../fixtures/a.js');
 }
 
 // Do the same with a built-in module
 for (let i = 0; i < 100; i++) {
- require("http");
+  require('http');
 }
 
 console.log(`counterAfter = ${counter}`);

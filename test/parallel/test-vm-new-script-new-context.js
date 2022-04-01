@@ -19,89 +19,89 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
-const assert = require("assert");
+const assert = require('assert');
 
-const Script = require("vm").Script;
+const Script = require('vm').Script;
 
 {
- const script = new Script("'passed';");
- const result1 = script.runInNewContext();
- const result2 = script.runInNewContext();
- assert.strictEqual(result1, "passed");
- assert.strictEqual(result2, "passed");
+  const script = new Script('\'passed\';');
+  const result1 = script.runInNewContext();
+  const result2 = script.runInNewContext();
+  assert.strictEqual(result1, 'passed');
+  assert.strictEqual(result2, 'passed');
 }
 
 {
- const script = new Script("throw new Error('test');");
- assert.throws(() => {
+  const script = new Script('throw new Error(\'test\');');
+  assert.throws(() => {
+    script.runInNewContext();
+  }, /^Error: test$/);
+}
+
+{
+  const script = new Script('foo.bar = 5;');
+  assert.throws(() => {
+    script.runInNewContext();
+  }, /^ReferenceError: foo is not defined$/);
+}
+
+{
+  global.hello = 5;
+  const script = new Script('hello = 2');
   script.runInNewContext();
- }, /^Error: test$/);
+  assert.strictEqual(global.hello, 5);
+
+  // Cleanup
+  delete global.hello;
 }
 
 {
- const script = new Script("foo.bar = 5;");
- assert.throws(() => {
-  script.runInNewContext();
- }, /^ReferenceError: foo is not defined$/);
+  global.code = 'foo = 1;' +
+                'bar = 2;' +
+                'if (baz !== 3) throw new Error(\'test fail\');';
+  global.foo = 2;
+  global.obj = { foo: 0, baz: 3 };
+  const script = new Script(global.code);
+  /* eslint-disable no-unused-vars */
+  const baz = script.runInNewContext(global.obj);
+  /* eslint-enable no-unused-vars */
+  assert.strictEqual(global.obj.foo, 1);
+  assert.strictEqual(global.obj.bar, 2);
+  assert.strictEqual(global.foo, 2);
+
+  // cleanup
+  delete global.code;
+  delete global.foo;
+  delete global.obj;
 }
 
 {
- global.hello = 5;
- const script = new Script("hello = 2");
- script.runInNewContext();
- assert.strictEqual(global.hello, 5);
+  const script = new Script('f()');
+  function changeFoo() { global.foo = 100; }
+  script.runInNewContext({ f: changeFoo });
+  assert.strictEqual(global.foo, 100);
 
- // Cleanup
- delete global.hello;
+  // cleanup
+  delete global.foo;
 }
 
 {
- global.code = "foo = 1;" +
-                "bar = 2;" +
-                "if (baz !== 3) throw new Error('test fail');";
- global.foo = 2;
- global.obj = { foo: 0, baz: 3 };
- const script = new Script(global.code);
- /* eslint-disable no-unused-vars */
- const baz = script.runInNewContext(global.obj);
- /* eslint-enable no-unused-vars */
- assert.strictEqual(global.obj.foo, 1);
- assert.strictEqual(global.obj.bar, 2);
- assert.strictEqual(global.foo, 2);
+  const script = new Script('f.a = 2');
+  const f = { a: 1 };
+  script.runInNewContext({ f });
+  assert.strictEqual(f.a, 2);
 
- // cleanup
- delete global.code;
- delete global.foo;
- delete global.obj;
+  assert.throws(() => {
+    script.runInNewContext();
+  }, /^ReferenceError: f is not defined$/);
 }
 
 {
- const script = new Script("f()");
- function changeFoo() { global.foo = 100; }
- script.runInNewContext({ f: changeFoo });
- assert.strictEqual(global.foo, 100);
-
- // cleanup
- delete global.foo;
-}
-
-{
- const script = new Script("f.a = 2");
- const f = { a: 1 };
- script.runInNewContext({ f });
- assert.strictEqual(f.a, 2);
-
- assert.throws(() => {
-  script.runInNewContext();
- }, /^ReferenceError: f is not defined$/);
-}
-
-{
- const script = new Script("");
- assert.throws(() => {
-  script.runInNewContext.call("'hello';");
- }, /^TypeError: this\.runInContext is not a function$/);
+  const script = new Script('');
+  assert.throws(() => {
+    script.runInNewContext.call('\'hello\';');
+  }, /^TypeError: this\.runInContext is not a function$/);
 }

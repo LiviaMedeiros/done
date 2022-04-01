@@ -1058,9 +1058,9 @@ Calling `.abort()` on the corresponding `AbortController` is similar to calling 
 ```js
 const controller = new AbortController();
 const { signal } = controller;
-const grep = spawn("grep", ["ssh"], { signal });
-grep.on("error", (err) => {
- // This will be called with err being an AbortError if the controller aborts
+const grep = spawn('grep', ['ssh'], { signal });
+grep.on('error', (err) => {
+  // This will be called with err being an AbortError if the controller aborts
 });
 controller.abort(); // stops the process
 ```
@@ -1070,13 +1070,13 @@ controller.abort(); // stops the process
 Calling `.abort()` on the corresponding `AbortController` will behave the same way as calling `.destroy(new AbortError())` on the stream:
 
 ```js
-const { Readable } = require("stream");
+const { Readable } = require('stream');
 const controller = new AbortController();
 const read = new Readable({
- read(size) {
-  // ...
- },
- signal: controller.signal,
+  read(size) {
+    // ...
+  },
+  signal: controller.signal
 });
 // Later, abort the operation closing the stream
 controller.abort();
@@ -1089,7 +1089,7 @@ Contributed by Benjamin Gruenbaum [#36431](https://github.com/nodejs/node/pull/3
 If `querystring.stringify()` is called with an object that contains `BigInt` values, they will now be serialized to their decimal representation instead of the empty string:
 
 ```js
-const querystring = require("querystring");
+const querystring = require('querystring');
 console.log(querystring.stringify({ bigint: 2n ** 64n }));
 // Prints: bigint=18446744073709551616
 ```
@@ -1588,28 +1588,28 @@ Vulnerabilities fixed:
 With `diagnostics_channel`, Node.js core and module authors can publish contextual data about what they are doing at a given time. This could be the hostname and query string of a mysql query, for example. Just create a named channel with `dc.channel(name)` and call `channel.publish(data)` to send the data to any listeners to that channel.
 
 ```js
-const dc = require("diagnostics_channel");
-const channel = dc.channel("mysql.query");
+const dc = require('diagnostics_channel');
+const channel = dc.channel('mysql.query');
 
 MySQL.prototype.query = function query(queryString, values, callback) {
- // Broadcast query information whenever a query is made
- channel.publish({
-  query: queryString,
-  host: this.hostname,
- });
+  // Broadcast query information whenever a query is made
+  channel.publish({
+    query: queryString,
+    host: this.hostname,
+  });
 
- this.doQuery(queryString, values, callback);
+  this.doQuery(queryString, values, callback);
 };
 ```
 
 Channels are like one big global event emitter but are split into separate objects to ensure they get the best performance. If nothing is listening to the channel, the publishing overhead should be as close to zero as possible. Consuming channel data is as easy as using `channel.subscribe(listener)` to run a function whenever a message is published to that channel.
 
 ```js
-const dc = require("diagnostics_channel");
-const channel = dc.channel("mysql.query");
+const dc = require('diagnostics_channel');
+const channel = dc.channel('mysql.query');
 
 channel.subscribe(({ query, host }) => {
- console.log(`mysql query to ${host}: ${query}`);
+  console.log(`mysql query to ${host}: ${query}`);
 });
 ```
 
@@ -1638,11 +1638,11 @@ systems.
 The resolver will use the v4 local address when making requests to IPv4 DNS servers, and the v6 local address when making requests to IPv6 DNS servers.
 
 ```js
-const { Resolver } = require("dns");
+const { Resolver } = require('dns');
 
 const resolver = new Resolver();
 
-resolver.setLocalAddress("10.1.2.3");
+resolver.setLocalAddress('10.1.2.3');
 // Equivalent to: resolver.setLocalAddress('10.1.2.3', '::0');
 ```
 

@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const fixtures = require("../common/fixtures");
+'use strict';
+require('../common');
+const assert = require('assert');
+const fixtures = require('../common/fixtures');
 
 const content =
-  require(fixtures.path("json-with-directory-name-module",
-  																						"module-stub",
-  																						"one-trailing-slash",
-  																						"two",
-  																						"three.js"));
+  require(fixtures.path('json-with-directory-name-module',
+                        'module-stub',
+                        'one-trailing-slash',
+                        'two',
+                        'three.js'));
 
-assert.notStrictEqual(content.rocko, "artischocko");
-assert.strictEqual(content, "hello from module-stub!");
+assert.notStrictEqual(content.rocko, 'artischocko');
+assert.strictEqual(content, 'hello from module-stub!');

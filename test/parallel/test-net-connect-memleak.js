@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 // Flags: --expose-gc
 
-const common = require("../common");
-const onGC = require("../common/ongc");
-const assert = require("assert");
-const net = require("net");
+const common = require('../common');
+const onGC = require('../common/ongc');
+const assert = require('assert');
+const net = require('net');
 
 // Test that the implicit listener for an 'connect' event on net.Sockets is
 // added using `once()`, i.e. can be gc'ed once that event has occurred.
@@ -36,23 +36,23 @@ let collected = false;
 const gcListener = { ongc() { collected = true; } };
 
 {
- const gcObject = {};
- onGC(gcObject, gcListener);
+  const gcObject = {};
+  onGC(gcObject, gcListener);
 
- const sock = net.createConnection(
-  server.address().port,
-  common.mustCall(() => {
-   assert.strictEqual(gcObject, gcObject); // Keep reference alive
-   assert.strictEqual(collected, false);
-   setImmediate(done, sock);
-  }));
+  const sock = net.createConnection(
+    server.address().port,
+    common.mustCall(() => {
+      assert.strictEqual(gcObject, gcObject); // Keep reference alive
+      assert.strictEqual(collected, false);
+      setImmediate(done, sock);
+    }));
 }
 
 function done(sock) {
- global.gc();
- setImmediate(() => {
-  assert.strictEqual(collected, true);
-  sock.end();
-  server.close();
- });
+  global.gc();
+  setImmediate(() => {
+    assert.strictEqual(collected, true);
+    sock.end();
+    server.close();
+  });
 }

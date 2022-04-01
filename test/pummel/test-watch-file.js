@@ -19,38 +19,38 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
+'use strict';
 
-require("../common");
-const assert = require("assert");
-const fs = require("fs");
-const path = require("path");
-const tmpdir = require("../common/tmpdir");
+require('../common');
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const tmpdir = require('../common/tmpdir');
 
 tmpdir.refresh();
-const f = path.join(tmpdir.path, "x.txt");
-fs.closeSync(fs.openSync(f, "w"));
+const f = path.join(tmpdir.path, 'x.txt');
+fs.closeSync(fs.openSync(f, 'w'));
 
 let changes = 0;
 function watchFile() {
- fs.watchFile(f, (curr, prev) => {
-  // Make sure there is at least one watch event that shows a changed mtime.
-  if (curr.mtime <= prev.mtime) {
-   return;
-  }
-  changes++;
-  fs.unwatchFile(f);
-  watchFile();
-  fs.unwatchFile(f);
- });
+  fs.watchFile(f, (curr, prev) => {
+    // Make sure there is at least one watch event that shows a changed mtime.
+    if (curr.mtime <= prev.mtime) {
+      return;
+    }
+    changes++;
+    fs.unwatchFile(f);
+    watchFile();
+    fs.unwatchFile(f);
+  });
 }
 
 watchFile();
 
 function changeFile() {
- const fd = fs.openSync(f, "w+");
- fs.writeSync(fd, "xyz\n");
- fs.closeSync(fd);
+  const fd = fs.openSync(f, 'w+');
+  fs.writeSync(fd, 'xyz\n');
+  fs.closeSync(fd);
 }
 
 changeFile();
@@ -59,6 +59,6 @@ const interval = setInterval(changeFile, 1000);
 // event loop open.
 interval.unref();
 
-process.on("exit", function() {
- assert.ok(changes > 0);
+process.on('exit', function() {
+  assert.ok(changes > 0);
 });

@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const fixtures = require("../common/fixtures");
+'use strict';
+require('../common');
+const assert = require('assert');
+const fixtures = require('../common/fixtures');
 
 assert.throws(function() {
- require(fixtures.path("invalid.json"));
+  require(fixtures.path('invalid.json'));
 }, {
- name: "SyntaxError",
- message: /test[/\\]fixtures[/\\]invalid\.json: /,
+  name: 'SyntaxError',
+  message: /test[/\\]fixtures[/\\]invalid\.json: /,
 });

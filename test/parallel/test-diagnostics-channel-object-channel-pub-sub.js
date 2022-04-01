@@ -1,27 +1,27 @@
-"use strict";
+'use strict';
 
-const common = require("../common");
-const dc = require("diagnostics_channel");
-const assert = require("assert");
+const common = require('../common');
+const dc = require('diagnostics_channel');
+const assert = require('assert');
 const { Channel } = dc;
 
 const input = {
- foo: "bar",
+  foo: 'bar'
 };
 
 // Should not have named channel
-assert.ok(!dc.hasSubscribers("test"));
+assert.ok(!dc.hasSubscribers('test'));
 
 // Individual channel objects can be created to avoid future lookups
-const channel = dc.channel("test");
+const channel = dc.channel('test');
 assert.ok(channel instanceof Channel);
 
 // No subscribers yet, should not publish
 assert.ok(!channel.hasSubscribers);
 
 const subscriber = common.mustCall((message, name) => {
- assert.strictEqual(name, channel.name);
- assert.deepStrictEqual(message, input);
+  assert.strictEqual(name, channel.name);
+  assert.deepStrictEqual(message, input);
 });
 
 // Now there's a subscriber, should publish
@@ -42,5 +42,5 @@ assert.ok(!channel.hasSubscribers);
 assert.ok(!channel.unsubscribe(subscriber));
 
 assert.throws(() => {
- channel.subscribe(null);
-}, { code: "ERR_INVALID_ARG_TYPE" });
+  channel.subscribe(null);
+}, { code: 'ERR_INVALID_ARG_TYPE' });

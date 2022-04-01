@@ -1,6 +1,6 @@
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
 process.stdin.setRawMode(true);
 assert.strictEqual(process.stdin.isRaw, true);

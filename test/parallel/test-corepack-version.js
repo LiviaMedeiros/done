@@ -1,16 +1,16 @@
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
-const path = require("path");
-const assert = require("assert");
+const path = require('path');
+const assert = require('assert');
 
 const corepackPathPackageJson = path.resolve(
- __dirname,
- "..",
- "..",
- "deps",
- "corepack",
- "package.json",
+  __dirname,
+  '..',
+  '..',
+  'deps',
+  'corepack',
+  'package.json'
 );
 
 const pkg = require(corepackPathPackageJson);

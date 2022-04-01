@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-require("../common");
+require('../common');
 
-const runBenchmark = require("../common/benchmark");
+const runBenchmark = require('../common/benchmark');
 
-runBenchmark("url", { NODEJS_BENCHMARK_ZERO_ALLOWED: 1 });
+runBenchmark('url', { NODEJS_BENCHMARK_ZERO_ALLOWED: 1 });

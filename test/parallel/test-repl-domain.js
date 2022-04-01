@@ -19,27 +19,27 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const ArrayStream = require("../common/arraystream");
+'use strict';
+require('../common');
+const ArrayStream = require('../common/arraystream');
 
-const repl = require("repl");
+const repl = require('repl');
 
 const putIn = new ArrayStream();
-repl.start("", putIn);
+repl.start('', putIn);
 
 putIn.write = function(data) {
- // Don't use assert for this because the domain might catch it, and
- // give a false negative.  Don't throw, just print and exit.
- if (data === "OK\n") {
-  console.log("ok");
- } else {
-  console.error(data);
-  process.exit(1);
- }
+  // Don't use assert for this because the domain might catch it, and
+  // give a false negative.  Don't throw, just print and exit.
+  if (data === 'OK\n') {
+    console.log('ok');
+  } else {
+    console.error(data);
+    process.exit(1);
+  }
 };
 
 putIn.run([
- 'require("domain").create().on("error", function() { console.log("OK") })' +
+  'require("domain").create().on("error", function() { console.log("OK") })' +
   '.run(function() { throw new Error("threw") })',
 ]);

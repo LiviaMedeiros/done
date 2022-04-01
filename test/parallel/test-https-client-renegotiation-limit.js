@@ -19,93 +19,93 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
 if (!common.opensslCli)
- common.skip("node compiled without OpenSSL CLI.");
+  common.skip('node compiled without OpenSSL CLI.');
 
-const assert = require("assert");
-const tls = require("tls");
-const https = require("https");
-const fixtures = require("../common/fixtures");
+const assert = require('assert');
+const tls = require('tls');
+const https = require('https');
+const fixtures = require('../common/fixtures');
 
 // Renegotiation as a protocol feature was dropped after TLS1.2.
-tls.DEFAULT_MAX_VERSION = "TLSv1.2";
+tls.DEFAULT_MAX_VERSION = 'TLSv1.2';
 
 // Renegotiation limits to test
 const LIMITS = [0, 1, 2, 3, 5, 10, 16];
 
 {
- let n = 0;
- function next() {
-  if (n >= LIMITS.length) return;
-  tls.CLIENT_RENEG_LIMIT = LIMITS[n++];
-  test(next);
- }
- next();
+  let n = 0;
+  function next() {
+    if (n >= LIMITS.length) return;
+    tls.CLIENT_RENEG_LIMIT = LIMITS[n++];
+    test(next);
+  }
+  next();
 }
 
 function test(next) {
- const options = {
-  cert: fixtures.readKey("rsa_cert.crt"),
-  key: fixtures.readKey("rsa_private.pem"),
- };
-
- const server = https.createServer(options, (req, res) => {
-  const conn = req.connection;
-  conn.on("error", (err) => {
-   console.error(`Caught exception: ${err}`);
-   assert.match(err.message, /TLS session renegotiation attack/);
-   conn.destroy();
-  });
-  res.end("ok");
- });
-
- server.listen(0, () => {
-  const agent = https.Agent({
-   keepAlive: true,
-  });
-
-  let client;
-  let renegs = 0;
-
   const options = {
-   rejectUnauthorized: false,
-   agent,
+    cert: fixtures.readKey('rsa_cert.crt'),
+    key: fixtures.readKey('rsa_private.pem'),
   };
 
-  const { port } = server.address();
-
-  https.get(`https://localhost:${port}/`, options, (res) => {
-   client = res.socket;
-
-   client.on("close", (hadErr) => {
-    assert.strictEqual(hadErr, false);
-    assert.strictEqual(renegs, tls.CLIENT_RENEG_LIMIT + 1);
-    server.close();
-    process.nextTick(next);
-   });
-
-   client.on("error", (err) => {
-    console.log("CLIENT ERR", err);
-    throw err;
-   });
-
-   spam();
-
-   // Simulate renegotiation attack
-   function spam() {
-    client.renegotiate({}, (err) => {
-     assert.ifError(err);
-     assert.ok(renegs <= tls.CLIENT_RENEG_LIMIT);
-     setImmediate(spam);
+  const server = https.createServer(options, (req, res) => {
+    const conn = req.connection;
+    conn.on('error', (err) => {
+      console.error(`Caught exception: ${err}`);
+      assert.match(err.message, /TLS session renegotiation attack/);
+      conn.destroy();
     });
-    renegs++;
-   }
+    res.end('ok');
   });
 
- });
+  server.listen(0, () => {
+    const agent = https.Agent({
+      keepAlive: true,
+    });
+
+    let client;
+    let renegs = 0;
+
+    const options = {
+      rejectUnauthorized: false,
+      agent,
+    };
+
+    const { port } = server.address();
+
+    https.get(`https://localhost:${port}/`, options, (res) => {
+      client = res.socket;
+
+      client.on('close', (hadErr) => {
+        assert.strictEqual(hadErr, false);
+        assert.strictEqual(renegs, tls.CLIENT_RENEG_LIMIT + 1);
+        server.close();
+        process.nextTick(next);
+      });
+
+      client.on('error', (err) => {
+        console.log('CLIENT ERR', err);
+        throw err;
+      });
+
+      spam();
+
+      // Simulate renegotiation attack
+      function spam() {
+        client.renegotiate({}, (err) => {
+          assert.ifError(err);
+          assert.ok(renegs <= tls.CLIENT_RENEG_LIMIT);
+          setImmediate(spam);
+        });
+        renegs++;
+      }
+    });
+
+  });
 }

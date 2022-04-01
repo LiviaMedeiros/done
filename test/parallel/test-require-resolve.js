@@ -19,64 +19,64 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const fixtures = require("../common/fixtures");
-const assert = require("assert");
-const { builtinModules } = require("module");
-const path = require("path");
+'use strict';
+const common = require('../common');
+const fixtures = require('../common/fixtures');
+const assert = require('assert');
+const { builtinModules } = require('module');
+const path = require('path');
 
 assert.strictEqual(
- require.resolve(fixtures.path("a")).toLowerCase(),
- fixtures.path("a.js").toLowerCase());
+  require.resolve(fixtures.path('a')).toLowerCase(),
+  fixtures.path('a.js').toLowerCase());
 assert.strictEqual(
- require.resolve(fixtures.path("nested-index", "one")).toLowerCase(),
- fixtures.path("nested-index", "one", "index.js").toLowerCase());
-assert.strictEqual(require.resolve("path"), "path");
+  require.resolve(fixtures.path('nested-index', 'one')).toLowerCase(),
+  fixtures.path('nested-index', 'one', 'index.js').toLowerCase());
+assert.strictEqual(require.resolve('path'), 'path');
 
 // Test configurable resolve() paths.
-require(fixtures.path("require-resolve.js"));
-require(fixtures.path("resolve-paths", "default", "verify-paths.js"));
+require(fixtures.path('require-resolve.js'));
+require(fixtures.path('resolve-paths', 'default', 'verify-paths.js'));
 
 [1, false, null, undefined, {}].forEach((value) => {
- const message = 'The "request" argument must be of type string.' +
+  const message = 'The "request" argument must be of type string.' +
     common.invalidArgTypeHelper(value);
- assert.throws(
-  () => { require.resolve(value); },
-  {
-   code: "ERR_INVALID_ARG_TYPE",
-   message,
-  });
+  assert.throws(
+    () => { require.resolve(value); },
+    {
+      code: 'ERR_INVALID_ARG_TYPE',
+      message
+    });
 
- assert.throws(
-  () => { require.resolve.paths(value); },
-  {
-   code: "ERR_INVALID_ARG_TYPE",
-   message,
-  });
+  assert.throws(
+    () => { require.resolve.paths(value); },
+    {
+      code: 'ERR_INVALID_ARG_TYPE',
+      message
+    });
 });
 
 // Test require.resolve.paths.
 {
- // builtinModules.
- builtinModules.forEach((mod) => {
-  assert.strictEqual(require.resolve.paths(mod), null);
- });
+  // builtinModules.
+  builtinModules.forEach((mod) => {
+    assert.strictEqual(require.resolve.paths(mod), null);
+  });
 
- // node_modules.
- const resolvedPaths = require.resolve.paths("eslint");
- assert.strictEqual(Array.isArray(resolvedPaths), true);
- assert.strictEqual(resolvedPaths[0].includes("node_modules"), true);
-
- // relativeModules.
- const relativeModules = [".", "..", "./foo", "../bar"];
- relativeModules.forEach((mod) => {
-  const resolvedPaths = require.resolve.paths(mod);
+  // node_modules.
+  const resolvedPaths = require.resolve.paths('eslint');
   assert.strictEqual(Array.isArray(resolvedPaths), true);
-  assert.strictEqual(resolvedPaths.length, 1);
-  assert.strictEqual(resolvedPaths[0], path.dirname(__filename));
+  assert.strictEqual(resolvedPaths[0].includes('node_modules'), true);
 
-  // Shouldn't look up relative modules from 'node_modules'.
-  assert.strictEqual(resolvedPaths.includes("/node_modules"), false);
- });
+  // relativeModules.
+  const relativeModules = ['.', '..', './foo', '../bar'];
+  relativeModules.forEach((mod) => {
+    const resolvedPaths = require.resolve.paths(mod);
+    assert.strictEqual(Array.isArray(resolvedPaths), true);
+    assert.strictEqual(resolvedPaths.length, 1);
+    assert.strictEqual(resolvedPaths[0], path.dirname(__filename));
+
+    // Shouldn't look up relative modules from 'node_modules'.
+    assert.strictEqual(resolvedPaths.includes('/node_modules'), false);
+  });
 }

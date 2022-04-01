@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const vm = require("vm");
+'use strict';
+require('../common');
+const vm = require('vm');
 
-console.error("beginning");
+console.error('beginning');
 
 try {
- vm.runInThisContext("var 4;", { filename: "foo.vm", displayErrors: true });
+  vm.runInThisContext('var 4;', { filename: 'foo.vm', displayErrors: true });
 } catch (err) {
- console.error(err);
+  console.error(err);
 }
 
-vm.runInThisContext("var 5;", { filename: "test.vm" });
+vm.runInThisContext('var 5;', { filename: 'test.vm' });
 
-console.error("end");
+console.error('end');

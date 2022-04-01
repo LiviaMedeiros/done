@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 
-process.on("uncaughtException", common.mustCall(2));
+process.on('uncaughtException', common.mustCall(2));
 
 setTimeout(function() {
- process.nextTick(function() {
-  const c = setInterval(function() {
-   clearInterval(c);
-   throw new Error("setInterval");
+  process.nextTick(function() {
+    const c = setInterval(function() {
+      clearInterval(c);
+      throw new Error('setInterval');
+    }, 1);
+  });
+  setTimeout(function() {
+    throw new Error('setTimeout');
   }, 1);
- });
- setTimeout(function() {
-  throw new Error("setTimeout");
- }, 1);
 }, 1);

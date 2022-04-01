@@ -12,11 +12,11 @@ to report arbitrary message data for diagnostics purposes.
 It can be accessed using:
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 ```
 
 It is intended that a module writer wanting to report diagnostics messages
@@ -38,42 +38,42 @@ other modules.
 Following is a simple overview of the public API.
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
 // Get a reusable channel object
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 // Subscribe to the channel
 channel.subscribe((message, name) => {
- // Received data
+  // Received data
 });
 
 // Check if the channel has an active subscriber
 if (channel.hasSubscribers) {
- // Publish data to the channel
- channel.publish({
-  some: "data",
- });
+  // Publish data to the channel
+  channel.publish({
+    some: 'data'
+  });
 }
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
 // Get a reusable channel object
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 // Subscribe to the channel
 channel.subscribe((message, name) => {
- // Received data
+  // Received data
 });
 
 // Check if the channel has an active subscriber
 if (channel.hasSubscribers) {
- // Publish data to the channel
- channel.publish({
-  some: "data",
- });
+  // Publish data to the channel
+  channel.publish({
+    some: 'data'
+  });
 }
 ```
 
@@ -95,18 +95,18 @@ This API is optional but helpful when trying to publish messages from very
 performance-sensitive code.
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
-if (diagnostics_channel.hasSubscribers("my-channel")) {
- // There are subscribers, prepare and publish message
+if (diagnostics_channel.hasSubscribers('my-channel')) {
+  // There are subscribers, prepare and publish message
 }
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
-if (diagnostics_channel.hasSubscribers("my-channel")) {
- // There are subscribers, prepare and publish message
+if (diagnostics_channel.hasSubscribers('my-channel')) {
+  // There are subscribers, prepare and publish message
 }
 ```
 
@@ -126,15 +126,15 @@ channel. It produces a channel object which is optimized to reduce overhead at
 publish time as much as possible.
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 ```
 
 ### Class: `Channel`
@@ -170,22 +170,22 @@ This API is optional but helpful when trying to publish messages from very
 performance-sensitive code.
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 if (channel.hasSubscribers) {
- // There are subscribers, prepare and publish message
+  // There are subscribers, prepare and publish message
 }
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 if (channel.hasSubscribers) {
- // There are subscribers, prepare and publish message
+  // There are subscribers, prepare and publish message
 }
 ```
 
@@ -203,22 +203,22 @@ Publish a message to any subscribers to the channel. This will trigger
 message handlers synchronously so they will execute within the same context.
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 channel.publish({
- some: "message",
+  some: 'message'
 });
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 channel.publish({
- some: "message",
+  some: 'message'
 });
 ```
 
@@ -239,22 +239,22 @@ will be run synchronously whenever a message is published to the channel. Any
 errors thrown in the message handler will trigger an [`'uncaughtException'`][].
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 channel.subscribe((message, name) => {
- // Received data
+  // Received data
 });
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 channel.subscribe((message, name) => {
- // Received data
+  // Received data
 });
 ```
 
@@ -280,12 +280,12 @@ Remove a message handler previously registered to this channel with
 [`channel.subscribe(onMessage)`][].
 
 ```mjs
-import diagnostics_channel from "diagnostics_channel";
+import diagnostics_channel from 'diagnostics_channel';
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 function onMessage(message, name) {
- // Received data
+  // Received data
 }
 
 channel.subscribe(onMessage);
@@ -294,12 +294,12 @@ channel.unsubscribe(onMessage);
 ```
 
 ```cjs
-const diagnostics_channel = require("diagnostics_channel");
+const diagnostics_channel = require('diagnostics_channel');
 
-const channel = diagnostics_channel.channel("my-channel");
+const channel = diagnostics_channel.channel('my-channel');
 
 function onMessage(message, name) {
- // Received data
+  // Received data
 }
 
 channel.subscribe(onMessage);

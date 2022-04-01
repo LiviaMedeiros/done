@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
 // This test *only* verifies that invoking the stdin getter does not
 // cause node to hang indefinitely.
@@ -29,4 +29,4 @@ require("../common");
 // invoke the getter.
 process.stdin; // eslint-disable-line no-unused-expressions
 
-console.error("Should exit normally now.");
+console.error('Should exit normally now.');

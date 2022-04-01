@@ -19,54 +19,54 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
-const assert = require("assert");
-const fixtures = require("../common/fixtures");
-const https = require("https");
+const assert = require('assert');
+const fixtures = require('../common/fixtures');
+const https = require('https');
 
 const options = {
- key: fixtures.readKey("agent1-key.pem"),
- cert: fixtures.readKey("agent1-cert.pem"),
+  key: fixtures.readKey('agent1-key.pem'),
+  cert: fixtures.readKey('agent1-cert.pem')
 };
 
-process.stdout.write("build body...");
-const body = "hello world\n".repeat(1024 * 1024);
-process.stdout.write("done\n");
+process.stdout.write('build body...');
+const body = 'hello world\n'.repeat(1024 * 1024);
+process.stdout.write('done\n');
 
 const server = https.createServer(options, common.mustCall(function(req, res) {
- console.log("got request");
- res.writeHead(200, { "content-type": "text/plain" });
- res.end(body);
+  console.log('got request');
+  res.writeHead(200, { 'content-type': 'text/plain' });
+  res.end(body);
 }));
 
 server.listen(0, common.mustCall(function() {
- https.get({
-  port: server.address().port,
-  rejectUnauthorized: false,
- }, common.mustCall(function(res) {
-  console.log("response!");
+  https.get({
+    port: server.address().port,
+    rejectUnauthorized: false
+  }, common.mustCall(function(res) {
+    console.log('response!');
 
-  let count = 0;
+    let count = 0;
 
-  res.on("data", function(d) {
-   process.stdout.write(".");
-   count += d.length;
-   res.pause();
-   process.nextTick(function() {
-    res.resume();
-   });
-  });
+    res.on('data', function(d) {
+      process.stdout.write('.');
+      count += d.length;
+      res.pause();
+      process.nextTick(function() {
+        res.resume();
+      });
+    });
 
-  res.on("end", common.mustCall(function(d) {
-   process.stdout.write("\n");
-   console.log("expected: ", body.length);
-   console.log("     got: ", count);
-   server.close();
-   assert.strictEqual(count, body.length);
+    res.on('end', common.mustCall(function(d) {
+      process.stdout.write('\n');
+      console.log('expected: ', body.length);
+      console.log('     got: ', count);
+      server.close();
+      assert.strictEqual(count, body.length);
+    }));
   }));
- }));
 }));

@@ -19,28 +19,28 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const assert = require("assert");
-const { spawn, fork, execFile } = require("child_process");
-const fixtures = require("../common/fixtures");
-const cmd = common.isWindows ? "rundll32" : "ls";
-const invalidcmd = "hopefully_you_dont_have_this_on_your_machine";
+'use strict';
+const common = require('../common');
+const assert = require('assert');
+const { spawn, fork, execFile } = require('child_process');
+const fixtures = require('../common/fixtures');
+const cmd = common.isWindows ? 'rundll32' : 'ls';
+const invalidcmd = 'hopefully_you_dont_have_this_on_your_machine';
 
-const empty = fixtures.path("empty.js");
+const empty = fixtures.path('empty.js');
 
 const invalidArgValueError = {
- code: "ERR_INVALID_ARG_VALUE",
- name: "TypeError",
+  code: 'ERR_INVALID_ARG_VALUE',
+  name: 'TypeError'
 };
 
 const invalidArgTypeError = {
- code: "ERR_INVALID_ARG_TYPE",
- name: "TypeError",
+  code: 'ERR_INVALID_ARG_TYPE',
+  name: 'TypeError'
 };
 
 assert.throws(function() {
- spawn(invalidcmd, "this is not an array");
+  spawn(invalidcmd, 'this is not an array');
 }, invalidArgTypeError);
 
 // Verify that valid argument combinations do not throw.
@@ -51,43 +51,43 @@ spawn(cmd, [], {});
 
 // Verify that invalid argument combinations throw.
 assert.throws(function() {
- spawn();
+  spawn();
 }, invalidArgTypeError);
 
 assert.throws(function() {
- spawn("");
+  spawn('');
 }, invalidArgValueError);
 
 assert.throws(function() {
- const file = { toString() { return null; } };
- spawn(file);
+  const file = { toString() { return null; } };
+  spawn(file);
 }, invalidArgTypeError);
 
 assert.throws(function() {
- spawn(cmd, true);
+  spawn(cmd, true);
 }, invalidArgTypeError);
 
 assert.throws(function() {
- spawn(cmd, [], null);
+  spawn(cmd, [], null);
 }, invalidArgTypeError);
 
 assert.throws(function() {
- spawn(cmd, [], 1);
+  spawn(cmd, [], 1);
 }, invalidArgTypeError);
 
 assert.throws(function() {
- spawn(cmd, [], { uid: 2 ** 63 });
+  spawn(cmd, [], { uid: 2 ** 63 });
 }, invalidArgTypeError);
 
 assert.throws(function() {
- spawn(cmd, [], { gid: 2 ** 63 });
+  spawn(cmd, [], { gid: 2 ** 63 });
 }, invalidArgTypeError);
 
 // Argument types for combinatorics.
 const a = [];
 const o = {};
 function c() {}
-const s = "string";
+const s = 'string';
 const u = undefined;
 const n = null;
 

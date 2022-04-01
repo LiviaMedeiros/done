@@ -1,18 +1,18 @@
-"use strict";
+'use strict';
 
 // Utilities for the tick-processor tests
 const {
- isWindows,
- isSunOS,
- isAIX,
- isLinuxPPCBE,
- isFreeBSD,
-} = require("../common");
+  isWindows,
+  isSunOS,
+  isAIX,
+  isLinuxPPCBE,
+  isFreeBSD
+} = require('../common');
 
 module.exports = {
- isCPPSymbolsNotMapped: isWindows ||
+  isCPPSymbolsNotMapped: isWindows ||
                          isSunOS ||
                          isAIX ||
                          isLinuxPPCBE ||
-                         isFreeBSD,
+                         isFreeBSD
 };

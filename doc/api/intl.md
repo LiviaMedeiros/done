@@ -97,8 +97,8 @@ such as [`Intl.DateTimeFormat`][], generally only work with the English locale:
 
 ```js
 const january = new Date(9e8);
-const english = new Intl.DateTimeFormat("en", { month: "long" });
-const spanish = new Intl.DateTimeFormat("es", { month: "long" });
+const english = new Intl.DateTimeFormat('en', { month: 'long' });
+const spanish = new Intl.DateTimeFormat('es', { month: 'long' });
 
 console.log(english.format(january));
 // Prints "January"
@@ -158,14 +158,14 @@ To verify that ICU is enabled at all (`system-icu`, `small-icu`, or
 `full-icu`), simply checking the existence of `Intl` should suffice:
 
 ```js
-const hasICU = typeof Intl === "object";
+const hasICU = typeof Intl === 'object';
 ```
 
 Alternatively, checking for `process.versions.icu`, a property defined only
 when ICU is enabled, works too:
 
 ```js
-const hasICU = typeof process.versions.icu === "string";
+const hasICU = typeof process.versions.icu === 'string';
 ```
 
 To check for support for a non-English locale (i.e. `full-icu` or
@@ -173,13 +173,13 @@ To check for support for a non-English locale (i.e. `full-icu` or
 
 ```js
 const hasFullICU = (() => {
- try {
-  const january = new Date(9e8);
-  const spanish = new Intl.DateTimeFormat("es", { month: "long" });
-  return spanish.format(january) === "enero";
- } catch (err) {
-  return false;
- }
+  try {
+    const january = new Date(9e8);
+    const spanish = new Intl.DateTimeFormat('es', { month: 'long' });
+    return spanish.format(january) === 'enero';
+  } catch (err) {
+    return false;
+  }
 })();
 ```
 

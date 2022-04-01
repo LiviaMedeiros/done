@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
 // This test ensures that setting `process.domain` to `null` does not result in
 // node crashing with a segfault.
@@ -28,5 +28,5 @@ require("../common");
 
 process.domain = null;
 setTimeout(function() {
- console.log("this console.log statement should not make node crash");
+  console.log('this console.log statement should not make node crash');
 }, 1);

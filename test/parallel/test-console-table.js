@@ -1,38 +1,38 @@
-"use strict";
+'use strict';
 
-require("../common");
+require('../common');
 
-const assert = require("assert");
-const { Console } = require("console");
+const assert = require('assert');
+const { Console } = require('console');
 
 const queue = [];
 
 const console = new Console({ write: (x) => {
- queue.push(x);
+  queue.push(x);
 }, removeListener: () => {} }, process.stderr, false);
 
 function test(data, only, expected) {
- if (arguments.length === 2) {
-  expected = only;
-  only = undefined;
- }
- console.table(data, only);
- assert.deepStrictEqual(
-  queue.shift().split("\n"),
-  expected.trimLeft().split("\n"),
- );
+  if (arguments.length === 2) {
+    expected = only;
+    only = undefined;
+  }
+  console.table(data, only);
+  assert.deepStrictEqual(
+    queue.shift().split('\n'),
+    expected.trimLeft().split('\n')
+  );
 }
 
 assert.throws(() => console.table([], false), {
- code: "ERR_INVALID_ARG_TYPE",
+  code: 'ERR_INVALID_ARG_TYPE',
 });
 
-test(null, "null\n");
-test(undefined, "undefined\n");
-test(false, "false\n");
-test("hi", "hi\n");
-test(Symbol(), "Symbol()\n");
-test(function() {}, "[Function (anonymous)]\n");
+test(null, 'null\n');
+test(undefined, 'undefined\n');
+test(false, 'false\n');
+test('hi', 'hi\n');
+test(Symbol(), 'Symbol()\n');
+test(function() {}, '[Function (anonymous)]\n');
 
 test([1, 2, 3], `
 ┌─────────┬────────┐
@@ -82,7 +82,7 @@ test({ a: 1, b: Symbol(), c: [10] }, `
 └─────────┴────┴──────────┘
 `);
 
-test(new Map([ ["a", 1], [Symbol(), [2]] ]), `
+test(new Map([ ['a', 1], [Symbol(), [2]] ]), `
 ┌───────────────────┬──────────┬────────┐
 │ (iteration index) │   Key    │ Values │
 ├───────────────────┼──────────┼────────┤
@@ -101,7 +101,7 @@ test(new Set([1, 2, Symbol()]), `
 └───────────────────┴──────────┘
 `);
 
-test({ a: 1, b: 2 }, ["a"], `
+test({ a: 1, b: 2 }, ['a'], `
 ┌─────────┬───┐
 │ (index) │ a │
 ├─────────┼───┤
@@ -110,7 +110,7 @@ test({ a: 1, b: 2 }, ["a"], `
 └─────────┴───┘
 `);
 
-test([{ a: 1, b: 2 }, { a: 3, c: 4 }], ["a"], `
+test([{ a: 1, b: 2 }, { a: 3, c: 4 }], ['a'], `
 ┌─────────┬───┐
 │ (index) │ a │
 ├─────────┼───┤
@@ -214,7 +214,7 @@ test(Buffer.from([1, 2, 3]), `
 └─────────┴────────┘
 `);
 
-test({ a: undefined }, ["x"], `
+test({ a: undefined }, ['x'], `
 ┌─────────┬───┐
 │ (index) │ x │
 ├─────────┼───┤
@@ -236,7 +236,7 @@ test(new Map(), `
 └───────────────────┴─────┴────────┘
 `);
 
-test([{ a: 1, b: "Y" }, { a: "Z", b: 2 }], `
+test([{ a: 1, b: 'Y' }, { a: 'Z', b: 2 }], `
 ┌─────────┬─────┬─────┐
 │ (index) │  a  │  b  │
 ├─────────┼─────┼─────┤
@@ -246,11 +246,11 @@ test([{ a: 1, b: "Y" }, { a: "Z", b: 2 }], `
 `);
 
 {
- const line = "─".repeat(79);
- const header = `${" ".repeat(37)}name${" ".repeat(40)}`;
- const name = "very long long long long long long long long long long long " +
-               "long long long long";
- test([{ name }], `
+  const line = '─'.repeat(79);
+  const header = `${' '.repeat(37)}name${' '.repeat(40)}`;
+  const name = 'very long long long long long long long long long long long ' +
+               'long long long long';
+  test([{ name }], `
 ┌─────────┬──${line}──┐
 │ (index) │  ${header}│
 ├─────────┼──${line}──┤
@@ -259,7 +259,7 @@ test([{ a: 1, b: "Y" }, { a: "Z", b: 2 }], `
 `);
 }
 
-test({ foo: "￥", bar: "¥" }, `
+test({ foo: '￥', bar: '¥' }, `
 ┌─────────┬────────┐
 │ (index) │ Values │
 ├─────────┼────────┤
@@ -268,7 +268,7 @@ test({ foo: "￥", bar: "¥" }, `
 └─────────┴────────┘
 `);
 
-test({ foo: "你好", bar: "hello" }, `
+test({ foo: '你好', bar: 'hello' }, `
 ┌─────────┬─────────┐
 │ (index) │ Values  │
 ├─────────┼─────────┤
@@ -281,7 +281,7 @@ test({ foo: "你好", bar: "hello" }, `
 // of Node.js created an object with a non-null prototype within console.table
 // and then wrote to object[column][index], which lead to an error as well as
 // modifications to Object.prototype.
-test([{ foo: 10 }, { foo: 20 }], ["__proto__"], `
+test([{ foo: 10 }, { foo: 20 }], ['__proto__'], `
 ┌─────────┬───────────┐
 │ (index) │ __proto__ │
 ├─────────┼───────────┤
@@ -289,5 +289,5 @@ test([{ foo: 10 }, { foo: 20 }], ["__proto__"], `
 │    1    │           │
 └─────────┴───────────┘
 `);
-assert.strictEqual("0" in Object.prototype, false);
-assert.strictEqual("1" in Object.prototype, false);
+assert.strictEqual('0' in Object.prototype, false);
+assert.strictEqual('1' in Object.prototype, false);

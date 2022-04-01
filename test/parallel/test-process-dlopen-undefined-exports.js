@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-require("../common");
-const assert = require("assert");
+require('../common');
+const assert = require('assert');
 
-const someBindingPath = "./test/addons/hello-world/build/Release/binding.node";
+const someBindingPath = './test/addons/hello-world/build/Release/binding.node';
 
 assert.throws(() => {
- process.dlopen({ exports: undefined }, someBindingPath);
+  process.dlopen({ exports: undefined }, someBindingPath);
 }, Error);

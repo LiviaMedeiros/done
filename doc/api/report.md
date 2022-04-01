@@ -444,7 +444,7 @@ This function takes an optional additional argument `filename`, which is
 the name of a file into which the report is written.
 
 ```js
-process.report.writeReport("./foo.json");
+process.report.writeReport('./foo.json');
 ```
 
 This function takes an optional additional argument `err` which is an `Error`
@@ -455,9 +455,9 @@ well as where it was handled.
 
 ```js
 try {
- process.chdir("/non-existent-path");
+  process.chdir('/non-existent-path');
 } catch (err) {
- process.report.writeReport(err);
+  process.report.writeReport(err);
 }
 // Any other code
 ```
@@ -467,9 +467,9 @@ error object must be the second parameter.
 
 ```js
 try {
- process.chdir("/non-existent-path");
+  process.chdir('/non-existent-path');
 } catch (err) {
- process.report.writeReport(filename, err);
+  process.report.writeReport(filename, err);
 }
 // Any other code
 ```
@@ -479,7 +479,7 @@ via an API call from a JavaScript application:
 
 ```js
 const report = process.report.getReport();
-console.log(typeof report === "object"); // true
+console.log(typeof report === 'object'); // true
 
 // Similar to process.report.writeReport() output
 console.log(JSON.stringify(report, null, 2));
@@ -490,8 +490,8 @@ object that will be used as the context for the JavaScript stack printed in the
 report.
 
 ```js
-const report = process.report.getReport(new Error("custom error"));
-console.log(typeof report === "object"); // true
+const report = process.report.getReport(new Error('custom error'));
+console.log(typeof report === 'object'); // true
 ```
 
 The API versions are useful when inspecting the runtime state from within
@@ -563,7 +563,7 @@ process.report.reportOnUncaughtException = false;
 process.report.reportOnFatalError = false;
 process.report.reportOnUncaughtException = false;
 process.report.reportOnSignal = true;
-process.report.signal = "SIGQUIT";
+process.report.signal = 'SIGQUIT';
 ```
 
 Configuration on module initialization is also available via

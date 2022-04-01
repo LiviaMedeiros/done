@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-require("../common");
+require('../common');
 
-const runBenchmark = require("../common/benchmark");
+const runBenchmark = require('../common/benchmark');
 
-runBenchmark("policy", [
- "n=1",
+runBenchmark('policy', [
+  'n=1',
 ]);

@@ -1,3 +1,3 @@
-"use strict";
-require("../common");
-process.stdin.end("foobar\n");
+'use strict';
+require('../common');
+process.stdin.end('foobar\n');

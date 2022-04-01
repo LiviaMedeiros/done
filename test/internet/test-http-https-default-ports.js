@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const { addresses } = require("../common/internet");
+'use strict';
+const common = require('../common');
+const { addresses } = require('../common/internet');
 
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
-const https = require("https");
+const https = require('https');
 
-const http = require("http");
+const http = require('http');
 
 https.get(`https://${addresses.INET_HOST}/`, common.mustCall((res) => {
- res.resume();
+  res.resume();
 }));
 
 http.get(`http://${addresses.INET_HOST}/`, common.mustCall((res) => {
- res.resume();
+  res.resume();
 }));

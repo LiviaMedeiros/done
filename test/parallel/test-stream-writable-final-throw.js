@@ -1,23 +1,23 @@
-"use strict";
+'use strict';
 
-const common = require("../common");
+const common = require('../common');
 const {
- Duplex,
-} = require("stream");
+  Duplex,
+} = require('stream');
 
 {
- class Foo extends Duplex {
-  _final(callback) {
-   throw new Error("fhqwhgads");
+  class Foo extends Duplex {
+    _final(callback) {
+      throw new Error('fhqwhgads');
+    }
+
+    _read() {}
   }
 
-  _read() {}
- }
-
- const foo = new Foo();
- foo._write = common.mustCall((chunk, encoding, cb) => {
-  cb();
- });
- foo.end("test", common.expectsError({ message: "fhqwhgads" }));
- foo.on("error", common.mustCall());
+  const foo = new Foo();
+  foo._write = common.mustCall((chunk, encoding, cb) => {
+    cb();
+  });
+  foo.end('test', common.expectsError({ message: 'fhqwhgads' }));
+  foo.on('error', common.mustCall());
 }

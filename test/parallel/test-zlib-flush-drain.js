@@ -1,13 +1,13 @@
-"use strict";
-require("../common");
-const assert = require("assert");
-const zlib = require("zlib");
+'use strict';
+require('../common');
+const assert = require('assert');
+const zlib = require('zlib');
 
-const bigData = Buffer.alloc(10240, "x");
+const bigData = Buffer.alloc(10240, 'x');
 
 const opts = {
- level: 0,
- highWaterMark: 16,
+  level: 0,
+  highWaterMark: 16
 };
 
 const deflater = zlib.createDeflate(opts);
@@ -18,8 +18,8 @@ let drainCount = 0;
 
 const flush = deflater.flush;
 deflater.flush = function(kind, callback) {
- flushCount++;
- flush.call(this, kind, callback);
+  flushCount++;
+  flush.call(this, kind, callback);
 };
 
 deflater.write(bigData);
@@ -28,24 +28,24 @@ const ws = deflater._writableState;
 const beforeFlush = ws.needDrain;
 let afterFlush = ws.needDrain;
 
-deflater.on("data", () => {
+deflater.on('data', () => {
 });
 
 deflater.flush(function(err) {
- afterFlush = ws.needDrain;
+  afterFlush = ws.needDrain;
 });
 
-deflater.on("drain", function() {
- drainCount++;
+deflater.on('drain', function() {
+  drainCount++;
 });
 
-process.once("exit", function() {
- assert.strictEqual(
-  beforeFlush, true);
- assert.strictEqual(
-  afterFlush, false);
- assert.strictEqual(
-  drainCount, 1);
- assert.strictEqual(
-  flushCount, 1);
+process.once('exit', function() {
+  assert.strictEqual(
+    beforeFlush, true);
+  assert.strictEqual(
+    afterFlush, false);
+  assert.strictEqual(
+    drainCount, 1);
+  assert.strictEqual(
+    flushCount, 1);
 });

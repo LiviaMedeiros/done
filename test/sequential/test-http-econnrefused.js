@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 
 // The test works by making a total of 8 requests to the server.  The first
 // two are made with the server off - they should come back as ECONNREFUSED.
@@ -29,127 +29,127 @@ const common = require("../common");
 // we were experiencing parse errors instead of ECONNREFUSED.
 // https://github.com/nodejs/node-v0.x-archive/issues/784
 
-const http = require("http");
-const assert = require("assert");
+const http = require('http');
+const assert = require('assert');
 
 
 const server = http.createServer(function(req, res) {
- let body = "";
+  let body = '';
 
- req.setEncoding("utf8");
- req.on("data", function(chunk) {
-  body += chunk;
- });
+  req.setEncoding('utf8');
+  req.on('data', function(chunk) {
+    body += chunk;
+  });
 
- req.on("end", function() {
-  assert.strictEqual(body, "PING");
-  res.writeHead(200);
-  res.end("PONG");
- });
+  req.on('end', function() {
+    assert.strictEqual(body, 'PING');
+    res.writeHead(200);
+    res.end('PONG');
+  });
 });
 
 
-server.on("listening", pingping);
+server.on('listening', pingping);
 
 
 function serverOn() {
- console.error("Server ON");
- server.listen(common.PORT);
+  console.error('Server ON');
+  server.listen(common.PORT);
 }
 
 
 function serverOff() {
- console.error("Server OFF");
- server.close();
- pingping();
+  console.error('Server OFF');
+  server.close();
+  pingping();
 }
 
 const responses = [];
 
 
 function afterPing(result) {
- responses.push(result);
- console.error(`afterPing. responses.length = ${responses.length}`);
- const ECONNREFUSED_RE = /ECONNREFUSED/;
- const successRE = /success/;
- switch (responses.length) {
-  case 2:
-   assert.match(responses[0], ECONNREFUSED_RE);
-   assert.match(responses[1], ECONNREFUSED_RE);
-   serverOn();
-   break;
+  responses.push(result);
+  console.error(`afterPing. responses.length = ${responses.length}`);
+  const ECONNREFUSED_RE = /ECONNREFUSED/;
+  const successRE = /success/;
+  switch (responses.length) {
+    case 2:
+      assert.match(responses[0], ECONNREFUSED_RE);
+      assert.match(responses[1], ECONNREFUSED_RE);
+      serverOn();
+      break;
 
-  case 4:
-   assert.match(responses[2], successRE);
-   assert.match(responses[3], successRE);
-   serverOff();
-   break;
+    case 4:
+      assert.match(responses[2], successRE);
+      assert.match(responses[3], successRE);
+      serverOff();
+      break;
 
-  case 6:
-   assert.match(responses[4], ECONNREFUSED_RE);
-   assert.match(responses[5], ECONNREFUSED_RE);
-   serverOn();
-   break;
+    case 6:
+      assert.match(responses[4], ECONNREFUSED_RE);
+      assert.match(responses[5], ECONNREFUSED_RE);
+      serverOn();
+      break;
 
-  case 8:
-   assert.match(responses[6], successRE);
-   assert.match(responses[7], successRE);
-   server.close();
-   // We should go to process.on('exit') from here.
-   break;
- }
+    case 8:
+      assert.match(responses[6], successRE);
+      assert.match(responses[7], successRE);
+      server.close();
+      // We should go to process.on('exit') from here.
+      break;
+  }
 }
 
 
 function ping() {
- console.error("making req");
+  console.error('making req');
 
- const opt = {
-  port: common.PORT,
-  path: "/ping",
-  method: "POST",
- };
+  const opt = {
+    port: common.PORT,
+    path: '/ping',
+    method: 'POST'
+  };
 
- const req = http.request(opt, function(res) {
-  let body = "";
+  const req = http.request(opt, function(res) {
+    let body = '';
 
-  res.setEncoding("utf8");
-  res.on("data", function(chunk) {
-   body += chunk;
+    res.setEncoding('utf8');
+    res.on('data', function(chunk) {
+      body += chunk;
+    });
+
+    res.on('end', function() {
+      assert.strictEqual(body, 'PONG');
+      assert.ok(!hadError);
+      gotEnd = true;
+      afterPing('success');
+    });
   });
 
-  res.on("end", function() {
-   assert.strictEqual(body, "PONG");
-   assert.ok(!hadError);
-   gotEnd = true;
-   afterPing("success");
+  req.end('PING');
+
+  let gotEnd = false;
+  let hadError = false;
+
+  req.on('error', function(error) {
+    console.log(`Error making ping req: ${error}`);
+    hadError = true;
+    assert.ok(!gotEnd);
+    afterPing(error.message);
   });
- });
-
- req.end("PING");
-
- let gotEnd = false;
- let hadError = false;
-
- req.on("error", function(error) {
-  console.log(`Error making ping req: ${error}`);
-  hadError = true;
-  assert.ok(!gotEnd);
-  afterPing(error.message);
- });
 }
 
 
 function pingping() {
- ping();
- ping();
+  ping();
+  ping();
 }
 
 pingping();
 
-process.on("exit", function() {
- console.error("process.on('exit')");
- console.error(responses);
+process.on('exit', function() {
+  console.error("process.on('exit')");
+  console.error(responses);
 
- assert.strictEqual(responses.length, 8);
+  assert.strictEqual(responses.length, 8);
 });

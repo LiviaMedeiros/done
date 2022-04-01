@@ -10,11 +10,11 @@ The `url` module provides utilities for URL resolution and parsing. It can be
 accessed using:
 
 ```mjs
-import url from "url";
+import url from 'url';
 ```
 
 ```cjs
-const url = require("url");
+const url = require('url');
 ```
 
 ## URL strings and URL objects
@@ -60,21 +60,21 @@ Parsing the URL string using the WHATWG API:
 
 ```js
 const myURL =
-  new URL("https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash");
+  new URL('https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash');
 ```
 
 Parsing the URL string using the Legacy API:
 
 ```mjs
-import url from "url";
+import url from 'url';
 const myURL =
-  url.parse("https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash");
+  url.parse('https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash');
 ```
 
 ```cjs
-const url = require("url");
+const url = require('url');
 const myURL =
-  url.parse("https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash");
+  url.parse('https://user:pass@sub.example.com:8080/p/a/t/h?query=string#hash');
 ```
 
 ### Constructing a URL from component parts and getting the constructed string
@@ -83,16 +83,16 @@ It is possible to construct a WHATWG URL from component parts using either the
 property setters or a template literal string:
 
 ```js
-const myURL = new URL("https://example.org");
-myURL.pathname = "/a/b/c";
-myURL.search = "?d=e";
-myURL.hash = "#fgh";
+const myURL = new URL('https://example.org');
+myURL.pathname = '/a/b/c';
+myURL.search = '?d=e';
+myURL.hash = '#fgh';
 ```
 
 ```js
-const pathname = "/a/b/c";
-const search = "?d=e";
-const hash = "#fgh";
+const pathname = '/a/b/c';
+const search = '?d=e';
+const hash = '#fgh';
 const myURL = new URL(`https://example.org${pathname}${search}${hash}`);
 ```
 
@@ -139,7 +139,7 @@ Creates a new `URL` object by parsing the `input` relative to the `base`. If
 `base` is passed as a string, it will be parsed equivalent to `new URL(base)`.
 
 ```js
-const myURL = new URL("/foo", "https://example.org/");
+const myURL = new URL('/foo', 'https://example.org/');
 // https://example.org/foo
 ```
 
@@ -147,12 +147,12 @@ The URL constructor is accessible as a property on the global object.
 It can also be imported from the built-in url module:
 
 ```mjs
-import { URL } from "url";
+import { URL } from 'url';
 console.log(URL === globalThis.URL); // Prints 'true'.
 ```
 
 ```cjs
-console.log(URL === require("url").URL); // Prints 'true'.
+console.log(URL === require('url').URL); // Prints 'true'.
 ```
 
 A `TypeError` will be thrown if the `input` or `base` are not valid URLs. Note
@@ -160,7 +160,7 @@ that an effort will be made to coerce the given values into strings. For
 instance:
 
 ```js
-const myURL = new URL({ toString: () => "https://example.org/" });
+const myURL = new URL({ toString: () => 'https://example.org/' });
 // https://example.org/
 ```
 
@@ -168,7 +168,7 @@ Unicode characters appearing within the host name of `input` will be
 automatically converted to ASCII using the [Punycode][] algorithm.
 
 ```js
-const myURL = new URL("https://測試");
+const myURL = new URL('https://測試');
 // https://xn--g6w251d/
 ```
 
@@ -180,22 +180,22 @@ and a `base` is provided, it is advised to validate that the `origin` of
 the `URL` object is what is expected.
 
 ```js
-let myURL = new URL("http://Example.com/", "https://example.org/");
+let myURL = new URL('http://Example.com/', 'https://example.org/');
 // http://example.com/
 
-myURL = new URL("https://Example.com/", "https://example.org/");
+myURL = new URL('https://Example.com/', 'https://example.org/');
 // https://example.com/
 
-myURL = new URL("foo://Example.com/", "https://example.org/");
+myURL = new URL('foo://Example.com/', 'https://example.org/');
 // foo://Example.com/
 
-myURL = new URL("http:Example.com/", "https://example.org/");
+myURL = new URL('http:Example.com/', 'https://example.org/');
 // http://example.com/
 
-myURL = new URL("https:Example.com/", "https://example.org/");
+myURL = new URL('https:Example.com/', 'https://example.org/');
 // https://example.org/Example.com/
 
-myURL = new URL("foo:Example.com/", "https://example.org/");
+myURL = new URL('foo:Example.com/', 'https://example.org/');
 // foo:Example.com/
 ```
 
@@ -206,11 +206,11 @@ myURL = new URL("foo:Example.com/", "https://example.org/");
 Gets and sets the fragment portion of the URL.
 
 ```js
-const myURL = new URL("https://example.org/foo#bar");
+const myURL = new URL('https://example.org/foo#bar');
 console.log(myURL.hash);
 // Prints #bar
 
-myURL.hash = "baz";
+myURL.hash = 'baz';
 console.log(myURL.href);
 // Prints https://example.org/foo#baz
 ```
@@ -227,11 +227,11 @@ percent-encode may vary somewhat from what the [`url.parse()`][] and
 Gets and sets the host portion of the URL.
 
 ```js
-const myURL = new URL("https://example.org:81/foo");
+const myURL = new URL('https://example.org:81/foo');
 console.log(myURL.host);
 // Prints example.org:81
 
-myURL.host = "example.com:82";
+myURL.host = 'example.com:82';
 console.log(myURL.href);
 // Prints https://example.com:82/foo
 ```
@@ -247,17 +247,17 @@ Gets and sets the host name portion of the URL. The key difference between
 port.
 
 ```js
-const myURL = new URL("https://example.org:81/foo");
+const myURL = new URL('https://example.org:81/foo');
 console.log(myURL.hostname);
 // Prints example.org
 
 // Setting the hostname does not change the port
-myURL.hostname = "example.com:82";
+myURL.hostname = 'example.com:82';
 console.log(myURL.href);
 // Prints https://example.com:81/foo
 
 // Use myURL.host to change the hostname and port
-myURL.host = "example.org:82";
+myURL.host = 'example.org:82';
 console.log(myURL.href);
 // Prints https://example.org:82/foo
 ```
@@ -271,11 +271,11 @@ Invalid host name values assigned to the `hostname` property are ignored.
 Gets and sets the serialized URL.
 
 ```js
-const myURL = new URL("https://example.org/foo");
+const myURL = new URL('https://example.org/foo');
 console.log(myURL.href);
 // Prints https://example.org/foo
 
-myURL.href = "https://example.com/bar";
+myURL.href = 'https://example.com/bar';
 console.log(myURL.href);
 // Prints https://example.com/bar
 ```
@@ -305,13 +305,13 @@ changes:
 Gets the read-only serialization of the URL's origin.
 
 ```js
-const myURL = new URL("https://example.org/foo/bar?baz");
+const myURL = new URL('https://example.org/foo/bar?baz');
 console.log(myURL.origin);
 // Prints https://example.org
 ```
 
 ```js
-const idnURL = new URL("https://測試");
+const idnURL = new URL('https://測試');
 console.log(idnURL.origin);
 // Prints https://xn--g6w251d
 
@@ -326,11 +326,11 @@ console.log(idnURL.hostname);
 Gets and sets the password portion of the URL.
 
 ```js
-const myURL = new URL("https://abc:xyz@example.com");
+const myURL = new URL('https://abc:xyz@example.com');
 console.log(myURL.password);
 // Prints xyz
 
-myURL.password = "123";
+myURL.password = '123';
 console.log(myURL.href);
 // Prints https://abc:123@example.com
 ```
@@ -347,11 +347,11 @@ percent-encode may vary somewhat from what the [`url.parse()`][] and
 Gets and sets the path portion of the URL.
 
 ```js
-const myURL = new URL("https://example.org/abc/xyz?123");
+const myURL = new URL('https://example.org/abc/xyz?123');
 console.log(myURL.pathname);
 // Prints /abc/xyz
 
-myURL.pathname = "/abcdef";
+myURL.pathname = '/abcdef';
 console.log(myURL.href);
 // Prints https://example.org/abcdef?123
 ```
@@ -399,13 +399,13 @@ assigned to `port`.
 If the number lies outside the range denoted above, it is ignored.
 
 ```js
-const myURL = new URL("https://example.org:8888");
+const myURL = new URL('https://example.org:8888');
 console.log(myURL.port);
 // Prints 8888
 
 // Default ports are automatically transformed to the empty string
 // (HTTPS protocol's default port is 443)
-myURL.port = "443";
+myURL.port = '443';
 console.log(myURL.port);
 // Prints the empty string
 console.log(myURL.href);
@@ -418,12 +418,12 @@ console.log(myURL.href);
 // Prints https://example.org:1234/
 
 // Completely invalid port strings are ignored
-myURL.port = "abcd";
+myURL.port = 'abcd';
 console.log(myURL.port);
 // Prints 1234
 
 // Leading numbers are treated as a port number
-myURL.port = "5678abcd";
+myURL.port = '5678abcd';
 console.log(myURL.port);
 // Prints 5678
 
@@ -458,11 +458,11 @@ console.log(myURL.port);
 Gets and sets the protocol portion of the URL.
 
 ```js
-const myURL = new URL("https://example.org");
+const myURL = new URL('https://example.org');
 console.log(myURL.protocol);
 // Prints https:
 
-myURL.protocol = "ftp";
+myURL.protocol = 'ftp';
 console.log(myURL.href);
 // Prints ftp://example.org/
 ```
@@ -487,8 +487,8 @@ non-special protocol, and vice versa.
 For instance, changing from `http` to `https` works:
 
 ```js
-const u = new URL("http://example.org");
-u.protocol = "https";
+const u = new URL('http://example.org');
+u.protocol = 'https';
 console.log(u.href);
 // https://example.org
 ```
@@ -497,8 +497,8 @@ However, changing from `http` to a hypothetical `fish` protocol does not
 because the new protocol is not special.
 
 ```js
-const u = new URL("http://example.org");
-u.protocol = "fish";
+const u = new URL('http://example.org');
+u.protocol = 'fish';
 console.log(u.href);
 // http://example.org
 ```
@@ -507,8 +507,8 @@ Likewise, changing from a non-special protocol to a special protocol is also
 not permitted:
 
 ```js
-const u = new URL("fish://example.org");
-u.protocol = "http";
+const u = new URL('fish://example.org');
+u.protocol = 'http';
 console.log(u.href);
 // fish://example.org
 ```
@@ -523,11 +523,11 @@ According to the WHATWG URL Standard, special protocol schemes are `ftp`,
 Gets and sets the serialized query portion of the URL.
 
 ```js
-const myURL = new URL("https://example.org/abc?123");
+const myURL = new URL('https://example.org/abc?123');
 console.log(myURL.search);
 // Prints ?123
 
-myURL.search = "abc=xyz";
+myURL.search = 'abc=xyz';
 console.log(myURL.href);
 // Prints https://example.org/abc?abc=xyz
 ```
@@ -554,7 +554,7 @@ instance, the `URL` object will not percent encode the ASCII tilde (`~`)
 character, while `URLSearchParams` will always encode it:
 
 ```js
-const myUrl = new URL("https://example.org/abc?foo=~bar");
+const myUrl = new URL('https://example.org/abc?foo=~bar');
 
 console.log(myUrl.search);  // prints ?foo=~bar
 
@@ -571,11 +571,11 @@ console.log(myUrl.search);  // prints ?foo=%7Ebar
 Gets and sets the username portion of the URL.
 
 ```js
-const myURL = new URL("https://abc:xyz@example.com");
+const myURL = new URL('https://abc:xyz@example.com');
 console.log(myURL.username);
 // Prints abc
 
-myURL.username = "123";
+myURL.username = '123';
 console.log(myURL.href);
 // Prints https://123:xyz@example.com/
 ```
@@ -605,8 +605,8 @@ with [`JSON.stringify()`][].
 
 ```js
 const myURLs = [
- new URL("https://www.example.com"),
- new URL("https://test.example.org"),
+  new URL('https://www.example.com'),
+  new URL('https://test.example.org'),
 ];
 console.log(JSON.stringify(myURLs));
 // Prints ["https://www.example.com/","https://test.example.org/"]
@@ -628,11 +628,11 @@ object and can be used to retrieve the `Blob` later.
 
 ```js
 const {
- Blob,
- resolveObjectURL,
-} = require("buffer");
+  Blob,
+  resolveObjectURL,
+} = require('buffer');
 
-const blob = new Blob(["hello"]);
+const blob = new Blob(['hello']);
 const id = URL.createObjectURL(blob);
 
 // later...
@@ -685,16 +685,16 @@ general, as it allows the customization of delimiter characters (`&` and `=`).
 On the other hand, this API is designed purely for URL query strings.
 
 ```js
-const myURL = new URL("https://example.org/?abc=123");
-console.log(myURL.searchParams.get("abc"));
+const myURL = new URL('https://example.org/?abc=123');
+console.log(myURL.searchParams.get('abc'));
 // Prints 123
 
-myURL.searchParams.append("abc", "xyz");
+myURL.searchParams.append('abc', 'xyz');
 console.log(myURL.href);
 // Prints https://example.org/?abc=123&abc=xyz
 
-myURL.searchParams.delete("abc");
-myURL.searchParams.set("a", "b");
+myURL.searchParams.delete('abc');
+myURL.searchParams.set('a', 'b');
 console.log(myURL.href);
 // Prints https://example.org/?a=b
 
@@ -702,7 +702,7 @@ const newSearchParams = new URLSearchParams(myURL.searchParams);
 // The above is equivalent to
 // const newSearchParams = new URLSearchParams(myURL.search);
 
-newSearchParams.append("a", "c");
+newSearchParams.append('a', 'c');
 console.log(myURL.href);
 // Prints https://example.org/?a=b
 console.log(newSearchParams.toString());
@@ -712,7 +712,7 @@ console.log(newSearchParams.toString());
 myURL.search = newSearchParams;
 console.log(myURL.href);
 // Prints https://example.org/?a=b&a=c
-newSearchParams.delete("a");
+newSearchParams.delete('a');
 console.log(myURL.href);
 // Prints https://example.org/?a=b&a=c
 ```
@@ -731,13 +731,13 @@ Parse the `string` as a query string, and use it to instantiate a new
 ```js
 let params;
 
-params = new URLSearchParams("user=abc&query=xyz");
-console.log(params.get("user"));
+params = new URLSearchParams('user=abc&query=xyz');
+console.log(params.get('user'));
 // Prints 'abc'
 console.log(params.toString());
 // Prints 'user=abc&query=xyz'
 
-params = new URLSearchParams("?user=abc&query=xyz");
+params = new URLSearchParams('?user=abc&query=xyz');
 console.log(params.toString());
 // Prints 'user=abc&query=xyz'
 ```
@@ -761,10 +761,10 @@ joins all array elements with commas.
 
 ```js
 const params = new URLSearchParams({
- user: "abc",
- query: ["first", "second"],
+  user: 'abc',
+  query: ['first', 'second']
 });
-console.log(params.getAll("query"));
+console.log(params.getAll('query'));
 // Prints [ 'first,second' ]
 console.log(params.toString());
 // Prints 'user=abc&query=first%2Csecond'
@@ -794,26 +794,26 @@ let params;
 
 // Using an array
 params = new URLSearchParams([
- ["user", "abc"],
- ["query", "first"],
- ["query", "second"],
+  ['user', 'abc'],
+  ['query', 'first'],
+  ['query', 'second'],
 ]);
 console.log(params.toString());
 // Prints 'user=abc&query=first&query=second'
 
 // Using a Map object
 const map = new Map();
-map.set("user", "abc");
-map.set("query", "xyz");
+map.set('user', 'abc');
+map.set('query', 'xyz');
 params = new URLSearchParams(map);
 console.log(params.toString());
 // Prints 'user=abc&query=xyz'
 
 // Using a generator function
 function* getQueryPairs() {
- yield ["user", "abc"];
- yield ["query", "first"];
- yield ["query", "second"];
+  yield ['user', 'abc'];
+  yield ['query', 'first'];
+  yield ['query', 'second'];
 }
 params = new URLSearchParams(getQueryPairs());
 console.log(params.toString());
@@ -821,7 +821,7 @@ console.log(params.toString());
 
 // Each key-value pair must have exactly two elements
 new URLSearchParams([
- ["user", "abc", "error"],
+  ['user', 'abc', 'error'],
 ]);
 // Throws TypeError [ERR_INVALID_TUPLE]:
 //        Each query pair must be an iterable [name, value] tuple
@@ -867,9 +867,9 @@ changes:
 Iterates over each name-value pair in the query and invokes the given function.
 
 ```js
-const myURL = new URL("https://example.org/?a=b&c=d");
+const myURL = new URL('https://example.org/?a=b&c=d');
 myURL.searchParams.forEach((value, name, searchParams) => {
- console.log(name, value, myURL.searchParams === searchParams);
+  console.log(name, value, myURL.searchParams === searchParams);
 });
 // Prints:
 //   a b true
@@ -907,9 +907,9 @@ Returns `true` if there is at least one name-value pair whose name is `name`.
 Returns an ES6 `Iterator` over the names of each name-value pair.
 
 ```js
-const params = new URLSearchParams("foo=bar&foo=baz");
+const params = new URLSearchParams('foo=bar&foo=baz');
 for (const name of params.keys()) {
- console.log(name);
+  console.log(name);
 }
 // Prints:
 //   foo
@@ -928,14 +928,14 @@ append the name-value pair to the query string.
 
 ```js
 const params = new URLSearchParams();
-params.append("foo", "bar");
-params.append("foo", "baz");
-params.append("abc", "def");
+params.append('foo', 'bar');
+params.append('foo', 'baz');
+params.append('abc', 'def');
 console.log(params.toString());
 // Prints foo=bar&foo=baz&abc=def
 
-params.set("foo", "def");
-params.set("xyz", "opq");
+params.set('foo', 'def');
+params.set('xyz', 'opq');
 console.log(params.toString());
 // Prints foo=def&abc=def&xyz=opq
 ```
@@ -955,7 +955,7 @@ with the same name is preserved.
 This method can be used, in particular, to increase cache hits.
 
 ```js
-const params = new URLSearchParams("query[]=abc&type=search&query[]=123");
+const params = new URLSearchParams('query[]=abc&type=search&query[]=123');
 params.sort();
 console.log(params.toString());
 // Prints query%5B%5D=abc&query%5B%5D=123&type=search
@@ -985,9 +985,9 @@ is the `name`, the second item of the `Array` is the `value`.
 Alias for [`urlSearchParams.entries()`][].
 
 ```js
-const params = new URLSearchParams("foo=bar&xyz=baz");
+const params = new URLSearchParams('foo=bar&xyz=baz');
 for (const [name, value] of params) {
- console.log(name, value);
+  console.log(name, value);
 }
 // Prints:
 //   foo bar
@@ -1014,24 +1014,24 @@ This feature is only available if the `node` executable was compiled with
 [ICU][] enabled. If not, the domain names are passed through unchanged.
 
 ```mjs
-import url from "url";
+import url from 'url';
 
-console.log(url.domainToASCII("español.com"));
+console.log(url.domainToASCII('español.com'));
 // Prints xn--espaol-zwa.com
-console.log(url.domainToASCII("中文.com"));
+console.log(url.domainToASCII('中文.com'));
 // Prints xn--fiq228c.com
-console.log(url.domainToASCII("xn--iñvalid.com"));
+console.log(url.domainToASCII('xn--iñvalid.com'));
 // Prints an empty string
 ```
 
 ```cjs
-const url = require("url");
+const url = require('url');
 
-console.log(url.domainToASCII("español.com"));
+console.log(url.domainToASCII('español.com'));
 // Prints xn--espaol-zwa.com
-console.log(url.domainToASCII("中文.com"));
+console.log(url.domainToASCII('中文.com'));
 // Prints xn--fiq228c.com
-console.log(url.domainToASCII("xn--iñvalid.com"));
+console.log(url.domainToASCII('xn--iñvalid.com'));
 // Prints an empty string
 ```
 
@@ -1055,24 +1055,24 @@ This feature is only available if the `node` executable was compiled with
 [ICU][] enabled. If not, the domain names are passed through unchanged.
 
 ```mjs
-import url from "url";
+import url from 'url';
 
-console.log(url.domainToUnicode("xn--espaol-zwa.com"));
+console.log(url.domainToUnicode('xn--espaol-zwa.com'));
 // Prints español.com
-console.log(url.domainToUnicode("xn--fiq228c.com"));
+console.log(url.domainToUnicode('xn--fiq228c.com'));
 // Prints 中文.com
-console.log(url.domainToUnicode("xn--iñvalid.com"));
+console.log(url.domainToUnicode('xn--iñvalid.com'));
 // Prints an empty string
 ```
 
 ```cjs
-const url = require("url");
+const url = require('url');
 
-console.log(url.domainToUnicode("xn--espaol-zwa.com"));
+console.log(url.domainToUnicode('xn--espaol-zwa.com'));
 // Prints español.com
-console.log(url.domainToUnicode("xn--fiq228c.com"));
+console.log(url.domainToUnicode('xn--fiq228c.com'));
 // Prints 中文.com
-console.log(url.domainToUnicode("xn--iñvalid.com"));
+console.log(url.domainToUnicode('xn--iñvalid.com'));
 // Prints an empty string
 ```
 
@@ -1089,36 +1089,36 @@ This function ensures the correct decodings of percent-encoded characters as
 well as ensuring a cross-platform valid absolute path string.
 
 ```mjs
-import { fileURLToPath } from "url";
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 
-new URL("file:///C:/path/").pathname;      // Incorrect: /C:/path/
-fileURLToPath("file:///C:/path/");         // Correct:   C:\path\ (Windows)
+new URL('file:///C:/path/').pathname;      // Incorrect: /C:/path/
+fileURLToPath('file:///C:/path/');         // Correct:   C:\path\ (Windows)
 
-new URL("file://nas/foo.txt").pathname;    // Incorrect: /foo.txt
-fileURLToPath("file://nas/foo.txt");       // Correct:   \\nas\foo.txt (Windows)
+new URL('file://nas/foo.txt').pathname;    // Incorrect: /foo.txt
+fileURLToPath('file://nas/foo.txt');       // Correct:   \\nas\foo.txt (Windows)
 
-new URL("file:///你好.txt").pathname;      // Incorrect: /%E4%BD%A0%E5%A5%BD.txt
-fileURLToPath("file:///你好.txt");         // Correct:   /你好.txt (POSIX)
+new URL('file:///你好.txt').pathname;      // Incorrect: /%E4%BD%A0%E5%A5%BD.txt
+fileURLToPath('file:///你好.txt');         // Correct:   /你好.txt (POSIX)
 
-new URL("file:///hello world").pathname;   // Incorrect: /hello%20world
-fileURLToPath("file:///hello world");      // Correct:   /hello world (POSIX)
+new URL('file:///hello world').pathname;   // Incorrect: /hello%20world
+fileURLToPath('file:///hello world');      // Correct:   /hello world (POSIX)
 ```
 
 ```cjs
-const { fileURLToPath } = require("url");
-new URL("file:///C:/path/").pathname;      // Incorrect: /C:/path/
-fileURLToPath("file:///C:/path/");         // Correct:   C:\path\ (Windows)
+const { fileURLToPath } = require('url');
+new URL('file:///C:/path/').pathname;      // Incorrect: /C:/path/
+fileURLToPath('file:///C:/path/');         // Correct:   C:\path\ (Windows)
 
-new URL("file://nas/foo.txt").pathname;    // Incorrect: /foo.txt
-fileURLToPath("file://nas/foo.txt");       // Correct:   \\nas\foo.txt (Windows)
+new URL('file://nas/foo.txt').pathname;    // Incorrect: /foo.txt
+fileURLToPath('file://nas/foo.txt');       // Correct:   \\nas\foo.txt (Windows)
 
-new URL("file:///你好.txt").pathname;      // Incorrect: /%E4%BD%A0%E5%A5%BD.txt
-fileURLToPath("file:///你好.txt");         // Correct:   /你好.txt (POSIX)
+new URL('file:///你好.txt').pathname;      // Incorrect: /%E4%BD%A0%E5%A5%BD.txt
+fileURLToPath('file:///你好.txt');         // Correct:   /你好.txt (POSIX)
 
-new URL("file:///hello world").pathname;   // Incorrect: /hello%20world
-fileURLToPath("file:///hello world");      // Correct:   /hello world (POSIX)
+new URL('file:///hello world').pathname;   // Incorrect: /hello%20world
+fileURLToPath('file:///hello world');      // Correct:   /hello world (POSIX)
 ```
 
 ### `url.format(URL[, options])`
@@ -1149,8 +1149,8 @@ any way. The `url.format(URL[, options])` method allows for basic customization
 of the output.
 
 ```mjs
-import url from "url";
-const myURL = new URL("https://a:b@測試?abc#foo");
+import url from 'url';
+const myURL = new URL('https://a:b@測試?abc#foo');
 
 console.log(myURL.href);
 // Prints https://a:b@xn--g6w251d/?abc#foo
@@ -1163,8 +1163,8 @@ console.log(url.format(myURL, { fragment: false, unicode: true, auth: false }));
 ```
 
 ```cjs
-const url = require("url");
-const myURL = new URL("https://a:b@測試?abc#foo");
+const url = require('url');
+const myURL = new URL('https://a:b@測試?abc#foo');
 
 console.log(myURL.href);
 // Prints https://a:b@xn--g6w251d/?abc#foo
@@ -1189,27 +1189,27 @@ This function ensures that `path` is resolved absolutely, and that the URL
 control characters are correctly encoded when converting into a File URL.
 
 ```mjs
-import { pathToFileURL } from "url";
+import { pathToFileURL } from 'url';
 
-new URL("/foo#1", "file:");           // Incorrect: file:///foo#1
-pathToFileURL("/foo#1");              // Correct:   file:///foo%231 (POSIX)
+new URL('/foo#1', 'file:');           // Incorrect: file:///foo#1
+pathToFileURL('/foo#1');              // Correct:   file:///foo%231 (POSIX)
 
-new URL("/some/path%.c", "file:");    // Incorrect: file:///some/path%.c
-pathToFileURL("/some/path%.c");       // Correct:   file:///some/path%25.c (POSIX)
+new URL('/some/path%.c', 'file:');    // Incorrect: file:///some/path%.c
+pathToFileURL('/some/path%.c');       // Correct:   file:///some/path%25.c (POSIX)
 ```
 
 ```cjs
-const { pathToFileURL } = require("url");
+const { pathToFileURL } = require('url');
 new URL(__filename);                  // Incorrect: throws (POSIX)
 new URL(__filename);                  // Incorrect: C:\... (Windows)
 pathToFileURL(__filename);            // Correct:   file:///... (POSIX)
 pathToFileURL(__filename);            // Correct:   file:///C:/... (Windows)
 
-new URL("/foo#1", "file:");           // Incorrect: file:///foo#1
-pathToFileURL("/foo#1");              // Correct:   file:///foo%231 (POSIX)
+new URL('/foo#1', 'file:');           // Incorrect: file:///foo#1
+pathToFileURL('/foo#1');              // Correct:   file:///foo%231 (POSIX)
 
-new URL("/some/path%.c", "file:");    // Incorrect: file:///some/path%.c
-pathToFileURL("/some/path%.c");       // Correct:   file:///some/path%25.c (POSIX)
+new URL('/some/path%.c', 'file:');    // Incorrect: file:///some/path%.c
+pathToFileURL('/some/path%.c');       // Correct:   file:///some/path%25.c (POSIX)
 ```
 
 ### `url.urlToHttpOptions(url)`
@@ -1241,8 +1241,8 @@ This utility function converts a URL object into an ordinary options object as
 expected by the [`http.request()`][] and [`https.request()`][] APIs.
 
 ```mjs
-import { urlToHttpOptions } from "url";
-const myURL = new URL("https://a:b@測試?abc#foo");
+import { urlToHttpOptions } from 'url';
+const myURL = new URL('https://a:b@測試?abc#foo');
 
 console.log(urlToHttpOptions(myURL));
 /*
@@ -1260,8 +1260,8 @@ console.log(urlToHttpOptions(myURL));
 ```
 
 ```cjs
-const { urlToHttpOptions } = require("url");
-const myURL = new URL("https://a:b@測試?abc#foo");
+const { urlToHttpOptions } = require('url');
+const myURL = new URL('https://a:b@測試?abc#foo');
 
 console.log(urlToHttpOptions(myUrl));
 /*
@@ -1446,15 +1446,15 @@ The `url.format()` method returns a formatted URL string derived from
 `urlObject`.
 
 ```js
-const url = require("url");
+const url = require('url');
 url.format({
- protocol: "https",
- hostname: "example.com",
- pathname: "/some/path",
- query: {
-  page: 1,
-  format: "json",
- },
+  protocol: 'https',
+  hostname: 'example.com',
+  pathname: '/some/path',
+  query: {
+    page: 1,
+    format: 'json'
+  }
 });
 
 // => 'https://example.com/some/path?page=1&format=json'
@@ -1609,28 +1609,28 @@ The `url.resolve()` method resolves a target URL relative to a base URL in a
 manner similar to that of a web browser resolving an anchor tag.
 
 ```js
-const url = require("url");
-url.resolve("/one/two/three", "four");         // '/one/two/four'
-url.resolve("http://example.com/", "/one");    // 'http://example.com/one'
-url.resolve("http://example.com/one", "/two"); // 'http://example.com/two'
+const url = require('url');
+url.resolve('/one/two/three', 'four');         // '/one/two/four'
+url.resolve('http://example.com/', '/one');    // 'http://example.com/one'
+url.resolve('http://example.com/one', '/two'); // 'http://example.com/two'
 ```
 
 To achieve the same result using the WHATWG URL API:
 
 ```js
 function resolve(from, to) {
- const resolvedUrl = new URL(to, new URL(from, "resolve://"));
- if (resolvedUrl.protocol === "resolve:") {
-  // `from` is a relative URL.
-  const { pathname, search, hash } = resolvedUrl;
-  return pathname + search + hash;
- }
- return resolvedUrl.toString();
+  const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
+  if (resolvedUrl.protocol === 'resolve:') {
+    // `from` is a relative URL.
+    const { pathname, search, hash } = resolvedUrl;
+    return pathname + search + hash;
+  }
+  return resolvedUrl.toString();
 }
 
-resolve("/one/two/three", "four");         // '/one/two/four'
-resolve("http://example.com/", "/one");    // 'http://example.com/one'
-resolve("http://example.com/one", "/two"); // 'http://example.com/two'
+resolve('/one/two/three', 'four');         // '/one/two/four'
+resolve('http://example.com/', '/one');    // 'http://example.com/one'
+resolve('http://example.com/one', '/two'); // 'http://example.com/two'
 ```
 
 <a id="whatwg-percent-encoding"></a>
@@ -1687,7 +1687,7 @@ using the [Punycode][] algorithm. Note, however, that a host name _may_ contain
 _both_ Punycode encoded and percent-encoded characters:
 
 ```js
-const myURL = new URL("https://%CF%80.example.com/foo");
+const myURL = new URL('https://%CF%80.example.com/foo');
 console.log(myURL.href);
 // Prints https://xn--1xa.example.com/foo
 console.log(myURL.origin);

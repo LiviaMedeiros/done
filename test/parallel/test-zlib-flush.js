@@ -1,10 +1,10 @@
-"use strict";
-require("../common");
-const assert = require("assert");
-const zlib = require("zlib");
-const fixtures = require("../common/fixtures");
+'use strict';
+require('../common');
+const assert = require('assert');
+const zlib = require('zlib');
+const fixtures = require('../common/fixtures');
 
-const file = fixtures.readSync("person.jpg");
+const file = fixtures.readSync('person.jpg');
 const chunkSize = 16;
 const opts = { level: 0 };
 const deflater = zlib.createDeflate(opts);
@@ -18,19 +18,19 @@ let actualNone;
 let actualFull;
 
 deflater.write(chunk, function() {
- deflater.flush(zlib.constants.Z_NO_FLUSH, function() {
-  actualNone = deflater.read();
-  deflater.flush(function() {
-   const bufs = [];
-   let buf;
-   while ((buf = deflater.read()) !== null)
-    bufs.push(buf);
-   actualFull = Buffer.concat(bufs);
+  deflater.flush(zlib.constants.Z_NO_FLUSH, function() {
+    actualNone = deflater.read();
+    deflater.flush(function() {
+      const bufs = [];
+      let buf;
+      while ((buf = deflater.read()) !== null)
+        bufs.push(buf);
+      actualFull = Buffer.concat(bufs);
+    });
   });
- });
 });
 
-process.once("exit", function() {
- assert.deepStrictEqual(actualNone, expectedNone);
- assert.deepStrictEqual(actualFull, expectedFull);
+process.once('exit', function() {
+  assert.deepStrictEqual(actualNone, expectedNone);
+  assert.deepStrictEqual(actualFull, expectedFull);
 });

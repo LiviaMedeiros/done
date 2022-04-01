@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
 console.error(process.uptime());
 // Add some wiggle room for different platforms.
@@ -32,6 +32,6 @@ assert.ok(process.uptime() <= 15);
 const original = process.uptime();
 
 setTimeout(function() {
- const uptime = process.uptime();
- assert.ok(original < uptime);
+  const uptime = process.uptime();
+  assert.ok(original < uptime);
 }, 10);

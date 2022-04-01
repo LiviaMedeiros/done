@@ -19,42 +19,42 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
-const domain = require("domain");
-const assert = require("assert");
-const crypto = require("crypto");
+const domain = require('domain');
+const assert = require('assert');
+const crypto = require('crypto');
 
 const d = domain.create();
-const expect = ["pbkdf2", "randomBytes", "pseudoRandomBytes"];
+const expect = ['pbkdf2', 'randomBytes', 'pseudoRandomBytes'];
 
-d.on("error", common.mustCall(function(e) {
- assert.strictEqual(e.message, expect.shift());
+d.on('error', common.mustCall(function(e) {
+  assert.strictEqual(e.message, expect.shift());
 }, 3));
 
 d.run(function() {
- one();
+  one();
 
- function one() {
-  crypto.pbkdf2("a", "b", 1, 8, "sha1", function() {
-   two();
-   throw new Error("pbkdf2");
-  });
- }
+  function one() {
+    crypto.pbkdf2('a', 'b', 1, 8, 'sha1', function() {
+      two();
+      throw new Error('pbkdf2');
+    });
+  }
 
- function two() {
-  crypto.randomBytes(4, function() {
-   three();
-   throw new Error("randomBytes");
-  });
- }
+  function two() {
+    crypto.randomBytes(4, function() {
+      three();
+      throw new Error('randomBytes');
+    });
+  }
 
- function three() {
-  crypto.pseudoRandomBytes(4, function() {
-   throw new Error("pseudoRandomBytes");
-  });
- }
+  function three() {
+    crypto.pseudoRandomBytes(4, function() {
+      throw new Error('pseudoRandomBytes');
+    });
+  }
 });

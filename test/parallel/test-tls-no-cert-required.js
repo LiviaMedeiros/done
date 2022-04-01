@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 if (!common.hasCrypto)
- common.skip("missing crypto");
+  common.skip('missing crypto');
 
-const assert = require("assert");
-const tls = require("tls");
+const assert = require('assert');
+const tls = require('tls');
 
 // Omitting the cert or pfx option to tls.createServer() should not throw.
 // AECDH-NULL-SHA is a no-authentication/no-encryption cipher and hence
 // doesn't need a certificate.
-tls.createServer({ ciphers: "AECDH-NULL-SHA" })
+tls.createServer({ ciphers: 'AECDH-NULL-SHA' })
   .listen(0, common.mustCall(close));
 
 tls.createServer(assert.fail)
@@ -40,18 +40,18 @@ tls.createServer({})
   .listen(0, common.mustCall(close));
 
 assert.throws(
- () => tls.createServer("this is not valid"),
- {
-  code: "ERR_INVALID_ARG_TYPE",
-  name: "TypeError",
-  message: 'The "options" argument must be of type object. ' +
-             "Received type string ('this is not valid')",
- },
+  () => tls.createServer('this is not valid'),
+  {
+    code: 'ERR_INVALID_ARG_TYPE',
+    name: 'TypeError',
+    message: 'The "options" argument must be of type object. ' +
+             "Received type string ('this is not valid')"
+  }
 );
 
 tls.createServer()
   .listen(0, common.mustCall(close));
 
 function close() {
- this.close();
+  this.close();
 }

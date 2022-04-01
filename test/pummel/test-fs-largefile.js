@@ -19,20 +19,20 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 
-const assert = require("assert");
-const fs = require("fs");
-const path = require("path");
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 
-const tmpdir = require("../common/tmpdir");
+const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
-const filepath = path.join(tmpdir.path, "large.txt");
-const fd = fs.openSync(filepath, "w+");
+const filepath = path.join(tmpdir.path, 'large.txt');
+const fd = fs.openSync(filepath, 'w+');
 const offset = 5 * 1024 * 1024 * 1024; // 5GB
-const message = "Large File";
+const message = 'Large File';
 
 fs.ftruncateSync(fd, offset);
 assert.strictEqual(fs.statSync(filepath).size, offset);

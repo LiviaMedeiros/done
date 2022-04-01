@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // This test is aimed at making sure that unref timers queued with
 // timers._unrefActive work correctly.
@@ -13,9 +13,9 @@
 // Finally, a ref timeout is used with a delay large enough to make sure that
 // all 10 timeouts had the time to expire.
 
-require("../common");
-const timers = require("timers");
-const assert = require("assert");
+require('../common');
+const timers = require('timers');
+const assert = require('assert');
 
 const someObject = {};
 let nbTimeouts = 0;
@@ -33,15 +33,15 @@ timers.unenroll(someObject);
 timers.enroll(someObject, 1);
 
 someObject._onTimeout = function _onTimeout() {
- ++nbTimeouts;
+  ++nbTimeouts;
 
- if (nbTimeouts === N) timers.unenroll(someObject);
+  if (nbTimeouts === N) timers.unenroll(someObject);
 
- timers._unrefActive(someObject);
+  timers._unrefActive(someObject);
 };
 
 timers._unrefActive(someObject);
 
 setTimeout(function() {
- assert.strictEqual(nbTimeouts, N);
+  assert.strictEqual(nbTimeouts, N);
 }, TEST_DURATION);

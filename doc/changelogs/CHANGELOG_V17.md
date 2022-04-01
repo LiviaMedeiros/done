@@ -1343,12 +1343,12 @@ stream (such as `process.stdin`) one line at a time.
 The following simple example illustrates the basic use of the `readline` module:
 
 ```mjs
-import * as readline from "node:readline/promises";
-import { stdin as input, stdout as output } from "process";
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'process';
 
 const rl = readline.createInterface({ input, output });
 
-const answer = await rl.question("What do you think of Node.js? ");
+const answer = await rl.question('What do you think of Node.js? ');
 
 console.log(`Thank you for your valuable feedback: ${answer}`);
 

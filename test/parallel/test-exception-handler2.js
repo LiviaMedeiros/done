@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const assert = require("assert");
+'use strict';
+const common = require('../common');
+const assert = require('assert');
 
-process.on("uncaughtException", function(err) {
- console.log(`Caught exception: ${err}`);
+process.on('uncaughtException', function(err) {
+  console.log(`Caught exception: ${err}`);
 });
 
 setTimeout(common.mustCall(function() {
- console.log("This will still run.");
+  console.log('This will still run.');
 }), 50);
 
 // Intentionally cause an exception, but don't catch it.
 nonexistentFunc(); // eslint-disable-line no-undef
-assert.fail("This will not run.");
+assert.fail('This will not run.');

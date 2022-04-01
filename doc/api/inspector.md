@@ -11,7 +11,7 @@ The `inspector` module provides an API for interacting with the V8 inspector.
 It can be accessed using:
 
 ```js
-const inspector = require("inspector");
+const inspector = require('inspector');
 ```
 
 ## `inspector.close()`
@@ -23,7 +23,7 @@ Deactivate the inspector. Blocks until there are no active connections.
 * {Object} An object to send messages to the remote inspector console.
 
 ```js
-require("inspector").console.log("a message");
+require('inspector').console.log('a message');
 ```
 
 The inspector console does not have API parity with Node.js
@@ -108,7 +108,7 @@ added: v8.0.0
 Emitted when any notification from the V8 Inspector is received.
 
 ```js
-session.on("inspectorNotification", (message) => console.log(message.method));
+session.on('inspectorNotification', (message) => console.log(message.method));
 // Debugger.paused
 // Debugger.resumed
 ```
@@ -131,8 +131,8 @@ event, and prints the reason for program suspension whenever program
 execution is suspended (through breakpoints, for example):
 
 ```js
-session.on("Debugger.paused", ({ params }) => {
- console.log(params.hitBreakpoints);
+session.on('Debugger.paused', ({ params }) => {
+  console.log(params.hitBreakpoints);
 });
 // [ '/the/file/that/has/the/breakpoint.js:11:0' ]
 ```
@@ -186,7 +186,7 @@ a response is received. `callback` is a function that accepts two optional
 arguments: error and message-specific result.
 
 ```js
-session.post("Runtime.evaluate", { expression: "2 + 2" },
+session.post('Runtime.evaluate', { expression: '2 + 2' },
              (error, { result }) => console.log(result));
 // Output: { type: 'number', value: 4, description: '4' }
 ```
@@ -209,23 +209,23 @@ protocol.
 Here's an example showing how to use the [CPU Profiler][]:
 
 ```js
-const inspector = require("inspector");
-const fs = require("fs");
+const inspector = require('inspector');
+const fs = require('fs');
 const session = new inspector.Session();
 session.connect();
 
-session.post("Profiler.enable", () => {
- session.post("Profiler.start", () => {
-  // Invoke business logic under measurement here...
+session.post('Profiler.enable', () => {
+  session.post('Profiler.start', () => {
+    // Invoke business logic under measurement here...
 
-  // some time later...
-  session.post("Profiler.stop", (err, { profile }) => {
-   // Write profile to disk, upload, etc.
-   if (!err) {
-    fs.writeFileSync("./profile.cpuprofile", JSON.stringify(profile));
-   }
+    // some time later...
+    session.post('Profiler.stop', (err, { profile }) => {
+      // Write profile to disk, upload, etc.
+      if (!err) {
+        fs.writeFileSync('./profile.cpuprofile', JSON.stringify(profile));
+      }
+    });
   });
- });
 });
 ```
 
@@ -234,22 +234,22 @@ session.post("Profiler.enable", () => {
 Here's an example showing how to use the [Heap Profiler][]:
 
 ```js
-const inspector = require("inspector");
-const fs = require("fs");
+const inspector = require('inspector');
+const fs = require('fs');
 const session = new inspector.Session();
 
-const fd = fs.openSync("profile.heapsnapshot", "w");
+const fd = fs.openSync('profile.heapsnapshot', 'w');
 
 session.connect();
 
-session.on("HeapProfiler.addHeapSnapshotChunk", (m) => {
- fs.writeSync(fd, m.params.chunk);
+session.on('HeapProfiler.addHeapSnapshotChunk', (m) => {
+  fs.writeSync(fd, m.params.chunk);
 });
 
-session.post("HeapProfiler.takeHeapSnapshot", null, (err, r) => {
- console.log("HeapProfiler.takeHeapSnapshot done:", err, r);
- session.disconnect();
- fs.closeSync(fd);
+session.post('HeapProfiler.takeHeapSnapshot', null, (err, r) => {
+  console.log('HeapProfiler.takeHeapSnapshot done:', err, r);
+  session.disconnect();
+  fs.closeSync(fd);
 });
 ```
 

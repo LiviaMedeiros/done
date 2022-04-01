@@ -1,10 +1,10 @@
-"use strict";
-require("../common");
-const assert = require("assert");
-const { spawn } = require("child_process");
+'use strict';
+require('../common');
+const assert = require('assert');
+const { spawn } = require('child_process');
 
 const child = spawn(process.execPath, [
- "--interactive",
+  '--interactive',
 ]);
 child.stdin.end(`
 import('fs').then(
@@ -13,6 +13,6 @@ import('fs').then(
 ).then(process.exit)
 `);
 
-child.on("exit", (code) => {
- assert.strictEqual(code, 0);
+child.on('exit', (code) => {
+  assert.strictEqual(code, 0);
 });

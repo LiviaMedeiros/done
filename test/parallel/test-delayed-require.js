@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const assert = require("assert");
-const fixtures = require("../common/fixtures");
+'use strict';
+const common = require('../common');
+const assert = require('assert');
+const fixtures = require('../common/fixtures');
 
 setTimeout(common.mustCall(function() {
- const a = require(fixtures.path("a"));
- assert.strictEqual("A" in a, true);
- assert.strictEqual(a.A(), "A");
- assert.strictEqual(a.D(), "D");
+  const a = require(fixtures.path('a'));
+  assert.strictEqual('A' in a, true);
+  assert.strictEqual(a.A(), 'A');
+  assert.strictEqual(a.D(), 'D');
 }), 50);

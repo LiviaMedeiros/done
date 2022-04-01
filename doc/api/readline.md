@@ -12,32 +12,32 @@ stream (such as [`process.stdin`][]) one line at a time.
 To use the promise-based APIs:
 
 ```mjs
-import * as readline from "node:readline/promises";
+import * as readline from 'node:readline/promises';
 ```
 
 ```cjs
-const readline = require("readline/promises");
+const readline = require('readline/promises');
 ```
 
 To use the callback and sync APIs:
 
 ```mjs
-import * as readline from "node:readline";
+import * as readline from 'node:readline';
 ```
 
 ```cjs
-const readline = require("readline");
+const readline = require('readline');
 ```
 
 The following simple example illustrates the basic use of the `readline` module.
 
 ```mjs
-import * as readline from "node:readline/promises";
-import { stdin as input, stdout as output } from "node:process";
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
 const rl = readline.createInterface({ input, output });
 
-const answer = await rl.question("What do you think of Node.js? ");
+const answer = await rl.question('What do you think of Node.js? ');
 
 console.log(`Thank you for your valuable feedback: ${answer}`);
 
@@ -45,16 +45,16 @@ rl.close();
 ```
 
 ```cjs
-const readline = require("readline");
-const { stdin: input, stdout: output } = require("process");
+const readline = require('readline');
+const { stdin: input, stdout: output } = require('process');
 
 const rl = readline.createInterface({ input, output });
 
-rl.question("What do you think of Node.js? ", (answer) => {
- // TODO: Log the answer in a database
- console.log(`Thank you for your valuable feedback: ${answer}`);
+rl.question('What do you think of Node.js? ', (answer) => {
+  // TODO: Log the answer in a database
+  console.log(`Thank you for your valuable feedback: ${answer}`);
 
- rl.close();
+  rl.close();
 });
 ```
 
@@ -118,8 +118,8 @@ The listener function is called with a string containing the single line of
 received input.
 
 ```js
-rl.on("line", (input) => {
- console.log(`Received: ${input}`);
+rl.on('line', (input) => {
+  console.log(`Received: ${input}`);
 });
 ```
 
@@ -143,8 +143,8 @@ could be useful to prevent certain lines to be added to the history, like
 a password.
 
 ```js
-rl.on("history", (history) => {
- console.log(`Received: ${history}`);
+rl.on('history', (history) => {
+  console.log(`Received: ${history}`);
 });
 ```
 
@@ -163,8 +163,8 @@ The `'pause'` event is emitted when one of the following occur:
 The listener function is called without passing any arguments.
 
 ```js
-rl.on("pause", () => {
- console.log("Readline paused.");
+rl.on('pause', () => {
+  console.log('Readline paused.');
 });
 ```
 
@@ -179,8 +179,8 @@ The `'resume'` event is emitted whenever the `input` stream is resumed.
 The listener function is called without passing any arguments.
 
 ```js
-rl.on("resume", () => {
- console.log("Readline resumed.");
+rl.on('resume', () => {
+  console.log('Readline resumed.');
 });
 ```
 
@@ -200,9 +200,9 @@ not be emitted.
 The listener function is invoked without passing any arguments.
 
 ```js
-rl.on("SIGCONT", () => {
- // `prompt` will automatically resume the stream
- rl.prompt();
+rl.on('SIGCONT', () => {
+  // `prompt` will automatically resume the stream
+  rl.prompt();
 });
 ```
 
@@ -222,10 +222,10 @@ a <kbd>Ctrl+C</kbd> input, known typically as `SIGINT`. If there are no
 The listener function is invoked without passing any arguments.
 
 ```js
-rl.on("SIGINT", () => {
- rl.question("Are you sure you want to exit? ", (answer) => {
-  if (answer.match(/^y(es)?$/i)) rl.pause();
- });
+rl.on('SIGINT', () => {
+  rl.question('Are you sure you want to exit? ', (answer) => {
+    if (answer.match(/^y(es)?$/i)) rl.pause();
+  });
 });
 ```
 
@@ -249,10 +249,10 @@ paused before the process was sent to the background.
 The listener function is invoked without passing any arguments.
 
 ```js
-rl.on("SIGTSTP", () => {
- // This will override SIGTSTP and prevent the program from going to the
- // background.
- console.log("Caught SIGTSTP.");
+rl.on('SIGTSTP', () => {
+  // This will override SIGTSTP and prevent the program from going to the
+  // background.
+  console.log('Caught SIGTSTP.');
 });
 ```
 
@@ -333,8 +333,8 @@ The `callback` is called with the provided answer as the only argument.
 Example usage:
 
 ```js
-rl.question("What is your favorite food? ", (answer) => {
- console.log(`Oh, so your favorite food is ${answer}`);
+rl.question('What is your favorite food? ', (answer) => {
+  console.log(`Oh, so your favorite food is ${answer}`);
 });
 ```
 
@@ -344,12 +344,12 @@ Using an `AbortController` to cancel a question.
 const ac = new AbortController();
 const signal = ac.signal;
 
-rl.question("What is your favorite food? ", { signal }, (answer) => {
- console.log(`Oh, so your favorite food is ${answer}`);
+rl.question('What is your favorite food? ', { signal }, (answer) => {
+  console.log(`Oh, so your favorite food is ${answer}`);
 });
 
-signal.addEventListener("abort", () => {
- console.log("The food question timed out");
+signal.addEventListener('abort', () => {
+  console.log('The food question timed out');
 }, { once: true });
 
 setTimeout(() => ac.abort(), 10000);
@@ -360,16 +360,16 @@ Promise that fulfills with the answer. If the question is canceled using
 an `AbortController` it will reject with an `AbortError`.
 
 ```js
-const util = require("util");
+const util = require('util');
 const question = util.promisify(rl.question).bind(rl);
 
 async function questionExample() {
- try {
-  const answer = await question("What is you favorite food? ");
-  console.log(`Oh, so your favorite food is ${answer}`);
- } catch (err) {
-  console.error("Question rejected", err);
- }
+  try {
+    const answer = await question('What is you favorite food? ');
+    console.log(`Oh, so your favorite food is ${answer}`);
+  } catch (err) {
+    console.error('Question rejected', err);
+  }
 }
 questionExample();
 ```
@@ -432,9 +432,9 @@ If the `InterfaceConstructor` was created with `output` set to `null` or
 `undefined` the `data` and `key` are not written.
 
 ```js
-rl.write("Delete this!");
+rl.write('Delete this!');
 // Simulate Ctrl+U to delete the line written previously
-rl.write(null, { ctrl: true, name: "u" });
+rl.write(null, { ctrl: true, name: 'u' });
 ```
 
 The `rl.write()` method will write the data to the `readline` `Interface`'s
@@ -471,14 +471,14 @@ instead for performance-sensitive applications.
 
 ```js
 async function processLineByLine() {
- const rl = readline.createInterface({
-  // ...
- });
+  const rl = readline.createInterface({
+    // ...
+  });
 
- for await (const line of rl) {
-  // Each line in the readline input will be successively available here as
-  // `line`.
- }
+  for await (const line of rl) {
+    // Each line in the readline input will be successively available here as
+    // `line`.
+  }
 }
 ```
 
@@ -515,16 +515,16 @@ unintended consequences if `rl.cursor` is not also controlled.
 One possible use case would be as follows:
 
 ```js
-const values = ["lorem ipsum", "dolor sit amet"];
+const values = ['lorem ipsum', 'dolor sit amet'];
 const rl = readline.createInterface(process.stdin);
 const showResults = debounce(() => {
- console.log(
-  "\n",
-  values.filter((val) => val.startsWith(rl.line)).join(" "),
- );
+  console.log(
+    '\n',
+    values.filter((val) => val.startsWith(rl.line)).join(' ')
+  );
 }, 300);
-process.stdin.on("keypress", (c, k) => {
- showResults();
+process.stdin.on('keypress', (c, k) => {
+  showResults();
 });
 ```
 
@@ -608,7 +608,7 @@ If the `readlinePromises.Interface` was created with `output` set to `null` or
 Example usage:
 
 ```mjs
-const answer = await rl.question("What is your favorite food? ");
+const answer = await rl.question('What is your favorite food? ');
 console.log(`Oh, so your favorite food is ${answer}`);
 ```
 
@@ -617,11 +617,11 @@ Using an `AbortSignal` to cancel a question.
 ```mjs
 const signal = AbortSignal.timeout(10_000);
 
-signal.addEventListener("abort", () => {
- console.log("The food question timed out");
+signal.addEventListener('abort', () => {
+  console.log('The food question timed out');
 }, { once: true });
 
-const answer = await rl.question("What is your favorite food? ", { signal });
+const answer = await rl.question('What is your favorite food? ', { signal });
 console.log(`Oh, so your favorite food is ${answer}`);
 ```
 
@@ -773,10 +773,10 @@ The `readlinePromises.createInterface()` method creates a new `readlinePromises.
 instance.
 
 ```js
-const readlinePromises = require("readline/promises");
+const readlinePromises = require('readline/promises');
 const rl = readlinePromises.createInterface({
- input: process.stdin,
- output: process.stdout,
+  input: process.stdin,
+  output: process.stdout
 });
 ```
 
@@ -784,8 +784,8 @@ Once the `readlinePromises.Interface` instance is created, the most common case
 is to listen for the `'line'` event:
 
 ```js
-rl.on("line", (line) => {
- console.log(`Received: ${line}`);
+rl.on('line', (line) => {
+  console.log(`Received: ${line}`);
 });
 ```
 
@@ -806,10 +806,10 @@ For instance: `[[substr1, substr2, ...], originalsubstring]`.
 
 ```js
 function completer(line) {
- const completions = ".help .error .exit .quit .q".split(" ");
- const hits = completions.filter((c) => c.startsWith(line));
- // Show all completions if none found
- return [hits.length ? hits : completions, line];
+  const completions = '.help .error .exit .quit .q'.split(' ');
+  const hits = completions.filter((c) => c.startsWith(line));
+  // Show all completions if none found
+  return [hits.length ? hits : completions, line];
 }
 ```
 
@@ -817,8 +817,8 @@ The `completer` function can also returns a {Promise}, or be asynchronous:
 
 ```js
 async function completer(linePartial) {
- await someAsyncWork();
- return [["123"], linePartial];
+  await someAsyncWork();
+  return [['123'], linePartial];
 }
 ```
 
@@ -877,8 +877,8 @@ The `callback` is called with the provided answer as the only argument.
 Example usage:
 
 ```js
-rl.question("What is your favorite food? ", (answer) => {
- console.log(`Oh, so your favorite food is ${answer}`);
+rl.question('What is your favorite food? ', (answer) => {
+  console.log(`Oh, so your favorite food is ${answer}`);
 });
 ```
 
@@ -888,12 +888,12 @@ Using an `AbortController` to cancel a question.
 const ac = new AbortController();
 const signal = ac.signal;
 
-rl.question("What is your favorite food? ", { signal }, (answer) => {
- console.log(`Oh, so your favorite food is ${answer}`);
+rl.question('What is your favorite food? ', { signal }, (answer) => {
+  console.log(`Oh, so your favorite food is ${answer}`);
 });
 
-signal.addEventListener("abort", () => {
- console.log("The food question timed out");
+signal.addEventListener('abort', () => {
+  console.log('The food question timed out');
 }, { once: true });
 
 setTimeout(() => ac.abort(), 10000);
@@ -904,16 +904,16 @@ Promise that fulfills with the answer. If the question is canceled using
 an `AbortController` it will reject with an `AbortError`.
 
 ```js
-const util = require("util");
+const util = require('util');
 const question = util.promisify(rl.question).bind(rl);
 
 async function questionExample() {
- try {
-  const answer = await question("What is you favorite food? ");
-  console.log(`Oh, so your favorite food is ${answer}`);
- } catch (err) {
-  console.error("Question rejected", err);
- }
+  try {
+    const answer = await question('What is you favorite food? ');
+    console.log(`Oh, so your favorite food is ${answer}`);
+  } catch (err) {
+    console.error('Question rejected', err);
+  }
 }
 questionExample();
 ```
@@ -1047,10 +1047,10 @@ The `readline.createInterface()` method creates a new `readline.Interface`
 instance.
 
 ```js
-const readline = require("readline");
+const readline = require('readline');
 const rl = readline.createInterface({
- input: process.stdin,
- output: process.stdout,
+  input: process.stdin,
+  output: process.stdout
 });
 ```
 
@@ -1058,8 +1058,8 @@ Once the `readline.Interface` instance is created, the most common case is to
 listen for the `'line'` event:
 
 ```js
-rl.on("line", (line) => {
- console.log(`Received: ${line}`);
+rl.on('line', (line) => {
+  console.log(`Received: ${line}`);
 });
 ```
 
@@ -1084,10 +1084,10 @@ For instance: `[[substr1, substr2, ...], originalsubstring]`.
 
 ```js
 function completer(line) {
- const completions = ".help .error .exit .quit .q".split(" ");
- const hits = completions.filter((c) => c.startsWith(line));
- // Show all completions if none found
- return [hits.length ? hits : completions, line];
+  const completions = '.help .error .exit .quit .q'.split(' ');
+  const hits = completions.filter((c) => c.startsWith(line));
+  // Show all completions if none found
+  return [hits.length ? hits : completions, line];
 }
 ```
 
@@ -1096,7 +1096,7 @@ arguments:
 
 ```js
 function completer(linePartial, callback) {
- callback(null, [["123"], linePartial]);
+  callback(null, [['123'], linePartial]);
 }
 ```
 
@@ -1176,7 +1176,7 @@ the `input` from emitting `'keypress'` events.
 ```js
 readline.emitKeypressEvents(process.stdin);
 if (process.stdin.isTTY)
- process.stdin.setRawMode(true);
+  process.stdin.setRawMode(true);
 ```
 
 ## Example: Tiny CLI
@@ -1185,28 +1185,28 @@ The following example illustrates the use of `readline.Interface` class to
 implement a small command-line interface:
 
 ```js
-const readline = require("readline");
+const readline = require('readline');
 const rl = readline.createInterface({
- input: process.stdin,
- output: process.stdout,
- prompt: "OHAI> ",
+  input: process.stdin,
+  output: process.stdout,
+  prompt: 'OHAI> '
 });
 
 rl.prompt();
 
-rl.on("line", (line) => {
- switch (line.trim()) {
-  case "hello":
-   console.log("world!");
-   break;
-  default:
-   console.log(`Say what? I might have heard '${line.trim()}'`);
-   break;
- }
- rl.prompt();
-}).on("close", () => {
- console.log("Have a great day!");
- process.exit(0);
+rl.on('line', (line) => {
+  switch (line.trim()) {
+    case 'hello':
+      console.log('world!');
+      break;
+    default:
+      console.log(`Say what? I might have heard '${line.trim()}'`);
+      break;
+  }
+  rl.prompt();
+}).on('close', () => {
+  console.log('Have a great day!');
+  process.exit(0);
 });
 ```
 
@@ -1217,23 +1217,23 @@ time. The easiest way to do so is leveraging the [`fs.ReadStream`][] API as
 well as a `for await...of` loop:
 
 ```js
-const fs = require("fs");
-const readline = require("readline");
+const fs = require('fs');
+const readline = require('readline');
 
 async function processLineByLine() {
- const fileStream = fs.createReadStream("input.txt");
+  const fileStream = fs.createReadStream('input.txt');
 
- const rl = readline.createInterface({
-  input: fileStream,
-  crlfDelay: Infinity,
- });
- // Note: we use the crlfDelay option to recognize all instances of CR LF
- // ('\r\n') in input.txt as a single line break.
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity
+  });
+  // Note: we use the crlfDelay option to recognize all instances of CR LF
+  // ('\r\n') in input.txt as a single line break.
 
- for await (const line of rl) {
-  // Each line in input.txt will be successively available here as `line`.
-  console.log(`Line from file: ${line}`);
- }
+  for await (const line of rl) {
+    // Each line in input.txt will be successively available here as `line`.
+    console.log(`Line from file: ${line}`);
+  }
 }
 
 processLineByLine();
@@ -1242,16 +1242,16 @@ processLineByLine();
 Alternatively, one could use the [`'line'`][] event:
 
 ```js
-const fs = require("fs");
-const readline = require("readline");
+const fs = require('fs');
+const readline = require('readline');
 
 const rl = readline.createInterface({
- input: fs.createReadStream("sample.txt"),
- crlfDelay: Infinity,
+  input: fs.createReadStream('sample.txt'),
+  crlfDelay: Infinity
 });
 
-rl.on("line", (line) => {
- console.log(`Line from file: ${line}`);
+rl.on('line', (line) => {
+  console.log(`Line from file: ${line}`);
 });
 ```
 
@@ -1259,27 +1259,27 @@ Currently, `for await...of` loop can be a bit slower. If `async` / `await`
 flow and speed are both essential, a mixed approach can be applied:
 
 ```js
-const { once } = require("events");
-const { createReadStream } = require("fs");
-const { createInterface } = require("readline");
+const { once } = require('events');
+const { createReadStream } = require('fs');
+const { createInterface } = require('readline');
 
 (async function processLineByLine() {
- try {
-  const rl = createInterface({
-   input: createReadStream("big-file.txt"),
-   crlfDelay: Infinity,
-  });
+  try {
+    const rl = createInterface({
+      input: createReadStream('big-file.txt'),
+      crlfDelay: Infinity
+    });
 
-  rl.on("line", (line) => {
-   // Process the line.
-  });
+    rl.on('line', (line) => {
+      // Process the line.
+    });
 
-  await once(rl, "close");
+    await once(rl, 'close');
 
-  console.log("File processed.");
- } catch (err) {
-  console.error(err);
- }
+    console.log('File processed.');
+  } catch (err) {
+    console.error(err);
+  }
 })();
 ```
 

@@ -1,6 +1,6 @@
-"use strict";
-const common = require("../common");
-const { Worker } = require("worker_threads");
+'use strict';
+const common = require('../common');
+const { Worker } = require('worker_threads');
 
 // Check that a Worker that's running another Worker can be terminated.
 
@@ -12,4 +12,4 @@ worker.on('online', () => {
 });
 `, { eval: true });
 
-worker.on("message", common.mustCall(() => worker.terminate()));
+worker.on('message', common.mustCall(() => worker.terminate()));

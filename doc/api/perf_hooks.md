@@ -17,21 +17,21 @@ Node.js supports the following [Web Performance APIs][]:
 * [User Timing][]
 
 ```js
-const { PerformanceObserver, performance } = require("perf_hooks");
+const { PerformanceObserver, performance } = require('perf_hooks');
 
 const obs = new PerformanceObserver((items) => {
- console.log(items.getEntries()[0].duration);
- performance.clearMarks();
+  console.log(items.getEntries()[0].duration);
+  performance.clearMarks();
 });
-obs.observe({ type: "measure" });
-performance.measure("Start to Now");
+obs.observe({ type: 'measure' });
+performance.measure('Start to Now');
 
-performance.mark("A");
+performance.mark('A');
 doSomeLongRunningProcess(() => {
- performance.measure("A to Now", "A");
+  performance.measure('A to Now', 'A');
 
- performance.mark("B");
- performance.measure("A to B", "A", "B");
+  performance.mark('B');
+  performance.measure('A to B', 'A', 'B');
 });
 ```
 
@@ -110,14 +110,14 @@ No other CPU idle time is taken into consideration. The following is an example
 of how a mostly idle process will have a high ELU.
 
 ```js
-"use strict";
-const { eventLoopUtilization } = require("perf_hooks").performance;
-const { spawnSync } = require("child_process");
+'use strict';
+const { eventLoopUtilization } = require('perf_hooks').performance;
+const { spawnSync } = require('child_process');
 
 setImmediate(() => {
- const elu = eventLoopUtilization();
- spawnSync("sleep", ["5"]);
- console.log(eventLoopUtilization(elu).utilization);
+  const elu = eventLoopUtilization();
+  spawnSync('sleep', ['5']);
+  console.log(eventLoopUtilization(elu).utilization);
 });
 ```
 
@@ -310,24 +310,24 @@ event type in order for the timing details to be accessed.
 
 ```js
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 function someFunction() {
- console.log("hello world");
+  console.log('hello world');
 }
 
 const wrapped = performance.timerify(someFunction);
 
 const obs = new PerformanceObserver((list) => {
- console.log(list.getEntries()[0].duration);
+  console.log(list.getEntries()[0].duration);
 
- performance.clearMarks();
- performance.clearMeasures();
- obs.disconnect();
+  performance.clearMarks();
+  performance.clearMeasures();
+  obs.disconnect();
 });
-obs.observe({ entryTypes: ["function"] });
+obs.observe({ entryTypes: ['function'] });
 
 // A performance timeline entry will be created
 wrapped();
@@ -676,20 +676,20 @@ changes:
 
 ```js
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 const obs = new PerformanceObserver((list, observer) => {
- console.log(list.getEntries());
+  console.log(list.getEntries());
 
- performance.clearMarks();
- performance.clearMeasures();
- observer.disconnect();
+  performance.clearMarks();
+  performance.clearMeasures();
+  observer.disconnect();
 });
-obs.observe({ entryTypes: ["mark"], buffered: true });
+obs.observe({ entryTypes: ['mark'], buffered: true });
 
-performance.mark("test");
+performance.mark('test');
 ```
 
 Because `PerformanceObserver` instances introduce their own additional
@@ -742,17 +742,17 @@ or `options.type`:
 
 ```js
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 const obs = new PerformanceObserver((list, observer) => {
- // Called once asynchronously. `list` contains three items.
+  // Called once asynchronously. `list` contains three items.
 });
-obs.observe({ type: "mark" });
+obs.observe({ type: 'mark' });
 
 for (let n = 0; n < 3; n++)
- performance.mark(`test${n}`);
+  performance.mark(`test${n}`);
 ```
 
 ## Class: `PerformanceObserverEntryList`
@@ -778,37 +778,37 @@ with respect to `performanceEntry.startTime`.
 
 ```js
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 const obs = new PerformanceObserver((perfObserverList, observer) => {
- console.log(perfObserverList.getEntries());
- /**
-	 * [
-	 *   PerformanceEntry {
-	 *     name: 'test',
-	 *     entryType: 'mark',
-	 *     startTime: 81.465639,
-	 *     duration: 0
-	 *   },
-	 *   PerformanceEntry {
-	 *     name: 'meow',
-	 *     entryType: 'mark',
-	 *     startTime: 81.860064,
-	 *     duration: 0
-	 *   }
-	 * ]
-	 */
+  console.log(perfObserverList.getEntries());
+  /**
+   * [
+   *   PerformanceEntry {
+   *     name: 'test',
+   *     entryType: 'mark',
+   *     startTime: 81.465639,
+   *     duration: 0
+   *   },
+   *   PerformanceEntry {
+   *     name: 'meow',
+   *     entryType: 'mark',
+   *     startTime: 81.860064,
+   *     duration: 0
+   *   }
+   * ]
+   */
 
- performance.clearMarks();
- performance.clearMeasures();
- observer.disconnect();
+  performance.clearMarks();
+  performance.clearMeasures();
+  observer.disconnect();
 });
-obs.observe({ type: "mark" });
+obs.observe({ type: 'mark' });
 
-performance.mark("test");
-performance.mark("meow");
+performance.mark('test');
+performance.mark('meow');
 ```
 
 ### `performanceObserverEntryList.getEntriesByName(name[, type])`
@@ -828,45 +828,45 @@ equal to `name`, and optionally, whose `performanceEntry.entryType` is equal to
 
 ```js
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 const obs = new PerformanceObserver((perfObserverList, observer) => {
- console.log(perfObserverList.getEntriesByName("meow"));
- /**
-	 * [
-	 *   PerformanceEntry {
-	 *     name: 'meow',
-	 *     entryType: 'mark',
-	 *     startTime: 98.545991,
-	 *     duration: 0
-	 *   }
-	 * ]
-	 */
- console.log(perfObserverList.getEntriesByName("nope")); // []
+  console.log(perfObserverList.getEntriesByName('meow'));
+  /**
+   * [
+   *   PerformanceEntry {
+   *     name: 'meow',
+   *     entryType: 'mark',
+   *     startTime: 98.545991,
+   *     duration: 0
+   *   }
+   * ]
+   */
+  console.log(perfObserverList.getEntriesByName('nope')); // []
 
- console.log(perfObserverList.getEntriesByName("test", "mark"));
- /**
-	 * [
-	 *   PerformanceEntry {
-	 *     name: 'test',
-	 *     entryType: 'mark',
-	 *     startTime: 63.518931,
-	 *     duration: 0
-	 *   }
-	 * ]
-	 */
- console.log(perfObserverList.getEntriesByName("test", "measure")); // []
+  console.log(perfObserverList.getEntriesByName('test', 'mark'));
+  /**
+   * [
+   *   PerformanceEntry {
+   *     name: 'test',
+   *     entryType: 'mark',
+   *     startTime: 63.518931,
+   *     duration: 0
+   *   }
+   * ]
+   */
+  console.log(perfObserverList.getEntriesByName('test', 'measure')); // []
 
- performance.clearMarks();
- performance.clearMeasures();
- observer.disconnect();
+  performance.clearMarks();
+  performance.clearMeasures();
+  observer.disconnect();
 });
-obs.observe({ entryTypes: ["mark", "measure"] });
+obs.observe({ entryTypes: ['mark', 'measure'] });
 
-performance.mark("test");
-performance.mark("meow");
+performance.mark('test');
+performance.mark('meow');
 ```
 
 ### `performanceObserverEntryList.getEntriesByType(type)`
@@ -884,36 +884,36 @@ is equal to `type`.
 
 ```js
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 const obs = new PerformanceObserver((perfObserverList, observer) => {
- console.log(perfObserverList.getEntriesByType("mark"));
- /**
-	 * [
-	 *   PerformanceEntry {
-	 *     name: 'test',
-	 *     entryType: 'mark',
-	 *     startTime: 55.897834,
-	 *     duration: 0
-	 *   },
-	 *   PerformanceEntry {
-	 *     name: 'meow',
-	 *     entryType: 'mark',
-	 *     startTime: 56.350146,
-	 *     duration: 0
-	 *   }
-	 * ]
-	 */
- performance.clearMarks();
- performance.clearMeasures();
- observer.disconnect();
+  console.log(perfObserverList.getEntriesByType('mark'));
+  /**
+   * [
+   *   PerformanceEntry {
+   *     name: 'test',
+   *     entryType: 'mark',
+   *     startTime: 55.897834,
+   *     duration: 0
+   *   },
+   *   PerformanceEntry {
+   *     name: 'meow',
+   *     entryType: 'mark',
+   *     startTime: 56.350146,
+   *     duration: 0
+   *   }
+   * ]
+   */
+  performance.clearMarks();
+  performance.clearMeasures();
+  observer.disconnect();
 });
-obs.observe({ type: "mark" });
+obs.observe({ type: 'mark' });
 
-performance.mark("test");
-performance.mark("meow");
+performance.mark('test');
+performance.mark('meow');
 ```
 
 ## `perf_hooks.createHistogram([options])`
@@ -959,7 +959,7 @@ of the timer, and those delays are specifically what this API is intended to
 detect.
 
 ```js
-const { monitorEventLoopDelay } = require("perf_hooks");
+const { monitorEventLoopDelay } = require('perf_hooks');
 const h = monitorEventLoopDelay({ resolution: 20 });
 h.enable();
 // Do something.
@@ -1227,40 +1227,40 @@ the actual duration of a Timeout operation (including the amount of time it took
 to execute the callback).
 
 ```js
-"use strict";
-const async_hooks = require("async_hooks");
+'use strict';
+const async_hooks = require('async_hooks');
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 
 const set = new Set();
 const hook = async_hooks.createHook({
- init(id, type) {
-  if (type === "Timeout") {
-   performance.mark(`Timeout-${id}-Init`);
-   set.add(id);
+  init(id, type) {
+    if (type === 'Timeout') {
+      performance.mark(`Timeout-${id}-Init`);
+      set.add(id);
+    }
+  },
+  destroy(id) {
+    if (set.has(id)) {
+      set.delete(id);
+      performance.mark(`Timeout-${id}-Destroy`);
+      performance.measure(`Timeout-${id}`,
+                          `Timeout-${id}-Init`,
+                          `Timeout-${id}-Destroy`);
+    }
   }
- },
- destroy(id) {
-  if (set.has(id)) {
-   set.delete(id);
-   performance.mark(`Timeout-${id}-Destroy`);
-   performance.measure(`Timeout-${id}`,
-                       `Timeout-${id}-Init`,
-                       `Timeout-${id}-Destroy`);
-  }
- },
 });
 hook.enable();
 
 const obs = new PerformanceObserver((list, observer) => {
- console.log(list.getEntries()[0]);
- performance.clearMarks();
- performance.clearMeasures();
- observer.disconnect();
+  console.log(list.getEntries()[0]);
+  performance.clearMarks();
+  performance.clearMeasures();
+  observer.disconnect();
 });
-obs.observe({ entryTypes: ["measure"], buffered: true });
+obs.observe({ entryTypes: ['measure'], buffered: true });
 
 setTimeout(() => {}, 1000);
 ```
@@ -1273,12 +1273,12 @@ dependencies:
 <!-- eslint-disable no-global-assign -->
 
 ```js
-"use strict";
+'use strict';
 const {
- performance,
- PerformanceObserver,
-} = require("perf_hooks");
-const mod = require("module");
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
+const mod = require('module');
 
 // Monkey patch the require function
 mod.Module.prototype.require =
@@ -1287,17 +1287,17 @@ require = performance.timerify(require);
 
 // Activate the observer
 const obs = new PerformanceObserver((list) => {
- const entries = list.getEntries();
- entries.forEach((entry) => {
-  console.log(`require('${entry[0]}')`, entry.duration);
- });
- performance.clearMarks();
- performance.clearMeasures();
- obs.disconnect();
+  const entries = list.getEntries();
+  entries.forEach((entry) => {
+    console.log(`require('${entry[0]}')`, entry.duration);
+  });
+  performance.clearMarks();
+  performance.clearMeasures();
+  obs.disconnect();
 });
-obs.observe({ entryTypes: ["function"], buffered: true });
+obs.observe({ entryTypes: ['function'], buffered: true });
 
-require("some-module");
+require('some-module');
 ```
 
 ### Measuring how long one HTTP round-trip takes
@@ -1309,61 +1309,61 @@ response, and for HTTP request, it means the time interval between receiving
 the request and sending the response:
 
 ```js
-"use strict";
-const { PerformanceObserver } = require("perf_hooks");
-const http = require("http");
+'use strict';
+const { PerformanceObserver } = require('perf_hooks');
+const http = require('http');
 
 const obs = new PerformanceObserver((items) => {
- items.getEntries().forEach((item) => {
-  console.log(item);
- });
+  items.getEntries().forEach((item) => {
+    console.log(item);
+  });
 });
 
-obs.observe({ entryTypes: ["http"] });
+obs.observe({ entryTypes: ['http'] });
 
 const PORT = 8080;
 
 http.createServer((req, res) => {
- res.end("ok");
+  res.end('ok');
 }).listen(PORT, () => {
- http.get(`http://127.0.0.1:${PORT}`);
+  http.get(`http://127.0.0.1:${PORT}`);
 });
 ```
 
 ### Measuring how long the `net.connect` (only for TCP) takes when the connection is successful
 
 ```js
-"use strict";
-const { PerformanceObserver } = require("perf_hooks");
-const net = require("net");
+'use strict';
+const { PerformanceObserver } = require('perf_hooks');
+const net = require('net');
 const obs = new PerformanceObserver((items) => {
- items.getEntries().forEach((item) => {
-  console.log(item);
- });
+  items.getEntries().forEach((item) => {
+    console.log(item);
+  });
 });
-obs.observe({ entryTypes: ["net"] });
+obs.observe({ entryTypes: ['net'] });
 const PORT = 8080;
 net.createServer((socket) => {
- socket.destroy();
+  socket.destroy();
 }).listen(PORT, () => {
- net.connect(PORT);
+  net.connect(PORT);
 });
 ```
 
 ### Measuring how long the DNS takes when the request is successful
 
 ```js
-"use strict";
-const { PerformanceObserver } = require("perf_hooks");
-const dns = require("dns");
+'use strict';
+const { PerformanceObserver } = require('perf_hooks');
+const dns = require('dns');
 const obs = new PerformanceObserver((items) => {
- items.getEntries().forEach((item) => {
-  console.log(item);
- });
+  items.getEntries().forEach((item) => {
+    console.log(item);
+  });
 });
-obs.observe({ entryTypes: ["dns"] });
-dns.lookup("localhost", () => {});
-dns.promises.resolve("localhost");
+obs.observe({ entryTypes: ['dns'] });
+dns.lookup('localhost', () => {});
+dns.promises.resolve('localhost');
 ```
 
 [Async Hooks]: async_hooks.md

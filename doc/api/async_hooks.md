@@ -10,11 +10,11 @@ The `async_hooks` module provides an API to track asynchronous resources. It
 can be accessed using:
 
 ```mjs
-import async_hooks from "async_hooks";
+import async_hooks from 'async_hooks';
 ```
 
 ```cjs
-const async_hooks = require("async_hooks");
+const async_hooks = require('async_hooks');
 ```
 
 ## Terminology
@@ -34,7 +34,7 @@ interface, and each thread will use a new set of async IDs.
 Following is a simple overview of the public API.
 
 ```mjs
-import async_hooks from "async_hooks";
+import async_hooks from 'async_hooks';
 
 // Return the ID of the current execution context.
 const eid = async_hooks.executionAsyncId();
@@ -82,7 +82,7 @@ function promiseResolve(asyncId) { }
 ```
 
 ```cjs
-const async_hooks = require("async_hooks");
+const async_hooks = require('async_hooks');
 
 // Return the ID of the current execution context.
 const eid = async_hooks.executionAsyncId();
@@ -155,20 +155,20 @@ specifics of all functions that can be passed to `callbacks` is in the
 [Hook Callbacks][] section.
 
 ```mjs
-import { createHook } from "async_hooks";
+import { createHook } from 'async_hooks';
 
 const asyncHook = createHook({
- init(asyncId, type, triggerAsyncId, resource) { },
- destroy(asyncId) { },
+  init(asyncId, type, triggerAsyncId, resource) { },
+  destroy(asyncId) { }
 });
 ```
 
 ```cjs
-const async_hooks = require("async_hooks");
+const async_hooks = require('async_hooks');
 
 const asyncHook = async_hooks.createHook({
- init(asyncId, type, triggerAsyncId, resource) { },
- destroy(asyncId) { },
+  init(asyncId, type, triggerAsyncId, resource) { },
+  destroy(asyncId) { }
 });
 ```
 
@@ -176,13 +176,13 @@ The callbacks will be inherited via the prototype chain:
 
 ```js
 class MyAsyncCallbacks {
- init(asyncId, type, triggerAsyncId, resource) { }
- destroy(asyncId) {}
+  init(asyncId, type, triggerAsyncId, resource) { }
+  destroy(asyncId) {}
 }
 
 class MyAddedCallbacks extends MyAsyncCallbacks {
- before(asyncId) { }
- after(asyncId) { }
+  before(asyncId) { }
+  after(asyncId) { }
 }
 
 const asyncHook = async_hooks.createHook(new MyAddedCallbacks());
@@ -220,22 +220,22 @@ This will print to the file and will not invoke `AsyncHook` recursively because
 it is synchronous.
 
 ```mjs
-import { writeFileSync } from "fs";
-import { format } from "util";
+import { writeFileSync } from 'fs';
+import { format } from 'util';
 
 function debug(...args) {
- // Use a function like this one when debugging inside an AsyncHook callback
- writeFileSync("log.out", `${format(...args)}\n`, { flag: "a" });
+  // Use a function like this one when debugging inside an AsyncHook callback
+  writeFileSync('log.out', `${format(...args)}\n`, { flag: 'a' });
 }
 ```
 
 ```cjs
-const fs = require("fs");
-const util = require("util");
+const fs = require('fs');
+const util = require('util');
 
 function debug(...args) {
- // Use a function like this one when debugging inside an AsyncHook callback
- fs.writeFileSync("log.out", `${util.format(...args)}\n`, { flag: "a" });
+  // Use a function like this one when debugging inside an AsyncHook callback
+  fs.writeFileSync('log.out', `${util.format(...args)}\n`, { flag: 'a' });
 }
 ```
 
@@ -261,13 +261,13 @@ The `AsyncHook` instance is disabled by default. If the `AsyncHook` instance
 should be enabled immediately after creation, the following pattern can be used.
 
 ```mjs
-import { createHook } from "async_hooks";
+import { createHook } from 'async_hooks';
 
 const hook = createHook(callbacks).enable();
 ```
 
 ```cjs
-const async_hooks = require("async_hooks");
+const async_hooks = require('async_hooks');
 
 const hook = async_hooks.createHook(callbacks).enable();
 ```
@@ -307,7 +307,7 @@ closing it before the resource can be used. The following snippet demonstrates
 this.
 
 ```mjs
-import { createServer } from "net";
+import { createServer } from 'net';
 
 createServer().listen(function() { this.close(); });
 // OR
@@ -315,7 +315,7 @@ clearTimeout(setTimeout(() => {}, 10));
 ```
 
 ```cjs
-require("net").createServer().listen(function() { this.close(); });
+require('net').createServer().listen(function() { this.close(); });
 // OR
 clearTimeout(setTimeout(() => {}, 10));
 ```
@@ -361,34 +361,34 @@ created, while `triggerAsyncId` shows _why_ a resource was created.
 The following is a simple demonstration of `triggerAsyncId`:
 
 ```mjs
-import { createHook, executionAsyncId } from "async_hooks";
-import { stdout } from "process";
-import net from "net";
+import { createHook, executionAsyncId } from 'async_hooks';
+import { stdout } from 'process';
+import net from 'net';
 
 createHook({
- init(asyncId, type, triggerAsyncId) {
-  const eid = executionAsyncId();
-  fs.writeSync(
-   stdout.fd,
-   `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
- },
+  init(asyncId, type, triggerAsyncId) {
+    const eid = executionAsyncId();
+    fs.writeSync(
+      stdout.fd,
+      `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
+  }
 }).enable();
 
 net.createServer((conn) => {}).listen(8080);
 ```
 
 ```cjs
-const { createHook, executionAsyncId } = require("async_hooks");
-const { stdout } = require("process");
-const net = require("net");
+const { createHook, executionAsyncId } = require('async_hooks');
+const { stdout } = require('process');
+const net = require('net');
 
 createHook({
- init(asyncId, type, triggerAsyncId) {
-  const eid = executionAsyncId();
-  fs.writeSync(
-   stdout.fd,
-   `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
- },
+  init(asyncId, type, triggerAsyncId) {
+    const eid = executionAsyncId();
+    fs.writeSync(
+      stdout.fd,
+      `${type}(${asyncId}): trigger: ${triggerAsyncId} execution: ${eid}\n`);
+  }
 }).enable();
 
 net.createServer((conn) => {}).listen(8080);
@@ -433,42 +433,42 @@ callback to `listen()` will look like. The output formatting is slightly more
 elaborate to make calling context easier to see.
 
 ```js
-const async_hooks = require("async_hooks");
-const fs = require("fs");
-const net = require("net");
+const async_hooks = require('async_hooks');
+const fs = require('fs');
+const net = require('net');
 const { fd } = process.stdout;
 
 let indent = 0;
 async_hooks.createHook({
- init(asyncId, type, triggerAsyncId) {
-  const eid = async_hooks.executionAsyncId();
-  const indentStr = " ".repeat(indent);
-  fs.writeSync(
-   fd,
-   `${indentStr}${type}(${asyncId}):` +
+  init(asyncId, type, triggerAsyncId) {
+    const eid = async_hooks.executionAsyncId();
+    const indentStr = ' '.repeat(indent);
+    fs.writeSync(
+      fd,
+      `${indentStr}${type}(${asyncId}):` +
       ` trigger: ${triggerAsyncId} execution: ${eid}\n`);
- },
- before(asyncId) {
-  const indentStr = " ".repeat(indent);
-  fs.writeSync(fd, `${indentStr}before:  ${asyncId}\n`);
-  indent += 2;
- },
- after(asyncId) {
-  indent -= 2;
-  const indentStr = " ".repeat(indent);
-  fs.writeSync(fd, `${indentStr}after:  ${asyncId}\n`);
- },
- destroy(asyncId) {
-  const indentStr = " ".repeat(indent);
-  fs.writeSync(fd, `${indentStr}destroy:  ${asyncId}\n`);
- },
+  },
+  before(asyncId) {
+    const indentStr = ' '.repeat(indent);
+    fs.writeSync(fd, `${indentStr}before:  ${asyncId}\n`);
+    indent += 2;
+  },
+  after(asyncId) {
+    indent -= 2;
+    const indentStr = ' '.repeat(indent);
+    fs.writeSync(fd, `${indentStr}after:  ${asyncId}\n`);
+  },
+  destroy(asyncId) {
+    const indentStr = ' '.repeat(indent);
+    fs.writeSync(fd, `${indentStr}destroy:  ${asyncId}\n`);
+  },
 }).enable();
 
 net.createServer(() => {}).listen(8080, () => {
- // Let's wait 10ms before logging the server started.
- setTimeout(() => {
-  console.log(">>>", async_hooks.executionAsyncId());
- }, 10);
+  // Let's wait 10ms before logging the server started.
+  setTimeout(() => {
+    console.log('>>>', async_hooks.executionAsyncId());
+  }, 10);
 });
 ```
 
@@ -619,22 +619,22 @@ return an empty object as there is no handle or request object to use,
 but having an object representing the top-level can be helpful.
 
 ```mjs
-import { open } from "fs";
-import { executionAsyncId, executionAsyncResource } from "async_hooks";
+import { open } from 'fs';
+import { executionAsyncId, executionAsyncResource } from 'async_hooks';
 
 console.log(executionAsyncId(), executionAsyncResource());  // 1 {}
-open(new URL(import.meta.url), "r", (err, fd) => {
- console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
+open(new URL(import.meta.url), 'r', (err, fd) => {
+  console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
 });
 ```
 
 ```cjs
-const { open } = require("fs");
-const { executionAsyncId, executionAsyncResource } = require("async_hooks");
+const { open } = require('fs');
+const { executionAsyncId, executionAsyncResource } = require('async_hooks');
 
 console.log(executionAsyncId(), executionAsyncResource());  // 1 {}
-open(__filename, "r", (err, fd) => {
- console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
+open(__filename, 'r', (err, fd) => {
+  console.log(executionAsyncId(), executionAsyncResource());  // 7 FSReqWrap
 });
 ```
 
@@ -642,54 +642,54 @@ This can be used to implement continuation local storage without the
 use of a tracking `Map` to store the metadata:
 
 ```mjs
-import { createServer } from "http";
+import { createServer } from 'http';
 import {
- createHook,
- executionAsyncId,
- executionAsyncResource,
-} from "async_hooks";
-const sym = Symbol("state"); // Private symbol to avoid pollution
+  executionAsyncId,
+  executionAsyncResource,
+  createHook
+} from 'async_hooks';
+const sym = Symbol('state'); // Private symbol to avoid pollution
 
 createHook({
- init(asyncId, type, triggerAsyncId, resource) {
-  const cr = executionAsyncResource();
-  if (cr) {
-   resource[sym] = cr[sym];
+  init(asyncId, type, triggerAsyncId, resource) {
+    const cr = executionAsyncResource();
+    if (cr) {
+      resource[sym] = cr[sym];
+    }
   }
- },
 }).enable();
 
 const server = createServer((req, res) => {
- executionAsyncResource()[sym] = { state: req.url };
- setTimeout(function() {
-  res.end(JSON.stringify(executionAsyncResource()[sym]));
- }, 100);
+  executionAsyncResource()[sym] = { state: req.url };
+  setTimeout(function() {
+    res.end(JSON.stringify(executionAsyncResource()[sym]));
+  }, 100);
 }).listen(3000);
 ```
 
 ```cjs
-const { createServer } = require("http");
+const { createServer } = require('http');
 const {
- executionAsyncId,
- executionAsyncResource,
- createHook,
-} = require("async_hooks");
-const sym = Symbol("state"); // Private symbol to avoid pollution
+  executionAsyncId,
+  executionAsyncResource,
+  createHook
+} = require('async_hooks');
+const sym = Symbol('state'); // Private symbol to avoid pollution
 
 createHook({
- init(asyncId, type, triggerAsyncId, resource) {
-  const cr = executionAsyncResource();
-  if (cr) {
-   resource[sym] = cr[sym];
+  init(asyncId, type, triggerAsyncId, resource) {
+    const cr = executionAsyncResource();
+    if (cr) {
+      resource[sym] = cr[sym];
+    }
   }
- },
 }).enable();
 
 const server = createServer((req, res) => {
- executionAsyncResource()[sym] = { state: req.url };
- setTimeout(function() {
-  res.end(JSON.stringify(executionAsyncResource()[sym]));
- }, 100);
+  executionAsyncResource()[sym] = { state: req.url };
+  setTimeout(function() {
+    res.end(JSON.stringify(executionAsyncResource()[sym]));
+  }, 100);
 }).listen(3000);
 ```
 
@@ -707,20 +707,20 @@ changes:
   track when something calls.
 
 ```mjs
-import { executionAsyncId } from "async_hooks";
+import { executionAsyncId } from 'async_hooks';
 
 console.log(executionAsyncId());  // 1 - bootstrap
-fs.open(path, "r", (err, fd) => {
- console.log(executionAsyncId());  // 6 - open()
+fs.open(path, 'r', (err, fd) => {
+  console.log(executionAsyncId());  // 6 - open()
 });
 ```
 
 ```cjs
-const async_hooks = require("async_hooks");
+const async_hooks = require('async_hooks');
 
 console.log(async_hooks.executionAsyncId());  // 1 - bootstrap
-fs.open(path, "r", (err, fd) => {
- console.log(async_hooks.executionAsyncId());  // 6 - open()
+fs.open(path, 'r', (err, fd) => {
+  console.log(async_hooks.executionAsyncId());  // 6 - open()
 });
 ```
 
@@ -729,14 +729,14 @@ causality (which is covered by `triggerAsyncId()`):
 
 ```js
 const server = net.createServer((conn) => {
- // Returns the ID of the server, not of the new connection, because the
- // callback runs in the execution scope of the server's MakeCallback().
- async_hooks.executionAsyncId();
+  // Returns the ID of the server, not of the new connection, because the
+  // callback runs in the execution scope of the server's MakeCallback().
+  async_hooks.executionAsyncId();
 
 }).listen(port, () => {
- // Returns the ID of a TickObject (process.nextTick()) because all
- // callbacks passed to .listen() are wrapped in a nextTick().
- async_hooks.executionAsyncId();
+  // Returns the ID of a TickObject (process.nextTick()) because all
+  // callbacks passed to .listen() are wrapped in a nextTick().
+  async_hooks.executionAsyncId();
 });
 ```
 
@@ -750,16 +750,16 @@ See the section on [promise execution tracking][].
 
 ```js
 const server = net.createServer((conn) => {
- // The resource that caused (or triggered) this callback to be called
- // was that of the new connection. Thus the return value of triggerAsyncId()
- // is the asyncId of "conn".
- async_hooks.triggerAsyncId();
+  // The resource that caused (or triggered) this callback to be called
+  // was that of the new connection. Thus the return value of triggerAsyncId()
+  // is the asyncId of "conn".
+  async_hooks.triggerAsyncId();
 
 }).listen(port, () => {
- // Even though all callbacks passed to .listen() are wrapped in a nextTick()
- // the callback itself exists because the call to the server's .listen()
- // was made. So the return value would be the ID of the server.
- async_hooks.triggerAsyncId();
+  // Even though all callbacks passed to .listen() are wrapped in a nextTick()
+  // the callback itself exists because the call to the server's .listen()
+  // was made. So the return value would be the ID of the server.
+  async_hooks.triggerAsyncId();
 });
 ```
 
@@ -788,20 +788,20 @@ V8. This means that programs using promises or `async`/`await` will not get
 correct execution and trigger ids for promise callback contexts by default.
 
 ```mjs
-import { executionAsyncId, triggerAsyncId } from "async_hooks";
+import { executionAsyncId, triggerAsyncId } from 'async_hooks';
 
 Promise.resolve(1729).then(() => {
- console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
 });
 // produces:
 // eid 1 tid 0
 ```
 
 ```cjs
-const { executionAsyncId, triggerAsyncId } = require("async_hooks");
+const { executionAsyncId, triggerAsyncId } = require('async_hooks');
 
 Promise.resolve(1729).then(() => {
- console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
 });
 // produces:
 // eid 1 tid 0
@@ -816,21 +816,21 @@ Installing async hooks via `async_hooks.createHook` enables promise execution
 tracking:
 
 ```mjs
-import { createHook, executionAsyncId, triggerAsyncId } from "async_hooks";
+import { createHook, executionAsyncId, triggerAsyncId } from 'async_hooks';
 createHook({ init() {} }).enable(); // forces PromiseHooks to be enabled.
 Promise.resolve(1729).then(() => {
- console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
 });
 // produces:
 // eid 7 tid 6
 ```
 
 ```cjs
-const { createHook, executionAsyncId, triggerAsyncId } = require("async_hooks");
+const { createHook, executionAsyncId, triggerAsyncId } = require('async_hooks');
 
 createHook({ init() {} }).enable(); // forces PromiseHooks to be enabled.
 Promise.resolve(1729).then(() => {
- console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
+  console.log(`eid ${executionAsyncId()} tid ${triggerAsyncId()}`);
 });
 // produces:
 // eid 7 tid 6

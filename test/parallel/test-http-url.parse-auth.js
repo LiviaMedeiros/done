@@ -19,30 +19,30 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const http = require("http");
-const url = require("url");
+'use strict';
+require('../common');
+const assert = require('assert');
+const http = require('http');
+const url = require('url');
 
 function check(request) {
- // The correct authorization header is be passed
- assert.strictEqual(request.headers.authorization, "Basic dXNlcjpwYXNzOg==");
+  // The correct authorization header is be passed
+  assert.strictEqual(request.headers.authorization, 'Basic dXNlcjpwYXNzOg==');
 }
 
 const server = http.createServer(function(request, response) {
- // Run the check function
- check(request);
- response.writeHead(200, {});
- response.end("ok");
- server.close();
+  // Run the check function
+  check(request);
+  response.writeHead(200, {});
+  response.end('ok');
+  server.close();
 });
 
 server.listen(0, function() {
- const port = this.address().port;
- // username = "user", password = "pass:"
- const testURL = url.parse(`http://user:pass%3A@localhost:${port}`);
+  const port = this.address().port;
+  // username = "user", password = "pass:"
+  const testURL = url.parse(`http://user:pass%3A@localhost:${port}`);
 
- // make the request
- http.request(testURL).end();
+  // make the request
+  http.request(testURL).end();
 });

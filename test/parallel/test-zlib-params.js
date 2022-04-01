@@ -1,10 +1,10 @@
-"use strict";
-require("../common");
-const assert = require("assert");
-const zlib = require("zlib");
-const fixtures = require("../common/fixtures");
+'use strict';
+require('../common');
+const assert = require('assert');
+const zlib = require('zlib');
+const fixtures = require('../common/fixtures');
 
-const file = fixtures.readSync("person.jpg");
+const file = fixtures.readSync('person.jpg');
 const chunkSize = 12 * 1024;
 const opts = { level: 9, strategy: zlib.constants.Z_DEFAULT_STRATEGY };
 const deflater = zlib.createDeflate(opts);
@@ -16,19 +16,19 @@ const expected = Buffer.concat([blkhdr, chunk2]);
 let actual;
 
 deflater.write(chunk1, function() {
- deflater.params(0, zlib.constants.Z_DEFAULT_STRATEGY, function() {
-  while (deflater.read());
-  deflater.end(chunk2, function() {
-   const bufs = [];
-   let buf;
-   while ((buf = deflater.read()) !== null)
-    bufs.push(buf);
-   actual = Buffer.concat(bufs);
+  deflater.params(0, zlib.constants.Z_DEFAULT_STRATEGY, function() {
+    while (deflater.read());
+    deflater.end(chunk2, function() {
+      const bufs = [];
+      let buf;
+      while ((buf = deflater.read()) !== null)
+        bufs.push(buf);
+      actual = Buffer.concat(bufs);
+    });
   });
- });
- while (deflater.read());
+  while (deflater.read());
 });
 
-process.once("exit", function() {
- assert.deepStrictEqual(actual, expected);
+process.once('exit', function() {
+  assert.deepStrictEqual(actual, expected);
 });

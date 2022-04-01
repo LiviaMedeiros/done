@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
+'use strict';
+const common = require('../common');
 
-if (process.config.variables.arm_version === "7") {
- common.skip("Too slow for armv7 bots");
+if (process.config.variables.arm_version === '7') {
+  common.skip('Too slow for armv7 bots');
 }
 
 let complete = 0;
@@ -32,10 +32,10 @@ let complete = 0;
 //  FATAL ERROR: JS Allocation failed - process out of memory
 // if the depth counter doesn't clear the nextTickQueue properly.
 (function runner() {
- if (++complete < 1e8)
-  process.nextTick(runner);
+  if (++complete < 1e8)
+    process.nextTick(runner);
 }());
 
 setImmediate(function() {
- console.log("ok");
+  console.log('ok');
 });

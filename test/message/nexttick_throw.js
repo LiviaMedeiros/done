@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
 process.nextTick(function() {
- process.nextTick(function() {
   process.nextTick(function() {
-   process.nextTick(function() {
-    // eslint-disable-next-line no-undef,no-unused-expressions
-    undefined_reference_error_maker;
-   });
+    process.nextTick(function() {
+      process.nextTick(function() {
+        // eslint-disable-next-line no-undef,no-unused-expressions
+        undefined_reference_error_maker;
+      });
+    });
   });
- });
 });

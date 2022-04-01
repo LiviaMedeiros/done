@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
-const cluster = require("cluster");
+'use strict';
+require('../common');
+const assert = require('assert');
+const cluster = require('cluster');
 
 let disconnected;
 
-process.on("exit", function() {
- assert(disconnected);
+process.on('exit', function() {
+  assert(disconnected);
 });
 
 cluster.disconnect(function() {
- disconnected = true;
+  disconnected = true;
 });
 
 // Assert that callback is not sometimes synchronous

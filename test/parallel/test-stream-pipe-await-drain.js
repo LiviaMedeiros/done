@@ -1,7 +1,7 @@
-"use strict";
-const common = require("../common");
-const stream = require("stream");
-const assert = require("assert");
+'use strict';
+const common = require('../common');
+const stream = require('stream');
+const assert = require('assert');
 
 // This is very similar to test-stream-pipe-cleanup-pause.js.
 
@@ -18,47 +18,47 @@ const buffer = Buffer.allocUnsafe(560000);
 reader._read = () => {};
 
 writer1._write = common.mustCall(function(chunk, encoding, cb) {
- this.emit("chunk-received");
- process.nextTick(cb);
+  this.emit('chunk-received');
+  process.nextTick(cb);
 }, 1);
 
-writer1.once("chunk-received", () => {
- assert.strictEqual(
-  reader._readableState.awaitDrainWriters.size,
-  0,
-  "awaitDrain initial value should be 0, actual is " +
+writer1.once('chunk-received', () => {
+  assert.strictEqual(
     reader._readableState.awaitDrainWriters.size,
- );
- setImmediate(() => {
-  // This one should *not* get through to writer1 because writer2 is not
-  // "done" processing.
-  reader.push(buffer);
- });
+    0,
+    'awaitDrain initial value should be 0, actual is ' +
+    reader._readableState.awaitDrainWriters.size
+  );
+  setImmediate(() => {
+    // This one should *not* get through to writer1 because writer2 is not
+    // "done" processing.
+    reader.push(buffer);
+  });
 });
 
 // A "slow" consumer:
 writer2._write = common.mustCall((chunk, encoding, cb) => {
- assert.strictEqual(
-  reader._readableState.awaitDrainWriters.size,
-  1,
-  "awaitDrain should be 1 after first push, actual is " +
+  assert.strictEqual(
     reader._readableState.awaitDrainWriters.size,
- );
- // Not calling cb here to "simulate" slow stream.
- // This should be called exactly once, since the first .write() call
- // will return false.
+    1,
+    'awaitDrain should be 1 after first push, actual is ' +
+    reader._readableState.awaitDrainWriters.size
+  );
+  // Not calling cb here to "simulate" slow stream.
+  // This should be called exactly once, since the first .write() call
+  // will return false.
 }, 1);
 
 writer3._write = common.mustCall((chunk, encoding, cb) => {
- assert.strictEqual(
-  reader._readableState.awaitDrainWriters.size,
-  2,
-  "awaitDrain should be 2 after second push, actual is " +
+  assert.strictEqual(
     reader._readableState.awaitDrainWriters.size,
- );
- // Not calling cb here to "simulate" slow stream.
- // This should be called exactly once, since the first .write() call
- // will return false.
+    2,
+    'awaitDrain should be 2 after second push, actual is ' +
+    reader._readableState.awaitDrainWriters.size
+  );
+  // Not calling cb here to "simulate" slow stream.
+  // This should be called exactly once, since the first .write() call
+  // will return false.
 }, 1);
 
 reader.pipe(writer1);

@@ -1,4 +1,4 @@
-"use strict";
-require("../common");
+'use strict';
+require('../common');
 
 process.stdout.end();

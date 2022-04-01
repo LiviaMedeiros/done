@@ -19,41 +19,41 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-require("../common");
-const assert = require("assert");
+'use strict';
+require('../common');
+const assert = require('assert');
 
 function enqueueMicrotask(fn) {
- Promise.resolve().then(fn);
+  Promise.resolve().then(fn);
 }
 
 let done = 0;
 
-process.on("exit", function() {
- assert.strictEqual(done, 2);
+process.on('exit', function() {
+  assert.strictEqual(done, 2);
 });
 
 // No nextTick, microtask
 setImmediate(function() {
- enqueueMicrotask(function() {
-  done++;
- });
+  enqueueMicrotask(function() {
+    done++;
+  });
 });
 
 
 // No nextTick, microtask with nextTick
 setImmediate(function() {
- let called = false;
+  let called = false;
 
- enqueueMicrotask(function() {
-  process.nextTick(function() {
-   called = true;
+  enqueueMicrotask(function() {
+    process.nextTick(function() {
+      called = true;
+    });
   });
- });
 
- setImmediate(function() {
-  if (called)
-   done++;
- });
+  setImmediate(function() {
+    if (called)
+      done++;
+  });
 
 });

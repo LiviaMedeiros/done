@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-"use strict";
-const common = require("../common");
-const assert = require("assert");
-const net = require("net");
+'use strict';
+const common = require('../common');
+const assert = require('assert');
+const net = require('net');
 
 const server = net.createServer(function(client) {
- client.end();
- server.close();
+  client.end();
+  server.close();
 });
 
 server.listen(0, common.mustCall(function() {
- net.connect(this.address().port, "localhost")
-    .on("lookup", common.mustCall(function(err, ip, type, host) {
-    	assert.strictEqual(err, null);
-    	assert.match(ip, /^(127\.0\.0\.1|::1)$/);
-    	assert.match(type.toString(), /^(4|6)$/);
-    	assert.strictEqual(host, "localhost");
+  net.connect(this.address().port, 'localhost')
+    .on('lookup', common.mustCall(function(err, ip, type, host) {
+      assert.strictEqual(err, null);
+      assert.match(ip, /^(127\.0\.0\.1|::1)$/);
+      assert.match(type.toString(), /^(4|6)$/);
+      assert.strictEqual(host, 'localhost');
     }));
 }));
