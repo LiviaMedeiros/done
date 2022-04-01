@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const { randomUUID } = require('crypto');
+const common = require("../common.js");
+const { randomUUID } = require("crypto");
 
 const bench = common.createBenchmark(main, {
  n: [1e7],

@@ -1,11 +1,11 @@
 // Flags: --expose-internals
 
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const { strictEqual, throws } = require('assert');
-const { setUnrefTimeout } = require('internal/timers');
+const { strictEqual, throws } = require("assert");
+const { setUnrefTimeout } = require("internal/timers");
 
 // Schedule the unrefed cases first so that the later case keeps the event loop
 // active.
@@ -24,7 +24,7 @@ const { setUnrefTimeout } = require('internal/timers');
  // This relies on implicit timers handle sorting within libuv.
 
  setTimeout(common.mustCall(() => {
-  strictEqual(called, false, 'unref()\'d timer returned before check');
+  strictEqual(called, false, "unref()'d timer returned before check");
  }), 1);
 
  strictEqual(timer.refresh(), timer);
@@ -32,11 +32,11 @@ const { setUnrefTimeout } = require('internal/timers');
 
 // Should throw with non-functions
 {
- [null, true, false, 0, 1, NaN, '', 'foo', {}, Symbol()].forEach((cb) => {
+ [null, true, false, 0, 1, NaN, "", "foo", {}, Symbol()].forEach((cb) => {
   throws(
    () => setUnrefTimeout(cb),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    },
   );
  });
@@ -50,7 +50,7 @@ const { setUnrefTimeout } = require('internal/timers');
  }), 1);
 
  setUnrefTimeout(common.mustCall(() => {
-  strictEqual(called, false, 'unref pooled timer returned before check');
+  strictEqual(called, false, "unref pooled timer returned before check");
  }), 1);
 
  strictEqual(timer.refresh(), timer);
@@ -64,7 +64,7 @@ const { setUnrefTimeout } = require('internal/timers');
  }), 1);
 
  setTimeout(common.mustCall(() => {
-  strictEqual(called, false, 'pooled timer returned before check');
+  strictEqual(called, false, "pooled timer returned before check");
  }), 1);
 
  strictEqual(timer.refresh(), timer);
@@ -95,7 +95,7 @@ const { setUnrefTimeout } = require('internal/timers');
  }, 2), 1);
 
  setTimeout(common.mustCall(() => {
-  strictEqual(called, 0, 'pooled timer returned before check');
+  strictEqual(called, 0, "pooled timer returned before check");
  }), 1);
 
  strictEqual(timer.refresh(), timer);

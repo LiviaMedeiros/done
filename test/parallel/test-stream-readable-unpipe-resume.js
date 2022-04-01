@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const stream = require('stream');
-const fs = require('fs');
+const common = require("../common");
+const stream = require("stream");
+const fs = require("fs");
 
 const readStream = fs.createReadStream(process.execPath);
 
@@ -13,7 +13,7 @@ const transformStream = new stream.Transform({
  }),
 });
 
-readStream.on('end', common.mustCall());
+readStream.on("end", common.mustCall());
 
 readStream
   .pipe(transformStream)

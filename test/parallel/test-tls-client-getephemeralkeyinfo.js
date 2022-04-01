@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
+ common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
-const tls = require('tls');
+const assert = require("assert");
+const tls = require("tls");
 
-const key = fixtures.readKey('agent2-key.pem');
-const cert = fixtures.readKey('agent2-cert.pem');
+const key = fixtures.readKey("agent2-key.pem");
+const cert = fixtures.readKey("agent2-cert.pem");
 
 // TODO(@sam-github) test works with TLS1.3, rework test to add
 //   'ECDH' with 'TLS_AES_128_GCM_SHA256',
@@ -28,14 +28,14 @@ function test(size, type, name, cipher) {
 
  if (name) options.ecdhCurve = name;
 
- if (type === 'DH') options.dhparam = loadDHParam(size);
+ if (type === "DH") options.dhparam = loadDHParam(size);
 
  const server = tls.createServer(options, common.mustCall((conn) => {
   assert.strictEqual(conn.getEphemeralKeyInfo(), null);
   conn.end();
  }));
 
- server.on('close', common.mustSucceed());
+ server.on("close", common.mustSucceed());
 
  server.listen(0, common.mustCall(() => {
   const client = tls.connect({
@@ -48,14 +48,14 @@ function test(size, type, name, cipher) {
    assert.strictEqual(ekeyinfo.name, name);
    server.close();
   }));
-  client.on('secureConnect', common.mustCall());
+  client.on("secureConnect", common.mustCall());
  }));
 }
 
-test(undefined, undefined, undefined, 'AES128-SHA256');
-test(1024, 'DH', undefined, 'DHE-RSA-AES128-GCM-SHA256');
-test(2048, 'DH', undefined, 'DHE-RSA-AES128-GCM-SHA256');
-test(256, 'ECDH', 'prime256v1', 'ECDHE-RSA-AES128-GCM-SHA256');
-test(521, 'ECDH', 'secp521r1', 'ECDHE-RSA-AES128-GCM-SHA256');
-test(253, 'ECDH', 'X25519', 'ECDHE-RSA-AES128-GCM-SHA256');
-test(448, 'ECDH', 'X448', 'ECDHE-RSA-AES128-GCM-SHA256');
+test(undefined, undefined, undefined, "AES128-SHA256");
+test(1024, "DH", undefined, "DHE-RSA-AES128-GCM-SHA256");
+test(2048, "DH", undefined, "DHE-RSA-AES128-GCM-SHA256");
+test(256, "ECDH", "prime256v1", "ECDHE-RSA-AES128-GCM-SHA256");
+test(521, "ECDH", "secp521r1", "ECDHE-RSA-AES128-GCM-SHA256");
+test(253, "ECDH", "X25519", "ECDHE-RSA-AES128-GCM-SHA256");
+test(448, "ECDH", "X448", "ECDHE-RSA-AES128-GCM-SHA256");

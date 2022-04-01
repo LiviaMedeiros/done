@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const { runInThisContext } = require('vm');
-const { parentPort, workerData } = require('worker_threads');
+const { runInThisContext } = require("vm");
+const { parentPort, workerData } = require("worker_threads");
 
 const { ResourceLoader } = require(workerData.wptRunner);
 const resource = new ResourceLoader(workerData.wptPath);
@@ -30,7 +30,7 @@ runInThisContext(workerData.harness.code, {
 // eslint-disable-next-line no-undef
 add_result_callback((result) => {
  parentPort.postMessage({
-  type: 'result',
+  type: "result",
   result: {
    status: result.status,
    name: result.name,
@@ -43,7 +43,7 @@ add_result_callback((result) => {
 // eslint-disable-next-line no-undef
 add_completion_callback((_, status) => {
  parentPort.postMessage({
-  type: 'completion',
+  type: "completion",
   status,
  });
 });

@@ -1,22 +1,22 @@
-'use strict';
-const common = require('../common.js');
-const zlib = require('zlib');
+"use strict";
+const common = require("../common.js");
+const zlib = require("zlib");
 
 const bench = common.createBenchmark(main, {
- method: ['inflate', 'inflateSync'],
+ method: ["inflate", "inflateSync"],
  inputLen: [1024],
  n: [4e5],
 });
 
 function main({ n, method, inputLen }) {
  // Default method value for tests.
- method = method || 'inflate';
- const chunk = zlib.deflateSync(Buffer.alloc(inputLen, 'a'));
+ method = method || "inflate";
+ const chunk = zlib.deflateSync(Buffer.alloc(inputLen, "a"));
 
  let i = 0;
  switch (method) {
   // Performs `n` single inflate operations
-  case 'inflate': {
+  case "inflate": {
    const inflate = zlib.inflate;
    bench.start();
    (function next(err, result) {
@@ -27,7 +27,7 @@ function main({ n, method, inputLen }) {
    break;
   }
   // Performs `n` single inflateSync operations
-  case 'inflateSync': {
+  case "inflateSync": {
    const inflateSync = zlib.inflateSync;
    bench.start();
    for (; i < n; ++i)
@@ -36,6 +36,6 @@ function main({ n, method, inputLen }) {
    break;
   }
   default:
-   throw new Error('Unsupported inflate method');
+   throw new Error("Unsupported inflate method");
  }
 }

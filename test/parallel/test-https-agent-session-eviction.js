@@ -1,25 +1,25 @@
 // Flags: --tls-min-v1.0
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { readKey } = require('../common/fixtures');
+const common = require("../common");
+const { readKey } = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const https = require('https');
-const { SSL_OP_NO_TICKET } = require('crypto').constants;
+const https = require("https");
+const { SSL_OP_NO_TICKET } = require("crypto").constants;
 
 const options = {
- key: readKey('agent1-key.pem'),
- cert: readKey('agent1-cert.pem'),
+ key: readKey("agent1-key.pem"),
+ cert: readKey("agent1-cert.pem"),
  secureOptions: SSL_OP_NO_TICKET,
- ciphers: 'RSA@SECLEVEL=0',
+ ciphers: "RSA@SECLEVEL=0",
 };
 
 // Create TLS1.2 server
 https.createServer(options, function(req, res) {
- res.end('ohai');
+ res.end("ohai");
 }).listen(0, function() {
  first(this);
 });
@@ -42,9 +42,9 @@ function first(server) {
 
 // Create TLS1 server
 function faultyServer(port) {
- options.secureProtocol = 'TLSv1_method';
+ options.secureProtocol = "TLSv1_method";
  https.createServer(options, function(req, res) {
-  res.end('hello faulty');
+  res.end("hello faulty");
  }).listen(port, function() {
   second(this);
  });
@@ -61,7 +61,7 @@ function second(server, session) {
 
  // Although we have a TLS 1.2 session to offer to the TLS 1.0 server,
  // connection to the TLS 1.0 server should work.
- req.on('response', common.mustCall(function(res) {
+ req.on("response", common.mustCall(function(res) {
   // The test is now complete for OpenSSL 1.1.0.
   server.close();
  }));

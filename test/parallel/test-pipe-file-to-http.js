@@ -19,43 +19,43 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const http = require('http');
-const path = require('path');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const http = require("http");
+const path = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const filename = path.join(tmpdir.path, 'big');
+const filename = path.join(tmpdir.path, "big");
 let count = 0;
 
 const server = http.createServer((req, res) => {
  let timeoutId;
- assert.strictEqual(req.method, 'POST');
+ assert.strictEqual(req.method, "POST");
  req.pause();
 
  setTimeout(() => {
   req.resume();
  }, 1000);
 
- req.on('data', (chunk) => {
+ req.on("data", (chunk) => {
   count += chunk.length;
  });
 
- req.on('end', () => {
+ req.on("end", () => {
   if (timeoutId) {
    clearTimeout(timeoutId);
   }
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.writeHead(200, { "Content-Type": "text/plain" });
   res.end();
  });
 });
 server.listen(0);
 
-server.on('listening', () => {
+server.on("listening", () => {
  common.createZeroFilledFile(filename);
  makeRequest();
 });
@@ -63,22 +63,22 @@ server.on('listening', () => {
 function makeRequest() {
  const req = http.request({
   port: server.address().port,
-  path: '/',
-  method: 'POST',
+  path: "/",
+  method: "POST",
  });
 
  const s = fs.ReadStream(filename);
  s.pipe(req);
- s.on('close', common.mustSucceed());
+ s.on("close", common.mustSucceed());
 
- req.on('response', (res) => {
+ req.on("response", (res) => {
   res.resume();
-  res.on('end', () => {
+  res.on("end", () => {
    server.close();
   });
  });
 }
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(count, 1024 * 10240);
 });

@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const Writable = require('stream').Writable;
+const common = require("../common");
+const Writable = require("stream").Writable;
 
 const bench = common.createBenchmark(main, {
  n: [2e6],
- sync: ['yes', 'no'],
- writev: ['yes', 'no'],
- callback: ['yes', 'no'],
+ sync: ["yes", "no"],
+ writev: ["yes", "no"],
+ callback: ["yes", "no"],
  len: [1024, 32 * 1024],
 });
 
 function main({ n, sync, writev, callback, len }) {
  const b = Buffer.allocUnsafe(len);
  const s = new Writable();
- sync = sync === 'yes';
+ sync = sync === "yes";
 
  const writecb = (cb) => {
   if (sync)
@@ -23,13 +23,13 @@ function main({ n, sync, writev, callback, len }) {
    process.nextTick(cb);
  };
 
- if (writev === 'yes') {
+ if (writev === "yes") {
   s._writev = (chunks, cb) => writecb(cb);
  } else {
   s._write = (chunk, encoding, cb) => writecb(cb);
  }
 
- const cb = callback === 'yes' ? () => {} : null;
+ const cb = callback === "yes" ? () => {} : null;
 
  bench.start();
 
@@ -38,9 +38,9 @@ function main({ n, sync, writev, callback, len }) {
   while (k++ < n && s.write(b, cb));
   if (k >= n) {
    bench.end(n);
-   s.removeListener('drain', run);
+   s.removeListener("drain", run);
   }
  }
- s.on('drain', run);
+ s.on("drain", run);
  run();
 }

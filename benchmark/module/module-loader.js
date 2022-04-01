@@ -1,21 +1,21 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
-const { builtinModules } = require('module');
-const common = require('../common.js');
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const { builtinModules } = require("module");
+const common = require("../common.js");
 
-const tmpdir = require('../../test/common/tmpdir');
-let benchmarkDirectory = path.join(tmpdir.path, 'nodejs-benchmark-module');
+const tmpdir = require("../../test/common/tmpdir");
+let benchmarkDirectory = path.join(tmpdir.path, "nodejs-benchmark-module");
 
 // Filter all irregular modules.
 const otherModules = builtinModules.filter((name) => !/\/|^_|^sys/.test(name));
 
 const bench = common.createBenchmark(main, {
- name: ['', '/', '/index.js'],
- dir: ['rel', 'abs'],
+ name: ["", "/", "/index.js"],
+ dir: ["rel", "abs"],
  files: [5e2],
  n: [1, 1e3],
- cache: ['true', 'false'],
+ cache: ["true", "false"],
 });
 
 function main({ n, name, cache, files, dir }) {
@@ -33,10 +33,10 @@ function main({ n, name, cache, files, dir }) {
   );
  }
 
- if (dir === 'rel')
+ if (dir === "rel")
   benchmarkDirectory = path.relative(__dirname, benchmarkDirectory);
 
- measureDir(n, cache === 'true', files, name);
+ measureDir(n, cache === "true", files, name);
 
  tmpdir.refresh();
 }

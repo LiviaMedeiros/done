@@ -1,18 +1,18 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const net = require('net');
-const { HTTPParser } = process.binding('http_parser');
+const net = require("net");
+const { HTTPParser } = process.binding("http_parser");
 
 const server = net.createServer((socket) => {
- socket.write('HTTP/1.1 200 OK\r\n');
- socket.write('Transfer-Encoding: chunked\r\n\r\n');
+ socket.write("HTTP/1.1 200 OK\r\n");
+ socket.write("Transfer-Encoding: chunked\r\n\r\n");
  setTimeout(() => {
-  socket.write('1\r\n');
-  socket.write('\n\r\n');
+  socket.write("1\r\n");
+  socket.write("\n\r\n");
   setTimeout(() => {
-   socket.write('1\r\n');
-   socket.write('\n\r\n');
+   socket.write("1\r\n");
+   socket.write("\n\r\n");
    setImmediate(() => {
     socket.destroy();
     server.close();

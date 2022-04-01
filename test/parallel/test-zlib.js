@@ -19,20 +19,20 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
-const stream = require('stream');
-const fs = require('fs');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
+const stream = require("stream");
+const fs = require("fs");
+const fixtures = require("../common/fixtures");
 
 // Should not segfault.
 assert.throws(() => zlib.gzipSync(Buffer.alloc(0), { windowBits: 8 }), {
- code: 'ERR_OUT_OF_RANGE',
- name: 'RangeError',
+ code: "ERR_OUT_OF_RANGE",
+ name: "RangeError",
  message: 'The value of "options.windowBits" is out of range. ' +
-           'It must be >= 9 and <= 15. Received 8',
+           "It must be >= 9 and <= 15. Received 8",
 });
 
 let zlibPairs = [
@@ -69,11 +69,11 @@ if (!process.env.PUMMEL) {
  strategy = [0];
 }
 
-let testFiles = ['person.jpg', 'elipses.txt', 'empty.txt'];
+let testFiles = ["person.jpg", "elipses.txt", "empty.txt"];
 
 if (process.env.FAST) {
  zlibPairs = [[zlib.Gzip, zlib.Unzip]];
- testFiles = ['person.jpg'];
+ testFiles = ["person.jpg"];
 }
 
 const tests = {};
@@ -107,8 +107,8 @@ class BufferStream extends stream.Stream {
    c.copy(buf, i);
    i += c.length;
   });
-  this.emit('data', buf);
-  this.emit('end');
+  this.emit("data", buf);
+  this.emit("end");
   return true;
  }
 }
@@ -122,12 +122,12 @@ class SlowStream extends stream.Stream {
  }
 
  write() {
-  throw new Error('not implemented, just call ss.end(chunk)');
+  throw new Error("not implemented, just call ss.end(chunk)");
  }
 
  pause() {
   this.paused = true;
-  this.emit('pause');
+  this.emit("pause");
  }
 
  resume() {
@@ -135,17 +135,17 @@ class SlowStream extends stream.Stream {
    if (this.paused) return;
    if (this.offset >= this.length) {
     this.ended = true;
-    return this.emit('end');
+    return this.emit("end");
    }
    const end = Math.min(this.offset + this.trickle, this.length);
    const c = this.chunk.slice(this.offset, end);
    this.offset += c.length;
-   this.emit('data', c);
+   this.emit("data", c);
    process.nextTick(emit);
   };
 
   if (this.ended) return;
-  this.emit('resume');
+  this.emit("resume");
   if (!this.chunk) return;
   this.paused = false;
   emit();
@@ -164,10 +164,10 @@ class SlowStream extends stream.Stream {
 zlib.createDeflateRaw({ windowBits: 8 });
 
 {
- const node = fs.createReadStream(fixtures.path('person.jpg'));
+ const node = fs.createReadStream(fixtures.path("person.jpg"));
  const raw = [];
  const reinflated = [];
- node.on('data', (chunk) => raw.push(chunk));
+ node.on("data", (chunk) => raw.push(chunk));
 
  // Usually, the inflate windowBits parameter needs to be at least the
  // value of the matching deflate’s windowBits. However, inflate raw with
@@ -177,10 +177,10 @@ zlib.createDeflateRaw({ windowBits: 8 });
  // a valid 8-bit-window zlib stream.
  node.pipe(zlib.createDeflateRaw({ windowBits: 9 }))
       .pipe(zlib.createInflateRaw({ windowBits: 8 }))
-      .on('data', (chunk) => reinflated.push(chunk))
-      .on('end', common.mustCall(
+      .on("data", (chunk) => reinflated.push(chunk))
+      .on("end", common.mustCall(
       	() => assert(Buffer.concat(raw).equals(Buffer.concat(reinflated)))))
-      .on('close', common.mustCall(1));
+      .on("close", common.mustCall(1));
 }
 
 // For each of the files, make sure that compressing and
@@ -207,7 +207,7 @@ testKeys.forEach(common.mustCall((file) => {
         const buf = new BufferStream();
 
         // Verify that the same exact buffer comes out the other end.
-        buf.on('data', common.mustCall((c) => {
+        buf.on("data", common.mustCall((c) => {
          const msg = `${file} ${chunkSize} ${
           JSON.stringify(opts)} ${Def.name} -> ${Inf.name}`;
          let i;

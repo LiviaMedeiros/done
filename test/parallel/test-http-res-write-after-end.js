@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const server = http.Server(common.mustCall(function(req, res) {
- res.on('error', common.expectsError({
-  code: 'ERR_STREAM_WRITE_AFTER_END',
-  name: 'Error',
+ res.on("error", common.expectsError({
+  code: "ERR_STREAM_WRITE_AFTER_END",
+  name: "Error",
  }));
 
- res.write('This should write.');
+ res.write("This should write.");
  res.end();
 
- const r = res.write('This should raise an error.');
+ const r = res.write("This should raise an error.");
  // Write after end should return false
  assert.strictEqual(r, false);
 }));

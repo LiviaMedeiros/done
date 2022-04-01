@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const net = require('net');
+const net = require("net");
 
 // This test creates 20 connections to a server and sets the server's
 // maxConnections property to 10. The first 10 connections make it through
@@ -34,7 +34,7 @@ let closes = 0;
 const waits = [];
 
 const server = net.createServer(common.mustCall(function(connection) {
- connection.write('hello');
+ connection.write("hello");
  waits.push(function() { connection.end(); });
 }, N / 2));
 
@@ -49,12 +49,12 @@ function makeConnection(index) {
  const c = net.createConnection(server.address().port);
  let gotData = false;
 
- c.on('connect', function() {
+ c.on("connect", function() {
   if (index + 1 < N) {
    makeConnection(index + 1);
   }
 
-  c.on('close', function() {
+  c.on("close", function() {
    console.error(`closed ${index}`);
    closes++;
 
@@ -67,7 +67,7 @@ function makeConnection(index) {
 
    if (closes === N / 2) {
     let cb;
-    console.error('calling wait callback.');
+    console.error("calling wait callback.");
     while ((cb = waits.shift()) !== undefined) {
      cb();
     }
@@ -84,17 +84,17 @@ function makeConnection(index) {
   });
  });
 
- c.on('end', function() { c.end(); });
+ c.on("end", function() { c.end(); });
 
- c.on('data', function(b) {
+ c.on("data", function(b) {
   gotData = true;
   assert.ok(b.length > 0);
  });
 
- c.on('error', function(e) {
+ c.on("error", function(e) {
   // Retry if SmartOS and ECONNREFUSED. See
   // https://github.com/nodejs/node/issues/2663.
-  if (common.isSunOS && (e.code === 'ECONNREFUSED')) {
+  if (common.isSunOS && (e.code === "ECONNREFUSED")) {
    c.connect(server.address().port);
   }
   console.error(`error ${index}: ${e}`);
@@ -102,6 +102,6 @@ function makeConnection(index) {
 }
 
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(closes, N);
 });

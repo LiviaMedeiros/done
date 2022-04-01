@@ -1,22 +1,22 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { internalBinding } = require('internal/test/binding');
-const { TCP, constants: TCPConstants } = internalBinding('tcp_wrap');
+const { internalBinding } = require("internal/test/binding");
+const { TCP, constants: TCPConstants } = internalBinding("tcp_wrap");
 const {
  WriteWrap,
  kReadBytesOrError,
  kArrayBufferOffset,
  streamBaseState,
-} = internalBinding('stream_wrap');
+} = internalBinding("stream_wrap");
 
 const server = new TCP(TCPConstants.SOCKET);
 
 const r = (common.hasIPv6 ?
- server.bind6('::', 0) :
- server.bind('0.0.0.0', 0));
+ server.bind6("::", 0) :
+ server.bind("0.0.0.0", 0));
 assert.strictEqual(r, 0);
 let port = {};
 server.getsockname(port);
@@ -26,11 +26,11 @@ server.listen(128);
 
 server.onconnection = (err, client) => {
  assert.strictEqual(client.writeQueueSize, 0);
- console.log('got connection');
+ console.log("got connection");
 
  const maybeCloseClient = () => {
   if (client.pendingWrites.length === 0 && client.gotEOF) {
-   console.log('close client');
+   console.log("close client");
    client.close();
   }
  };
@@ -76,7 +76,7 @@ server.onconnection = (err, client) => {
    }
 
   } else {
-   console.log('eof');
+   console.log("eof");
    client.gotEOF = true;
    server.close();
    maybeCloseClient();
@@ -84,17 +84,17 @@ server.onconnection = (err, client) => {
  }, 2);
 };
 
-const net = require('net');
+const net = require("net");
 
 const c = net.createConnection(port);
 
-c.on('connect', common.mustCall(() => { c.end('hello world'); }));
+c.on("connect", common.mustCall(() => { c.end("hello world"); }));
 
-c.setEncoding('utf8');
-c.on('data', common.mustCall((d) => {
- assert.strictEqual(d, 'hello world');
+c.setEncoding("utf8");
+c.on("data", common.mustCall((d) => {
+ assert.strictEqual(d, "hello world");
 }));
 
-c.on('close', () => {
- console.error('client closed');
+c.on("close", () => {
+ console.error("client closed");
 });

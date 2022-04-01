@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const { Writable } = require('stream');
+"use strict";
+const common = require("../common");
+const { Writable } = require("stream");
 
 // Don't emit 'drain' if ended
 
@@ -11,6 +11,6 @@ const w = new Writable({
  highWaterMark: 1,
 });
 
-w.on('drain', common.mustNotCall());
-w.write('asd');
+w.on("drain", common.mustNotCall());
+w.write("asd");
 w.end();

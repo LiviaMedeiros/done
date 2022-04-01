@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
 const server = http.createServer((req, res) => {
- res.end('ok');
+ res.end("ok");
 }).listen(0, common.mustCall(() => {
  const agent = http.Agent({
   keepAlive: true,
@@ -42,13 +42,13 @@ const server = http.createServer((req, res) => {
 
  function req(callback) {
   http.request({
-   method: 'GET',
-   path: '/',
+   method: "GET",
+   path: "/",
    agent,
    port: server.address().port,
   }, common.mustCall((res) => {
    res.resume();
-   res.once('end', common.mustCall(() => {
+   res.once("end", common.mustCall(() => {
     setImmediate(callback);
    }));
   })).end();

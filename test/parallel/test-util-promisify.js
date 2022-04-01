@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const vm = require('vm');
-const { promisify } = require('util');
-const { customPromisifyArgs } = require('internal/util');
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const vm = require("vm");
+const { promisify } = require("util");
+const { customPromisifyArgs } = require("internal/util");
 
 const stat = promisify(fs.stat);
 
@@ -18,9 +18,9 @@ const stat = promisify(fs.stat);
 }
 
 {
- const promise = stat('/dontexist');
+ const promise = stat("/dontexist");
  promise.catch(common.mustCall((error) => {
-  assert(error.message.includes('ENOENT: no such file or directory, stat'));
+  assert(error.message.includes("ENOENT: no such file or directory, stat"));
  }));
 }
 
@@ -40,7 +40,7 @@ const stat = promisify(fs.stat);
 
  // util.promisify.custom is a shared symbol which can be accessed
  // as `Symbol.for("nodejs.util.promisify.custom")`.
- const kCustomPromisifiedSymbol = Symbol.for('nodejs.util.promisify.custom');
+ const kCustomPromisifiedSymbol = Symbol.for("nodejs.util.promisify.custom");
  fn[kCustomPromisifiedSymbol] = promisifiedFn;
 
  assert.strictEqual(kCustomPromisifiedSymbol, promisify.custom);
@@ -53,7 +53,7 @@ const stat = promisify(fs.stat);
  fn[promisify.custom] = 42;
  assert.throws(
   () => promisify(fn),
-  { code: 'ERR_INVALID_ARG_TYPE', name: 'TypeError' },
+  { code: "ERR_INVALID_ARG_TYPE", name: "TypeError" },
  );
 }
 
@@ -65,7 +65,7 @@ const stat = promisify(fs.stat);
   callback(null, firstValue, secondValue);
  }
 
- fn[customPromisifyArgs] = ['first', 'second'];
+ fn[customPromisifyArgs] = ["first", "second"];
 
  promisify(fn)().then(common.mustCall((obj) => {
   assert.deepStrictEqual(obj, { first: firstValue, second: secondValue });
@@ -73,17 +73,17 @@ const stat = promisify(fs.stat);
 }
 
 {
- const fn = vm.runInNewContext('(function() {})');
+ const fn = vm.runInNewContext("(function() {})");
  assert.notStrictEqual(Object.getPrototypeOf(promisify(fn)),
                        Function.prototype);
 }
 
 {
  function fn(callback) {
-  callback(null, 'foo', 'bar');
+  callback(null, "foo", "bar");
  }
  promisify(fn)().then(common.mustCall((value) => {
-  assert.strictEqual(value, 'foo');
+  assert.strictEqual(value, "foo");
  }));
 }
 
@@ -118,8 +118,8 @@ const stat = promisify(fs.stat);
  function fn(err, val, callback) {
   callback(err, val);
  }
- promisify(fn)(new Error('oops'), null).catch(common.mustCall((err) => {
-  assert.strictEqual(err.message, 'oops');
+ promisify(fn)(new Error("oops"), null).catch(common.mustCall((err) => {
+  assert.strictEqual(err.message, "oops");
  }));
 }
 
@@ -147,7 +147,7 @@ const stat = promisify(fs.stat);
 }
 
 {
- const err = new Error('Should not have called the callback with the error.');
+ const err = new Error("Should not have called the callback with the error.");
  const stack = err.stack;
 
  const fn = promisify(function(cb) {
@@ -197,12 +197,12 @@ const stat = promisify(fs.stat);
  ]);
 }
 
-[undefined, null, true, 0, 'str', {}, [], Symbol()].forEach((input) => {
+[undefined, null, true, 0, "str", {}, [], Symbol()].forEach((input) => {
  assert.throws(
   () => promisify(input),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "original" argument must be of type function.' +
                common.invalidArgTypeHelper(input),
   });

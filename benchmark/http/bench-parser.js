@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 const bench = common.createBenchmark(main, {
  len: [4, 8, 16, 32],
  n: [1e5],
 }, {
- flags: ['--expose-internals', '--no-warnings'],
+ flags: ["--expose-internals", "--no-warnings"],
 });
 
 function main({ len, n }) {
- const { HTTPParser } = common.binding('http_parser');
+ const { HTTPParser } = common.binding("http_parser");
  const REQUEST = HTTPParser.REQUEST;
  const kOnHeaders = HTTPParser.kOnHeaders | 0;
  const kOnHeadersComplete = HTTPParser.kOnHeadersComplete | 0;
  const kOnBody = HTTPParser.kOnBody | 0;
  const kOnMessageComplete = HTTPParser.kOnMessageComplete | 0;
- const CRLF = '\r\n';
+ const CRLF = "\r\n";
 
  function processHeader(header, n) {
   const parser = newParser(REQUEST);

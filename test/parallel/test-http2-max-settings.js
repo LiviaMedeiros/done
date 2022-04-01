@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const http2 = require('http2');
+const http2 = require("http2");
 
 const server = http2.createServer({ maxSettings: 1 });
 
@@ -12,11 +12,11 @@ const server = http2.createServer({ maxSettings: 1 });
 // emitted on the server side but it will be destroyed
 // immediately after creation and there will be no
 // stream created.
-server.on('session', common.mustCall((session) => {
- session.on('stream', common.mustNotCall());
- session.on('remoteSettings', common.mustNotCall());
+server.on("session", common.mustCall((session) => {
+ session.on("stream", common.mustNotCall());
+ session.on("remoteSettings", common.mustNotCall());
 }));
-server.on('stream', common.mustNotCall());
+server.on("stream", common.mustNotCall());
 
 server.listen(0, common.mustCall(() => {
  // Specify two settings entries when a max of 1 is allowed.
@@ -30,7 +30,7 @@ server.listen(0, common.mustCall(() => {
    },
   });
 
- client.on('error', common.mustCall(() => {
+ client.on("error", common.mustCall(() => {
   server.close();
  }));
 }));

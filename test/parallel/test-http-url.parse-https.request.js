@@ -19,20 +19,20 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const { readKey } = require('../common/fixtures');
+ common.skip("missing crypto");
+const { readKey } = require("../common/fixtures");
 
-const assert = require('assert');
-const https = require('https');
-const url = require('url');
+const assert = require("assert");
+const https = require("https");
+const url = require("url");
 
 // https options
 const httpsOptions = {
- key: readKey('agent1-key.pem'),
- cert: readKey('agent1-cert.pem'),
+ key: readKey("agent1-key.pem"),
+ cert: readKey("agent1-cert.pem"),
 };
 
 function check(request) {
@@ -44,7 +44,7 @@ const server = https.createServer(httpsOptions, function(request, response) {
  // Run the check function
  check(request);
  response.writeHead(200, {});
- response.end('ok');
+ response.end("ok");
  server.close();
 });
 

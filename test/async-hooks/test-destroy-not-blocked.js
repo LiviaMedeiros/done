@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 // Flags: --expose_gc
 
-const common = require('../common');
-const assert = require('assert');
-const tick = require('../common/tick');
+const common = require("../common");
+const assert = require("assert");
+const tick = require("../common/tick");
 
-const { createHook, AsyncResource } = require('async_hooks');
+const { createHook, AsyncResource } = require("async_hooks");
 
 // Test priority of destroy hook relative to nextTick,... and
 // verify a microtask is scheduled in case a lot items are queued
 
-const resType = 'MyResource';
+const resType = "MyResource";
 let activeId = -1;
 createHook({
  init(id, type) {

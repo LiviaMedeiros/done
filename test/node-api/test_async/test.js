@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
-const child_process = require('child_process');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
+const child_process = require("child_process");
 const test_async = require(`./build/${common.buildType}/test_async`);
 
-const testException = 'test_async_cb_exception';
+const testException = "test_async_cb_exception";
 
 // Exception thrown from async completion callback.
 // (Tested in a spawned process because the exception is fatal.)
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  test_async.Test(1, {}, common.mustCall(function() {
   throw new Error(testException);
  }));
  return;
 }
 const p = child_process.spawnSync(
- process.execPath, [ __filename, 'child' ]);
+ process.execPath, [ __filename, "child" ]);
 assert.ifError(p.error);
 assert.ok(p.stderr.toString().includes(testException));
 

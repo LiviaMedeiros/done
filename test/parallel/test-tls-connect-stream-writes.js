@@ -1,23 +1,23 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const stream = require('stream');
-const net = require('net');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const stream = require("stream");
+const net = require("net");
+const fixtures = require("../common/fixtures");
 
-const options = { key: fixtures.readKey('rsa_private.pem'),
-                  cert: fixtures.readKey('rsa_cert.crt'),
-                  ca: [ fixtures.readKey('rsa_ca.crt') ],
-                  ciphers: 'AES256-GCM-SHA384' };
-const content = 'hello world';
+const options = { key: fixtures.readKey("rsa_private.pem"),
+                  cert: fixtures.readKey("rsa_cert.crt"),
+                  ca: [ fixtures.readKey("rsa_ca.crt") ],
+                  ciphers: "AES256-GCM-SHA384" };
+const content = "hello world";
 const recv_bufs = [];
-let send_data = '';
+let send_data = "";
 const server = tls.createServer(options, function(s) {
- s.on('data', function(c) {
+ s.on("data", function(c) {
   recv_bufs.push(c);
  });
 });
@@ -25,7 +25,7 @@ server.listen(0, function() {
  const raw = net.connect(this.address().port);
 
  let pending = false;
- raw.on('readable', function() {
+ raw.on("readable", function() {
   if (pending)
    p._read();
  });
@@ -59,7 +59,7 @@ server.listen(0, function() {
  });
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  const recv_data = (Buffer.concat(recv_bufs)).toString();
  assert.strictEqual(send_data, recv_data);
 });

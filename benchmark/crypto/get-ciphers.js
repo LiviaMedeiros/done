@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  n: [1, 5000],
- v: ['crypto', 'tls'],
+ v: ["crypto", "tls"],
 });
 
 function main({ n, v }) {

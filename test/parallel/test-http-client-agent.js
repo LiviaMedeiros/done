@@ -19,24 +19,24 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const Countdown = require('../common/countdown');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const Countdown = require("../common/countdown");
 
 let name;
 const max = 3;
 
 const server = http.Server(common.mustCall((req, res) => {
- if (req.url === '/0') {
+ if (req.url === "/0") {
   setTimeout(common.mustCall(() => {
    res.writeHead(200);
-   res.end('Hello, World!');
+   res.end("Hello, World!");
   }), 100);
  } else {
   res.writeHead(200);
-  res.end('Hello, World!');
+  res.end("Hello, World!");
  }
 }, max));
 server.listen(0, common.mustCall(() => {
@@ -57,7 +57,7 @@ function request(i) {
   path: `/${i}`,
  }, function(res) {
   const socket = req.socket;
-  socket.on('close', common.mustCall(() => {
+  socket.on("close", common.mustCall(() => {
    countdown.dec();
    if (countdown.remaining > 0) {
     assert.strictEqual(http.globalAgent.sockets[name].includes(socket),

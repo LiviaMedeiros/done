@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 common.skipIfWorker(); // https://github.com/nodejs/node/issues/22767
 
-const assert = require('assert');
-const { Session } = require('inspector');
+const assert = require("assert");
+const { Session } = require("inspector");
 
 const session = new Session();
 
@@ -30,7 +30,7 @@ function post(message, data) {
 function generateTrace() {
  return new Promise((resolve) => setTimeout(() => {
   for (let i = 0; i < 1000000; i++) {
-   'test' + i; // eslint-disable-line no-unused-expressions
+   "test" + i; // eslint-disable-line no-unused-expressions
   }
   resolve();
  }, 1));
@@ -45,25 +45,25 @@ async function test() {
  session.connect();
  let traceNotification = null;
  let tracingComplete = false;
- session.on('NodeTracing.dataCollected', (n) => traceNotification = n);
- session.on('NodeTracing.tracingComplete', () => tracingComplete = true);
- const { categories } = await post('NodeTracing.getCategories');
- compareIgnoringOrder(['node', 'node.async', 'node.bootstrap', 'node.fs.sync',
-                       'node.perf', 'node.perf.usertiming',
-                       'node.perf.timerify', 'v8'],
+ session.on("NodeTracing.dataCollected", (n) => traceNotification = n);
+ session.on("NodeTracing.tracingComplete", () => tracingComplete = true);
+ const { categories } = await post("NodeTracing.getCategories");
+ compareIgnoringOrder(["node", "node.async", "node.bootstrap", "node.fs.sync",
+                       "node.perf", "node.perf.usertiming",
+                       "node.perf.timerify", "v8"],
                       categories);
 
- const traceConfig = { includedCategories: ['v8'] };
- await post('NodeTracing.start', { traceConfig });
+ const traceConfig = { includedCategories: ["v8"] };
+ await post("NodeTracing.start", { traceConfig });
 
  for (let i = 0; i < 5; i++)
   await generateTrace();
- JSON.stringify(await post('NodeTracing.stop', { traceConfig }));
+ JSON.stringify(await post("NodeTracing.stop", { traceConfig }));
  session.disconnect();
  assert(traceNotification.params.value.length > 0);
  assert(tracingComplete);
  clearInterval(interval);
- console.log('Success');
+ console.log("Success");
 }
 
 test().then(common.mustCall());

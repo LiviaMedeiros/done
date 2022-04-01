@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
+const assert = require("assert");
 const {
  randomUUID,
-} = require('crypto');
+} = require("crypto");
 
 const last = new Set([
- '00000000-0000-0000-0000-000000000000',
+ "00000000-0000-0000-0000-000000000000",
 ]);
 
 function testMatch(uuid) {
@@ -28,17 +28,17 @@ for (let n = 0; n < 130; n++) {
  const uuid = randomUUID();
  assert(!last.has(uuid));
  last.add(uuid);
- assert.strictEqual(typeof uuid, 'string');
+ assert.strictEqual(typeof uuid, "string");
  assert.strictEqual(uuid.length, 36);
  testMatch(uuid);
 
  // Check that version 4 identifier was populated.
  assert.strictEqual(
-  Buffer.from(uuid.substr(14, 2), 'hex')[0] & 0x40, 0x40);
+  Buffer.from(uuid.substr(14, 2), "hex")[0] & 0x40, 0x40);
 
  // Check that clock_seq_hi_and_reserved was populated with reserved bits.
  assert.strictEqual(
-  Buffer.from(uuid.substr(19, 2), 'hex')[0] & 0b1100_0000, 0b1000_0000);
+  Buffer.from(uuid.substr(19, 2), "hex")[0] & 0b1100_0000, 0b1000_0000);
 }
 
 // Test non-buffered UUID's
@@ -49,10 +49,10 @@ for (let n = 0; n < 130; n++) {
  testMatch(randomUUID({ disableEntropyCache: true }));
 
  assert.throws(() => randomUUID(1), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 
- assert.throws(() => randomUUID({ disableEntropyCache: '' }), {
-  code: 'ERR_INVALID_ARG_TYPE',
+ assert.throws(() => randomUUID({ disableEntropyCache: "" }), {
+  code: "ERR_INVALID_ARG_TYPE",
  });
 }

@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 const {
  IsLossless,
  TestInt64,
@@ -41,12 +41,12 @@ const {
 });
 
 assert.throws(() => CreateTooBigBigInt(), {
- name: 'Error',
- message: 'Invalid argument',
+ name: "Error",
+ message: "Invalid argument",
 });
 
 // Test that we correctly forward exceptions from the engine.
 assert.throws(() => MakeBigIntWordsThrow(), {
- name: 'RangeError',
- message: 'Maximum BigInt size exceeded',
+ name: "RangeError",
+ message: "Maximum BigInt size exceeded",
 });

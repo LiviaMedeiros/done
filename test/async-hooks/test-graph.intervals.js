@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const initHooks = require('./init-hooks');
-const verifyGraph = require('./verify-graph');
+const common = require("../common");
+const initHooks = require("./init-hooks");
+const verifyGraph = require("./verify-graph");
 const TIMEOUT = 1;
 
 const hooks = initHooks();
@@ -23,13 +23,13 @@ function onsecondInterval() {
  clearInterval(iv2);
 }
 
-process.on('exit', onexit);
+process.on("exit", onexit);
 
 function onexit() {
  hooks.disable();
  verifyGraph(
   hooks,
-  [ { type: 'Timeout', id: 'timeout:1', triggerAsyncId: null },
-    { type: 'Timeout', id: 'timeout:2', triggerAsyncId: 'timeout:1' }],
+  [ { type: "Timeout", id: "timeout:1", triggerAsyncId: null },
+    { type: "Timeout", id: "timeout:2", triggerAsyncId: "timeout:1" }],
  );
 }

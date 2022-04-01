@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 // Refs: https://github.com/nodejs/node/issues/31733
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
-const stream = require('stream');
-const tmpdir = require('../common/tmpdir');
+const assert = require("assert");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const stream = require("stream");
+const tmpdir = require("../common/tmpdir");
 
 class Sink extends stream.Writable {
  constructor() {
@@ -52,7 +52,7 @@ function mstream(config) {
  plain.pipe(c).pipe(crypt);
  plain.end(expected);
 
- crypt.on('close', common.mustCall(() => {
+ crypt.on("close", common.mustCall(() => {
   const d = crypto.createDecipheriv(cipher, key, iv, { authTagLength });
   d.setAAD(aad, { plaintextLength });
   d.setAuthTag(c.getAuthTag());
@@ -63,7 +63,7 @@ function mstream(config) {
   for (const chunk of chunks) crypt.write(chunk);
   crypt.end();
 
-  plain.on('close', common.mustCall(() => {
+  plain.on("close", common.mustCall(() => {
    const actual = Buffer.concat(plain.chunks);
    assert.deepStrictEqual(expected, actual);
   }));
@@ -76,22 +76,22 @@ function fstream(config) {
 
  const { cipher, key, iv, aad, authTagLength, plaintextLength } = config;
  const expected = Buffer.alloc(plaintextLength);
- fs.writeFileSync(filename('a'), expected);
+ fs.writeFileSync(filename("a"), expected);
 
  const c = crypto.createCipheriv(cipher, key, iv, { authTagLength });
  c.setAAD(aad, { plaintextLength });
 
- const plain = fs.createReadStream(filename('a'));
- const crypt = fs.createWriteStream(filename('b'));
+ const plain = fs.createReadStream(filename("a"));
+ const crypt = fs.createWriteStream(filename("b"));
  plain.pipe(c).pipe(crypt);
 
  // Observation: 'close' comes before 'end' on |c|, which definitely feels
  // wrong. Switching to `c.on('end', ...)` doesn't fix the test though.
- crypt.on('close', common.mustCall(() => {
+ crypt.on("close", common.mustCall(() => {
   // Just to drive home the point that decryption does actually work:
   // reading the file synchronously, then decrypting it, works.
   {
-   const ciphertext = fs.readFileSync(filename('b'));
+   const ciphertext = fs.readFileSync(filename("b"));
    const d = crypto.createDecipheriv(cipher, key, iv, { authTagLength });
    d.setAAD(aad, { plaintextLength });
    d.setAuthTag(c.getAuthTag());
@@ -103,12 +103,12 @@ function fstream(config) {
   d.setAAD(aad, { plaintextLength });
   d.setAuthTag(c.getAuthTag());
 
-  const crypt = fs.createReadStream(filename('b'));
-  const plain = fs.createWriteStream(filename('c'));
+  const crypt = fs.createReadStream(filename("b"));
+  const plain = fs.createWriteStream(filename("c"));
   crypt.pipe(d).pipe(plain);
 
-  plain.on('close', common.mustCall(() => {
-   const actual = fs.readFileSync(filename('c'));
+  plain.on("close", common.mustCall(() => {
+   const actual = fs.readFileSync(filename("c"));
    assert.deepStrictEqual(expected, actual);
   }));
  }));
@@ -124,7 +124,7 @@ function test(config) {
 tmpdir.refresh();
 
 test({
- cipher: 'aes-128-ccm',
+ cipher: "aes-128-ccm",
  aad: Buffer.alloc(1),
  iv: Buffer.alloc(8),
  key: Buffer.alloc(16),
@@ -133,7 +133,7 @@ test({
 });
 
 test({
- cipher: 'aes-128-ccm',
+ cipher: "aes-128-ccm",
  aad: Buffer.alloc(1),
  iv: Buffer.alloc(8),
  key: Buffer.alloc(16),

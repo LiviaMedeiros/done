@@ -1,16 +1,16 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 if (!common.isMainThread)
- common.skip('Worker bootstrapping works differently -> different async IDs');
+ common.skip("Worker bootstrapping works differently -> different async IDs");
 
 const promiseAsyncIds = [];
 
 async_hooks.createHook({
  init: common.mustCallAtLeast((id, type, triggerId) => {
-  if (type === 'PROMISE') {
+  if (type === "PROMISE") {
    // Check that the last known Promise is triggering the creation of
    // this one.
    assert.strictEqual(triggerId,

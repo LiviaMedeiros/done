@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 // Test buffers small enough to use the JS implementation
 {

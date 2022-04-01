@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
 
 const serverSockets = [];
@@ -62,9 +62,9 @@ server.listen(0, function() {
   });
  });
 
- process.on('exit', function() {
+ process.on("exit", function() {
   assert(closed);
-  console.log('ok');
+  console.log("ok");
  });
 
  // make 10 requests in parallel,
@@ -87,12 +87,12 @@ server.listen(0, function() {
    path: `/${i}`,
    agent: agent,
   }, function(res) {
-   let data = '';
-   res.setEncoding('ascii');
-   res.on('data', function(c) {
+   let data = "";
+   res.setEncoding("ascii");
+   res.on("data", function(c) {
     data += c;
    });
-   res.on('end', function() {
+   res.on("end", function() {
     assert.strictEqual(data, `/${i}`);
     cb();
    });

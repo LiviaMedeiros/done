@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
 const f = __filename;
 
-assert.throws(() => fs.exists(f), { code: 'ERR_INVALID_ARG_TYPE' });
-assert.throws(() => fs.exists(), { code: 'ERR_INVALID_ARG_TYPE' });
-assert.throws(() => fs.exists(f, {}), { code: 'ERR_INVALID_ARG_TYPE' });
+assert.throws(() => fs.exists(f), { code: "ERR_INVALID_ARG_TYPE" });
+assert.throws(() => fs.exists(), { code: "ERR_INVALID_ARG_TYPE" });
+assert.throws(() => fs.exists(f, {}), { code: "ERR_INVALID_ARG_TYPE" });
 
 fs.exists(f, common.mustCall(function(y) {
  assert.strictEqual(y, true);
@@ -39,7 +39,7 @@ fs.exists(`${f}-NO`, common.mustCall(function(y) {
 
 // If the path is invalid, fs.exists will still invoke the callback with false
 // instead of throwing errors
-fs.exists(new URL('https://foo'), common.mustCall(function(y) {
+fs.exists(new URL("https://foo"), common.mustCall(function(y) {
  assert.strictEqual(y, false);
 }));
 
@@ -53,4 +53,4 @@ assert(!fs.existsSync(`${f}-NO`));
 // fs.existsSync() never throws
 assert(!fs.existsSync());
 assert(!fs.existsSync({}));
-assert(!fs.existsSync(new URL('https://foo')));
+assert(!fs.existsSync(new URL("https://foo")));

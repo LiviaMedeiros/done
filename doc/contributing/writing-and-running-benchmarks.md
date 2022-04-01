@@ -477,21 +477,21 @@ outside the `main` function has side effects. In general, prefer putting
 the code inside the `main` function if it's more than just declaration.
 
 ```js
-'use strict';
-const common = require('../common.js');
-const { SlowBuffer } = require('buffer');
+"use strict";
+const common = require("../common.js");
+const { SlowBuffer } = require("buffer");
 
 const configs = {
  // Number of operations, specified here so they show up in the report.
  // Most benchmarks just use one value for all runs.
  n: [1024],
- type: ['fast', 'slow'],  // Custom configurations
+ type: ["fast", "slow"],  // Custom configurations
  size: [16, 128, 1024],  // Custom configurations
 };
 
 const options = {
  // Add --expose-internals in order to require internal modules in main
- flags: ['--zero-fill-buffers'],
+ flags: ["--zero-fill-buffers"],
 };
 
 // `main` and `configs` are required, `options` is optional.
@@ -510,7 +510,7 @@ function main(conf) {
  bench.start();
 
  // Do operations here
- const BufferConstructor = conf.type === 'fast' ? Buffer : SlowBuffer;
+ const BufferConstructor = conf.type === "fast" ? Buffer : SlowBuffer;
 
  for (let i = 0; i < conf.n; i++) {
   new BufferConstructor(conf.size);
@@ -528,9 +528,9 @@ The `bench` object returned by `createBenchmark` implements
 benchmark HTTP servers.
 
 ```js
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  kb: [64, 128, 256, 1024],
@@ -539,9 +539,9 @@ const bench = common.createBenchmark(main, {
 });
 
 function main(conf) {
- const http = require('http');
+ const http = require("http");
  const len = conf.kb * 1024;
- const chunk = Buffer.alloc(len, 'x');
+ const chunk = Buffer.alloc(len, "x");
  const server = http.createServer((req, res) => {
   res.end(chunk);
  });

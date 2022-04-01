@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
-const http = require('http');
+const assert = require("assert");
+const http = require("http");
 
 const durationBetweenIntervals = [];
 let timeoutTooShort = false;
@@ -33,7 +33,7 @@ function runTest(timeoutDuration) {
     // Interval wasn't invoked, probably because the machine is busy with
     // other things. Try again with a longer timeout.
     newTimeoutDuration = timeoutDuration * 2;
-    console.error('The interval was not invoked.');
+    console.error("The interval was not invoked.");
     console.error(`Trying w/ timeout of ${newTimeoutDuration}.`);
     return;
    }
@@ -48,11 +48,11 @@ function runTest(timeoutDuration) {
     return;
    }
 
-   assert.fail('Request timeout should not fire');
+   assert.fail("Request timeout should not fire");
   });
 
   req.resume();
-  req.once('end', () => {
+  req.once("end", () => {
    res.end();
   });
  });
@@ -60,7 +60,7 @@ function runTest(timeoutDuration) {
  server.listen(0, common.mustCall(() => {
   const req = http.request({
    port: server.address().port,
-   method: 'POST',
+   method: "POST",
   }, () => {
    let lastIntervalTimestamp = Date.now();
    const interval = setInterval(() => {
@@ -74,13 +74,13 @@ function runTest(timeoutDuration) {
      timeoutTooShort = true;
     }
     intervalWasInvoked = true;
-    req.write('a');
+    req.write("a");
    }, INTERVAL);
    setTimeout(() => {
     clearInterval(interval);
     req.end();
    }, timeoutDuration);
   });
-  req.write('.');
+  req.write(".");
  }));
 }

@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  extraSize: [1, 256, 4 * 256],

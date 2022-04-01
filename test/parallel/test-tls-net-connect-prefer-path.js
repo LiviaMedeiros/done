@@ -1,22 +1,22 @@
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 // This tests that both tls and net will ignore host and port if path is
 // provided.
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const tls = require('tls');
-const net = require('net');
-const assert = require('assert');
+const tls = require("tls");
+const net = require("net");
+const assert = require("assert");
 
 function libName(lib) {
- return lib === net ? 'net' : 'tls';
+ return lib === net ? "net" : "tls";
 }
 
 function mkServer(lib, tcp, cb) {
@@ -29,8 +29,8 @@ function mkServer(lib, tcp, cb) {
  const args = [handler];
  if (lib === tls) {
   args.unshift({
-   cert: fixtures.readKey('rsa_cert.crt'),
-   key: fixtures.readKey('rsa_private.pem'),
+   cert: fixtures.readKey("rsa_cert.crt"),
+   key: fixtures.readKey("rsa_private.pem"),
   });
  }
  const server = lib.createServer(...args);
@@ -43,14 +43,14 @@ function testLib(lib, cb) {
    const client = lib.connect({
     path: unixServer.address(),
     port: tcpServer.address().port,
-    host: 'localhost',
+    host: "localhost",
     rejectUnauthorized: false,
    }, () => {
     const bufs = [];
-    client.on('data', common.mustCall((d) => {
+    client.on("data", common.mustCall((d) => {
      bufs.push(d);
     }));
-    client.on('end', common.mustCall(() => {
+    client.on("end", common.mustCall(() => {
      const resp = Buffer.concat(bufs).toString();
      assert.strictEqual(resp, `${libName(lib)}:${unixServer.address()}`);
      tcpServer.close();

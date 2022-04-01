@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const { mustCall, mustNotCall } = require('../common');
-const { Readable } = require('stream');
-const { strictEqual } = require('assert');
+const { mustCall, mustNotCall } = require("../common");
+const { Readable } = require("stream");
+const { strictEqual } = require("assert");
 
 async function asyncSupport() {
  const finallyMustCall = mustCall();
@@ -10,7 +10,7 @@ async function asyncSupport() {
 
  async function* infiniteGenerate() {
   try {
-   while (true) yield 'a';
+   while (true) yield "a";
   } finally {
    finallyMustCall();
   }
@@ -20,7 +20,7 @@ async function asyncSupport() {
 
  for await (const chunk of stream) {
   bodyMustCall();
-  strictEqual(chunk, 'a');
+  strictEqual(chunk, "a");
   break;
  }
 }
@@ -31,7 +31,7 @@ async function syncSupport() {
 
  function* infiniteGenerate() {
   try {
-   while (true) yield 'a';
+   while (true) yield "a";
   } finally {
    finallyMustCall();
   }
@@ -41,7 +41,7 @@ async function syncSupport() {
 
  for await (const chunk of stream) {
   bodyMustCall();
-  strictEqual(chunk, 'a');
+  strictEqual(chunk, "a");
   break;
  }
 }
@@ -52,7 +52,7 @@ async function syncPromiseSupport() {
 
  function* infiniteGenerate() {
   try {
-   while (true) yield Promise.resolve('a');
+   while (true) yield Promise.resolve("a");
   } finally {
    // eslint-disable-next-line no-unsafe-finally
    return { then(cb) {
@@ -66,7 +66,7 @@ async function syncPromiseSupport() {
 
  for await (const chunk of stream) {
   bodyMustCall();
-  strictEqual(chunk, 'a');
+  strictEqual(chunk, "a");
   break;
  }
 }
@@ -79,7 +79,7 @@ async function syncRejectedSupport() {
 
  function* generate() {
   try {
-   yield Promise.reject('a');
+   yield Promise.reject("a");
    secondNextMustNotCall();
   } finally {
    // eslint-disable-next-line no-unsafe-finally
@@ -111,7 +111,7 @@ async function noReturnAfterThrow() {
   [Symbol.asyncIterator]() { return this; },
   async next() {
    nextMustCall();
-   throw new Error('a');
+   throw new Error("a");
   },
   async return() {
    returnMustNotCall();
@@ -142,7 +142,7 @@ async function closeStreamWhileNextIsPending() {
  async function* infiniteGenerate() {
   try {
    while (true) {
-    yield 'a';
+    yield "a";
     resolveYielded();
     await destroyed;
    }
@@ -153,9 +153,9 @@ async function closeStreamWhileNextIsPending() {
 
  const stream = Readable.from(infiniteGenerate());
 
- stream.on('data', (data) => {
+ stream.on("data", (data) => {
   dataMustCall();
-  strictEqual(data, 'a');
+  strictEqual(data, "a");
  });
 
  yielded.then(() => {
@@ -170,9 +170,9 @@ async function closeAfterNullYielded() {
 
  function* generate() {
   try {
-   yield 'a';
-   yield 'a';
-   yield 'a';
+   yield "a";
+   yield "a";
+   yield "a";
   } finally {
    finallyMustCall();
   }
@@ -180,9 +180,9 @@ async function closeAfterNullYielded() {
 
  const stream = Readable.from(generate());
 
- stream.on('data', (chunk) => {
+ stream.on("data", (chunk) => {
   dataMustCall();
-  strictEqual(chunk, 'a');
+  strictEqual(chunk, "a");
  });
 }
 

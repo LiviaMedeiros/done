@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { Writable } = require('stream');
-const assert = require('assert');
+const common = require("../common");
+const { Writable } = require("stream");
+const assert = require("assert");
 
 // basic
 {
  // Find it on Writable.prototype
- assert(Object.hasOwn(Writable.prototype, 'writableFinished'));
+ assert(Object.hasOwn(Writable.prototype, "writableFinished"));
 }
 
 // event
@@ -20,11 +20,11 @@ const assert = require('assert');
   cb();
  };
 
- writable.on('finish', common.mustCall(() => {
+ writable.on("finish", common.mustCall(() => {
   assert.strictEqual(writable.writableFinished, true);
  }));
 
- writable.end('testing finished state', common.mustCall(() => {
+ writable.end("testing finished state", common.mustCall(() => {
   assert.strictEqual(writable.writableFinished, true);
  }));
 }
@@ -39,7 +39,7 @@ const assert = require('assert');
  });
 
  w.end();
- w.on('finish', common.mustCall());
+ w.on("finish", common.mustCall());
 }
 
 {
@@ -52,7 +52,7 @@ const assert = require('assert');
  });
 
  let sync = true;
- w.on('prefinish', common.mustCall(() => {
+ w.on("prefinish", common.mustCall(() => {
   assert.strictEqual(sync, true);
  }));
  w.end();
@@ -72,7 +72,7 @@ const assert = require('assert');
  });
 
  let sync = true;
- w.on('prefinish', common.mustCall(() => {
+ w.on("prefinish", common.mustCall(() => {
   assert.strictEqual(sync, true);
  }));
  w.end();

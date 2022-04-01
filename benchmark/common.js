@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const child_process = require('child_process');
-const http_benchmarkers = require('./_http-benchmarkers.js');
+const child_process = require("child_process");
+const http_benchmarkers = require("./_http-benchmarkers.js");
 
 class Benchmark {
  constructor(fn, configs, options = {}) {
@@ -38,7 +38,7 @@ class Benchmark {
   this.config = this.queue[0];
 
   process.nextTick(() => {
-   if (Object.hasOwn(process.env, 'NODE_RUN_BENCHMARK_FN')) {
+   if (Object.hasOwn(process.env, "NODE_RUN_BENCHMARK_FN")) {
     fn(this.config);
    } else {
     // _run will use fork() to create a new process for each configuration
@@ -52,13 +52,13 @@ class Benchmark {
   const cliOptions = {};
 
   // Check for the test mode first.
-  const testIndex = argv.indexOf('--test');
+  const testIndex = argv.indexOf("--test");
   if (testIndex !== -1) {
    for (const [key, rawValue] of Object.entries(configs)) {
     let value = Array.isArray(rawValue) ? rawValue[0] : rawValue;
     // Set numbers to one by default to reduce the runtime.
-    if (typeof value === 'number') {
-     if (key === 'dur' || key === 'duration') {
+    if (typeof value === "number") {
+     if (key === "dur" || key === "duration") {
       value = 0.05;
      } else if (value > 1) {
       value = 1;
@@ -96,7 +96,7 @@ class Benchmark {
      cliOptions[key] = [];
     cliOptions[key].push(
      // Infer the type from the config object and parse accordingly
-     typeof configs[key][0] === 'number' ? +value : value,
+     typeof configs[key][0] === "number" ? +value : value,
     );
    } else {
     extraOptions[key] = value;
@@ -116,7 +116,7 @@ class Benchmark {
    const values = options[key];
 
    for (const value of values) {
-    if (typeof value !== 'number' && typeof value !== 'string') {
+    if (typeof value !== "number" && typeof value !== "string") {
      throw new TypeError(
       `configuration "${key}" had type ${typeof value}`);
     }
@@ -170,7 +170,7 @@ class Benchmark {
   // If forked, report to the parent.
   if (process.send) {
    process.send({
-    type: 'config',
+    type: "config",
     name: this.name,
     queueLength: this.queue.length,
    });
@@ -183,7 +183,7 @@ class Benchmark {
    // construct a configuration queue, but just execute the benchmark
    // function.
    const childEnv = { ...process.env };
-   childEnv.NODE_RUN_BENCHMARK_FN = '';
+   childEnv.NODE_RUN_BENCHMARK_FN = "";
 
    // Create configuration arguments
    const childArgs = [];
@@ -198,8 +198,8 @@ class Benchmark {
     env: childEnv,
     execArgv: this.flags.concat(process.execArgv),
    });
-   child.on('message', sendResult);
-   child.on('close', (code) => {
+   child.on("message", sendResult);
+   child.on("close", (code) => {
     if (code) {
      process.exit(code);
     }
@@ -215,7 +215,7 @@ class Benchmark {
 
  start() {
   if (this._started) {
-   throw new Error('Called start more than once in a single benchmark');
+   throw new Error("Called start more than once in a single benchmark");
   }
   this._started = true;
   this._time = process.hrtime.bigint();
@@ -226,23 +226,23 @@ class Benchmark {
   const time = process.hrtime.bigint();
 
   if (!this._started) {
-   throw new Error('called end without start');
+   throw new Error("called end without start");
   }
   if (this._ended) {
-   throw new Error('called end multiple times');
+   throw new Error("called end multiple times");
   }
-  if (typeof operations !== 'number') {
-   throw new Error('called end() without specifying operation count');
+  if (typeof operations !== "number") {
+   throw new Error("called end() without specifying operation count");
   }
   if (!process.env.NODEJS_BENCHMARK_ZERO_ALLOWED && operations <= 0) {
-   throw new Error('called end() with operation count <= 0');
+   throw new Error("called end() with operation count <= 0");
   }
 
   this._ended = true;
 
   if (time === this._time) {
    if (!process.env.NODEJS_BENCHMARK_ZERO_ALLOWED)
-    throw new Error('insufficient clock precision for short benchmark');
+    throw new Error("insufficient clock precision for short benchmark");
    // Avoid dividing by zero
    this.report(operations && Number.MAX_VALUE, 0n);
    return;
@@ -259,7 +259,7 @@ class Benchmark {
    conf: this.config,
    rate,
    time: nanoSecondsToString(elapsed),
-   type: 'report',
+   type: "report",
   });
  }
 }
@@ -268,21 +268,21 @@ function nanoSecondsToString(bigint) {
  const str = bigint.toString();
  const decimalPointIndex = str.length - 9;
  if (decimalPointIndex <= 0) {
-  return `0.${'0'.repeat(-decimalPointIndex)}${str}`;
+  return `0.${"0".repeat(-decimalPointIndex)}${str}`;
  }
  return `${str.slice(0, decimalPointIndex)}.${str.slice(decimalPointIndex)}`;
 }
 
 function formatResult(data) {
  // Construct configuration string, " A=a, B=b, ..."
- let conf = '';
+ let conf = "";
  for (const key of Object.keys(data.conf)) {
   conf += ` ${key}=${JSON.stringify(data.conf[key])}`;
  }
 
- let rate = data.rate.toString().split('.');
- rate[0] = rate[0].replace(/(\d)(?=(?:\d\d\d)+(?!\d))/g, '$1,');
- rate = (rate[1] ? rate.join('.') : rate[0]);
+ let rate = data.rate.toString().split(".");
+ rate[0] = rate[0].replace(/(\d)(?=(?:\d\d\d)+(?!\d))/g, "$1,");
+ rate = (rate[1] ? rate.join(".") : rate[0]);
  return `${data.name}${conf}: ${rate}\n`;
 }
 
@@ -297,42 +297,42 @@ function sendResult(data) {
 }
 
 const urls = {
- long: 'http://nodejs.org:89/docs/latest/api/foo/bar/qua/13949281/0f28b/' +
-        '/5d49/b3020/url.html#test?payload1=true&payload2=false&test=1' +
-        '&benchmark=3&foo=38.38.011.293&bar=1234834910480&test=19299&3992&' +
-        'key=f5c65e1e98fe07e648249ad41e1cfdb0',
- short: 'https://nodejs.org/en/blog/',
- idn: 'http://你好你好.在线',
- auth: 'https://user:pass@example.com/path?search=1',
- file: 'file:///foo/bar/test/node.js',
- ws: 'ws://localhost:9229/f46db715-70df-43ad-a359-7f9949f39868',
+ long: "http://nodejs.org:89/docs/latest/api/foo/bar/qua/13949281/0f28b/" +
+        "/5d49/b3020/url.html#test?payload1=true&payload2=false&test=1" +
+        "&benchmark=3&foo=38.38.011.293&bar=1234834910480&test=19299&3992&" +
+        "key=f5c65e1e98fe07e648249ad41e1cfdb0",
+ short: "https://nodejs.org/en/blog/",
+ idn: "http://你好你好.在线",
+ auth: "https://user:pass@example.com/path?search=1",
+ file: "file:///foo/bar/test/node.js",
+ ws: "ws://localhost:9229/f46db715-70df-43ad-a359-7f9949f39868",
  javascript: 'javascript:alert("node is awesome");',
- percent: 'https://%E4%BD%A0/foo',
- dot: 'https://example.org/./a/../b/./c',
+ percent: "https://%E4%BD%A0/foo",
+ dot: "https://example.org/./a/../b/./c",
 };
 
 const searchParams = {
- noencode: 'foo=bar&baz=quux&xyzzy=thud',
- multicharsep: 'foo=bar&&&&&&&&&&baz=quux&&&&&&&&&&xyzzy=thud',
- encodefake: 'foo=%©ar&baz=%A©uux&xyzzy=%©ud',
- encodemany: '%66%6F%6F=bar&%62%61%7A=quux&xyzzy=%74h%75d',
- encodelast: 'foo=bar&baz=quux&xyzzy=thu%64',
- multivalue: 'foo=bar&foo=baz&foo=quux&quuy=quuz',
- multivaluemany: 'foo=bar&foo=baz&foo=quux&quuy=quuz&foo=abc&foo=def&' +
-                  'foo=ghi&foo=jkl&foo=mno&foo=pqr&foo=stu&foo=vwxyz',
- manypairs: 'a&b&c&d&e&f&g&h&i&j&k&l&m&n&o&p&q&r&s&t&u&v&w&x&y&z',
- manyblankpairs: '&&&&&&&&&&&&&&&&&&&&&&&&',
- altspaces: 'foo+bar=baz+quux&xyzzy+thud=quuy+quuz&abc=def+ghi',
+ noencode: "foo=bar&baz=quux&xyzzy=thud",
+ multicharsep: "foo=bar&&&&&&&&&&baz=quux&&&&&&&&&&xyzzy=thud",
+ encodefake: "foo=%©ar&baz=%A©uux&xyzzy=%©ud",
+ encodemany: "%66%6F%6F=bar&%62%61%7A=quux&xyzzy=%74h%75d",
+ encodelast: "foo=bar&baz=quux&xyzzy=thu%64",
+ multivalue: "foo=bar&foo=baz&foo=quux&quuy=quuz",
+ multivaluemany: "foo=bar&foo=baz&foo=quux&quuy=quuz&foo=abc&foo=def&" +
+                  "foo=ghi&foo=jkl&foo=mno&foo=pqr&foo=stu&foo=vwxyz",
+ manypairs: "a&b&c&d&e&f&g&h&i&j&k&l&m&n&o&p&q&r&s&t&u&v&w&x&y&z",
+ manyblankpairs: "&&&&&&&&&&&&&&&&&&&&&&&&",
+ altspaces: "foo+bar=baz+quux&xyzzy+thud=quuy+quuz&abc=def+ghi",
 };
 
 function getUrlData(withBase) {
- const data = require('../test/fixtures/wpt/url/resources/urltestdata.json');
+ const data = require("../test/fixtures/wpt/url/resources/urltestdata.json");
  const result = [];
  for (const item of data) {
   if (item.failure || !item.input) continue;
   if (withBase) {
    result.push([item.input, item.base]);
-  } else if (item.base !== 'about:blank') {
+  } else if (item.base !== "about:blank") {
    result.push(item.base);
   }
  }
@@ -354,18 +354,18 @@ function getUrlData(withBase) {
  */
 function bakeUrlData(type, e = 0, withBase = false, asUrl = false) {
  let result = [];
- if (type === 'wpt') {
+ if (type === "wpt") {
   result = getUrlData(withBase);
  } else if (urls[type]) {
   const input = urls[type];
-  const item = withBase ? [input, 'about:blank'] : input;
+  const item = withBase ? [input, "about:blank"] : input;
   // Roughly the size of WPT URL test data
   result = new Array(200).fill(item);
  } else {
   throw new Error(`Unknown url data type ${type}`);
  }
 
- if (typeof e !== 'number') {
+ if (typeof e !== "number") {
   throw new Error(`e must be a number, received ${e}`);
  }
 
@@ -389,19 +389,19 @@ module.exports = {
  bakeUrlData,
  binding(bindingName) {
   try {
-   const { internalBinding } = require('internal/test/binding');
+   const { internalBinding } = require("internal/test/binding");
 
    return internalBinding(bindingName);
   } catch {
    return process.binding(bindingName);
   }
  },
- buildType: process.features.debug ? 'Debug' : 'Release',
+ buildType: process.features.debug ? "Debug" : "Release",
  createBenchmark(fn, configs, options) {
   return new Benchmark(fn, configs, options);
  },
  sendResult,
  searchParams,
- urlDataTypes: Object.keys(urls).concat(['wpt']),
+ urlDataTypes: Object.keys(urls).concat(["wpt"]),
  urls,
 };

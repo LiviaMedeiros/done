@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Verify that connect reqs are properly cleaned up.
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const ROUNDS = 5;
 const ATTEMPTS_PER_ROUND = 50;
@@ -40,9 +40,9 @@ const server = net.createServer().listen(0, common.mustCall(() => {
 function pummel() {
  let pending;
  for (pending = 0; pending < ATTEMPTS_PER_ROUND; pending++) {
-  net.createConnection(port).on('error', function(err) {
-   console.log('pending', pending, 'rounds', rounds);
-   assert.strictEqual(err.code, 'ECONNREFUSED');
+  net.createConnection(port).on("error", function(err) {
+   console.log("pending", pending, "rounds", rounds);
+   assert.strictEqual(err.code, "ECONNREFUSED");
    if (--pending > 0) return;
    if (rounds === ROUNDS) return check();
    rounds++;
@@ -55,11 +55,11 @@ function pummel() {
 function check() {
  setTimeout(common.mustCall(function() {
   assert.strictEqual(process.getActiveResourcesInfo().filter(
-   (type) => type === 'TCPWRAP').length, 0);
+   (type) => type === "TCPWRAP").length, 0);
  }), 0);
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(rounds, ROUNDS);
  assert.strictEqual(reqs, ROUNDS * ATTEMPTS_PER_ROUND);
 });

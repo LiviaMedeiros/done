@@ -1,18 +1,18 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { internalBinding } = require('internal/test/binding');
-const async_wrap = internalBinding('async_wrap');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../common");
+const { internalBinding } = require("internal/test/binding");
+const async_wrap = internalBinding("async_wrap");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const RUNS = 5;
 let test_id = null;
 let run_cntr = 0;
 let hooks = null;
 
-process.on('beforeExit', common.mustCall(() => {
- process.removeAllListeners('uncaughtException');
+process.on("beforeExit", common.mustCall(() => {
+ process.removeAllListeners("uncaughtException");
  hooks.disable();
  assert.strictEqual(test_id, null);
  assert.strictEqual(run_cntr, RUNS);

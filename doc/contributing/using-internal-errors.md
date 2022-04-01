@@ -32,13 +32,13 @@ Can be replaced by first adding a new error key into the `internal/errors.js`
 file:
 
 ```js
-E('FOO', 'Expected string received %s', TypeError);
+E("FOO", "Expected string received %s", TypeError);
 ```
 
 Then replacing the existing `new TypeError` in the code:
 
 ```js
-const { FOO } = require('internal/errors').codes;
+const { FOO } = require("internal/errors").codes;
 // ...
 const err = new FOO(type);
 ```
@@ -49,8 +49,8 @@ New static error codes are added by modifying the `internal/errors.js` file
 and appending the new error codes to the end using the utility `E()` method.
 
 ```js
-E('EXAMPLE_KEY1', 'This is the error value', TypeError);
-E('EXAMPLE_KEY2', (a, b) => `${a} ${b}`, RangeError);
+E("EXAMPLE_KEY1", "This is the error value", TypeError);
+E("EXAMPLE_KEY2", (a, b) => `${a} ${b}`, RangeError);
 ```
 
 The first argument passed to `E()` is the static identifier. The second
@@ -68,10 +68,10 @@ properties of the main class:
 <!-- eslint-disable no-unreachable -->
 
 ```js
-E('EXAMPLE_KEY', 'Error message', TypeError, RangeError);
+E("EXAMPLE_KEY", "Error message", TypeError, RangeError);
 
 // In another module
-const { EXAMPLE_KEY } = require('internal/errors').codes;
+const { EXAMPLE_KEY } = require("internal/errors").codes;
 // TypeError
 throw new EXAMPLE_KEY();
 // RangeError
@@ -94,7 +94,7 @@ as we can trust the error helper implementation. An example of this kind of
 error would be:
 
 ```js
-E('ERR_SOCKET_ALREADY_BOUND', 'Socket is already bound');
+E("ERR_SOCKET_ALREADY_BOUND", "Socket is already bound");
 ```
 
 If the error message is not a constant string then tests to validate
@@ -107,8 +107,8 @@ message string. A simple example is:
 ```js
 // Test ERR_TLS_CERT_ALTNAME_INVALID
 assert.strictEqual(
- errors.message('ERR_TLS_CERT_ALTNAME_INVALID', ['altname']),
- 'Hostname/IP does not match certificate\'s altnames: altname');
+ errors.message("ERR_TLS_CERT_ALTNAME_INVALID", ["altname"]),
+ "Hostname/IP does not match certificate's altnames: altname");
 ```
 
 In addition, there should also be tests which validate the use of the
@@ -121,7 +121,7 @@ required when the message for an error changes.
 assert.throws(() => {
  socket.bind();
 }, common.expectsError({
- code: 'ERR_SOCKET_ALREADY_BOUND',
+ code: "ERR_SOCKET_ALREADY_BOUND",
  type: Error,
 }));
 ```

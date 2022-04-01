@@ -1,14 +1,14 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('Does not support binding fd on Windows');
+ common.skip("Does not support binding fd on Windows");
 
-const assert = require('assert');
-const dgram = require('dgram');
-const { internalBinding } = require('internal/test/binding');
-const { UDP } = internalBinding('udp_wrap');
-const { UV_UDP_REUSEADDR } = require('os').constants;
+const assert = require("assert");
+const dgram = require("dgram");
+const { internalBinding } = require("internal/test/binding");
+const { UDP } = internalBinding("udp_wrap");
+const { UV_UDP_REUSEADDR } = require("os").constants;
 
 const BUFFER_SIZE = 4096;
 
@@ -33,8 +33,8 @@ const BUFFER_SIZE = 4096;
  }
 
  function testWithOptions(reuseAddr, udp4) {
-  const type = udp4 ? 'udp4' : 'udp6';
-  const bindAddress = udp4 ? common.localhostIPv4 : '::1';
+  const type = udp4 ? "udp4" : "udp6";
+  const bindAddress = udp4 ? common.localhostIPv4 : "::1";
 
   let fd;
 
@@ -85,31 +85,31 @@ const BUFFER_SIZE = 4096;
     socket.send(String(fd), port, address);
    }));
 
-   socket.on('message', common.mustCall((data) => {
-    assert.strictEqual(data.toString('utf8'), String(fd));
+   socket.on("message", common.mustCall((data) => {
+    assert.strictEqual(data.toString("utf8"), String(fd));
     socket.close();
    }));
 
-   socket.on('error', (err) => {
+   socket.on("error", (err) => {
     console.error(err.message);
     assert.fail(err.message);
    });
 
-   socket.on('close', common.mustCall(() => {}));
+   socket.on("close", common.mustCall(() => {}));
   }));
 
-  receiver.on('message', common.mustCall((data, { address, port }) => {
-   assert.strictEqual(data.toString('utf8'), String(fd));
+  receiver.on("message", common.mustCall((data, { address, port }) => {
+   assert.strictEqual(data.toString("utf8"), String(fd));
    receiver.send(String(fd), port, address);
    process.nextTick(() => receiver.close());
   }));
 
-  receiver.on('error', (err) => {
+  receiver.on("error", (err) => {
    console.error(err.message);
    assert.fail(err.message);
   });
 
-  receiver.on('close', common.mustCall(() => {}));
+  receiver.on("close", common.mustCall(() => {}));
  }
 
  testWithOptions(true, true);

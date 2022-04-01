@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert');
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, { n: [1e5] });
 
@@ -11,7 +11,7 @@ function main({ n }) {
   if (i % 2 === 0)
    assert(true);
   else
-   assert(true, 'foo bar baz');
+   assert(true, "foo bar baz");
  }
  bench.end(n);
 }

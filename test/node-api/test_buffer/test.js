@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc --no-concurrent-array-buffer-sweeping
 
-const common = require('../../common');
+const common = require("../../common");
 const binding = require(`./build/${common.buildType}/test_buffer`);
-const assert = require('assert');
-const tick = require('util').promisify(require('../../common/tick'));
+const assert = require("assert");
+const tick = require("util").promisify(require("../../common/tick"));
 
 (async function() {
  assert.strictEqual(binding.newBuffer().toString(), binding.theText);
  assert.strictEqual(binding.newExternalBuffer().toString(), binding.theText);
- console.log('gc1');
+ console.log("gc1");
  global.gc();
  assert.strictEqual(binding.getDeleterCallCount(), 0);
  await tick(10);
@@ -23,6 +23,6 @@ const tick = require('util').promisify(require('../../common/tick'));
  global.gc();
  assert.strictEqual(binding.getDeleterCallCount(), 1);
  await tick(10);
- console.log('gc2');
+ console.log("gc2");
  assert.strictEqual(binding.getDeleterCallCount(), 2);
 })().then(common.mustCall());

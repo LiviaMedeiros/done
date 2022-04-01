@@ -1,30 +1,30 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const {
  readFileSync,
-} = require('fs');
+} = require("fs");
 
 const {
  open,
-} = require('fs/promises');
+} = require("fs/promises");
 
-const check = readFileSync(__filename, { encoding: 'utf8' });
+const check = readFileSync(__filename, { encoding: "utf8" });
 
 // Make sure the ReadableStream works...
 (async () => {
  const dec = new TextDecoder();
  const file = await open(__filename);
- let data = '';
+ let data = "";
  for await (const chunk of file.readableWebStream())
   data += dec.decode(chunk);
 
  assert.strictEqual(check, data);
 
  assert.throws(() => file.readableWebStream(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 
  await file.close();
@@ -37,7 +37,7 @@ const check = readFileSync(__filename, { encoding: 'utf8' });
  await file.close();
 
  assert.throws(() => file.readableWebStream(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 })().then(common.mustCall());
 
@@ -48,7 +48,7 @@ const check = readFileSync(__filename, { encoding: 'utf8' });
  file.close();
 
  assert.throws(() => file.readableWebStream(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 })().then(common.mustCall());
 

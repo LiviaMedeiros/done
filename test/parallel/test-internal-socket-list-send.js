@@ -1,28 +1,28 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const EventEmitter = require('events');
-const SocketListSend = require('internal/socket_list').SocketListSend;
+const common = require("../common");
+const assert = require("assert");
+const EventEmitter = require("events");
+const SocketListSend = require("internal/socket_list").SocketListSend;
 
-const key = 'test-key';
+const key = "test-key";
 
 // Verify that an error will be received in callback when child is not
 // connected.
 {
  const child = Object.assign(new EventEmitter(), { connected: false });
- assert.strictEqual(child.listenerCount('internalMessage'), 0);
+ assert.strictEqual(child.listenerCount("internalMessage"), 0);
 
- const list = new SocketListSend(child, 'test');
+ const list = new SocketListSend(child, "test");
 
- list._request('msg', 'cmd', false, common.mustCall((err) => {
+ list._request("msg", "cmd", false, common.mustCall((err) => {
   common.expectsError({
-   code: 'ERR_CHILD_CLOSED_BEFORE_REPLY',
-   name: 'Error',
-   message: 'Child closed before reply received',
+   code: "ERR_CHILD_CLOSED_BEFORE_REPLY",
+   name: "Error",
+   message: "Child closed before reply received",
   })(err);
-  assert.strictEqual(child.listenerCount('internalMessage'), 0);
+  assert.strictEqual(child.listenerCount("internalMessage"), 0);
  }));
 }
 
@@ -32,19 +32,19 @@ const key = 'test-key';
   connected: true,
   _send: function(msg) {
    process.nextTick(() =>
-    this.emit('internalMessage', { key, cmd: 'cmd' }),
+    this.emit("internalMessage", { key, cmd: "cmd" }),
    );
   },
  });
 
  const list = new SocketListSend(child, key);
 
- list._request('msg', 'cmd', false, common.mustCall((err, msg) => {
+ list._request("msg", "cmd", false, common.mustCall((err, msg) => {
   assert.strictEqual(err, null);
-  assert.strictEqual(msg.cmd, 'cmd');
+  assert.strictEqual(msg.cmd, "cmd");
   assert.strictEqual(msg.key, key);
-  assert.strictEqual(child.listenerCount('internalMessage'), 0);
-  assert.strictEqual(child.listenerCount('disconnect'), 0);
+  assert.strictEqual(child.listenerCount("internalMessage"), 0);
+  assert.strictEqual(child.listenerCount("disconnect"), 0);
  }));
 }
 
@@ -53,18 +53,18 @@ const key = 'test-key';
 {
  const child = Object.assign(new EventEmitter(), {
   connected: true,
-  _send: function(msg) { process.nextTick(() => this.emit('disconnect')); },
+  _send: function(msg) { process.nextTick(() => this.emit("disconnect")); },
  });
 
  const list = new SocketListSend(child, key);
 
- list._request('msg', 'cmd', false, common.mustCall((err) => {
+ list._request("msg", "cmd", false, common.mustCall((err) => {
   common.expectsError({
-   code: 'ERR_CHILD_CLOSED_BEFORE_REPLY',
-   name: 'Error',
-   message: 'Child closed before reply received',
+   code: "ERR_CHILD_CLOSED_BEFORE_REPLY",
+   name: "Error",
+   message: "Child closed before reply received",
   })(err);
-  assert.strictEqual(child.listenerCount('internalMessage'), 0);
+  assert.strictEqual(child.listenerCount("internalMessage"), 0);
  }));
 }
 
@@ -74,10 +74,10 @@ const key = 'test-key';
  const child = Object.assign(new EventEmitter(), {
   connected: true,
   _send: function(msg) {
-   assert.strictEqual(msg.cmd, 'NODE_SOCKET_NOTIFY_CLOSE');
+   assert.strictEqual(msg.cmd, "NODE_SOCKET_NOTIFY_CLOSE");
    assert.strictEqual(msg.key, key);
    process.nextTick(() =>
-    this.emit('internalMessage', { key, cmd: 'NODE_SOCKET_ALL_CLOSED' }),
+    this.emit("internalMessage", { key, cmd: "NODE_SOCKET_ALL_CLOSED" }),
    );
   },
  });
@@ -86,10 +86,10 @@ const key = 'test-key';
 
  list.close(common.mustCall((err, msg) => {
   assert.strictEqual(err, null);
-  assert.strictEqual(msg.cmd, 'NODE_SOCKET_ALL_CLOSED');
+  assert.strictEqual(msg.cmd, "NODE_SOCKET_ALL_CLOSED");
   assert.strictEqual(msg.key, key);
-  assert.strictEqual(child.listenerCount('internalMessage'), 0);
-  assert.strictEqual(child.listenerCount('disconnect'), 0);
+  assert.strictEqual(child.listenerCount("internalMessage"), 0);
+  assert.strictEqual(child.listenerCount("disconnect"), 0);
  }));
 }
 
@@ -99,13 +99,13 @@ const key = 'test-key';
  const child = Object.assign(new EventEmitter(), {
   connected: true,
   _send: function(msg) {
-   assert.strictEqual(msg.cmd, 'NODE_SOCKET_GET_COUNT');
+   assert.strictEqual(msg.cmd, "NODE_SOCKET_GET_COUNT");
    assert.strictEqual(msg.key, key);
    process.nextTick(() =>
-    this.emit('internalMessage', {
+    this.emit("internalMessage", {
      key,
      count,
-     cmd: 'NODE_SOCKET_COUNT',
+     cmd: "NODE_SOCKET_COUNT",
     }),
    );
   },
@@ -116,8 +116,8 @@ const key = 'test-key';
  list.getConnections(common.mustCall((err, msg) => {
   assert.strictEqual(err, null);
   assert.strictEqual(msg, count);
-  assert.strictEqual(child.listenerCount('internalMessage'), 0);
-  assert.strictEqual(child.listenerCount('disconnect'), 0);
+  assert.strictEqual(child.listenerCount("internalMessage"), 0);
+  assert.strictEqual(child.listenerCount("disconnect"), 0);
  }));
 }
 
@@ -129,8 +129,8 @@ const key = 'test-key';
   connected: true,
   _send: function() {
    process.nextTick(() => {
-    this.emit('disconnect');
-    this.emit('internalMessage', { key, count, cmd: 'NODE_SOCKET_COUNT' });
+    this.emit("disconnect");
+    this.emit("internalMessage", { key, count, cmd: "NODE_SOCKET_COUNT" });
    });
   },
  });
@@ -139,10 +139,10 @@ const key = 'test-key';
 
  list.getConnections(common.mustCall((err) => {
   common.expectsError({
-   code: 'ERR_CHILD_CLOSED_BEFORE_REPLY',
-   name: 'Error',
-   message: 'Child closed before reply received',
+   code: "ERR_CHILD_CLOSED_BEFORE_REPLY",
+   name: "Error",
+   message: "Child closed before reply received",
   })(err);
-  assert.strictEqual(child.listenerCount('internalMessage'), 0);
+  assert.strictEqual(child.listenerCount("internalMessage"), 0);
  }));
 }

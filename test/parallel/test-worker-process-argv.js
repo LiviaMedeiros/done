@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { Worker, isMainThread, workerData } = require('worker_threads');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { Worker, isMainThread, workerData } = require("worker_threads");
 
 if (isMainThread) {
  assert.throws(() => {
-  new Worker(__filename, { argv: 'foo' });
+  new Worker(__filename, { argv: "foo" });
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 
  [
   new Worker(__filename, {
-   argv: [null, 'foo', 123, Symbol('bar')],
+   argv: [null, "foo", 123, Symbol("bar")],
    // Asserts only if the worker is started by the test.
-   workerData: 'assert-argv',
+   workerData: "assert-argv",
   }),
   new Worker(`
       const assert = require('assert');
@@ -33,17 +33,17 @@ if (isMainThread) {
         String(Symbol('bar'))]
       );
     `, {
-   argv: [null, 'foo', 123, Symbol('bar')],
+   argv: [null, "foo", 123, Symbol("bar")],
    eval: true,
   }),
  ].forEach((worker) => {
-  worker.on('exit', common.mustCall((code) => {
+  worker.on("exit", common.mustCall((code) => {
    assert.strictEqual(code, 0);
   }));
  });
-} else if (workerData === 'assert-argv') {
+} else if (workerData === "assert-argv") {
  assert.deepStrictEqual(
   process.argv,
-  [process.execPath, __filename, 'null', 'foo', '123', String(Symbol('bar'))],
+  [process.execPath, __filename, "null", "foo", "123", String(Symbol("bar"))],
  );
 }

@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const stream = require('stream');
+"use strict";
+const common = require("../common");
+const stream = require("stream");
 
 function test(throwCodeInbetween) {
  // Check that a pipe does not stall if .read() is called unexpectedly

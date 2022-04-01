@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 // Test 32 bit float
 const buffer = Buffer.alloc(4);
@@ -61,16 +61,16 @@ buffer[3] = 0xff;
 assert.strictEqual(buffer.readFloatBE(0), 4.627507918739843e-41);
 assert.strictEqual(buffer.readFloatLE(0), -Infinity);
 
-['readFloatLE', 'readFloatBE'].forEach((fn) => {
+["readFloatLE", "readFloatBE"].forEach((fn) => {
 
  // Verify that default offset works fine.
  buffer[fn](undefined);
  buffer[fn]();
 
- ['', '0', null, {}, [], () => {}, true, false].forEach((off) => {
+ ["", "0", null, {}, [], () => {}, true, false].forEach((off) => {
   assert.throws(
    () => buffer[fn](off),
-   { code: 'ERR_INVALID_ARG_TYPE' },
+   { code: "ERR_INVALID_ARG_TYPE" },
   );
  });
 
@@ -78,8 +78,8 @@ assert.strictEqual(buffer.readFloatLE(0), -Infinity);
   assert.throws(
    () => buffer[fn](offset),
    {
-    code: 'ERR_OUT_OF_RANGE',
-    name: 'RangeError',
+    code: "ERR_OUT_OF_RANGE",
+    name: "RangeError",
     message: 'The value of "offset" is out of range. ' +
                  `It must be >= 0 and <= 0. Received ${offset}`,
    });
@@ -88,17 +88,17 @@ assert.strictEqual(buffer.readFloatLE(0), -Infinity);
  assert.throws(
   () => Buffer.alloc(1)[fn](1),
   {
-   code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-   name: 'RangeError',
-   message: 'Attempt to access memory outside buffer bounds',
+   code: "ERR_BUFFER_OUT_OF_BOUNDS",
+   name: "RangeError",
+   message: "Attempt to access memory outside buffer bounds",
   });
 
  [NaN, 1.01].forEach((offset) => {
   assert.throws(
    () => buffer[fn](offset),
    {
-    code: 'ERR_OUT_OF_RANGE',
-    name: 'RangeError',
+    code: "ERR_OUT_OF_RANGE",
+    name: "RangeError",
     message: 'The value of "offset" is out of range. ' +
                  `It must be an integer. Received ${offset}`,
    });

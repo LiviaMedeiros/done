@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { MessageChannel } = require('worker_threads');
+const { MessageChannel } = require("worker_threads");
 
 // Make sure that an infinite asynchronous .on('message')/postMessage loop
 // does not lead to a stack overflow and does not starve the event loop.
@@ -11,7 +11,7 @@ const { MessageChannel } = require('worker_threads');
 
 const { port1, port2 } = new MessageChannel();
 let count = 0;
-port1.on('message', () => {
+port1.on("message", () => {
  if (count === 0) {
   setTimeout(common.mustCall(() => {
    port1.close();

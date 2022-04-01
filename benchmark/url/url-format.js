@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common.js');
-const url = require('url');
+"use strict";
+const common = require("../common.js");
+const url = require("url");
 
 const inputs = {
- slashes: { slashes: true, host: 'localhost' },
- file: { protocol: 'file:', pathname: '/foo' },
+ slashes: { slashes: true, host: "localhost" },
+ file: { protocol: "file:", pathname: "/foo" },
 };
 
 const bench = common.createBenchmark(main, {

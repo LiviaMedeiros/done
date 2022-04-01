@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { Worker } = require('worker_threads');
-const { once } = require('events');
-const helper = require('../common/report');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { Worker } = require("worker_threads");
+const { once } = require("events");
+const helper = require("../common/report");
 
 async function basic() {
  // Test that the report includes basic information about Worker threads.
@@ -15,7 +15,7 @@ async function basic() {
     });
   `, { eval: true });
 
- await once(w, 'online');
+ await once(w, "online");
 
  const report = process.report.getReport();
  helper.validateContent(report);
@@ -25,15 +25,15 @@ async function basic() {
 
  w.postMessage({});
 
- await once(w, 'exit');
+ await once(w, "exit");
 }
 
 async function interruptingJS() {
  // Test that the report also works when Worker threads are busy in JS land.
 
- const w = new Worker('while (true);', { eval: true });
+ const w = new Worker("while (true);", { eval: true });
 
- await once(w, 'online');
+ await once(w, "online");
 
  const report = process.report.getReport();
  helper.validateContent(report);

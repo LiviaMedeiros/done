@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 const implementations = [
  function(fn) {
@@ -32,7 +32,7 @@ const implementations = [
 let expected = 0;
 let done = 0;
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(done, expected);
 });
 

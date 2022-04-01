@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const Countdown = require('../common/countdown');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const Countdown = require("../common/countdown");
+const assert = require("assert");
+const http = require("http");
 
 const N = 4;
 const M = 4;
 const server = http.Server(common.mustCall(function(req, res) {
  res.writeHead(200);
- res.end('hello world\n');
+ res.end("hello world\n");
 }, (N * M))); // N * M = good requests (the errors will not be counted)
 
 function makeRequests(outCount, inCount, shouldFail) {
@@ -54,11 +54,11 @@ function makeRequests(outCount, inCount, shouldFail) {
   for (let i = 0; i < outCount; i++) {
    setTimeout(() => {
     for (let j = 0; j < inCount; j++) {
-     const req = http.get({ port: port, path: '/' }, onRequest);
+     const req = http.get({ port: port, path: "/" }, onRequest);
      if (shouldFail)
-      req.on('error', common.mustCall(onRequest));
+      req.on("error", common.mustCall(onRequest));
      else
-      req.on('error', (e) => assert.fail(e));
+      req.on("error", (e) => assert.fail(e));
     }
    }, i);
   }
@@ -73,7 +73,7 @@ const test2 = () => {
  // Ref: https://github.com/nodejs/node/issues/13045
  // Ref: https://github.com/nodejs/node/issues/13831
  http.Agent.prototype.createConnection = function createConnection(_, cb) {
-  process.nextTick(cb, new Error('nothing'));
+  process.nextTick(cb, new Error("nothing"));
  };
  return makeRequests(N, M, true);
 };

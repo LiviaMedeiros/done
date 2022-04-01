@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const http2 = require("http2");
 
 // This test assesses whether long-running writes can complete
 // or timeout because the session or stream are not aware that the
@@ -25,41 +25,41 @@ let offsetTimeout = common.platformTimeout(100);
 let didReceiveData = false;
 
 const server = http2.createSecureServer({
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 });
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
  const content = Buffer.alloc(writeSize, 0x44);
 
  stream.respond({
-  'Content-Type': 'application/octet-stream',
-  'Content-Length': content.length.toString(),
-  'Vary': 'Accept-Encoding',
+  "Content-Type": "application/octet-stream",
+  "Content-Length": content.length.toString(),
+  "Vary": "Accept-Encoding",
  });
 
  stream.write(content);
  stream.setTimeout(serverTimeout);
- stream.on('timeout', () => {
-  assert.ok(!didReceiveData, 'Should not timeout');
+ stream.on("timeout", () => {
+  assert.ok(!didReceiveData, "Should not timeout");
  });
  stream.end();
 }));
 server.setTimeout(serverTimeout);
-server.on('timeout', () => {
- assert.ok(!didReceiveData, 'Should not timeout');
+server.on("timeout", () => {
+ assert.ok(!didReceiveData, "Should not timeout");
 });
 
 server.listen(0, common.mustCall(() => {
  const client = http2.connect(`https://localhost:${server.address().port}`,
                               { rejectUnauthorized: false });
 
- const req = client.request({ ':path': '/' });
+ const req = client.request({ ":path": "/" });
  req.end();
 
  const resume = () => req.resume();
  let receivedBufferLength = 0;
  let firstReceivedAt;
- req.on('data', common.mustCallAtLeast((buf) => {
+ req.on("data", common.mustCallAtLeast((buf) => {
   if (receivedBufferLength === 0) {
    didReceiveData = false;
    firstReceivedAt = Date.now();
@@ -77,7 +77,7 @@ server.listen(0, common.mustCall(() => {
    offsetTimeout = 0;
   }
  }, 1));
- req.on('end', common.mustCall(() => {
+ req.on("end", common.mustCall(() => {
   client.close();
   server.close();
  }));

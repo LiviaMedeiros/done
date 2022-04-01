@@ -19,7 +19,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
 // The goal of this test is to cover the Workers' implementation of
 // Worker.prototype.destroy. Worker.prototype.destroy is called within
@@ -27,9 +27,9 @@
 // primary, and another time when it's not connected to it, so that we cover
 // both code paths.
 
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
 let worker1, worker2;
 
 if (cluster.isPrimary) {
@@ -37,12 +37,12 @@ if (cluster.isPrimary) {
  worker2 = cluster.fork();
 
  [worker1, worker2].forEach(function(worker) {
-  worker.on('disconnect', common.mustCall());
-  worker.on('exit', common.mustCall());
+  worker.on("disconnect", common.mustCall());
+  worker.on("exit", common.mustCall());
  });
 } else if (cluster.worker.id === 1) {
  // Call destroy when worker is disconnected
- cluster.worker.process.on('disconnect', function() {
+ cluster.worker.process.on("disconnect", function() {
   cluster.worker.destroy();
  });
 

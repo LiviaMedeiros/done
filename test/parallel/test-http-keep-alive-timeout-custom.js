@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const http = require('http');
-const assert = require('assert');
+const common = require("../common");
+const http = require("http");
+const assert = require("assert");
 
 const server = http.createServer(common.mustCall((req, res) => {
- const body = 'hello world\n';
+ const body = "hello world\n";
 
  res.writeHead(200, {
-  'Content-Length': body.length,
-  'Keep-Alive': 'timeout=50',
+  "Content-Length": body.length,
+  "Keep-Alive": "timeout=50",
  });
  res.write(body);
  res.end();
@@ -20,11 +20,11 @@ const agent = new http.Agent({ maxSockets: 1, keepAlive: true });
 
 server.listen(0, common.mustCall(function() {
  http.get({
-  path: '/', port: this.address().port, agent: agent,
+  path: "/", port: this.address().port, agent: agent,
  }, common.mustCall((response) => {
   response.resume();
   assert.strictEqual(
-   response.headers['keep-alive'], 'timeout=50');
+   response.headers["keep-alive"], "timeout=50");
   server.close();
   agent.destroy();
  }));

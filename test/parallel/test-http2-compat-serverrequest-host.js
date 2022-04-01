@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
 
 // Requests using host instead of :authority should be allowed
 // and Http2ServerRequest.authority should fall back to host
@@ -14,12 +14,12 @@ const h2 = require('http2');
 const server = h2.createServer();
 server.listen(0, common.mustCall(function() {
  const port = server.address().port;
- server.once('request', common.mustCall(function(request, response) {
+ server.once("request", common.mustCall(function(request, response) {
   const expected = {
-   ':path': '/foobar',
-   ':method': 'GET',
-   ':scheme': 'http',
-   'host': `localhost:${port}`,
+   ":path": "/foobar",
+   ":method": "GET",
+   ":scheme": "http",
+   "host": `localhost:${port}`,
   };
 
   assert.strictEqual(request.authority, expected.host);
@@ -36,10 +36,10 @@ server.listen(0, common.mustCall(function() {
    assert.strictEqual(rawHeaders[position + 1], value);
   }
 
-  assert(!Object.hasOwn(headers, ':authority'));
-  assert(!Object.hasOwn(rawHeaders, ':authority'));
+  assert(!Object.hasOwn(headers, ":authority"));
+  assert(!Object.hasOwn(rawHeaders, ":authority"));
 
-  response.on('finish', common.mustCall(function() {
+  response.on("finish", common.mustCall(function() {
    server.close();
   }));
   response.end();
@@ -48,13 +48,13 @@ server.listen(0, common.mustCall(function() {
  const url = `http://localhost:${port}`;
  const client = h2.connect(url, common.mustCall(function() {
   const headers = {
-   ':path': '/foobar',
-   ':method': 'GET',
-   ':scheme': 'http',
-   'host': `localhost:${port}`,
+   ":path": "/foobar",
+   ":method": "GET",
+   ":scheme": "http",
+   "host": `localhost:${port}`,
   };
   const request = client.request(headers);
-  request.on('end', common.mustCall(function() {
+  request.on("end", common.mustCall(function() {
    client.close();
   }));
   request.end();

@@ -19,39 +19,39 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import highlightJs from 'highlight.js';
-import raw from 'rehype-raw';
-import htmlStringify from 'rehype-stringify';
-import gfm from 'remark-gfm';
-import markdown from 'remark-parse';
-import remark2rehype from 'remark-rehype';
-import { unified } from 'unified';
-import { visit } from 'unist-util-visit';
+import highlightJs from "highlight.js";
+import raw from "rehype-raw";
+import htmlStringify from "rehype-stringify";
+import gfm from "remark-gfm";
+import markdown from "remark-parse";
+import remark2rehype from "remark-rehype";
+import { unified } from "unified";
+import { visit } from "unist-util-visit";
 
-import * as common from './common.mjs';
-import * as typeParser from './type-parser.mjs';
+import * as common from "./common.mjs";
+import * as typeParser from "./type-parser.mjs";
 
 const { highlight, getLanguage } = highlightJs;
 
-const docPath = new URL('../../doc/', import.meta.url);
+const docPath = new URL("../../doc/", import.meta.url);
 
 // Add class attributes to index navigation links.
 function navClasses() {
  return (tree) => {
-  visit(tree, { type: 'element', tagName: 'a' }, (node) => {
-   node.properties.class = 'nav-' +
-        node.properties.href.replace('.html', '').replace(/\W+/g, '-');
+  visit(tree, { type: "element", tagName: "a" }, (node) => {
+   node.properties.class = "nav-" +
+        node.properties.href.replace(".html", "").replace(/\W+/g, "-");
   });
  };
 }
 
-const gtocPath = new URL('./api/index.md', docPath);
-const gtocMD = fs.readFileSync(gtocPath, 'utf8')
+const gtocPath = new URL("./api/index.md", docPath);
+const gtocMD = fs.readFileSync(gtocPath, "utf8")
   .replace(/\(([^#?]+?)\.md\)/ig, (_, filename) => `(${filename}.html)`)
-  .replace(/^<!--.*?-->/gms, '');
+  .replace(/^<!--.*?-->/gms, "");
 const gtocHTML = unified()
   .use(markdown)
   .use(gfm)
@@ -61,15 +61,15 @@ const gtocHTML = unified()
   .use(htmlStringify)
   .processSync(gtocMD).toString();
 
-const templatePath = new URL('./template.html', docPath);
-const template = fs.readFileSync(templatePath, 'utf8');
+const templatePath = new URL("./template.html", docPath);
+const template = fs.readFileSync(templatePath, "utf8");
 
 function processContent(content) {
  content = content.toString();
  // Increment header tag levels to avoid multiple h1 tags in a doc.
  // This means we can't already have an <h6>.
- if (content.includes('<h6>')) {
-  throw new Error('Cannot increment a level 6 header');
+ if (content.includes("<h6>")) {
+  throw new Error("Cannot increment a level 6 header");
  }
  // `++level` to convert the string to a number and increment it.
  content = content.replace(/(?<=<\/?h)[1-5](?=[^<>]*>)/g, (level) => ++level);
@@ -83,36 +83,36 @@ function processContent(content) {
     .replace(/(?<!<section [^>]+>)<h3/g, (heading) => {
     	if (firstTime) {
     		firstTime = false;
-    		return '<section>' + heading;
+    		return "<section>" + heading;
     	}
-    	return '</section><section>' + heading;
-    }) + (firstTime ? '' : '</section>');
+    	return "</section><section>" + heading;
+    }) + (firstTime ? "" : "</section>");
 }
 
 export function toHTML({ input, content, filename, nodeVersion, versions }) {
- filename = path.basename(filename, '.md');
+ filename = path.basename(filename, ".md");
 
- const id = filename.replace(/\W+/g, '-');
+ const id = filename.replace(/\W+/g, "-");
 
- let HTML = template.replace('__ID__', id)
+ let HTML = template.replace("__ID__", id)
                      .replace(/__FILENAME__/g, filename)
-                     .replace('__SECTION__', content.section)
+                     .replace("__SECTION__", content.section)
                      .replace(/__VERSION__/g, nodeVersion)
                      .replace(/__TOC__/g, content.toc)
                      .replace(/__TOC_PICKER__/g, tocPicker(id, content))
                      .replace(/__GTOC_PICKER__/g, gtocPicker(id))
                      .replace(/__GTOC__/g, gtocHTML.replace(
                      	`class="nav-${id}"`, `class="nav-${id} active"`))
-                     .replace('__EDIT_ON_GITHUB__', editOnGitHub(filename))
-                     .replace('__CONTENT__', processContent(content));
+                     .replace("__EDIT_ON_GITHUB__", editOnGitHub(filename))
+                     .replace("__CONTENT__", processContent(content));
 
  const docCreated = input.match(
   /<!--\s*introduced_in\s*=\s*v([0-9]+)\.([0-9]+)\.[0-9]+\s*-->/);
  if (docCreated) {
-  HTML = HTML.replace('__ALTDOCS__', altDocs(filename, docCreated, versions));
+  HTML = HTML.replace("__ALTDOCS__", altDocs(filename, docCreated, versions));
  } else {
   console.error(`Failed to add alternative version links to ${filename}`);
-  HTML = HTML.replace('__ALTDOCS__', '');
+  HTML = HTML.replace("__ALTDOCS__", "");
  }
 
  return HTML;
@@ -123,7 +123,7 @@ export function firstHeader() {
  return (tree, file) => {
   let heading;
   visit(tree, (node) => {
-   if (node.type === 'heading') {
+   if (node.type === "heading") {
     heading = node;
     return false;
    }
@@ -131,10 +131,10 @@ export function firstHeader() {
 
   if (heading && heading.children.length) {
    const recursiveTextContent = (node) =>
-    node.value || node.children.map(recursiveTextContent).join('');
+    node.value || node.children.map(recursiveTextContent).join("");
    file.section = recursiveTextContent(heading);
   } else {
-   file.section = 'Index';
+   file.section = "Index";
   }
  };
 }
@@ -147,10 +147,10 @@ export function preprocessText({ nodeVersion }) {
    if (common.isSourceLink(node.value)) {
     const [path] = node.value.match(/(?<=<!-- source_link=).*(?= -->)/);
     node.value = `<p><strong>Source Code:</strong> <a href="https://github.com/nodejs/node/blob/${nodeVersion}/${path}">${path}</a></p>`;
-   } else if (node.type === 'text' && node.value) {
+   } else if (node.type === "text" && node.value) {
     const value = linkJsTypeDocs(linkManPages(node.value));
     if (value !== node.value) {
-     node.type = 'html';
+     node.type = "html";
      node.value = value;
     }
    }
@@ -159,7 +159,7 @@ export function preprocessText({ nodeVersion }) {
 }
 
 // Syscalls which appear in the docs, but which only exist in BSD / macOS.
-const BSD_ONLY_SYSCALLS = new Set(['lchmod']);
+const BSD_ONLY_SYSCALLS = new Set(["lchmod"]);
 const MAN_PAGE = /(^|\s)([a-z.]+)\((\d)([a-z]?)\)/gm;
 
 // Handle references to man pages, eg "open(2)" or "lchmod(2)".
@@ -182,7 +182,7 @@ function linkManPages(text) {
 
 const TYPE_SIGNATURE = /\{[^}]+\}/g;
 function linkJsTypeDocs(text) {
- const parts = text.split('`');
+ const parts = text.split("`");
 
  // Handle types, for example the source Markdown might say
  // "This argument should be a {number} or {string}".
@@ -195,10 +195,10 @@ function linkJsTypeDocs(text) {
   }
  }
 
- return parts.join('`');
+ return parts.join("`");
 }
 
-const isJSFlavorSnippet = (node) => node.lang === 'cjs' || node.lang === 'mjs';
+const isJSFlavorSnippet = (node) => node.lang === "cjs" || node.lang === "mjs";
 
 // Preprocess headers, stability blockquotes, and YAML blocks.
 export function preprocessElements({ filename }) {
@@ -208,10 +208,10 @@ export function preprocessElements({ filename }) {
   let heading = null;
 
   visit(tree, null, (node, index, parent) => {
-   if (node.type === 'heading') {
+   if (node.type === "heading") {
     headingIndex = index;
     heading = node;
-   } else if (node.type === 'code') {
+   } else if (node.type === "code") {
     if (!node.lang) {
      console.warn(
       `No language set in ${filename}, line ${node.position.start.line}`,
@@ -221,8 +221,8 @@ export function preprocessElements({ filename }) {
      `language-js ${node.lang}` :
      `language-${node.lang}`;
     const highlighted =
-          `<code class='${className}'>${(getLanguage(node.lang || '') ? highlight(node.value, { language: node.lang }) : node).value}</code>`;
-    node.type = 'html';
+          `<code class='${className}'>${(getLanguage(node.lang || "") ? highlight(node.value, { language: node.lang }) : node).value}</code>`;
+    node.type = "html";
 
     if (isJSFlavorSnippet(node)) {
      const previousNode = parent.children[index - 1] || {};
@@ -235,16 +235,16 @@ export function preprocessElements({ filename }) {
       node.value = highlighted;
      } else if (isJSFlavorSnippet(previousNode) &&
                      previousNode.lang !== node.lang) {
-      node.value = '<pre>' +
+      node.value = "<pre>" +
               '<input class="js-flavor-selector" type="checkbox"' +
               // If CJS comes in second, ESM should display by default.
-              (node.lang === 'cjs' ? ' checked' : '') +
+              (node.lang === "cjs" ? " checked" : "") +
               ' aria-label="Show modern ES modules syntax">' +
               previousNode.value +
               highlighted +
-              '</pre>';
+              "</pre>";
       node.lang = null;
-      previousNode.value = '';
+      previousNode.value = "";
       previousNode.lang = null;
      } else {
       // Isolated JS snippet, no need to add the checkbox.
@@ -253,15 +253,15 @@ export function preprocessElements({ filename }) {
     } else {
      node.value = `<pre>${highlighted}</pre>`;
     }
-   } else if (node.type === 'html' && common.isYAMLBlock(node.value)) {
+   } else if (node.type === "html" && common.isYAMLBlock(node.value)) {
     node.value = parseYAML(node.value);
 
-   } else if (node.type === 'blockquote') {
-    const paragraph = node.children[0].type === 'paragraph' &&
+   } else if (node.type === "blockquote") {
+    const paragraph = node.children[0].type === "paragraph" &&
           node.children[0];
-    const text = paragraph && paragraph.children[0].type === 'text' &&
+    const text = paragraph && paragraph.children[0].type === "text" &&
           paragraph.children[0];
-    if (text && text.value.includes('Stability:')) {
+    if (text && text.value.includes("Stability:")) {
      const [, prefix, number, explication] =
             text.value.match(STABILITY_RE);
 
@@ -276,29 +276,29 @@ export function preprocessElements({ filename }) {
      }
 
      // Do not link to the section we are already in.
-     const noLinking = filename.includes('documentation') &&
-            heading !== null && heading.children[0].value === 'Stability index';
+     const noLinking = filename.includes("documentation") &&
+            heading !== null && heading.children[0].value === "Stability index";
 
      // Collapse blockquote and paragraph into a single node
-     node.type = 'paragraph';
+     node.type = "paragraph";
      node.children.shift();
      node.children.unshift(...paragraph.children);
 
      // Insert div with prefix and number
      node.children.unshift({
-      type: 'html',
+      type: "html",
       value: `<div class="api_stability api_stability_${number}">` +
-              (noLinking ? '' :
+              (noLinking ? "" :
               	'<a href="documentation.html#stability-index">') +
-              `${prefix} ${number}${noLinking ? '' : '</a>'}`
-                .replace(/\n/g, ' '),
+              `${prefix} ${number}${noLinking ? "" : "</a>"}`
+                .replace(/\n/g, " "),
      });
 
      // Remove prefix and number from text
      text.value = explication;
 
      // close div
-     node.children.push({ type: 'html', value: '</div>' });
+     node.children.push({ type: "html", value: "</div>" });
     }
    }
   });
@@ -309,23 +309,23 @@ function parseYAML(text) {
  const meta = common.extractAndParseYAML(text);
  let result = '<div class="api_metadata">\n';
 
- const added = { description: '' };
- const deprecated = { description: '' };
- const removed = { description: '' };
+ const added = { description: "" };
+ const deprecated = { description: "" };
+ const removed = { description: "" };
 
  if (meta.added) {
-  added.version = meta.added.join(', ');
+  added.version = meta.added.join(", ");
   added.description = `<span>Added in: ${added.version}</span>`;
  }
 
  if (meta.deprecated) {
-  deprecated.version = meta.deprecated.join(', ');
+  deprecated.version = meta.deprecated.join(", ");
   deprecated.description =
         `<span>Deprecated since: ${deprecated.version}</span>`;
  }
 
  if (meta.removed) {
-  removed.version = meta.removed.join(', ');
+  removed.version = meta.removed.join(", ");
   removed.description = `<span>Removed in: ${removed.version}</span>`;
  }
 
@@ -337,7 +337,7 @@ function parseYAML(text) {
   meta.changes.sort((a, b) => versionSort(a.version, b.version));
 
   result += '<details class="changelog"><summary>History</summary>\n' +
-            '<table>\n<tr><th>Version</th><th>Changes</th></tr>\n';
+            "<table>\n<tr><th>Version</th><th>Changes</th></tr>\n";
 
   meta.changes.forEach((change) => {
    const description = unified()
@@ -348,22 +348,22 @@ function parseYAML(text) {
         .use(htmlStringify)
         .processSync(change.description).toString();
 
-   const version = common.arrify(change.version).join(', ');
+   const version = common.arrify(change.version).join(", ");
 
    result += `<tr><td>${version}</td>\n` +
                   `<td>${description}</td></tr>\n`;
   });
 
-  result += '</table>\n</details>\n';
+  result += "</table>\n</details>\n";
  } else {
   result += `${added.description}${deprecated.description}${removed.description}\n`;
  }
 
  if (meta.napiVersion) {
-  result += `<span>N-API version: ${meta.napiVersion.join(', ')}</span>\n`;
+  result += `<span>N-API version: ${meta.napiVersion.join(", ")}</span>\n`;
  }
 
- result += '</div>';
+ result += "</div>";
  return result;
 }
 
@@ -389,11 +389,11 @@ export function buildToc({ filename, apilinks }) {
  return (tree, file) => {
   const idCounters = Object.create(null);
   const legacyIdCounters = Object.create(null);
-  let toc = '';
+  let toc = "";
   let depth = 0;
 
   visit(tree, null, (node) => {
-   if (node.type !== 'heading') return;
+   if (node.type !== "heading") return;
 
    if (node.depth - depth > 1) {
     throw new Error(
@@ -402,7 +402,7 @@ export function buildToc({ filename, apilinks }) {
    }
 
    depth = node.depth;
-   const realFilename = path.basename(filename, '.md');
+   const realFilename = path.basename(filename, ".md");
    const headingText = file.value.slice(
     node.children[0].position.start.offset,
     node.position.end.offset).trim();
@@ -416,13 +416,13 @@ export function buildToc({ filename, apilinks }) {
     if (!node.data) node.data = {};
     if (!node.data.hProperties) node.data.hProperties = {};
     node.data.hProperties.id =
-          headingText.substring(0, headingText.indexOf(':'));
+          headingText.substring(0, headingText.indexOf(":"));
    }
 
    const hasStability = node.stability !== undefined;
-   toc += ' '.repeat((depth - 1) * 2) +
-        (hasStability ? `* <span class="stability_${node.stability}">` : '* ') +
-        `<a href="#${isDeprecationHeading ? node.data.hProperties.id : id}">${headingText}</a>${hasStability ? '</span>' : ''}\n`;
+   toc += " ".repeat((depth - 1) * 2) +
+        (hasStability ? `* <span class="stability_${node.stability}">` : "* ") +
+        `<a href="#${isDeprecationHeading ? node.data.hProperties.id : id}">${headingText}</a>${hasStability ? "</span>" : ""}\n`;
 
    let anchor =
          `<span><a class="mark" href="#${id}" id="${id}">#</a></span>`;
@@ -430,20 +430,20 @@ export function buildToc({ filename, apilinks }) {
    // Add alias anchor to preserve old links
    anchor += `<a aria-hidden="true" class="legacy" id="${legacyId}"></a>`;
 
-   if (realFilename === 'errors' && headingText.startsWith('ERR_')) {
+   if (realFilename === "errors" && headingText.startsWith("ERR_")) {
     anchor +=
           `<span><a class="mark" href="#${headingText}" id="${headingText}">#</a></span>`;
    }
 
-   const api = headingText.replace(/^.*:\s+/, '').replace(/\(.*/, '');
+   const api = headingText.replace(/^.*:\s+/, "").replace(/\(.*/, "");
    if (apilinks[api]) {
     anchor = `<a class="srclink" href=${apilinks[api]}>[src]</a>${anchor}`;
    }
 
-   node.children.push({ type: 'html', value: anchor });
+   node.children.push({ type: "html", value: anchor });
   });
 
-  if (toc !== '') {
+  if (toc !== "") {
    const inner = unified()
         .use(markdown)
         .use(gfm)
@@ -455,7 +455,7 @@ export function buildToc({ filename, apilinks }) {
    file.toc = `<details id="toc" open><summary>Table of contents</summary>${inner}</details>`;
    file.tocPicker = `<div class="toc">${inner}</div>`;
   } else {
-   file.toc = file.tocPicker = '<!-- TOC -->';
+   file.toc = file.tocPicker = "<!-- TOC -->";
   }
  };
 }
@@ -464,8 +464,8 @@ export function buildToc({ filename, apilinks }) {
 const punctuation = /[^\w\- ]/g;
 function getId(text, idCounters) {
  text = text.toLowerCase()
-             .replace(punctuation, '')
-             .replace(/ /g, '-');
+             .replace(punctuation, "")
+             .replace(/ /g, "-");
  if (idCounters[text] !== undefined) {
   return `${text}_${++idCounters[text]}`;
  }
@@ -480,9 +480,9 @@ const edgeUnderscores = /^_+|_+$/g;
 const notAlphaStart = /^[^a-z]/;
 function getLegacyId(text, idCounters) {
  text = text.toLowerCase()
-             .replace(notAlphaNumerics, '_')
-             .replace(edgeUnderscores, '')
-             .replace(notAlphaStart, '_$&');
+             .replace(notAlphaNumerics, "_")
+             .replace(edgeUnderscores, "")
+             .replace(notAlphaStart, "_$&");
  if (idCounters[text] !== undefined) {
   return `${text}_${++idCounters[text]}`;
  }
@@ -492,23 +492,23 @@ function getLegacyId(text, idCounters) {
 
 function altDocs(filename, docCreated, versions) {
  const [, docCreatedMajor, docCreatedMinor] = docCreated.map(Number);
- const host = 'https://nodejs.org';
+ const host = "https://nodejs.org";
 
  const getHref = (versionNum) =>
   `${host}/docs/latest-v${versionNum}/api/${filename}.html`;
 
  const wrapInListItem = (version) =>
-  `<li><a href="${getHref(version.num)}">${version.num}${version.lts ? ' <b>LTS</b>' : ''}</a></li>`;
+  `<li><a href="${getHref(version.num)}">${version.num}${version.lts ? " <b>LTS</b>" : ""}</a></li>`;
 
  function isDocInVersion(version) {
-  const [versionMajor, versionMinor] = version.num.split('.').map(Number);
+  const [versionMajor, versionMinor] = version.num.split(".").map(Number);
   if (docCreatedMajor > versionMajor) return false;
   if (docCreatedMajor < versionMajor) return true;
   if (Number.isNaN(versionMinor)) return true;
   return docCreatedMinor <= versionMinor;
  }
 
- const list = versions.filter(isDocInVersion).map(wrapInListItem).join('\n');
+ const list = versions.filter(isDocInVersion).map(wrapInListItem).join("\n");
 
  return list ? `
     <li class="picker-header">
@@ -518,7 +518,7 @@ function altDocs(filename, docCreated, versions) {
       </a>
       <div class="picker"><ol id="alt-docs">${list}</ol></div>
     </li>
-  ` : '';
+  ` : "";
 }
 
 function editOnGitHub(filename) {
@@ -526,14 +526,14 @@ function editOnGitHub(filename) {
 }
 
 function gtocPicker(id) {
- if (id === 'index') {
-  return '';
+ if (id === "index") {
+  return "";
  }
 
  // Highlight the current module and add a link to the index
  const gtoc = gtocHTML.replace(
   `class="nav-${id}"`, `class="nav-${id} active"`,
- ).replace('</ul>', `
+ ).replace("</ul>", `
       <li>
         <a href="index.html">Index</a>
       </li>
@@ -553,8 +553,8 @@ function gtocPicker(id) {
 }
 
 function tocPicker(id, content) {
- if (id === 'index') {
-  return '';
+ if (id === "index") {
+  return "";
  }
 
  return `

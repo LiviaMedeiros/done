@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
 
 const check = Buffer.from([0x00, 0x01, 0x00, 0x00, 0x10, 0x00,
                            0x00, 0x02, 0x00, 0x00, 0x00, 0x01,
@@ -17,18 +17,18 @@ const val = http2.getPackedSettings(http2.getDefaultSettings());
 assert.deepStrictEqual(val, check);
 
 [
- ['headerTableSize', 0],
- ['headerTableSize', 2 ** 32 - 1],
- ['initialWindowSize', 0],
- ['initialWindowSize', 2 ** 32 - 1],
- ['maxFrameSize', 16384],
- ['maxFrameSize', 2 ** 24 - 1],
- ['maxConcurrentStreams', 0],
- ['maxConcurrentStreams', 2 ** 31 - 1],
- ['maxHeaderListSize', 0],
- ['maxHeaderListSize', 2 ** 32 - 1],
- ['maxHeaderSize', 0],
- ['maxHeaderSize', 2 ** 32 - 1],
+ ["headerTableSize", 0],
+ ["headerTableSize", 2 ** 32 - 1],
+ ["initialWindowSize", 0],
+ ["initialWindowSize", 2 ** 32 - 1],
+ ["maxFrameSize", 16384],
+ ["maxFrameSize", 2 ** 24 - 1],
+ ["maxConcurrentStreams", 0],
+ ["maxConcurrentStreams", 2 ** 31 - 1],
+ ["maxHeaderListSize", 0],
+ ["maxHeaderListSize", 2 ** 32 - 1],
+ ["maxHeaderSize", 0],
+ ["maxHeaderSize", 2 ** 32 - 1],
 ].forEach((i) => {
  // Valid options should not throw.
  http2.getPackedSettings({ [i[0]]: i[1] });
@@ -38,48 +38,48 @@ http2.getPackedSettings({ enablePush: true });
 http2.getPackedSettings({ enablePush: false });
 
 [
- ['headerTableSize', -1],
- ['headerTableSize', 2 ** 32],
- ['initialWindowSize', -1],
- ['initialWindowSize', 2 ** 32],
- ['maxFrameSize', 16383],
- ['maxFrameSize', 2 ** 24],
- ['maxConcurrentStreams', -1],
- ['maxConcurrentStreams', 2 ** 32],
- ['maxHeaderListSize', -1],
- ['maxHeaderListSize', 2 ** 32],
- ['maxHeaderSize', -1],
- ['maxHeaderSize', 2 ** 32],
+ ["headerTableSize", -1],
+ ["headerTableSize", 2 ** 32],
+ ["initialWindowSize", -1],
+ ["initialWindowSize", 2 ** 32],
+ ["maxFrameSize", 16383],
+ ["maxFrameSize", 2 ** 24],
+ ["maxConcurrentStreams", -1],
+ ["maxConcurrentStreams", 2 ** 32],
+ ["maxHeaderListSize", -1],
+ ["maxHeaderListSize", 2 ** 32],
+ ["maxHeaderSize", -1],
+ ["maxHeaderSize", 2 ** 32],
 ].forEach((i) => {
  assert.throws(() => {
   http2.getPackedSettings({ [i[0]]: i[1] });
  }, {
-  code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-  name: 'RangeError',
+  code: "ERR_HTTP2_INVALID_SETTING_VALUE",
+  name: "RangeError",
   message: `Invalid value for setting "${i[0]}": ${i[1]}`,
  });
 });
 
 [
- 1, null, '', Infinity, new Date(), {}, NaN, [false],
+ 1, null, "", Infinity, new Date(), {}, NaN, [false],
 ].forEach((i) => {
  assert.throws(() => {
   http2.getPackedSettings({ enablePush: i });
  }, {
-  code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-  name: 'TypeError',
+  code: "ERR_HTTP2_INVALID_SETTING_VALUE",
+  name: "TypeError",
   message: `Invalid value for setting "enablePush": ${i}`,
  });
 });
 
 [
- 1, null, '', Infinity, new Date(), {}, NaN, [false],
+ 1, null, "", Infinity, new Date(), {}, NaN, [false],
 ].forEach((i) => {
  assert.throws(() => {
   http2.getPackedSettings({ enableConnectProtocol: i });
  }, {
-  code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-  name: 'TypeError',
+  code: "ERR_HTTP2_INVALID_SETTING_VALUE",
+  name: "TypeError",
   message: `Invalid value for setting "enableConnectProtocol": ${i}`,
  });
 });
@@ -104,7 +104,7 @@ http2.getPackedSettings({ enablePush: false });
   maxHeaderSize: 100,
   enablePush: true,
   enableConnectProtocol: false,
-  foo: 'ignored',
+  foo: "ignored",
  });
  assert.strictEqual(packed.length, 42);
  assert.deepStrictEqual(packed, check);
@@ -126,12 +126,12 @@ http2.getPackedSettings({ enablePush: false });
   0x00, 0x02, 0x00, 0x00, 0x00, 0x01,
   0x00, 0x08, 0x00, 0x00, 0x00, 0x00]);
 
- [1, true, '', [], {}, NaN].forEach((input) => {
+ [1, true, "", [], {}, NaN].forEach((input) => {
   assert.throws(() => {
    http2.getUnpackedSettings(input);
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message:
         'The "buf" argument must be an instance of Buffer or TypedArray.' +
         common.invalidArgTypeHelper(input),
@@ -141,9 +141,9 @@ http2.getPackedSettings({ enablePush: false });
  assert.throws(() => {
   http2.getUnpackedSettings(packed.slice(5));
  }, {
-  code: 'ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH',
-  name: 'RangeError',
-  message: 'Packed settings length must be a multiple of six',
+  code: "ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH",
+  name: "RangeError",
+  message: "Packed settings length must be a multiple of six",
  });
 
  const settings = http2.getUnpackedSettings(packed);
@@ -172,9 +172,9 @@ http2.getPackedSettings({ enablePush: false });
  assert.throws(() => {
   http2.getUnpackedSettings(packed.slice(5));
  }, {
-  code: 'ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH',
-  name: 'RangeError',
-  message: 'Packed settings length must be a multiple of six',
+  code: "ERR_HTTP2_INVALID_PACKED_SETTINGS_LENGTH",
+  name: "RangeError",
+  message: "Packed settings length must be a multiple of six",
  });
 
  const settings = http2.getUnpackedSettings(packed);
@@ -203,8 +203,8 @@ http2.getPackedSettings({ enablePush: false });
  assert.throws(() => {
   http2.getUnpackedSettings(packed);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message:
         'The "buf" argument must be an instance of Buffer or TypedArray.' +
         common.invalidArgTypeHelper(packed),
@@ -251,8 +251,8 @@ http2.getPackedSettings({ enablePush: false });
  assert.throws(() => {
   http2.getUnpackedSettings(packed, { validate: true });
  }, {
-  code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-  name: 'RangeError',
+  code: "ERR_HTTP2_INVALID_SETTING_VALUE",
+  name: "RangeError",
   message: 'Invalid value for setting "maxFrameSize": 16777216',
  });
 }

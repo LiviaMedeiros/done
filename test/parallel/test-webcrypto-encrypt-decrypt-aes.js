@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { webcrypto } = require('crypto');
+const assert = require("assert");
+const { webcrypto } = require("crypto");
 const { subtle } = webcrypto;
 
 async function testEncrypt({ keyBuffer, algorithm, plaintext, result }) {
@@ -14,18 +14,18 @@ async function testEncrypt({ keyBuffer, algorithm, plaintext, result }) {
  plaintext = Buffer.from(plaintext);
 
  const key = await subtle.importKey(
-  'raw',
+  "raw",
   keyBuffer,
   { name: algorithm.name },
   false,
-  ['encrypt', 'decrypt']);
+  ["encrypt", "decrypt"]);
 
  const output = await subtle.encrypt(algorithm, key, plaintext);
  plaintext[0] = 255 - plaintext[0];
 
  assert.strictEqual(
-  Buffer.from(output).toString('hex'),
-  Buffer.from(result).toString('hex'));
+  Buffer.from(output).toString("hex"),
+  Buffer.from(result).toString("hex"));
 
  // Converting the returned ArrayBuffer into a Buffer right away,
  // so that the next line works
@@ -33,17 +33,17 @@ async function testEncrypt({ keyBuffer, algorithm, plaintext, result }) {
  check[0] = 255 - check[0];
 
  assert.strictEqual(
-  Buffer.from(check).toString('hex'),
-  Buffer.from(plaintext).toString('hex'));
+  Buffer.from(check).toString("hex"),
+  Buffer.from(plaintext).toString("hex"));
 }
 
 async function testEncryptNoEncrypt({ keyBuffer, algorithm, plaintext }) {
  const key = await subtle.importKey(
-  'raw',
+  "raw",
   keyBuffer,
   { name: algorithm.name },
   false,
-  ['decrypt']);
+  ["decrypt"]);
 
  return assert.rejects(subtle.encrypt(algorithm, key, plaintext), {
   message: /The requested operation is not valid for the provided key/,
@@ -52,11 +52,11 @@ async function testEncryptNoEncrypt({ keyBuffer, algorithm, plaintext }) {
 
 async function testEncryptNoDecrypt({ keyBuffer, algorithm, plaintext }) {
  const key = await subtle.importKey(
-  'raw',
+  "raw",
   keyBuffer,
   { name: algorithm.name },
   false,
-  ['encrypt']);
+  ["encrypt"]);
 
  const output = await subtle.encrypt(algorithm, key, plaintext);
 
@@ -68,11 +68,11 @@ async function testEncryptNoDecrypt({ keyBuffer, algorithm, plaintext }) {
 async function testEncryptWrongAlg({ keyBuffer, algorithm, plaintext }, alg) {
  assert.notStrictEqual(algorithm.name, alg);
  const key = await subtle.importKey(
-  'raw',
+  "raw",
   keyBuffer,
   { name: alg },
   false,
-  ['encrypt']);
+  ["encrypt"]);
 
  return assert.rejects(subtle.encrypt(algorithm, key, plaintext), {
   message: /The requested operation is not valid for the provided key/,
@@ -81,11 +81,11 @@ async function testEncryptWrongAlg({ keyBuffer, algorithm, plaintext }, alg) {
 
 async function testDecrypt({ keyBuffer, algorithm, result }) {
  const key = await subtle.importKey(
-  'raw',
+  "raw",
   keyBuffer,
   { name: algorithm.name },
   false,
-  ['encrypt', 'decrypt']);
+  ["encrypt", "decrypt"]);
 
  await subtle.decrypt(algorithm, key, result);
 }
@@ -96,7 +96,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
   passing,
   failing,
   decryptionFailing,
- } = require('../fixtures/crypto/aes_cbc')();
+ } = require("../fixtures/crypto/aes_cbc")();
 
  (async function() {
   const variations = [];
@@ -105,7 +105,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
    variations.push(testEncrypt(vector));
    variations.push(testEncryptNoEncrypt(vector));
    variations.push(testEncryptNoDecrypt(vector));
-   variations.push(testEncryptWrongAlg(vector, 'AES-CTR'));
+   variations.push(testEncryptWrongAlg(vector, "AES-CTR"));
   });
 
   failing.forEach((vector) => {
@@ -133,7 +133,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
   passing,
   failing,
   decryptionFailing,
- } = require('../fixtures/crypto/aes_ctr')();
+ } = require("../fixtures/crypto/aes_ctr")();
 
  (async function() {
   const variations = [];
@@ -142,7 +142,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
    variations.push(testEncrypt(vector));
    variations.push(testEncryptNoEncrypt(vector));
    variations.push(testEncryptNoDecrypt(vector));
-   variations.push(testEncryptWrongAlg(vector, 'AES-CBC'));
+   variations.push(testEncryptWrongAlg(vector, "AES-CBC"));
   });
 
   // TODO(@jasnell): These fail for different reasons. Need to
@@ -172,7 +172,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
   passing,
   failing,
   decryptionFailing,
- } = require('../fixtures/crypto/aes_gcm')();
+ } = require("../fixtures/crypto/aes_gcm")();
 
  (async function() {
   const variations = [];
@@ -181,7 +181,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
    variations.push(testEncrypt(vector));
    variations.push(testEncryptNoEncrypt(vector));
    variations.push(testEncryptNoDecrypt(vector));
-   variations.push(testEncryptWrongAlg(vector, 'AES-CBC'));
+   variations.push(testEncryptWrongAlg(vector, "AES-CBC"));
   });
 
   failing.forEach((vector) => {
@@ -207,11 +207,11 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
  (async function() {
   const secretKey = await subtle.generateKey(
    {
-    name: 'AES-GCM',
+    name: "AES-GCM",
     length: 256,
    },
    false,
-   ['encrypt', 'decrypt'],
+   ["encrypt", "decrypt"],
   );
 
   const iv = webcrypto.getRandomValues(new Uint8Array(12));
@@ -219,7 +219,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
 
   const encrypted = await subtle.encrypt(
    {
-    name: 'AES-GCM',
+    name: "AES-GCM",
     iv,
     additionalData: aad,
     tagLength: 128,
@@ -230,7 +230,7 @@ async function testDecrypt({ keyBuffer, algorithm, result }) {
 
   await subtle.decrypt(
    {
-    name: 'AES-GCM',
+    name: "AES-GCM",
     iv,
     additionalData: aad,
     tagLength: 128,

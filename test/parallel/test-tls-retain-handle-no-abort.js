@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const util = require('util');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const util = require("util");
+const fixtures = require("../common/fixtures");
 
-const sent = 'hello world';
+const sent = "hello world";
 const serverOptions = {
  isServer: true,
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 let ssl = null;
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.ok(ssl !== null);
  // If the internal pointer to stream_ isn't cleared properly then this
  // will abort.
@@ -26,8 +26,8 @@ process.on('exit', function() {
 });
 
 const server = tls.createServer(serverOptions, function(s) {
- s.on('data', function() { });
- s.on('end', function() {
+ s.on("data", function() { });
+ s.on("end", function() {
   server.close();
   s.destroy();
  });

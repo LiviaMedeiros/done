@@ -6,15 +6,15 @@
 // Short jobs: small zip jobs.
 // Long jobs: fs.readFile on a large file.
 
-'use strict';
+"use strict";
 
-const path = require('path');
-const common = require('../common.js');
+const path = require("path");
+const common = require("../common.js");
 const filename = path.resolve(__dirname,
                               `.removeme-benchmark-garbage-${process.pid}`);
-const fs = require('fs');
-const zlib = require('zlib');
-const assert = require('assert');
+const fs = require("fs");
+const zlib = require("zlib");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
  dur: [5],
@@ -28,11 +28,11 @@ function main({ len, dur, concurrent }) {
  } catch {
   // Continue regardless of error.
  }
- let data = Buffer.alloc(len, 'x');
+ let data = Buffer.alloc(len, "x");
  fs.writeFileSync(filename, data);
  data = null;
 
- const zipData = Buffer.alloc(1024, 'a');
+ const zipData = Buffer.alloc(1024, "a");
 
  let reads = 0;
  let zips = 0;
@@ -55,7 +55,7 @@ function main({ len, dur, concurrent }) {
 
  function afterRead(er, data) {
   if (er) {
-   if (er.code === 'ENOENT') {
+   if (er.code === "ENOENT") {
     // Only OK if unlinked by the timer from main.
     assert.ok(benchEnded);
     return;
@@ -64,7 +64,7 @@ function main({ len, dur, concurrent }) {
   }
 
   if (data.length !== len)
-   throw new Error('wrong number of bytes returned');
+   throw new Error("wrong number of bytes returned");
 
   reads++;
   if (!benchEnded)

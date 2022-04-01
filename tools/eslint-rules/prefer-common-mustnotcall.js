@@ -2,14 +2,14 @@
  * @fileoverview Prefer common.mustNotCall(msg) over common.mustCall(fn, 0)
  * @author James M Snell <jasnell@gmail.com>
  */
-'use strict';
+"use strict";
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
-const msg = 'Please use common.mustNotCall(msg) instead of ' +
-            'common.mustCall(fn, 0) or common.mustCall(0).';
+const msg = "Please use common.mustNotCall(msg) instead of " +
+            "common.mustCall(fn, 0) or common.mustCall(0).";
 const mustCallSelector = 'CallExpression[callee.object.name="common"]' +
                          '[callee.property.name="mustCall"]';
 const arg0Selector = `${mustCallSelector}[arguments.0.value=0]`;

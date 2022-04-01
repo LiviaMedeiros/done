@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
 
-require('../common');
-const assert = require('assert');
-const { internalBinding } = require('internal/test/binding');
-const { safeGetenv } = internalBinding('credentials');
+require("../common");
+const assert = require("assert");
+const { internalBinding } = require("internal/test/binding");
+const { safeGetenv } = internalBinding("credentials");
 
 // FIXME(joyeecheung): this test is not entirely useful. To properly
 // test this we could create a mismatch between the effective/real

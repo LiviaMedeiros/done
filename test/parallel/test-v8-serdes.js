@@ -1,19 +1,19 @@
 // Flags: --expose-internals
 
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { internalBinding } = require('internal/test/binding');
-const assert = require('assert');
-const v8 = require('v8');
-const os = require('os');
+const common = require("../common");
+const { internalBinding } = require("internal/test/binding");
+const assert = require("assert");
+const v8 = require("v8");
+const os = require("os");
 
 const circular = {};
 circular.circular = circular;
 
 const objects = [
- { foo: 'bar' },
- { bar: 'baz' },
+ { foo: "bar" },
+ { bar: "baz" },
  new Uint8Array([1, 2, 3, 4]),
  new Uint32Array([1, 2, 3, 4]),
  new DataView(new ArrayBuffer(42)),
@@ -24,7 +24,7 @@ const objects = [
  circular,
 ];
 
-const hostObject = new (internalBinding('js_stream').JSStream)();
+const hostObject = new (internalBinding("js_stream").JSStream)();
 
 {
  const ser = new v8.DefaultSerializer();
@@ -50,8 +50,8 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
 {
  const ser = new v8.DefaultSerializer();
  ser._getDataCloneError = common.mustCall((message) => {
-  assert.strictEqual(message, '#<Object> could not be cloned.');
-  return new Error('foobar');
+  assert.strictEqual(message, "#<Object> could not be cloned.");
+  return new Error("foobar");
  });
 
  ser.writeHeader();
@@ -65,7 +65,7 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
  const ser = new v8.DefaultSerializer();
  ser._writeHostObject = common.mustCall((object) => {
   assert.strictEqual(object, hostObject);
-  const buf = Buffer.from('hostObjectTag');
+  const buf = Buffer.from("hostObjectTag");
 
   ser.writeUint32(buf.length);
   ser.writeRawBytes(buf);
@@ -82,7 +82,7 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
   const length = des.readUint32();
   const buf = des.readRawBytes(length);
 
-  assert.strictEqual(buf.toString(), 'hostObjectTag');
+  assert.strictEqual(buf.toString(), "hostObjectTag");
 
   assert.deepStrictEqual(des.readUint64(), [1, 2]);
   assert.strictEqual(des.readDouble(), -0.25);
@@ -97,7 +97,7 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
 // This test ensures that `v8.Serializer.writeRawBytes()` support
 // `TypedArray` and `DataView`.
 {
- const text = 'hostObjectTag';
+ const text = "hostObjectTag";
  const data = Buffer.from(text);
  const arrayBufferViews = common.getArrayBufferViews(data);
 
@@ -138,7 +138,7 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
 {
  const ser = new v8.DefaultSerializer();
  ser._writeHostObject = common.mustCall((object) => {
-  throw new Error('foobar');
+  throw new Error("foobar");
  });
 
  ser.writeHeader();
@@ -150,12 +150,12 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
 {
  assert.throws(() => v8.serialize(hostObject), {
   constructor: Error,
-  message: 'Unserializable host object: JSStream {}',
+  message: "Unserializable host object: JSStream {}",
  });
 }
 
 {
- const buf = Buffer.from('ff0d6f2203666f6f5e007b01', 'hex');
+ const buf = Buffer.from("ff0d6f2203666f6f5e007b01", "hex");
 
  const des = new v8.DefaultDeserializer(buf);
  des.readHeader();
@@ -172,10 +172,10 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
 {
  // Unaligned Uint16Array read, with padding in the underlying array buffer.
  let buf = Buffer.alloc(32 + 9);
- buf.write('ff0d5c0404addeefbe', 32, 'hex');
+ buf.write("ff0d5c0404addeefbe", 32, "hex");
  buf = buf.slice(32);
 
- const expectedResult = os.endianness() === 'LE' ?
+ const expectedResult = os.endianness() === "LE" ?
   new Uint16Array([0xdead, 0xbeef]) : new Uint16Array([0xadde, 0xefbe]);
 
  assert.deepStrictEqual(v8.deserialize(buf), expectedResult);
@@ -185,12 +185,12 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
  assert.throws(() => v8.Serializer(), {
   constructor: TypeError,
   message: "Class constructor Serializer cannot be invoked without 'new'",
-  code: 'ERR_CONSTRUCT_CALL_REQUIRED',
+  code: "ERR_CONSTRUCT_CALL_REQUIRED",
  });
  assert.throws(() => v8.Deserializer(), {
   constructor: TypeError,
   message: "Class constructor Deserializer cannot be invoked without 'new'",
-  code: 'ERR_CONSTRUCT_CALL_REQUIRED',
+  code: "ERR_CONSTRUCT_CALL_REQUIRED",
  });
 }
 
@@ -220,7 +220,7 @@ const hostObject = new (internalBinding('js_stream').JSStream)();
 }
 
 {
- const INVALID_SOURCE = 'INVALID_SOURCE_TYPE';
+ const INVALID_SOURCE = "INVALID_SOURCE_TYPE";
  const serializer = new v8.Serializer();
  serializer.writeHeader();
  assert.throws(

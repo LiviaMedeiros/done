@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const url = require('url');
-const testPath = '/foo?bar';
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const url = require("url");
+const testPath = "/foo?bar";
 
 const server = http.createServer(common.mustCall((req, res) => {
- assert.strictEqual(req.method, 'GET');
+ assert.strictEqual(req.method, "GET");
  assert.strictEqual(req.url, testPath);
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.write('hello\n');
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.write("hello\n");
  res.end();
 }, 3));
 

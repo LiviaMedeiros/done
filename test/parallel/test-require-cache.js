@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 {
- const relativePath = '../fixtures/semicolon';
+ const relativePath = "../fixtures/semicolon";
  const absolutePath = require.resolve(relativePath);
  const fakeModule = {};
 
@@ -35,7 +35,7 @@ const assert = require('assert');
 
 
 {
- const relativePath = 'fs';
+ const relativePath = "fs";
  const fakeModule = {};
 
  require.cache[relativePath] = { exports: fakeModule };

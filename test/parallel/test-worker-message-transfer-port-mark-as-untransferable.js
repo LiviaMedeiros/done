@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { MessageChannel, markAsUntransferable } = require('worker_threads');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { MessageChannel, markAsUntransferable } = require("worker_threads");
 
 {
  const ab = new ArrayBuffer(8);
@@ -13,7 +13,7 @@ const { MessageChannel, markAsUntransferable } = require('worker_threads');
  port1.postMessage(ab, [ ab ]);
 
  assert.strictEqual(ab.byteLength, 8);  // The AB is not detached.
- port2.once('message', common.mustCall());
+ port2.once("message", common.mustCall());
 }
 
 {
@@ -26,8 +26,8 @@ const { MessageChannel, markAsUntransferable } = require('worker_threads');
   channel1.port1.postMessage(channel2.port1, [ channel2.port1 ]);
  }, /was found in message but not listed in transferList/);
 
- channel2.port1.postMessage('still works, not closed/transferred');
- channel2.port2.once('message', common.mustCall());
+ channel2.port1.postMessage("still works, not closed/transferred");
+ channel2.port2.once("message", common.mustCall());
 }
 
 {

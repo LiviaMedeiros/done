@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 // Regression test for https://github.com/nodejs/node/issues/13262
 
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 if (!common.isMainThread)
- common.skip('Worker bootstrapping works differently -> different async IDs');
+ common.skip("Worker bootstrapping works differently -> different async IDs");
 
 let seenId, seenResource;
 
@@ -15,7 +15,7 @@ async_hooks.createHook({
  init: common.mustCall((id, provider, triggerAsyncId, resource) => {
   seenId = id;
   seenResource = resource;
-  assert.strictEqual(provider, 'Immediate');
+  assert.strictEqual(provider, "Immediate");
   assert.strictEqual(triggerAsyncId, 1);
  }),
  before: common.mustNotCall(),

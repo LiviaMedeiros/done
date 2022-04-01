@@ -1,11 +1,11 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cp = require('child_process');
-const internalCp = require('internal/child_process');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cp = require("child_process");
+const internalCp = require("internal/child_process");
 const cmd = process.execPath;
-const args = ['-p', '42'];
+const args = ["-p", "42"];
 const options = { windowsHide: true };
 
 // Since windowsHide isn't really observable, monkey patch spawn() and
@@ -28,14 +28,14 @@ internalCp.spawnSync = common.mustCall(function(options) {
 
  assert.strictEqual(child.status, 0);
  assert.strictEqual(child.signal, null);
- assert.strictEqual(child.stdout.toString().trim(), '42');
- assert.strictEqual(child.stderr.toString().trim(), '');
+ assert.strictEqual(child.stdout.toString().trim(), "42");
+ assert.strictEqual(child.stderr.toString().trim(), "");
 }
 
 {
  const child = cp.spawn(cmd, args, options);
 
- child.on('exit', common.mustCall((code, signal) => {
+ child.on("exit", common.mustCall((code, signal) => {
   assert.strictEqual(code, 0);
   assert.strictEqual(signal, null);
  }));
@@ -43,8 +43,8 @@ internalCp.spawnSync = common.mustCall(function(options) {
 
 {
  const callback = common.mustSucceed((stdout, stderr) => {
-  assert.strictEqual(stdout.trim(), '42');
-  assert.strictEqual(stderr.trim(), '');
+  assert.strictEqual(stdout.trim(), "42");
+  assert.strictEqual(stderr.trim(), "");
  });
 
  cp.execFile(cmd, args, options, callback);

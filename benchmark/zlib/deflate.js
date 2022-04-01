@@ -1,25 +1,25 @@
-'use strict';
-const common = require('../common.js');
-const zlib = require('zlib');
+"use strict";
+const common = require("../common.js");
+const zlib = require("zlib");
 
 const bench = common.createBenchmark(main, {
- method: ['createDeflate', 'deflate', 'deflateSync'],
+ method: ["createDeflate", "deflate", "deflateSync"],
  inputLen: [1024],
  n: [4e5],
 });
 
 function main({ n, method, inputLen }) {
  // Default method value for testing.
- method = method || 'deflate';
- const chunk = Buffer.alloc(inputLen, 'a');
+ method = method || "deflate";
+ const chunk = Buffer.alloc(inputLen, "a");
 
  switch (method) {
   // Performs `n` writes for a single deflate stream
-  case 'createDeflate': {
+  case "createDeflate": {
    let i = 0;
    const deflater = zlib.createDeflate();
    deflater.resume();
-   deflater.on('finish', () => {
+   deflater.on("finish", () => {
     bench.end(n);
    });
 
@@ -32,7 +32,7 @@ function main({ n, method, inputLen }) {
    break;
   }
   // Performs `n` single deflate operations
-  case 'deflate': {
+  case "deflate": {
    let i = 0;
    const deflate = zlib.deflate;
    bench.start();
@@ -44,7 +44,7 @@ function main({ n, method, inputLen }) {
    break;
   }
   // Performs `n` single deflateSync operations
-  case 'deflateSync': {
+  case "deflateSync": {
    const deflateSync = zlib.deflateSync;
    bench.start();
    for (let i = 0; i < n; ++i)
@@ -53,6 +53,6 @@ function main({ n, method, inputLen }) {
    break;
   }
   default:
-   throw new Error('Unsupported deflate method');
+   throw new Error("Unsupported deflate method");
  }
 }

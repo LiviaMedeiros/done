@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common.js');
-const assert = require('assert');
+"use strict";
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
- loopMethod: ['forEach', 'iterator'],
+ loopMethod: ["forEach", "iterator"],
  n: [1e6],
 });
 
-const str = 'one=single&two=first&three=first&two=2nd&three=2nd&three=3rd';
+const str = "one=single&two=first&three=first&two=2nd&three=2nd&three=3rd";
 
 function forEach(n) {
  const params = new URLSearchParams(str);
@@ -22,8 +22,8 @@ function forEach(n) {
   params.forEach(cb);
  bench.end(n);
 
- assert.strictEqual(noDead[0], 'three');
- assert.strictEqual(noDead[1], '3rd');
+ assert.strictEqual(noDead[0], "three");
+ assert.strictEqual(noDead[1], "3rd");
 }
 
 function iterator(n) {
@@ -39,16 +39,16 @@ function iterator(n) {
  }
  bench.end(n);
 
- assert.strictEqual(noDead[0], 'three');
- assert.strictEqual(noDead[1], '3rd');
+ assert.strictEqual(noDead[0], "three");
+ assert.strictEqual(noDead[1], "3rd");
 }
 
 function main({ loopMethod, n }) {
  switch (loopMethod) {
-  case 'forEach':
+  case "forEach":
    forEach(n);
    break;
-  case 'iterator':
+  case "iterator":
    iterator(n);
    break;
   default:

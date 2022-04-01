@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Create an ssl server.  First connection, validate that not resume.
 // Cache session and close connection.  Use session on second connection.
 // ASSERT resumption.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const options = {
- key: fixtures.readKey('agent2-key.pem'),
- cert: fixtures.readKey('agent2-cert.pem'),
+ key: fixtures.readKey("agent2-key.pem"),
+ cert: fixtures.readKey("agent2-cert.pem"),
 };
 
-const big = Buffer.alloc(2 * 1024 * 1024, 'Y');
+const big = Buffer.alloc(2 * 1024 * 1024, "Y");
 
 // create server
 const server = tls.createServer(options, common.mustCall(function(socket) {
@@ -53,13 +53,13 @@ server.listen(0, common.mustCall(function() {
  }, common.mustCall(function() {
   let bytesRead = 0;
 
-  client.on('readable', function() {
+  client.on("readable", function() {
    const d = client.read();
    if (d)
     bytesRead += d.length;
   });
 
-  client.on('end', common.mustCall(function() {
+  client.on("end", common.mustCall(function() {
    server.close();
    assert.strictEqual(big.length, bytesRead);
   }));

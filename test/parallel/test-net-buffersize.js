@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const iter = 10;
 
 const server = net.createServer(function(socket) {
- socket.on('readable', function() {
+ socket.on("readable", function() {
   socket.read();
  });
 
- socket.on('end', function() {
+ socket.on("end", function() {
   server.close();
  });
 });
@@ -39,12 +39,12 @@ const server = net.createServer(function(socket) {
 server.listen(0, common.mustCall(function() {
  const client = net.connect(this.address().port);
 
- client.on('finish', common.mustCall(() => {
+ client.on("finish", common.mustCall(() => {
   assert.strictEqual(client.bufferSize, 0);
  }));
 
  for (let i = 1; i < iter; i++) {
-  client.write('a');
+  client.write("a");
   assert.strictEqual(client.bufferSize, i);
  }
 

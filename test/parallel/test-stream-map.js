@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Readable,
-} = require('stream');
-const assert = require('assert');
-const { once } = require('events');
-const { setTimeout } = require('timers/promises');
+} = require("stream");
+const assert = require("assert");
+const { once } = require("events");
+const { setTimeout } = require("timers/promises");
 
 {
  // Map works on synchronous streams with a synchronous mapper
@@ -81,7 +81,7 @@ const { setTimeout } = require('timers/promises');
    this.push(null);
   },
  });
- setImmediate(() => stream.emit('data', Uint8Array.from([1])));
+ setImmediate(() => stream.emit("data", Uint8Array.from([1])));
  const stream = source.map(async ([x]) => {
   return x + x;
  }).map((x) => x + x);
@@ -97,7 +97,7 @@ const { setTimeout } = require('timers/promises');
  // Emitting an error during `map`
  const stream = Readable.from([1, 2, 3, 4, 5]).map(async (x) => {
   if (x === 3) {
-   stream.emit('error', new Error('boom'));
+   stream.emit("error", new Error("boom"));
   }
   return x + x;
  });
@@ -111,7 +111,7 @@ const { setTimeout } = require('timers/promises');
  // Throwing an error during `map` (sync)
  const stream = Readable.from([1, 2, 3, 4, 5]).map((x) => {
   if (x === 3) {
-   throw new Error('boom');
+   throw new Error("boom");
   }
   return x + x;
  });
@@ -126,7 +126,7 @@ const { setTimeout } = require('timers/promises');
  // Throwing an error during `map` (async)
  const stream = Readable.from([1, 2, 3, 4, 5]).map(async (x) => {
   if (x === 3) {
-   throw new Error('boom');
+   throw new Error("boom");
   }
   return x + x;
  });
@@ -141,16 +141,16 @@ const { setTimeout } = require('timers/promises');
  const ac = new AbortController();
  const range = Readable.from([1, 2, 3, 4, 5]);
  const stream = range.map(common.mustCall(async (_, { signal }) => {
-  await once(signal, 'abort');
+  await once(signal, "abort");
   throw signal.reason;
  }, 2), { signal: ac.signal, concurrency: 2 });
  // pump
  assert.rejects(async () => {
   for await (const item of stream) {
-   assert.fail('should not reach here, got ' + item);
+   assert.fail("should not reach here, got " + item);
   }
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall());
 
  setImmediate(() => {
@@ -177,7 +177,7 @@ const { setTimeout } = require('timers/promises');
  // Error cases
  assert.throws(() => Readable.from([1]).map(1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).map((x) => x, {
-  concurrency: 'Foo',
+  concurrency: "Foo",
  }), /ERR_OUT_OF_RANGE/);
  assert.throws(() => Readable.from([1]).map((x) => x, 1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).map((x) => x, { signal: true }), /ERR_INVALID_ARG_TYPE/);

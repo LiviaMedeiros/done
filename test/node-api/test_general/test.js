@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const tmpdir = require('../../common/tmpdir');
-const child_process = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const url = require('url');
+const common = require("../../common");
+const tmpdir = require("../../common/tmpdir");
+const child_process = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const url = require("url");
 const filename = require.resolve(`./build/${common.buildType}/test_general`);
 const test_general = require(filename);
-const assert = require('assert');
+const assert = require("assert");
 
 tmpdir.refresh();
 
@@ -19,7 +19,7 @@ tmpdir.refresh();
 }
 
 {
- const urlTestDir = path.join(tmpdir.path, 'foo%#bar');
+ const urlTestDir = path.join(tmpdir.path, "foo%#bar");
  const urlTestFile = path.join(urlTestDir, path.basename(filename));
  fs.mkdirSync(urlTestDir, { recursive: true });
  fs.copyFileSync(filename, urlTestFile);
@@ -27,8 +27,8 @@ tmpdir.refresh();
  // into this process and can be removed here.
  const reportedFilename = child_process.spawnSync(
   process.execPath,
-  ['-p', `require(${JSON.stringify(urlTestFile)}).filename`],
-  { encoding: 'utf8' }).stdout.trim();
+  ["-p", `require(${JSON.stringify(urlTestFile)}).filename`],
+  { encoding: "utf8" }).stdout.trim();
  assert.doesNotMatch(reportedFilename, /foo%#bar/);
  assert.strictEqual(reportedFilename, url.pathToFileURL(urlTestFile).href);
  fs.rmSync(urlTestDir, {
@@ -40,7 +40,7 @@ tmpdir.refresh();
 
 {
  const [ major, minor, patch, release ] = test_general.testGetNodeVersion();
- assert.strictEqual(process.version.split('-')[0],
+ assert.strictEqual(process.version.split("-")[0],
                     `v${major}.${minor}.${patch}`);
  assert.strictEqual(release, process.release.name);
 }

@@ -19,20 +19,20 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const url = require('url');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const url = require("url");
 
 let testURL;
 
 // Make sure the basics work
 function check(request) {
  // Default method should still be 'GET'
- assert.strictEqual(request.method, 'GET');
+ assert.strictEqual(request.method, "GET");
  // There are no URL params, so you should not see any
- assert.strictEqual(request.url, '/');
+ assert.strictEqual(request.url, "/");
  // The host header should use the url.parse.hostname
  assert.strictEqual(request.headers.host,
                     `${testURL.hostname}:${testURL.port}`);
@@ -42,7 +42,7 @@ const server = http.createServer(function(request, response) {
  // Run the check function
  check(request);
  response.writeHead(200, {});
- response.end('ok');
+ response.end("ok");
  server.close();
 });
 

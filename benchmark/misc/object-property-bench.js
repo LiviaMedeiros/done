@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 /* eslint-disable dot-notation */
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- method: ['property', 'string', 'variable', 'symbol'],
+ method: ["property", "string", "variable", "symbol"],
  n: [1e9],
 });
 
@@ -26,17 +26,17 @@ function runString(n) {
 
  bench.start();
  for (let i = 0; i < n; i++) {
-  object['p1'] = 21;
-  object['p2'] = 21;
-  object['p1'] += object['p2'];
+  object["p1"] = 21;
+  object["p2"] = 21;
+  object["p1"] += object["p2"];
  }
  bench.end(n);
 }
 
 function runVariable(n) {
  const object = {};
- const var1 = 'p1';
- const var2 = 'p2';
+ const var1 = "p1";
+ const var2 = "p2";
 
  bench.start();
  for (let i = 0; i < n; i++) {
@@ -49,8 +49,8 @@ function runVariable(n) {
 
 function runSymbol(n) {
  const object = {};
- const symbol1 = Symbol('p1');
- const symbol2 = Symbol('p2');
+ const symbol1 = Symbol("p1");
+ const symbol2 = Symbol("p2");
 
  bench.start();
  for (let i = 0; i < n; i++) {
@@ -64,16 +64,16 @@ function runSymbol(n) {
 function main({ n, method }) {
 
  switch (method) {
-  case 'property':
+  case "property":
    runProperty(n);
    break;
-  case 'string':
+  case "string":
    runString(n);
    break;
-  case 'variable':
+  case "variable":
    runVariable(n);
    break;
-  case 'symbol':
+  case "symbol":
    runSymbol(n);
    break;
   default:

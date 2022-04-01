@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const net = require('net');
-const assert = require('assert');
+"use strict";
+require("../common");
+const net = require("net");
+const assert = require("assert");
 
 let cbcount = 0;
 const N = 500000;
 
 const server = net.Server(function(socket) {
- socket.on('data', function(d) {
+ socket.on("data", function(d) {
   console.error(`got ${d.length} bytes`);
  });
 
- socket.on('end', function() {
-  console.error('end');
+ socket.on("end", function() {
+  console.error("end");
   socket.destroy();
   server.close();
  });
@@ -58,14 +58,14 @@ function makeCallback(c) {
 server.listen(0, function() {
  const client = net.createConnection(server.address().port);
 
- client.on('connect', function() {
+ client.on("connect", function() {
   for (let i = 0; i < N; i++) {
-   client.write('hello world', makeCallback(i));
+   client.write("hello world", makeCallback(i));
   }
   client.end();
  });
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(cbcount, N);
 });

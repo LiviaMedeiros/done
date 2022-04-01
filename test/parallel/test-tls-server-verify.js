@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 if (!common.opensslCli)
- common.skip('node compiled without OpenSSL CLI.');
+ common.skip("node compiled without OpenSSL CLI.");
 
 // This is a rather complex test which sets up various TLS servers with node
 // and connects to them using the 'openssl s_client' command line utility
@@ -36,93 +36,93 @@ if (!common.opensslCli)
 // - accepted and "unauthorized", or
 // - accepted and "authorized".
 
-const assert = require('assert');
-const { spawn } = require('child_process');
+const assert = require("assert");
+const { spawn } = require("child_process");
 const { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } =
-  require('crypto').constants;
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+  require("crypto").constants;
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const testCases =
-  [{ title: 'Do not request certs. Everyone is unauthorized.',
+  [{ title: "Do not request certs. Everyone is unauthorized.",
   			requestCert: false,
   			rejectUnauthorized: false,
   			renegotiate: false,
-  			CAs: ['ca1-cert'],
+  			CAs: ["ca1-cert"],
   			clients:
-     [{ name: 'agent1', shouldReject: false, shouldAuth: false },
-     	{ name: 'agent2', shouldReject: false, shouldAuth: false },
-     	{ name: 'agent3', shouldReject: false, shouldAuth: false },
-     	{ name: 'nocert', shouldReject: false, shouldAuth: false },
+     [{ name: "agent1", shouldReject: false, shouldAuth: false },
+     	{ name: "agent2", shouldReject: false, shouldAuth: false },
+     	{ name: "agent3", shouldReject: false, shouldAuth: false },
+     	{ name: "nocert", shouldReject: false, shouldAuth: false },
      ] },
 
-  	{ title: 'Allow both authed and unauthed connections with CA1',
+  	{ title: "Allow both authed and unauthed connections with CA1",
   			requestCert: true,
   			rejectUnauthorized: false,
   			renegotiate: false,
-  			CAs: ['ca1-cert'],
+  			CAs: ["ca1-cert"],
   			clients:
-    [{ name: 'agent1', shouldReject: false, shouldAuth: true },
-    	{ name: 'agent2', shouldReject: false, shouldAuth: false },
-    	{ name: 'agent3', shouldReject: false, shouldAuth: false },
-    	{ name: 'nocert', shouldReject: false, shouldAuth: false },
+    [{ name: "agent1", shouldReject: false, shouldAuth: true },
+    	{ name: "agent2", shouldReject: false, shouldAuth: false },
+    	{ name: "agent3", shouldReject: false, shouldAuth: false },
+    	{ name: "nocert", shouldReject: false, shouldAuth: false },
     ] },
 
-  	{ title: 'Do not request certs at connection. Do that later',
+  	{ title: "Do not request certs at connection. Do that later",
   			requestCert: false,
   			rejectUnauthorized: false,
   			renegotiate: true,
-  			CAs: ['ca1-cert'],
+  			CAs: ["ca1-cert"],
   			clients:
-    [{ name: 'agent1', shouldReject: false, shouldAuth: true },
-    	{ name: 'agent2', shouldReject: false, shouldAuth: false },
-    	{ name: 'agent3', shouldReject: false, shouldAuth: false },
-    	{ name: 'nocert', shouldReject: false, shouldAuth: false },
+    [{ name: "agent1", shouldReject: false, shouldAuth: true },
+    	{ name: "agent2", shouldReject: false, shouldAuth: false },
+    	{ name: "agent3", shouldReject: false, shouldAuth: false },
+    	{ name: "nocert", shouldReject: false, shouldAuth: false },
     ] },
 
-  	{ title: 'Allow only authed connections with CA1',
+  	{ title: "Allow only authed connections with CA1",
   			requestCert: true,
   			rejectUnauthorized: true,
   			renegotiate: false,
-  			CAs: ['ca1-cert'],
+  			CAs: ["ca1-cert"],
   			clients:
-    [{ name: 'agent1', shouldReject: false, shouldAuth: true },
-    	{ name: 'agent2', shouldReject: true },
-    	{ name: 'agent3', shouldReject: true },
-    	{ name: 'nocert', shouldReject: true },
+    [{ name: "agent1", shouldReject: false, shouldAuth: true },
+    	{ name: "agent2", shouldReject: true },
+    	{ name: "agent3", shouldReject: true },
+    	{ name: "nocert", shouldReject: true },
     ] },
 
-  	{ title: 'Allow only authed connections with CA1 and CA2',
+  	{ title: "Allow only authed connections with CA1 and CA2",
   			requestCert: true,
   			rejectUnauthorized: true,
   			renegotiate: false,
-  			CAs: ['ca1-cert', 'ca2-cert'],
+  			CAs: ["ca1-cert", "ca2-cert"],
   			clients:
-    [{ name: 'agent1', shouldReject: false, shouldAuth: true },
-    	{ name: 'agent2', shouldReject: true },
-    	{ name: 'agent3', shouldReject: false, shouldAuth: true },
-    	{ name: 'nocert', shouldReject: true },
+    [{ name: "agent1", shouldReject: false, shouldAuth: true },
+    	{ name: "agent2", shouldReject: true },
+    	{ name: "agent3", shouldReject: false, shouldAuth: true },
+    	{ name: "nocert", shouldReject: true },
     ] },
 
 
-  	{ title: 'Allow only certs signed by CA2 but not in the CRL',
+  	{ title: "Allow only certs signed by CA2 but not in the CRL",
   			requestCert: true,
   			rejectUnauthorized: true,
   			renegotiate: false,
-  			CAs: ['ca2-cert'],
-  			crl: 'ca2-crl',
+  			CAs: ["ca2-cert"],
+  			crl: "ca2-crl",
   			clients: [
-  				{ name: 'agent1', shouldReject: true, shouldAuth: false },
-  				{ name: 'agent2', shouldReject: true, shouldAuth: false },
-  				{ name: 'agent3', shouldReject: false, shouldAuth: true },
+  				{ name: "agent1", shouldReject: true, shouldAuth: false },
+  				{ name: "agent2", shouldReject: true, shouldAuth: false },
+  				{ name: "agent3", shouldReject: false, shouldAuth: true },
   				// Agent4 has a cert in the CRL.
-  				{ name: 'agent4', shouldReject: true, shouldAuth: false },
-  				{ name: 'nocert', shouldReject: true },
+  				{ name: "agent4", shouldReject: true, shouldAuth: false },
+  				{ name: "nocert", shouldReject: true },
   			] },
   ];
 
 function filenamePEM(n) {
- return fixtures.path('keys', `${n}.pem`);
+ return fixtures.path("keys", `${n}.pem`);
 }
 
 function loadPEM(n) {
@@ -130,8 +130,8 @@ function loadPEM(n) {
 }
 
 
-const serverKey = loadPEM('agent2-key');
-const serverCert = loadPEM('agent2-cert');
+const serverKey = loadPEM("agent2-key");
+const serverCert = loadPEM("agent2-cert");
 
 
 function runClient(prefix, port, options, cb) {
@@ -141,45 +141,45 @@ function runClient(prefix, port, options, cb) {
  // - Certificate, but not signed by CA.
  // - Certificate signed by CA.
 
- const args = ['s_client', '-connect', `127.0.0.1:${port}`];
+ const args = ["s_client", "-connect", `127.0.0.1:${port}`];
 
  console.log(`${prefix}  connecting with`, options.name);
 
  switch (options.name) {
-  case 'agent1':
+  case "agent1":
    // Signed by CA1
-   args.push('-key');
-   args.push(filenamePEM('agent1-key'));
-   args.push('-cert');
-   args.push(filenamePEM('agent1-cert'));
+   args.push("-key");
+   args.push(filenamePEM("agent1-key"));
+   args.push("-cert");
+   args.push(filenamePEM("agent1-cert"));
    break;
 
-  case 'agent2':
+  case "agent2":
    // Self-signed
    // This is also the key-cert pair that the server will use.
-   args.push('-key');
-   args.push(filenamePEM('agent2-key'));
-   args.push('-cert');
-   args.push(filenamePEM('agent2-cert'));
+   args.push("-key");
+   args.push(filenamePEM("agent2-key"));
+   args.push("-cert");
+   args.push(filenamePEM("agent2-cert"));
    break;
 
-  case 'agent3':
+  case "agent3":
    // Signed by CA2
-   args.push('-key');
-   args.push(filenamePEM('agent3-key'));
-   args.push('-cert');
-   args.push(filenamePEM('agent3-cert'));
+   args.push("-key");
+   args.push(filenamePEM("agent3-key"));
+   args.push("-cert");
+   args.push(filenamePEM("agent3-cert"));
    break;
 
-  case 'agent4':
+  case "agent4":
    // Signed by CA2 (rejected by ca2-crl)
-   args.push('-key');
-   args.push(filenamePEM('agent4-key'));
-   args.push('-cert');
-   args.push(filenamePEM('agent4-cert'));
+   args.push("-key");
+   args.push(filenamePEM("agent4-key"));
+   args.push("-cert");
+   args.push(filenamePEM("agent4-cert"));
    break;
 
-  case 'nocert':
+  case "nocert":
    // Do not send certificate
    break;
 
@@ -190,14 +190,14 @@ function runClient(prefix, port, options, cb) {
  // To test use: openssl s_client -connect localhost:8000
  const client = spawn(common.opensslCli, args);
 
- let out = '';
+ let out = "";
 
  let rejected = true;
  let authed = false;
  let goodbye = false;
 
- client.stdout.setEncoding('utf8');
- client.stdout.on('data', function(d) {
+ client.stdout.setEncoding("utf8");
+ client.stdout.on("data", function(d) {
   out += d;
 
   if (!goodbye && /_unauthed/.test(out)) {
@@ -217,7 +217,7 @@ function runClient(prefix, port, options, cb) {
   }
  });
 
- client.on('exit', function(code) {
+ client.on("exit", function(code) {
   if (options.shouldReject) {
    assert.strictEqual(
     rejected, true,
@@ -265,12 +265,12 @@ function runTest(port, testIndex) {
   serverOptions.secureOptions =
         SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION;
   // Renegotiation as a protocol feature was dropped after TLS1.2.
-  serverOptions.maxVersion = 'TLSv1.2';
+  serverOptions.maxVersion = "TLSv1.2";
  }
 
  let renegotiated = false;
  const server = tls.Server(serverOptions, function handleConnection(c) {
-  c.on('error', function(e) {
+  c.on("error", function(e) {
    // child.kill() leads ECONNRESET error in the TLS connection of
    // openssl s_client via spawn(). A test result is already
    // checked by the data of client.stdout before child.kill() so
@@ -280,13 +280,13 @@ function runTest(port, testIndex) {
    renegotiated = true;
    setTimeout(function() {
     console.error(`${prefix}- connected, renegotiating`);
-    c.write('\n_renegotiating\n');
+    c.write("\n_renegotiating\n");
     return c.renegotiate({
      requestCert: true,
      rejectUnauthorized: false,
     }, function(err) {
      assert.ifError(err);
-     c.write('\n_renegotiated\n');
+     c.write("\n_renegotiated\n");
      handleConnection(c);
     });
    }, 200);
@@ -296,10 +296,10 @@ function runTest(port, testIndex) {
   if (c.authorized) {
    console.error(`${prefix}- authed connection: ${
     c.getPeerCertificate().subject.CN}`);
-   c.write('\n_authed\n');
+   c.write("\n_authed\n");
   } else {
    console.error(`${prefix}- unauthed connection: %s`, c.authorizationError);
-   c.write('\n_unauthed\n');
+   c.write("\n_unauthed\n");
   }
  });
 
@@ -343,6 +343,6 @@ let nextTest = 0;
 runTest(0, nextTest++);
 
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(successfulTests, testCases.length);
 });

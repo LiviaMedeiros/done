@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const { WPTRunner } = require('../common/wpt');
+"use strict";
+require("../common");
+const { WPTRunner } = require("../common/wpt");
 
-const runner = new WPTRunner('dom/abort');
+const runner = new WPTRunner("dom/abort");
 
 runner.runJsTests();

@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 // Original test written by Jakub Lekstan <kuebzky@gmail.com>
-const common = require('../common');
+const common = require("../common");
 
 // FIXME add sunos support
 if (common.isSunOS)
  common.skip(`Unsupported platform [${process.platform}]`);
 // FIXME add IBMi support
 if (common.isIBMi)
- common.skip('Unsupported platform IBMi');
+ common.skip("Unsupported platform IBMi");
 if (!common.isMainThread)
- common.skip('Setting the process title from Workers is not supported');
+ common.skip("Setting the process title from Workers is not supported");
 
-const assert = require('assert');
-const exec = require('child_process').exec;
-const path = require('path');
+const assert = require("assert");
+const exec = require("child_process").exec;
+const path = require("path");
 
 // The title shouldn't be too long; libuv's uv_set_process_title() out of
 // security considerations no longer overwrites envp, only argv, so the
@@ -35,12 +35,12 @@ const cmd = common.isLinux ?
  `ps -p ${process.pid} -o args=`;
 
 exec(cmd, common.mustSucceed((stdout, stderr) => {
- assert.strictEqual(stderr, '');
+ assert.strictEqual(stderr, "");
 
  // Freebsd always add ' (procname)' to the process title
  if (common.isFreeBSD || common.isOpenBSD)
   title += ` (${path.basename(process.execPath)})`;
 
  // Omitting trailing whitespace and \n
- assert.strictEqual(stdout.replace(/\s+$/, '').endsWith(title), true);
+ assert.strictEqual(stdout.replace(/\s+$/, "").endsWith(title), true);
 }));

@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const { fork } = require('child_process');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const { fork } = require("child_process");
 
 // This test check the arguments of `fork` method
 // Refs: https://github.com/nodejs/node/issues/20749
-const expectedEnv = { foo: 'bar' };
+const expectedEnv = { foo: "bar" };
 
 // Ensure that first argument `modulePath` must be provided
 // and be of type string
@@ -19,19 +19,19 @@ const expectedEnv = { foo: 'bar' };
   [],
   {},
   () => {},
-  Symbol('t'),
+  Symbol("t"),
  ];
  invalidModulePath.forEach((modulePath) => {
   assert.throws(() => fork(modulePath), {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: /^The "modulePath" argument must be of type string/,
   });
  });
 
- const cp = fork(fixtures.path('child-process-echo-options.js'));
+ const cp = fork(fixtures.path("child-process-echo-options.js"));
  cp.on(
-  'exit',
+  "exit",
   common.mustCall((code) => {
    assert.strictEqual(code, 0);
   }),
@@ -46,16 +46,16 @@ const expectedEnv = { foo: 'bar' };
   0,
   true,
   () => {},
-  Symbol('t'),
+  Symbol("t"),
  ];
  invalidSecondArgs.forEach((arg) => {
   assert.throws(
    () => {
-    fork(fixtures.path('child-process-echo-options.js'), arg);
+    fork(fixtures.path("child-process-echo-options.js"), arg);
    },
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
    },
   );
  });
@@ -63,19 +63,19 @@ const expectedEnv = { foo: 'bar' };
  const argsLists = [undefined, null, []];
 
  argsLists.forEach((args) => {
-  const cp = fork(fixtures.path('child-process-echo-options.js'), args, {
+  const cp = fork(fixtures.path("child-process-echo-options.js"), args, {
    env: { ...process.env, ...expectedEnv },
   });
 
   cp.on(
-   'message',
+   "message",
    common.mustCall(({ env }) => {
     assert.strictEqual(env.foo, expectedEnv.foo);
    }),
   );
 
   cp.on(
-   'exit',
+   "exit",
    common.mustCall((code) => {
     assert.strictEqual(code, 0);
    }),
@@ -89,16 +89,16 @@ const expectedEnv = { foo: 'bar' };
   0,
   true,
   () => {},
-  Symbol('t'),
+  Symbol("t"),
  ];
  invalidThirdArgs.forEach((arg) => {
   assert.throws(
    () => {
-    fork(fixtures.path('child-process-echo-options.js'), [], arg);
+    fork(fixtures.path("child-process-echo-options.js"), [], arg);
    },
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
    },
   );
  });

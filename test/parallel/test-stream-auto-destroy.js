@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
-const stream = require('stream');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const stream = require("stream");
+const assert = require("assert");
 
 {
  const r = new stream.Readable({
   autoDestroy: true,
   read() {
-   this.push('hello');
-   this.push('world');
+   this.push("hello");
+   this.push("world");
    this.push(null);
   },
   destroy: common.mustCall((err, cb) => cb()),
@@ -18,11 +18,11 @@ const assert = require('assert');
 
  r.resume();
 
- r.on('end', common.mustCall(() => {
+ r.on("end", common.mustCall(() => {
   ended = true;
  }));
 
- r.on('close', common.mustCall(() => {
+ r.on("close", common.mustCall(() => {
   assert(ended);
  }));
 }
@@ -38,15 +38,15 @@ const assert = require('assert');
 
  let finished = false;
 
- w.write('hello');
- w.write('world');
+ w.write("hello");
+ w.write("world");
  w.end();
 
- w.on('finish', common.mustCall(() => {
+ w.on("finish", common.mustCall(() => {
   finished = true;
  }));
 
- w.on('close', common.mustCall(() => {
+ w.on("close", common.mustCall(() => {
   assert(finished);
  }));
 }
@@ -63,21 +63,21 @@ const assert = require('assert');
  let ended = false;
  let finished = false;
 
- t.write('hello');
- t.write('world');
+ t.write("hello");
+ t.write("world");
  t.end();
 
  t.resume();
 
- t.on('end', common.mustCall(() => {
+ t.on("end", common.mustCall(() => {
   ended = true;
  }));
 
- t.on('finish', common.mustCall(() => {
+ t.on("finish", common.mustCall(() => {
   finished = true;
  }));
 
- t.on('close', common.mustCall(() => {
+ t.on("close", common.mustCall(() => {
   assert(ended);
   assert(finished);
  }));
@@ -86,7 +86,7 @@ const assert = require('assert');
 {
  const r = new stream.Readable({
   read() {
-   r2.emit('error', new Error('fail'));
+   r2.emit("error", new Error("fail"));
   },
  });
  const r2 = new stream.Readable({
@@ -100,7 +100,7 @@ const assert = require('assert');
 {
  const r = new stream.Readable({
   read() {
-   w.emit('error', new Error('fail'));
+   w.emit("error", new Error("fail"));
   },
  });
  const w = new stream.Writable({

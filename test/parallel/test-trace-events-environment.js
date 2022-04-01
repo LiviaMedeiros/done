@@ -1,26 +1,26 @@
 // Flags: --no-warnings
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cp = require('child_process');
-const path = require('path');
-const fs = require('fs');
-const tmpdir = require('../common/tmpdir');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cp = require("child_process");
+const path = require("path");
+const fs = require("fs");
+const tmpdir = require("../common/tmpdir");
 
 // This tests the emission of node.environment trace events
 
 const names = new Set([
- 'Environment',
- 'RunAndClearNativeImmediates',
- 'CheckImmediate',
- 'RunTimers',
- 'BeforeExit',
- 'RunCleanup',
- 'AtExit',
+ "Environment",
+ "RunAndClearNativeImmediates",
+ "CheckImmediate",
+ "RunTimers",
+ "BeforeExit",
+ "RunCleanup",
+ "AtExit",
 ]);
 
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  /* eslint-disable no-unused-expressions */
  // This is just so that the child has something to do.
  1 + 1;
@@ -33,22 +33,22 @@ if (process.argv[2] === 'child') {
  tmpdir.refresh();
 
  const proc = cp.fork(__filename,
-                      [ 'child' ], {
+                      [ "child" ], {
                        cwd: tmpdir.path,
                        execArgv: [
-                        '--trace-event-categories',
-                        'node.environment',
+                        "--trace-event-categories",
+                        "node.environment",
                        ],
                       });
 
- proc.once('exit', common.mustCall(async () => {
-  const file = path.join(tmpdir.path, 'node_trace.1.log');
+ proc.once("exit", common.mustCall(async () => {
+  const file = path.join(tmpdir.path, "node_trace.1.log");
   const checkSet = new Set();
 
   assert(fs.existsSync(file));
   const data = await fs.promises.readFile(file);
   JSON.parse(data.toString()).traceEvents
-      .filter((trace) => trace.cat !== '__metadata')
+      .filter((trace) => trace.cat !== "__metadata")
       .forEach((trace) => {
       	assert.strictEqual(trace.pid, proc.pid);
       	assert(names.has(trace.name));

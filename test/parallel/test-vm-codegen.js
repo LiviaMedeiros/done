@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
-const { createContext, runInContext, runInNewContext } = require('vm');
+const { createContext, runInContext, runInNewContext } = require("vm");
 
 const WASM_BYTES = Buffer.from(
  [0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00]);
@@ -25,7 +25,7 @@ const WASM_BYTES = Buffer.from(
   },
  });
 
- const EvalError = runInContext('EvalError', ctx);
+ const EvalError = runInContext("EvalError", ctx);
  assert.throws(() => {
   runInContext('eval("x")', ctx);
  }, EvalError);
@@ -38,9 +38,9 @@ const WASM_BYTES = Buffer.from(
   },
  });
 
- const CompileError = runInContext('WebAssembly.CompileError', ctx);
+ const CompileError = runInContext("WebAssembly.CompileError", ctx);
  assert.throws(() => {
-  runInContext('new WebAssembly.Module(WASM_BYTES)', ctx);
+  runInContext("new WebAssembly.Module(WASM_BYTES)", ctx);
  }, CompileError);
 }
 
@@ -51,17 +51,17 @@ assert.throws(() => {
   },
  });
 }, {
- name: 'EvalError',
+ name: "EvalError",
 });
 
 assert.throws(() => {
- runInNewContext('new WebAssembly.Module(WASM_BYTES)', { WASM_BYTES }, {
+ runInNewContext("new WebAssembly.Module(WASM_BYTES)", { WASM_BYTES }, {
   contextCodeGeneration: {
    wasm: false,
   },
  });
 }, {
- name: 'CompileError',
+ name: "CompileError",
 });
 
 assert.throws(() => {
@@ -71,7 +71,7 @@ assert.throws(() => {
   },
  });
 }, {
- code: 'ERR_INVALID_ARG_TYPE',
+ code: "ERR_INVALID_ARG_TYPE",
 });
 
 assert.throws(() => {
@@ -81,7 +81,7 @@ assert.throws(() => {
   },
  });
 }, {
- code: 'ERR_INVALID_ARG_TYPE',
+ code: "ERR_INVALID_ARG_TYPE",
 });
 
 assert.throws(() => {
@@ -89,7 +89,7 @@ assert.throws(() => {
   codeGeneration: 1,
  });
 }, {
- code: 'ERR_INVALID_ARG_TYPE',
+ code: "ERR_INVALID_ARG_TYPE",
 });
 
 assert.throws(() => {
@@ -97,5 +97,5 @@ assert.throws(() => {
   codeGeneration: null,
  });
 }, {
- code: 'ERR_INVALID_ARG_TYPE',
+ code: "ERR_INVALID_ARG_TYPE",
 });

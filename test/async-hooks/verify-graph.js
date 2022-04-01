@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const util = require('util');
+require("../common");
+const assert = require("assert");
+const util = require("util");
 
 function findInGraph(graph, type, n) {
  let found = 0;
@@ -28,7 +28,7 @@ function pruneTickObjects(activities) {
 
  while (tickObject.found) {
   for (let i = 0; i < activities.length; i++) {
-   if (activities[i].type === 'TickObject') {
+   if (activities[i].type === "TickObject") {
     tickObject.index = i;
     break;
    } else if (i + 1 >= activities.length) {
@@ -128,7 +128,7 @@ module.exports.printGraph = function printGraph(hooks) {
  activities.forEach(procesNode);
 
  function procesNode(x) {
-  const key = x.type.replace(/WRAP/, '').toLowerCase();
+  const key = x.type.replace(/WRAP/, "").toLowerCase();
   if (!ids[key]) ids[key] = 1;
   const id = `${key}:${ids[key]++}`;
   uidtoid[x.uid] = id;

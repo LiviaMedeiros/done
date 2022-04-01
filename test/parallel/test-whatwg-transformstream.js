@@ -1,33 +1,33 @@
 // Flags: --expose-internals --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const {
  ReadableStream,
  TransformStream,
  TransformStreamDefaultController,
-} = require('stream/web');
+} = require("stream/web");
 
 const {
  createReadStream,
  readFileSync,
-} = require('fs');
+} = require("fs");
 
 const {
  kTransfer,
-} = require('internal/worker/js_transferable');
+} = require("internal/worker/js_transferable");
 
 const {
  inspect,
-} = require('util');
+} = require("util");
 
 assert.throws(() => new TransformStream({ readableType: 1 }), {
- code: 'ERR_INVALID_ARG_VALUE',
+ code: "ERR_INVALID_ARG_VALUE",
 });
 assert.throws(() => new TransformStream({ writableType: 1 }), {
- code: 'ERR_INVALID_ARG_VALUE',
+ code: "ERR_INVALID_ARG_VALUE",
 });
 
 
@@ -39,11 +39,11 @@ assert.throws(() => new TransformStream({ writableType: 1 }), {
   const reader = stream.readable.getReader();
 
   const { 1: result } = await Promise.all([
-   writer.write('hello'),
+   writer.write("hello"),
    reader.read(),
   ]);
 
-  assert.strictEqual(result.value, 'hello');
+  assert.strictEqual(result.value, "hello");
  }
 
  test(stream).then(common.mustCall());
@@ -73,11 +73,11 @@ class Transform {
   const reader = stream.readable.getReader();
 
   const { 1: result } = await Promise.all([
-   writer.write('hello'),
+   writer.write("hello"),
    reader.read(),
   ]);
 
-  assert.strictEqual(result.value, 'HELLO');
+  assert.strictEqual(result.value, "HELLO");
 
   await writer.close();
  }
@@ -94,14 +94,14 @@ class Source {
 
  start(controller) {
   this.stream = createReadStream(__filename);
-  this.stream.on('data', (chunk) => {
+  this.stream.on("data", (chunk) => {
    controller.enqueue(chunk.toString());
   });
-  this.stream.once('end', () => {
+  this.stream.once("end", () => {
    if (!this.cancelCalled)
     controller.close();
   });
-  this.stream.once('error', (error) => {
+  this.stream.once("error", (error) => {
    controller.error(error);
   });
  }
@@ -117,7 +117,7 @@ class Source {
  const r = instream.pipeThrough(tstream);
 
  async function read(stream) {
-  let res = '';
+  let res = "";
   for await (const chunk of stream)
    res += chunk;
   return res;
@@ -130,39 +130,39 @@ class Source {
 }
 
 {
- assert.throws(() => Reflect.get(TransformStream.prototype, 'readable', {}), {
-  code: 'ERR_INVALID_THIS',
+ assert.throws(() => Reflect.get(TransformStream.prototype, "readable", {}), {
+  code: "ERR_INVALID_THIS",
  });
- assert.throws(() => Reflect.get(TransformStream.prototype, 'writable', {}), {
-  code: 'ERR_INVALID_THIS',
+ assert.throws(() => Reflect.get(TransformStream.prototype, "writable", {}), {
+  code: "ERR_INVALID_THIS",
  });
  assert.throws(() => TransformStream.prototype[kTransfer]({}), {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
 
  assert.throws(() => {
-  Reflect.get(TransformStreamDefaultController.prototype, 'desiredSize', {});
+  Reflect.get(TransformStreamDefaultController.prototype, "desiredSize", {});
  }, {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
  assert.throws(() => {
   TransformStreamDefaultController.prototype.enqueue({});
  }, {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
  assert.throws(() => {
   TransformStreamDefaultController.prototype.error({});
  }, {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
  assert.throws(() => {
   TransformStreamDefaultController.prototype.terminate({});
  }, {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
 
  assert.throws(() => new TransformStreamDefaultController(), {
-  code: 'ERR_ILLEGAL_CONSTRUCTOR',
+  code: "ERR_ILLEGAL_CONSTRUCTOR",
  });
 }
 

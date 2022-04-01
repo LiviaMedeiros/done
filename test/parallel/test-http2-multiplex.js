@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
 // Tests opening 100 concurrent simultaneous uploading streams over a single
 // connection and makes sure that the data for each is appropriately echoed.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const Countdown = require('../common/countdown');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const Countdown = require("../common/countdown");
 
 const server = http2.createServer();
 
 const count = 100;
 
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
  stream.respond();
  stream.pipe(stream);
 }, count));
@@ -29,15 +29,15 @@ server.listen(0, common.mustCall(() => {
  });
 
  function doRequest() {
-  const req = client.request({ ':method': 'POST' });
+  const req = client.request({ ":method": "POST" });
 
-  let data = '';
-  req.setEncoding('utf8');
-  req.on('data', (chunk) => data += chunk);
-  req.on('end', common.mustCall(() => {
-   assert.strictEqual(data, 'abcdefghij');
+  let data = "";
+  req.setEncoding("utf8");
+  req.on("data", (chunk) => data += chunk);
+  req.on("end", common.mustCall(() => {
+   assert.strictEqual(data, "abcdefghij");
   }));
-  req.on('close', common.mustCall(() => countdown.dec()));
+  req.on("close", common.mustCall(() => countdown.dec()));
 
   let n = 0;
   function writeChunk() {

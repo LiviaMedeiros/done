@@ -1,18 +1,18 @@
 // Flags: --no-warnings
-'use strict';
+"use strict";
 
 // Test that DEP0121 is emitted on the first call of _setSimultaneousAccepts().
 
 const {
  expectWarning,
-} = require('../common');
+} = require("../common");
 const {
  _setSimultaneousAccepts,
-} = require('net');
+} = require("net");
 
 expectWarning(
- 'DeprecationWarning',
- 'net._setSimultaneousAccepts() is deprecated and will be removed.',
- 'DEP0121');
+ "DeprecationWarning",
+ "net._setSimultaneousAccepts() is deprecated and will be removed.",
+ "DEP0121");
 
 _setSimultaneousAccepts();

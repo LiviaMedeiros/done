@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const common = require('../common.js');
-const tmpdir = require('../../test/common/tmpdir');
-const benchmarkDirectory = path.join(tmpdir.path, 'nodejs-benchmark-module');
+const fs = require("fs");
+const path = require("path");
+const common = require("../common.js");
+const tmpdir = require("../../test/common/tmpdir");
+const benchmarkDirectory = path.join(tmpdir.path, "nodejs-benchmark-module");
 
 const bench = common.createBenchmark(main, {
- type: ['.js', '.json', 'dir'],
+ type: [".js", ".json", "dir"],
  n: [1e4],
 });
 
@@ -16,13 +16,13 @@ function main({ type, n }) {
  createEntryPoint(n);
 
  switch (type) {
-  case '.js':
+  case ".js":
    measureJSFile(n);
    break;
-  case '.json':
+  case ".json":
    measureJSONFile(n);
    break;
-  case 'dir':
+  case "dir":
    measureDir(n);
  }
 
@@ -56,8 +56,8 @@ function measureDir(n) {
 function createEntryPoint(n) {
  fs.mkdirSync(benchmarkDirectory);
 
- const JSFileContent = 'module.exports = [];';
- const JSONFileContent = '[]';
+ const JSFileContent = "module.exports = [];";
+ const JSONFileContent = "[]";
 
  for (let i = 0; i < n; i++) {
   // JS file.

@@ -2,7 +2,7 @@
  * @fileoverview Look for unescaped "literal" dots in regular expressions
  * @author Brian White
  */
-'use strict';
+"use strict";
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -19,11 +19,11 @@ module.exports = function(context) {
   context.report({
    node,
    loc: sourceCode.getLocFromIndex(indexOfDot),
-   message: 'Unescaped dot character in regular expression',
+   message: "Unescaped dot character in regular expression",
   });
  }
 
- const allowedModifiers = ['+', '*', '?', '{'];
+ const allowedModifiers = ["+", "*", "?", "{"];
  function checkRegExp(nodes) {
   let escaping = false;
   let inCharClass = false;
@@ -33,13 +33,13 @@ module.exports = function(context) {
    const str = pair[1];
    for (let i = 0; i < str.length; ++i) {
     switch (str[i]) {
-     case '[':
+     case "[":
       if (!escaping)
        inCharClass = true;
       else
        escaping = false;
       break;
-     case ']':
+     case "]":
       if (!escaping) {
        if (inCharClass)
         inCharClass = false;
@@ -47,10 +47,10 @@ module.exports = function(context) {
        escaping = false;
       }
       break;
-     case '\\':
+     case "\\":
       escaping = !escaping;
       break;
-     case '.':
+     case ".":
       if (!escaping) {
        if (!inCharClass &&
                   ((i + 1) === str.length ||
@@ -70,7 +70,7 @@ module.exports = function(context) {
  }
 
  function checkRegExpStart(node) {
-  if (node.callee && node.callee.name === 'RegExp') {
+  if (node.callee && node.callee.name === "RegExp") {
    if (inRegExp) {
     regexpStack.push(regexpBuffer);
     regexpBuffer = [];
@@ -80,7 +80,7 @@ module.exports = function(context) {
  }
 
  function checkRegExpEnd(node) {
-  if (node.callee && node.callee.name === 'RegExp') {
+  if (node.callee && node.callee.name === "RegExp") {
    checkRegExp(regexpBuffer);
    if (regexpStack.length) {
     regexpBuffer = regexpStack.pop();
@@ -92,22 +92,22 @@ module.exports = function(context) {
  }
 
  function checkLiteral(node) {
-  const isTemplate = (node.type === 'TemplateLiteral' && node.quasis &&
+  const isTemplate = (node.type === "TemplateLiteral" && node.quasis &&
                         node.quasis.length);
   if (inRegExp &&
-        (isTemplate || (typeof node.value === 'string' && node.value.length))) {
+        (isTemplate || (typeof node.value === "string" && node.value.length))) {
    let p = node.parent;
-   while (p && p.type === 'BinaryExpression') {
+   while (p && p.type === "BinaryExpression") {
     p = p.parent;
    }
-   if (p && (p.type === 'NewExpression' || p.type === 'CallExpression') &&
-          p.callee && p.callee.type === 'Identifier' &&
-          p.callee.name === 'RegExp') {
+   if (p && (p.type === "NewExpression" || p.type === "CallExpression") &&
+          p.callee && p.callee.type === "Identifier" &&
+          p.callee.name === "RegExp") {
     if (isTemplate) {
      const quasis = node.quasis;
      for (let i = 0; i < quasis.length; ++i) {
       const el = quasis[i];
-      if (el.type === 'TemplateElement' && el.value && el.value.cooked)
+      if (el.type === "TemplateElement" && el.value && el.value.cooked)
        regexpBuffer.push([el, el.value.cooked]);
      }
     } else {
@@ -120,11 +120,11 @@ module.exports = function(context) {
  }
 
  return {
-  'TemplateLiteral': checkLiteral,
-  'Literal': checkLiteral,
-  'CallExpression': checkRegExpStart,
-  'NewExpression': checkRegExpStart,
-  'CallExpression:exit': checkRegExpEnd,
-  'NewExpression:exit': checkRegExpEnd,
+  "TemplateLiteral": checkLiteral,
+  "Literal": checkLiteral,
+  "CallExpression": checkRegExpStart,
+  "NewExpression": checkRegExpStart,
+  "CallExpression:exit": checkRegExpEnd,
+  "NewExpression:exit": checkRegExpEnd,
  };
 };

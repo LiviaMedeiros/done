@@ -1,16 +1,16 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 
-const fixtures = require('../common/fixtures');
-const startCLI = require('../common/debugger');
+const fixtures = require("../common/fixtures");
+const startCLI = require("../common/debugger");
 
-const assert = require('assert');
+const assert = require("assert");
 
 // Test for files that start with strict directive.
 {
- const script = fixtures.path('debugger', 'use-strict.js');
+ const script = fixtures.path("debugger", "use-strict.js");
  const cli = startCLI([script]);
 
  function onFatal(error) {

@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
-const tls = require('tls');
+const assert = require("assert");
+const tls = require("tls");
 const errorMessageRegex = common.hasOpenSSL3 ?
  /^Error: error:05800074:x509 certificate routines::key values mismatch$/ :
  /^Error: error:0B080074:x509 certificate routines:X509_check_private_key:key values mismatch$/;
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent2-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent2-cert.pem"),
 };
 
 assert.throws(function() {

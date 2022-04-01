@@ -1,19 +1,19 @@
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
-const assert = require('assert');
-const fs = require('fs');
+const assert = require("assert");
+const fs = require("fs");
 
 {
- const fd = 'k';
+ const fd = "k";
 
  assert.throws(
   () => {
    fs.createReadStream(null, { fd });
   },
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
 
  assert.throws(
@@ -21,8 +21,8 @@ const fs = require('fs');
    fs.createWriteStream(null, { fd });
   },
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
 }
 
@@ -34,8 +34,8 @@ const fs = require('fs');
    fs.createReadStream(path);
   },
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
 
  assert.throws(
@@ -43,7 +43,7 @@ const fs = require('fs');
    fs.createWriteStream(path);
   },
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
 }

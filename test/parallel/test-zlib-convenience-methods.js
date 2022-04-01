@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Test convenience methods with and without options supplied
 
-const common = require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
+const common = require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
 
 // Must be a multiple of 4 characters in total to test all ArrayBufferView
 // types.
-const expectStr = 'blah'.repeat(8);
+const expectStr = "blah".repeat(8);
 const expectBuf = Buffer.from(expectStr);
 
 const opts = {
@@ -41,19 +41,19 @@ const optsInfo = {
 };
 
 for (const [type, expect] of [
- ['string', expectStr],
- ['Buffer', expectBuf],
+ ["string", expectStr],
+ ["Buffer", expectBuf],
  ...common.getBufferSources(expectBuf).map((obj) =>
   [obj[Symbol.toStringTag], obj],
  ),
 ]) {
  for (const method of [
-  ['gzip', 'gunzip', 'Gzip', 'Gunzip'],
-  ['gzip', 'unzip', 'Gzip', 'Unzip'],
-  ['deflate', 'inflate', 'Deflate', 'Inflate'],
-  ['deflateRaw', 'inflateRaw', 'DeflateRaw', 'InflateRaw'],
-  ['brotliCompress', 'brotliDecompress',
-   'BrotliCompress', 'BrotliDecompress'],
+  ["gzip", "gunzip", "Gzip", "Gunzip"],
+  ["gzip", "unzip", "Gzip", "Unzip"],
+  ["deflate", "inflate", "Deflate", "Inflate"],
+  ["deflateRaw", "inflateRaw", "DeflateRaw", "InflateRaw"],
+  ["brotliCompress", "brotliDecompress",
+   "BrotliCompress", "BrotliDecompress"],
  ]) {
   zlib[method[0]](expect, opts, common.mustCall((err, result) => {
    zlib[method[1]](result, opts, common.mustCall((err, result) => {
@@ -123,11 +123,11 @@ for (const [type, expect] of [
 }
 
 assert.throws(
- () => zlib.gzip('abc'),
+ () => zlib.gzip("abc"),
  {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message: 'The "callback" argument must be of type function. ' +
-             'Received undefined',
+             "Received undefined",
  },
 );

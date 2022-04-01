@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const binding = require(`./build/${common.buildType}/binding`);
 const makeCallback = binding.makeCallback;
 
@@ -16,7 +16,7 @@ const hook_result = {
 };
 const test_hook = async_hooks.createHook({
  init: (id, type) => {
-  if (type === 'test') {
+  if (type === "test") {
    hook_result.id = id;
    hook_result.init_called = true;
   }

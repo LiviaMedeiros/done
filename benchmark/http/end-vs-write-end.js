@@ -6,30 +6,30 @@
 // always as hot as it could be.
 //
 // Verify that our assumptions are valid.
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- type: ['asc', 'utf', 'buf'],
+ type: ["asc", "utf", "buf"],
  len: [64 * 1024, 128 * 1024, 256 * 1024, 1024 * 1024],
  c: [100],
- method: ['write', 'end'],
+ method: ["write", "end"],
  duration: 5,
 });
 
 function main({ len, type, method, c, duration }) {
- const http = require('http');
+ const http = require("http");
  let chunk;
  switch (type) {
-  case 'buf':
-   chunk = Buffer.alloc(len, 'x');
+  case "buf":
+   chunk = Buffer.alloc(len, "x");
    break;
-  case 'utf':
-   chunk = 'ü'.repeat(len / 2);
+  case "utf":
+   chunk = "ü".repeat(len / 2);
    break;
-  case 'asc':
-   chunk = 'a'.repeat(len);
+  case "asc":
+   chunk = "a".repeat(len);
    break;
  }
 
@@ -42,7 +42,7 @@ function main({ len, type, method, c, duration }) {
   res.end(chunk);
  }
 
- const fn = method === 'write' ? write : end;
+ const fn = method === "write" ? write : end;
 
  const server = http.createServer((req, res) => {
   fn(res);

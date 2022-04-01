@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const url = require('url');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const url = require("url");
 
 function check(request) {
  // A path should come over with params
- assert.strictEqual(request.url, '/asdf?qwer=zxcv');
+ assert.strictEqual(request.url, "/asdf?qwer=zxcv");
 }
 
 const server = http.createServer(function(request, response) {
  // Run the check function
  check(request);
  response.writeHead(200, {});
- response.end('ok');
+ response.end("ok");
  server.close();
 });
 

@@ -1,8 +1,8 @@
 // Flags: --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const {
  arrayBuffer,
@@ -10,18 +10,18 @@ const {
  buffer,
  text,
  json,
-} = require('stream/consumers');
+} = require("stream/consumers");
 
 const {
  Readable,
  PassThrough,
-} = require('stream');
+} = require("stream");
 
 const {
  TransformStream,
-} = require('stream/web');
+} = require("stream/web");
 
-const buf = Buffer.from('hellothere');
+const buf = Buffer.from("hellothere");
 const kArrayBuffer =
   buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
 
@@ -33,8 +33,8 @@ const kArrayBuffer =
   assert.deepStrictEqual(await blob.arrayBuffer(), kArrayBuffer);
  }));
 
- passthrough.write('hello');
- setTimeout(() => passthrough.end('there'), 10);
+ passthrough.write("hello");
+ setTimeout(() => passthrough.end("there"), 10);
 }
 
 {
@@ -45,8 +45,8 @@ const kArrayBuffer =
   assert.deepStrictEqual(ab, kArrayBuffer);
  }));
 
- passthrough.write('hello');
- setTimeout(() => passthrough.end('there'), 10);
+ passthrough.write("hello");
+ setTimeout(() => passthrough.end("there"), 10);
 }
 
 {
@@ -57,8 +57,8 @@ const kArrayBuffer =
   assert.deepStrictEqual(buf.buffer, kArrayBuffer);
  }));
 
- passthrough.write('hello');
- setTimeout(() => passthrough.end('there'), 10);
+ passthrough.write("hello");
+ setTimeout(() => passthrough.end("there"), 10);
 }
 
 
@@ -67,11 +67,11 @@ const kArrayBuffer =
 
  text(passthrough).then(common.mustCall(async (str) => {
   assert.strictEqual(str.length, 10);
-  assert.strictEqual(str, 'hellothere');
+  assert.strictEqual(str, "hellothere");
  }));
 
- passthrough.write('hello');
- setTimeout(() => passthrough.end('there'), 10);
+ passthrough.write("hello");
+ setTimeout(() => passthrough.end("there"), 10);
 }
 
 {
@@ -80,7 +80,7 @@ const kArrayBuffer =
  });
 
  text(readable).then((data) => {
-  assert.strictEqual(data, 'foo\ufffd\ufffd\ufffd');
+  assert.strictEqual(data, "foo\ufffd\ufffd\ufffd");
  });
 
  readable.push(new Uint8Array([0x66, 0x6f, 0x6f, 0xed, 0xa0, 0x80]));
@@ -92,7 +92,7 @@ const kArrayBuffer =
 
  json(passthrough).then(common.mustCall(async (str) => {
   assert.strictEqual(str.length, 10);
-  assert.strictEqual(str, 'hellothere');
+  assert.strictEqual(str, "hellothere");
  }));
 
  passthrough.write('"hello');
@@ -108,13 +108,13 @@ const kArrayBuffer =
  }));
 
  const writer = writable.getWriter();
- writer.write('hello');
+ writer.write("hello");
  setTimeout(() => {
-  writer.write('there');
+  writer.write("there");
   writer.close();
  }, 10);
 
- assert.rejects(blob(readable), { code: 'ERR_INVALID_STATE' });
+ assert.rejects(blob(readable), { code: "ERR_INVALID_STATE" });
 }
 
 {
@@ -126,13 +126,13 @@ const kArrayBuffer =
  }));
 
  const writer = writable.getWriter();
- writer.write('hello');
+ writer.write("hello");
  setTimeout(() => {
-  writer.write('there');
+  writer.write("there");
   writer.close();
  }, 10);
 
- assert.rejects(arrayBuffer(readable), { code: 'ERR_INVALID_STATE' });
+ assert.rejects(arrayBuffer(readable), { code: "ERR_INVALID_STATE" });
 }
 
 {
@@ -140,17 +140,17 @@ const kArrayBuffer =
 
  text(readable).then(common.mustCall(async (str) => {
   assert.strictEqual(str.length, 10);
-  assert.strictEqual(str, 'hellothere');
+  assert.strictEqual(str, "hellothere");
  }));
 
  const writer = writable.getWriter();
- writer.write('hello');
+ writer.write("hello");
  setTimeout(() => {
-  writer.write('there');
+  writer.write("there");
   writer.close();
  }, 10);
 
- assert.rejects(text(readable), { code: 'ERR_INVALID_STATE' });
+ assert.rejects(text(readable), { code: "ERR_INVALID_STATE" });
 }
 
 {
@@ -158,7 +158,7 @@ const kArrayBuffer =
 
  json(readable).then(common.mustCall(async (str) => {
   assert.strictEqual(str.length, 10);
-  assert.strictEqual(str, 'hellothere');
+  assert.strictEqual(str, "hellothere");
  }));
 
  const writer = writable.getWriter();
@@ -168,7 +168,7 @@ const kArrayBuffer =
   writer.close();
  }, 10);
 
- assert.rejects(json(readable), { code: 'ERR_INVALID_STATE' });
+ assert.rejects(json(readable), { code: "ERR_INVALID_STATE" });
 }
 
 {
@@ -195,7 +195,7 @@ const kArrayBuffer =
   assert.strictEqual(ab.byteLength, 30);
   assert.strictEqual(
    Buffer.from(ab).toString(),
-   '[object Object][object Object]');
+   "[object Object][object Object]");
  }));
 
  stream.write({});
@@ -212,7 +212,7 @@ const kArrayBuffer =
   assert.strictEqual(buf.byteLength, 30);
   assert.strictEqual(
    buf.toString(),
-   '[object Object][object Object]');
+   "[object Object][object Object]");
  }));
 
  stream.write({});
@@ -226,7 +226,7 @@ const kArrayBuffer =
  });
 
  assert.rejects(text(stream), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 
  stream.write({});
@@ -240,7 +240,7 @@ const kArrayBuffer =
  });
 
  assert.rejects(json(stream), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 
  stream.write({});

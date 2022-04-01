@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const http = require('http');
-const Countdown = require('../common/countdown');
+"use strict";
+const common = require("../common");
+const http = require("http");
+const Countdown = require("../common/countdown");
 
 const N = 8;
 
@@ -30,8 +30,8 @@ const countdown = new Countdown(N, () => server.close());
 
 const server = http.Server(common.mustCall((req, res) => {
  res.writeHead(200);
- res.write('Working on it...');
- req.on('aborted', common.mustCall(() => countdown.dec()));
+ res.write("Working on it...");
+ req.on("aborted", common.mustCall(() => countdown.dec()));
 }, N));
 
 server.listen(0, common.mustCall(() => {

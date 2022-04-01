@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const server = net.createServer(function(socket) {
  socket.end();
@@ -15,19 +15,19 @@ server.listen(0, common.mustCall(function() {
  // previously caused an err in the bytesWritten count.
  socket.cork();
 
- socket.write('one');
- socket.write(Buffer.from('twø', 'utf8'));
+ socket.write("one");
+ socket.write(Buffer.from("twø", "utf8"));
 
  socket.uncork();
 
  // one = 3 bytes, twø = 4 bytes
  assert.strictEqual(socket.bytesWritten, 3 + 4);
 
- socket.on('connect', common.mustCall(function() {
+ socket.on("connect", common.mustCall(function() {
   assert.strictEqual(socket.bytesWritten, 3 + 4);
  }));
 
- socket.on('end', common.mustCall(function() {
+ socket.on("end", common.mustCall(function() {
   assert.strictEqual(socket.bytesWritten, 3 + 4);
 
   server.close();

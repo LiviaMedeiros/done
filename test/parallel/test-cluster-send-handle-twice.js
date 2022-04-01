@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Testing to send an handle twice to the primary process.
 
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 const workers = {
  toStart: 1,
@@ -34,26 +34,26 @@ const workers = {
 if (cluster.isPrimary) {
  for (let i = 0; i < workers.toStart; ++i) {
   const worker = cluster.fork();
-  worker.on('exit', common.mustCall(function(code, signal) {
+  worker.on("exit", common.mustCall(function(code, signal) {
    assert.strictEqual(code, 0, `Worker exited with an error code: ${code}`);
    assert.strictEqual(signal, null, `Worker exited by a signal: ${signal}`);
   }));
  }
 } else {
  const server = net.createServer(common.mustCall((socket) => {
-  process.send('send-handle-1', socket);
-  process.send('send-handle-2', socket);
+  process.send("send-handle-1", socket);
+  process.send("send-handle-2", socket);
  }));
 
  server.listen(0, function() {
   const client = net.connect({
-   host: 'localhost',
+   host: "localhost",
    port: server.address().port,
   });
-  client.on('close', common.mustCall(() => { cluster.worker.disconnect(); }));
-  client.on('connect', () => { client.end(); });
- }).on('error', function(e) {
+  client.on("close", common.mustCall(() => { cluster.worker.disconnect(); }));
+  client.on("connect", () => { client.end(); });
+ }).on("error", function(e) {
   console.error(e);
-  assert.fail('server.listen failed');
+  assert.fail("server.listen failed");
  });
 }

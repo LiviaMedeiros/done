@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const cluster = require('cluster');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const cluster = require("cluster");
+const assert = require("assert");
 
 common.skipIfInspectorDisabled();
 
-checkForInspectSupport('--inspect');
+checkForInspectSupport("--inspect");
 
 function checkForInspectSupport(flag) {
 
@@ -18,11 +18,11 @@ function checkForInspectSupport(flag) {
    cluster.fork();
   }
 
-  cluster.on('online', (worker) => {
+  cluster.on("online", (worker) => {
    worker.disconnect();
   });
 
-  cluster.on('exit', common.mustCall((worker, code, signal) => {
+  cluster.on("exit", common.mustCall((worker, code, signal) => {
    const errMsg = `For NODE_OPTIONS ${nodeOptions}, failed to start cluster`;
    assert.strictEqual(worker.exitedAfterDisconnect, true, errMsg);
   }, numWorkers));

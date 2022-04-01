@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
+const common = require("../../common");
 
 // This tests the promise-related n-api calls
 
-const assert = require('assert');
+const assert = require("assert");
 const test_promise = require(`./build/${common.buildType}/test_promise`);
 
 // A resolution
@@ -21,7 +21,7 @@ const test_promise = require(`./build/${common.buildType}/test_promise`);
 
 // A rejection
 {
- const expected_result = 'It\'s not you, it\'s me.';
+ const expected_result = "It's not you, it's me.";
  const promise = test_promise.createPromise();
  promise.then(
   common.mustNotCall(),
@@ -33,14 +33,14 @@ const test_promise = require(`./build/${common.buildType}/test_promise`);
 
 // Chaining
 {
- const expected_result = 'chained answer';
+ const expected_result = "chained answer";
  const promise = test_promise.createPromise();
  promise.then(
   common.mustCall(function(result) {
    assert.strictEqual(result, expected_result);
   }),
   common.mustNotCall());
- test_promise.concludeCurrentPromise(Promise.resolve('chained answer'), true);
+ test_promise.concludeCurrentPromise(Promise.resolve("chained answer"), true);
 }
 
 const promiseTypeTestPromise = test_promise.createPromise();
@@ -55,7 +55,7 @@ rejectPromise.catch((reason) => {
 });
 
 assert.strictEqual(test_promise.isPromise(2.4), false);
-assert.strictEqual(test_promise.isPromise('I promise!'), false);
+assert.strictEqual(test_promise.isPromise("I promise!"), false);
 assert.strictEqual(test_promise.isPromise(undefined), false);
 assert.strictEqual(test_promise.isPromise(null), false);
 assert.strictEqual(test_promise.isPromise({}), false);

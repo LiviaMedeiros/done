@@ -1,11 +1,11 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const { spawnSync } = require('child_process');
-const os = require('os');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { spawnSync } = require("child_process");
+const os = require("os");
 
 const { signal, status, output } =
-  spawnSync(process.execPath, ['--security-revert=not-a-cve']);
+  spawnSync(process.execPath, ["--security-revert=not-a-cve"]);
 assert.strictEqual(signal, null);
 assert.strictEqual(status, 12);
 assert.strictEqual(

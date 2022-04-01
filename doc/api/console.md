@@ -25,11 +25,11 @@ more information.
 Example using the global `console`:
 
 ```js
-console.log('hello world');
+console.log("hello world");
 // Prints: hello world, to stdout
-console.log('hello %s', 'world');
+console.log("hello %s", "world");
 // Prints: hello world, to stdout
-console.error(new Error('Whoops, something bad happened'));
+console.error(new Error("Whoops, something bad happened"));
 // Prints error message and stack trace to stderr:
 //   Error: Whoops, something bad happened
 //     at [eval]:5:15
@@ -40,7 +40,7 @@ console.error(new Error('Whoops, something bad happened'));
 //     at evalScript (node:internal/process/execution:76:60)
 //     at node:internal/main/eval_string:23:3
 
-const name = 'Will Robinson';
+const name = "Will Robinson";
 console.warn(`Danger ${name}! Danger!`);
 // Prints: Danger Will Robinson! Danger!, to stderr
 ```
@@ -52,14 +52,14 @@ const out = getStreamSomehow();
 const err = getStreamSomehow();
 const myConsole = new console.Console(out, err);
 
-myConsole.log('hello world');
+myConsole.log("hello world");
 // Prints: hello world, to out
-myConsole.log('hello %s', 'world');
+myConsole.log("hello %s", "world");
 // Prints: hello world, to out
-myConsole.error(new Error('Whoops, something bad happened'));
+myConsole.error(new Error("Whoops, something bad happened"));
 // Prints: [Error: Whoops, something bad happened], to err
 
-const name = 'Will Robinson';
+const name = "Will Robinson";
 myConsole.warn(`Danger ${name}! Danger!`);
 // Prints: Danger Will Robinson! Danger!, to err
 ```
@@ -81,7 +81,7 @@ output streams and can be accessed using either `require('console').Console`
 or `console.Console` (or their destructured counterparts):
 
 ```js
-const { Console } = require('console');
+const { Console } = require("console");
 ```
 
 ```js
@@ -133,13 +133,13 @@ writable stream to print log or info output. `stderr` is used for warning or
 error output. If `stderr` is not provided, `stdout` is used for `stderr`.
 
 ```js
-const output = fs.createWriteStream('./stdout.log');
-const errorOutput = fs.createWriteStream('./stderr.log');
+const output = fs.createWriteStream("./stdout.log");
+const errorOutput = fs.createWriteStream("./stderr.log");
 // Custom simple logger
 const logger = new Console({ stdout: output, stderr: errorOutput });
 // use it like console
 const count = 5;
-logger.log('count: %d', count);
+logger.log("count: %d", count);
 // In stdout.log: count 5
 ```
 
@@ -172,9 +172,9 @@ starts with `"Assertion failed"`. If provided, `message` is formatted using
 If `value` is [truthy][], nothing happens.
 
 ```js
-console.assert(true, 'does nothing');
+console.assert(true, "does nothing");
 
-console.assert(false, 'Whoops %s work', 'didn\'t');
+console.assert(false, "Whoops %s work", "didn't");
 // Assertion failed: Whoops didn't work
 
 console.assert();
@@ -321,9 +321,9 @@ values similar to printf(3) (the arguments are all passed to
 
 ```js
 const code = 5;
-console.error('error #%d', code);
+console.error("error #%d", code);
 // Prints: error #5, to stderr
-console.error('error', code);
+console.error("error", code);
 // Prints: error 5, to stderr
 ```
 
@@ -389,9 +389,9 @@ values similar to printf(3) (the arguments are all passed to
 
 ```js
 const count = 5;
-console.log('count: %d', count);
+console.log("count: %d", count);
 // Prints: count: 5, to stdout
-console.log('count:', count);
+console.log("count:", count);
 // Prints: count: 5, to stdout
 ```
 
@@ -418,7 +418,7 @@ console.table(Symbol());
 console.table(undefined);
 // undefined
 
-console.table([{ a: 1, b: 'Y' }, { a: 'Z', b: 2 }]);
+console.table([{ a: 1, b: "Y" }, { a: "Z", b: 2 }]);
 // ┌─────────┬─────┬─────┐
 // │ (index) │  a  │  b  │
 // ├─────────┼─────┼─────┤
@@ -426,7 +426,7 @@ console.table([{ a: 1, b: 'Y' }, { a: 'Z', b: 2 }]);
 // │    1    │ 'Z' │  2  │
 // └─────────┴─────┴─────┘
 
-console.table([{ a: 1, b: 'Y' }, { a: 'Z', b: 2 }], ['a']);
+console.table([{ a: 1, b: "Y" }, { a: "Z", b: 2 }], ["a"]);
 // ┌─────────┬─────┐
 // │ (index) │  a  │
 // ├─────────┼─────┤
@@ -469,9 +469,9 @@ Stops a timer that was previously started by calling [`console.time()`][] and
 prints the result to `stdout`:
 
 ```js
-console.time('bunch-of-stuff');
+console.time("bunch-of-stuff");
 // Do a bunch of stuff.
-console.timeEnd('bunch-of-stuff');
+console.timeEnd("bunch-of-stuff");
 // Prints: bunch-of-stuff: 225.438ms
 ```
 
@@ -488,12 +488,12 @@ For a timer that was previously started by calling [`console.time()`][], prints
 the elapsed time and other `data` arguments to `stdout`:
 
 ```js
-console.time('process');
+console.time("process");
 const value = expensiveProcess1(); // Returns 42
-console.timeLog('process', value);
+console.timeLog("process", value);
 // Prints "process: 365.227ms 42".
 doExpensiveProcess2(value);
-console.timeEnd('process');
+console.timeEnd("process");
 ```
 
 ### `console.trace([message][, ...args])`
@@ -509,7 +509,7 @@ Prints to `stderr` the string `'Trace: '`, followed by the [`util.format()`][]
 formatted message and stack trace to the current position in the code.
 
 ```js
-console.trace('Show me');
+console.trace("Show me");
 // Prints: (stack trace will vary based on where trace is called)
 //  Trace: Show me
 //    at repl:2:9
@@ -555,9 +555,9 @@ label until [`console.profileEnd()`][] is called. The profile is then added to
 the **Profile** panel of the inspector.
 
 ```js
-console.profile('MyLabel');
+console.profile("MyLabel");
 // Some code
-console.profileEnd('MyLabel');
+console.profileEnd("MyLabel");
 // Adds the profile 'MyLabel' to the Profiles panel of the inspector.
 ```
 

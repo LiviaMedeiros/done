@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
 // Tests below are not from WPT.
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 assert.deepStrictEqual(
- Object.getOwnPropertyDescriptor(global, 'URL'),
+ Object.getOwnPropertyDescriptor(global, "URL"),
  {
   value: URL,
   writable: true,
@@ -16,7 +16,7 @@ assert.deepStrictEqual(
 );
 
 assert.deepStrictEqual(
- Object.getOwnPropertyDescriptor(global, 'URLSearchParams'),
+ Object.getOwnPropertyDescriptor(global, "URLSearchParams"),
  {
   value: URLSearchParams,
   writable: true,

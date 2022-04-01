@@ -1,46 +1,46 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { subtle } = require('crypto').webcrypto;
+const assert = require("assert");
+const { subtle } = require("crypto").webcrypto;
 
-const vectors = require('../fixtures/crypto/hmac')();
+const vectors = require("../fixtures/crypto/hmac")();
 
 async function testVerify({ hash,
                             keyBuffer,
                             signature,
                             plaintext }) {
- const name = 'HMAC';
+ const name = "HMAC";
  const [
   key,
   noVerifyKey,
   rsaKeys,
  ] = await Promise.all([
   subtle.importKey(
-   'raw',
+   "raw",
    keyBuffer,
    { name, hash },
    false,
-   ['verify']),
+   ["verify"]),
   subtle.importKey(
-   'raw',
+   "raw",
    keyBuffer,
    { name, hash },
    false,
    [ /* No usages */ ]),
   subtle.generateKey(
    {
-    name: 'RSA-PSS',
+    name: "RSA-PSS",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
    false,
-   ['sign']),
+   ["sign"]),
  ]);
 
  assert(await subtle.verify({ name, hash }, key, signature, plaintext));
@@ -90,7 +90,7 @@ async function testVerify({ hash,
 
  // Test failure when wrong hash is used
  {
-  const otherhash = hash === 'SHA-1' ? 'SHA-256' : 'SHA-1';
+  const otherhash = hash === "SHA-1" ? "SHA-256" : "SHA-1";
   assert(!(await subtle.verify({
    name,
    hash: otherhash,
@@ -98,7 +98,7 @@ async function testVerify({ hash,
  }
 
  await assert.rejects(
-  subtle.verify({ name, hash: 'sha256' }, key, signature, copy), {
+  subtle.verify({ name, hash: "sha256" }, key, signature, copy), {
    message: /Unrecognized name/,
   });
 }
@@ -107,40 +107,40 @@ async function testSign({ hash,
                           keyBuffer,
                           signature,
                           plaintext }) {
- const name = 'HMAC';
+ const name = "HMAC";
  const [
   key,
   noSignKey,
   rsaKeys,
  ] = await Promise.all([
   subtle.importKey(
-   'raw',
+   "raw",
    keyBuffer,
    { name, hash },
    false,
-   ['verify', 'sign']),
+   ["verify", "sign"]),
   subtle.importKey(
-   'raw',
+   "raw",
    keyBuffer,
    { name, hash },
    false,
-   [ 'verify' ]),
+   [ "verify" ]),
   subtle.generateKey(
    {
-    name: 'RSA-PSS',
+    name: "RSA-PSS",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
    false,
-   ['sign']),
+   ["sign"]),
  ]);
 
  {
   const sig = await subtle.sign({ name, hash }, key, plaintext);
   assert.strictEqual(
-   Buffer.from(sig).toString('hex'),
-   signature.toString('hex'));
+   Buffer.from(sig).toString("hex"),
+   signature.toString("hex"));
   assert(await subtle.verify({ name, hash }, key, sig, plaintext));
  }
 
@@ -154,9 +154,9 @@ async function testSign({ hash,
 
  await assert.rejects(
   subtle.generateKey({ name }, false, []), {
-   name: 'TypeError',
-   code: 'ERR_MISSING_OPTION',
-   message: 'algorithm.hash is required',
+   name: "TypeError",
+   code: "ERR_MISSING_OPTION",
+   message: "algorithm.hash is required",
   });
 
  // Test failure when no sign usage

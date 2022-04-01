@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 const { deepEqual, deepStrictEqual, notDeepEqual, notDeepStrictEqual } =
-  require('assert');
+  require("assert");
 
 const primValues = {
- 'string': 'a',
- 'number': 1,
- 'object': { 0: 'a' },
- 'array': [1, 2, 3],
+ "string": "a",
+ "number": 1,
+ "object": { 0: "a" },
+ "array": [1, 2, 3],
 };
 
 const bench = common.createBenchmark(main, {
@@ -17,10 +17,10 @@ const bench = common.createBenchmark(main, {
  len: [2e4],
  strict: [0, 1],
  method: [
-  'deepEqual_Array',
-  'notDeepEqual_Array',
-  'deepEqual_Set',
-  'notDeepEqual_Set',
+  "deepEqual_Array",
+  "notDeepEqual_Array",
+  "deepEqual_Set",
+  "notDeepEqual_Set",
  ],
 });
 
@@ -44,7 +44,7 @@ function main({ n, len, primitive, method, strict }) {
   expectedWrong.push(prim);
  }
  expectedWrong.pop();
- expectedWrong.push('b');
+ expectedWrong.push("b");
 
  // Note: primitives are only added once to a set
  const actualSet = new Set(actual);
@@ -52,16 +52,16 @@ function main({ n, len, primitive, method, strict }) {
  const expectedWrongSet = new Set(expectedWrong);
 
  switch (method) {
-  case 'deepEqual_Array':
+  case "deepEqual_Array":
    run(strict ? deepStrictEqual : deepEqual, n, actual, expected);
    break;
-  case 'notDeepEqual_Array':
+  case "notDeepEqual_Array":
    run(strict ? notDeepStrictEqual : notDeepEqual, n, actual, expectedWrong);
    break;
-  case 'deepEqual_Set':
+  case "deepEqual_Set":
    run(strict ? deepStrictEqual : deepEqual, n, actualSet, expectedSet);
    break;
-  case 'notDeepEqual_Set':
+  case "notDeepEqual_Set":
    run(strict ? notDeepStrictEqual : notDeepEqual,
        n, actualSet, expectedWrongSet);
    break;

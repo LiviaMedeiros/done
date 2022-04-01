@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto').webcrypto;
+const assert = require("assert");
+const crypto = require("crypto").webcrypto;
 
 (async () => {
  const k = await crypto.subtle.importKey(
-  'raw',
+  "raw",
   new Uint8Array(32),
-  { name: 'AES-GCM' },
+  { name: "AES-GCM" },
   false,
-  [ 'encrypt', 'decrypt' ]);
+  [ "encrypt", "decrypt" ]);
  assert(k instanceof crypto.CryptoKey);
 
  const e = await crypto.subtle.encrypt({
-  name: 'AES-GCM',
+  name: "AES-GCM",
   iv: new Uint8Array(12),
  }, k, new Uint8Array(0));
  assert(e instanceof ArrayBuffer);
@@ -29,7 +29,7 @@ const crypto = require('crypto').webcrypto;
    0xa9, 0x63, 0xb4, 0xf1, 0xc4, 0xcb, 0x73, 0x8b ]));
 
  const v = await crypto.subtle.decrypt({
-  name: 'AES-GCM',
+  name: "AES-GCM",
   iv: new Uint8Array(12),
  }, k, e);
  assert(v instanceof ArrayBuffer);

@@ -19,29 +19,29 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
+const assert = require("assert");
+const tls = require("tls");
 
-const net = require('net');
+const net = require("net");
 
 const options = {
- key: fixtures.readKey('rsa_private.pem'),
- cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey("rsa_private.pem"),
+ cert: fixtures.readKey("rsa_cert.crt"),
 };
 
-const body = 'A'.repeat(40000);
+const body = "A".repeat(40000);
 
 // the "proxy" server
 const a = tls.createServer(options, function(socket) {
  const myOptions = {
-  host: '127.0.0.1',
+  host: "127.0.0.1",
   port: b.address().port,
   rejectUnauthorized: false,
  };
@@ -49,7 +49,7 @@ const a = tls.createServer(options, function(socket) {
  dest.pipe(socket);
  socket.pipe(dest);
 
- dest.on('end', function() {
+ dest.on("end", function() {
   socket.destroy();
  });
 });
@@ -62,7 +62,7 @@ const b = tls.createServer(options, function(socket) {
 a.listen(0, function() {
  b.listen(0, function() {
   const myOptions = {
-   host: '127.0.0.1',
+   host: "127.0.0.1",
    port: a.address().port,
    rejectUnauthorized: false,
   };
@@ -71,12 +71,12 @@ a.listen(0, function() {
    socket: socket,
    rejectUnauthorized: false,
   });
-  ssl.setEncoding('utf8');
-  let buf = '';
-  ssl.on('data', function(data) {
+  ssl.setEncoding("utf8");
+  let buf = "";
+  ssl.on("data", function(data) {
    buf += data;
   });
-  ssl.on('end', common.mustCall(function() {
+  ssl.on("end", common.mustCall(function() {
    assert.strictEqual(buf, body);
    ssl.end();
    a.close();

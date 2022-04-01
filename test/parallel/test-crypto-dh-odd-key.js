@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 
 function test() {
- const odd = Buffer.alloc(39, 'A');
+ const odd = Buffer.alloc(39, "A");
 
  const c = crypto.createDiffieHellman(common.hasOpenSSL3 ? 1024 : 32);
  c.setPrivateKey(odd);

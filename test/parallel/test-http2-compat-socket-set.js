@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
 
 // Tests behavior of the proxied socket in Http2ServerRequest
 // & Http2ServerResponse - specifically property setters
 
 const errMsg = {
- code: 'ERR_HTTP2_NO_SOCKET_MANIPULATION',
- name: 'Error',
- message: 'HTTP/2 sockets should not be directly manipulated ' +
-           '(e.g. read and written)',
+ code: "ERR_HTTP2_NO_SOCKET_MANIPULATION",
+ name: "Error",
+ message: "HTTP/2 sockets should not be directly manipulated " +
+           "(e.g. read and written)",
 };
 
 const server = h2.createServer();
 
-server.on('request', common.mustCall(function(request, response) {
+server.on("request", common.mustCall(function(request, response) {
  const noop = () => {};
 
  assert.strictEqual(request.stream.destroyed, false);
@@ -81,13 +81,13 @@ server.listen(0, common.mustCall(function() {
  const url = `http://localhost:${port}`;
  const client = h2.connect(url, common.mustCall(function() {
   const headers = {
-   ':path': '/',
-   ':method': 'GET',
-   ':scheme': 'http',
-   ':authority': `localhost:${port}`,
+   ":path": "/",
+   ":method": "GET",
+   ":scheme": "http",
+   ":authority": `localhost:${port}`,
   };
   const request = client.request(headers);
-  request.on('end', common.mustCall(() => {
+  request.on("end", common.mustCall(() => {
    client.close();
    server.close();
   }));

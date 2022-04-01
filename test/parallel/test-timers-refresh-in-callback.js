@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 // This test checks whether a refresh called inside the callback will keep
 // the event loop alive to run the timer again.

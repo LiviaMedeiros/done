@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  // Unicode confuses ab on os x.
- type: ['bytes', 'buffer'],
+ type: ["bytes", "buffer"],
  len: [4, 1024, 102400],
  chunks: [1, 4],
  c: [50, 500],
@@ -12,9 +12,9 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ type, len, chunks, c, chunkedEnc, duration }) {
- const server = require('../fixtures/simple-http-server.js')
+ const server = require("../fixtures/simple-http-server.js")
   .listen(common.PORT)
-  .on('listening', () => {
+  .on("listening", () => {
   	const path = `/${type}/${len}/${chunks}/normal/${chunkedEnc}`;
 
   	bench.http({

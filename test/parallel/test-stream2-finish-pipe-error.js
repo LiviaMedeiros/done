@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const stream = require('stream');
+"use strict";
+const common = require("../common");
+const stream = require("stream");
 
-process.on('uncaughtException', common.mustCall());
+process.on("uncaughtException", common.mustCall());
 
 const r = new stream.Readable();
 r._read = function(size) {

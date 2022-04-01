@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
 // This tests verifies that process.stdin.end() does not
 // crash the process with ENOTCONN

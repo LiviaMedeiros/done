@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert');
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
- method: ['withoutdefaults', 'withdefaults'],
+ method: ["withoutdefaults", "withdefaults"],
  n: [1e8],
 });
 
@@ -36,10 +36,10 @@ function runDefaultParams(n) {
 
 function main({ n, method }) {
  switch (method) {
-  case 'withoutdefaults':
+  case "withoutdefaults":
    runOldStyleDefaults(n);
    break;
-  case 'withdefaults':
+  case "withdefaults":
    runDefaultParams(n);
    break;
   default:

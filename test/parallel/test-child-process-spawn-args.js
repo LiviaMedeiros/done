@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // This test confirms that `undefined`, `null`, and `[]`
 // can be used as a placeholder for the second argument (`args`) of `spawn()`.
@@ -6,15 +6,15 @@
 // caused the third argument (`options`) to be ignored.
 // See https://github.com/nodejs/node/issues/24912.
 
-const common = require('../common');
-const tmpdir = require('../common/tmpdir');
+const common = require("../common");
+const tmpdir = require("../common/tmpdir");
 
-const assert = require('assert');
-const { spawn } = require('child_process');
+const assert = require("assert");
+const { spawn } = require("child_process");
 
 tmpdir.refresh();
 
-const command = common.isWindows ? 'cd' : 'pwd';
+const command = common.isWindows ? "cd" : "pwd";
 const options = { cwd: tmpdir.path };
 
 if (common.isWindows) {
@@ -40,11 +40,11 @@ const expectedResult = tmpdir.path.trim().toLowerCase();
 
     let accumulatedData = Buffer.alloc(0);
 
-    subprocess.stdout.on('data', common.mustCall((data) => {
+    subprocess.stdout.on("data", common.mustCall((data) => {
      accumulatedData = Buffer.concat([accumulatedData, data]);
     }));
 
-    subprocess.stdout.on('end', () => {
+    subprocess.stdout.on("end", () => {
      resolve(accumulatedData.toString().trim().toLowerCase());
     });
    });

@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('dgram clustering is currently not supported on Windows.');
+ common.skip("dgram clustering is currently not supported on Windows.");
 
 const NUM_WORKERS = 4;
 const PACKETS_PER_WORKER = 10;
 
-const cluster = require('cluster');
-const dgram = require('dgram');
-const assert = require('assert');
+const cluster = require("cluster");
+const dgram = require("dgram");
+const assert = require("assert");
 
 if (cluster.isPrimary)
  primary();
@@ -41,7 +41,7 @@ function primary() {
  let received = 0;
 
  // Start listening on a socket.
- const socket = dgram.createSocket('udp4');
+ const socket = dgram.createSocket("udp4");
  socket.bind({ port: 0 }, common.mustCall(() => {
 
   // Fork workers.
@@ -53,7 +53,7 @@ function primary() {
 
  // Disconnect workers when the expected number of messages have been
  // received.
- socket.on('message', common.mustCall((data, info) => {
+ socket.on("message", common.mustCall((data, info) => {
   received++;
 
   if (received === PACKETS_PER_WORKER * NUM_WORKERS) {
@@ -70,24 +70,24 @@ function primary() {
 
 function worker() {
  // Create udp socket and send packets to primary.
- const socket = dgram.createSocket('udp4');
- const buf = Buffer.from('hello world');
+ const socket = dgram.createSocket("udp4");
+ const buf = Buffer.from("hello world");
 
  // This test is intended to exercise the cluster binding of udp sockets, but
  // since sockets aren't clustered when implicitly bound by at first call of
  // send(), explicitly bind them to an ephemeral port.
  socket.bind(0);
 
- process.on('message', common.mustCall((msg) => {
+ process.on("message", common.mustCall((msg) => {
   assert(msg.port);
 
   // There is no guarantee that a sent dgram packet will be received so keep
   // sending until disconnect.
   const interval = setInterval(() => {
-   socket.send(buf, 0, buf.length, msg.port, '127.0.0.1');
+   socket.send(buf, 0, buf.length, msg.port, "127.0.0.1");
   }, 1);
 
-  cluster.worker.on('disconnect', () => {
+  cluster.worker.on("disconnect", () => {
    clearInterval(interval);
   });
  }));

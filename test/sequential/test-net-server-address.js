@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 // Test on IPv4 Server
 {
- const family = 'IPv4';
+ const family = "IPv4";
  const server = net.createServer();
 
- server.on('error', common.mustNotCall());
+ server.on("error", common.mustNotCall());
 
  server
     .listen(common.PORT + 1, common.localhostIPv4, common.mustCall(() => {
@@ -42,20 +42,20 @@ const net = require('net');
 }
 
 if (!common.hasIPv6) {
- common.printSkipMessage('ipv6 part of test, no IPv6 support');
+ common.printSkipMessage("ipv6 part of test, no IPv6 support");
  return;
 }
 
-const family6 = 'IPv6';
-const anycast6 = '::';
+const family6 = "IPv6";
+const anycast6 = "::";
 
 // Test on IPv6 Server
 {
- const localhost = '::1';
+ const localhost = "::1";
 
  const server = net.createServer();
 
- server.on('error', common.mustNotCall());
+ server.on("error", common.mustNotCall());
 
  server.listen(common.PORT + 2, localhost, common.mustCall(() => {
   const address = server.address();
@@ -70,7 +70,7 @@ const anycast6 = '::';
 {
  const server = net.createServer();
 
- server.on('error', common.mustNotCall());
+ server.on("error", common.mustNotCall());
 
  // Specify the port number
  server.listen(common.PORT + 3, common.mustCall(() => {
@@ -86,7 +86,7 @@ const anycast6 = '::';
 {
  const server = net.createServer();
 
- server.on('error', common.mustNotCall());
+ server.on("error", common.mustNotCall());
 
  // Don't specify the port number
  server.listen(common.mustCall(() => {
@@ -101,7 +101,7 @@ const anycast6 = '::';
 {
  const server = net.createServer();
 
- server.on('error', common.mustNotCall());
+ server.on("error", common.mustNotCall());
 
  // Specify a false-y port number
  server.listen(0, common.mustCall(() => {

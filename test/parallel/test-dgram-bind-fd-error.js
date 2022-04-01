@@ -1,15 +1,15 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('Does not support binding fd on Windows');
+ common.skip("Does not support binding fd on Windows");
 
-const dgram = require('dgram');
-const assert = require('assert');
-const { kStateSymbol } = require('internal/dgram');
-const { internalBinding } = require('internal/test/binding');
-const { TCP, constants } = internalBinding('tcp_wrap');
-const TYPE = 'udp4';
+const dgram = require("dgram");
+const assert = require("assert");
+const { kStateSymbol } = require("internal/dgram");
+const { internalBinding } = require("internal/test/binding");
+const { TCP, constants } = internalBinding("tcp_wrap");
+const TYPE = "udp4";
 
 // Throw when the fd is occupied according to https://github.com/libuv/libuv/pull/1851.
 {
@@ -24,8 +24,8 @@ const TYPE = 'udp4';
     fd: handle.fd,
    });
   }, {
-   code: 'EEXIST',
-   name: 'Error',
+   code: "EEXIST",
+   name: "Error",
    message: /^open EEXIST$/,
   });
 
@@ -47,8 +47,8 @@ const TYPE = 'udp4';
    fd,
   });
  }, {
-  code: 'ERR_INVALID_FD_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_FD_TYPE",
+  name: "TypeError",
   message: /^Unsupported fd type: TCP$/,
  });
 

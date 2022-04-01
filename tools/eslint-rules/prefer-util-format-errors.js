@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const { isDefiningError } = require('./rules-utils.js');
+const { isDefiningError } = require("./rules-utils.js");
 
-const errMsg = 'Please use a printf-like formatted string that util.format' +
-               ' can consume.';
+const errMsg = "Please use a printf-like formatted string that util.format" +
+               " can consume.";
 
 function isArrowFunctionWithTemplateLiteral(node) {
- return node.type === 'ArrowFunctionExpression' &&
-         node.body.type === 'TemplateLiteral';
+ return node.type === "ArrowFunctionExpression" &&
+         node.body.type === "TemplateLiteral";
 }
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
     const { expressions } = msg.body;
     const hasSequentialParams = msg.params.every((param, index) => {
      const expr = expressions[index];
-     return expr && expr.type === 'Identifier' && param.name === expr.name;
+     return expr && expr.type === "Identifier" && param.name === expr.name;
     });
     if (hasSequentialParams)
      context.report(msg, errMsg);

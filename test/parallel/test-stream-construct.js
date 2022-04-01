@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { Writable, Readable, Duplex } = require('stream');
-const assert = require('assert');
+const common = require("../common");
+const { Writable, Readable, Duplex } = require("stream");
+const assert = require("assert");
 
 {
  // Multiple callback.
@@ -11,9 +11,9 @@ const assert = require('assert');
    callback();
    callback();
   }),
- }).on('error', common.expectsError({
-  name: 'Error',
-  code: 'ERR_MULTIPLE_CALLBACK',
+ }).on("error", common.expectsError({
+  name: "Error",
+  code: "ERR_MULTIPLE_CALLBACK",
  }));
 }
 
@@ -24,9 +24,9 @@ const assert = require('assert');
    callback();
    callback();
   }),
- }).on('error', common.expectsError({
-  name: 'Error',
-  code: 'ERR_MULTIPLE_CALLBACK',
+ }).on("error", common.expectsError({
+  name: "Error",
+  code: "ERR_MULTIPLE_CALLBACK",
  }));
 }
 
@@ -35,11 +35,11 @@ const assert = require('assert');
 
  new Writable({
   construct: common.mustCall((callback) => {
-   callback(new Error('test'));
+   callback(new Error("test"));
   }),
- }).on('error', common.expectsError({
-  name: 'Error',
-  message: 'test',
+ }).on("error", common.expectsError({
+  name: "Error",
+  message: "test",
  }));
 }
 
@@ -48,11 +48,11 @@ const assert = require('assert');
 
  new Readable({
   construct: common.mustCall((callback) => {
-   callback(new Error('test'));
+   callback(new Error("test"));
   }),
- }).on('error', common.expectsError({
-  name: 'Error',
-  message: 'test',
+ }).on("error", common.expectsError({
+  name: "Error",
+  message: "test",
  }));
 }
 
@@ -61,11 +61,11 @@ const assert = require('assert');
 
  new Writable({
   construct: common.mustCall((callback) => {
-   process.nextTick(callback, new Error('test'));
+   process.nextTick(callback, new Error("test"));
   }),
- }).on('error', common.expectsError({
-  name: 'Error',
-  message: 'test',
+ }).on("error", common.expectsError({
+  name: "Error",
+  message: "test",
  }));
 }
 
@@ -74,11 +74,11 @@ const assert = require('assert');
 
  new Readable({
   construct: common.mustCall((callback) => {
-   process.nextTick(callback, new Error('test'));
+   process.nextTick(callback, new Error("test"));
   }),
- }).on('error', common.expectsError({
-  name: 'Error',
-  message: 'test',
+ }).on("error", common.expectsError({
+  name: "Error",
+  message: "test",
  }));
 }
 
@@ -91,7 +91,7 @@ function testDestroy(factory) {
     process.nextTick(cb);
    }),
   });
-  s.on('close', common.mustCall(() => {
+  s.on("close", common.mustCall(() => {
    assert.strictEqual(constructed, true);
   }));
   s.destroy();
@@ -105,7 +105,7 @@ function testDestroy(factory) {
     process.nextTick(cb);
    }),
   });
-  s.on('close', common.mustCall(() => {
+  s.on("close", common.mustCall(() => {
    assert.strictEqual(constructed, true);
   }));
   s.destroy(null, () => {
@@ -121,7 +121,7 @@ function testDestroy(factory) {
     process.nextTick(cb);
    }),
   });
-  s.on('close', common.mustCall(() => {
+  s.on("close", common.mustCall(() => {
    assert.strictEqual(constructed, true);
   }));
   s.destroy();
@@ -136,14 +136,14 @@ function testDestroy(factory) {
     process.nextTick(cb);
    }),
   });
-  s.on('close', common.mustCall(() => {
+  s.on("close", common.mustCall(() => {
    assert.strictEqual(constructed, true);
   }));
-  s.on('error', common.mustCall((err) => {
-   assert.strictEqual(err.message, 'kaboom');
+  s.on("error", common.mustCall((err) => {
+   assert.strictEqual(err.message, "kaboom");
   }));
-  s.destroy(new Error('kaboom'), (err) => {
-   assert.strictEqual(err.message, 'kaboom');
+  s.destroy(new Error("kaboom"), (err) => {
+   assert.strictEqual(err.message, "kaboom");
    assert.strictEqual(constructed, true);
   });
  }
@@ -156,10 +156,10 @@ function testDestroy(factory) {
     process.nextTick(cb);
    }),
   });
-  s.on('error', common.mustCall(() => {
+  s.on("error", common.mustCall(() => {
    assert.strictEqual(constructed, true);
   }));
-  s.on('close', common.mustCall(() => {
+  s.on("close", common.mustCall(() => {
    assert.strictEqual(constructed, true);
   }));
   s.destroy(new Error());
@@ -188,10 +188,10 @@ testDestroy((opts) => new Writable({
    r.push(null);
   }),
  });
- r.on('close', common.mustCall(() => {
+ r.on("close", common.mustCall(() => {
   assert.strictEqual(constructed, true);
  }));
- r.on('data', common.mustNotCall());
+ r.on("data", common.mustNotCall());
 }
 
 {
@@ -211,10 +211,10 @@ testDestroy((opts) => new Writable({
    process.nextTick(cb);
   }),
  });
- w.on('close', common.mustCall(() => {
+ w.on("close", common.mustCall(() => {
   assert.strictEqual(constructed, true);
  }));
- w.end('data');
+ w.end("data");
 }
 
 {
@@ -231,7 +231,7 @@ testDestroy((opts) => new Writable({
    process.nextTick(cb);
   }),
  });
- w.on('close', common.mustCall(() => {
+ w.on("close", common.mustCall(() => {
   assert.strictEqual(constructed, true);
  }));
  w.end();
@@ -263,8 +263,8 @@ testDestroy((opts) => new Writable({
   },
  });
  d.resume();
- d.end('foo');
- d.on('close', common.mustCall(() => {
+ d.end("foo");
+ d.on("close", common.mustCall(() => {
   assert.strictEqual(constructed, true);
  }));
 }

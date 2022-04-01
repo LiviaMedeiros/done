@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const crypto = require('crypto');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const crypto = require("crypto");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
-const certPem = fixtures.readKey('rsa_cert.crt');
+const certPem = fixtures.readKey("rsa_cert.crt");
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 const server = tls.Server(options, (socket) => {
@@ -46,9 +46,9 @@ const server = tls.Server(options, (socket) => {
 });
 
 function verify() {
- crypto.createVerify('SHA1')
-    .update('Test')
-    .verify(certPem, 'asdfasdfas', 'base64');
+ crypto.createVerify("SHA1")
+    .update("Test")
+    .verify(certPem, "asdfasdfas", "base64");
 }
 
 server.listen(0, common.mustCall(() => {
@@ -58,8 +58,8 @@ server.listen(0, common.mustCall(() => {
  }, common.mustCall(() => {
   verify();
  }))
-    .on('error', common.mustNotCall())
-    .on('close', common.mustCall(() => {
+    .on("error", common.mustNotCall())
+    .on("close", common.mustCall(() => {
     	server.close();
     })).resume();
 }));

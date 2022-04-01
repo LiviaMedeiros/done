@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
 
 const tests = [];
 
@@ -52,7 +52,7 @@ test(function serverTimeout(cb) {
   assert.ok(s instanceof http.Server);
   http.get({
    port: server.address().port,
-  }).on('error', common.mustCall());
+  }).on("error", common.mustCall());
  }));
 });
 
@@ -69,10 +69,10 @@ test(function serverRequestTimeout(cb) {
  server.listen(common.mustCall(() => {
   const req = http.request({
    port: server.address().port,
-   method: 'POST',
+   method: "POST",
   });
-  req.on('error', common.mustCall());
-  req.write('Hello');
+  req.on("error", common.mustCall());
+  req.write("Hello");
   // req is in progress
  }));
 });
@@ -90,7 +90,7 @@ test(function serverResponseTimeout(cb) {
  server.listen(common.mustCall(() => {
   http.get({
    port: server.address().port,
-  }).on('error', common.mustCall());
+  }).on("error", common.mustCall());
  }));
 });
 
@@ -99,9 +99,9 @@ test(function serverRequestNotTimeoutAfterEnd(cb) {
   // Just do nothing, we should get a timeout event.
   const s = req.setTimeout(50, common.mustNotCall());
   assert.ok(s instanceof http.IncomingMessage);
-  res.on('timeout', common.mustCall());
+  res.on("timeout", common.mustCall());
  }));
- server.on('timeout', common.mustCall((socket) => {
+ server.on("timeout", common.mustCall((socket) => {
   socket.destroy();
   server.close();
   cb();
@@ -109,20 +109,20 @@ test(function serverRequestNotTimeoutAfterEnd(cb) {
  server.listen(common.mustCall(() => {
   http.get({
    port: server.address().port,
-  }).on('error', common.mustCall());
+  }).on("error", common.mustCall());
  }));
 });
 
 test(function serverResponseTimeoutWithPipeline(cb) {
- let caughtTimeout = '';
+ let caughtTimeout = "";
  let secReceived = false;
- process.on('exit', () => {
-  assert.strictEqual(caughtTimeout, '/2');
+ process.on("exit", () => {
+  assert.strictEqual(caughtTimeout, "/2");
  });
  const server = http.createServer((req, res) => {
-  if (req.url === '/2')
+  if (req.url === "/2")
    secReceived = true;
-  if (req.url === '/1') {
+  if (req.url === "/1") {
    res.end();
    return;
   }
@@ -131,7 +131,7 @@ test(function serverResponseTimeoutWithPipeline(cb) {
   });
   assert.ok(s instanceof http.OutgoingMessage);
  });
- server.on('timeout', common.mustCall((socket) => {
+ server.on("timeout", common.mustCall((socket) => {
   if (secReceived) {
    socket.destroy();
    server.close();
@@ -144,9 +144,9 @@ test(function serverResponseTimeoutWithPipeline(cb) {
    allowHalfOpen: true,
   };
   const c = net.connect(options, () => {
-   c.write('GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n');
+   c.write("GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n");
   });
  }));
 });
@@ -167,11 +167,11 @@ test(function idleTimeout(cb) {
   };
   const c = net.connect(options, () => {
    // ECONNRESET could happen on a heavily-loaded server.
-   c.on('error', (e) => {
-    if (e.message !== 'read ECONNRESET')
+   c.on("error", (e) => {
+    if (e.message !== "read ECONNRESET")
      throw e;
    });
-   c.write('GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n');
+   c.write("GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n");
    // Keep-Alive
   });
  }));
@@ -191,7 +191,7 @@ test(function fastTimeout(cb) {
  }
 
  const server = http.createServer(common.mustCall((req, res) => {
-  req.on('timeout', common.mustNotCall());
+  req.on("timeout", common.mustNotCall());
   res.end();
   connectionHandlerInvoked = true;
   invokeCallbackIfDone();
@@ -208,7 +208,7 @@ test(function fastTimeout(cb) {
    allowHalfOpen: true,
   };
   const c = net.connect(options, () => {
-   c.write('GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n');
+   c.write("GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n");
    // Keep-Alive
   });
  }));

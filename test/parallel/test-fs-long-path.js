@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.isWindows)
- common.skip('this test is Windows-specific.');
+ common.skip("this test is Windows-specific.");
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 
 // Make a path that will be at least 260 chars long.
 const fileNameLen = Math.max(260 - tmpdir.path.length - 1, 1);
-const fileName = path.join(tmpdir.path, 'x'.repeat(fileNameLen));
+const fileName = path.join(tmpdir.path, "x".repeat(fileNameLen));
 const fullPath = path.resolve(fileName);
 
 tmpdir.refresh();
@@ -41,6 +41,6 @@ console.log({
  fullPathLength: fullPath.length,
 });
 
-fs.writeFile(fullPath, 'ok', common.mustSucceed(() => {
+fs.writeFile(fullPath, "ok", common.mustSucceed(() => {
  fs.stat(fullPath, common.mustSucceed());
 }));

@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const Readable = require('stream').Readable;
+const common = require("../common");
+const Readable = require("stream").Readable;
 
 const bench = common.createBenchmark(main, {
  n: [1e5],
- sync: ['yes', 'no'],
+ sync: ["yes", "no"],
 });
 
 async function main({ n, sync }) {
- sync = sync === 'yes';
+ sync = sync === "yes";
 
  const s = new Readable({
   objectMode: true,

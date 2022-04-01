@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-require('../common');
-const { WPTRunner } = require('../common/wpt');
+require("../common");
+const { WPTRunner } = require("../common/wpt");
 
-const runner = new WPTRunner('streams');
+const runner = new WPTRunner("streams");
 
 // Set Node.js flags required for the tests.
-runner.setFlags(['--expose-internals']);
+runner.setFlags(["--expose-internals"]);
 
 // Set a script that will be executed in the worker before running the tests.
 runner.setInitScript(`

@@ -19,30 +19,30 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const net = require("net");
 
-process.once('beforeExit', common.mustCall(tryImmediate));
+process.once("beforeExit", common.mustCall(tryImmediate));
 
 function tryImmediate() {
  setImmediate(common.mustCall(() => {
-  process.once('beforeExit', common.mustCall(tryTimer));
+  process.once("beforeExit", common.mustCall(tryTimer));
  }));
 }
 
 function tryTimer() {
  setTimeout(common.mustCall(() => {
-  process.once('beforeExit', common.mustCall(tryListen));
+  process.once("beforeExit", common.mustCall(tryListen));
  }), 1);
 }
 
 function tryListen() {
  net.createServer()
     .listen(0)
-    .on('listening', common.mustCall(function() {
+    .on("listening", common.mustCall(function() {
     	this.close();
-    	process.once('beforeExit', common.mustCall(tryRepeatedTimer));
+    	process.once("beforeExit", common.mustCall(tryRepeatedTimer));
     }));
 }
 
@@ -59,7 +59,7 @@ function tryRepeatedTimer() {
   if (++n < N)
    setTimeout(repeatedTimer, 1);
   else // n == N
-   process.once('beforeExit', common.mustCall(tryNextTick));
+   process.once("beforeExit", common.mustCall(tryNextTick));
  }, N);
  setTimeout(repeatedTimer, 1);
 }
@@ -67,6 +67,6 @@ function tryRepeatedTimer() {
 // Test if the callback of `process.nextTick` can be invoked.
 function tryNextTick() {
  process.nextTick(common.mustCall(function() {
-  process.once('beforeExit', common.mustNotCall());
+  process.once("beforeExit", common.mustNotCall());
  }));
 }

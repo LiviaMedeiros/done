@@ -1,9 +1,9 @@
 // Flags: --expose-internals
-'use strict';
-require('../common');
-const assert = require('assert');
-const { internalBinding } = require('internal/test/binding');
-const { Signal } = internalBinding('signal_wrap');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { internalBinding } = require("internal/test/binding");
+const { Signal } = internalBinding("signal_wrap");
 
 // Test Signal `this` safety
 // https://github.com/joyent/node/issues/6690

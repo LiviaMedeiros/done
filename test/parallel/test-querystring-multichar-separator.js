@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const qs = require('querystring');
+"use strict";
+require("../common");
+const assert = require("assert");
+const qs = require("querystring");
 
 function check(actual, expected) {
  assert(!(actual instanceof Object));
@@ -12,14 +12,14 @@ function check(actual, expected) {
  });
 }
 
-check(qs.parse('foo=>bar&&bar=>baz', '&&', '=>'),
-      { foo: 'bar', bar: 'baz' });
+check(qs.parse("foo=>bar&&bar=>baz", "&&", "=>"),
+      { foo: "bar", bar: "baz" });
 
-check(qs.stringify({ foo: 'bar', bar: 'baz' }, '&&', '=>'),
-      'foo=>bar&&bar=>baz');
+check(qs.stringify({ foo: "bar", bar: "baz" }, "&&", "=>"),
+      "foo=>bar&&bar=>baz");
 
-check(qs.parse('foo==>bar, bar==>baz', ', ', '==>'),
-      { foo: 'bar', bar: 'baz' });
+check(qs.parse("foo==>bar, bar==>baz", ", ", "==>"),
+      { foo: "bar", bar: "baz" });
 
-check(qs.stringify({ foo: 'bar', bar: 'baz' }, ', ', '==>'),
-      'foo==>bar, bar==>baz');
+check(qs.stringify({ foo: "bar", bar: "baz" }, ", ", "==>"),
+      "foo==>bar, bar==>baz");

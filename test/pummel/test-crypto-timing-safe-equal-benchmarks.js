@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 if (!common.enoughTestMem)
- common.skip('memory-intensive test');
+ common.skip("memory-intensive test");
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 
 function runOneBenchmark(compareFunc, firstBufFill, secondBufFill, bufSize) {
  return eval(`
@@ -37,13 +37,13 @@ function getTValue(compareFunc) {
  for (let i = 0; i < numTrials; i++) {
   if (Math.random() < 0.5) {
    // First benchmark: comparing two equal buffers
-   rawEqualBenches[i] = runOneBenchmark(compareFunc, 'A', 'A', bufSize);
+   rawEqualBenches[i] = runOneBenchmark(compareFunc, "A", "A", bufSize);
    // Second benchmark: comparing two unequal buffers
-   rawUnequalBenches[i] = runOneBenchmark(compareFunc, 'B', 'C', bufSize);
+   rawUnequalBenches[i] = runOneBenchmark(compareFunc, "B", "C", bufSize);
   } else {
    // Flip the order of the benchmarks half of the time.
-   rawUnequalBenches[i] = runOneBenchmark(compareFunc, 'B', 'C', bufSize);
-   rawEqualBenches[i] = runOneBenchmark(compareFunc, 'A', 'A', bufSize);
+   rawUnequalBenches[i] = runOneBenchmark(compareFunc, "B", "C", bufSize);
+   rawEqualBenches[i] = runOneBenchmark(compareFunc, "A", "A", bufSize);
   }
  }
 

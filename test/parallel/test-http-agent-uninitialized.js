@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const http = require('http');
-const net = require('net');
+const common = require("../common");
+const http = require("http");
+const net = require("net");
 
 const agent = new http.Agent({
  keepAlive: true,
@@ -19,7 +19,7 @@ const server = http.createServer(common.mustCall((req, res) => {
  // Now force the agent to use the socket and check that _handle exists before
  // calling asyncReset().
  agent.addRequest(req, {});
- req.on('response', common.mustCall(() => {
+ req.on("response", common.mustCall(() => {
   server.close();
  }));
  req.end();

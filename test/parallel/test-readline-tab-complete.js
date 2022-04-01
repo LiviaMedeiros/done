@@ -1,33 +1,33 @@
-'use strict';
+"use strict";
 
 // Flags: --expose-internals
 
-const common = require('../common');
-const readline = require('readline');
-const assert = require('assert');
-const EventEmitter = require('events').EventEmitter;
-const { getStringWidth } = require('internal/util/inspect');
+const common = require("../common");
+const readline = require("readline");
+const assert = require("assert");
+const EventEmitter = require("events").EventEmitter;
+const { getStringWidth } = require("internal/util/inspect");
 
 common.skipIfDumbTerminal();
 
 // This test verifies that the tab completion supports unicode and the writes
 // are limited to the minimum.
 [
- 'あ',
- '𐐷',
- '🐕',
+ "あ",
+ "𐐷",
+ "🐕",
 ].forEach((char) => {
  [true, false].forEach((lineBreak) => {
   const completer = (line) => [
    [
-    'First group',
-    '',
-    `${char}${'a'.repeat(10)}`, `${char}${'b'.repeat(10)}`, char.repeat(11),
+    "First group",
+    "",
+    `${char}${"a".repeat(10)}`, `${char}${"b".repeat(10)}`, char.repeat(11),
    ],
    line,
   ];
 
-  let output = '';
+  let output = "";
   const width = getStringWidth(char) - 1;
 
   class FakeInput extends EventEmitter {
@@ -50,27 +50,27 @@ common.skipIfDumbTerminal();
    completer: common.mustCallAtLeast(completer),
   });
 
-  const last = '\r\nFirst group\r\n\r\n' +
-    `${char}${'a'.repeat(10)}${' '.repeat(2 + width * 10)}` +
-      `${char}${'b'.repeat(10)}` +
-      (lineBreak ? '\r\n' : ' '.repeat(2 + width * 10)) +
+  const last = "\r\nFirst group\r\n\r\n" +
+    `${char}${"a".repeat(10)}${" ".repeat(2 + width * 10)}` +
+      `${char}${"b".repeat(10)}` +
+      (lineBreak ? "\r\n" : " ".repeat(2 + width * 10)) +
       `${char.repeat(11)}\r\n` +
     `\r\n\u001b[1G\u001b[0J> ${char}\u001b[${4 + width}G`;
 
-  const expectations = [char, '', last];
+  const expectations = [char, "", last];
 
-  rli.on('line', common.mustNotCall());
+  rli.on("line", common.mustNotCall());
   for (const character of `${char}\t\t`) {
-   fi.emit('data', character);
+   fi.emit("data", character);
    assert.strictEqual(output, expectations.shift());
-   output = '';
+   output = "";
   }
   rli.close();
  });
 });
 
 {
- let output = '';
+ let output = "";
  class FakeInput extends EventEmitter {
   columns = 80;
 
@@ -89,20 +89,20 @@ common.skipIfDumbTerminal();
   output: fi,
   terminal: true,
   completer:
-        common.mustCallAtLeast((_, cb) => cb(new Error('message'))),
+        common.mustCallAtLeast((_, cb) => cb(new Error("message"))),
  });
 
- rli.on('line', common.mustNotCall());
- fi.emit('data', '\t');
+ rli.on("line", common.mustNotCall());
+ fi.emit("data", "\t");
  queueMicrotask(() => {
   assert.match(output, /^Tab completion error: Error: message/);
-  output = '';
+  output = "";
  });
  rli.close();
 }
 
 {
- let output = '';
+ let output = "";
  class FakeInput extends EventEmitter {
   columns = 80;
 
@@ -125,13 +125,13 @@ common.skipIfDumbTerminal();
   }),
  });
 
- rli.on('line', common.mustNotCall());
- fi.emit('data', 'input');
+ rli.on("line", common.mustNotCall());
+ fi.emit("data", "input");
  queueMicrotask(() => {
-  fi.emit('data', '\t');
+  fi.emit("data", "\t");
   queueMicrotask(() => {
    assert.match(output, /> Input/);
-   output = '';
+   output = "";
    rli.close();
   });
  });

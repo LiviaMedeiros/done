@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common');
-const Countdown = require('../common/countdown');
-const assert = require('assert');
-const { AsyncLocalStorage } = require('async_hooks');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const Countdown = require("../common/countdown");
+const assert = require("assert");
+const { AsyncLocalStorage } = require("async_hooks");
+const http = require("http");
 const cls = new AsyncLocalStorage();
 const NUM_CLIENTS = 10;
 
@@ -33,13 +33,13 @@ server.listen(0, common.mustCall(() => {
    const options = { port: server.address().port };
    const req = http.get(options, common.mustCall((res) => {
     const store = cls.getStore();
-    store.set('data', '');
+    store.set("data", "");
 
     // Make ondata and onend non-closure
     // functions and fully dependent on ALS
-    res.setEncoding('utf8');
-    res.on('data', ondata);
-    res.on('end', common.mustCall(onend));
+    res.setEncoding("utf8");
+    res.on("data", ondata);
+    res.on("end", common.mustCall(onend));
    }));
    req.end();
   }));
@@ -50,16 +50,16 @@ server.listen(0, common.mustCall(() => {
 function ondata(d) {
  const store = cls.getStore();
  assert.notStrictEqual(store, undefined);
- let chunk = store.get('data');
+ let chunk = store.get("data");
  chunk += d;
- store.set('data', chunk);
+ store.set("data", chunk);
 }
 
 // Retrieve the store data, and test for homogeneity
 function onend() {
  const store = cls.getStore();
  assert.notStrictEqual(store, undefined);
- const data = store.get('data');
+ const data = store.get("data");
  assert.strictEqual(data, data[0].repeat(data.length));
  countdown.dec();
 }

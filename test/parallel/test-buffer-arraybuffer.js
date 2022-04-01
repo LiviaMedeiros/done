@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 const LENGTH = 16;
 
@@ -41,11 +41,11 @@ assert.throws(function() {
  Object.setPrototypeOf(AB.prototype, ArrayBuffer.prototype);
  Buffer.from(new AB());
 }, {
- code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError',
- message: 'The first argument must be of type string or an instance of ' +
-           'Buffer, ArrayBuffer, or Array or an Array-like Object. Received ' +
-           'an instance of AB',
+ code: "ERR_INVALID_ARG_TYPE",
+ name: "TypeError",
+ message: "The first argument must be of type string or an instance of " +
+           "Buffer, ArrayBuffer, or Array or an Array-like Object. Received " +
+           "an instance of AB",
 });
 
 // Test the byteOffset and length arguments
@@ -65,13 +65,13 @@ assert.throws(function() {
  assert.strictEqual(ab[1], 9);
 
  assert.throws(() => Buffer.from(ab.buffer, 6), {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
+  code: "ERR_BUFFER_OUT_OF_BOUNDS",
+  name: "RangeError",
   message: '"offset" is outside of buffer bounds',
  });
  assert.throws(() => Buffer.from(ab.buffer, 3, 6), {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
+  code: "ERR_BUFFER_OUT_OF_BOUNDS",
+  name: "RangeError",
   message: '"length" is outside of buffer bounds',
  });
 }
@@ -93,13 +93,13 @@ assert.throws(function() {
  assert.strictEqual(ab[1], 9);
 
  assert.throws(() => Buffer(ab.buffer, 6), {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
+  code: "ERR_BUFFER_OUT_OF_BOUNDS",
+  name: "RangeError",
   message: '"offset" is outside of buffer bounds',
  });
  assert.throws(() => Buffer(ab.buffer, 3, 6), {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
+  code: "ERR_BUFFER_OUT_OF_BOUNDS",
+  name: "RangeError",
   message: '"length" is outside of buffer bounds',
  });
 }
@@ -108,7 +108,7 @@ assert.throws(function() {
  // If byteOffset is not numeric, it defaults to 0.
  const ab = new ArrayBuffer(10);
  const expected = Buffer.from(ab, 0);
- assert.deepStrictEqual(Buffer.from(ab, 'fhqwhgads'), expected);
+ assert.deepStrictEqual(Buffer.from(ab, "fhqwhgads"), expected);
  assert.deepStrictEqual(Buffer.from(ab, NaN), expected);
  assert.deepStrictEqual(Buffer.from(ab, {}), expected);
  assert.deepStrictEqual(Buffer.from(ab, []), expected);
@@ -120,8 +120,8 @@ assert.throws(function() {
  assert.throws(() => {
   Buffer.from(ab, Infinity);
  }, {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
+  code: "ERR_BUFFER_OUT_OF_BOUNDS",
+  name: "RangeError",
   message: '"offset" is outside of buffer bounds',
  });
 }
@@ -130,7 +130,7 @@ assert.throws(function() {
  // If length is not numeric, it defaults to 0.
  const ab = new ArrayBuffer(10);
  const expected = Buffer.from(ab, 0, 0);
- assert.deepStrictEqual(Buffer.from(ab, 0, 'fhqwhgads'), expected);
+ assert.deepStrictEqual(Buffer.from(ab, 0, "fhqwhgads"), expected);
  assert.deepStrictEqual(Buffer.from(ab, 0, NaN), expected);
  assert.deepStrictEqual(Buffer.from(ab, 0, {}), expected);
  assert.deepStrictEqual(Buffer.from(ab, 0, []), expected);
@@ -142,8 +142,8 @@ assert.throws(function() {
  assert.throws(() => {
   Buffer.from(ab, 0, Infinity);
  }, {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
+  code: "ERR_BUFFER_OUT_OF_BOUNDS",
+  name: "RangeError",
   message: '"length" is outside of buffer bounds',
  });
 }

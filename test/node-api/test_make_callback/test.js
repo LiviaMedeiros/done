@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const vm = require('vm');
+const common = require("../../common");
+const assert = require("assert");
+const vm = require("vm");
 const binding = require(`./build/${common.buildType}/binding`);
 const makeCallback = binding.makeCallback;
 
@@ -79,7 +79,7 @@ const forward = vm.runInNewContext(`
 // Runs in outer context.
 function endpoint($Object) {
  if (Object === $Object)
-  throw new Error('bad');
+  throw new Error("bad");
  return Object;
 }
 

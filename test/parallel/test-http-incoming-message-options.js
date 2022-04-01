@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
 const readableHighWaterMark = 1024;
 const server = http.createServer((req, res) => { res.end(); });
 

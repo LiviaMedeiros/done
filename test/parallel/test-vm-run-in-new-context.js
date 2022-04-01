@@ -19,34 +19,34 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const common = require('../common');
-const assert = require('assert');
-const vm = require('vm');
+const common = require("../common");
+const assert = require("assert");
+const vm = require("vm");
 
-if (typeof global.gc !== 'function')
- assert.fail('Run this test with --expose-gc');
+if (typeof global.gc !== "function")
+ assert.fail("Run this test with --expose-gc");
 
 // Run a string
-const result = vm.runInNewContext('\'passed\';');
-assert.strictEqual(result, 'passed');
+const result = vm.runInNewContext("'passed';");
+assert.strictEqual(result, "passed");
 
 // Thrown error
 assert.throws(() => {
- vm.runInNewContext('throw new Error(\'test\');');
+ vm.runInNewContext("throw new Error('test');");
 }, /^Error: test$/);
 
 global.hello = 5;
-vm.runInNewContext('hello = 2');
+vm.runInNewContext("hello = 2");
 assert.strictEqual(global.hello, 5);
 
 
 // Pass values in and out
-global.code = 'foo = 1;' +
-              'bar = 2;' +
-              'if (baz !== 3) throw new Error(\'test fail\');';
+global.code = "foo = 1;" +
+              "bar = 2;" +
+              "if (baz !== 3) throw new Error('test fail');";
 global.foo = 2;
 global.obj = { foo: 0, baz: 3 };
 /* eslint-disable no-unused-vars */
@@ -58,21 +58,21 @@ assert.strictEqual(global.foo, 2);
 
 // Call a function by reference
 function changeFoo() { global.foo = 100; }
-vm.runInNewContext('f()', { f: changeFoo });
+vm.runInNewContext("f()", { f: changeFoo });
 assert.strictEqual(global.foo, 100);
 
 // Modify an object by reference
 const f = { a: 1 };
-vm.runInNewContext('f.a = 2', { f });
+vm.runInNewContext("f.a = 2", { f });
 assert.strictEqual(f.a, 2);
 
 // Use function in context without referencing context
-const fn = vm.runInNewContext('(function() { obj.p = {}; })', { obj: {} });
+const fn = vm.runInNewContext("(function() { obj.p = {}; })", { obj: {} });
 global.gc();
 fn();
 // Should not crash
 
-const filename = 'test_file.vm';
+const filename = "test_file.vm";
 for (const arg of [filename, { filename }]) {
  // Verify that providing a custom filename works.
  const code = 'throw new Error("foo");';
@@ -80,12 +80,12 @@ for (const arg of [filename, { filename }]) {
  assert.throws(() => {
   vm.runInNewContext(code, {}, arg);
  }, (err) => {
-  const lines = err.stack.split('\n');
+  const lines = err.stack.split("\n");
 
   assert.strictEqual(lines[0].trim(), `${filename}:1`);
   assert.strictEqual(lines[1].trim(), code);
   // Skip lines[2] and lines[3]. They're just a ^ and blank line.
-  assert.strictEqual(lines[4].trim(), 'Error: foo');
+  assert.strictEqual(lines[4].trim(), "Error: foo");
   assert.strictEqual(lines[5].trim(), `at ${filename}:1:7`);
   // The rest of the stack is uninteresting.
   return true;

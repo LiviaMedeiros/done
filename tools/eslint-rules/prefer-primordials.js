@@ -4,7 +4,7 @@
  *               that can be replaced with primordials.
  * @author Leko <leko.noor@gmail.com>
  */
-'use strict';
+"use strict";
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -49,7 +49,7 @@ function getDestructuringAssignmentParent(scope, node) {
   !declaration ||
     !declaration.defs ||
     declaration.defs.length === 0 ||
-    declaration.defs[0].type !== 'Variable' ||
+    declaration.defs[0].type !== "Variable" ||
     !declaration.defs[0].node.init
  ) {
   return null;
@@ -60,20 +60,20 @@ function getDestructuringAssignmentParent(scope, node) {
 const parentSelectors = [
  // We want to select identifiers that refer to other references, not the ones
  // that create a new reference.
- 'ClassDeclaration',
- 'FunctionDeclaration',
- 'LabeledStatement',
- 'MemberExpression',
- 'MethodDefinition',
- 'SwitchCase',
- 'VariableDeclarator',
+ "ClassDeclaration",
+ "FunctionDeclaration",
+ "LabeledStatement",
+ "MemberExpression",
+ "MethodDefinition",
+ "SwitchCase",
+ "VariableDeclarator",
 ];
-const identifierSelector = parentSelectors.map((selector) => `[type!=${selector}]`).join('') + '>Identifier';
+const identifierSelector = parentSelectors.map((selector) => `[type!=${selector}]`).join("") + ">Identifier";
 
 module.exports = {
  meta: {
   messages: {
-   error: 'Use `const { {{name}} } = primordials;` instead of the global.',
+   error: "Use `const { {{name}} } = primordials;` instead of the global.",
   },
  },
  create(context) {
@@ -100,7 +100,7 @@ module.exports = {
     reported = new Set();
    },
    [identifierSelector](node) {
-    if (node.parent.type === 'Property' && node.parent.key === node) {
+    if (node.parent.type === "Property" && node.parent.key === node) {
      // If the identifier is the key for this property declaration, it
      // can't be referring to a primordials member.
      return;
@@ -120,14 +120,14 @@ module.exports = {
 
     const defs = globalScope.set.get(name)?.defs;
     if (parentName && isTarget(nameMap, parentName)) {
-     if (defs?.[0].name.name !== 'primordials' &&
+     if (defs?.[0].name.name !== "primordials" &&
               !reported.has(parent.range[0]) &&
-              parent.parent?.id?.type !== 'Identifier') {
+              parent.parent?.id?.type !== "Identifier") {
       reported.add(node.range[0]);
       const into = renameMap.get(name);
       context.report({
        node,
-       messageId: 'error',
+       messageId: "error",
        data: {
         name: getReportName({ into, parentName, name }),
        },
@@ -135,12 +135,12 @@ module.exports = {
      }
      return;
     }
-    if (defs.length === 0 || defs[0].node.init.name !== 'primordials') {
+    if (defs.length === 0 || defs[0].node.init.name !== "primordials") {
      reported.add(node.range[0]);
      const into = renameMap.get(name);
      context.report({
       node,
-      messageId: 'error',
+      messageId: "error",
       data: {
        name: getReportName({ into, parentName, name }),
       },
@@ -159,7 +159,7 @@ module.exports = {
     if (variables.length === 0) {
      context.report({
       node,
-      messageId: 'error',
+      messageId: "error",
       data: {
        name: toPrimordialsName(obj, prop),
       },
@@ -169,12 +169,12 @@ module.exports = {
    VariableDeclarator(node) {
     const name = node.init?.name;
     if (name !== undefined && isTarget(nameMap, name) &&
-            node.id.type === 'Identifier' &&
+            node.id.type === "Identifier" &&
             !globalScope.set.get(name)?.defs.length) {
      reported.add(node.init.range[0]);
      context.report({
       node,
-      messageId: 'error',
+      messageId: "error",
       data: { name },
      });
     }

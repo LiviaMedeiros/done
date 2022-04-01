@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 
 // The goal of this test is to make sure that, after the regression introduced
@@ -10,9 +10,9 @@
 // This behavior is a private implementation detail and should not be
 // considered public interface.
 
-require('../common');
-const timers = require('timers');
-const assert = require('assert');
+require("../common");
+const timers = require("timers");
+const assert = require("assert");
 
 let nbTimersFired = 0;
 

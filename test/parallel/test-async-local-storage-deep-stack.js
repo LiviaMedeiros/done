@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const { AsyncLocalStorage } = require('async_hooks');
+"use strict";
+const common = require("../common");
+const { AsyncLocalStorage } = require("async_hooks");
 
 // Regression test for: https://github.com/nodejs/node/issues/34556
 

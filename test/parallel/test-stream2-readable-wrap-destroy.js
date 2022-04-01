@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const { Readable } = require('stream');
-const EE = require('events').EventEmitter;
+const { Readable } = require("stream");
+const EE = require("events").EventEmitter;
 
 const oldStream = new EE();
 oldStream.pause = () => {};
@@ -14,7 +14,7 @@ oldStream.resume = () => {};
   destroy: common.mustCall(),
  })
     .wrap(oldStream);
- oldStream.emit('destroy');
+ oldStream.emit("destroy");
 }
 
 {
@@ -23,5 +23,5 @@ oldStream.resume = () => {};
   destroy: common.mustCall(),
  })
     .wrap(oldStream);
- oldStream.emit('close');
+ oldStream.emit("close");
 }

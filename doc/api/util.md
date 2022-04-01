@@ -11,7 +11,7 @@ utilities are useful for application and module developers as well. To access
 it:
 
 ```js
-const util = require('util');
+const util = require("util");
 ```
 
 ## `util.callbackify(original)`
@@ -30,10 +30,10 @@ first argument will be the rejection reason (or `null` if the `Promise`
 resolved), and the second argument will be the resolved value.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 async function fn() {
- return 'hello world';
+ return "hello world";
 }
 const callbackFunction = util.callbackify(fn);
 
@@ -67,7 +67,7 @@ const callbackFunction = util.callbackify(fn);
 callbackFunction((err, ret) => {
  // When the Promise was rejected with `null` it is wrapped with an Error and
  // the original value is stored in `reason`.
- err && Object.hasOwn(err, 'reason') && err.reason === null;  // true
+ err && Object.hasOwn(err, "reason") && err.reason === null;  // true
 });
 ```
 
@@ -90,10 +90,10 @@ environment variable, then the returned function operates similar to
 [`console.error()`][]. If not, then the returned function is a no-op.
 
 ```js
-const util = require('util');
-const debuglog = util.debuglog('foo');
+const util = require("util");
+const debuglog = util.debuglog("foo");
 
-debuglog('hello from foo [%d]', 123);
+debuglog("hello from foo [%d]", 123);
 ```
 
 If this program is run with `NODE_DEBUG=foo` in the environment, then
@@ -109,10 +109,10 @@ environment variable set, then it will not print anything.
 The `section` supports wildcard also:
 
 ```js
-const util = require('util');
-const debuglog = util.debuglog('foo-bar');
+const util = require("util");
+const debuglog = util.debuglog("foo-bar");
 
-debuglog('hi there, it\'s foo-bar [%d]', 2333);
+debuglog("hi there, it's foo-bar [%d]", 2333);
 ```
 
 if it is run with `NODE_DEBUG=foo*` in the environment, then it will output
@@ -130,8 +130,8 @@ with a different function that doesn't have any initialization or
 unnecessary wrapping.
 
 ```js
-const util = require('util');
-let debuglog = util.debuglog('internals', (debug) => {
+const util = require("util");
+let debuglog = util.debuglog("internals", (debug) => {
  // Replace with a logging function that optimizes out
  // testing if the section is enabled
  debuglog = debug;
@@ -153,10 +153,10 @@ then the returned value will be `true`. If not, then the returned value will be
 `false`.
 
 ```js
-const util = require('util');
-const enabled = util.debuglog('foo').enabled;
+const util = require("util");
+const enabled = util.debuglog("foo").enabled;
 if (enabled) {
- console.log('hello from foo [%d]', 123);
+ console.log("hello from foo [%d]", 123);
 }
 ```
 
@@ -197,11 +197,11 @@ The `util.deprecate()` method wraps `fn` (which may be a function or class) in
 such a way that it is marked as deprecated.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 exports.obsoleteFunction = util.deprecate(() => {
  // Do something here.
-}, 'obsoleteFunction() is deprecated. Use newShinyFunction() instead.');
+}, "obsoleteFunction() is deprecated. Use newShinyFunction() instead.");
 ```
 
 When called, `util.deprecate()` will return a function that will emit a
@@ -214,10 +214,10 @@ If the same optional `code` is supplied in multiple calls to `util.deprecate()`,
 the warning will be emitted only once for that `code`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
-const fn1 = util.deprecate(someFunction, someMessage, 'DEP0001');
-const fn2 = util.deprecate(someOtherFunction, someOtherMessage, 'DEP0001');
+const fn1 = util.deprecate(someFunction, someMessage, "DEP0001");
+const fn2 = util.deprecate(someOtherFunction, someOtherMessage, "DEP0001");
 fn1(); // Emits a deprecation warning with code DEP0001
 fn2(); // Does not emit a deprecation warning because it has the same code
 ```
@@ -309,7 +309,7 @@ corresponding argument. Supported specifiers are:
 If a specifier does not have a corresponding argument, it is not replaced:
 
 ```js
-util.format('%s:%s', 'foo');
+util.format("%s:%s", "foo");
 // Returns: 'foo:%s'
 ```
 
@@ -321,7 +321,7 @@ number of specifiers, the extra arguments are concatenated to the returned
 string, separated by spaces:
 
 ```js
-util.format('%s:%s', 'foo', 'bar', 'baz');
+util.format("%s:%s", "foo", "bar", "baz");
 // Returns: 'foo:bar baz'
 ```
 
@@ -337,7 +337,7 @@ If only one argument is passed to `util.format()`, it is returned as it is
 without any formatting:
 
 ```js
-util.format('%% %s');
+util.format("%% %s");
 // Returns: '%% %s'
 ```
 
@@ -359,7 +359,7 @@ an `inspectOptions` argument which specifies options that are passed along to
 [`util.inspect()`][].
 
 ```js
-util.formatWithOptions({ colors: true }, 'See object %O', { foo: 42 });
+util.formatWithOptions({ colors: true }, "See object %O", { foo: 42 });
 // Returns 'See object { foo: 42 }', where `42` is colored as a number
 // when printed to a terminal.
 ```
@@ -378,7 +378,7 @@ The mapping between error codes and error names is platform-dependent.
 See [Common System Errors][] for the names of common errors.
 
 ```js
-fs.access('file/that/does/not/exist', (err) => {
+fs.access("file/that/does/not/exist", (err) => {
  const name = util.getSystemErrorName(err.errno);
  console.error(name);  // ENOENT
 });
@@ -399,7 +399,7 @@ The mapping between error codes and error names is platform-dependent.
 See [Common System Errors][] for the names of common errors.
 
 ```js
-fs.access('file/that/does/not/exist', (err) => {
+fs.access("file/that/does/not/exist", (err) => {
  const errorMap = util.getSystemErrorMap();
  const name = errorMap.get(err.errno);
  console.error(name);  // ENOENT
@@ -435,8 +435,8 @@ As an additional convenience, `superConstructor` will be accessible
 through the `constructor.super_` property.
 
 ```js
-const util = require('util');
-const EventEmitter = require('events');
+const util = require("util");
+const EventEmitter = require("events");
 
 function MyStream() {
  EventEmitter.call(this);
@@ -445,7 +445,7 @@ function MyStream() {
 util.inherits(MyStream, EventEmitter);
 
 MyStream.prototype.write = function(data) {
- this.emit('data', data);
+ this.emit("data", data);
 };
 
 const stream = new MyStream();
@@ -453,29 +453,29 @@ const stream = new MyStream();
 console.log(stream instanceof EventEmitter); // true
 console.log(MyStream.super_ === EventEmitter); // true
 
-stream.on('data', (data) => {
+stream.on("data", (data) => {
  console.log(`Received data: "${data}"`);
 });
-stream.write('It works!'); // Received data: "It works!"
+stream.write("It works!"); // Received data: "It works!"
 ```
 
 ES6 example using `class` and `extends`:
 
 ```js
-const EventEmitter = require('events');
+const EventEmitter = require("events");
 
 class MyStream extends EventEmitter {
  write(data) {
-  this.emit('data', data);
+  this.emit("data", data);
  }
 }
 
 const stream = new MyStream();
 
-stream.on('data', (data) => {
+stream.on("data", (data) => {
  console.log(`Received data: "${data}"`);
 });
-stream.write('With ES6');
+stream.write("With ES6");
 ```
 
 ## `util.inspect(object[, options])`
@@ -626,13 +626,13 @@ an identifiable tag for an inspected value.
 ```js
 class Foo {
  get [Symbol.toStringTag]() {
-  return 'bar';
+  return "bar";
  }
 }
 
 class Bar {}
 
-const baz = Object.create(null, { [Symbol.toStringTag]: { value: 'foo' } });
+const baz = Object.create(null, { [Symbol.toStringTag]: { value: "foo" } });
 
 util.inspect(new Foo()); // 'Foo [bar] {}'
 util.inspect(new Bar()); // 'Bar {}'
@@ -642,7 +642,7 @@ util.inspect(baz);       // '[foo] {}'
 Circular references point to their anchor by using a reference index:
 
 ```js
-const { inspect } = require('util');
+const { inspect } = require("util");
 
 const obj = {};
 obj.a = [obj];
@@ -660,7 +660,7 @@ console.log(inspect(obj));
 The following example inspects all properties of the `util` object:
 
 ```js
-const util = require('util');
+const util = require("util");
 
 console.log(util.inspect(util, { showHidden: true, depth: null }));
 ```
@@ -668,15 +668,15 @@ console.log(util.inspect(util, { showHidden: true, depth: null }));
 The following example highlights the effect of the `compact` option:
 
 ```js
-const util = require('util');
+const util = require("util");
 
 const o = {
  a: [1, 2, [[
-  'Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do ' +
-      'eiusmod \ntempor incididunt ut labore et dolore magna aliqua.',
-  'test',
-  'foo']], 4],
- b: new Map([['za', 1], ['zb', 'test']]),
+  "Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do " +
+      "eiusmod \ntempor incididunt ut labore et dolore magna aliqua.",
+  "test",
+  "foo"]], 4],
+ b: new Map([["za", 1], ["zb", "test"]]),
 };
 console.log(util.inspect(o, { compact: true, depth: 5, breakLength: 80 }));
 
@@ -724,7 +724,7 @@ guarantee which entries are displayed. That means retrieving the same
 with no remaining strong references may be garbage collected at any time.
 
 ```js
-const { inspect } = require('util');
+const { inspect } = require("util");
 
 const obj = { a: 1 };
 const obj2 = { b: 2 };
@@ -738,12 +738,12 @@ The `sorted` option ensures that an object's property insertion order does not
 impact the result of `util.inspect()`.
 
 ```js
-const { inspect } = require('util');
-const assert = require('assert');
+const { inspect } = require("util");
+const assert = require("assert");
 
 const o1 = {
  b: [2, 3, 1],
- a: '`a` comes before `b`',
+ a: "`a` comes before `b`",
  c: new Set([2, 3, 1]),
 };
 console.log(inspect(o1, { sorted: true }));
@@ -753,7 +753,7 @@ console.log(inspect(o1, { sorted: (a, b) => b.localeCompare(a) }));
 
 const o2 = {
  c: new Set([2, 1, 3]),
- a: '`a` comes before `b`',
+ a: "`a` comes before `b`",
  b: [2, 3, 1],
 };
 assert.strict.equal(
@@ -766,7 +766,7 @@ The `numericSeparator` option adds an underscore every three digits to all
 numbers.
 
 ```js
-const { inspect } = require('util');
+const { inspect } = require("util");
 
 const thousand = 1_000;
 const million = 1_000_000;
@@ -892,7 +892,7 @@ which `util.inspect()` will invoke and use the result of when inspecting
 the object.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 class Box {
  constructor(value) {
@@ -901,7 +901,7 @@ class Box {
 
  [util.inspect.custom](depth, options, inspect) {
   if (depth < 0) {
-   return options.stylize('[Box]', 'special');
+   return options.stylize("[Box]", "special");
   }
 
   const newOptions = Object.assign({}, options, {
@@ -909,10 +909,10 @@ class Box {
   });
 
   // Five space padding because that's the size of "Box< ".
-  const padding = ' '.repeat(5);
+  const padding = " ".repeat(5);
   const inner = inspect(this.value, newOptions)
                   .replace(/\n/g, `\n${padding}`);
-  return `${options.stylize('Box', 'special')}< ${inner} >`;
+  return `${options.stylize("Box", "special")}< ${inner} >`;
  }
 }
 
@@ -927,11 +927,11 @@ a string but may return a value of any type that will be formatted accordingly
 by `util.inspect()`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
-const obj = { foo: 'this will not show up in the inspect() output' };
+const obj = { foo: "this will not show up in the inspect() output" };
 obj[util.inspect.custom] = (depth) => {
- return { bar: 'baz' };
+ return { bar: "baz" };
 };
 
 util.inspect(obj);
@@ -960,7 +960,7 @@ The `util.inspect()` function itself is passed as third argument to the custom
 inspect function to allow further portability.
 
 ```js
-const customInspectSymbol = Symbol.for('nodejs.util.inspect.custom');
+const customInspectSymbol = Symbol.for("nodejs.util.inspect.custom");
 
 class Password {
  constructor(value) {
@@ -968,7 +968,7 @@ class Password {
  }
 
  toString() {
-  return 'xxxxxxxx';
+  return "xxxxxxxx";
  }
 
  [customInspectSymbol](depth, inspectOptions, inspect) {
@@ -976,7 +976,7 @@ class Password {
  }
 }
 
-const password = new Password('r0sebud');
+const password = new Password("r0sebud");
 console.log(password);
 // Prints Password <xxxxxxxx>
 ```
@@ -996,7 +996,7 @@ object containing one or more valid [`util.inspect()`][] options. Setting
 option properties directly is also supported.
 
 ```js
-const util = require('util');
+const util = require("util");
 const arr = Array(101).fill(0);
 
 console.log(arr); // Logs the truncated array
@@ -1034,11 +1034,11 @@ an `(err, value) => ...` callback as the last argument, and returns a version
 that returns promises.
 
 ```js
-const util = require('util');
-const fs = require('fs');
+const util = require("util");
+const fs = require("fs");
 
 const stat = util.promisify(fs.stat);
-stat('.').then((stats) => {
+stat(".").then((stats) => {
  // Do something with `stats`
 }).catch((error) => {
  // Handle the error.
@@ -1048,13 +1048,13 @@ stat('.').then((stats) => {
 Or, equivalently using `async function`s:
 
 ```js
-const util = require('util');
-const fs = require('fs');
+const util = require("util");
+const fs = require("fs");
 
 const stat = util.promisify(fs.stat);
 
 async function callStat() {
- const stats = await stat('.');
+ const stats = await stat(".");
  console.log(`This directory is owned by ${stats.uid}`);
 }
 ```
@@ -1072,7 +1072,7 @@ Using `promisify()` on class methods or other methods that use `this` may not
 work as expected unless handled specially:
 
 ```js
-const util = require('util');
+const util = require("util");
 
 class Foo {
  constructor() {
@@ -1102,7 +1102,7 @@ Using the `util.promisify.custom` symbol one can override the return value of
 [`util.promisify()`][]:
 
 ```js
-const util = require('util');
+const util = require("util");
 
 function doSomething(foo, callback) {
  // ...
@@ -1157,7 +1157,7 @@ For example, with a function that takes in
 `(foo, onSuccessCallback, onErrorCallback)`:
 
 ```js
-const kCustomPromisifiedSymbol = Symbol.for('nodejs.util.promisify.custom');
+const kCustomPromisifiedSymbol = Symbol.for("nodejs.util.promisify.custom");
 
 doSomething[kCustomPromisifiedSymbol] = (foo) => {
  return new Promise((resolve, reject) => {
@@ -1178,7 +1178,7 @@ added: v16.11.0
 Returns `str` with any ANSI escape codes removed.
 
 ```js
-console.log(util.stripVTControlCharacters('\u001B[4mvalue\u001B[0m'));
+console.log(util.stripVTControlCharacters("\u001B[4mvalue\u001B[0m"));
 // Prints "value"
 ```
 
@@ -1339,7 +1339,7 @@ instances of `TextEncoder` only support UTF-8 encoding.
 
 ```js
 const encoder = new TextEncoder();
-const uint8array = encoder.encode('this is some data');
+const uint8array = encoder.encode("this is some data");
 ```
 
 The `TextEncoder` class is also available on the global object.
@@ -1365,7 +1365,7 @@ containing the read Unicode code units and written UTF-8 bytes.
 
 ```js
 const encoder = new TextEncoder();
-const src = 'this is some data';
+const src = "this is some data";
 const dest = new Uint8Array(10);
 const { read, written } = encoder.encodeInto(src, dest);
 ```
@@ -1446,7 +1446,7 @@ views, such as typed array objects or [`DataView`][]. Equivalent to
 
 ```js
 util.types.isArrayBufferView(new Int8Array());  // true
-util.types.isArrayBufferView(Buffer.from('hello world')); // true
+util.types.isArrayBufferView(Buffer.from("hello world")); // true
 util.types.isArrayBufferView(new DataView(new ArrayBuffer(16)));  // true
 util.types.isArrayBufferView(new ArrayBuffer());  // false
 ```
@@ -1577,8 +1577,8 @@ For example:
 ```js
 util.types.isBoxedPrimitive(false); // Returns false
 util.types.isBoxedPrimitive(new Boolean(false)); // Returns true
-util.types.isBoxedPrimitive(Symbol('foo')); // Returns false
-util.types.isBoxedPrimitive(Object(Symbol('foo'))); // Returns true
+util.types.isBoxedPrimitive(Symbol("foo")); // Returns false
+util.types.isBoxedPrimitive(Object(Symbol("foo"))); // Returns true
 util.types.isBoxedPrimitive(Object(BigInt(5))); // Returns true
 ```
 
@@ -1663,11 +1663,11 @@ DECLARE_NAPI_PROPERTY("myNapi", MyNapi)
 ```
 
 ```js
-const native = require('napi_addon.node');
+const native = require("napi_addon.node");
 const data = native.myNapi();
 util.types.isExternal(data); // returns true
 util.types.isExternal(0); // returns false
-util.types.isExternal(new String('foo')); // returns false
+util.types.isExternal(new String("foo")); // returns false
 ```
 
 For further information on `napi_create_external`, refer to
@@ -1943,7 +1943,7 @@ Returns `true` if the value is a regular expression object.
 
 ```js
 util.types.isRegExp(/abc/);  // Returns true
-util.types.isRegExp(new RegExp('abc'));  // Returns true
+util.types.isRegExp(new RegExp("abc"));  // Returns true
 ```
 
 ### `util.types.isSet(value)`
@@ -2012,8 +2012,8 @@ Returns `true` if the value is a string object, e.g. created
 by `new String()`.
 
 ```js
-util.types.isStringObject('foo');  // Returns false
-util.types.isStringObject(new String('foo'));   // Returns true
+util.types.isStringObject("foo");  // Returns false
+util.types.isStringObject(new String("foo"));   // Returns true
 ```
 
 ### `util.types.isSymbolObject(value)`
@@ -2029,7 +2029,7 @@ Returns `true` if the value is a symbol object, created
 by calling `Object()` on a `Symbol` primitive.
 
 ```js
-const symbol = Symbol('foo');
+const symbol = Symbol("foo");
 util.types.isSymbolObject(symbol);  // Returns false
 util.types.isSymbolObject(Object(symbol));   // Returns true
 ```
@@ -2210,7 +2210,7 @@ Alias for [`Array.isArray()`][].
 Returns `true` if the given `object` is an `Array`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isArray([]);
 // Returns: true
@@ -2235,7 +2235,7 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `Boolean`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isBoolean(1);
 // Returns: false
@@ -2260,13 +2260,13 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `Buffer`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isBuffer({ length: 0 });
 // Returns: false
 util.isBuffer([]);
 // Returns: false
-util.isBuffer(Buffer.from('hello world'));
+util.isBuffer(Buffer.from("hello world"));
 // Returns: true
 ```
 
@@ -2285,7 +2285,7 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `Date`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isDate(new Date());
 // Returns: true
@@ -2311,13 +2311,13 @@ Returns `true` if the given `object` is an [`Error`][]. Otherwise, returns
 `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isError(new Error());
 // Returns: true
 util.isError(new TypeError());
 // Returns: true
-util.isError({ name: 'Error', message: 'an error occurred' });
+util.isError({ name: "Error", message: "an error occurred" });
 // Returns: false
 ```
 
@@ -2326,12 +2326,12 @@ possible to obtain an incorrect result when the `object` argument manipulates
 `@@toStringTag`.
 
 ```js
-const util = require('util');
-const obj = { name: 'Error', message: 'an error occurred' };
+const util = require("util");
+const obj = { name: "Error", message: "an error occurred" };
 
 util.isError(obj);
 // Returns: false
-obj[Symbol.toStringTag] = 'Error';
+obj[Symbol.toStringTag] = "Error";
 util.isError(obj);
 // Returns: true
 ```
@@ -2352,7 +2352,7 @@ Returns `true` if the given `object` is a `Function`. Otherwise, returns
 `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 function Foo() {}
 const Bar = () => {};
@@ -2381,7 +2381,7 @@ Returns `true` if the given `object` is strictly `null`. Otherwise, returns
 `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isNull(0);
 // Returns: false
@@ -2408,7 +2408,7 @@ Returns `true` if the given `object` is `null` or `undefined`. Otherwise,
 returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isNullOrUndefined(0);
 // Returns: false
@@ -2433,7 +2433,7 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `Number`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isNumber(false);
 // Returns: false
@@ -2463,7 +2463,7 @@ Returns `true` if the given `object` is strictly an `Object` **and** not a
 Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isObject(5);
 // Returns: false
@@ -2493,11 +2493,11 @@ Returns `true` if the given `object` is a primitive type. Otherwise, returns
 `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isPrimitive(5);
 // Returns: true
-util.isPrimitive('foo');
+util.isPrimitive("foo");
 // Returns: true
 util.isPrimitive(false);
 // Returns: true
@@ -2530,11 +2530,11 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `RegExp`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isRegExp(/some regexp/);
 // Returns: true
-util.isRegExp(new RegExp('another regexp'));
+util.isRegExp(new RegExp("another regexp"));
 // Returns: true
 util.isRegExp({});
 // Returns: false
@@ -2555,13 +2555,13 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `string`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
-util.isString('');
+util.isString("");
 // Returns: true
-util.isString('foo');
+util.isString("foo");
 // Returns: true
-util.isString(String('foo'));
+util.isString(String("foo"));
 // Returns: true
 util.isString(5);
 // Returns: false
@@ -2582,13 +2582,13 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is a `Symbol`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 util.isSymbol(5);
 // Returns: false
-util.isSymbol('foo');
+util.isSymbol("foo");
 // Returns: false
-util.isSymbol(Symbol('foo'));
+util.isSymbol(Symbol("foo"));
 // Returns: true
 ```
 
@@ -2607,7 +2607,7 @@ deprecated: v4.0.0
 Returns `true` if the given `object` is `undefined`. Otherwise, returns `false`.
 
 ```js
-const util = require('util');
+const util = require("util");
 
 const foo = undefined;
 util.isUndefined(5);
@@ -2633,9 +2633,9 @@ The `util.log()` method prints the given `string` to `stdout` with an included
 timestamp.
 
 ```js
-const util = require('util');
+const util = require("util");
 
-util.log('Timestamped message.');
+util.log("Timestamped message.");
 ```
 
 [Common System Errors]: errors.md#common-system-errors

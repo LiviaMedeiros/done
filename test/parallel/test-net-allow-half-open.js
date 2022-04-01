@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 {
  const server = net.createServer(common.mustCall((socket) => {
@@ -11,7 +11,7 @@ const net = require('net');
   const socket = net.connect(server.address().port);
   assert.strictEqual(socket.allowHalfOpen, false);
   socket.resume();
-  socket.on('end', common.mustCall(() => {
+  socket.on("end", common.mustCall(() => {
    process.nextTick(() => {
     // Ensure socket is not destroyed straight away
     // without proper shutdown.
@@ -19,10 +19,10 @@ const net = require('net');
     server.close();
    });
   }));
-  socket.on('finish', common.mustCall(() => {
+  socket.on("finish", common.mustCall(() => {
    assert(!socket.destroyed);
   }));
-  socket.on('close', common.mustCall());
+  socket.on("close", common.mustCall());
  }));
 }
 
@@ -33,14 +33,14 @@ const net = require('net');
   const socket = net.connect(server.address().port);
   assert.strictEqual(socket.allowHalfOpen, false);
   socket.resume();
-  socket.on('end', common.mustCall(() => {
+  socket.on("end", common.mustCall(() => {
    assert(!socket.destroyed);
   }));
-  socket.end('asd');
-  socket.on('finish', common.mustCall(() => {
+  socket.end("asd");
+  socket.on("finish", common.mustCall(() => {
    assert(!socket.destroyed);
   }));
-  socket.on('close', common.mustCall(() => {
+  socket.on("close", common.mustCall(() => {
    server.close();
   }));
  }));

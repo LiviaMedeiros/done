@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
 // https://github.com/nodejs/node/issues/3020
 // Promises, nextTick, and queueMicrotask allow code to escape the timeout
 // set for runInContext, runInNewContext, and runInThisContext
 
-const common = require('../common');
-const assert = require('assert');
-const vm = require('vm');
+const common = require("../common");
+const assert = require("assert");
+const vm = require("vm");
 
 const NS_PER_MS = 1000000n;
 
@@ -32,7 +32,7 @@ function loop() {
 for (let i = 0; i < 4; i++) {
  assert.throws(() => {
   vm.runInNewContext(
-   'nextTick(loop); loop();',
+   "nextTick(loop); loop();",
    {
     hrtime,
     nextTick,
@@ -41,6 +41,6 @@ for (let i = 0; i < 4; i++) {
    { timeout: common.platformTimeout(10) },
   );
  }, {
-  code: 'ERR_SCRIPT_EXECUTION_TIMEOUT',
+  code: "ERR_SCRIPT_EXECUTION_TIMEOUT",
  });
 }

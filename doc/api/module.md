@@ -34,13 +34,13 @@ by the [module wrapper][]. To access it, require the `Module` module:
 ```mjs
 // module.mjs
 // In an ECMAScript module
-import { builtinModules as builtin } from 'module';
+import { builtinModules as builtin } from "module";
 ```
 
 ```cjs
 // module.cjs
 // In a CommonJS module
-const builtin = require('module').builtinModules;
+const builtin = require("module").builtinModules;
 ```
 
 ### `module.createRequire(filename)`
@@ -55,11 +55,11 @@ added: v12.2.0
 * Returns: {require} Require function
 
 ```mjs
-import { createRequire } from 'module';
+import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 // sibling-module.js is a CommonJS module.
-const siblingModule = require('./sibling-module');
+const siblingModule = require("./sibling-module");
 ```
 
 ### `module.syncBuiltinESMExports()`
@@ -73,9 +73,9 @@ builtin [ES Modules][] to match the properties of the [CommonJS][] exports. It
 does not add or remove exported names from the [ES Modules][].
 
 ```js
-const fs = require('fs');
-const assert = require('assert');
-const { syncBuiltinESMExports } = require('module');
+const fs = require("fs");
+const assert = require("assert");
+const { syncBuiltinESMExports } = require("module");
 
 fs.readFile = newAPI;
 
@@ -89,13 +89,13 @@ fs.newAPI = newAPI;
 
 syncBuiltinESMExports();
 
-import('fs').then((esmFS) => {
+import("fs").then((esmFS) => {
  // It syncs the existing readFile property with the new value
  assert.strictEqual(esmFS.readFile, newAPI);
  // readFileSync has been deleted from the required fs
- assert.strictEqual('readFileSync' in fs, false);
+ assert.strictEqual("readFileSync" in fs, false);
  // syncBuiltinESMExports() does not remove readFileSync from esmFS
- assert.strictEqual('readFileSync' in esmFS, true);
+ assert.strictEqual("readFileSync" in esmFS, true);
  // syncBuiltinESMExports() does not add names
  assert.strictEqual(esmFS.newAPI, undefined);
 });
@@ -122,13 +122,13 @@ To enable source map parsing, Node.js must be run with the flag
 ```mjs
 // module.mjs
 // In an ECMAScript module
-import { findSourceMap, SourceMap } from 'module';
+import { SourceMap, findSourceMap } from "module";
 ```
 
 ```cjs
 // module.cjs
 // In a CommonJS module
-const { findSourceMap, SourceMap } = require('module');
+const { findSourceMap, SourceMap } = require("module");
 ```
 
 <!-- Anchors to make sure old links find a target -->

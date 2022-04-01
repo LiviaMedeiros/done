@@ -1,22 +1,22 @@
-import { mustCall } from '../common/index.mjs';
-import { match, notStrictEqual } from 'assert';
-import { spawn } from 'child_process';
-import { execPath } from 'process';
+import { mustCall } from "../common/index.mjs";
+import { match, notStrictEqual } from "assert";
+import { spawn } from "child_process";
+import { execPath } from "process";
 
 {
  const child = spawn(execPath, [
-  '--experimental-network-imports',
-  '--input-type=module',
-  '-e',
+  "--experimental-network-imports",
+  "--input-type=module",
+  "-e",
   'import "http://example.com"',
  ]);
 
- let stderr = '';
- child.stderr.setEncoding('utf8');
- child.stderr.on('data', (data) => {
+ let stderr = "";
+ child.stderr.setEncoding("utf8");
+ child.stderr.on("data", (data) => {
   stderr += data;
  });
- child.on('close', mustCall((code, _signal) => {
+ child.on("close", mustCall((code, _signal) => {
   notStrictEqual(code, 0);
 
   // [ERR_NETWORK_IMPORT_DISALLOWED]: import of 'http://example.com/' by
@@ -27,17 +27,17 @@ import { execPath } from 'process';
 }
 {
  const child = spawn(execPath, [
-  '--experimental-network-imports',
-  '--input-type=module',
+  "--experimental-network-imports",
+  "--input-type=module",
  ]);
  child.stdin.end('import "http://example.com"');
 
- let stderr = '';
- child.stderr.setEncoding('utf8');
- child.stderr.on('data', (data) => {
+ let stderr = "";
+ child.stderr.setEncoding("utf8");
+ child.stderr.on("data", (data) => {
   stderr += data;
  });
- child.on('close', mustCall((code, _signal) => {
+ child.on("close", mustCall((code, _signal) => {
   notStrictEqual(code, 0);
 
   // [ERR_NETWORK_IMPORT_DISALLOWED]: import of 'http://example.com/' by

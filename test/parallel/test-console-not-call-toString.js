@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 function func() {}
 let toStringCalled = false;
@@ -29,6 +29,6 @@ func.toString = function() {
  toStringCalled = true;
 };
 
-require('util').inspect(func);
+require("util").inspect(func);
 
 assert.ok(!toStringCalled);

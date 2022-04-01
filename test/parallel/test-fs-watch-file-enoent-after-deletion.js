@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // Make sure the deletion event gets reported in the following scenario:
 // 1. Watch a file.
@@ -32,14 +32,14 @@ const common = require('../common');
 // stopped it from getting emitted.
 // https://github.com/nodejs/node-v0.x-archive/issues/4027
 
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const filename = path.join(tmpdir.path, 'watched');
-fs.writeFileSync(filename, 'quis custodiet ipsos custodes');
+const filename = path.join(tmpdir.path, "watched");
+fs.writeFileSync(filename, "quis custodiet ipsos custodes");
 
 fs.watchFile(filename, { interval: 50 }, common.mustCall(function(curr, prev) {
  fs.unwatchFile(filename);

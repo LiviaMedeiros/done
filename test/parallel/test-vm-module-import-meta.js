@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 // Flags: --experimental-vm-modules
 
-const common = require('../common');
-const assert = require('assert');
-const { SourceTextModule } = require('vm');
+const common = require("../common");
+const assert = require("assert");
+const { SourceTextModule } = require("vm");
 
 async function testBasic() {
- const m = new SourceTextModule('globalThis.importMeta = import.meta;', {
+ const m = new SourceTextModule("globalThis.importMeta = import.meta;", {
   initializeImportMeta: common.mustCall((meta, module) => {
    assert.strictEqual(module, m);
    meta.prop = 42;
@@ -17,23 +17,23 @@ async function testBasic() {
  await m.evaluate();
  const result = globalThis.importMeta;
  delete globalThis.importMeta;
- assert.strictEqual(typeof result, 'object');
+ assert.strictEqual(typeof result, "object");
  assert.strictEqual(Object.getPrototypeOf(result), null);
  assert.strictEqual(result.prop, 42);
- assert.deepStrictEqual(Reflect.ownKeys(result), ['prop']);
+ assert.deepStrictEqual(Reflect.ownKeys(result), ["prop"]);
 }
 
 async function testInvalid() {
  for (const invalidValue of [
-  null, {}, 0, Symbol.iterator, [], 'string', false,
+  null, {}, 0, Symbol.iterator, [], "string", false,
  ]) {
   assert.throws(() => {
-   new SourceTextModule('', {
+   new SourceTextModule("", {
     initializeImportMeta: invalidValue,
    });
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
  }
 }

@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 if (!common.hasIntl)
- common.skip('missing Intl');
+ common.skip("missing Intl");
 common.skipIfEslintMissing();
 
-const RuleTester = require('../../tools/node_modules/eslint').RuleTester;
-const rule = require('../../tools/eslint-rules/documented-deprecation-codes');
+const RuleTester = require("../../tools/node_modules/eslint").RuleTester;
+const rule = require("../../tools/eslint-rules/documented-deprecation-codes");
 
-const mdFile = 'doc/api/deprecations.md';
+const mdFile = "doc/api/deprecations.md";
 
-const invalidCode = 'UNDOCUMENTED INVALID CODE';
+const invalidCode = "UNDOCUMENTED INVALID CODE";
 
-new RuleTester().run('documented-deprecation-codes', rule, {
+new RuleTester().run("documented-deprecation-codes", rule, {
  valid: [
   `
     deprecate(function() {

@@ -1,15 +1,15 @@
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const https = require('https');
+const assert = require("assert");
+const https = require("https");
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 const TOTAL = 4;
@@ -21,17 +21,17 @@ const server = https.Server(options, function(req, res) {
  const servername = req.socket.servername;
 
  if (servername !== false) {
-  res.setHeader('x-sni', servername);
+  res.setHeader("x-sni", servername);
  }
 
- res.end('hello world');
+ res.end("hello world");
 });
 
 server.listen(0, function() {
  function expectResponse(id) {
   return common.mustCall(function(res) {
    res.resume();
-   assert.strictEqual(res.headers['x-sni'],
+   assert.strictEqual(res.headers["x-sni"],
                       id === false ? undefined : `sni.${id}`);
   });
  }
@@ -43,9 +43,9 @@ server.listen(0, function() {
   https.get({
    agent: agent,
 
-   path: '/',
+   path: "/",
    port: this.address().port,
-   host: '127.0.0.1',
+   host: "127.0.0.1",
    servername: `sni.${j}`,
    rejectUnauthorized: false,
   }, expectResponse(j));
@@ -53,10 +53,10 @@ server.listen(0, function() {
  https.get({
   agent: agent,
 
-  path: '/',
+  path: "/",
   port: this.address().port,
-  host: '127.0.0.1',
-  servername: '',
+  host: "127.0.0.1",
+  servername: "",
   rejectUnauthorized: false,
  }, expectResponse(false));
 });

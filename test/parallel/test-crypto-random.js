@@ -20,29 +20,29 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // Flags: --pending-deprecation
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
-const cryptop = require('crypto').webcrypto;
-const { kMaxLength } = require('buffer');
+const assert = require("assert");
+const crypto = require("crypto");
+const cryptop = require("crypto").webcrypto;
+const { kMaxLength } = require("buffer");
 
 const kMaxInt32 = 2 ** 31 - 1;
 const kMaxPossibleLength = Math.min(kMaxLength, kMaxInt32);
 
-common.expectWarning('DeprecationWarning',
-                     'crypto.pseudoRandomBytes is deprecated.', 'DEP0115');
+common.expectWarning("DeprecationWarning",
+                     "crypto.pseudoRandomBytes is deprecated.", "DEP0115");
 
 {
  [crypto.randomBytes, crypto.pseudoRandomBytes].forEach((f) => {
   [undefined, null, false, true, {}, []].forEach((value) => {
    const errObj = {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
     message: 'The "size" argument must be of type number.' +
                  common.invalidArgTypeHelper(value),
    };
@@ -52,8 +52,8 @@ common.expectWarning('DeprecationWarning',
 
   [-1, NaN, 2 ** 32, 2 ** 31].forEach((value) => {
    const errObj = {
-    code: 'ERR_OUT_OF_RANGE',
-    name: 'RangeError',
+    code: "ERR_OUT_OF_RANGE",
+    name: "RangeError",
     message: 'The value of "size" is out of range. It must be >= 0 && <= ' +
                  `${kMaxPossibleLength}. Received ${value}`,
    };
@@ -73,16 +73,16 @@ common.expectWarning('DeprecationWarning',
 
 {
  const buf = Buffer.alloc(10);
- const before = buf.toString('hex');
- const after = crypto.randomFillSync(buf).toString('hex');
+ const before = buf.toString("hex");
+ const after = crypto.randomFillSync(buf).toString("hex");
  assert.notStrictEqual(before, after);
 }
 
 {
  const buf = new Uint8Array(new Array(10).fill(0));
- const before = Buffer.from(buf).toString('hex');
+ const before = Buffer.from(buf).toString("hex");
  crypto.randomFillSync(buf);
- const after = Buffer.from(buf).toString('hex');
+ const after = Buffer.from(buf).toString("hex");
  assert.notStrictEqual(before, after);
 }
 
@@ -94,9 +94,9 @@ common.expectWarning('DeprecationWarning',
   new Float64Array(10),
   new DataView(new ArrayBuffer(10)),
  ].forEach((buf) => {
-  const before = Buffer.from(buf.buffer).toString('hex');
+  const before = Buffer.from(buf.buffer).toString("hex");
   crypto.randomFillSync(buf);
-  const after = Buffer.from(buf.buffer).toString('hex');
+  const after = Buffer.from(buf.buffer).toString("hex");
   assert.notStrictEqual(before, after);
  });
 }
@@ -106,9 +106,9 @@ common.expectWarning('DeprecationWarning',
   new Uint16Array(10),
   new Uint32Array(10),
  ].forEach((buf) => {
-  const before = Buffer.from(buf.buffer).toString('hex');
+  const before = Buffer.from(buf.buffer).toString("hex");
   cryptop.getRandomValues(buf);
-  const after = Buffer.from(buf.buffer).toString('hex');
+  const after = Buffer.from(buf.buffer).toString("hex");
   assert.notStrictEqual(before, after);
  });
 }
@@ -118,27 +118,27 @@ common.expectWarning('DeprecationWarning',
   new ArrayBuffer(10),
   new SharedArrayBuffer(10),
  ].forEach((buf) => {
-  const before = Buffer.from(buf).toString('hex');
+  const before = Buffer.from(buf).toString("hex");
   crypto.randomFillSync(buf);
-  const after = Buffer.from(buf).toString('hex');
+  const after = Buffer.from(buf).toString("hex");
   assert.notStrictEqual(before, after);
  });
 }
 
 {
  const buf = Buffer.alloc(10);
- const before = buf.toString('hex');
+ const before = buf.toString("hex");
  crypto.randomFill(buf, common.mustSucceed((buf) => {
-  const after = buf.toString('hex');
+  const after = buf.toString("hex");
   assert.notStrictEqual(before, after);
  }));
 }
 
 {
  const buf = new Uint8Array(new Array(10).fill(0));
- const before = Buffer.from(buf).toString('hex');
+ const before = Buffer.from(buf).toString("hex");
  crypto.randomFill(buf, common.mustSucceed((buf) => {
-  const after = Buffer.from(buf).toString('hex');
+  const after = Buffer.from(buf).toString("hex");
   assert.notStrictEqual(before, after);
  }));
 }
@@ -151,9 +151,9 @@ common.expectWarning('DeprecationWarning',
   new Float64Array(10),
   new DataView(new ArrayBuffer(10)),
  ].forEach((buf) => {
-  const before = Buffer.from(buf.buffer).toString('hex');
+  const before = Buffer.from(buf.buffer).toString("hex");
   crypto.randomFill(buf, common.mustSucceed((buf) => {
-   const after = Buffer.from(buf.buffer).toString('hex');
+   const after = Buffer.from(buf.buffer).toString("hex");
    assert.notStrictEqual(before, after);
   }));
  });
@@ -164,9 +164,9 @@ common.expectWarning('DeprecationWarning',
   new ArrayBuffer(10),
   new SharedArrayBuffer(10),
  ].forEach((buf) => {
-  const before = Buffer.from(buf).toString('hex');
+  const before = Buffer.from(buf).toString("hex");
   crypto.randomFill(buf, common.mustSucceed((buf) => {
-   const after = Buffer.from(buf).toString('hex');
+   const after = Buffer.from(buf).toString("hex");
    assert.notStrictEqual(before, after);
   }));
  });
@@ -174,36 +174,36 @@ common.expectWarning('DeprecationWarning',
 
 {
  const buf = Buffer.alloc(10);
- const before = buf.toString('hex');
+ const before = buf.toString("hex");
  crypto.randomFillSync(buf, 5, 5);
- const after = buf.toString('hex');
+ const after = buf.toString("hex");
  assert.notStrictEqual(before, after);
  assert.deepStrictEqual(before.slice(0, 5), after.slice(0, 5));
 }
 
 {
  const buf = new Uint8Array(new Array(10).fill(0));
- const before = Buffer.from(buf).toString('hex');
+ const before = Buffer.from(buf).toString("hex");
  crypto.randomFillSync(buf, 5, 5);
- const after = Buffer.from(buf).toString('hex');
+ const after = Buffer.from(buf).toString("hex");
  assert.notStrictEqual(before, after);
  assert.deepStrictEqual(before.slice(0, 5), after.slice(0, 5));
 }
 
 {
  const buf = Buffer.alloc(10);
- const before = buf.toString('hex');
+ const before = buf.toString("hex");
  crypto.randomFillSync(buf, 5);
- const after = buf.toString('hex');
+ const after = buf.toString("hex");
  assert.notStrictEqual(before, after);
  assert.deepStrictEqual(before.slice(0, 5), after.slice(0, 5));
 }
 
 {
  const buf = Buffer.alloc(10);
- const before = buf.toString('hex');
+ const before = buf.toString("hex");
  crypto.randomFill(buf, 5, 5, common.mustSucceed((buf) => {
-  const after = buf.toString('hex');
+  const after = buf.toString("hex");
   assert.notStrictEqual(before, after);
   assert.deepStrictEqual(before.slice(0, 5), after.slice(0, 5));
  }));
@@ -211,9 +211,9 @@ common.expectWarning('DeprecationWarning',
 
 {
  const buf = new Uint8Array(new Array(10).fill(0));
- const before = Buffer.from(buf).toString('hex');
+ const before = Buffer.from(buf).toString("hex");
  crypto.randomFill(buf, 5, 5, common.mustSucceed((buf) => {
-  const after = Buffer.from(buf).toString('hex');
+  const after = Buffer.from(buf).toString("hex");
   assert.notStrictEqual(before, after);
   assert.deepStrictEqual(before.slice(0, 5), after.slice(0, 5));
  }));
@@ -228,30 +228,30 @@ common.expectWarning('DeprecationWarning',
   assert.strictEqual(len, 10, `Expected byteLength of 10, got ${len}`);
 
   const typeErrObj = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "offset" argument must be of type number. ' +
                "Received type string ('test')",
   };
 
-  assert.throws(() => crypto.randomFillSync(buf, 'test'), typeErrObj);
+  assert.throws(() => crypto.randomFillSync(buf, "test"), typeErrObj);
 
   assert.throws(
-   () => crypto.randomFill(buf, 'test', common.mustNotCall()),
+   () => crypto.randomFill(buf, "test", common.mustNotCall()),
    typeErrObj);
 
-  typeErrObj.message = typeErrObj.message.replace('offset', 'size');
-  assert.throws(() => crypto.randomFillSync(buf, 0, 'test'), typeErrObj);
+  typeErrObj.message = typeErrObj.message.replace("offset", "size");
+  assert.throws(() => crypto.randomFillSync(buf, 0, "test"), typeErrObj);
 
   assert.throws(
-   () => crypto.randomFill(buf, 0, 'test', common.mustNotCall()),
+   () => crypto.randomFill(buf, 0, "test", common.mustNotCall()),
    typeErrObj,
   );
 
   [NaN, kMaxPossibleLength + 1, -10, (-1 >>> 0) + 1].forEach((offsetSize) => {
    const errObj = {
-    code: 'ERR_OUT_OF_RANGE',
-    name: 'RangeError',
+    code: "ERR_OUT_OF_RANGE",
+    name: "RangeError",
     message: 'The value of "offset" is out of range. ' +
                  `It must be >= 0 && <= 10. Received ${offsetSize}`,
    };
@@ -273,10 +273,10 @@ common.expectWarning('DeprecationWarning',
   });
 
   const rangeErrObj = {
-   code: 'ERR_OUT_OF_RANGE',
-   name: 'RangeError',
+   code: "ERR_OUT_OF_RANGE",
+   name: "RangeError",
    message: 'The value of "size + offset" is out of range. ' +
-               'It must be <= 10. Received 11',
+               "It must be <= 10. Received 11",
   };
   assert.throws(() => crypto.randomFillSync(buf, 1, 10), rangeErrObj);
 
@@ -293,8 +293,8 @@ common.expectWarning('DeprecationWarning',
 assert.throws(
  () => crypto.randomBytes((-1 >>> 0) + 1),
  {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "size" is out of range. ' +
              `It must be >= 0 && <= ${kMaxPossibleLength}. Received 4294967296`,
  },
@@ -305,22 +305,22 @@ assert.throws(
  assert.throws(
   () => crypto.randomFillSync(i),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
  assert.throws(
   () => crypto.randomFill(i, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
  assert.throws(
   () => crypto.randomFill(buf, 0, 10, i),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
 });
 
@@ -328,13 +328,13 @@ assert.throws(
  assert.throws(
   () => crypto.randomBytes(1, i),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
 });
 
-['pseudoRandomBytes', 'prng', 'rng'].forEach((f) => {
+["pseudoRandomBytes", "prng", "rng"].forEach((f) => {
  const desc = Object.getOwnPropertyDescriptor(crypto, f);
  assert.ok(desc);
  assert.strictEqual(desc.configurable, true);
@@ -412,16 +412,16 @@ assert.throws(
 }
 {
 
- ['10', true, NaN, null, {}, []].forEach((i) => {
+ ["10", true, NaN, null, {}, []].forEach((i) => {
   const invalidMinError = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "min" argument must be a safe integer.' +
                `${common.invalidArgTypeHelper(i)}`,
   };
   const invalidMaxError = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "max" argument must be a safe integer.' +
                `${common.invalidArgTypeHelper(i)}`,
   };
@@ -461,8 +461,8 @@ assert.throws(
  assert.throws(
   () => crypto.randomInt(minInt - 1, minInt + 5, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "min" argument must be a safe integer.' +
       `${common.invalidArgTypeHelper(minInt - 1)}`,
   },
@@ -471,8 +471,8 @@ assert.throws(
  assert.throws(
   () => crypto.randomInt(maxInt + 1, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "max" argument must be a safe integer.' +
       `${common.invalidArgTypeHelper(maxInt + 1)}`,
   },
@@ -482,8 +482,8 @@ assert.throws(
  crypto.randomInt(0, 1, common.mustSucceed());
  for (const arg of [[0], [1, 1], [3, 2], [-5, -5], [11, -10]]) {
   assert.throws(() => crypto.randomInt(...arg, common.mustNotCall()), {
-   code: 'ERR_OUT_OF_RANGE',
-   name: 'RangeError',
+   code: "ERR_OUT_OF_RANGE",
+   name: "RangeError",
    message: 'The value of "max" is out of range. It must be greater than ' +
       `the value of "min" (${arg[arg.length - 2] || 0}). ` +
       `Received ${arg[arg.length - 1]}`,
@@ -496,26 +496,26 @@ assert.throws(
  assert.throws(
   () => crypto.randomInt(1, MAX_RANGE + 2, common.mustNotCall()),
   {
-   code: 'ERR_OUT_OF_RANGE',
-   name: 'RangeError',
+   code: "ERR_OUT_OF_RANGE",
+   name: "RangeError",
    message: 'The value of "max - min" is out of range. ' +
                `It must be <= ${MAX_RANGE}. ` +
-               'Received 281_474_976_710_656',
+               "Received 281_474_976_710_656",
   },
  );
 
  assert.throws(() => crypto.randomInt(MAX_RANGE + 1, common.mustNotCall()), {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "max" is out of range. ' +
              `It must be <= ${MAX_RANGE}. ` +
-             'Received 281_474_976_710_656',
+             "Received 281_474_976_710_656",
  });
 
  [true, NaN, null, {}, [], 10].forEach((i) => {
   const cbError = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   };
   assert.throws(() => crypto.randomInt(0, 1, i), cbError);
  });

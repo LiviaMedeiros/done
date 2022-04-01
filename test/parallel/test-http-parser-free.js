@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const Countdown = require('../common/countdown');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const Countdown = require("../common/countdown");
 const N = 100;
 
 const server = http.createServer(function(req, res) {
- res.end('Hello');
+ res.end("Hello");
 });
 
 const countdown = new Countdown(N, () => server.close());

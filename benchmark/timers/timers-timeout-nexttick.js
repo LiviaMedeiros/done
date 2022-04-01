@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 // The following benchmark measures setting up n * 1e6 timeouts,
 // as well as scheduling a next tick from each timeout. Those

@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { promiseHooks } = require('v8');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { promiseHooks } = require("v8");
 
 assert.throws(() => {
  promiseHooks.onAfter(async function() { });

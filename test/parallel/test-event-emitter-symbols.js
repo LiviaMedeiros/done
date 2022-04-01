@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const EventEmitter = require('events');
-const assert = require('assert');
+const common = require("../common");
+const EventEmitter = require("events");
+const assert = require("assert");
 
 const ee = new EventEmitter();
-const foo = Symbol('foo');
+const foo = Symbol("foo");
 const listener = common.mustCall();
 
 ee.on(foo, listener);

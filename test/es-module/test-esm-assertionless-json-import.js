@@ -1,14 +1,14 @@
 // Flags: --experimental-loader ./test/fixtures/es-module-loaders/assertionless-json-import.mjs
-'use strict';
-const common = require('../common');
-const { strictEqual } = require('assert');
+"use strict";
+const common = require("../common");
+const { strictEqual } = require("assert");
 
 async function test() {
  {
   const [secret0, secret1] = await Promise.all([
-   import('../fixtures/experimental.json'),
+   import("../fixtures/experimental.json"),
    import(
-    '../fixtures/experimental.json',
+    "../fixtures/experimental.json",
     { assert: { type: 'json' } }
    ),
   ]);
@@ -21,9 +21,9 @@ async function test() {
 
  {
   const [secret0, secret1] = await Promise.all([
-   import('../fixtures/experimental.json?test'),
+   import("../fixtures/experimental.json?test"),
    import(
-    '../fixtures/experimental.json?test',
+    "../fixtures/experimental.json?test",
     { assert: { type: 'json' } }
    ),
   ]);
@@ -36,9 +36,9 @@ async function test() {
 
  {
   const [secret0, secret1] = await Promise.all([
-   import('../fixtures/experimental.json#test'),
+   import("../fixtures/experimental.json#test"),
    import(
-    '../fixtures/experimental.json#test',
+    "../fixtures/experimental.json#test",
     { assert: { type: 'json' } }
    ),
   ]);
@@ -51,9 +51,9 @@ async function test() {
 
  {
   const [secret0, secret1] = await Promise.all([
-   import('../fixtures/experimental.json?test2#test'),
+   import("../fixtures/experimental.json?test2#test"),
    import(
-    '../fixtures/experimental.json?test2#test',
+    "../fixtures/experimental.json?test2#test",
     { assert: { type: 'json' } }
    ),
   ]);

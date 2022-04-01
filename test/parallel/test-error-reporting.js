@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const exec = require('child_process').exec;
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const exec = require("child_process").exec;
+const fixtures = require("../common/fixtures");
 
 function errExec(script, callback) {
  const cmd = `"${process.argv[0]}" "${fixtures.path(script)}"`;
@@ -32,7 +32,7 @@ function errExec(script, callback) {
   assert.ok(err);
 
   // More than one line of error output.
-  assert.ok(stderr.split('\n').length);
+  assert.ok(stderr.split("\n").length);
 
   // Proxy the args for more tests.
   callback(err, stdout, stderr);
@@ -43,39 +43,39 @@ const syntaxErrorMessage = /\bSyntaxError\b/;
 
 
 // Simple throw error
-errExec('throws_error.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, /blah/);
 }));
 
 
 // Trying to JSON.parse(undefined)
-errExec('throws_error2.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error2.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, syntaxErrorMessage);
 }));
 
 
 // Trying to JSON.parse(undefined) in nextTick
-errExec('throws_error3.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error3.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, syntaxErrorMessage);
 }));
 
 
 // throw ILLEGAL error
-errExec('throws_error4.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error4.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, syntaxErrorMessage);
 }));
 
 // Specific long exception line doesn't result in stack overflow
-errExec('throws_error5.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error5.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, syntaxErrorMessage);
 }));
 
 // Long exception line with length > errorBuffer doesn't result in assertion
-errExec('throws_error6.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error6.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, syntaxErrorMessage);
 }));
 
 // Object that throws in toString() doesn't print garbage
-errExec('throws_error7.js', common.mustCall((err, stdout, stderr) => {
+errExec("throws_error7.js", common.mustCall((err, stdout, stderr) => {
  assert.match(stderr, /throw {\r?\n\^\r?\n{ toString: \[Function: toString] }\r?\n\r?\nNode\.js \S+\r?\n$/);
 }));

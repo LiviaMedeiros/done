@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
 // Custom error throwing
 // eslint-disable-next-line no-throw-literal
-throw ({ name: 'MyCustomError', message: 'This is a custom message' });
+throw ({ name: "MyCustomError", message: "This is a custom message" });

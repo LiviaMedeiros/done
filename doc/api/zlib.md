@@ -12,7 +12,7 @@ Deflate/Inflate, and Brotli.
 To access it:
 
 ```js
-const zlib = require('zlib');
+const zlib = require("zlib");
 ```
 
 Compression and decompression are built around the Node.js [Streams API][].
@@ -22,27 +22,27 @@ piping the source stream through a `zlib` `Transform` stream into a destination
 stream:
 
 ```js
-const { createGzip } = require('zlib');
-const { pipeline } = require('stream');
+const { createGzip } = require("zlib");
+const { pipeline } = require("stream");
 const {
  createReadStream,
  createWriteStream,
-} = require('fs');
+} = require("fs");
 
 const gzip = createGzip();
-const source = createReadStream('input.txt');
-const destination = createWriteStream('input.txt.gz');
+const source = createReadStream("input.txt");
+const destination = createWriteStream("input.txt.gz");
 
 pipeline(source, gzip, destination, (err) => {
  if (err) {
-  console.error('An error occurred:', err);
+  console.error("An error occurred:", err);
   process.exitCode = 1;
  }
 });
 
 // Or, Promisified
 
-const { promisify } = require('util');
+const { promisify } = require("util");
 const pipe = promisify(pipeline);
 
 async function do_gzip(input, output) {
@@ -52,9 +52,9 @@ async function do_gzip(input, output) {
  await pipe(source, gzip, destination);
 }
 
-do_gzip('input.txt', 'input.txt.gz')
+do_gzip("input.txt", "input.txt.gz")
   .catch((err) => {
-  	console.error('An error occurred:', err);
+  	console.error("An error occurred:", err);
   	process.exitCode = 1;
   });
 ```
@@ -62,21 +62,21 @@ do_gzip('input.txt', 'input.txt.gz')
 It is also possible to compress or decompress data in a single step:
 
 ```js
-const { deflate, unzip } = require('zlib');
+const { deflate, unzip } = require("zlib");
 
-const input = '.................................';
+const input = ".................................";
 deflate(input, (err, buffer) => {
  if (err) {
-  console.error('An error occurred:', err);
+  console.error("An error occurred:", err);
   process.exitCode = 1;
  }
- console.log(buffer.toString('base64'));
+ console.log(buffer.toString("base64"));
 });
 
-const buffer = Buffer.from('eJzT0yMAAGTvBe8=', 'base64');
+const buffer = Buffer.from("eJzT0yMAAGTvBe8=", "base64");
 unzip(buffer, (err, buffer) => {
  if (err) {
-  console.error('An error occurred:', err);
+  console.error("An error occurred:", err);
   process.exitCode = 1;
  }
  console.log(buffer.toString());
@@ -84,13 +84,13 @@ unzip(buffer, (err, buffer) => {
 
 // Or, Promisified
 
-const { promisify } = require('util');
+const { promisify } = require("util");
 const do_unzip = promisify(unzip);
 
 do_unzip(buffer)
   .then((buf) => console.log(buf.toString()))
   .catch((err) => {
-  	console.error('An error occurred:', err);
+  	console.error("An error occurred:", err);
   	process.exitCode = 1;
   });
 ```
@@ -105,9 +105,9 @@ Creating and using a large number of zlib objects simultaneously can cause
 significant memory fragmentation.
 
 ```js
-const zlib = require('zlib');
+const zlib = require("zlib");
 
-const payload = Buffer.from('This is some data');
+const payload = Buffer.from("This is some data");
 
 // WARNING: DO NOT DO THIS!
 for (let i = 0; i < 30000; ++i) {
@@ -140,34 +140,34 @@ tradeoffs involved in `zlib` usage.
 
 ```js
 // Client request example
-const zlib = require('zlib');
-const http = require('http');
-const fs = require('fs');
-const { pipeline } = require('stream');
+const zlib = require("zlib");
+const http = require("http");
+const fs = require("fs");
+const { pipeline } = require("stream");
 
-const request = http.get({ host: 'example.com',
-                           path: '/',
+const request = http.get({ host: "example.com",
+                           path: "/",
                            port: 80,
-                           headers: { 'Accept-Encoding': 'br,gzip,deflate' } });
-request.on('response', (response) => {
- const output = fs.createWriteStream('example.com_index.html');
+                           headers: { "Accept-Encoding": "br,gzip,deflate" } });
+request.on("response", (response) => {
+ const output = fs.createWriteStream("example.com_index.html");
 
  const onError = (err) => {
   if (err) {
-   console.error('An error occurred:', err);
+   console.error("An error occurred:", err);
    process.exitCode = 1;
   }
  };
 
- switch (response.headers['content-encoding']) {
-  case 'br':
+ switch (response.headers["content-encoding"]) {
+  case "br":
    pipeline(response, zlib.createBrotliDecompress(), output, onError);
    break;
    // Or, just use zlib.createUnzip() to handle both of the following cases:
-  case 'gzip':
+  case "gzip":
    pipeline(response, zlib.createGunzip(), output, onError);
    break;
-  case 'deflate':
+  case "deflate":
    pipeline(response, zlib.createInflate(), output, onError);
    break;
   default:
@@ -181,18 +181,18 @@ request.on('response', (response) => {
 // server example
 // Running a gzip operation on every request is quite expensive.
 // It would be much more efficient to cache the compressed buffer.
-const zlib = require('zlib');
-const http = require('http');
-const fs = require('fs');
-const { pipeline } = require('stream');
+const zlib = require("zlib");
+const http = require("http");
+const fs = require("fs");
+const { pipeline } = require("stream");
 
 http.createServer((request, response) => {
- const raw = fs.createReadStream('index.html');
+ const raw = fs.createReadStream("index.html");
  // Store both a compressed and an uncompressed version of the resource.
- response.setHeader('Vary', 'Accept-Encoding');
- let acceptEncoding = request.headers['accept-encoding'];
+ response.setHeader("Vary", "Accept-Encoding");
+ let acceptEncoding = request.headers["accept-encoding"];
  if (!acceptEncoding) {
-  acceptEncoding = '';
+  acceptEncoding = "";
  }
 
  const onError = (err) => {
@@ -203,20 +203,20 @@ http.createServer((request, response) => {
    // The best we can do is terminate the response immediately
    // and log the error.
    response.end();
-   console.error('An error occurred:', err);
+   console.error("An error occurred:", err);
   }
  };
 
  // Note: This is not a conformant accept-encoding parser.
  // See https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
  if (/\bdeflate\b/.test(acceptEncoding)) {
-  response.writeHead(200, { 'Content-Encoding': 'deflate' });
+  response.writeHead(200, { "Content-Encoding": "deflate" });
   pipeline(raw, zlib.createDeflate(), response, onError);
  } else if (/\bgzip\b/.test(acceptEncoding)) {
-  response.writeHead(200, { 'Content-Encoding': 'gzip' });
+  response.writeHead(200, { "Content-Encoding": "gzip" });
   pipeline(raw, zlib.createGzip(), response, onError);
  } else if (/\bbr\b/.test(acceptEncoding)) {
-  response.writeHead(200, { 'Content-Encoding': 'br' });
+  response.writeHead(200, { "Content-Encoding": "br" });
   pipeline(raw, zlib.createBrotliCompress(), response, onError);
  } else {
   response.writeHead(200, {});
@@ -233,7 +233,7 @@ method that is used to decompress the last chunk of input data:
 
 ```js
 // This is a truncated version of the buffer from the above examples
-const buffer = Buffer.from('eJzT0yMA', 'base64');
+const buffer = Buffer.from("eJzT0yMA", "base64");
 
 zlib.unzip(
  buffer,
@@ -241,7 +241,7 @@ zlib.unzip(
  { finishFlush: zlib.constants.Z_SYNC_FLUSH },
  (err, buffer) => {
   if (err) {
-   console.error('An error occurred:', err);
+   console.error("An error occurred:", err);
    process.exitCode = 1;
   }
   console.log(buffer.toString());
@@ -319,13 +319,13 @@ In the following example, `flush()` is used to write a compressed partial
 HTTP response to the client:
 
 ```js
-const zlib = require('zlib');
-const http = require('http');
-const { pipeline } = require('stream');
+const zlib = require("zlib");
+const http = require("http");
+const { pipeline } = require("stream");
 
 http.createServer((request, response) => {
  // For the sake of simplicity, the Accept-Encoding checks are omitted.
- response.writeHead(200, { 'content-encoding': 'gzip' });
+ response.writeHead(200, { "content-encoding": "gzip" });
  const output = zlib.createGzip();
  let i;
 
@@ -338,7 +338,7 @@ http.createServer((request, response) => {
    // and log the error.
    clearInterval(i);
    response.end();
-   console.error('An error occurred:', err);
+   console.error("An error occurred:", err);
   }
  });
 

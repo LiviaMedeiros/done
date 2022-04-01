@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 // Test https://github.com/nodejs/node/issues/25499 fix.
 
-const { mustCall } = require('../common');
+const { mustCall } = require("../common");
 
-const { Agent, createServer, get } = require('http');
-const { strictEqual } = require('assert');
+const { Agent, createServer, get } = require("http");
+const { strictEqual } = require("assert");
 
 const server = createServer(mustCall((req, res) => {
  res.end();
@@ -18,16 +18,16 @@ server.listen(0, () => {
  let socket;
 
  const req = get({ agent, port }, (res) => {
-  res.on('end', () => {
+  res.on("end", () => {
    strictEqual(req.setTimeout(0), req);
-   strictEqual(socket.listenerCount('timeout'), 1);
+   strictEqual(socket.listenerCount("timeout"), 1);
    agent.destroy();
    server.close();
   });
   res.resume();
  });
 
- req.on('socket', (sock) => {
+ req.on("socket", (sock) => {
   socket = sock;
  });
 });

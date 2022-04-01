@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { createServer } = require('http');
-const { connect } = require('net');
-const { finished } = require('stream');
+const common = require("../common");
+const assert = require("assert");
+const { createServer } = require("http");
+const { connect } = require("net");
+const { finished } = require("stream");
 
 // This test validates that the 'timeout' event fires
 // after server.headersTimeout.
 
 const headers =
-  'GET / HTTP/1.1\r\n' +
-  'Host: localhost\r\n' +
-  'Agent: node\r\n';
+  "GET / HTTP/1.1\r\n" +
+  "Host: localhost\r\n" +
+  "Agent: node\r\n";
 
 const server = createServer(common.mustNotCall());
 let sendCharEvery = 1000;
@@ -28,17 +28,17 @@ if (!process.env.REAL) {
  server.headersTimeout = 2 * sendCharEvery;
 }
 
-server.once('timeout', common.mustCall((socket) => {
+server.once("timeout", common.mustCall((socket) => {
  socket.destroy();
 }));
 
 server.listen(0, common.mustCall(() => {
  const client = connect(server.address().port);
  client.write(headers);
- client.write('X-CRASH: ');
+ client.write("X-CRASH: ");
 
  const interval = setInterval(() => {
-  client.write('a');
+  client.write("a");
  }, sendCharEvery);
 
  client.resume();

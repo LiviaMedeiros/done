@@ -1,28 +1,28 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert').ok;
-const { performance } = require('perf_hooks');
+const common = require("../common.js");
+const assert = require("assert").ok;
+const { performance } = require("perf_hooks");
 const { nodeTiming, eventLoopUtilization } = performance;
 
 const bench = common.createBenchmark(main, {
  n: [1e6],
  method: [
-  'idleTime',
-  'ELU_simple',
-  'ELU_passed',
+  "idleTime",
+  "ELU_simple",
+  "ELU_passed",
  ],
 });
 
 function main({ method, n }) {
  switch (method) {
-  case 'idleTime':
+  case "idleTime":
    benchIdleTime(n);
    break;
-  case 'ELU_simple':
+  case "ELU_simple":
    benchELUSimple(n);
    break;
-  case 'ELU_passed':
+  case "ELU_passed":
    benchELUPassed(n);
    break;
   default:

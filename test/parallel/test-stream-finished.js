@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Writable,
  Readable,
@@ -9,12 +9,12 @@ const {
  Duplex,
  PassThrough,
  Stream,
-} = require('stream');
-const assert = require('assert');
-const EE = require('events');
-const fs = require('fs');
-const { promisify } = require('util');
-const http = require('http');
+} = require("stream");
+const assert = require("assert");
+const EE = require("events");
+const fs = require("fs");
+const { promisify } = require("util");
+const http = require("http");
 
 {
  const rs = new Readable({
@@ -49,11 +49,11 @@ const http = require('http');
  let finish = false;
  let ended = false;
 
- tr.on('end', () => {
+ tr.on("end", () => {
   ended = true;
  });
 
- tr.on('finish', () => {
+ tr.on("finish", () => {
   finish = true;
  });
 
@@ -82,7 +82,7 @@ const http = require('http');
 
   let ended = false;
   rs.resume();
-  rs.on('end', () => {
+  rs.on("end", () => {
    ended = true;
   });
   await finishedPromise(rs);
@@ -100,7 +100,7 @@ const http = require('http');
 
  const rs = Readable.from((function* () {})());
  finished(rs, { signal }, common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
+  assert.strictEqual(err.name, "AbortError");
  }));
 }
 
@@ -111,7 +111,7 @@ const http = require('http');
 
  const rs = Readable.from((function* () {})());
  finished(rs, { signal }, common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
+  assert.strictEqual(err.name, "AbortError");
  }));
 
  ac.abort();
@@ -125,7 +125,7 @@ const http = require('http');
  const rs = Readable.from((function* () {})());
  setTimeout(() => ac.abort(), 1);
  finished(rs, { signal }, common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
+  assert.strictEqual(err.name, "AbortError");
  }));
 }
 
@@ -153,7 +153,7 @@ const http = require('http');
   await finishedPromise(rs, { signal });
  }
 
- assert.rejects(run, { name: 'AbortError' }).then(common.mustCall());
+ assert.rejects(run, { name: "AbortError" }).then(common.mustCall());
 }
 
 {
@@ -166,15 +166,15 @@ const http = require('http');
   await finishedPromise(rs, { signal });
  }
 
- assert.rejects(run, { name: 'AbortError' }).then(common.mustCall());
+ assert.rejects(run, { name: "AbortError" }).then(common.mustCall());
 }
 
 
 {
- const rs = fs.createReadStream('file-does-not-exist');
+ const rs = fs.createReadStream("file-does-not-exist");
 
  finished(rs, common.expectsError({
-  code: 'ENOENT',
+  code: "ENOENT",
  }));
 }
 
@@ -184,7 +184,7 @@ const http = require('http');
  finished(rs, common.mustSucceed());
 
  rs.push(null);
- rs.emit('close'); // Should not trigger an error
+ rs.emit("close"); // Should not trigger an error
  rs.resume();
 }
 
@@ -192,10 +192,10 @@ const http = require('http');
  const rs = new Readable();
 
  finished(rs, common.mustCall((err) => {
-  assert(err, 'premature close error');
+  assert(err, "premature close error");
  }));
 
- rs.emit('close'); // Should trigger error
+ rs.emit("close"); // Should trigger error
  rs.push(null);
  rs.resume();
 }
@@ -207,23 +207,23 @@ const http = require('http');
  });
 
  assert.throws(
-  () => finished(rs, 'foo'),
+  () => finished(rs, "foo"),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
    message: /callback/,
   },
  );
  assert.throws(
-  () => finished(rs, 'foo', () => {}),
+  () => finished(rs, "foo", () => {}),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
    message: /options/,
   },
  );
  assert.throws(
-  () => finished(rs, {}, 'foo'),
+  () => finished(rs, {}, "foo"),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
    message: /callback/,
   },
  );
@@ -251,7 +251,7 @@ const http = require('http');
  const removeListeners = finished(rs, common.mustNotCall());
  removeListeners();
 
- rs.emit('close');
+ rs.emit("close");
  rs.push(null);
  rs.resume();
 }
@@ -264,9 +264,9 @@ const http = require('http');
   () => {
    finished(streamLike, () => {});
   },
-  { code: 'ERR_INVALID_ARG_TYPE' },
+  { code: "ERR_INVALID_ARG_TYPE" },
  );
- streamLike.emit('close');
+ streamLike.emit("close");
 }
 
 {
@@ -274,7 +274,7 @@ const http = require('http');
  writable.writable = false;
  writable.destroy();
  finished(writable, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+  assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
  }));
 }
 
@@ -283,7 +283,7 @@ const http = require('http');
  readable.readable = false;
  readable.destroy();
  finished(readable, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+  assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
  }));
 }
 
@@ -294,9 +294,9 @@ const http = require('http');
   },
  });
  finished(w, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+  assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
  }));
- w.end('asd');
+ w.end("asd");
  w.destroy();
 }
 
@@ -377,7 +377,7 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
   },
   autoDestroy: false,
  });
- w.end('asd');
+ w.end("asd");
  process.nextTick(() => {
   finished(w, common.mustCall());
  });
@@ -390,8 +390,8 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
   },
   autoDestroy: false,
  });
- w.write('asd');
- w.on('error', common.mustCall(() => {
+ w.write("asd");
+ w.on("error", common.mustCall(() => {
   finished(w, common.mustCall());
  }));
 }
@@ -402,7 +402,7 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  });
  r.push(null);
  r.resume();
- r.on('end', common.mustCall(() => {
+ r.on("end", common.mustCall(() => {
   finished(r, common.mustCall());
  }));
 }
@@ -410,8 +410,8 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
 {
  const rs = fs.createReadStream(__filename, { autoClose: false });
  rs.resume();
- rs.on('close', common.mustNotCall());
- rs.on('end', common.mustCall(() => {
+ rs.on("close", common.mustNotCall());
+ rs.on("end", common.mustCall(() => {
   finished(rs, common.mustCall());
  }));
 }
@@ -421,18 +421,18 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  d._writableState = {};
  d._writableState.finished = true;
  finished(d, { readable: false, writable: true }, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+  assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
  }));
  d._writableState.errored = true;
- d.emit('close');
+ d.emit("close");
 }
 
 {
  const r = new Readable();
  finished(r, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+  assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
  }));
- r.push('asd');
+ r.push("asd");
  r.push(null);
  r.destroy();
 }
@@ -445,7 +445,7 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
   },
  });
 
- d.on('end', common.mustCall());
+ d.on("end", common.mustCall());
 
  finished(d, { readable: true, writable: false }, common.mustCall());
 
@@ -461,7 +461,7 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
   },
  });
 
- d.on('end', common.mustCall());
+ d.on("end", common.mustCall());
 
  d.end();
  finished(d, { readable: true, writable: false }, common.mustCall());
@@ -476,7 +476,7 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  const r = new Readable();
  finished(r, common.mustCall());
  r.resume();
- r.push('asd');
+ r.push("asd");
  r.destroyed = true;
  r.push(null);
 }
@@ -494,11 +494,11 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
    this.response = response;
    this.readMore = false;
 
-   response.once('end', () => {
+   response.once("end", () => {
     this.push(null);
    });
 
-   response.on('readable', () => {
+   response.on("readable", () => {
     if (this.readMore) {
      this._read();
     }
@@ -522,25 +522,25 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  }
 
  const instance = new HelloWorld(response);
- instance.setEncoding('utf8');
+ instance.setEncoding("utf8");
  instance.end();
 
  (async () => {
-  await EE.once(instance, 'finish');
+  await EE.once(instance, "finish");
 
   setImmediate(() => {
-   response.write('chunk 1');
-   response.write('chunk 2');
-   response.write('chunk 3');
+   response.write("chunk 1");
+   response.write("chunk 2");
+   response.write("chunk 3");
    response.end();
   });
 
-  let res = '';
+  let res = "";
   for await (const data of instance) {
    res += data;
   }
 
-  assert.strictEqual(res, 'chunk 1chunk 2chunk 3');
+  assert.strictEqual(res, "chunk 1chunk 2chunk 3");
  })().then(common.mustCall());
 }
 
@@ -553,14 +553,14 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
 {
  const p = new PassThrough();
  p.end();
- p.on('finish', common.mustCall(() => {
+ p.on("finish", common.mustCall(() => {
   finished(p, common.mustNotCall());
  }));
 }
 
 {
  const server = http.createServer(common.mustCall((req, res) => {
-  res.on('close', common.mustCall(() => {
+  res.on("close", common.mustCall(() => {
    finished(res, common.mustCall(() => {
     server.close();
    }));
@@ -569,16 +569,16 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  }))
   .listen(0, function() {
   	http.request({
-  		method: 'GET',
+  		method: "GET",
   		port: this.address().port,
   	}).end()
-      .on('response', common.mustCall());
+      .on("response", common.mustCall());
   });
 }
 
 {
  const server = http.createServer(common.mustCall((req, res) => {
-  req.on('close', common.mustCall(() => {
+  req.on("close", common.mustCall(() => {
    finished(req, common.mustCall(() => {
     server.close();
    }));
@@ -586,9 +586,9 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
   req.destroy();
  })).listen(0, function() {
   http.request({
-   method: 'GET',
+   method: "GET",
    port: this.address().port,
-  }).end().on('error', common.mustCall());
+  }).end().on("error", common.mustCall());
  });
 }
 
@@ -601,11 +601,11 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  w.aborted = false;
  w.end();
  let closed = false;
- w.on('finish', () => {
+ w.on("finish", () => {
   assert.strictEqual(closed, false);
-  w.emit('aborted');
+  w.emit("aborted");
  });
- w.on('close', common.mustCall(() => {
+ w.on("close", common.mustCall(() => {
   closed = true;
  }));
 
@@ -634,9 +634,9 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
  assert.strictEqual(w.errored, null);
  finished(w, common.mustCall((err) => {
   assert.strictEqual(w.closed, true);
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+  assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
   finished(w, common.mustCall((err) => {
-   assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+   assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
   }));
  }));
 }
@@ -657,7 +657,7 @@ testClosed((opts) => new Writable({ write() {}, ...opts }));
   }));
  })).listen(0, function() {
   http.request(
-   { method: 'GET', port: this.address().port },
+   { method: "GET", port: this.address().port },
    common.mustCall(function(res) {
     res.resume();
     server.close();

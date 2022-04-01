@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('dgram clustering is currently not supported on windows.');
+ common.skip("dgram clustering is currently not supported on windows.");
 
-const assert = require('assert');
-const cluster = require('cluster');
-const dgram = require('dgram');
+const assert = require("assert");
+const cluster = require("cluster");
+const dgram = require("dgram");
 
 if (cluster.isPrimary) {
- cluster.fork().on('exit', common.mustCall((code) => {
+ cluster.fork().on("exit", common.mustCall((code) => {
   assert.strictEqual(code, 0);
  }));
  return;
@@ -20,7 +20,7 @@ function close() {
   cluster.worker.disconnect();
 }
 
-const options = { type: 'udp4', reuseAddr: true };
+const options = { type: "udp4", reuseAddr: true };
 const socket1 = dgram.createSocket(options);
 const socket2 = dgram.createSocket(options);
 

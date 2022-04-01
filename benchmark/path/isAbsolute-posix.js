@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common.js');
-const { posix } = require('path');
+"use strict";
+const common = require("../common.js");
+const { posix } = require("path");
 
 const bench = common.createBenchmark(main, {
  path: [
-  '',
-  '.',
-  '/foo/bar',
-  '/baz/..',
-  'bar/baz',
+  "",
+  ".",
+  "/foo/bar",
+  "/baz/..",
+  "bar/baz",
  ],
  n: [1e5],
 });

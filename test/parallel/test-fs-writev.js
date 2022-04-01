@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const tmpdir = require('../common/tmpdir');
+const common = require("../common");
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
+const tmpdir = require("../common/tmpdir");
 
 tmpdir.refresh();
 
-const expected = 'ümlaut. Лорем 運務ホソモ指及 आपको करने विकास 紙読決多密所 أضف';
+const expected = "ümlaut. Лорем 運務ホソモ指及 आपको करने विकास 紙読決多密所 أضف";
 
 const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
 
@@ -19,7 +19,7 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
 // fs.writev with array of buffers with all parameters
 {
  const filename = getFileName(1);
- const fd = fs.openSync(filename, 'w');
+ const fd = fs.openSync(filename, "w");
 
  const buffer = Buffer.from(expected);
  const bufferArr = [buffer, buffer];
@@ -39,7 +39,7 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
 // fs.writev with array of buffers without position
 {
  const filename = getFileName(2);
- const fd = fs.openSync(filename, 'w');
+ const fd = fs.openSync(filename, "w");
 
  const buffer = Buffer.from(expected);
  const bufferArr = [buffer, buffer];
@@ -61,7 +61,7 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
 // fs.writev with empty array of buffers
 {
  const filename = getFileName(3);
- const fd = fs.openSync(filename, 'w');
+ const fd = fs.openSync(filename, "w");
  const bufferArr = [];
  let afterSyncCall = false;
 
@@ -81,13 +81,13 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
  */
 {
  const filename = getFileName(4);
- const fd = fs.openSync(filename, 'w');
+ const fd = fs.openSync(filename, "w");
 
- [false, 'test', {}, [{}], ['sdf'], null, undefined].forEach((i) => {
+ [false, "test", {}, [{}], ["sdf"], null, undefined].forEach((i) => {
   assert.throws(
    () => fs.writev(fd, i, null, common.mustNotCall()), {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
    },
   );
  });
@@ -96,12 +96,12 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
 }
 
 // fs.writev with wrong fd types
-[false, 'test', {}, [{}], null, undefined].forEach((i) => {
+[false, "test", {}, [{}], null, undefined].forEach((i) => {
  assert.throws(
   () => fs.writev(i, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
 });

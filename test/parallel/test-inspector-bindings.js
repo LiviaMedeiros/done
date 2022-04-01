@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 common.skipIfInspectorDisabled();
-const assert = require('assert');
-const inspector = require('inspector');
-const path = require('path');
-const { pathToFileURL } = require('url');
+const assert = require("assert");
+const inspector = require("inspector");
+const path = require("path");
+const { pathToFileURL } = require("url");
 
 // This test case will set a breakpoint 4 lines below
 function debuggedFunction() {
@@ -19,11 +19,11 @@ function debuggedFunction() {
 let scopeCallback = null;
 
 function checkScope(session, scopeId) {
- session.post('Runtime.getProperties', {
-  'objectId': scopeId,
-  'ownProperties': false,
-  'accessorPropertiesOnly': false,
-  'generatePreview': true,
+ session.post("Runtime.getProperties", {
+  "objectId": scopeId,
+  "ownProperties": false,
+  "accessorPropertiesOnly": false,
+  "generatePreview": true,
  }, scopeCallback);
 }
 
@@ -35,8 +35,8 @@ function debuggerPausedCallback(session, notification) {
 }
 
 function waitForWarningSkipAsyncStackTraces(resolve) {
- process.once('warning', function(warning) {
-  if (warning.code === 'INSPECTOR_ASYNC_STACK_TRACES_NOT_AVAILABLE') {
+ process.once("warning", function(warning) {
+  if (warning.code === "INSPECTOR_ASYNC_STACK_TRACES_NOT_AVAILABLE") {
    waitForWarningSkipAsyncStackTraces(resolve);
   } else {
    resolve(warning);
@@ -48,10 +48,10 @@ async function testNoCrashWithExceptionInCallback() {
  // There is a deliberate exception in the callback
  const session = new inspector.Session();
  session.connect();
- const error = new Error('We expect this');
- console.log('Expecting warning to be emitted');
+ const error = new Error("We expect this");
+ console.log("Expecting warning to be emitted");
  const promise = new Promise(waitForWarningSkipAsyncStackTraces);
- session.post('Console.enable', () => { throw error; });
+ session.post("Console.enable", () => { throw error; });
  assert.strictEqual(await promise, error);
  session.disconnect();
 }
@@ -65,7 +65,7 @@ function testSampleDebugSession() {
  };
  scopeCallback = function(error, result) {
   const i = cur++;
-  let v, actual, expected;
+  let actual, expected, v;
   for (v of result.result) {
    actual = v.value.value;
    expected = expects[v.name][i];
@@ -77,18 +77,18 @@ function testSampleDebugSession() {
  };
  const session = new inspector.Session();
  session.connect();
- session.on('Debugger.paused',
+ session.on("Debugger.paused",
             (notification) => debuggerPausedCallback(session, notification));
  let cbAsSecondArgCalled = false;
  assert.throws(() => {
-  session.post('Debugger.enable', function() {}, function() {});
+  session.post("Debugger.enable", function() {}, function() {});
  }, TypeError);
- session.post('Debugger.enable', () => cbAsSecondArgCalled = true);
- session.post('Debugger.setBreakpointByUrl', {
-  'lineNumber': 13,
-  'url': pathToFileURL(path.resolve(__dirname, __filename)).toString(),
-  'columnNumber': 0,
-  'condition': '',
+ session.post("Debugger.enable", () => cbAsSecondArgCalled = true);
+ session.post("Debugger.setBreakpointByUrl", {
+  "lineNumber": 13,
+  "url": pathToFileURL(path.resolve(__dirname, __filename)).toString(),
+  "columnNumber": 0,
+  "condition": "",
  });
 
  debuggedFunction();
@@ -97,22 +97,22 @@ function testSampleDebugSession() {
  assert.strictEqual(cur, 5);
  scopeCallback = null;
  session.disconnect();
- assert.throws(() => session.post('Debugger.enable'), (e) => !!e);
+ assert.throws(() => session.post("Debugger.enable"), (e) => !!e);
 }
 
 async function testNoCrashConsoleLogBeforeThrow() {
  const session = new inspector.Session();
  session.connect();
  let attempt = 1;
- process.on('warning', common.mustCall(3));
- session.on('inspectorNotification', () => {
+ process.on("warning", common.mustCall(3));
+ session.on("inspectorNotification", () => {
   if (attempt++ > 3)
    return;
-  console.log('console.log in handler');
-  throw new Error('Exception in handler');
+  console.log("console.log in handler");
+  throw new Error("Exception in handler");
  });
- session.post('Runtime.enable');
- console.log('Did not crash');
+ session.post("Runtime.enable");
+ console.log("Did not crash");
  session.disconnect();
 }
 

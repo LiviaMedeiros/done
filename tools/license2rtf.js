@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const assert = require('assert');
-const Stream = require('stream');
+const assert = require("assert");
+const Stream = require("stream");
 
 
 /*
@@ -10,25 +10,25 @@ const Stream = require('stream');
 class LineSplitter extends Stream {
  constructor() {
   super();
-  this.buffer = '';
+  this.buffer = "";
   this.writable = true;
  }
 
  write(data) {
   const lines = (this.buffer + data).split(/\r\n|\n\r|\n|\r/);
   for (let i = 0; i < lines.length - 1; i++) {
-   this.emit('data', lines[i]);
+   this.emit("data", lines[i]);
   }
   this.buffer = lines[lines.length - 1];
   return true;
  }
 
  end(data) {
-  this.write(data || '');
+  this.write(data || "");
   if (this.buffer) {
-   this.emit('data', this.buffer);
+   this.emit("data", this.buffer);
   }
-  this.emit('end');
+  this.emit("end");
  }
 }
 
@@ -45,22 +45,22 @@ class ParagraphParser extends Stream {
  }
 
  write(data) {
-  this.parseLine(data + '');
+  this.parseLine(data + "");
   return true;
  }
 
  end(data) {
   if (data)
-   this.parseLine(data + '');
+   this.parseLine(data + "");
   this.flushParagraph();
-  this.emit('end');
+  this.emit("end");
  }
 
  resetParagraph() {
   this.paragraphLineIndent = -1;
 
   this.paragraph = {
-   li: '',
+   li: "",
    inLicenseBlock: this.blockIsLicenseBlock,
    lines: [],
   };
@@ -74,7 +74,7 @@ class ParagraphParser extends Stream {
 
  flushParagraph() {
   if (this.paragraph.lines.length || this.paragraph.li) {
-   this.emit('data', this.paragraph);
+   this.emit("data", this.paragraph);
   }
   this.resetParagraph();
  }
@@ -96,14 +96,14 @@ class ParagraphParser extends Stream {
     this.blockHasCStyleComment = /^\s*(\/\*)/.test(line);
    if (this.blockHasCStyleComment) {
     const prev = line;
-    line = line.replace(/^(\s*?)(?:\s?\*\/|\/\*\s|\s\*\s?)/, '$1');
+    line = line.replace(/^(\s*?)(?:\s?\*\/|\/\*\s|\s\*\s?)/, "$1");
     if (prev === line)
-     line = line.replace(/^\s{2}/, '');
+     line = line.replace(/^\s{2}/, "");
     if (/\*\//.test(prev))
      this.blockHasCStyleComment = false;
    } else {
     // Strip C++ and perl style comments.
-    line = line.replace(/^(\s*)(?:\/\/\s?|#\s?)/, '$1');
+    line = line.replace(/^(\s*)(?:\/\/\s?|#\s?)/, "$1");
    }
   }
 
@@ -185,7 +185,7 @@ class Unwrapper extends Stream {
    if (line.length < 50) {
     // If the first word on the next line really didn't fit after the line,
     // it probably was just ordinary wrapping after all.
-    const nextFirstWordLength = lines[i + 1].replace(/\s.*$/, '').length;
+    const nextFirstWordLength = lines[i + 1].replace(/\s.*$/, "").length;
     if (line.length + nextFirstWordLength < 60) {
      breakAfter[i] = true;
     }
@@ -203,30 +203,30 @@ class Unwrapper extends Stream {
   for (i = 0; i < lines.length; i++) {
    // Replace multiple whitespace characters by a single one, and strip
    // trailing whitespace.
-   lines[i] = lines[i].replace(/\s+/g, ' ').replace(/\s+$/, '');
+   lines[i] = lines[i].replace(/\s+/g, " ").replace(/\s+$/, "");
   }
 
-  this.emit('data', paragraph);
+  this.emit("data", paragraph);
  }
 
  end(data) {
   if (data)
    this.write(data);
-  this.emit('end');
+  this.emit("end");
  }
 }
 
 function rtfEscape(string) {
  function toHex(number, length) {
-  return (~~number).toString(16).padStart(length, '0');
+  return (~~number).toString(16).padStart(length, "0");
  }
 
  return string
     .replace(/[\\{}]/g, (m) => `\\${m}`)
-    .replace(/\t/g, () => '\\tab ')
+    .replace(/\t/g, () => "\\tab ")
     // eslint-disable-next-line no-control-regex
     .replace(/[\x00-\x1f\x7f-\xff]/g, (m) => `\\'${toHex(m.charCodeAt(0), 2)}`)
-    .replace(/\ufeff/g, '')
+    .replace(/\ufeff/g, "")
     .replace(/[\u0100-\uffff]/g, (m) => `\\u${toHex(m.charCodeAt(0), 4)}?`);
 }
 
@@ -249,23 +249,23 @@ class RtfGenerator extends Stream {
   if (li)
    level++;
 
-  let rtf = '\\pard\\sa150\\sl300\\slmult1';
+  let rtf = "\\pard\\sa150\\sl300\\slmult1";
   if (level > 0)
    rtf += `\\li${level * 240}`;
   if (li)
    rtf += `\\tx${level * 240}\\fi-240`;
   if (lic)
-   rtf += '\\ri240';
+   rtf += "\\ri240";
   if (!lic)
-   rtf += '\\b';
+   rtf += "\\b";
   if (li)
    rtf += ` ${li}\\tab`;
-  rtf += ` ${lines.map(rtfEscape).join('\\line ')}`;
+  rtf += ` ${lines.map(rtfEscape).join("\\line ")}`;
   if (!lic)
-   rtf += '\\b0';
-  rtf += '\\par\n';
+   rtf += "\\b0";
+  rtf += "\\par\n";
 
-  this.emit('data', rtf);
+  this.emit("data", rtf);
  }
 
  end(data) {
@@ -273,17 +273,17 @@ class RtfGenerator extends Stream {
    this.write(data);
   if (this.didWriteAnything)
    this.emitFooter();
-  this.emit('end');
+  this.emit("end");
  }
 
  emitHeader() {
-  this.emit('data', '{\\rtf1\\ansi\\ansicpg1252\\uc1\\deff0\\deflang1033' +
-                      '{\\fonttbl{\\f0\\fswiss\\fcharset0 Tahoma;}}\\fs20\n' +
-                      '{\\*\\generator txt2rtf 0.0.1;}\n');
+  this.emit("data", "{\\rtf1\\ansi\\ansicpg1252\\uc1\\deff0\\deflang1033" +
+                      "{\\fonttbl{\\f0\\fswiss\\fcharset0 Tahoma;}}\\fs20\n" +
+                      "{\\*\\generator txt2rtf 0.0.1;}\n");
  }
 
  emitFooter() {
-  this.emit('data', '}');
+  this.emit("data", "}");
  }
 }
 
@@ -295,7 +295,7 @@ const paragraphParser = new ParagraphParser();
 const unwrapper = new Unwrapper();
 const rtfGenerator = new RtfGenerator();
 
-stdin.setEncoding('utf-8');
+stdin.setEncoding("utf-8");
 stdin.resume();
 
 stdin.pipe(lineSplitter);

@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { promisify } = require('util');
-const execFile = require('child_process').execFile;
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const assert = require("assert");
+const { promisify } = require("util");
+const execFile = require("child_process").execFile;
+const fixtures = require("../common/fixtures");
 
-const echoFixture = fixtures.path('echo.js');
+const echoFixture = fixtures.path("echo.js");
 const promisified = promisify(execFile);
 const invalidArgTypeError = {
- code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError',
+ code: "ERR_INVALID_ARG_TYPE",
+ name: "TypeError",
 };
 
 {
@@ -23,7 +23,7 @@ const invalidArgTypeError = {
 
  assert.rejects(
   promise,
-  { name: 'AbortError' },
+  { name: "AbortError" },
  ).then(common.mustCall());
 }
 
@@ -33,7 +33,7 @@ const invalidArgTypeError = {
 
  assert.rejects(
   promisified(process.execPath, [echoFixture, 0], { signal }),
-  { name: 'AbortError' },
+  { name: "AbortError" },
  ).then(common.mustCall());
 }
 
@@ -49,7 +49,7 @@ const invalidArgTypeError = {
 {
  // Verify that if something different than Abortcontroller.signal
  // is passed, ERR_INVALID_ARG_TYPE is thrown
- const signal = 'world!';
+ const signal = "world!";
  assert.throws(() => {
   promisified(process.execPath, [echoFixture, 0], { signal });
  }, invalidArgTypeError);

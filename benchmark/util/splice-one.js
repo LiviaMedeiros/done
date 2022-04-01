@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 const bench = common.createBenchmark(main, {
  n: [1e5],
- pos: ['start', 'middle', 'end'],
+ pos: ["start", "middle", "end"],
  size: [10, 100, 500],
-}, { flags: ['--expose-internals'] });
+}, { flags: ["--expose-internals"] });
 
 function main({ n, pos, size }) {
- const { spliceOne } = require('internal/util');
+ const { spliceOne } = require("internal/util");
  const arr = new Array(size);
- arr.fill('');
+ arr.fill("");
  let index;
  switch (pos) {
-  case 'end':
+  case "end":
    index = size - 1;
    break;
-  case 'middle':
+  case "middle":
    index = Math.floor(size / 2);
    break;
   default: // start
@@ -27,7 +27,7 @@ function main({ n, pos, size }) {
  bench.start();
  for (let i = 0; i < n; i++) {
   spliceOne(arr, index);
-  arr.push('');
+  arr.push("");
  }
  bench.end(n);
 }

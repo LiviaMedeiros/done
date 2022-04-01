@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { Duplex, Readable, Writable, pipeline } = require('stream');
-const { Blob } = require('buffer');
+const common = require("../common");
+const assert = require("assert");
+const { Duplex, Readable, Writable, pipeline } = require("stream");
+const { Blob } = require("buffer");
 
 {
  const d = Duplex.from({
   readable: new Readable({
    read() {
-    this.push('asd');
+    this.push("asd");
     this.push(null);
    },
   }),
  });
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, false);
- d.once('readable', common.mustCall(function() {
-  assert.strictEqual(d.read().toString(), 'asd');
+ d.once("readable", common.mustCall(function() {
+  assert.strictEqual(d.read().toString(), "asd");
  }));
- d.once('end', common.mustCall(function() {
+ d.once("end", common.mustCall(function() {
   assert.strictEqual(d.readable, false);
  }));
 }
@@ -27,22 +27,22 @@ const { Blob } = require('buffer');
 {
  const d = Duplex.from(new Readable({
   read() {
-   this.push('asd');
+   this.push("asd");
    this.push(null);
   },
  }));
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, false);
- d.once('readable', common.mustCall(function() {
-  assert.strictEqual(d.read().toString(), 'asd');
+ d.once("readable", common.mustCall(function() {
+  assert.strictEqual(d.read().toString(), "asd");
  }));
- d.once('end', common.mustCall(function() {
+ d.once("end", common.mustCall(function() {
   assert.strictEqual(d.readable, false);
  }));
 }
 
 {
- let ret = '';
+ let ret = "";
  const d = Duplex.from(new Writable({
   write(chunk, encoding, callback) {
    ret += chunk;
@@ -51,15 +51,15 @@ const { Blob } = require('buffer');
  }));
  assert.strictEqual(d.readable, false);
  assert.strictEqual(d.writable, true);
- d.end('asd');
- d.on('finish', common.mustCall(function() {
+ d.end("asd");
+ d.on("finish", common.mustCall(function() {
   assert.strictEqual(d.writable, false);
-  assert.strictEqual(ret, 'asd');
+  assert.strictEqual(ret, "asd");
  }));
 }
 
 {
- let ret = '';
+ let ret = "";
  const d = Duplex.from({
   writable: new Writable({
    write(chunk, encoding, callback) {
@@ -70,19 +70,19 @@ const { Blob } = require('buffer');
  });
  assert.strictEqual(d.readable, false);
  assert.strictEqual(d.writable, true);
- d.end('asd');
- d.on('finish', common.mustCall(function() {
+ d.end("asd");
+ d.on("finish", common.mustCall(function() {
   assert.strictEqual(d.writable, false);
-  assert.strictEqual(ret, 'asd');
+  assert.strictEqual(ret, "asd");
  }));
 }
 
 {
- let ret = '';
+ let ret = "";
  const d = Duplex.from({
   readable: new Readable({
    read() {
-    this.push('asd');
+    this.push("asd");
     this.push(null);
    },
   }),
@@ -95,27 +95,27 @@ const { Blob } = require('buffer');
  });
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, true);
- d.once('readable', common.mustCall(function() {
-  assert.strictEqual(d.read().toString(), 'asd');
+ d.once("readable", common.mustCall(function() {
+  assert.strictEqual(d.read().toString(), "asd");
  }));
- d.once('end', common.mustCall(function() {
+ d.once("end", common.mustCall(function() {
   assert.strictEqual(d.readable, false);
  }));
- d.end('asd');
- d.once('finish', common.mustCall(function() {
+ d.end("asd");
+ d.once("finish", common.mustCall(function() {
   assert.strictEqual(d.writable, false);
-  assert.strictEqual(ret, 'asd');
+  assert.strictEqual(ret, "asd");
  }));
 }
 
 {
- const d = Duplex.from(Promise.resolve('asd'));
+ const d = Duplex.from(Promise.resolve("asd"));
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, false);
- d.once('readable', common.mustCall(function() {
-  assert.strictEqual(d.read().toString(), 'asd');
+ d.once("readable", common.mustCall(function() {
+  assert.strictEqual(d.read().toString(), "asd");
  }));
- d.once('end', common.mustCall(function() {
+ d.once("end", common.mustCall(function() {
   assert.strictEqual(d.readable, false);
  }));
 }
@@ -123,11 +123,11 @@ const { Blob } = require('buffer');
 {
  // https://github.com/nodejs/node/issues/40497
  pipeline(
-  ['abc\ndef\nghi'],
+  ["abc\ndef\nghi"],
   Duplex.from(async function * (source) {
-   let rest = '';
+   let rest = "";
    for await (const chunk of source) {
-    const lines = (rest + chunk.toString()).split('\n');
+    const lines = (rest + chunk.toString()).split("\n");
     rest = lines.pop();
     for (const line of lines) {
      yield line;
@@ -136,11 +136,11 @@ const { Blob } = require('buffer');
    yield rest;
   }),
   async function * (source) { // eslint-disable-line require-yield
-   let ret = '';
+   let ret = "";
    for await (const x of source) {
     ret += x;
    }
-   assert.strictEqual(ret, 'abcdefghi');
+   assert.strictEqual(ret, "abcdefghi");
   },
   common.mustCall(() => {}),
  );
@@ -154,32 +154,32 @@ const { Blob } = require('buffer');
 
 // Ensure that Duplex.from works for blobs
 {
- const blob = new Blob(['blob']);
+ const blob = new Blob(["blob"]);
  const expectedByteLength = blob.size;
  const duplex = Duplex.from(blob);
- duplex.on('data', common.mustCall((arrayBuffer) => {
+ duplex.on("data", common.mustCall((arrayBuffer) => {
   assert.strictEqual(arrayBuffer.byteLength, expectedByteLength);
  }));
 }
 
 // Ensure that given a promise rejection it emits an error
 {
- const myErrorMessage = 'myCustomError';
+ const myErrorMessage = "myCustomError";
  Duplex.from(Promise.reject(myErrorMessage))
-    .on('error', common.mustCall((error) => {
+    .on("error", common.mustCall((error) => {
     	assert.strictEqual(error, myErrorMessage);
     }));
 }
 
 // Ensure that given a promise rejection on an async function it emits an error
 {
- const myErrorMessage = 'myCustomError';
+ const myErrorMessage = "myCustomError";
  async function asyncFn() {
   return Promise.reject(myErrorMessage);
  }
 
  Duplex.from(asyncFn)
-    .on('error', common.mustCall((error) => {
+    .on("error", common.mustCall((error) => {
     	assert.strictEqual(error, myErrorMessage);
     }));
 }
@@ -187,13 +187,13 @@ const { Blob } = require('buffer');
 // Ensure that Duplex.from throws an Invalid return value when function is void
 {
  assert.throws(() => Duplex.from(() => {}), {
-  code: 'ERR_INVALID_RETURN_VALUE',
+  code: "ERR_INVALID_RETURN_VALUE",
  });
 }
 
 // Ensure data if a sub object has a readable stream it's duplexified
 {
- const msg = Buffer.from('hello');
+ const msg = Buffer.from("hello");
  const duplex = Duplex.from({
   readable: Readable({
    read() {
@@ -201,7 +201,7 @@ const { Blob } = require('buffer');
     this.push(null);
    },
   }),
- }).on('data', common.mustCall((data) => {
+ }).on("data", common.mustCall((data) => {
   assert.strictEqual(data, msg);
  }));
 
@@ -210,7 +210,7 @@ const { Blob } = require('buffer');
 
 // Ensure data if a sub object has a writable stream it's duplexified
 {
- const msg = Buffer.from('hello');
+ const msg = Buffer.from("hello");
  const duplex = Duplex.from({
   writable: Writable({
    write: common.mustCall((data) => {
@@ -225,7 +225,7 @@ const { Blob } = require('buffer');
 
 // Ensure data if a sub object has a writable and readable stream it's duplexified
 {
- const msg = Buffer.from('hello');
+ const msg = Buffer.from("hello");
 
  const duplex = Duplex.from({
   readable: Readable({
@@ -242,39 +242,39 @@ const { Blob } = require('buffer');
  });
 
  duplex.pipe(duplex)
-    .on('data', common.mustCall((data) => {
+    .on("data", common.mustCall((data) => {
     	assert.strictEqual(data, msg);
     	assert.strictEqual(duplex.readable, true);
     	assert.strictEqual(duplex.writable, true);
     }))
-    .on('end', common.mustCall());
+    .on("end", common.mustCall());
 }
 
 // Ensure that given readable stream that throws an error it calls destroy
 {
- const myErrorMessage = 'error!';
+ const myErrorMessage = "error!";
  const duplex = Duplex.from(Readable({
   read() {
    throw new Error(myErrorMessage);
   },
  }));
- duplex.on('error', common.mustCall((msg) => {
+ duplex.on("error", common.mustCall((msg) => {
   assert.strictEqual(msg.message, myErrorMessage);
  }));
 }
 
 // Ensure that given writable stream that throws an error it calls destroy
 {
- const myErrorMessage = 'error!';
+ const myErrorMessage = "error!";
  const duplex = Duplex.from(Writable({
   write(chunk, enc, cb) {
    cb(myErrorMessage);
   },
  }));
 
- duplex.on('error', common.mustCall((msg) => {
+ duplex.on("error", common.mustCall((msg) => {
   assert.strictEqual(msg, myErrorMessage);
  }));
 
- duplex.write('test');
+ duplex.write("test");
 }

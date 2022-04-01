@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const cluster = require('cluster');
+const cluster = require("cluster");
 if (cluster.isMaster) {
- const common = require('../common.js');
+ const common = require("../common.js");
  const bench = common.createBenchmark(main, {
   workers: [1],
-  payload: ['string', 'object'],
+  payload: ["string", "object"],
   sendsPerBroadcast: [1, 10],
-  serialization: ['json', 'advanced'],
+  serialization: ["json", "advanced"],
   n: [1e5],
  });
 
@@ -27,18 +27,18 @@ if (cluster.isMaster) {
   cluster.settings.serialization = serialization;
 
   switch (payload) {
-   case 'string':
-    data = 'hello world!';
+   case "string":
+    data = "hello world!";
     break;
-   case 'object':
-    data = { action: 'pewpewpew', powerLevel: 9001 };
+   case "object":
+    data = { action: "pewpewpew", powerLevel: 9001 };
     break;
    default:
-    throw new Error('Unsupported payload type');
+    throw new Error("Unsupported payload type");
   }
 
   for (let i = 0; i < workers; ++i)
-   cluster.fork().on('online', onOnline).on('message', onMessage);
+   cluster.fork().on("online", onOnline).on("message", onMessage);
 
   function onOnline() {
    if (++readies === workers) {
@@ -69,7 +69,7 @@ if (cluster.isMaster) {
   }
  }
 } else {
- process.on('message', (msg) => {
+ process.on("message", (msg) => {
   process.send(msg);
  });
 }

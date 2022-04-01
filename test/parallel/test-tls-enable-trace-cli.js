@@ -1,40 +1,40 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-if (!common.hasCrypto) common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+if (!common.hasCrypto) common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
 
 // Test --trace-tls CLI flag.
 
-const assert = require('assert');
-const { fork } = require('child_process');
+const assert = require("assert");
+const { fork } = require("child_process");
 
-if (process.argv[2] === 'test')
+if (process.argv[2] === "test")
  return test();
 
-const binding = require('internal/test/binding').internalBinding;
+const binding = require("internal/test/binding").internalBinding;
 
-if (!binding('tls_wrap').HAVE_SSL_TRACE)
- return common.skip('no SSL_trace() compiled into openssl');
+if (!binding("tls_wrap").HAVE_SSL_TRACE)
+ return common.skip("no SSL_trace() compiled into openssl");
 
-const child = fork(__filename, ['test'], {
+const child = fork(__filename, ["test"], {
  silent: true,
- execArgv: ['--trace-tls'],
+ execArgv: ["--trace-tls"],
 });
 
-let stdout = '';
-let stderr = '';
-child.stdout.setEncoding('utf8');
-child.stderr.setEncoding('utf8');
-child.stdout.on('data', (data) => stdout += data);
-child.stderr.on('data', (data) => stderr += data);
-child.on('close', common.mustCall((code, signal) => {
+let stdout = "";
+let stderr = "";
+child.stdout.setEncoding("utf8");
+child.stderr.setEncoding("utf8");
+child.stdout.on("data", (data) => stdout += data);
+child.stderr.on("data", (data) => stderr += data);
+child.on("close", common.mustCall((code, signal) => {
  // For debugging and observation of actual trace output.
  console.log(stderr);
 
  assert.strictEqual(code, 0);
  assert.strictEqual(signal, null);
- assert.strictEqual(stdout.trim(), '');
+ assert.strictEqual(stdout.trim(), "");
  assert.match(stderr, /Warning: Enabling --trace-tls can expose sensitive/);
  assert.match(stderr, /Sent Record/);
 }));
@@ -42,7 +42,7 @@ child.on('close', common.mustCall((code, signal) => {
 function test() {
  const {
   connect, keys,
- } = require(fixtures.path('tls-connect'));
+ } = require(fixtures.path("tls-connect"));
 
  connect({
   client: {
@@ -55,10 +55,10 @@ function test() {
   },
  }, common.mustCall((err, pair, cleanup) => {
   if (pair.server.err) {
-   console.trace('server', pair.server.err);
+   console.trace("server", pair.server.err);
   }
   if (pair.client.err) {
-   console.trace('client', pair.client.err);
+   console.trace("client", pair.client.err);
   }
   assert.ifError(pair.server.err);
   assert.ifError(pair.client.err);

@@ -147,15 +147,15 @@ but also to files referenced by `import` statements and `import()` expressions.
 // my-app.js, treated as an ES module because there is a package.json
 // file in the same folder with "type": "module".
 
-import './startup/init.js';
+import "./startup/init.js";
 // Loaded as ES module since ./startup contains no package.json file,
 // and therefore inherits the "type" value from one level up.
 
-import 'commonjs-package';
+import "commonjs-package";
 // Loaded as CommonJS since ./node_modules/commonjs-package/package.json
 // lacks a "type" field or contains "type": "commonjs".
 
-import './node_modules/commonjs-package/index.js';
+import "./node_modules/commonjs-package/index.js";
 // Loaded as CommonJS since ./node_modules/commonjs-package/package.json
 // lacks a "type" field or contains "type": "commonjs".
 ```
@@ -167,10 +167,10 @@ Files ending with `.cjs` are always loaded as [CommonJS][] regardless of the
 nearest parent `package.json`.
 
 ```js
-import './legacy-file.cjs';
+import "./legacy-file.cjs";
 // Loaded as CommonJS since .cjs is always loaded as CommonJS.
 
-import 'commonjs-package/src/index.mjs';
+import "commonjs-package/src/index.mjs";
 // Loaded as ES module since .mjs is always loaded as ES module.
 ```
 
@@ -346,14 +346,14 @@ with the main entry point by treating the main entry point as the
 Now only the defined subpath in [`"exports"`][] can be imported by a consumer:
 
 ```js
-import submodule from 'es-module-package/submodule';
+import submodule from "es-module-package/submodule";
 // Loads ./node_modules/es-module-package/src/submodule.js
 ```
 
 While other subpaths will error:
 
 ```js
-import submodule from 'es-module-package/private-module.js';
+import submodule from "es-module-package/private-module.js";
 // Throws ERR_PACKAGE_PATH_NOT_EXPORTED
 ```
 
@@ -434,13 +434,13 @@ All instances of `*` on the right hand side will then be replaced with this
 value, including if it contains any `/` separators.
 
 ```js
-import featureX from 'es-module-package/features/x';
+import featureX from "es-module-package/features/x";
 // Loads ./node_modules/es-module-package/src/features/x.js
 
-import featureY from 'es-module-package/features/y/y';
+import featureY from "es-module-package/features/y/y";
 // Loads ./node_modules/es-module-package/src/features/y/y.js
 
-import internalZ from '#internal/z';
+import internalZ from "#internal/z";
 // Loads ./node_modules/es-module-package/src/internal/z.js
 ```
 
@@ -467,10 +467,10 @@ To exclude private subfolders from patterns, `null` targets can be used:
 ```
 
 ```js
-import featureInternal from 'es-module-package/features/private-internal/m';
+import featureInternal from "es-module-package/features/private-internal/m";
 // Throws: ERR_PACKAGE_PATH_NOT_EXPORTED
 
-import featureX from 'es-module-package/features/x';
+import featureX from "es-module-package/features/x";
 // Loads ./node_modules/es-module-package/src/features/x.js
 ```
 
@@ -719,7 +719,7 @@ Then any module _in that package_ can reference an export in the package itself:
 
 ```js
 // ./a-module.mjs
-import { something } from 'a-package'; // Imports "something" from ./main.mjs.
+import { something } from "a-package"; // Imports "something" from ./main.mjs.
 ```
 
 Self-referencing is available only if `package.json` has [`"exports"`][], and
@@ -733,7 +733,7 @@ error:
 // Imports "another" from ./m.mjs. Fails because
 // the "package.json" "exports" field
 // does not provide an export named "./m.mjs".
-import { another } from 'a-package/m.mjs';
+import { another } from "a-package/m.mjs";
 ```
 
 Self-referencing is also available when using `require`, both in an ES module,
@@ -741,7 +741,7 @@ and in a CommonJS one. For example, this code will also work:
 
 ```cjs
 // ./a-module.js
-const { something } = require('a-package/foo'); // Loads from ./foo.js.
+const { something } = require("a-package/foo"); // Loads from ./foo.js.
 ```
 
 Finally, self-referencing also works with scoped packages. For example, this
@@ -762,7 +762,7 @@ module.exports = 42;
 
 ```cjs
 // ./other.js
-console.log(require('@my/package'));
+console.log(require("@my/package"));
 ```
 
 ```console
@@ -870,12 +870,12 @@ See [Enabling](esm.md#enabling).
 
 ```cjs
 // ./node_modules/pkg/index.cjs
-exports.name = 'value';
+exports.name = "value";
 ```
 
 ```js
 // ./node_modules/pkg/wrapper.mjs
-import cjsModule from './index.cjs';
+import cjsModule from "./index.cjs";
 export const name = cjsModule.name;
 ```
 
@@ -891,7 +891,7 @@ then the wrapper would instead be written to export the default optionally
 along with any named exports as well:
 
 ```js
-import cjsModule from './index.cjs';
+import cjsModule from "./index.cjs";
 export const name = cjsModule.name;
 export default cjsModule;
 ```
@@ -969,7 +969,7 @@ CommonJS and ES module instances of the package:
    package, it would be used like this:
 
    ```js
-   import Date from 'date';
+   import Date from "date";
    const someDate = new Date();
    // someDate contains state; Date does not
    ```
@@ -984,13 +984,13 @@ CommonJS and ES module instances of the package:
 
    ```cjs
    // ./node_modules/pkg/index.cjs
-   const state = require('./state.cjs');
+   const state = require("./state.cjs");
    module.exports.state = state;
    ```
 
    ```js
    // ./node_modules/pkg/index.mjs
-   import state from './state.cjs';
+   import state from "./state.cjs";
    export {
     state,
    };
@@ -1107,7 +1107,7 @@ It also defines the script that is used when the [package directory is loaded
 via `require()`](modules.md#folders-as-modules).
 
 ```cjs
-require('./path/to/directory'); // This resolves to ./path/to/directory/main.js.
+require("./path/to/directory"); // This resolves to ./path/to/directory/main.js.
 ```
 
 ### `"packageManager"`
@@ -1184,7 +1184,7 @@ parent `package.json` contains `"type": "module"`.
 
 ```js
 // my-app.js, part of the same example as above
-import './startup.js'; // Loaded as ES module because of package.json
+import "./startup.js"; // Loaded as ES module because of package.json
 ```
 
 Regardless of the value of the `"type"` field, `.mjs` files are always treated

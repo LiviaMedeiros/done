@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const { isDefiningError } = require('./rules-utils.js');
+const { isDefiningError } = require("./rules-utils.js");
 
-const prefix = 'Out of ASCIIbetical order - ';
-const opStr = ' >= ';
+const prefix = "Out of ASCIIbetical order - ";
+const opStr = " >= ";
 
 function errorForNode(node) {
  return node.expression.arguments[0].value;
@@ -23,7 +23,7 @@ module.exports = {
     const curr = errorForNode(node);
     previousNode = node;
     if (prev >= curr) {
-     const message = [prefix, prev, opStr, curr].join('');
+     const message = [prefix, prev, opStr, curr].join("");
      context.report({ node, message });
     }
    },

@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Create an object of all benchmark scripts
 const benchmarks = {};
 fs.readdirSync(__dirname)
   .filter((name) => {
-  	return name !== 'fixtures' &&
+  	return name !== "fixtures" &&
            fs.statSync(path.resolve(__dirname, name)).isDirectory();
   })
   .forEach((category) => {
   	benchmarks[category] = fs.readdirSync(path.resolve(__dirname, category))
-      .filter((filename) => filename[0] !== '.' && filename[0] !== '_');
+      .filter((filename) => filename[0] !== "." && filename[0] !== "_");
   });
 
 function CLI(usage, settings) {
@@ -30,16 +30,16 @@ function CLI(usage, settings) {
  }
 
  let currentOptional = null;
- let mode = 'both'; // Possible states are: [both, option, item]
+ let mode = "both"; // Possible states are: [both, option, item]
 
  for (const arg of process.argv.slice(2)) {
-  if (arg === '--') {
+  if (arg === "--") {
    // Only items can follow --
-   mode = 'item';
-  } else if (mode === 'both' && arg[0] === '-') {
+   mode = "item";
+  } else if (mode === "both" && arg[0] === "-") {
    // Optional arguments declaration
 
-   if (arg[1] === '-') {
+   if (arg[1] === "-") {
     currentOptional = arg.slice(2);
    } else {
     currentOptional = arg.slice(1);
@@ -47,12 +47,12 @@ function CLI(usage, settings) {
 
    if (settings.boolArgs && settings.boolArgs.includes(currentOptional)) {
     this.optional[currentOptional] = true;
-    mode = 'both';
+    mode = "both";
    } else {
     // Expect the next value to be option related (either -- or the value)
-    mode = 'option';
+    mode = "option";
    }
-  } else if (mode === 'option') {
+  } else if (mode === "option") {
    // Optional arguments value
 
    if (settings.arrayArgs.includes(currentOptional)) {
@@ -62,15 +62,15 @@ function CLI(usage, settings) {
    }
 
    // The next value can be either an option or an item
-   mode = 'both';
-  } else if (arg === 'test') {
+   mode = "both";
+  } else if (arg === "test") {
    this.test = true;
-  } else if (['both', 'item'].includes(mode)) {
+  } else if (["both", "item"].includes(mode)) {
    // item arguments
    this.items.push(arg);
 
    // The next value must be an item
-   mode = 'item';
+   mode = "item";
   } else {
    // Bad case, abort
    this.abort(usage);
@@ -87,7 +87,7 @@ CLI.prototype.abort = function(msg) {
 CLI.prototype.benchmarks = function() {
  const paths = [];
 
- if (this.items.includes('all')) {
+ if (this.items.includes("all")) {
   this.items = Object.keys(benchmarks);
  }
 

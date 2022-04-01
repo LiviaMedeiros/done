@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common');
-if (!common.hasCrypto) common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+if (!common.hasCrypto) common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
 
 // Test sigalgs: option for TLS.
 
 const {
  assert, connect, keys,
-} = require(fixtures.path('tls-connect'));
+} = require(fixtures.path("tls-connect"));
 
 function assert_arrays_equal(left, right) {
  assert.strictEqual(left.length, right.length);
@@ -17,7 +17,7 @@ function assert_arrays_equal(left, right) {
 }
 
 function test(csigalgs, ssigalgs, shared_sigalgs, cerr, serr) {
- assert(shared_sigalgs || serr || cerr, 'test missing any expectations');
+ assert(shared_sigalgs || serr || cerr, "test missing any expectations");
  connect({
   client: {
    checkServerIdentity: (servername, cert) => { },
@@ -61,14 +61,14 @@ function test(csigalgs, ssigalgs, shared_sigalgs, cerr, serr) {
 }
 
 // Have shared sigalgs
-test('RSA-PSS+SHA384', 'RSA-PSS+SHA384', ['RSA-PSS+SHA384']);
-test('RSA-PSS+SHA256:RSA-PSS+SHA512:ECDSA+SHA256',
-     'RSA-PSS+SHA256:ECDSA+SHA256',
-     ['RSA-PSS+SHA256', 'ECDSA+SHA256']);
+test("RSA-PSS+SHA384", "RSA-PSS+SHA384", ["RSA-PSS+SHA384"]);
+test("RSA-PSS+SHA256:RSA-PSS+SHA512:ECDSA+SHA256",
+     "RSA-PSS+SHA256:ECDSA+SHA256",
+     ["RSA-PSS+SHA256", "ECDSA+SHA256"]);
 
 // Do not have shared sigalgs.
-test('RSA-PSS+SHA384', 'ECDSA+SHA256',
-     undefined, 'ECONNRESET', 'ERR_SSL_NO_SHARED_SIGNATURE_ALGORITMS');
+test("RSA-PSS+SHA384", "ECDSA+SHA256",
+     undefined, "ECONNRESET", "ERR_SSL_NO_SHARED_SIGNATURE_ALGORITMS");
 
-test('RSA-PSS+SHA384:ECDSA+SHA256', 'ECDSA+SHA384:RSA-PSS+SHA256',
-     undefined, 'ECONNRESET', 'ERR_SSL_NO_SHARED_SIGNATURE_ALGORITMS');
+test("RSA-PSS+SHA384:ECDSA+SHA256", "ECDSA+SHA384:RSA-PSS+SHA256",
+     undefined, "ECONNRESET", "ERR_SSL_NO_SHARED_SIGNATURE_ALGORITMS");

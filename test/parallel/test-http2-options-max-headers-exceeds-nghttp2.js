@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const h2 = require("http2");
 
 const server = h2.createServer();
 
-server.on('stream', common.mustNotCall());
-server.on('error', common.mustNotCall());
+server.on("stream", common.mustNotCall());
+server.on("error", common.mustNotCall());
 
 server.listen(0, common.mustCall(() => {
 
@@ -20,27 +20,27 @@ server.listen(0, common.mustCall(() => {
 
  const client = h2.connect(`http://localhost:${server.address().port}`,
                            options);
- client.on('error', common.expectsError({
-  code: 'ERR_HTTP2_SESSION_ERROR',
-  name: 'Error',
-  message: 'Session closed with error code 9',
+ client.on("error", common.expectsError({
+  code: "ERR_HTTP2_SESSION_ERROR",
+  name: "Error",
+  message: "Session closed with error code 9",
  }));
 
  const req = client.request({
   // Greater than 65536 bytes
-  'test-header': 'A'.repeat(90000),
+  "test-header": "A".repeat(90000),
  });
- req.on('response', common.mustNotCall());
+ req.on("response", common.mustNotCall());
 
- req.on('close', common.mustCall(() => {
+ req.on("close", common.mustCall(() => {
   client.close();
   server.close();
  }));
 
- req.on('error', common.expectsError({
-  code: 'ERR_HTTP2_SESSION_ERROR',
-  name: 'Error',
-  message: 'Session closed with error code 9',
+ req.on("error", common.expectsError({
+  code: "ERR_HTTP2_SESSION_ERROR",
+  name: "Error",
+  message: "Session closed with error code 9",
  }));
  req.end();
 }));

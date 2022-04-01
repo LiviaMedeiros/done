@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 const safe = Buffer.alloc(10);
 

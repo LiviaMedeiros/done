@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const http = require("http");
 
-const CRLF = '\r\n';
+const CRLF = "\r\n";
 
 const server = http.createServer();
-server.on('upgrade', function(req, socket) {
+server.on("upgrade", function(req, socket) {
  socket.write(`HTTP/1.1 101 Ok${CRLF}` +
                `Connection: Upgrade${CRLF}` +
                `Upgrade: Test${CRLF}${CRLF}` +
-               'head');
- socket.on('end', function() {
+               "head");
+ socket.on("end", function() {
   socket.end();
  });
 });
@@ -39,8 +39,8 @@ server.on('upgrade', function(req, socket) {
 server.listen(0, common.mustCall(function() {
 
  function upgradeRequest(fn) {
-  console.log('req');
-  const header = { 'Connection': 'Upgrade', 'Upgrade': 'Test' };
+  console.log("req");
+  const header = { "Connection": "Upgrade", "Upgrade": "Test" };
   const request = http.request({
    port: server.address().port,
    headers: header,
@@ -48,33 +48,33 @@ server.listen(0, common.mustCall(function() {
   let wasUpgrade = false;
 
   function onUpgrade(res, socket) {
-   console.log('client upgraded');
+   console.log("client upgraded");
    wasUpgrade = true;
 
-   request.removeListener('upgrade', onUpgrade);
+   request.removeListener("upgrade", onUpgrade);
    socket.end();
   }
-  request.on('upgrade', onUpgrade);
+  request.on("upgrade", onUpgrade);
 
   function onEnd() {
-   console.log('client end');
-   request.removeListener('end', onEnd);
+   console.log("client end");
+   request.removeListener("end", onEnd);
    if (!wasUpgrade) {
-    throw new Error('hasn\'t received upgrade event');
+    throw new Error("hasn't received upgrade event");
    } else {
     fn && process.nextTick(fn);
    }
   }
-  request.on('close', onEnd);
+  request.on("close", onEnd);
 
-  request.write('head');
+  request.write("head");
 
  }
 
  upgradeRequest(common.mustCall(function() {
   upgradeRequest(common.mustCall(function() {
    // Test pass
-   console.log('Pass!');
+   console.log("Pass!");
    server.close();
   }));
  }));

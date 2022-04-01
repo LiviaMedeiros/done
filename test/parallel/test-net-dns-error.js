@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const net = require('net');
+const assert = require("assert");
+const net = require("net");
 
-const host = '*'.repeat(64);
+const host = "*".repeat(64);
 // Resolving hostname > 63 characters may return EAI_FAIL (permanent failure).
-const errCodes = ['ENOTFOUND', 'EAI_FAIL'];
+const errCodes = ["ENOTFOUND", "EAI_FAIL"];
 
 const socket = net.connect(42, host, common.mustNotCall());
-socket.on('error', common.mustCall(function(err) {
+socket.on("error", common.mustCall(function(err) {
  assert(errCodes.includes(err.code), err);
 }));
-socket.on('lookup', common.mustCall(function(err, ip, type) {
+socket.on("lookup", common.mustCall(function(err, ip, type) {
  assert(err instanceof Error);
  assert(errCodes.includes(err.code), err);
  assert.strictEqual(ip, undefined);

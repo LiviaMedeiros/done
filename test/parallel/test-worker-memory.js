@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isIBMi)
- common.skip('On IBMi, the rss memory always returns zero');
+ common.skip("On IBMi, the rss memory always returns zero");
 
-const assert = require('assert');
-const util = require('util');
-const { Worker } = require('worker_threads');
+const assert = require("assert");
+const util = require("util");
+const { Worker } = require("worker_threads");
 
-let numWorkers = +process.env.JOBS || require('os').cpus().length;
+let numWorkers = +process.env.JOBS || require("os").cpus().length;
 if (numWorkers > 20) {
  // Cap the number of workers at 20 (as an even divisor of 60 used as
  // the total number of workers started) otherwise the test fails on
@@ -22,12 +22,12 @@ function run(n, done) {
  if (n <= 0)
   return done();
  const worker = new Worker(
-  'require(\'worker_threads\').parentPort.postMessage(2 + 2)',
+  "require('worker_threads').parentPort.postMessage(2 + 2)",
   { eval: true });
- worker.on('message', common.mustCall((value) => {
+ worker.on("message", common.mustCall((value) => {
   assert.strictEqual(value, 4);
  }));
- worker.on('exit', common.mustCall(() => {
+ worker.on("exit", common.mustCall(() => {
   run(n - 1, done);
  }));
 }
@@ -44,7 +44,7 @@ for (let i = 0; i < numWorkers; ++i) {
    // don't have the memory of 50 Isolates/Node.js environments just lying
    // around somewhere.
    assert.ok(finishStats.rss / startStats.rss < 5,
-             'Unexpected memory overhead: ' +
+             "Unexpected memory overhead: " +
                 util.inspect([startStats, finishStats]));
   }
  });

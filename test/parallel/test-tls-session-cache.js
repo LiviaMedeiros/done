@@ -19,38 +19,38 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const tls = require('tls');
-const { spawn } = require('child_process');
+ common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const tls = require("tls");
+const { spawn } = require("child_process");
 
 if (!common.opensslCli)
- common.skip('node compiled without OpenSSL CLI.');
+ common.skip("node compiled without OpenSSL CLI.");
 
 
 doTest({ tickets: false }, function() {
  doTest({ tickets: true }, function() {
   doTest({ tickets: false, invalidSession: true }, function() {
-   console.error('all done');
+   console.error("all done");
   });
  });
 });
 
 function doTest(testOptions, callback) {
- const key = fixtures.readKey('rsa_private.pem');
- const cert = fixtures.readKey('rsa_cert.crt');
+ const key = fixtures.readKey("rsa_private.pem");
+ const cert = fixtures.readKey("rsa_cert.crt");
  const options = {
   key,
   cert,
   ca: [cert],
   requestCert: true,
   rejectUnauthorized: false,
-  secureProtocol: 'TLS_method',
-  ciphers: 'RSA@SECLEVEL=0',
+  secureProtocol: "TLS_method",
+  ciphers: "RSA@SECLEVEL=0",
  };
  let requestCount = 0;
  let resumeCount = 0;
@@ -58,17 +58,17 @@ function doTest(testOptions, callback) {
  let session;
 
  const server = tls.createServer(options, function(cleartext) {
-  cleartext.on('error', function(er) {
+  cleartext.on("error", function(er) {
    // We're ok with getting ECONNRESET in this test, but it's
    // timing-dependent, and thus unreliable. Any other errors
    // are just failures, though.
-   if (er.code !== 'ECONNRESET')
+   if (er.code !== "ECONNRESET")
     throw er;
   });
   ++requestCount;
-  cleartext.end('');
+  cleartext.end("");
  });
- server.on('newSession', function(id, data, cb) {
+ server.on("newSession", function(id, data, cb) {
   ++newSessionCount;
   // Emulate asynchronous store
   setImmediate(() => {
@@ -77,16 +77,16 @@ function doTest(testOptions, callback) {
    cb();
   });
  });
- server.on('resumeSession', function(id, callback) {
+ server.on("resumeSession", function(id, callback) {
   ++resumeCount;
   assert.ok(session);
-  assert.strictEqual(session.id.toString('hex'), id.toString('hex'));
+  assert.strictEqual(session.id.toString("hex"), id.toString("hex"));
 
   let data = session.data;
 
   // Return an invalid session to test Node does not crash.
   if (testOptions.invalidSession) {
-   data = Buffer.from('INVALID SESSION');
+   data = Buffer.from("INVALID SESSION");
    session = null;
   }
 
@@ -98,30 +98,30 @@ function doTest(testOptions, callback) {
 
  server.listen(0, function() {
   const args = [
-   's_client',
-   '-tls1',
-   '-connect', `localhost:${this.address().port}`,
-   '-servername', 'ohgod',
-   '-key', fixtures.path('keys/rsa_private.pem'),
-   '-cert', fixtures.path('keys/rsa_cert.crt'),
-   '-reconnect',
-  ].concat(testOptions.tickets ? [] : '-no_ticket');
+   "s_client",
+   "-tls1",
+   "-connect", `localhost:${this.address().port}`,
+   "-servername", "ohgod",
+   "-key", fixtures.path("keys/rsa_private.pem"),
+   "-cert", fixtures.path("keys/rsa_cert.crt"),
+   "-reconnect",
+  ].concat(testOptions.tickets ? [] : "-no_ticket");
 
   function spawnClient() {
    const client = spawn(common.opensslCli, args, {
-    stdio: [ 0, 1, 'pipe' ],
+    stdio: [ 0, 1, "pipe" ],
    });
-   let err = '';
-   client.stderr.setEncoding('utf8');
-   client.stderr.on('data', function(chunk) {
+   let err = "";
+   client.stderr.setEncoding("utf8");
+   client.stderr.on("data", function(chunk) {
     err += chunk;
    });
 
-   client.on('exit', common.mustCall(function(code, signal) {
+   client.on("exit", common.mustCall(function(code, signal) {
     if (code !== 0) {
      // If SmartOS and connection refused, then retry. See
      // https://github.com/nodejs/node/issues/2663.
-     if (common.isSunOS && err.includes('Connection refused')) {
+     if (common.isSunOS && err.includes("Connection refused")) {
       requestCount = 0;
       spawnClient();
       return;
@@ -138,7 +138,7 @@ function doTest(testOptions, callback) {
   spawnClient();
  });
 
- process.on('exit', function() {
+ process.on("exit", function() {
   // Each test run connects 6 times: an initial request and 5 reconnect
   // requests.
   assert.strictEqual(requestCount, 6);

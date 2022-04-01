@@ -1,28 +1,28 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { readKey } = require('../common/fixtures');
+const common = require("../common");
+const { readKey } = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { createServer } = require('https');
-const { connect } = require('tls');
-const { finished } = require('stream');
+const assert = require("assert");
+const { createServer } = require("https");
+const { connect } = require("tls");
+const { finished } = require("stream");
 
 // This test validates that the 'timeout' event fires
 // after server.headersTimeout.
 
 const headers =
-  'GET / HTTP/1.1\r\n' +
-  'Host: localhost\r\n' +
-  'Agent: node\r\n';
+  "GET / HTTP/1.1\r\n" +
+  "Host: localhost\r\n" +
+  "Agent: node\r\n";
 
 const server = createServer({
- key: readKey('agent1-key.pem'),
- cert: readKey('agent1-cert.pem'),
- ca: readKey('ca1-cert.pem'),
+ key: readKey("agent1-key.pem"),
+ cert: readKey("agent1-cert.pem"),
+ ca: readKey("ca1-cert.pem"),
 }, common.mustNotCall());
 
 let sendCharEvery = 1000;
@@ -38,7 +38,7 @@ if (!process.env.REAL) {
  server.headersTimeout = 2 * sendCharEvery;
 }
 
-server.once('timeout', common.mustCall((socket) => {
+server.once("timeout", common.mustCall((socket) => {
  socket.destroy();
 }));
 
@@ -48,10 +48,10 @@ server.listen(0, common.mustCall(() => {
   rejectUnauthorized: false,
  });
  client.write(headers);
- client.write('X-CRASH: ');
+ client.write("X-CRASH: ");
 
  const interval = setInterval(() => {
-  client.write('a');
+  client.write("a");
  }, sendCharEvery);
 
  client.resume();

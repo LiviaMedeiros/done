@@ -1,6 +1,6 @@
-import { mustCall } from '../common/index.mjs';
-import { Readable } from 'stream';
-import assert from 'assert';
+import { mustCall } from "../common/index.mjs";
+import { Readable } from "stream";
+import assert from "assert";
 
 // These tests are manually ported from the draft PR for the test262 test suite
 // Authored by Rick Waldron in https://github.com/tc39/test262/pull/2818/files
@@ -50,7 +50,7 @@ import assert from 'assert';
 // that happen before stream conversion were not ported.
 {
  // asIndexedPairs/is-function
- assert.strictEqual(typeof Readable.prototype.asIndexedPairs, 'function');
+ assert.strictEqual(typeof Readable.prototype.asIndexedPairs, "function");
  // asIndexedPairs/indexed-pairs.js
  const iterator = Readable.from([0, 1]);
  const indexedPairs = iterator.asIndexedPairs();
@@ -61,10 +61,10 @@ import assert from 'assert';
  // asIndexedPairs/length.js
  assert.strictEqual(Readable.prototype.asIndexedPairs.length, 0);
  // asIndexedPairs/name.js
- assert.strictEqual(Readable.prototype.asIndexedPairs.name, 'asIndexedPairs');
+ assert.strictEqual(Readable.prototype.asIndexedPairs.name, "asIndexedPairs");
  const descriptor = Object.getOwnPropertyDescriptor(
   Readable.prototype,
-  'asIndexedPairs',
+  "asIndexedPairs",
  );
  assert.strictEqual(descriptor.enumerable, false);
  assert.strictEqual(descriptor.configurable, true);
@@ -75,7 +75,7 @@ import assert from 'assert';
  assert.strictEqual(Readable.prototype.drop.length, 1);
  const descriptor = Object.getOwnPropertyDescriptor(
   Readable.prototype,
-  'drop',
+  "drop",
  );
  assert.strictEqual(descriptor.enumerable, false);
  assert.strictEqual(descriptor.configurable, true);
@@ -97,7 +97,7 @@ import assert from 'assert';
  assert.throws(() => {
   Readable.from([1]).drop({
    valueOf() {
-    throw new Error('boom');
+    throw new Error("boom");
    },
   });
  }, /boom/);
@@ -105,7 +105,7 @@ import assert from 'assert';
  const two = await Readable.from([1, 2]).drop({ valueOf: () => 1 }).toArray();
  assert.deepStrictEqual(two, [2]);
  // drop/name
- assert.strictEqual(Readable.prototype.drop.name, 'drop');
+ assert.strictEqual(Readable.prototype.drop.name, "drop");
  // drop/non-constructible
  assert.throws(() => new Readable.prototype.drop(1), TypeError);
  // drop/proto
@@ -150,17 +150,17 @@ import assert from 'assert';
 
 {
  // every/is-function
- assert.strictEqual(typeof Readable.prototype.every, 'function');
+ assert.strictEqual(typeof Readable.prototype.every, "function");
 }
 {
  // every/length
  assert.strictEqual(Readable.prototype.every.length, 1);
  // every/name
- assert.strictEqual(Readable.prototype.every.name, 'every');
+ assert.strictEqual(Readable.prototype.every.name, "every");
  // every/propdesc
  const descriptor = Object.getOwnPropertyDescriptor(
   Readable.prototype,
-  'every',
+  "every",
  );
  assert.strictEqual(descriptor.enumerable, false);
  assert.strictEqual(descriptor.configurable, true);

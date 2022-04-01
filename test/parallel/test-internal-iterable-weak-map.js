@@ -1,9 +1,9 @@
 // Flags: --expose-gc --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { deepStrictEqual, strictEqual } = require('assert');
-const { IterableWeakMap } = require('internal/util/iterable_weak_map');
+const common = require("../common");
+const { deepStrictEqual, strictEqual } = require("assert");
+const { IterableWeakMap } = require("internal/util/iterable_weak_map");
 
 // Ensures iterating over the map does not rely on methods which can be
 // mutated by users.
@@ -19,15 +19,15 @@ Reflect.getPrototypeOf(new Set()[Symbol.iterator]()).next =
   moduleB: {},
   moduleC: {},
  };
- wm.set(_cache.moduleA, 'hello');
- wm.set(_cache.moduleB, 'discard');
- wm.set(_cache.moduleC, 'goodbye');
+ wm.set(_cache.moduleA, "hello");
+ wm.set(_cache.moduleB, "discard");
+ wm.set(_cache.moduleC, "goodbye");
  delete _cache.moduleB;
  setImmediate(() => {
   _cache; // eslint-disable-line no-unused-expressions
   globalThis.gc();
   const values = [...wm];
-  deepStrictEqual(values, ['hello', 'goodbye']);
+  deepStrictEqual(values, ["hello", "goodbye"]);
  });
 }
 
@@ -38,11 +38,11 @@ Reflect.getPrototypeOf(new Set()[Symbol.iterator]()).next =
   moduleA: {},
   moduleB: {},
  };
- wm.set(_cache.moduleA, 'hello');
- wm.set(_cache.moduleB, 'goodbye');
- wm.set(_cache.moduleB, 'goodnight');
+ wm.set(_cache.moduleA, "hello");
+ wm.set(_cache.moduleB, "goodbye");
+ wm.set(_cache.moduleB, "goodnight");
  const values = [...wm];
- deepStrictEqual(values, ['hello', 'goodnight']);
+ deepStrictEqual(values, ["hello", "goodnight"]);
 }
 
 // It allows entry to be deleted by key.
@@ -53,12 +53,12 @@ Reflect.getPrototypeOf(new Set()[Symbol.iterator]()).next =
   moduleB: {},
   moduleC: {},
  };
- wm.set(_cache.moduleA, 'hello');
- wm.set(_cache.moduleB, 'discard');
- wm.set(_cache.moduleC, 'goodbye');
+ wm.set(_cache.moduleA, "hello");
+ wm.set(_cache.moduleB, "discard");
+ wm.set(_cache.moduleC, "goodbye");
  wm.delete(_cache.moduleB);
  const values = [...wm];
- deepStrictEqual(values, ['hello', 'goodbye']);
+ deepStrictEqual(values, ["hello", "goodbye"]);
 }
 
 // It handles delete for key that does not exist.
@@ -69,11 +69,11 @@ Reflect.getPrototypeOf(new Set()[Symbol.iterator]()).next =
   moduleB: {},
   moduleC: {},
  };
- wm.set(_cache.moduleA, 'hello');
- wm.set(_cache.moduleC, 'goodbye');
+ wm.set(_cache.moduleA, "hello");
+ wm.set(_cache.moduleC, "goodbye");
  wm.delete(_cache.moduleB);
  const values = [...wm];
- deepStrictEqual(values, ['hello', 'goodbye']);
+ deepStrictEqual(values, ["hello", "goodbye"]);
 }
 
 // It allows an entry to be fetched by key.
@@ -84,10 +84,10 @@ Reflect.getPrototypeOf(new Set()[Symbol.iterator]()).next =
   moduleB: {},
   moduleC: {},
  };
- wm.set(_cache.moduleA, 'hello');
- wm.set(_cache.moduleB, 'discard');
- wm.set(_cache.moduleC, 'goodbye');
- strictEqual(wm.get(_cache.moduleB), 'discard');
+ wm.set(_cache.moduleA, "hello");
+ wm.set(_cache.moduleB, "discard");
+ wm.set(_cache.moduleC, "goodbye");
+ strictEqual(wm.get(_cache.moduleB), "discard");
 }
 
 // It returns true for has() if key exists.
@@ -96,6 +96,6 @@ Reflect.getPrototypeOf(new Set()[Symbol.iterator]()).next =
  const _cache = {
   moduleA: {},
  };
- wm.set(_cache.moduleA, 'hello');
+ wm.set(_cache.moduleA, "hello");
  strictEqual(wm.has(_cache.moduleA), true);
 }

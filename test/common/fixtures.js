@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const path = require('path');
-const fs = require('fs');
-const { pathToFileURL } = require('url');
+const path = require("path");
+const fs = require("fs");
+const { pathToFileURL } = require("url");
 
-const fixturesDir = path.join(__dirname, '..', 'fixtures');
+const fixturesDir = path.join(__dirname, "..", "fixtures");
 
 function fixturesPath(...args) {
  return path.join(fixturesDir, ...args);
@@ -21,7 +21,7 @@ function readFixtureSync(args, enc) {
 }
 
 function readFixtureKey(name, enc) {
- return fs.readFileSync(fixturesPath('keys', name), enc);
+ return fs.readFileSync(fixturesPath("keys", name), enc);
 }
 
 function readFixtureKeys(enc, ...names) {

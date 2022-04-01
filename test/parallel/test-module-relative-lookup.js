@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const _module = require('module'); // Avoid collision with global.module
+const common = require("../common");
+const assert = require("assert");
+const _module = require("module"); // Avoid collision with global.module
 
 // Current directory gets highest priority for local modules
 function testFirstInPath(moduleName, isLocalModule) {
@@ -12,13 +12,13 @@ function testFirstInPath(moduleName, isLocalModule) {
 
  let paths = _module._resolveLookupPaths(moduleName);
 
- assertFunction(paths[0], '.');
+ assertFunction(paths[0], ".");
 
  paths = _module._resolveLookupPaths(moduleName, null);
- assertFunction(paths && paths[0], '.');
+ assertFunction(paths && paths[0], ".");
 }
 
-testFirstInPath('./lodash', true);
+testFirstInPath("./lodash", true);
 
 // Relative path on Windows, but a regular file name elsewhere
-testFirstInPath('.\\lodash', common.isWindows);
+testFirstInPath(".\\lodash", common.isWindows);

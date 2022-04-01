@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if ((!common.hasCrypto) || (!common.hasIntl)) {
- common.skip('ESLint tests require crypto and Intl');
+ common.skip("ESLint tests require crypto and Intl");
 }
 
 common.skipIfEslintMissing();
 
-const RuleTester = require('../../tools/node_modules/eslint').RuleTester;
-const rule = require('../../tools/eslint-rules/crypto-check');
+const RuleTester = require("../../tools/node_modules/eslint").RuleTester;
+const rule = require("../../tools/eslint-rules/crypto-check");
 
-const message = 'Please add a hasCrypto check to allow this test to be ' +
+const message = "Please add a hasCrypto check to allow this test to be " +
                 'skipped when Node is built "--without-ssl".';
 
-new RuleTester().run('crypto-check', rule, {
+new RuleTester().run("crypto-check", rule, {
  valid: [
-  'foo',
-  'crypto',
+  "foo",
+  "crypto",
   `
     if (!common.hasCrypto) {
       common.skip("missing crypto");
@@ -34,9 +34,9 @@ new RuleTester().run('crypto-check', rule, {
   {
    code: 'require("common")\n' +
             'require("crypto")\n' +
-            'if (!common.hasCrypto) {\n' +
+            "if (!common.hasCrypto) {\n" +
             '  common.skip("missing crypto");\n' +
-            '}',
+            "}",
    errors: [{ message }],
   },
   {
@@ -44,33 +44,33 @@ new RuleTester().run('crypto-check', rule, {
             'require("crypto")',
    errors: [{ message }],
    output: 'require("common")\n' +
-              'if (!common.hasCrypto) {' +
+              "if (!common.hasCrypto) {" +
               ' common.skip("missing crypto");' +
-              '}\n' +
+              "}\n" +
               'require("crypto")',
   },
   {
    code: 'require("common")\n' +
-            'if (common.foo) {}\n' +
+            "if (common.foo) {}\n" +
             'require("crypto")',
    errors: [{ message }],
    output: 'require("common")\n' +
-              'if (!common.hasCrypto) {' +
+              "if (!common.hasCrypto) {" +
               ' common.skip("missing crypto");' +
-              '}\n' +
-              'if (common.foo) {}\n' +
+              "}\n" +
+              "if (common.foo) {}\n" +
               'require("crypto")',
   },
   {
    code: 'require("common")\n' +
-            'if (common.foo) {}\n' +
+            "if (common.foo) {}\n" +
             'internalBinding("crypto")',
    errors: [{ message }],
    output: 'require("common")\n' +
-              'if (!common.hasCrypto) {' +
+              "if (!common.hasCrypto) {" +
               ' common.skip("missing crypto");' +
-              '}\n' +
-              'if (common.foo) {}\n' +
+              "}\n" +
+              "if (common.foo) {}\n" +
               'internalBinding("crypto")',
   },
  ],

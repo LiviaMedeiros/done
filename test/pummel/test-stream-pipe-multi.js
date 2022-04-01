@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Test that having a bunch of streams piping in parallel
 // doesn't break anything.
 
-require('../common');
-const assert = require('assert');
-const Stream = require('stream').Stream;
+require("../common");
+const assert = require("assert");
+const Stream = require("stream").Stream;
 const rr = [];
 const ww = [];
 const cnt = 100;
@@ -45,27 +45,27 @@ function FakeStream() {
 FakeStream.prototype = Object.create(Stream.prototype);
 
 FakeStream.prototype.write = function(chunk) {
- console.error(this.ID, 'write', this.wait);
+ console.error(this.ID, "write", this.wait);
  if (this.wait) {
-  process.nextTick(this.emit.bind(this, 'drain'));
+  process.nextTick(this.emit.bind(this, "drain"));
  }
  this.wait = !this.wait;
  return this.wait;
 };
 
 FakeStream.prototype.end = function() {
- this.emit('end');
+ this.emit("end");
  process.nextTick(this.close.bind(this));
 };
 
 // noop - closes happen automatically on end.
 FakeStream.prototype.close = function() {
- this.emit('close');
+ this.emit("close");
 };
 
 
 // Expect all streams to close properly.
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(wclosed, cnt);
  assert.strictEqual(rclosed, cnt);
 });
@@ -76,15 +76,15 @@ for (let i = 0; i < chunkSize; i++) {
 
 for (let i = 0; i < cnt; i++) {
  const r = new FakeStream();
- r.on('close', function() {
-  console.error(this.ID, 'read close');
+ r.on("close", function() {
+  console.error(this.ID, "read close");
   rclosed++;
  });
  rr.push(r);
 
  const w = new FakeStream();
- w.on('close', function() {
-  console.error(this.ID, 'write close');
+ w.on("close", function() {
+  console.error(this.ID, "write close");
   wclosed++;
  });
  ww.push(w);
@@ -99,17 +99,17 @@ rr.forEach(function(r) {
  let cnt = chunks;
  let paused = false;
 
- r.on('pause', function() {
+ r.on("pause", function() {
   paused = true;
  });
 
- r.on('resume', function() {
+ r.on("resume", function() {
   paused = false;
   step();
  });
 
  function step() {
-  r.emit('data', data);
+  r.emit("data", data);
   if (--cnt === 0) {
    r.end();
    return;

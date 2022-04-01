@@ -1,10 +1,10 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
-const assert = require('assert');
-const PriorityQueue = require('internal/priority_queue');
+const assert = require("assert");
+const PriorityQueue = require("internal/priority_queue");
 
 {
  // Checks that the queue is fundamentally correct.

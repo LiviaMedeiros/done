@@ -1,12 +1,12 @@
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 const {
  executionAsyncResource,
  executionAsyncId,
  createHook,
-} = require('async_hooks');
-const http = require('http');
+} = require("async_hooks");
+const http = require("http");
 
 const hooked = {};
 createHook({
@@ -16,9 +16,9 @@ createHook({
 }).enable();
 
 const server = http.createServer((req, res) => {
- res.write('hello');
+ res.write("hello");
  setTimeout(() => {
-  res.end(' world!');
+  res.end(" world!");
  }, 1000);
 });
 
@@ -26,10 +26,10 @@ server.listen(0, () => {
  assert.strictEqual(executionAsyncResource(), hooked[executionAsyncId()]);
  http.get({ port: server.address().port }, (res) => {
   assert.strictEqual(executionAsyncResource(), hooked[executionAsyncId()]);
-  res.on('data', () => {
+  res.on("data", () => {
    assert.strictEqual(executionAsyncResource(), hooked[executionAsyncId()]);
   });
-  res.on('end', () => {
+  res.on("end", () => {
    assert.strictEqual(executionAsyncResource(), hooked[executionAsyncId()]);
    server.close();
   });

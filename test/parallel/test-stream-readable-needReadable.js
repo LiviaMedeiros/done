@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const Readable = require('stream').Readable;
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const Readable = require("stream").Readable;
 
 const readable = new Readable({
  read: () => {},
@@ -10,7 +10,7 @@ const readable = new Readable({
 // Initialized to false.
 assert.strictEqual(readable._readableState.needReadable, false);
 
-readable.on('readable', common.mustCall(() => {
+readable.on("readable", common.mustCall(() => {
  // When the readable event fires, needReadable is reset.
  assert.strictEqual(readable._readableState.needReadable, false);
  readable.read();
@@ -19,10 +19,10 @@ readable.on('readable', common.mustCall(() => {
 // If a readable listener is attached, then a readable event is needed.
 assert.strictEqual(readable._readableState.needReadable, true);
 
-readable.push('foo');
+readable.push("foo");
 readable.push(null);
 
-readable.on('end', common.mustCall(() => {
+readable.on("end", common.mustCall(() => {
  // No need to emit readable anymore when the stream ends.
  assert.strictEqual(readable._readableState.needReadable, false);
 }));
@@ -31,7 +31,7 @@ const asyncReadable = new Readable({
  read: () => {},
 });
 
-asyncReadable.on('readable', common.mustCall(() => {
+asyncReadable.on("readable", common.mustCall(() => {
  if (asyncReadable.read() !== null) {
   // After each read(), the buffer is empty.
   // If the stream doesn't end now,
@@ -41,10 +41,10 @@ asyncReadable.on('readable', common.mustCall(() => {
 }, 2));
 
 process.nextTick(common.mustCall(() => {
- asyncReadable.push('foooo');
+ asyncReadable.push("foooo");
 }));
 process.nextTick(common.mustCall(() => {
- asyncReadable.push('bar');
+ asyncReadable.push("bar");
 }));
 setImmediate(common.mustCall(() => {
  asyncReadable.push(null);
@@ -56,16 +56,16 @@ const flowing = new Readable({
 });
 
 // Notice this must be above the on('data') call.
-flowing.push('foooo');
-flowing.push('bar');
-flowing.push('quo');
+flowing.push("foooo");
+flowing.push("bar");
+flowing.push("quo");
 process.nextTick(common.mustCall(() => {
  flowing.push(null);
 }));
 
 // When the buffer already has enough data, and the stream is
 // in flowing mode, there is no need for the readable event.
-flowing.on('data', common.mustCall(function(data) {
+flowing.on("data", common.mustCall(function(data) {
  assert.strictEqual(flowing._readableState.needReadable, false);
 }, 3));
 
@@ -73,7 +73,7 @@ const slowProducer = new Readable({
  read: () => {},
 });
 
-slowProducer.on('readable', common.mustCall(() => {
+slowProducer.on("readable", common.mustCall(() => {
  const chunk = slowProducer.read(8);
  const state = slowProducer._readableState;
  if (chunk === null) {
@@ -86,11 +86,11 @@ slowProducer.on('readable', common.mustCall(() => {
 }, 4));
 
 process.nextTick(common.mustCall(() => {
- slowProducer.push('foo');
+ slowProducer.push("foo");
  process.nextTick(common.mustCall(() => {
-  slowProducer.push('foo');
+  slowProducer.push("foo");
   process.nextTick(common.mustCall(() => {
-   slowProducer.push('foo');
+   slowProducer.push("foo");
    process.nextTick(common.mustCall(() => {
     slowProducer.push(null);
    }));

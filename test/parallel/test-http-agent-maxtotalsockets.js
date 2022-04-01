@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const Countdown = require('../common/countdown');
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const Countdown = require("../common/countdown");
 
 assert.throws(() => new http.Agent({
- maxTotalSockets: 'test',
+ maxTotalSockets: "test",
 }), {
- code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError',
+ code: "ERR_INVALID_ARG_TYPE",
+ name: "TypeError",
  message: 'The "maxTotalSockets" argument must be of type number. ' +
     "Received type string ('test')",
 });
@@ -18,8 +18,8 @@ assert.throws(() => new http.Agent({
  assert.throws(() => new http.Agent({
   maxTotalSockets: item,
  }), {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "maxTotalSockets" is out of range. ' +
       `It must be > 0. Received ${item}`,
  });
@@ -41,10 +41,10 @@ function start(param = {}) {
  });
 
  const server = http.createServer(common.mustCall((req, res) => {
-  res.end('hello world');
+  res.end("hello world");
  }, 6));
  const server2 = http.createServer(common.mustCall((req, res) => {
-  res.end('hello world');
+  res.end("hello world");
  }, 6));
 
  server.keepAliveTimeout = 0;
@@ -60,14 +60,14 @@ function start(param = {}) {
  function handler(s) {
   for (let i = 0; i < 6; i++) {
    http.get({
-    host: 'localhost',
+    host: "localhost",
     port: s.address().port,
     agent,
     path: `/${i}`,
    }, common.mustCall((res) => {
     assert.strictEqual(res.statusCode, 200);
     res.resume();
-    res.on('end', common.mustCall(() => {
+    res.on("end", common.mustCall(() => {
      for (const key of Object.keys(agent.sockets)) {
       assert(agent.sockets[key].length <= maxSockets);
      }

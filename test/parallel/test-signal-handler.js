@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (common.isWindows)
- common.skip('SIGUSR1 and SIGHUP signals are not supported');
+ common.skip("SIGUSR1 and SIGHUP signals are not supported");
 if (!common.isMainThread)
- common.skip('Signal handling in Workers is not supported');
+ common.skip("Signal handling in Workers is not supported");
 
 console.log(`process.pid: ${process.pid}`);
 
-process.on('SIGUSR1', common.mustCall());
+process.on("SIGUSR1", common.mustCall());
 
-process.on('SIGUSR1', common.mustCall(function() {
+process.on("SIGUSR1", common.mustCall(function() {
  setTimeout(function() {
-  console.log('End.');
+  console.log("End.");
   process.exit(0);
  }, 5);
 }));
@@ -44,13 +44,13 @@ setInterval(function() {
  console.log(`running process...${++i}`);
 
  if (i === 5) {
-  process.kill(process.pid, 'SIGUSR1');
+  process.kill(process.pid, "SIGUSR1");
  }
 }, 1);
 
 // Test on condition where a watcher for SIGNAL
 // has been previously registered, and `process.listeners(SIGNAL).length === 1`
-process.on('SIGHUP', common.mustNotCall());
-process.removeAllListeners('SIGHUP');
-process.on('SIGHUP', common.mustCall());
-process.kill(process.pid, 'SIGHUP');
+process.on("SIGHUP", common.mustNotCall());
+process.removeAllListeners("SIGHUP");
+process.on("SIGHUP", common.mustCall());
+process.kill(process.pid, "SIGHUP");

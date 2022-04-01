@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const server = net.createServer((conn) => {
  conn.end();

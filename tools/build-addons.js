@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 // Usage: e.g. node build-addons.js <path to node-gyp> <directory>
 
-const child_process = require('child_process');
-const path = require('path');
-const fs = require('fs').promises;
-const util = require('util');
+const child_process = require("child_process");
+const path = require("path");
+const fs = require("fs").promises;
+const util = require("util");
 
 const execFile = util.promisify(child_process.execFile);
 
-const parallelization = +process.env.JOBS || require('os').cpus().length;
+const parallelization = +process.env.JOBS || require("os").cpus().length;
 const nodeGyp = process.argv[2];
 
 async function runner(directoryQueue) {
@@ -22,19 +22,19 @@ async function runner(directoryQueue) {
  try {
   // Only run for directories that have a `binding.gyp`.
   // (https://github.com/nodejs/node/issues/14843)
-  await fs.stat(path.join(dir, 'binding.gyp'));
+  await fs.stat(path.join(dir, "binding.gyp"));
  } catch (err) {
-  if (err.code === 'ENOENT' || err.code === 'ENOTDIR')
+  if (err.code === "ENOENT" || err.code === "ENOTDIR")
    return next();
   throw err;
  }
 
  console.log(`Building addon in ${dir}`);
  const { stdout, stderr } =
-    await execFile(process.execPath, [nodeGyp, 'rebuild', `--directory=${dir}`],
+    await execFile(process.execPath, [nodeGyp, "rebuild", `--directory=${dir}`],
     															{
-    																stdio: 'inherit',
-    																env: { ...process.env, MAKEFLAGS: '-j1' },
+    																stdio: "inherit",
+    																env: { ...process.env, MAKEFLAGS: "-j1" },
     															});
 
  // We buffer the output and print it out once the process is done in order

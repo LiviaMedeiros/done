@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const stream = require('stream');
+const stream = require("stream");
 
 class MyWritable extends stream.Writable {
  constructor(fn, options) {
@@ -39,18 +39,18 @@ class MyWritable extends stream.Writable {
 
 (function defaultCondingIsUtf8() {
  const m = new MyWritable(function(isBuffer, type, enc) {
-  assert.strictEqual(enc, 'utf8');
+  assert.strictEqual(enc, "utf8");
  }, { decodeStrings: false });
- m.write('foo');
+ m.write("foo");
  m.end();
 }());
 
 (function changeDefaultEncodingToAscii() {
  const m = new MyWritable(function(isBuffer, type, enc) {
-  assert.strictEqual(enc, 'ascii');
+  assert.strictEqual(enc, "ascii");
  }, { decodeStrings: false });
- m.setDefaultEncoding('ascii');
- m.write('bar');
+ m.setDefaultEncoding("ascii");
+ m.write("bar");
  m.end();
 }());
 
@@ -60,19 +60,19 @@ assert.throws(() => {
   (isBuffer, type, enc) => {},
   { decodeStrings: false });
  m.setDefaultEncoding({});
- m.write('bar');
+ m.write("bar");
  m.end();
 }, {
- name: 'TypeError',
- code: 'ERR_UNKNOWN_ENCODING',
- message: 'Unknown encoding: {}',
+ name: "TypeError",
+ code: "ERR_UNKNOWN_ENCODING",
+ message: "Unknown encoding: {}",
 });
 
 (function checkVariableCaseEncoding() {
  const m = new MyWritable(function(isBuffer, type, enc) {
-  assert.strictEqual(enc, 'ascii');
+  assert.strictEqual(enc, "ascii");
  }, { decodeStrings: false });
- m.setDefaultEncoding('AsCii');
- m.write('bar');
+ m.setDefaultEncoding("AsCii");
+ m.write("bar");
  m.end();
 }());

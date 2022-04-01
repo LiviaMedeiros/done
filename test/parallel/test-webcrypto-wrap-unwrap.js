@@ -1,34 +1,34 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { subtle } = require('crypto').webcrypto;
+const assert = require("assert");
+const { subtle } = require("crypto").webcrypto;
 
 const kWrappingData = {
- 'RSA-OAEP': {
+ "RSA-OAEP": {
   generate: {
    modulusLength: 4096,
    publicExponent: new Uint8Array([1, 0, 1]),
-   hash: 'SHA-256',
+   hash: "SHA-256",
   },
   wrap: { label: new Uint8Array(8) },
   pair: true,
  },
- 'AES-CTR': {
+ "AES-CTR": {
   generate: { length: 128 },
   wrap: { counter: new Uint8Array(16), length: 64 },
   pair: false,
  },
- 'AES-CBC': {
+ "AES-CBC": {
   generate: { length: 128 },
   wrap: { iv: new Uint8Array(16) },
   pair: false,
  },
- 'AES-GCM': {
+ "AES-GCM": {
   generate: { length: 128 },
   wrap: {
    iv: new Uint8Array(16),
@@ -37,7 +37,7 @@ const kWrappingData = {
   },
   pair: false,
  },
- 'AES-KW': {
+ "AES-KW": {
   generate: { length: 128 },
   wrap: { },
   pair: false,
@@ -49,7 +49,7 @@ function generateWrappingKeys() {
   const keys = await subtle.generateKey(
    { name, ...kWrappingData[name].generate },
    true,
-   ['wrapKey', 'unwrapKey']);
+   ["wrapKey", "unwrapKey"]);
   if (kWrappingData[name].pair) {
    kWrappingData[name].wrappingKey = keys.publicKey;
    kWrappingData[name].unwrappingKey = keys.privateKey;
@@ -64,99 +64,99 @@ async function generateKeysToWrap() {
  const parameters = [
   {
    algorithm: {
-    name: 'RSASSA-PKCS1-v1_5',
+    name: "RSASSA-PKCS1-v1_5",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
-   privateUsages: ['sign'],
-   publicUsages: ['verify'],
+   privateUsages: ["sign"],
+   publicUsages: ["verify"],
    pair: true,
   },
   {
    algorithm: {
-    name: 'RSA-PSS',
+    name: "RSA-PSS",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
-   privateUsages: ['sign'],
-   publicUsages: ['verify'],
+   privateUsages: ["sign"],
+   publicUsages: ["verify"],
    pair: true,
   },
   {
    algorithm: {
-    name: 'RSA-OAEP',
+    name: "RSA-OAEP",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
-   privateUsages: ['decrypt'],
-   publicUsages: ['encrypt'],
+   privateUsages: ["decrypt"],
+   publicUsages: ["encrypt"],
    pair: true,
   },
   {
    algorithm: {
-    name: 'ECDSA',
-    namedCurve: 'P-384',
+    name: "ECDSA",
+    namedCurve: "P-384",
    },
-   privateUsages: ['sign'],
-   publicUsages: ['verify'],
+   privateUsages: ["sign"],
+   publicUsages: ["verify"],
    pair: true,
   },
   {
    algorithm: {
-    name: 'ECDH',
-    namedCurve: 'P-384',
+    name: "ECDH",
+    namedCurve: "P-384",
    },
-   privateUsages: ['deriveBits'],
+   privateUsages: ["deriveBits"],
    publicUsages: [],
    pair: true,
   },
   {
    algorithm: {
-    name: 'AES-CTR',
+    name: "AES-CTR",
     length: 128,
    },
-   usages: ['encrypt', 'decrypt'],
+   usages: ["encrypt", "decrypt"],
    pair: false,
   },
   {
    algorithm: {
-    name: 'AES-CBC',
+    name: "AES-CBC",
     length: 128,
    },
-   usages: ['encrypt', 'decrypt'],
+   usages: ["encrypt", "decrypt"],
    pair: false,
   },
   {
    algorithm: {
-    name: 'AES-GCM', length: 128,
+    name: "AES-GCM", length: 128,
    },
-   usages: ['encrypt', 'decrypt'],
+   usages: ["encrypt", "decrypt"],
    pair: false,
   },
   {
    algorithm: {
-    name: 'AES-KW',
+    name: "AES-KW",
     length: 128,
    },
-   usages: ['wrapKey', 'unwrapKey'],
+   usages: ["wrapKey", "unwrapKey"],
    pair: false,
   },
   {
    algorithm: {
-    name: 'HMAC',
+    name: "HMAC",
     length: 128,
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
-   usages: ['sign', 'verify'],
+   usages: ["sign", "verify"],
    pair: false,
   },
  ];
 
  const allkeys = await Promise.all(parameters.map(async (params) => {
-  const usages = 'usages' in params ?
+  const usages = "usages" in params ?
    params.usages :
    params.publicUsages.concat(params.privateUsages);
 
@@ -189,9 +189,9 @@ async function generateKeysToWrap() {
 
 function getFormats(key) {
  switch (key.key.type) {
-  case 'secret': return ['raw', 'jwk'];
-  case 'public': return ['spki', 'jwk'];
-  case 'private': return ['pkcs8', 'jwk'];
+  case "secret": return ["raw", "jwk"];
+  case "public": return ["spki", "jwk"];
+  case "private": return ["pkcs8", "jwk"];
  }
 }
 
@@ -200,18 +200,18 @@ function getFormats(key) {
 // If the wrapping algorithm is RSA-OAEP, the exported key
 // material maximum length is a factor of the modulusLength
 async function wrappingIsPossible(name, exported) {
- if ('byteLength' in exported) {
+ if ("byteLength" in exported) {
   switch (name) {
-   case 'AES-KW':
+   case "AES-KW":
     return exported.byteLength % 8 === 0;
-   case 'RSA-OAEP':
+   case "RSA-OAEP":
     return exported.byteLength <= 446;
   }
- } else if ('kty' in exported) {
+ } else if ("kty" in exported) {
   switch (name) {
-   case 'AES-KW':
+   case "AES-KW":
     return JSON.stringify(exported).length % 8 === 0;
-   case 'RSA-OAEP':
+   case "RSA-OAEP":
     return JSON.stringify(exported).length <= 478;
   }
  }

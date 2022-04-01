@@ -1,15 +1,15 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 
-const { validateSnapshotNodes } = require('../common/heap');
-const inspector = require('inspector');
+const { validateSnapshotNodes } = require("../common/heap");
+const inspector = require("inspector");
 
 const snapshotNode = {
  children: [
-  { node_name: 'Node / InspectorSession', edge_name: 'session' },
+  { node_name: "Node / InspectorSession", edge_name: "session" },
  ],
 };
 
@@ -19,7 +19,7 @@ const snapshotNode = {
  if (process.env.NODE_V8_COVERAGE) {
   expected.push(snapshotNode);
  }
- validateSnapshotNodes('Node / JSBindingsConnection', expected);
+ validateSnapshotNodes("Node / JSBindingsConnection", expected);
 }
 
 // JSBindingsConnection should be added.
@@ -29,16 +29,16 @@ const snapshotNode = {
  const expected = [
   {
    children: [
-    { node_name: 'Node / InspectorSession', edge_name: 'session' },
-    { node_name: 'Connection', edge_name: 'wrapped' },
-    (edge) => edge.name === 'callback' &&
+    { node_name: "Node / InspectorSession", edge_name: "session" },
+    { node_name: "Connection", edge_name: "wrapped" },
+    (edge) => edge.name === "callback" &&
           (edge.to.type === undefined || // embedded graph
-           edge.to.type === 'closure'), // snapshot
+           edge.to.type === "closure"), // snapshot
    ],
   },
  ];
  if (process.env.NODE_V8_COVERAGE) {
   expected.push(snapshotNode);
  }
- validateSnapshotNodes('Node / JSBindingsConnection', expected);
+ validateSnapshotNodes("Node / JSBindingsConnection", expected);
 }

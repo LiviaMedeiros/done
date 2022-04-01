@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
 
 const options = {};
 
@@ -13,7 +13,7 @@ const server = http2.createServer(options);
 // Options are defaulted but the options are not modified
 assert.deepStrictEqual(Object.keys(options), []);
 
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
  const headers = {};
  const options = {};
  stream.respond(headers, options);
@@ -42,7 +42,7 @@ server.listen(0, common.mustCall(() => {
  assert.deepStrictEqual(Object.keys(options), []);
 
  req.resume();
- req.on('end', common.mustCall(() => {
+ req.on("end", common.mustCall(() => {
   server.close();
   client.close();
  }));

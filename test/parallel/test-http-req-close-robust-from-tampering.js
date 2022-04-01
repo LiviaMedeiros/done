@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const { createServer } = require('http');
-const { connect } = require('net');
+"use strict";
+const common = require("../common");
+const { createServer } = require("http");
+const { connect } = require("net");
 
 // Make sure that calling the semi-private close() handlers manually doesn't
 // cause an error.
@@ -16,11 +16,11 @@ server.listen(0, common.mustCall(() => {
  const client = connect(server.address().port);
 
  const req = [
-  'POST / HTTP/1.1',
-  'Content-Length: 11',
-  '',
-  'hello world',
- ].join('\r\n');
+  "POST / HTTP/1.1",
+  "Content-Length: 11",
+  "",
+  "hello world",
+ ].join("\r\n");
 
  client.end(req);
 }));

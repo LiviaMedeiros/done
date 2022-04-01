@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
-const https = require('https');
+const assert = require("assert");
+const https = require("https");
 
 const options = {
- key: fixtures.readKey('rsa_private.pem'),
- cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey("rsa_private.pem"),
+ cert: fixtures.readKey("rsa_cert.crt"),
 };
 
 const server = https.createServer(options, common.mustCall(function(req, res) {
@@ -51,7 +51,7 @@ function unauthorized() {
   res.resume();
   rejectUnauthorized();
  });
- req.on('error', function(err) {
+ req.on("error", function(err) {
   throw err;
  });
  req.end();
@@ -63,7 +63,7 @@ function rejectUnauthorized() {
  };
  options.agent = new https.Agent(options);
  const req = https.request(options, common.mustNotCall());
- req.on('error', function(err) {
+ req.on("error", function(err) {
   authorized();
  });
  req.end();
@@ -72,7 +72,7 @@ function rejectUnauthorized() {
 function authorized() {
  const options = {
   port: server.address().port,
-  ca: [fixtures.readKey('rsa_cert.crt')],
+  ca: [fixtures.readKey("rsa_cert.crt")],
  };
  options.agent = new https.Agent(options);
  const req = https.request(options, function(res) {
@@ -80,6 +80,6 @@ function authorized() {
   assert(req.socket.authorized);
   server.close();
  });
- req.on('error', common.mustNotCall());
+ req.on("error", common.mustNotCall());
  req.end();
 }

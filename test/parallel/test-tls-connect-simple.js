@@ -19,26 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 let serverConnected = 0;
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 const server = tls.Server(options, common.mustCall(function(socket) {
  if (++serverConnected === 2) {
   server.close(common.mustCall());
-  server.on('close', common.mustCall());
+  server.on("close", common.mustCall());
  }
 }, 2));
 
@@ -56,7 +56,7 @@ server.listen(0, function() {
   rejectUnauthorized: false,
  };
  const client2 = tls.connect(client2options);
- client2.on('secureConnect', common.mustCall(function() {
+ client2.on("secureConnect", common.mustCall(function() {
   client2.end();
  }));
 });

@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const zlib = require('zlib');
+"use strict";
+const common = require("../common");
+const zlib = require("zlib");
 
-zlib.gzip('hello', common.mustCall((err, out) => {
+zlib.gzip("hello", common.mustCall((err, out) => {
  const unzip = zlib.createGunzip();
  unzip.write(out);
  unzip.close(common.mustCall());

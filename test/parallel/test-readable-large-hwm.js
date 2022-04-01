@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const { Readable } = require('stream');
+"use strict";
+const common = require("../common");
+const { Readable } = require("stream");
 
 // Make sure that readable completes
 // even when reading larger buffer.
@@ -17,11 +17,11 @@ const r = new Readable({
  },
 });
 
-r.on('readable', () => {
+r.on("readable", () => {
  while (true) {
   const ret = r.read(bufferSize);
   if (ret === null)
    break;
  }
 });
-r.on('end', common.mustCall());
+r.on("end", common.mustCall());

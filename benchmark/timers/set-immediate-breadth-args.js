@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 const bench = common.createBenchmark(main, {
  n: [5e6],
 });
 
 function main({ n }) {
 
- process.on('exit', () => {
+ process.on("exit", () => {
   bench.end(n);
  });
 

@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common.js');
-const { exec, execSync } = require('child_process');
-const isWindows = process.platform === 'win32';
+"use strict";
+const common = require("../common.js");
+const { exec, execSync } = require("child_process");
+const isWindows = process.platform === "win32";
 
 const messagesLength = [64, 256, 1024, 4096];
 // Windows does not support command lines longer than 8191 characters
@@ -16,11 +16,11 @@ function childProcessExecStdout({ dur, len }) {
  bench.start();
 
  const maxDuration = dur * 1000;
- const cmd = `yes "${'.'.repeat(len)}"`;
- const child = exec(cmd, { 'stdio': ['ignore', 'pipe', 'ignore'] });
+ const cmd = `yes "${".".repeat(len)}"`;
+ const child = exec(cmd, { "stdio": ["ignore", "pipe", "ignore"] });
 
  let bytes = 0;
- child.stdout.on('data', (msg) => {
+ child.stdout.on("data", (msg) => {
   bytes += msg.length;
  });
 

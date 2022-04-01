@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const types = [
- 'Uint8',
- 'Uint16LE',
- 'Uint16BE',
- 'Uint32LE',
- 'Uint32BE',
- 'Int8',
- 'Int16LE',
- 'Int16BE',
- 'Int32LE',
- 'Int32BE',
- 'Float32LE',
- 'Float32BE',
- 'Float64LE',
- 'Float64BE',
+ "Uint8",
+ "Uint16LE",
+ "Uint16BE",
+ "Uint32LE",
+ "Uint32BE",
+ "Int8",
+ "Int16LE",
+ "Int16BE",
+ "Int32LE",
+ "Int32BE",
+ "Float32LE",
+ "Float32BE",
+ "Float64LE",
+ "Float64BE",
 ];
 
 const bench = common.createBenchmark(main, {
@@ -43,7 +43,7 @@ function main({ n, type }) {
  const ab = new ArrayBuffer(8);
  const dv = new DataView(ab, 0, 8);
  const le = /LE$/.test(type);
- const fn = `set${type.replace(/[LB]E$/, '')}`;
+ const fn = `set${type.replace(/[LB]E$/, "")}`;
 
  if (/int/i.test(fn))
   benchInt(dv, fn, n, le);

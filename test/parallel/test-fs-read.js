@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const fs = require('fs');
-const filepath = fixtures.path('x.txt');
-const fd = fs.openSync(filepath, 'r');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const fs = require("fs");
+const filepath = fixtures.path("x.txt");
+const fd = fs.openSync(filepath, "r");
 
-const expected = Buffer.from('xyz\n');
+const expected = Buffer.from("xyz\n");
 
 function test(bufferAsync, bufferSync, expected) {
  fs.read(fd,
@@ -67,36 +67,36 @@ test(new Uint8Array(expected.length),
 }
 
 assert.throws(() => new fs.Dir(), {
- code: 'ERR_MISSING_ARGS',
+ code: "ERR_MISSING_ARGS",
 });
 
 assert.throws(
  () => fs.read(fd, Buffer.alloc(1), 0, 1, 0),
  {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  },
 );
 
 assert.throws(
  () => fs.read(fd, { buffer: null }, common.mustNotCall()),
  /TypeError: Cannot read properties of null \(reading 'byteLength'\)/,
- 'throws when options.buffer is null',
+ "throws when options.buffer is null",
 );
 
 assert.throws(
  () => fs.readSync(fd, { buffer: null }),
  {
-  name: 'TypeError',
+  name: "TypeError",
   message: 'The "buffer" argument must be an instance of Buffer, ' +
-    'TypedArray, or DataView. Received an instance of Object',
+    "TypedArray, or DataView. Received an instance of Object",
  },
- 'throws when options.buffer is null',
+ "throws when options.buffer is null",
 );
 
 assert.throws(
  () => fs.read(null, Buffer.alloc(1), 0, 1, 0),
  {
   message: 'The "fd" argument must be of type number. Received null',
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  },
 );

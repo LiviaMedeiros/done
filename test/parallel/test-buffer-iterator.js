@@ -1,6 +1,6 @@
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 const buffer = Buffer.from([1, 2, 3, 4, 5]);
 let arr;

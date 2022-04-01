@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 // Checks that setInterval timers keep running even when they're
 // unrefed within their callback.
 
-const common = require('../common');
-const net = require('net');
+const common = require("../common");
+const net = require("net");
 
 let counter1 = 0;
 let counter2 = 0;

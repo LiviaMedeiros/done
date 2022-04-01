@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
-const https = require('https');
-const tls = require('tls');
+const fixtures = require("../common/fixtures");
+const https = require("https");
+const tls = require("tls");
 
 const tests = [];
 
 const serverOptions = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 function test(fn) {
@@ -48,9 +48,9 @@ test(function serverKeepAliveTimeoutWithPipeline(cb) {
    rejectUnauthorized: false,
   };
   const c = tls.connect(options, () => {
-   c.write('GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n');
+   c.write("GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n");
   });
  }));
 });
@@ -71,9 +71,9 @@ test(function serverNoEndKeepAliveTimeoutWithPipeline(cb) {
    rejectUnauthorized: false,
   };
   const c = tls.connect(options, () => {
-   c.write('GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n');
+   c.write("GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n");
   });
  }));
 });

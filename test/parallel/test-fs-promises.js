@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const tmpdir = require('../common/tmpdir');
-const fixtures = require('../common/fixtures');
-const path = require('path');
-const fs = require('fs');
+const common = require("../common");
+const assert = require("assert");
+const tmpdir = require("../common/tmpdir");
+const fixtures = require("../common/fixtures");
+const path = require("path");
+const fs = require("fs");
 const fsPromises = fs.promises;
 const {
  access,
@@ -43,7 +43,7 @@ function nextdir() {
 
 // fs.promises should be enumerable.
 assert.strictEqual(
- Object.prototype.propertyIsEnumerable.call(fs, 'promises'),
+ Object.prototype.propertyIsEnumerable.call(fs, "promises"),
  true,
 );
 
@@ -52,10 +52,10 @@ assert.strictEqual(
     .then(common.mustCall());
 
  assert.rejects(
-  access('this file does not exist', 0),
+  access("this file does not exist", 0),
   {
-   code: 'ENOENT',
-   name: 'Error',
+   code: "ENOENT",
+   name: "Error",
    message: /^ENOENT: no such file or directory, access/,
   },
  );
@@ -63,7 +63,7 @@ assert.strictEqual(
  assert.rejects(
   access(__filename, 8),
   {
-   code: 'ERR_OUT_OF_RANGE',
+   code: "ERR_OUT_OF_RANGE",
    message: /"mode".*must be an integer >= 0 && <= 7\. Received 8$/,
   },
  );
@@ -71,23 +71,23 @@ assert.strictEqual(
  assert.rejects(
   access(__filename, { [Symbol.toPrimitive]() { return 5; } }),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
    message: /"mode" argument.+integer\. Received an instance of Object$/,
   },
  );
 }
 
 function verifyStatObject(stat) {
- assert.strictEqual(typeof stat, 'object');
- assert.strictEqual(typeof stat.dev, 'number');
- assert.strictEqual(typeof stat.mode, 'number');
+ assert.strictEqual(typeof stat, "object");
+ assert.strictEqual(typeof stat.dev, "number");
+ assert.strictEqual(typeof stat.mode, "number");
 }
 
 async function getHandle(dest) {
- await copyFile(fixtures.path('baz.js'), dest);
+ await copyFile(fixtures.path("baz.js"), dest);
  await access(dest);
 
- return open(dest, 'r+');
+ return open(dest, "r+");
 }
 
 async function executeOnHandle(dest, func) {
@@ -106,12 +106,12 @@ async function executeOnHandle(dest, func) {
  async function doTest() {
   tmpdir.refresh();
 
-  const dest = path.resolve(tmpDir, 'baz.js');
+  const dest = path.resolve(tmpDir, "baz.js");
 
   // handle is object
   {
    await executeOnHandle(dest, async (handle) => {
-    assert.strictEqual(typeof handle, 'object');
+    assert.strictEqual(typeof handle, "object");
    });
   }
 
@@ -141,9 +141,9 @@ async function executeOnHandle(dest, func) {
 
   // Test fs.read promises when length to read is zero bytes
   {
-   const dest = path.resolve(tmpDir, 'test1.js');
+   const dest = path.resolve(tmpDir, "test1.js");
    await executeOnHandle(dest, async (handle) => {
-    const buf = Buffer.from('DAWGS WIN');
+    const buf = Buffer.from("DAWGS WIN");
     const bufLen = buf.length;
     await handle.write(buf);
     const ret = await handle.read(Buffer.alloc(bufLen), 0, 0, 0);
@@ -164,7 +164,7 @@ async function executeOnHandle(dest, func) {
   // Bytes written to file match buffer
   {
    await executeOnHandle(dest, async (handle) => {
-    const buf = Buffer.from('hello fsPromises');
+    const buf = Buffer.from("hello fsPromises");
     const bufLen = buf.length;
     await handle.write(buf);
     const ret = await handle.read(Buffer.alloc(bufLen), 0, bufLen, 0);
@@ -176,14 +176,14 @@ async function executeOnHandle(dest, func) {
   // Truncate file to specified length
   {
    await executeOnHandle(dest, async (handle) => {
-    const buf = Buffer.from('hello FileHandle');
+    const buf = Buffer.from("hello FileHandle");
     const bufLen = buf.length;
     await handle.write(buf, 0, bufLen, 0);
     const ret = await handle.read(Buffer.alloc(bufLen), 0, bufLen, 0);
     assert.strictEqual(ret.bytesRead, bufLen);
     assert.deepStrictEqual(ret.buffer, buf);
     await truncate(dest, 5);
-    assert.strictEqual((await readFile(dest)).toString(), 'hello');
+    assert.strictEqual((await readFile(dest)).toString(), "hello");
    });
   }
 
@@ -206,10 +206,10 @@ async function executeOnHandle(dest, func) {
       await chown(dest, 1, -2);
      },
      {
-      code: 'ERR_OUT_OF_RANGE',
-      name: 'RangeError',
+      code: "ERR_OUT_OF_RANGE",
+      name: "RangeError",
       message: 'The value of "gid" is out of range. ' +
-                     'It must be >= -1 && <= 4294967295. Received -2',
+                     "It must be >= -1 && <= 4294967295. Received -2",
      });
 
     await assert.rejects(
@@ -217,10 +217,10 @@ async function executeOnHandle(dest, func) {
       await handle.chown(1, -2);
      },
      {
-      code: 'ERR_OUT_OF_RANGE',
-      name: 'RangeError',
+      code: "ERR_OUT_OF_RANGE",
+      name: "RangeError",
       message: 'The value of "gid" is out of range. ' +
-                      'It must be >= -1 && <= 4294967295. Received -2',
+                      "It must be >= -1 && <= 4294967295. Received -2",
      });
    });
   }
@@ -237,8 +237,8 @@ async function executeOnHandle(dest, func) {
      // Some systems do not have futimes. If there is an error,
      // expect it to be ENOSYS
      common.expectsError({
-      code: 'ENOSYS',
-      name: 'Error',
+      code: "ENOSYS",
+      name: "Error",
      })(err);
     }
    });
@@ -259,13 +259,13 @@ async function executeOnHandle(dest, func) {
 
   // create symlink
   {
-   const newPath = path.resolve(tmpDir, 'baz2.js');
+   const newPath = path.resolve(tmpDir, "baz2.js");
    await rename(dest, newPath);
    let stats = await stat(newPath);
    verifyStatObject(stats);
 
    if (common.canCreateSymLink()) {
-    const newLink = path.resolve(tmpDir, 'baz3.js');
+    const newLink = path.resolve(tmpDir, "baz3.js");
     await symlink(newPath, newLink);
     if (!common.isWindows) {
      await lchown(newLink, process.getuid(), process.getgid());
@@ -289,9 +289,9 @@ async function executeOnHandle(dest, func) {
       assert.rejects(
        lchmod(newLink, newMode),
        common.expectsError({
-        code: 'ERR_METHOD_NOT_IMPLEMENTED',
-        name: 'Error',
-        message: 'The lchmod() method is not implemented',
+        code: "ERR_METHOD_NOT_IMPLEMENTED",
+        name: "Error",
+        message: "The lchmod() method is not implemented",
        }),
       ),
      ]);
@@ -304,7 +304,7 @@ async function executeOnHandle(dest, func) {
   // specify symlink type
   {
    const dir = path.join(tmpDir, nextdir());
-   await symlink(tmpDir, dir, 'dir');
+   await symlink(tmpDir, dir, "dir");
    const stats = await lstat(dir);
    assert.strictEqual(stats.isSymbolicLink(), true);
    await unlink(dir);
@@ -312,8 +312,8 @@ async function executeOnHandle(dest, func) {
 
   // create hard link
   {
-   const newPath = path.resolve(tmpDir, 'baz2.js');
-   const newLink = path.resolve(tmpDir, 'baz4.js');
+   const newPath = path.resolve(tmpDir, "baz2.js");
+   const newLink = path.resolve(tmpDir, "baz4.js");
    await link(newPath, newLink);
 
    await unlink(newLink);
@@ -321,25 +321,25 @@ async function executeOnHandle(dest, func) {
 
   // Testing readdir lists both files and directories
   {
-   const newDir = path.resolve(tmpDir, 'dir');
-   const newFile = path.resolve(tmpDir, 'foo.js');
+   const newDir = path.resolve(tmpDir, "dir");
+   const newFile = path.resolve(tmpDir, "foo.js");
 
    await mkdir(newDir);
-   await writeFile(newFile, 'DAWGS WIN!', 'utf8');
+   await writeFile(newFile, "DAWGS WIN!", "utf8");
 
    const stats = await stat(newDir);
    assert(stats.isDirectory());
    const list = await readdir(tmpDir);
-   assert.notStrictEqual(list.indexOf('dir'), -1);
-   assert.notStrictEqual(list.indexOf('foo.js'), -1);
+   assert.notStrictEqual(list.indexOf("dir"), -1);
+   assert.notStrictEqual(list.indexOf("foo.js"), -1);
    await rmdir(newDir);
    await unlink(newFile);
   }
 
   // Use fallback encoding when input is null
   {
-   const newFile = path.resolve(tmpDir, 'dogs_running.js');
-   await writeFile(newFile, 'dogs running', { encoding: null });
+   const newFile = path.resolve(tmpDir, "dogs_running.js");
+   await writeFile(newFile, "dogs running", { encoding: null });
    const fileExists = fs.existsSync(newFile);
    assert.strictEqual(fileExists, true);
   }
@@ -355,7 +355,7 @@ async function executeOnHandle(dest, func) {
   // `mkdir` when options is string.
   {
    const dir = path.join(tmpDir, nextdir());
-   await mkdir(dir, '777');
+   await mkdir(dir, "777");
    const stats = await stat(dir);
    assert(stats.isDirectory());
   }
@@ -372,14 +372,14 @@ async function executeOnHandle(dest, func) {
   {
    const dir = path.join(tmpDir, nextdir(), nextdir());
    await mkdir(path.dirname(dir));
-   await writeFile(dir, '');
+   await writeFile(dir, "");
    assert.rejects(
     mkdir(dir, { recursive: true }),
     {
-     code: 'EEXIST',
+     code: "EEXIST",
      message: /EEXIST: .*mkdir/,
-     name: 'Error',
-     syscall: 'mkdir',
+     name: "Error",
+     syscall: "mkdir",
     },
    );
   }
@@ -389,14 +389,14 @@ async function executeOnHandle(dest, func) {
    const file = path.join(tmpDir, nextdir(), nextdir());
    const dir = path.join(file, nextdir(), nextdir());
    await mkdir(path.dirname(file));
-   await writeFile(file, '');
+   await writeFile(file, "");
    assert.rejects(
     mkdir(dir, { recursive: true }),
     {
-     code: 'ENOTDIR',
+     code: "ENOTDIR",
      message: /ENOTDIR: .*mkdir/,
-     name: 'Error',
-     syscall: 'mkdir',
+     name: "Error",
+     syscall: "mkdir",
     },
    );
   }
@@ -421,13 +421,13 @@ async function executeOnHandle(dest, func) {
   // Everything else generates an error.
   {
    const dir = path.join(tmpDir, nextdir(), nextdir());
-   ['', 1, {}, [], null, Symbol('test'), () => {}].forEach((recursive) => {
+   ["", 1, {}, [], null, Symbol("test"), () => {}].forEach((recursive) => {
     assert.rejects(
      // mkdir() expects to get a boolean value for options.recursive.
      async () => mkdir(dir, { recursive }),
      {
-      code: 'ERR_INVALID_ARG_TYPE',
-      name: 'TypeError',
+      code: "ERR_INVALID_ARG_TYPE",
+      name: "TypeError",
      },
     );
    });
@@ -435,13 +435,13 @@ async function executeOnHandle(dest, func) {
 
   // `mkdtemp` with invalid numeric prefix
   {
-   await mkdtemp(path.resolve(tmpDir, 'FOO'));
+   await mkdtemp(path.resolve(tmpDir, "FOO"));
    assert.rejects(
     // mkdtemp() expects to get a string prefix.
     async () => mkdtemp(1),
     {
-     code: 'ERR_INVALID_ARG_TYPE',
-     name: 'TypeError',
+     code: "ERR_INVALID_ARG_TYPE",
+     name: "TypeError",
     },
    );
   }
@@ -450,14 +450,14 @@ async function executeOnHandle(dest, func) {
   {
    await executeOnHandle(dest, async (handle) => {
     await assert.rejects(
-     async () => handle.write('abc', 0, 'hex'),
+     async () => handle.write("abc", 0, "hex"),
      {
-      code: 'ERR_INVALID_ARG_VALUE',
+      code: "ERR_INVALID_ARG_VALUE",
       message: /'encoding' is invalid for data of length 3/,
      },
     );
 
-    const ret = await handle.write('abcd', 0, 'hex');
+    const ret = await handle.write("abcd", 0, "hex");
     assert.strictEqual(ret.bytesWritten, 2);
    });
   }
@@ -466,7 +466,7 @@ async function executeOnHandle(dest, func) {
   {
    await executeOnHandle(dest, async (handle) => {
     await assert.rejects(() => handle.stat.call({}), {
-     code: 'ERR_INTERNAL_ASSERTION',
+     code: "ERR_INTERNAL_ASSERTION",
      message: /handle must be an instance of FileHandle/,
     });
    });

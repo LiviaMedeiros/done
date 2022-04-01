@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const server = http.createServer(common.mustCall((req, res) => {
- if (req.url === '/first') {
-  res.end('ok');
+ if (req.url === "/first") {
+  res.end("ok");
   return;
  }
  setTimeout(() => {
-  res.end('ok');
+  res.end("ok");
  }, common.platformTimeout(500));
 }, 2));
 
@@ -26,15 +26,15 @@ function request(path, callback) {
  const req = http.request({ agent, path, port }, common.mustCall((res) => {
   assert.strictEqual(res.statusCode, 200);
 
-  res.setEncoding('utf8');
+  res.setEncoding("utf8");
 
-  let result = '';
-  res.on('data', (chunk) => {
+  let result = "";
+  res.on("data", (chunk) => {
    result += chunk;
   });
 
-  res.on('end', common.mustCall(() => {
-   assert.strictEqual(result, 'ok');
+  res.on("end", common.mustCall(() => {
+   assert.strictEqual(result, "ok");
    callback();
   }));
  }));
@@ -42,8 +42,8 @@ function request(path, callback) {
 }
 
 server.listen(0, common.mustCall(() => {
- request('/first', () => {
-  request('/second', () => {
+ request("/first", () => {
+  request("/second", () => {
    server.close();
   });
  });

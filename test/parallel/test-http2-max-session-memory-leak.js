@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const http2 = require("http2");
 
 // Regression test for https://github.com/nodejs/node/issues/27416.
 // Check that received data is accounted for correctly in the maxSessionMemory
@@ -13,7 +13,7 @@ const maxSessionMemory = 1;  // 1 MB
 const requestCount = 1000;
 
 const server = http2.createServer({ maxSessionMemory });
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  stream.respond();
  stream.end();
 });
@@ -26,12 +26,12 @@ server.listen(common.mustCall(() => {
  function request() {
   return new Promise((resolve, reject) => {
    const stream = client.request({
-    ':method': 'POST',
-    'content-length': bodyLength,
+    ":method": "POST",
+    "content-length": bodyLength,
    });
-   stream.on('error', reject);
-   stream.on('response', resolve);
-   stream.end('a'.repeat(bodyLength));
+   stream.on("error", reject);
+   stream.on("response", resolve);
+   stream.end("a".repeat(bodyLength));
   });
  }
 

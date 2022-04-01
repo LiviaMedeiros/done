@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 
-for (const destroyer of ['destroy', 'abort']) {
+for (const destroyer of ["destroy", "abort"]) {
  let socketsCreated = 0;
 
  class Agent extends http.Agent {
@@ -29,12 +29,12 @@ for (const destroyer of ['destroy', 'abort']) {
   const req = http.get({ agent, port }, common.mustNotCall());
   req[destroyer]();
 
-  if (destroyer === 'destroy') {
-   req.on('error', common.mustCall((err) => {
-    assert.strictEqual(err.code, 'ECONNRESET');
+  if (destroyer === "destroy") {
+   req.on("error", common.mustCall((err) => {
+    assert.strictEqual(err.code, "ECONNRESET");
    }));
   } else {
-   req.on('error', common.mustNotCall());
+   req.on("error", common.mustNotCall());
   }
 
   http.get({ agent, port }, common.mustCall((res) => {

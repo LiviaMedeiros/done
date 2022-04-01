@@ -1,32 +1,32 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const http = require('http');
-const fixtures = require('../common/fixtures');
-const { spawn } = require('child_process');
-const { parse: parseURL } = require('url');
-const { pathToFileURL } = require('url');
-const { EventEmitter } = require('events');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const http = require("http");
+const fixtures = require("../common/fixtures");
+const { spawn } = require("child_process");
+const { parse: parseURL } = require("url");
+const { pathToFileURL } = require("url");
+const { EventEmitter } = require("events");
 
-const _MAINSCRIPT = fixtures.path('loop.js');
+const _MAINSCRIPT = fixtures.path("loop.js");
 const DEBUG = false;
 const TIMEOUT = common.platformTimeout(15 * 1000);
 
 function spawnChildProcess(inspectorFlags, scriptContents, scriptFile) {
  const args = [].concat(inspectorFlags);
  if (scriptContents) {
-  args.push('-e', scriptContents);
+  args.push("-e", scriptContents);
  } else {
   args.push(scriptFile);
  }
  const child = spawn(process.execPath, args);
 
  const handler = tearDown.bind(null, child);
- process.on('exit', handler);
- process.on('uncaughtException', handler);
- process.on('unhandledRejection', handler);
- process.on('SIGINT', handler);
+ process.on("exit", handler);
+ process.on("uncaughtException", handler);
+ process.on("unhandledRejection", handler);
+ process.on("SIGINT", handler);
 
  return child;
 }
@@ -35,12 +35,12 @@ function makeBufferingDataCallback(dataCallback) {
  let buffer = Buffer.alloc(0);
  return (data) => {
   const newData = Buffer.concat([buffer, data]);
-  const str = newData.toString('utf8');
-  const lines = str.replace(/\r/g, '').split('\n');
-  if (str.endsWith('\n'))
+  const str = newData.toString("utf8");
+  const lines = str.replace(/\r/g, "").split("\n");
+  if (str.endsWith("\n"))
    buffer = Buffer.alloc(0);
   else
-   buffer = Buffer.from(lines.pop(), 'utf8');
+   buffer = Buffer.from(lines.pop(), "utf8");
   for (const line of lines)
    dataCallback(line);
  };
@@ -71,14 +71,14 @@ function parseWSFrame(buffer) {
   dataLen = buffer.readUInt16BE(2);
   bodyOffset = 4;
  } else if (dataLen === 127) {
-  assert(buffer[2] === 0 && buffer[3] === 0, 'Inspector message too big');
+  assert(buffer[2] === 0 && buffer[3] === 0, "Inspector message too big");
   dataLen = buffer.readUIntBE(4, 6);
   bodyOffset = 10;
  }
  if (buffer.length < bodyOffset + dataLen)
   return { length: 0, message };
  const jsonPayload =
-    buffer.slice(bodyOffset, bodyOffset + dataLen).toString('utf8');
+    buffer.slice(bodyOffset, bodyOffset + dataLen).toString("utf8");
  try {
   message = JSON.parse(jsonPayload);
  } catch (e) {
@@ -86,7 +86,7 @@ function parseWSFrame(buffer) {
   throw e;
  }
  if (DEBUG)
-  console.log('[received]', JSON.stringify(message));
+  console.log("[received]", JSON.stringify(message));
  return { length: bodyOffset + dataLen, message };
 }
 
@@ -132,7 +132,7 @@ class InspectorSession {
   this._pausedDetails = null;
 
   let buffer = Buffer.alloc(0);
-  socket.on('data', (data) => {
+  socket.on("data", (data) => {
    buffer = Buffer.concat([buffer, data]);
    do {
     const { length, message, closed } = parseWSFrame(buffer);
@@ -148,7 +148,7 @@ class InspectorSession {
    } while (true);
   });
   this._terminationPromise = new Promise((resolve) => {
-   socket.once('close', resolve);
+   socket.once("close", resolve);
   });
  }
 
@@ -170,18 +170,18 @@ class InspectorSession {
    else
     reject(message.error);
   } else {
-   if (message.method === 'Debugger.scriptParsed') {
+   if (message.method === "Debugger.scriptParsed") {
     const { scriptId, url } = message.params;
     this._scriptsIdsByUrl.set(scriptId, url);
-    const fileUrl = url.startsWith('file:') ?
+    const fileUrl = url.startsWith("file:") ?
      url : pathToFileURL(url).toString();
     if (fileUrl === this.scriptURL().toString()) {
      this.mainScriptId = scriptId;
     }
    }
-   if (message.method === 'Debugger.paused')
+   if (message.method === "Debugger.paused")
     this._pausedDetails = message.params;
-   if (message.method === 'Debugger.resumed')
+   if (message.method === "Debugger.resumed")
     this._pausedDetails = null;
 
    if (this._notificationCallback) {
@@ -203,7 +203,7 @@ class InspectorSession {
   const msg = JSON.parse(JSON.stringify(message)); // Clone!
   msg.id = this._nextId++;
   if (DEBUG)
-   console.log('[sent]', JSON.stringify(msg));
+   console.log("[sent]", JSON.stringify(msg));
 
   const responsePromise = new Promise((resolve, reject) => {
    this._commandResponsePromises.set(msg.id, { resolve, reject });
@@ -237,7 +237,7 @@ class InspectorSession {
    return notification.method === methodOrPredicate;
   }
   const predicate =
-        typeof methodOrPredicate === 'string' ? matchMethod : methodOrPredicate;
+        typeof methodOrPredicate === "string" ? matchMethod : methodOrPredicate;
   let notification = null;
   do {
    if (this._unprocessedNotifications.length) {
@@ -251,7 +251,7 @@ class InspectorSession {
  }
 
  _isBreakOnLineNotification(message, line, expectedScriptPath) {
-  if (message.method === 'Debugger.paused') {
+  if (message.method === "Debugger.paused") {
    const callFrame = message.params.callFrames[0];
    const location = callFrame.location;
    const scriptPath = this._scriptsIdsByUrl.get(location.scriptId);
@@ -278,7 +278,7 @@ class InspectorSession {
  _matchesConsoleOutputNotification(notification, type, values) {
   if (!Array.isArray(values))
    values = [ values ];
-  if (notification.method === 'Runtime.consoleAPICalled') {
+  if (notification.method === "Runtime.consoleAPICalled") {
    const params = notification.params;
    if (params.type === type) {
     let i = 0;
@@ -300,14 +300,14 @@ class InspectorSession {
  }
 
  async runToCompletion() {
-  console.log('[test]', 'Verify node waits for the frontend to disconnect');
-  await this.send({ 'method': 'Debugger.resume' });
+  console.log("[test]", "Verify node waits for the frontend to disconnect");
+  await this.send({ "method": "Debugger.resume" });
   await this.waitForNotification((notification) => {
-   return notification.method === 'Runtime.executionContextDestroyed' &&
+   return notification.method === "Runtime.executionContextDestroyed" &&
         notification.params.executionContextId === 1;
   });
   while ((await this._instance.nextStderrString()) !==
-              'Waiting for the debugger to disconnect...');
+              "Waiting for the debugger to disconnect...");
   await this.disconnect();
  }
 
@@ -325,8 +325,8 @@ class InspectorSession {
 }
 
 class NodeInstance extends EventEmitter {
- constructor(inspectorFlags = ['--inspect-brk=0', '--expose-internals'],
-             scriptContents = '',
+ constructor(inspectorFlags = ["--inspect-brk=0", "--expose-internals"],
+             scriptContents = "",
              scriptFile = _MAINSCRIPT) {
   super();
 
@@ -340,17 +340,17 @@ class NodeInstance extends EventEmitter {
   this._stderrLineCallback = null;
   this._unprocessedStderrLines = [];
 
-  this._process.stdout.on('data', makeBufferingDataCallback(
+  this._process.stdout.on("data", makeBufferingDataCallback(
    (line) => {
-    this.emit('stdout', line);
-    console.log('[out]', line);
+    this.emit("stdout", line);
+    console.log("[out]", line);
    }));
 
-  this._process.stderr.on('data', makeBufferingDataCallback(
+  this._process.stderr.on("data", makeBufferingDataCallback(
    (message) => this.onStderrLine(message)));
 
   this._shutdownPromise = new Promise((resolve) => {
-   this._process.once('exit', (exitCode, signal) => {
+   this._process.once("exit", (exitCode, signal) => {
     if (signal) {
      console.error(`[err] child process crashed, signal ${signal}`);
     }
@@ -362,16 +362,16 @@ class NodeInstance extends EventEmitter {
 
  static async startViaSignal(scriptContents) {
   const instance = new NodeInstance(
-   ['--expose-internals'],
+   ["--expose-internals"],
    `${scriptContents}\nprocess._rawDebug('started');`, undefined);
-  const msg = 'Timed out waiting for process to start';
-  while (await fires(instance.nextStderrString(), msg, TIMEOUT) !== 'started');
+  const msg = "Timed out waiting for process to start";
+  while (await fires(instance.nextStderrString(), msg, TIMEOUT) !== "started");
   process._debugProcess(instance._process.pid);
   return instance;
  }
 
  onStderrLine(line) {
-  console.log('[err]', line);
+  console.log("[err]", line);
   if (this._portCallback) {
    const matches = line.match(/Debugger listening on ws:\/\/.+:(\d+)\/.+/);
    if (matches) {
@@ -388,19 +388,19 @@ class NodeInstance extends EventEmitter {
  }
 
  httpGet(host, path, hostHeaderValue) {
-  console.log('[test]', `Testing ${path}`);
-  const headers = hostHeaderValue ? { 'Host': hostHeaderValue } : null;
+  console.log("[test]", `Testing ${path}`);
+  const headers = hostHeaderValue ? { "Host": hostHeaderValue } : null;
   return this.portPromise.then((port) => new Promise((resolve, reject) => {
    const req = http.get({ host, port, family: 4, path, headers }, (res) => {
-    let response = '';
-    res.setEncoding('utf8');
+    let response = "";
+    res.setEncoding("utf8");
     res
-          .on('data', (data) => response += data.toString())
-          .on('end', () => {
+          .on("data", (data) => response += data.toString())
+          .on("end", () => {
           	resolve(response);
           });
    });
-   req.on('error', reject);
+   req.on("error", reject);
   })).then((response) => {
    try {
     return JSON.parse(response);
@@ -412,7 +412,7 @@ class NodeInstance extends EventEmitter {
  }
 
  async sendUpgradeRequest() {
-  const response = await this.httpGet(null, '/json/list');
+  const response = await this.httpGet(null, "/json/list");
   const devtoolsUrl = response[0].webSocketDebuggerUrl;
   const port = await this.portPromise;
   return http.get({
@@ -420,34 +420,34 @@ class NodeInstance extends EventEmitter {
    family: 4,
    path: parseURL(devtoolsUrl).path,
    headers: {
-    'Connection': 'Upgrade',
-    'Upgrade': 'websocket',
-    'Sec-WebSocket-Version': 13,
-    'Sec-WebSocket-Key': 'key==',
+    "Connection": "Upgrade",
+    "Upgrade": "websocket",
+    "Sec-WebSocket-Version": 13,
+    "Sec-WebSocket-Key": "key==",
    },
   });
  }
 
  async connectInspectorSession() {
-  console.log('[test]', 'Connecting to a child Node process');
+  console.log("[test]", "Connecting to a child Node process");
   const upgradeRequest = await this.sendUpgradeRequest();
   return new Promise((resolve) => {
    upgradeRequest
-        .on('upgrade',
+        .on("upgrade",
         				(message, socket) => resolve(new InspectorSession(socket, this)))
-        .on('response', common.mustNotCall('Upgrade was not received'));
+        .on("response", common.mustNotCall("Upgrade was not received"));
   });
  }
 
  async expectConnectionDeclined() {
-  console.log('[test]', 'Checking upgrade is not possible');
+  console.log("[test]", "Checking upgrade is not possible");
   const upgradeRequest = await this.sendUpgradeRequest();
   return new Promise((resolve) => {
    upgradeRequest
-          .on('upgrade', common.mustNotCall('Upgrade was received'))
-          .on('response', (response) =>
-          	response.on('data', () => {})
-                    .on('end', () => resolve(response.statusCode)));
+          .on("upgrade", common.mustNotCall("Upgrade was received"))
+          .on("response", (response) =>
+          	response.on("data", () => {})
+                    .on("end", () => resolve(response.statusCode)));
   });
  }
 
@@ -476,7 +476,7 @@ class NodeInstance extends EventEmitter {
 
  script() {
   if (this._script === null)
-   this._script = fs.readFileSync(this.scriptPath(), 'utf8');
+   this._script = fs.readFileSync(this.scriptPath(), "utf8");
   return this._script;
  }
 }

@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { MessageChannel, MessagePort, Worker } = require('worker_threads');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { MessageChannel, MessagePort, Worker } = require("worker_threads");
 
 {
  const channel = new MessageChannel();
 
- channel.port1.on('message', common.mustCall(({ typedArray }) => {
+ channel.port1.on("message", common.mustCall(({ typedArray }) => {
   assert.deepStrictEqual(typedArray, new Uint8Array([0, 1, 2, 3, 4]));
  }));
 
@@ -19,8 +19,8 @@ const { MessageChannel, MessagePort, Worker } = require('worker_threads');
 {
  const channel = new MessageChannel();
 
- channel.port1.on('close', common.mustCall());
- channel.port2.on('close', common.mustCall());
+ channel.port1.on("close", common.mustCall());
+ channel.port2.on("close", common.mustCall());
  channel.port2.close();
 }
 
@@ -38,8 +38,8 @@ const { MessageChannel, MessagePort, Worker } = require('worker_threads');
  w.postMessage({ port: channel.port2 }, [ channel.port2 ]);
  assert(channel.port1 instanceof MessagePort);
  assert(channel.port2 instanceof MessagePort);
- channel.port1.on('message', common.mustCall((message) => {
-  assert.strictEqual(message, 'works');
+ channel.port1.on("message", common.mustCall((message) => {
+  assert.strictEqual(message, "works");
   w.terminate();
  }));
 }

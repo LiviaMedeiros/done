@@ -1,25 +1,25 @@
-'use strict';
-const common = require('../../common');
-const fixture = require('../../common/fixtures');
+"use strict";
+const common = require("../../common");
+const fixture = require("../../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const engine = path.join(__dirname,
                          `/build/${common.buildType}/testkeyengine.engine`);
 
 if (!fs.existsSync(engine))
- common.skip('no client cert engine');
+ common.skip("no client cert engine");
 
-const assert = require('assert');
-const https = require('https');
+const assert = require("assert");
+const https = require("https");
 
-const agentKey = fs.readFileSync(fixture.path('/keys/agent1-key.pem'));
-const agentCert = fs.readFileSync(fixture.path('/keys/agent1-cert.pem'));
-const agentCa = fs.readFileSync(fixture.path('/keys/ca1-cert.pem'));
+const agentKey = fs.readFileSync(fixture.path("/keys/agent1-key.pem"));
+const agentCert = fs.readFileSync(fixture.path("/keys/agent1-cert.pem"));
+const agentCa = fs.readFileSync(fixture.path("/keys/ca1-cert.pem"));
 
 const serverOptions = {
  key: agentKey,
@@ -31,29 +31,29 @@ const serverOptions = {
 
 const server = https.createServer(serverOptions, common.mustCall((req, res) => {
  res.writeHead(200);
- res.end('hello world');
+ res.end("hello world");
 })).listen(0, common.localhostIPv4, common.mustCall(() => {
  const clientOptions = {
-  method: 'GET',
+  method: "GET",
   host: common.localhostIPv4,
   port: server.address().port,
-  path: '/test',
+  path: "/test",
   privateKeyEngine: engine,
-  privateKeyIdentifier: 'dummykey',
+  privateKeyIdentifier: "dummykey",
   cert: agentCert,
   rejectUnauthorized: false, // Prevent failing on self-signed certificates
   headers: {},
  };
 
  const req = https.request(clientOptions, common.mustCall((response) => {
-  let body = '';
-  response.setEncoding('utf8');
-  response.on('data', (chunk) => {
+  let body = "";
+  response.setEncoding("utf8");
+  response.on("data", (chunk) => {
    body += chunk;
   });
 
-  response.on('end', common.mustCall(() => {
-   assert.strictEqual(body, 'hello world');
+  response.on("end", common.mustCall(() => {
+   assert.strictEqual(body, "hello world");
    server.close();
   }));
  }));

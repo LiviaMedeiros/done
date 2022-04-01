@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const fs = require('fs');
-const http2 = require('http2');
-const path = require('path');
+ common.skip("missing crypto");
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const fs = require("fs");
+const http2 = require("http2");
+const path = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 // This test assesses whether long-running writes can complete
@@ -30,39 +30,39 @@ let offsetTimeout = common.platformTimeout(100);
 let didReceiveData = false;
 
 const content = Buffer.alloc(writeSize, 0x44);
-const filepath = path.join(tmpdir.path, 'http2-large-write.tmp');
-fs.writeFileSync(filepath, content, 'binary');
-const fd = fs.openSync(filepath, 'r');
-process.on('beforeExit', () => fs.closeSync(fd));
+const filepath = path.join(tmpdir.path, "http2-large-write.tmp");
+fs.writeFileSync(filepath, content, "binary");
+const fd = fs.openSync(filepath, "r");
+process.on("beforeExit", () => fs.closeSync(fd));
 
 const server = http2.createSecureServer({
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 });
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
  stream.respondWithFD(fd, {
-  'Content-Type': 'application/octet-stream',
-  'Content-Length': content.length.toString(),
-  'Vary': 'Accept-Encoding',
+  "Content-Type": "application/octet-stream",
+  "Content-Length": content.length.toString(),
+  "Vary": "Accept-Encoding",
  });
  stream.end();
 }));
 server.setTimeout(serverTimeout);
-server.on('timeout', () => {
- assert.ok(!didReceiveData, 'Should not timeout');
+server.on("timeout", () => {
+ assert.ok(!didReceiveData, "Should not timeout");
 });
 
 server.listen(0, common.mustCall(() => {
  const client = http2.connect(`https://localhost:${server.address().port}`,
                               { rejectUnauthorized: false });
 
- const req = client.request({ ':path': '/' });
+ const req = client.request({ ":path": "/" });
  req.end();
 
  const resume = () => req.resume();
  let receivedBufferLength = 0;
  let firstReceivedAt;
- req.on('data', common.mustCallAtLeast((buf) => {
+ req.on("data", common.mustCallAtLeast((buf) => {
   if (receivedBufferLength === 0) {
    didReceiveData = false;
    firstReceivedAt = Date.now();
@@ -80,7 +80,7 @@ server.listen(0, common.mustCall(() => {
    offsetTimeout = 0;
   }
  }, 1));
- req.on('end', common.mustCall(() => {
+ req.on("end", common.mustCall(() => {
   client.close();
   server.close();
  }));

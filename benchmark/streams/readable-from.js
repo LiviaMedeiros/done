@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const Readable = require('stream').Readable;
+const common = require("../common");
+const Readable = require("stream").Readable;
 
 const bench = common.createBenchmark(main, {
  n: [1e7],
@@ -16,11 +16,11 @@ async function main({ n }) {
  const s = new Readable.from(arr);
 
  bench.start();
- s.on('data', (data) => {
+ s.on("data", (data) => {
   // eslint-disable-next-line no-unused-expressions
   data;
  });
- s.on('close', () => {
+ s.on("close", () => {
   bench.end(n);
  });
 }

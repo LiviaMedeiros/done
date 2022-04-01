@@ -1,30 +1,30 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
 
-const common = require('../common');
+const common = require("../common");
 
-if (!common.hasCrypto) common.skip('missing crypto');
+if (!common.hasCrypto) common.skip("missing crypto");
 common.requireNoPackageJSONAbove();
 
-const Manifest = require('internal/policy/manifest').Manifest;
+const Manifest = require("internal/policy/manifest").Manifest;
 
 
-const assert = require('assert');
+const assert = require("assert");
 
-const { debuglog } = require('util');
-const debug = debuglog('test');
+const { debuglog } = require("util");
+const debug = debuglog("test");
 
 const conditionTreePermutations = [
- ['default'],
- ['import'],
- ['node'],
- ['require'],
- ['require', 'import'],
- ['import', 'require'],
- ['default', 'require'],
- ['require', 'default'],
- ['node', 'require'],
- ['require', 'node'],
+ ["default"],
+ ["import"],
+ ["node"],
+ ["require"],
+ ["require", "import"],
+ ["import", "require"],
+ ["default", "require"],
+ ["require", "default"],
+ ["node", "require"],
+ ["require", "node"],
 ];
 for (const totalDepth of [1, 2, 3]) {
  const conditionTrees = [];
@@ -78,16 +78,16 @@ for (const totalDepth of [1, 2, 3]) {
   }
   const manifest = new Manifest({
    resources: {
-    'test:_': {
+    "test:_": {
      dependencies: {
       _: root,
      },
     },
    },
   });
-  const redirector = manifest.getDependencyMapper('test:_');
+  const redirector = manifest.getDependencyMapper("test:_");
   for (const { target, conditions } of order) {
-   const result = redirector.resolve('_', conditions).href;
+   const result = redirector.resolve("_", conditions).href;
    if (result !== target) {
     // If we didn't hit the target, make sure a target prior to this one
     // matched, including conditions
@@ -105,8 +105,8 @@ for (const totalDepth of [1, 2, 3]) {
      }
      if (preTarget === target) {
       debug(
-       'dependencies %O expected ordering %O and trying for %j ' +
-              'no prior targets matched',
+       "dependencies %O expected ordering %O and trying for %j " +
+              "no prior targets matched",
        root,
        order,
        target,

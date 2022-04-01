@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common.js');
-const { createHook } = require('async_hooks');
+"use strict";
+const common = require("../common.js");
+const { createHook } = require("async_hooks");
 
 let hook;
 const tests = {
@@ -30,14 +30,14 @@ const tests = {
 const bench = common.createBenchmark(main, {
  n: [1e6],
  asyncHooks: [
-  'enabled',
-  'enabledWithDestroy',
-  'enabledWithInitOnly',
-  'disabled',
+  "enabled",
+  "enabledWithDestroy",
+  "enabledWithInitOnly",
+  "disabled",
  ],
 });
 
-const err = new Error('foobar');
+const err = new Error("foobar");
 async function run(n) {
  for (let i = 0; i < n; i++) {
   await new Promise((resolve) => resolve())

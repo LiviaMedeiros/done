@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const fs = require('fs');
-const readline = require('readline');
-const path = require('path');
+"use strict";
+const common = require("../common");
+const fs = require("fs");
+const readline = require("readline");
+const path = require("path");
 
 async function processLineByLine_SymbolAsyncError(filename) {
  const fileStream = fs.createReadStream(filename);
@@ -16,11 +16,11 @@ async function processLineByLine_SymbolAsyncError(filename) {
  }
 }
 
-const f = path.join(__dirname, 'file.txt');
+const f = path.join(__dirname, "file.txt");
 
 // catch-able SymbolAsyncIterator `errorListener` error
 processLineByLine_SymbolAsyncError(f).catch(common.expectsError({
- code: 'ENOENT',
+ code: "ENOENT",
  message: `ENOENT: no such file or directory, open '${f}'`,
 }));
 
@@ -30,8 +30,8 @@ async function processLineByLine_InterfaceErrorEvent(filename) {
   input: fileStream,
   crlfDelay: Infinity,
  });
- rl.on('error', common.expectsError({
-  code: 'ENOENT',
+ rl.on("error", common.expectsError({
+  code: "ENOENT",
   message: `ENOENT: no such file or directory, open '${f}'`,
  }));
 }

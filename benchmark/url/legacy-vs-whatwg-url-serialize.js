@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common.js');
-const url = require('url');
+"use strict";
+const common = require("../common.js");
+const url = require("url");
 const URL = url.URL;
-const assert = require('assert');
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
  type: common.urlDataTypes,
- method: ['legacy', 'whatwg'],
+ method: ["legacy", "whatwg"],
  e: [1],
 });
 
@@ -39,10 +39,10 @@ function main({ type, e, method }) {
 
  let noDead;  // Avoid dead code elimination.
  switch (method) {
-  case 'legacy':
+  case "legacy":
    noDead = useLegacy(data);
    break;
-  case 'whatwg':
+  case "whatwg":
    noDead = useWHATWG(data);
    break;
   default:

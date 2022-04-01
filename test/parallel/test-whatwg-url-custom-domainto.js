@@ -1,27 +1,27 @@
-'use strict';
+"use strict";
 
 // Tests below are not from WPT.
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasIntl)
- common.skip('missing Intl');
+ common.skip("missing Intl");
 
-const assert = require('assert');
-const { domainToASCII, domainToUnicode } = require('url');
+const assert = require("assert");
+const { domainToASCII, domainToUnicode } = require("url");
 
-const tests = require('../fixtures/url-idna');
-const fixtures = require('../common/fixtures');
+const tests = require("../fixtures/url-idna");
+const fixtures = require("../common/fixtures");
 const wptToASCIITests = require(
- fixtures.path('wpt', 'url', 'resources', 'toascii.json'),
+ fixtures.path("wpt", "url", "resources", "toascii.json"),
 );
 
 {
- const expectedError = { code: 'ERR_MISSING_ARGS', name: 'TypeError' };
+ const expectedError = { code: "ERR_MISSING_ARGS", name: "TypeError" };
  assert.throws(() => domainToASCII(), expectedError);
  assert.throws(() => domainToUnicode(), expectedError);
- assert.strictEqual(domainToASCII(undefined), 'undefined');
- assert.strictEqual(domainToUnicode(undefined), 'undefined');
+ assert.strictEqual(domainToASCII(undefined), "undefined");
+ assert.strictEqual(domainToUnicode(undefined), "undefined");
 }
 
 {
@@ -39,15 +39,15 @@ const wptToASCIITests = require(
 
 {
  for (const [i, test] of wptToASCIITests.entries()) {
-  if (typeof test === 'string')
+  if (typeof test === "string")
    continue; // skip comments
   const { comment, input, output } = test;
   let caseComment = `Case ${i + 1}`;
   if (comment)
    caseComment += ` (${comment})`;
   if (output === null) {
-   assert.strictEqual(domainToASCII(input), '', caseComment);
-   assert.strictEqual(domainToUnicode(input), '', caseComment);
+   assert.strictEqual(domainToASCII(input), "", caseComment);
+   assert.strictEqual(domainToUnicode(input), "", caseComment);
   } else {
    assert.strictEqual(domainToASCII(input), output, caseComment);
    const roundtripped = domainToASCII(domainToUnicode(input));

@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-require('../common');
-const fixtures = require('../common/fixtures');
-const fs = require('fs');
-const assert = require('assert');
-const filepath = fixtures.path('x.txt');
+require("../common");
+const fixtures = require("../common/fixtures");
+const fs = require("fs");
+const assert = require("assert");
+const filepath = fixtures.path("x.txt");
 
-const expected = Buffer.from('xyz\n');
+const expected = Buffer.from("xyz\n");
 
 function runTest(defaultBuffer, options) {
  let fd;
  try {
-  fd = fs.openSync(filepath, 'r');
+  fd = fs.openSync(filepath, "r");
   const result = fs.readSync(fd, defaultBuffer, options);
   assert.strictEqual(result, expected.length);
   assert.deepStrictEqual(defaultBuffer, expected);
@@ -49,8 +49,8 @@ for (const options of [
  Symbol(),
 
  // Test even more malicious corner cases
- '4'.repeat(expected.length),
- new String('4444'),
+ "4".repeat(expected.length),
+ new String("4444"),
  [4, 4, 4, 4],
 ]) {
  runTest(Buffer.allocUnsafe(expected.length), options);

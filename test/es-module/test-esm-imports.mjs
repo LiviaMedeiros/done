@@ -1,8 +1,8 @@
-import { mustCall } from '../common/index.mjs';
-import { ok, deepStrictEqual, strictEqual } from 'assert';
+import { mustCall } from "../common/index.mjs";
+import { deepStrictEqual, ok, strictEqual } from "assert";
 
-import importer from '../fixtures/es-modules/pkgimports/importer.js';
-import { requireFixture } from '../fixtures/pkgexports.mjs';
+import importer from "../fixtures/es-modules/pkgimports/importer.js";
+import { requireFixture } from "../fixtures/pkgexports.mjs";
 
 const { requireImport, importImport } = importer;
 
@@ -11,17 +11,17 @@ const { requireImport, importImport } = importer;
 
  const internalImports = new Map([
   // Base case
-  ['#test', { default: 'test' }],
+  ["#test", { default: "test" }],
   // import / require conditions
-  ['#branch', { default: isRequire ? 'requirebranch' : 'importbranch' }],
+  ["#branch", { default: isRequire ? "requirebranch" : "importbranch" }],
   // Subpath imports
-  ['#subpath/x.js', { default: 'xsubpath' }],
+  ["#subpath/x.js", { default: "xsubpath" }],
   // External imports
-  ['#external', { default: 'asdf' }],
+  ["#external", { default: "asdf" }],
   // External subpath imports
-  ['#external/subpath/asdf.js', { default: 'asdf' }],
+  ["#external/subpath/asdf.js", { default: "asdf" }],
   // Trailing pattern imports
-  ['#subpath/asdf.asdf', { default: 'test' }],
+  ["#subpath/asdf.asdf", { default: "test" }],
  ]);
 
  for (const [validSpecifier, expected] of internalImports) {
@@ -35,74 +35,74 @@ const { requireImport, importImport } = importer;
 
  const invalidImportTargets = new Set([
   // Target steps below the package base
-  ['#belowbase', '#belowbase'],
+  ["#belowbase", "#belowbase"],
   // Target is a URL
-  ['#url', '#url'],
+  ["#url", "#url"],
  ]);
 
  for (const [specifier, subpath] of invalidImportTargets) {
   loadFixture(specifier).catch(mustCall((err) => {
-   strictEqual(err.code, 'ERR_INVALID_PACKAGE_TARGET');
+   strictEqual(err.code, "ERR_INVALID_PACKAGE_TARGET");
    assertStartsWith(err.message, 'Invalid "imports"');
    assertIncludes(err.message, subpath);
-   assertNotIncludes(err.message, 'targets must start with');
+   assertNotIncludes(err.message, "targets must start with");
   }));
  }
 
  const invalidImportSpecifiers = new Map([
   // Backtracking below the package base
-  ['#subpath/sub/../../../belowbase', 'request is not a valid subpath'],
+  ["#subpath/sub/../../../belowbase", "request is not a valid subpath"],
   // Percent-encoded slash errors
-  ['#external/subpath/x%2Fy', 'must not include encoded "/" or "\\"'],
-  ['#external/subpath/x%5Cy', 'must not include encoded "/" or "\\"'],
+  ["#external/subpath/x%2Fy", 'must not include encoded "/" or "\\"'],
+  ["#external/subpath/x%5Cy", 'must not include encoded "/" or "\\"'],
   // Target must have a name
-  ['#', '#'],
+  ["#", "#"],
   // Initial slash target must have a leading name
-  ['#/initialslash', '#/initialslash'],
+  ["#/initialslash", "#/initialslash"],
   // Percent-encoded target paths
-  ['#encodedslash', 'must not include encoded "/" or "\\"'],
-  ['#encodedbackslash', 'must not include encoded "/" or "\\"'],
+  ["#encodedslash", 'must not include encoded "/" or "\\"'],
+  ["#encodedbackslash", 'must not include encoded "/" or "\\"'],
  ]);
 
  for (const [specifier, expected] of invalidImportSpecifiers) {
   loadFixture(specifier).catch(mustCall((err) => {
-   strictEqual(err.code, 'ERR_INVALID_MODULE_SPECIFIER');
-   assertStartsWith(err.message, 'Invalid module');
+   strictEqual(err.code, "ERR_INVALID_MODULE_SPECIFIER");
+   assertStartsWith(err.message, "Invalid module");
    assertIncludes(err.message, expected);
   }));
  }
 
  const undefinedImports = new Set([
   // EOL subpaths
-  '#external/invalidsubpath/x',
+  "#external/invalidsubpath/x",
   // Missing import
-  '#missing',
+  "#missing",
   // Explicit null import
-  '#null',
+  "#null",
   // No condition match import
-  '#nullcondition',
+  "#nullcondition",
   // Null subpath shadowing
-  '#subpath/nullshadow/x',
+  "#subpath/nullshadow/x",
  ]);
 
  for (const specifier of undefinedImports) {
   loadFixture(specifier).catch(mustCall((err) => {
-   strictEqual(err.code, 'ERR_PACKAGE_IMPORT_NOT_DEFINED');
-   assertStartsWith(err.message, 'Package import ');
+   strictEqual(err.code, "ERR_PACKAGE_IMPORT_NOT_DEFINED");
+   assertStartsWith(err.message, "Package import ");
    assertIncludes(err.message, specifier);
   }));
  }
 
  // Handle not found for the defined imports target not existing
- loadFixture('#notfound').catch(mustCall((err) => {
+ loadFixture("#notfound").catch(mustCall((err) => {
   strictEqual(err.code,
-              isRequire ? 'MODULE_NOT_FOUND' : 'ERR_MODULE_NOT_FOUND');
+              isRequire ? "MODULE_NOT_FOUND" : "ERR_MODULE_NOT_FOUND");
  }));
 });
 
 // CJS resolver must still support #package packages in node_modules
-requireFixture('#cjs').then(mustCall((actual) => {
- strictEqual(actual.default, 'cjs backcompat');
+requireFixture("#cjs").then(mustCall((actual) => {
+ strictEqual(actual.default, "cjs backcompat");
 }));
 
 function assertStartsWith(actual, expected) {

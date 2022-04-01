@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const { SlowBuffer } = require('buffer');
+require("../common");
+const assert = require("assert");
+const { SlowBuffer } = require("buffer");
 
 const msg = {
- code: 'ERR_INVALID_ARG_VALUE',
- name: 'RangeError',
+ code: "ERR_INVALID_ARG_VALUE",
+ name: "RangeError",
  message: /^The argument 'size' is invalid\. Received [^"]*$/,
 };
 

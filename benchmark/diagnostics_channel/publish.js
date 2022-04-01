@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common.js');
-const dc = require('diagnostics_channel');
+"use strict";
+const common = require("../common.js");
+const dc = require("diagnostics_channel");
 
 const bench = common.createBenchmark(main, {
  n: [1e8],
@@ -10,13 +10,13 @@ const bench = common.createBenchmark(main, {
 function noop() {}
 
 function main({ n, subscribers }) {
- const channel = dc.channel('test');
+ const channel = dc.channel("test");
  for (let i = 0; i < subscribers; i++) {
   channel.subscribe(noop);
  }
 
  const data = {
-  foo: 'bar',
+  foo: "bar",
  };
 
  bench.start();

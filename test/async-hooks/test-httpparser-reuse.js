@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { createHook } = require('async_hooks');
-const http = require('http');
+const common = require("../common");
+const assert = require("assert");
+const { createHook } = require("async_hooks");
+const http = require("http");
 
 // Verify that resource emitted for an HTTPParser is not reused.
 // Verify that correct create/destroy events are emitted.
 
-const reused = Symbol('reused');
+const reused = Symbol("reused");
 
 const reusedParser = [];
 const incomingMessageParser = [];
@@ -19,10 +19,10 @@ const destroyed = [];
 createHook({
  init(asyncId, type, triggerAsyncId, resource) {
   switch (type) {
-   case 'HTTPINCOMINGMESSAGE':
+   case "HTTPINCOMINGMESSAGE":
     incomingMessageParser.push(asyncId);
     break;
-   case 'HTTPCLIENTREQUEST':
+   case "HTTPCLIENTREQUEST":
     clientRequestParser.push(asyncId);
     break;
   }

@@ -1,33 +1,33 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
-const net = require('net');
-const stream = require('stream');
-const tls = require('tls');
+const net = require("net");
+const stream = require("stream");
+const tls = require("tls");
 
 const server = tls.createServer({
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 }, common.mustCall(function(c) {
- console.log('new client');
+ console.log("new client");
 
  c.resume();
- c.end('ohai');
+ c.end("ohai");
 })).listen(0, common.mustCall(function() {
  const raw = net.connect(this.address().port);
 
  let pending = false;
- raw.on('readable', function() {
+ raw.on("readable", function() {
   if (pending)
    p._read();
  });
 
- raw.on('end', function() {
+ raw.on("end", function() {
   p.push(null);
  });
 
@@ -37,14 +37,14 @@ const server = tls.createServer({
 
    const chunk = raw.read();
    if (chunk) {
-    console.log('read', chunk);
+    console.log("read", chunk);
     this.push(chunk);
    } else {
     pending = true;
    }
   },
   write: function write(data, enc, cb) {
-   console.log('write', data, enc);
+   console.log("write", data, enc);
    raw.write(data, enc, cb);
   },
  });
@@ -53,14 +53,14 @@ const server = tls.createServer({
   socket: p,
   rejectUnauthorized: false,
  }, common.mustCall(function() {
-  console.log('client secure');
+  console.log("client secure");
 
   socket.resume();
-  socket.end('hello');
+  socket.end("hello");
  }));
 
- socket.once('close', function() {
-  console.log('client close');
+ socket.once("close", function() {
+  console.log("client close");
   server.close();
  });
 }));

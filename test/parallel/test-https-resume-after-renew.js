@@ -1,29 +1,29 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
-const https = require('https');
-const crypto = require('crypto');
+const fixtures = require("../common/fixtures");
+const https = require("https");
+const crypto = require("crypto");
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
- ca: fixtures.readKey('ca1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
+ ca: fixtures.readKey("ca1-cert.pem"),
 };
 
 const server = https.createServer(options, function(req, res) {
- res.end('hello');
+ res.end("hello");
 });
 
-const aes = Buffer.alloc(16, 'S');
-const hmac = Buffer.alloc(16, 'H');
+const aes = Buffer.alloc(16, "S");
+const hmac = Buffer.alloc(16, "H");
 
 server._sharedCreds.context.enableTicketKeyCallback();
 server._sharedCreds.context.onticketkeycallback = function(name, iv, enc) {
  if (enc) {
-  const newName = Buffer.alloc(16, 'A');
+  const newName = Buffer.alloc(16, "A");
   const newIV = crypto.randomBytes(16);
   return [ 1, hmac, aes, newName, newIV ];
  }
@@ -36,13 +36,13 @@ server.listen(0, function() {
 
  function doReq(callback) {
   https.request({
-   method: 'GET',
+   method: "GET",
    port: addr.port,
-   servername: 'agent1',
+   servername: "agent1",
    ca: options.ca,
   }, function(res) {
    res.resume();
-   res.once('end', callback);
+   res.once("end", callback);
   }).end();
  }
 

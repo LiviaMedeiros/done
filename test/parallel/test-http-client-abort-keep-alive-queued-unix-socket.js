@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 let socketsCreated = 0;
 
@@ -16,7 +16,7 @@ class Agent extends http.Agent {
 const server = http.createServer((req, res) => res.end());
 
 const socketPath = common.PIPE;
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 server.listen(socketPath, common.mustCall(() => {

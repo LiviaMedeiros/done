@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
+const assert = require("assert");
+const tls = require("tls");
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
-const options = { key: fixtures.readKey('rsa_private.pem'),
-                  cert: fixtures.readKey('rsa_cert.crt'),
-                  ca: [ fixtures.readKey('rsa_ca.crt') ] };
+const options = { key: fixtures.readKey("rsa_private.pem"),
+                  cert: fixtures.readKey("rsa_cert.crt"),
+                  ca: [ fixtures.readKey("rsa_ca.crt") ] };
 
 const writes = [
- 'some server data',
- 'and a separate packet',
- 'and one more',
+ "some server data",
+ "and a separate packet",
+ "and one more",
 ];
 let receivedWrites = 0;
 
@@ -49,8 +49,8 @@ const server = tls.createServer(options, function(c) {
 }).listen(0, common.mustCall(function() {
  const connectOpts = { rejectUnauthorized: false };
  const c = tls.connect(this.address().port, connectOpts, function() {
-  c.write('some client data');
-  c.on('readable', function() {
+  c.write("some client data");
+  c.on("readable", function() {
    let data = c.read();
    if (data === null)
     return;
@@ -70,6 +70,6 @@ const server = tls.createServer(options, function(c) {
 }));
 
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(receivedWrites, writes.length);
 });

@@ -1,28 +1,28 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 // Test interaction of compiled-in CAs with user-provided CAs.
 
-const assert = require('assert');
-const fs = require('fs');
-const fixtures = require('../common/fixtures');
-const tls = require('tls');
+const assert = require("assert");
+const fs = require("fs");
+const fixtures = require("../common/fixtures");
+const tls = require("tls");
 
 function filenamePEM(n) {
- return fixtures.path('keys', `${n}.pem`);
+ return fixtures.path("keys", `${n}.pem`);
 }
 
 function loadPEM(n) {
  return fs.readFileSync(filenamePEM(n));
 }
 
-const caCert = loadPEM('ca1-cert');
+const caCert = loadPEM("ca1-cert");
 
 const opts = {
- host: 'www.nodejs.org',
+ host: "www.nodejs.org",
  port: 443,
  rejectUnauthorized: true,
 };
@@ -32,12 +32,12 @@ tls.connect(opts, common.mustCall(end));
 
 // The .ca option replaces the well-known roots, so connection fails.
 opts.ca = caCert;
-tls.connect(opts, fail).on('error', common.mustCall((err) => {
- assert.strictEqual(err.message, 'unable to get local issuer certificate');
+tls.connect(opts, fail).on("error", common.mustCall((err) => {
+ assert.strictEqual(err.message, "unable to get local issuer certificate");
 }));
 
 function fail() {
- assert.fail('should fail to connect');
+ assert.fail("should fail to connect");
 }
 
 // New secure contexts have the well-known root CAs.

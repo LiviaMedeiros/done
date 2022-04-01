@@ -19,31 +19,31 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const server = http.createServer();
 
-server.once('request', common.mustCall((req, res) => {
- server.on('request', common.mustCall((req, res) => {
-  res.end(Buffer.from('asdf'));
+server.once("request", common.mustCall((req, res) => {
+ server.on("request", common.mustCall((req, res) => {
+  res.end(Buffer.from("asdf"));
  }));
  // `res.write()` should accept `string`.
- res.write('string');
+ res.write("string");
  // `res.write()` should accept `buffer`.
- res.write(Buffer.from('asdf'));
+ res.write(Buffer.from("asdf"));
 
  const expectedError = {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
  };
 
  // `res.write()` should not accept an Array.
  assert.throws(
   () => {
-   res.write(['array']);
+   res.write(["array"]);
   },
   expectedError,
  );
@@ -51,13 +51,13 @@ server.once('request', common.mustCall((req, res) => {
  // `res.end()` should not accept an Array.
  assert.throws(
   () => {
-   res.end(['moo']);
+   res.end(["moo"]);
   },
   expectedError,
  );
 
  // `res.end()` should accept `string`.
- res.end('string');
+ res.end("string");
 }));
 
 server.listen(0, function() {

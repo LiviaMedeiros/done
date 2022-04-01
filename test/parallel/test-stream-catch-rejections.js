@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const stream = require('stream');
-const assert = require('assert');
+const common = require("../common");
+const stream = require("stream");
+const assert = require("assert");
 
 {
  const r = new stream.Readable({
@@ -10,17 +10,17 @@ const assert = require('assert');
   read() {
   },
  });
- r.push('hello');
- r.push('world');
+ r.push("hello");
+ r.push("world");
 
- const err = new Error('kaboom');
+ const err = new Error("kaboom");
 
- r.on('error', common.mustCall((_err) => {
+ r.on("error", common.mustCall((_err) => {
   assert.strictEqual(err, _err);
   assert.strictEqual(r.destroyed, true);
  }));
 
- r.on('data', async () => {
+ r.on("data", async () => {
   throw err;
  });
 }
@@ -34,18 +34,18 @@ const assert = require('assert');
   },
  });
 
- const err = new Error('kaboom');
+ const err = new Error("kaboom");
 
- w.write('hello', () => {
-  w.write('world');
+ w.write("hello", () => {
+  w.write("world");
  });
 
- w.on('error', common.mustCall((_err) => {
+ w.on("error", common.mustCall((_err) => {
   assert.strictEqual(err, _err);
   assert.strictEqual(w.destroyed, true);
  }));
 
- w.on('drain', common.mustCall(async () => {
+ w.on("drain", common.mustCall(async () => {
   throw err;
  }, 2));
 }

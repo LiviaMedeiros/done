@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
-const { strictEqual, throws } = require('assert');
-const buffer = require('buffer');
+const { strictEqual, throws } = require("assert");
+const buffer = require("buffer");
 
 // Exported on the global object
 strictEqual(globalThis.atob, buffer.atob);

@@ -19,26 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.opensslCli)
- common.skip('node compiled without OpenSSL CLI.');
+ common.skip("node compiled without OpenSSL CLI.");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
+const assert = require("assert");
 
-const SSL_OP_NO_TICKET = require('crypto').constants.SSL_OP_NO_TICKET;
+const SSL_OP_NO_TICKET = require("crypto").constants.SSL_OP_NO_TICKET;
 
-const pfx = fixtures.readKey('agent1.pfx');
-const key = fixtures.readKey('agent1-key.pem');
-const cert = fixtures.readKey('agent1-cert.pem');
-const ca = fixtures.readKey('ca1-cert.pem');
+const pfx = fixtures.readKey("agent1.pfx");
+const key = fixtures.readKey("agent1-key.pem");
+const cert = fixtures.readKey("agent1-cert.pem");
+const ca = fixtures.readKey("ca1-cert.pem");
 
 function test(testOptions, cb) {
  const options = {
@@ -59,20 +59,20 @@ function test(testOptions, cb) {
  }
 
  const server = tls.createServer(options, common.mustCall((cleartext) => {
-  cleartext.on('error', function(er) {
+  cleartext.on("error", function(er) {
    // We're ok with getting ECONNRESET in this test, but it's
    // timing-dependent, and thus unreliable. Any other errors
    // are just failures, though.
-   if (er.code !== 'ECONNRESET')
+   if (er.code !== "ECONNRESET")
     throw er;
   });
   cleartext.end();
  }, requestCount));
 
  if (!testOptions.ocsp)
-  server.on('OCSPRequest', common.mustNotCall());
+  server.on("OCSPRequest", common.mustNotCall());
  else
-  server.on('OCSPRequest', common.mustCall((cert, issuer, callback) => {
+  server.on("OCSPRequest", common.mustCall((cert, issuer, callback) => {
    assert.ok(Buffer.isBuffer(cert));
    assert.ok(Buffer.isBuffer(issuer));
 
@@ -89,7 +89,7 @@ function test(testOptions, cb) {
    rejectUnauthorized: false,
   }, common.mustCall(() => { }, requestCount));
 
-  client.on('OCSPResponse', common.mustCall((resp) => {
+  client.on("OCSPResponse", common.mustCall((resp) => {
    if (testOptions.response) {
     assert.strictEqual(resp.toString(), testOptions.response);
     client.destroy();
@@ -98,16 +98,16 @@ function test(testOptions, cb) {
    }
   }, testOptions.ocsp === false ? 0 : 1));
 
-  client.on('close', common.mustCall(() => {
+  client.on("close", common.mustCall(() => {
    server.close(cb);
   }));
  });
 }
 
 test({ ocsp: true, response: false });
-test({ ocsp: true, response: 'hello world' });
+test({ ocsp: true, response: "hello world" });
 test({ ocsp: false });
 
 if (!common.hasFipsCrypto) {
- test({ ocsp: true, response: 'hello pfx', pfx: pfx, passphrase: 'sample' });
+ test({ ocsp: true, response: "hello pfx", pfx: pfx, passphrase: "sample" });
 }

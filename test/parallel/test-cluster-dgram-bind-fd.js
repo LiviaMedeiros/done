@@ -1,15 +1,15 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('dgram clustering is currently not supported on Windows.');
+ common.skip("dgram clustering is currently not supported on Windows.");
 
 const NUM_WORKERS = 4;
 const PACKETS_PER_WORKER = 10;
 
-const assert = require('assert');
-const cluster = require('cluster');
-const dgram = require('dgram');
+const assert = require("assert");
+const cluster = require("cluster");
+const dgram = require("dgram");
 
 if (cluster.isPrimary)
  primary();
@@ -18,8 +18,8 @@ else
 
 
 function primary() {
- const { internalBinding } = require('internal/test/binding');
- const { UDP } = internalBinding('udp_wrap');
+ const { internalBinding } = require("internal/test/binding");
+ const { UDP } = internalBinding("udp_wrap");
 
  // Create a handle and use its fd.
  const rawHandle = new UDP();
@@ -36,13 +36,13 @@ function primary() {
   cluster.fork();
 
  // Wait until all workers are listening.
- cluster.on('listening', common.mustCall((worker, address) => {
+ cluster.on("listening", common.mustCall((worker, address) => {
   if (++listening < NUM_WORKERS)
    return;
 
   // Start sending messages.
-  const buf = Buffer.from('hello world');
-  const socket = dgram.createSocket('udp4');
+  const buf = Buffer.from("hello world");
+  const socket = dgram.createSocket("udp4");
   let sent = 0;
   doSend();
 
@@ -74,12 +74,12 @@ function primary() {
    fd,
   });
 
-  worker.on('message', common.mustCall((msg) => {
+  worker.on("message", common.mustCall((msg) => {
    received = msg.received;
    worker.disconnect();
   }));
 
-  worker.on('exit', common.mustCall(() => {
+  worker.on("exit", common.mustCall(() => {
    assert.strictEqual(received, PACKETS_PER_WORKER);
   }));
  }
@@ -89,12 +89,12 @@ function primary() {
 function worker() {
  let received = 0;
 
- process.on('message', common.mustCall((data) => {
+ process.on("message", common.mustCall((data) => {
   const { fd } = data;
   // Create udp socket and start listening.
-  const socket = dgram.createSocket('udp4');
+  const socket = dgram.createSocket("udp4");
 
-  socket.on('message', common.mustCall((data, info) => {
+  socket.on("message", common.mustCall((data, info) => {
    received++;
 
    // Every 10 messages, notify the primary.

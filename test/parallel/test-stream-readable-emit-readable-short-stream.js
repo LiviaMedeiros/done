@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const stream = require('stream');
-const assert = require('assert');
+const common = require("../common");
+const stream = require("stream");
+const assert = require("assert");
 
 {
  const r = new stream.Readable({
   read: common.mustCall(function() {
-   this.push('content');
+   this.push("content");
    this.push(null);
   }),
  });
@@ -23,13 +23,13 @@ const assert = require('assert');
  });
 
  r.pipe(t);
- t.on('readable', common.mustCall(function() {
+ t.on("readable", common.mustCall(function() {
   while (true) {
    const chunk = t.read();
    if (!chunk)
     break;
 
-   assert.strictEqual(chunk.toString(), 'content');
+   assert.strictEqual(chunk.toString(), "content");
   }
  }, 2));
 }
@@ -45,14 +45,14 @@ const assert = require('assert');
   }),
  });
 
- t.end('content');
+ t.end("content");
 
- t.on('readable', common.mustCall(function() {
+ t.on("readable", common.mustCall(function() {
   while (true) {
    const chunk = t.read();
    if (!chunk)
     break;
-   assert.strictEqual(chunk.toString(), 'content');
+   assert.strictEqual(chunk.toString(), "content");
   }
  }));
 }
@@ -68,15 +68,15 @@ const assert = require('assert');
   }),
  });
 
- t.write('content');
+ t.write("content");
  t.end();
 
- t.on('readable', common.mustCall(function() {
+ t.on("readable", common.mustCall(function() {
   while (true) {
    const chunk = t.read();
    if (!chunk)
     break;
-   assert.strictEqual(chunk.toString(), 'content');
+   assert.strictEqual(chunk.toString(), "content");
   }
  }));
 }
@@ -87,16 +87,16 @@ const assert = require('assert');
   },
  });
 
- t.on('readable', common.mustCall(function() {
+ t.on("readable", common.mustCall(function() {
   while (true) {
    const chunk = t.read();
    if (!chunk)
     break;
-   assert.strictEqual(chunk.toString(), 'content');
+   assert.strictEqual(chunk.toString(), "content");
   }
  }));
 
- t.push('content');
+ t.push("content");
  t.push(null);
 }
 
@@ -106,17 +106,17 @@ const assert = require('assert');
   },
  });
 
- t.on('readable', common.mustCall(function() {
+ t.on("readable", common.mustCall(function() {
   while (true) {
    const chunk = t.read();
    if (!chunk)
     break;
-   assert.strictEqual(chunk.toString(), 'content');
+   assert.strictEqual(chunk.toString(), "content");
   }
  }, 2));
 
  process.nextTick(() => {
-  t.push('content');
+  t.push("content");
   t.push(null);
  });
 }
@@ -132,15 +132,15 @@ const assert = require('assert');
   }),
  });
 
- t.on('readable', common.mustCall(function() {
+ t.on("readable", common.mustCall(function() {
   while (true) {
    const chunk = t.read();
    if (!chunk)
     break;
-   assert.strictEqual(chunk.toString(), 'content');
+   assert.strictEqual(chunk.toString(), "content");
   }
  }, 2));
 
- t.write('content');
+ t.write("content");
  t.end();
 }

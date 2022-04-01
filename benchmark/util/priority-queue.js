@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 const bench = common.createBenchmark(main, {
  n: [1e5],
-}, { flags: ['--expose-internals'] });
+}, { flags: ["--expose-internals"] });
 
 function main({ n, type }) {
- const PriorityQueue = require('internal/priority_queue');
+ const PriorityQueue = require("internal/priority_queue");
  const queue = new PriorityQueue();
  bench.start();
  for (let i = 0; i < n; i++)

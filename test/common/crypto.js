@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 
 // The values below (modp2/modp2buf) are for a 1024 bits long prime from
 // RFC 2412 E.2, see https://tools.ietf.org/html/rfc2412. */

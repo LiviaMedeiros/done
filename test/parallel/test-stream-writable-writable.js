@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { Writable } = require('stream');
+const { Writable } = require("stream");
 
 {
  const w = new Writable({
@@ -20,9 +20,9 @@ const { Writable } = require('stream');
   }),
  });
  assert.strictEqual(w.writable, true);
- w.write('asd');
+ w.write("asd");
  assert.strictEqual(w.writable, false);
- w.on('error', common.mustCall());
+ w.on("error", common.mustCall());
 }
 
 {
@@ -34,8 +34,8 @@ const { Writable } = require('stream');
    });
   }),
  });
- w.write('asd');
- w.on('error', common.mustCall());
+ w.write("asd");
+ w.on("error", common.mustCall());
 }
 
 {

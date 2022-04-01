@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
 
-const client = dgram.createSocket('udp4');
-const server = dgram.createSocket('udp4');
+const client = dgram.createSocket("udp4");
+const server = dgram.createSocket("udp4");
 
-const toSend = [Buffer.alloc(256, 'x'),
-                Buffer.alloc(256, 'y'),
-                Buffer.alloc(256, 'z'),
-                'hello'];
+const toSend = [Buffer.alloc(256, "x"),
+                Buffer.alloc(256, "y"),
+                Buffer.alloc(256, "z"),
+                "hello"];
 
 const received = [];
 
-server.on('listening', common.mustCall(() => {
+server.on("listening", common.mustCall(() => {
  const port = server.address().port;
  client.connect(port, (err) => {
   assert.ifError(err);
@@ -31,7 +31,7 @@ server.on('listening', common.mustCall(() => {
  });
 }));
 
-server.on('message', common.mustCall((buf, info) => {
+server.on("message", common.mustCall((buf, info) => {
  received.push(buf.toString());
 
  if (received.length === toSend.length * 2) {

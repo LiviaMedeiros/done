@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
 
 const server = h2.createServer();
-server.on('stream', (stream) => {
- stream.on('close', common.mustCall());
+server.on("stream", (stream) => {
+ stream.on("close", common.mustCall());
  stream.respond();
- stream.end('ok');
+ stream.end("ok");
 });
 
 server.listen(0, common.mustCall(() => {
@@ -21,20 +21,20 @@ server.listen(0, common.mustCall(() => {
  assert.throws(
   () => req.close(2 ** 32),
   {
-   name: 'RangeError',
-   code: 'ERR_OUT_OF_RANGE',
+   name: "RangeError",
+   code: "ERR_OUT_OF_RANGE",
    message: 'The value of "code" is out of range. It must be ' +
-               '>= 0 && <= 4294967295. Received 4294967296',
+               ">= 0 && <= 4294967295. Received 4294967296",
   },
  );
  assert.strictEqual(req.closed, false);
 
- [true, 1, {}, [], null, 'test'].forEach((notFunction) => {
+ [true, 1, {}, [], null, "test"].forEach((notFunction) => {
   assert.throws(
    () => req.close(closeCode, notFunction),
    {
-    name: 'TypeError',
-    code: 'ERR_INVALID_ARG_TYPE',
+    name: "TypeError",
+    code: "ERR_INVALID_ARG_TYPE",
    },
   );
   assert.strictEqual(req.closed, false);
@@ -49,26 +49,26 @@ server.listen(0, common.mustCall(() => {
  // Second call doesn't do anything.
  req.close(closeCode + 1);
 
- req.on('close', common.mustCall(() => {
+ req.on("close", common.mustCall(() => {
   assert.strictEqual(req.destroyed, true);
   assert.strictEqual(req.rstCode, closeCode);
   server.close();
   client.close();
  }));
 
- req.on('error', common.expectsError({
-  code: 'ERR_HTTP2_STREAM_ERROR',
-  name: 'Error',
-  message: 'Stream closed with error code NGHTTP2_PROTOCOL_ERROR',
+ req.on("error", common.expectsError({
+  code: "ERR_HTTP2_STREAM_ERROR",
+  name: "Error",
+  message: "Stream closed with error code NGHTTP2_PROTOCOL_ERROR",
  }));
 
  // The `response` event should not fire as the server should receive the
  // RST_STREAM frame before it ever has a chance to reply.
- req.on('response', common.mustNotCall());
+ req.on("response", common.mustNotCall());
 
  // The `end` event should still fire as we close the readable stream by
  // pushing a `null` chunk.
- req.on('end', common.mustCall());
+ req.on("end", common.mustCall());
 
  req.resume();
  req.end();

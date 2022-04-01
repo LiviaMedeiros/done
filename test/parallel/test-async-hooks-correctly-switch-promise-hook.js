@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+"use strict";
+require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 // Regression test for:
 // - https://github.com/nodejs/node/issues/38814
@@ -50,24 +50,24 @@ async function main() {
 
 main();
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.deepStrictEqual(Array.from(layers.values()), [
   {
-   type: 'PROMISE',
+   type: "PROMISE",
    init: true,
    before: true,
    after: true,
    promiseResolve: true,
   },
   {
-   type: 'PROMISE',
+   type: "PROMISE",
    init: true,
    before: false,
    after: false,
    promiseResolve: true,
   },
   {
-   type: 'PROMISE',
+   type: "PROMISE",
    init: true,
    before: true,
    after: true,

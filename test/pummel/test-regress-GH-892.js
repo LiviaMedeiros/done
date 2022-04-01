@@ -19,33 +19,33 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Uploading a big file via HTTPS causes node to drop out of the event loop.
 // https://github.com/joyent/node/issues/892
 // In this test we set up an HTTPS in this process and launch a subprocess
 // to POST a 32mb file to us. A bug in the pause/resume functionality of the
 // TLS server causes the child process to exit cleanly before having sent
 // the entire buffer.
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const spawn = require('child_process').spawn;
-const https = require('https');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const spawn = require("child_process").spawn;
+const https = require("https");
+const fixtures = require("../common/fixtures");
 
 const bytesExpected = 1024 * 1024 * 32;
 
 let started = false;
 
-const childScript = fixtures.path('GH-892-request.js');
+const childScript = fixtures.path("GH-892-request.js");
 
 function makeRequest() {
  if (started) return;
  started = true;
 
- let stderrBuffer = '';
+ let stderrBuffer = "";
 
  // Pass along --trace-deprecation/--throw-deprecation in
  // process.execArgv to track down nextTick recursion errors
@@ -57,7 +57,7 @@ function makeRequest() {
 
  const child = spawn(process.execPath, args);
 
- child.on('exit', function(code) {
+ child.on("exit", function(code) {
   assert.match(stderrBuffer, /DONE/);
   assert.strictEqual(code, 0);
  });
@@ -69,16 +69,16 @@ function makeRequest() {
 
 
  // Buffer the stderr so that we can check that it got 'DONE'
- child.stderr.setEncoding('ascii');
- child.stderr.on('data', function(d) {
+ child.stderr.setEncoding("ascii");
+ child.stderr.on("data", function(d) {
   stderrBuffer += d;
  });
 }
 
 
 const serverOptions = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 let uploadCount = 0;
@@ -89,15 +89,15 @@ const server = https.Server(serverOptions, function(req, res) {
  // while the upload is in progress.
  server.close();
 
- req.on('data', function(d) {
-  process.stderr.write('.');
+ req.on("data", function(d) {
+  process.stderr.write(".");
   uploadCount += d.length;
  });
 
- req.on('end', function() {
+ req.on("end", function() {
   assert.strictEqual(uploadCount, bytesExpected);
-  res.writeHead(200, { 'content-type': 'text/plain' });
-  res.end('successful upload\n');
+  res.writeHead(200, { "content-type": "text/plain" });
+  res.end("successful upload\n");
  });
 });
 
@@ -106,7 +106,7 @@ server.listen(0, function() {
  makeRequest();
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  console.error(`got ${uploadCount} bytes`);
  assert.strictEqual(uploadCount, bytesExpected);
 });

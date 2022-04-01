@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fs = require('fs');
-const { join } = require('path');
-const readline = require('readline');
-const assert = require('assert');
+const common = require("../common");
+const fs = require("fs");
+const { join } = require("path");
+const readline = require("readline");
+const assert = require("assert");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const filename = join(tmpdir.path, 'test.txt');
+const filename = join(tmpdir.path, "test.txt");
 
 const testContents = [
- '',
- '\n',
- 'line 1',
- 'line 1\nline 2 南越国是前203年至前111年存在于岭南地区的一个国家\nline 3\ntrailing',
- 'line 1\nline 2\nline 3 ends with newline\n',
+ "",
+ "\n",
+ "line 1",
+ "line 1\nline 2 南越国是前203年至前111年存在于岭南地区的一个国家\nline 3\ntrailing",
+ "line 1\nline 2\nline 3 ends with newline\n",
 ];
 
 async function testSimple() {
@@ -34,12 +34,12 @@ async function testSimple() {
    iteratedLines.push(k);
   }
 
-  const expectedLines = fileContent.split('\n');
-  if (expectedLines[expectedLines.length - 1] === '') {
+  const expectedLines = fileContent.split("\n");
+  if (expectedLines[expectedLines.length - 1] === "") {
    expectedLines.pop();
   }
   assert.deepStrictEqual(iteratedLines, expectedLines);
-  assert.strictEqual(iteratedLines.join(''), fileContent.replace(/\n/g, ''));
+  assert.strictEqual(iteratedLines.join(""), fileContent.replace(/\n/g, ""));
  }
 }
 
@@ -53,8 +53,8 @@ async function testMutual() {
    crlfDelay: Infinity,
   });
 
-  const expectedLines = fileContent.split('\n');
-  if (expectedLines[expectedLines.length - 1] === '') {
+  const expectedLines = fileContent.split("\n");
+  if (expectedLines[expectedLines.length - 1] === "") {
    expectedLines.pop();
   }
   const iteratedLines = [];

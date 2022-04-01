@@ -1,13 +1,13 @@
 // Test the speed of .pipe() with sockets
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const net = require('net');
+const common = require("../common.js");
+const net = require("net");
 const PORT = common.PORT;
 
 const bench = common.createBenchmark(main, {
  len: [4, 8, 16, 32, 64, 128, 512, 1024],
- type: ['buf'],
+ type: ["buf"],
  dur: [5],
 });
 
@@ -16,16 +16,16 @@ let encoding;
 
 function main({ dur, len, type }) {
  switch (type) {
-  case 'buf':
-   chunk = Buffer.alloc(len, 'x');
+  case "buf":
+   chunk = Buffer.alloc(len, "x");
    break;
-  case 'utf':
-   encoding = 'utf8';
-   chunk = 'ü'.repeat(len / 2);
+  case "utf":
+   encoding = "utf8";
+   chunk = "ü".repeat(len / 2);
    break;
-  case 'asc':
-   encoding = 'ascii';
-   chunk = 'x'.repeat(len);
+  case "asc":
+   encoding = "ascii";
+   chunk = "x".repeat(len);
    break;
   default:
    throw new Error(`invalid type: ${type}`);
@@ -40,10 +40,10 @@ function main({ dur, len, type }) {
 
  server.listen(PORT, () => {
   const socket = net.connect(PORT);
-  socket.on('connect', () => {
+  socket.on("connect", () => {
    bench.start();
 
-   socket.on('drain', send);
+   socket.on("drain", send);
    send();
 
    setTimeout(() => {
@@ -70,9 +70,9 @@ function Writer() {
 Writer.prototype.write = function(chunk, encoding, cb) {
  this.received += chunk.length;
 
- if (typeof encoding === 'function')
+ if (typeof encoding === "function")
   encoding();
- else if (typeof cb === 'function')
+ else if (typeof cb === "function")
   cb();
 
  return true;

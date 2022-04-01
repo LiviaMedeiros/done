@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
-console.trace('foo');
+console.trace("foo");

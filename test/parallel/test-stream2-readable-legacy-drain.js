@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const Stream = require('stream');
+const Stream = require("stream");
 const Readable = Stream.Readable;
 
 const r = new Readable();
@@ -33,7 +33,7 @@ r._read = function(n) {
  return r.push(++reads === N ? null : Buffer.allocUnsafe(1));
 };
 
-r.on('end', common.mustCall());
+r.on("end", common.mustCall());
 
 const w = new Stream();
 w.writable = true;
@@ -47,7 +47,7 @@ w.write = function(c) {
 function drain() {
  assert(buffered <= 3);
  buffered = 0;
- w.emit('drain');
+ w.emit("drain");
 }
 
 w.end = common.mustCall();

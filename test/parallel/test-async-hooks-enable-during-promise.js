@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const async_hooks = require('async_hooks');
+"use strict";
+const common = require("../common");
+const async_hooks = require("async_hooks");
 
 Promise.resolve(1).then(common.mustCall(() => {
  async_hooks.createHook({

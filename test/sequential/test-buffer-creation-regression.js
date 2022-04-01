@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 function test(arrayBuffer, offset, length) {
  const uint8Array = new Uint8Array(arrayBuffer, offset, length);
@@ -16,8 +16,8 @@ function test(arrayBuffer, offset, length) {
 }
 
 const acceptableOOMErrors = [
- 'Array buffer allocation failed',
- 'Invalid array buffer length',
+ "Array buffer allocation failed",
+ "Invalid array buffer length",
 ];
 
 const length = 1000;

@@ -1,16 +1,16 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const child_process = require('child_process');
-const { once } = require('events');
-const { inspect } = require('util');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const child_process = require("child_process");
+const { once } = require("events");
+const { inspect } = require("util");
 
-if (process.argv[2] !== 'child') {
- for (const value of [null, 42, Infinity, 'foo']) {
+if (process.argv[2] !== "child") {
+ for (const value of [null, 42, Infinity, "foo"]) {
   assert.throws(() => {
    child_process.spawn(process.execPath, [], { serialization: value });
   }, {
-   code: 'ERR_INVALID_ARG_VALUE',
+   code: "ERR_INVALID_ARG_VALUE",
    message: "The property 'options.serialization' " +
         "must be one of: undefined, 'json', 'advanced'. " +
         `Received ${inspect(value)}`,
@@ -18,10 +18,10 @@ if (process.argv[2] !== 'child') {
  }
 
  (async () => {
-  const cp = child_process.spawn(process.execPath, [__filename, 'child'],
+  const cp = child_process.spawn(process.execPath, [__filename, "child"],
                                  {
-                                  stdio: ['ipc', 'inherit', 'inherit'],
-                                  serialization: 'advanced',
+                                  stdio: ["ipc", "inherit", "inherit"],
+                                  serialization: "advanced",
                                  });
 
   const circular = {};
@@ -29,20 +29,20 @@ if (process.argv[2] !== 'child') {
   for await (const message of [
    { uint8: new Uint8Array(4) },
    { float64: new Float64Array([ Math.PI ]) },
-   { buffer: Buffer.from('Hello!') },
+   { buffer: Buffer.from("Hello!") },
    { map: new Map([{ a: 1 }, { b: 2 }]) },
    { bigInt: 1337n },
    circular,
-   new Error('Something went wrong'),
-   new RangeError('Something range-y went wrong'),
+   new Error("Something went wrong"),
+   new RangeError("Something range-y went wrong"),
   ]) {
    cp.send(message);
-   const [ received ] = await once(cp, 'message');
+   const [ received ] = await once(cp, "message");
    assert.deepStrictEqual(received, message);
   }
 
   cp.disconnect();
  })().then(common.mustCall());
 } else {
- process.on('message', (msg) => process.send(msg));
+ process.on("message", (msg) => process.send(msg));
 }

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const big = Buffer.alloc(1024 * 1024);
 
@@ -35,9 +35,9 @@ const onListen = common.mustCall(() => {
  });
 
  const onConnect = common.mustCall(() => {
-  socket.on('data', onData);
-  socket.on('end', onEnd);
-  socket.on('close', onClose);
+  socket.on("data", onData);
+  socket.on("end", onEnd);
+  socket.on("close", onClose);
   socket.end();
  });
 

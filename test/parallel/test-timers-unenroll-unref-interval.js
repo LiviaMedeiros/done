@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const timers = require('timers');
+const common = require("../common");
+const timers = require("timers");
 
 {
  const interval = setInterval(common.mustCall(() => {

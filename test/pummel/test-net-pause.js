@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const N = 200;
-let recv = '';
+let recv = "";
 let chars_recved = 0;
 
 const server = net.createServer((connection) => {
@@ -35,17 +35,17 @@ const server = net.createServer((connection) => {
    return;
   }
   setTimeout(() => {
-   connection.write('C');
+   connection.write("C");
    write(j + 1);
   }, 10);
  }
  write(0);
 });
 
-server.on('listening', () => {
+server.on("listening", () => {
  const client = net.createConnection(server.address().port);
- client.setEncoding('ascii');
- client.on('data', (d) => {
+ client.setEncoding("ascii");
+ client.on("data", (d) => {
   console.log(d);
   recv += d;
  });
@@ -78,14 +78,14 @@ server.on('listening', () => {
 
  }, 500);
 
- client.on('end', () => {
+ client.on("end", () => {
   server.close();
   client.end();
  });
 });
 server.listen(0);
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(recv.length, N);
- console.error('Exit');
+ console.error("Exit");
 });

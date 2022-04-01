@@ -1,21 +1,21 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 const {
  getSystemErrorMap,
  _errnoException,
-} = require('util');
+} = require("util");
 
-const { internalBinding } = require('internal/test/binding');
-const uv = internalBinding('uv');
+const { internalBinding } = require("internal/test/binding");
+const uv = internalBinding("uv");
 const uvKeys = Object.keys(uv);
 
 const errMap = getSystemErrorMap();
 
 uvKeys.forEach((key) => {
- if (!key.startsWith('UV_'))
+ if (!key.startsWith("UV_"))
   return;
 
  const err = _errnoException(uv[key]);

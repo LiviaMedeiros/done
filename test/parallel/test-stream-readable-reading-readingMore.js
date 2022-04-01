@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const Readable = require('stream').Readable;
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const Readable = require("stream").Readable;
 
 {
  const readable = new Readable({
@@ -14,7 +14,7 @@ const Readable = require('stream').Readable;
  assert.strictEqual(state.reading, false);
  assert.strictEqual(state.readingMore, false);
 
- readable.on('data', common.mustCall((data) => {
+ readable.on("data", common.mustCall((data) => {
   // While in a flowing state with a 'readable' listener
   // we should not be reading more
   if (readable.readableFlowing)
@@ -32,7 +32,7 @@ const Readable = require('stream').Readable;
  }
 
  const expectedReadingMore = [true, true, false];
- readable.on('readable', common.mustCall(() => {
+ readable.on("readable", common.mustCall(() => {
   // There is only one readingMore scheduled from on('data'),
   // after which everything is governed by the .read() call
   assert.strictEqual(state.readingMore, expectedReadingMore.shift());
@@ -47,8 +47,8 @@ const Readable = require('stream').Readable;
    process.nextTick(common.mustCall(onStreamEnd, 1));
  }, 3));
 
- readable.on('end', common.mustCall(onStreamEnd));
- readable.push('pushed');
+ readable.on("end", common.mustCall(onStreamEnd));
+ readable.push("pushed");
 
  readable.read(6);
 
@@ -57,7 +57,7 @@ const Readable = require('stream').Readable;
  assert.strictEqual(state.readingMore, true);
 
  // add chunk to front
- readable.unshift('unshifted');
+ readable.unshift("unshifted");
 
  // end
  readable.push(null);
@@ -74,7 +74,7 @@ const Readable = require('stream').Readable;
  assert.strictEqual(state.reading, false);
  assert.strictEqual(state.readingMore, false);
 
- readable.on('data', common.mustCall((data) => {
+ readable.on("data", common.mustCall((data) => {
   // While in a flowing state without a 'readable' listener
   // we should be reading more
   if (readable.readableFlowing)
@@ -91,8 +91,8 @@ const Readable = require('stream').Readable;
   assert.strictEqual(state.reading, false);
  }
 
- readable.on('end', common.mustCall(onStreamEnd));
- readable.push('pushed');
+ readable.on("end", common.mustCall(onStreamEnd));
+ readable.push("pushed");
 
  // Stop emitting 'data' events
  assert.strictEqual(state.flowing, true);
@@ -107,7 +107,7 @@ const Readable = require('stream').Readable;
  assert.strictEqual(state.flowing, true);
 
  // add chunk to front
- readable.unshift('unshifted');
+ readable.unshift("unshifted");
 
  // end
  readable.push(null);
@@ -126,14 +126,14 @@ const Readable = require('stream').Readable;
 
  const onReadable = common.mustNotCall;
 
- readable.on('readable', onReadable);
+ readable.on("readable", onReadable);
 
- readable.on('data', common.mustCall((data) => {
+ readable.on("data", common.mustCall((data) => {
   // Reading as long as we've not ended
   assert.strictEqual(state.reading, !state.ended);
  }, 2));
 
- readable.removeListener('readable', onReadable);
+ readable.removeListener("readable", onReadable);
 
  function onStreamEnd() {
   // End of stream; state.reading is false
@@ -142,8 +142,8 @@ const Readable = require('stream').Readable;
   assert.strictEqual(state.reading, false);
  }
 
- readable.on('end', common.mustCall(onStreamEnd));
- readable.push('pushed');
+ readable.on("end", common.mustCall(onStreamEnd));
+ readable.push("pushed");
 
  // We are still not flowing, we will be resuming in the next tick
  assert.strictEqual(state.flowing, false);
@@ -163,7 +163,7 @@ const Readable = require('stream').Readable;
   assert.strictEqual(state.flowing, true);
 
   // add chunk to front
-  readable.unshift('unshifted');
+  readable.unshift("unshifted");
 
   // end
   readable.push(null);

@@ -1,40 +1,40 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 let icu;
 try {
- icu = common.binding('icu');
+ icu = common.binding("icu");
 } catch {
  // Continue regardless of error.
 }
-const punycode = require('punycode');
+const punycode = require("punycode");
 
 const bench = common.createBenchmark(main, {
- method: ['punycode'].concat(icu !== undefined ? ['icu'] : []),
+ method: ["punycode"].concat(icu !== undefined ? ["icu"] : []),
  n: [1024],
  val: [
-  'افغانستا.icom.museum',
-  'الجزائر.icom.museum',
-  'österreich.icom.museum',
-  'বাংলাদেশ.icom.museum',
-  'беларусь.icom.museum',
-  'belgië.icom.museum',
-  'българия.icom.museum',
-  'تشادر.icom.museum',
-  '中国.icom.museum',
-  'القمر.icom.museum',
-  'κυπρος.icom.museum',
-  'českárepublika.icom.museum',
-  'مصر.icom.museum',
-  'ελλάδα.icom.museum',
-  'magyarország.icom.museum',
-  'ísland.icom.museum',
-  'भारत.icom.museum',
-  'ايران.icom.museum',
-  'éire.icom.museum',
-  'איקו״ם.ישראל.museum',
-  '日本.icom.museum',
-  'الأردن.icom.museum',
+  "افغانستا.icom.museum",
+  "الجزائر.icom.museum",
+  "österreich.icom.museum",
+  "বাংলাদেশ.icom.museum",
+  "беларусь.icom.museum",
+  "belgië.icom.museum",
+  "българия.icom.museum",
+  "تشادر.icom.museum",
+  "中国.icom.museum",
+  "القمر.icom.museum",
+  "κυπρος.icom.museum",
+  "českárepublika.icom.museum",
+  "مصر.icom.museum",
+  "ελλάδα.icom.museum",
+  "magyarország.icom.museum",
+  "ísland.icom.museum",
+  "भारत.icom.museum",
+  "ايران.icom.museum",
+  "éire.icom.museum",
+  "איקו״ם.ישראל.museum",
+  "日本.icom.museum",
+  "الأردن.icom.museum",
  ],
 });
 
@@ -64,10 +64,10 @@ function runICU(n, val) {
 
 function main({ n, val, method }) {
  switch (method) {
-  case 'punycode':
+  case "punycode":
    runPunycode(n, val);
    break;
-  case 'icu':
+  case "icu":
    if (icu !== undefined) {
     runICU(n, val);
     break;

@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common.js');
-const domain = require('domain');
+"use strict";
+const common = require("../common.js");
+const domain = require("domain");
 
 const bench = common.createBenchmark(main, {
  args: [0, 1, 2, 3],

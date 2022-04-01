@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
 
 {
  // Http2ServerRequest should have header helpers
@@ -12,20 +12,20 @@ const h2 = require('http2');
  const server = h2.createServer();
  server.listen(0, common.mustCall(function() {
   const port = server.address().port;
-  server.once('request', common.mustCall(function(request, response) {
+  server.once("request", common.mustCall(function(request, response) {
    const expected = {
-    ':path': '/foobar',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
-    'foo-bar': 'abc123',
+    ":path": "/foobar",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
+    "foo-bar": "abc123",
    };
 
    assert.strictEqual(request.path, undefined);
-   assert.strictEqual(request.method, expected[':method']);
-   assert.strictEqual(request.scheme, expected[':scheme']);
-   assert.strictEqual(request.url, expected[':path']);
-   assert.strictEqual(request.authority, expected[':authority']);
+   assert.strictEqual(request.method, expected[":method"]);
+   assert.strictEqual(request.scheme, expected[":scheme"]);
+   assert.strictEqual(request.url, expected[":path"]);
+   assert.strictEqual(request.authority, expected[":authority"]);
 
    const headers = request.headers;
    for (const [name, value] of Object.entries(expected)) {
@@ -39,32 +39,32 @@ const h2 = require('http2');
     assert.strictEqual(rawHeaders[position + 1], value);
    }
 
-   request.url = '/one';
-   assert.strictEqual(request.url, '/one');
+   request.url = "/one";
+   assert.strictEqual(request.url, "/one");
 
    // Third-party plugins for packages like express use query params to
    // change the request method
-   request.method = 'POST';
-   assert.strictEqual(request.method, 'POST');
+   request.method = "POST";
+   assert.strictEqual(request.method, "POST");
    assert.throws(
-    () => request.method = '   ',
+    () => request.method = "   ",
     {
-     code: 'ERR_INVALID_ARG_VALUE',
-     name: 'TypeError',
+     code: "ERR_INVALID_ARG_VALUE",
+     name: "TypeError",
      message: "The argument 'method' is invalid. Received '   '",
     },
    );
    assert.throws(
     () => request.method = true,
     {
-     code: 'ERR_INVALID_ARG_TYPE',
-     name: 'TypeError',
+     code: "ERR_INVALID_ARG_TYPE",
+     name: "TypeError",
      message: 'The "method" argument must be of type string. ' +
-                  'Received type boolean (true)',
+                  "Received type boolean (true)",
     },
    );
 
-   response.on('finish', common.mustCall(function() {
+   response.on("finish", common.mustCall(function() {
     server.close();
    }));
    response.end();
@@ -73,14 +73,14 @@ const h2 = require('http2');
   const url = `http://localhost:${port}`;
   const client = h2.connect(url, common.mustCall(function() {
    const headers = {
-    ':path': '/foobar',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
-    'foo-bar': 'abc123',
+    ":path": "/foobar",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
+    "foo-bar": "abc123",
    };
    const request = client.request(headers);
-   request.on('end', common.mustCall(function() {
+   request.on("end", common.mustCall(function() {
     client.close();
    }));
    request.end();
@@ -96,21 +96,21 @@ const h2 = require('http2');
  const server = h2.createServer();
  server.listen(0, common.mustCall(function() {
   const port = server.address().port;
-  server.once('request', common.mustCall(function(request, response) {
+  server.once("request", common.mustCall(function(request, response) {
    const expected = {
-    ':path': '/foobar',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
-    'foo1': 'abc1',
-    'foo2': 'abc2',
+    ":path": "/foobar",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
+    "foo1": "abc1",
+    "foo2": "abc2",
    };
 
    assert.strictEqual(request.path, undefined);
-   assert.strictEqual(request.method, expected[':method']);
-   assert.strictEqual(request.scheme, expected[':scheme']);
-   assert.strictEqual(request.url, expected[':path']);
-   assert.strictEqual(request.authority, expected[':authority']);
+   assert.strictEqual(request.method, expected[":method"]);
+   assert.strictEqual(request.scheme, expected[":scheme"]);
+   assert.strictEqual(request.url, expected[":path"]);
+   assert.strictEqual(request.authority, expected[":authority"]);
 
    const headers = request.headers;
    for (const [name, value] of Object.entries(expected)) {
@@ -126,7 +126,7 @@ const h2 = require('http2');
     expectedPosition++;
    }
 
-   response.on('finish', common.mustCall(function() {
+   response.on("finish", common.mustCall(function() {
     server.close();
    }));
    response.end();
@@ -135,15 +135,15 @@ const h2 = require('http2');
   const url = `http://localhost:${port}`;
   const client = h2.connect(url, common.mustCall(function() {
    const headers = {
-    ':path': '/foobar',
-    ':method': 'GET',
-    'foo1': 'abc1',
-    ':scheme': 'http',
-    'foo2': 'abc2',
-    ':authority': `localhost:${port}`,
+    ":path": "/foobar",
+    ":method": "GET",
+    "foo1": "abc1",
+    ":scheme": "http",
+    "foo2": "abc2",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('end', common.mustCall(function() {
+   request.on("end", common.mustCall(function() {
     client.close();
    }));
    request.end();

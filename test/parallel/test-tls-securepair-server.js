@@ -19,31 +19,31 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 if (!common.opensslCli)
- common.skip('missing openssl-cli');
+ common.skip("missing openssl-cli");
 
-const assert = require('assert');
-const tls = require('tls');
-const net = require('net');
-const spawn = require('child_process').spawn;
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const net = require("net");
+const spawn = require("child_process").spawn;
+const fixtures = require("../common/fixtures");
 
-const key = fixtures.readKey('rsa_private.pem');
-const cert = fixtures.readKey('rsa_cert.crt');
+const key = fixtures.readKey("rsa_private.pem");
+const cert = fixtures.readKey("rsa_cert.crt");
 
 function log(a) {
- console.error('***server***', a);
+ console.error("***server***", a);
 }
 
 const server = net.createServer(common.mustCall(function(socket) {
  log(`connection fd=${socket.fd}`);
  const sslcontext = tls.createSecureContext({ key, cert });
- sslcontext.context.setCiphers('RC4-SHA:AES128-SHA:AES256-SHA');
+ sslcontext.context.setCiphers("RC4-SHA:AES128-SHA:AES256-SHA");
 
  const pair = tls.createSecurePair(sslcontext, true);
 
@@ -53,48 +53,48 @@ const server = net.createServer(common.mustCall(function(socket) {
  pair.encrypted.pipe(socket);
  socket.pipe(pair.encrypted);
 
- log('i set it secure');
+ log("i set it secure");
 
- pair.on('secure', function() {
-  log('connected+secure!');
-  pair.cleartext.write('hello\r\n');
+ pair.on("secure", function() {
+  log("connected+secure!");
+  pair.cleartext.write("hello\r\n");
   log(pair.cleartext.getPeerCertificate());
   log(pair.cleartext.getCipher());
  });
 
- pair.cleartext.on('data', function(data) {
+ pair.cleartext.on("data", function(data) {
   log(`read bytes ${data.length}`);
   pair.cleartext.write(data);
  });
 
- socket.on('end', function() {
-  log('socket end');
+ socket.on("end", function() {
+  log("socket end");
  });
 
- pair.cleartext.on('error', function(err) {
-  log('got error: ');
+ pair.cleartext.on("error", function(err) {
+  log("got error: ");
   log(err);
   socket.destroy();
  });
 
- pair.encrypted.on('error', function(err) {
-  log('encrypted error: ');
+ pair.encrypted.on("error", function(err) {
+  log("encrypted error: ");
   log(err);
   socket.destroy();
  });
 
- socket.on('error', function(err) {
-  log('socket error: ');
+ socket.on("error", function(err) {
+  log("socket error: ");
   log(err);
   socket.destroy();
  });
 
- socket.on('close', function(err) {
-  log('socket closed');
+ socket.on("close", function(err) {
+  log("socket closed");
  });
 
- pair.on('error', function(err) {
-  log('secure error: ');
+ pair.on("error", function(err) {
+  log("secure error: ");
   log(err);
   socket.destroy();
  });
@@ -107,20 +107,20 @@ let gotWorld = false;
 server.listen(0, common.mustCall(function() {
  // To test use: openssl s_client -connect localhost:8000
 
- const args = ['s_client', '-connect', `127.0.0.1:${this.address().port}`];
+ const args = ["s_client", "-connect", `127.0.0.1:${this.address().port}`];
 
  const client = spawn(common.opensslCli, args);
 
 
- let out = '';
+ let out = "";
 
- client.stdout.setEncoding('utf8');
- client.stdout.on('data', function(d) {
+ client.stdout.setEncoding("utf8");
+ client.stdout.on("data", function(d) {
   out += d;
 
   if (!gotHello && /hello/.test(out)) {
    gotHello = true;
-   client.stdin.write('world\r\n');
+   client.stdin.write("world\r\n");
    sentWorld = true;
   }
 
@@ -132,13 +132,13 @@ server.listen(0, common.mustCall(function() {
 
  client.stdout.pipe(process.stdout, { end: false });
 
- client.on('exit', common.mustCall(function(code) {
+ client.on("exit", common.mustCall(function(code) {
   assert.strictEqual(code, 0);
   server.close();
  }));
 }));
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.ok(gotHello);
  assert.ok(sentWorld);
  assert.ok(gotWorld);

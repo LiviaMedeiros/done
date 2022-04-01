@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const net = require('net');
-const tls = require('tls');
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const net = require("net");
+const tls = require("tls");
 
 let clientError = null;
 
 const server = tls.createServer({
- cert: fixtures.readKey('agent1-cert.pem'),
- key: fixtures.readKey('agent1-key.pem'),
-}, common.mustNotCall()).on('tlsClientError', function(err, conn) {
+ cert: fixtures.readKey("agent1-cert.pem"),
+ key: fixtures.readKey("agent1-key.pem"),
+}, common.mustNotCall()).on("tlsClientError", function(err, conn) {
  assert(!clientError && conn);
  clientError = err;
  server.close();
@@ -42,10 +42,10 @@ const server = tls.createServer({
  net.connect(this.address().port, function() {
   // Destroy the socket once it is connected, so the server sees ECONNRESET.
   this.destroy();
- }).on('error', common.mustNotCall());
+ }).on("error", common.mustNotCall());
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert(clientError);
  assert.match(clientError.message, /socket hang up/);
  assert.match(clientError.code, /ECONNRESET/);

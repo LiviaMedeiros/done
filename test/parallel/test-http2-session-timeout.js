@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
 
 let requests = 0;
 const mustNotCall = () => {
@@ -16,8 +16,8 @@ const server = http2.createServer();
 // how long the first request takes.
 server.timeout = 0;
 
-server.on('request', (req, res) => res.end());
-server.on('timeout', mustNotCall);
+server.on("request", (req, res) => res.end());
+server.on("timeout", mustNotCall);
 
 server.listen(0, common.mustCall(() => {
  const port = server.address().port;
@@ -29,17 +29,17 @@ server.listen(0, common.mustCall(() => {
 
  function makeReq() {
   const request = client.request({
-   ':path': '/foobar',
-   ':method': 'GET',
-   ':scheme': 'http',
-   ':authority': `localhost:${port}`,
+   ":path": "/foobar",
+   ":method": "GET",
+   ":scheme": "http",
+   ":authority": `localhost:${port}`,
   });
   request.resume();
   request.end();
 
   requests += 1;
 
-  request.on('end', () => {
+  request.on("end", () => {
    const diff = process.hrtime(startTime);
    const milliseconds = (diff[0] * 1e3 + diff[1] / 1e6);
    if (server.timeout === 0) {
@@ -53,7 +53,7 @@ server.listen(0, common.mustCall(() => {
    } else if (milliseconds < server.timeout * 2) {
     makeReq();
    } else {
-    server.removeListener('timeout', mustNotCall);
+    server.removeListener("timeout", mustNotCall);
     server.close();
     client.close();
    }

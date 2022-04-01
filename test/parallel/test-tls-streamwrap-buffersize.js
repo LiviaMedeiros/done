@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const makeDuplexPair = require('../common/duplexpair');
-const tls = require('tls');
-const net = require('net');
+ common.skip("missing crypto");
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const makeDuplexPair = require("../common/duplexpair");
+const tls = require("tls");
+const net = require("net");
 
 // This test ensures that `bufferSize` also works for those tlsSockets
 // created from `socket` of `Duplex`, with which, TLSSocket will wrap
@@ -23,8 +23,8 @@ const net = require('net');
    }, common.mustCall(() => {
     clientSide.pipe(socket);
     socket.pipe(clientSide);
-    clientSide.on('close', common.mustCall(() => socket.destroy()));
-    socket.on('close', common.mustCall(() => clientSide.destroy()));
+    clientSide.on("close", common.mustCall(() => socket.destroy()));
+    socket.on("close", common.mustCall(() => clientSide.destroy()));
 
     resolve(serverSide);
    }));
@@ -32,15 +32,15 @@ const net = require('net');
  }
 
  const server = tls.createServer({
-  key: fixtures.readKey('agent2-key.pem'),
-  cert: fixtures.readKey('agent2-cert.pem'),
+  key: fixtures.readKey("agent2-key.pem"),
+  cert: fixtures.readKey("agent2-cert.pem"),
  }, common.mustCall((socket) => {
-  let str = '';
-  socket.setEncoding('utf-8');
-  socket.on('data', (chunk) => { str += chunk; });
+  let str = "";
+  socket.setEncoding("utf-8");
+  socket.on("data", (chunk) => { str += chunk; });
 
-  socket.on('end', common.mustCall(() => {
-   assert.strictEqual(str, 'a'.repeat(iter - 1));
+  socket.on("end", common.mustCall(() => {
+   assert.strictEqual(str, "a".repeat(iter - 1));
    server.close();
   }));
  }));
@@ -55,12 +55,12 @@ const net = require('net');
     assert.strictEqual(client.bufferSize, 0);
 
     for (let i = 1; i < iter; i++) {
-     client.write('a');
+     client.write("a");
      assert.strictEqual(client.bufferSize, i);
     }
 
-    client.on('end', common.mustCall());
-    client.on('close', common.mustCall(() => {
+    client.on("end", common.mustCall());
+    client.on("close", common.mustCall(() => {
      assert.strictEqual(client.bufferSize, undefined);
     }));
 

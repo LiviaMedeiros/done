@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const net = require('net');
+const assert = require("assert");
+const net = require("net");
 
 const { expectsError, mustCall } = common;
 
@@ -13,19 +13,19 @@ const server = net.createServer(mustCall((socket) => {
 })).listen(() => {
  const client = net.connect(server.address().port, () => {
   let hasError = false;
-  client.on('error', mustCall((err) => {
+  client.on("error", mustCall((err) => {
    hasError = true;
    server.close();
   }));
-  client.on('end', mustCall(() => {
-   const ret = client.write('hello', expectsError({
-    code: 'EPIPE',
-    message: 'This socket has been ended by the other party',
-    name: 'Error',
+  client.on("end", mustCall(() => {
+   const ret = client.write("hello", expectsError({
+    code: "EPIPE",
+    message: "This socket has been ended by the other party",
+    name: "Error",
    }));
 
    assert.strictEqual(ret, false);
-   assert(!hasError, 'The error should be emitted in the next tick.');
+   assert(!hasError, "The error should be emitted in the next tick.");
   }));
   client.end();
  });

@@ -19,27 +19,27 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
-const stream = require('stream');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
+const stream = require("stream");
 
-const request = Buffer.from('ABCD'.repeat(1024 * 256 - 1)); // 1mb
+const request = Buffer.from("ABCD".repeat(1024 * 256 - 1)); // 1mb
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 class Mediator extends stream.Writable {
  constructor() {
   super();
-  this.buf = '';
+  this.buf = "";
  }
 
  _write(data, enc, cb) {

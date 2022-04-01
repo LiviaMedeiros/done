@@ -1,18 +1,18 @@
 // Test the throughput of the fs.WriteStream class.
-'use strict';
+"use strict";
 
-const path = require('path');
-const common = require('../common.js');
-const fs = require('fs');
-const assert = require('assert');
+const path = require("path");
+const common = require("../common.js");
+const fs = require("fs");
+const assert = require("assert");
 
-const tmpdir = require('../../test/common/tmpdir');
+const tmpdir = require("../../test/common/tmpdir");
 tmpdir.refresh();
 const filename = path.resolve(tmpdir.path,
                               `.removeme-benchmark-garbage-${process.pid}`);
 
 const bench = common.createBenchmark(main, {
- encodingType: ['buf', 'asc', 'utf'],
+ encodingType: ["buf", "asc", "utf"],
  filesize: [1000 * 1024],
  highWaterMark: [1024, 4096, 65535, 1024 * 1024],
  n: 1024,
@@ -22,16 +22,16 @@ function main(conf) {
  const { encodingType, highWaterMark, filesize } = conf;
  let { n } = conf;
 
- let encoding = '';
+ let encoding = "";
  switch (encodingType) {
-  case 'buf':
+  case "buf":
    encoding = null;
    break;
-  case 'asc':
-   encoding = 'ascii';
+  case "asc":
+   encoding = "ascii";
    break;
-  case 'utf':
-   encoding = 'utf8';
+  case "utf":
+   encoding = "utf8";
    break;
   default:
    throw new Error(`invalid encodingType: ${encodingType}`);
@@ -39,15 +39,15 @@ function main(conf) {
 
  // Make file
  const buf = Buffer.allocUnsafe(filesize);
- if (encoding === 'utf8') {
+ if (encoding === "utf8") {
   // ü
   for (let i = 0; i < buf.length; i++) {
    buf[i] = i % 2 === 0 ? 0xC3 : 0xBC;
   }
- } else if (encoding === 'ascii') {
-  buf.fill('a');
+ } else if (encoding === "ascii") {
+  buf.fill("a");
  } else {
-  buf.fill('x');
+  buf.fill("x");
  }
 
  try {
@@ -56,8 +56,8 @@ function main(conf) {
   // Continue regardless of error.
  }
  const ws = fs.createWriteStream(filename);
- ws.on('close', runTest.bind(null, filesize, highWaterMark, encoding, n));
- ws.on('drain', write);
+ ws.on("close", runTest.bind(null, filesize, highWaterMark, encoding, n));
+ ws.on("drain", write);
  write();
  function write() {
   do {
@@ -75,16 +75,16 @@ function runTest(filesize, highWaterMark, encoding, n) {
   encoding,
  });
 
- rs.on('open', () => {
+ rs.on("open", () => {
   bench.start();
  });
 
  let bytes = 0;
- rs.on('data', (chunk) => {
+ rs.on("data", (chunk) => {
   bytes += chunk.length;
  });
 
- rs.on('end', () => {
+ rs.on("end", () => {
   try {
    fs.unlinkSync(filename);
   } catch {

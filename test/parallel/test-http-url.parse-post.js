@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const url = require('url');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const url = require("url");
 
 let testURL;
 
 function check(request) {
  // url.parse should not mess with the method
- assert.strictEqual(request.method, 'POST');
+ assert.strictEqual(request.method, "POST");
  // Everything else should be right
- assert.strictEqual(request.url, '/asdf?qwer=zxcv');
+ assert.strictEqual(request.url, "/asdf?qwer=zxcv");
  // The host header should use the url.parse.hostname
  assert.strictEqual(request.headers.host,
                     `${testURL.hostname}:${testURL.port}`);
@@ -41,13 +41,13 @@ const server = http.createServer(function(request, response) {
  // Run the check function
  check(request);
  response.writeHead(200, {});
- response.end('ok');
+ response.end("ok");
  server.close();
 });
 
 server.listen(0, function() {
  testURL = url.parse(`http://localhost:${this.address().port}/asdf?qwer=zxcv`);
- testURL.method = 'POST';
+ testURL.method = "POST";
 
  // make the request
  http.request(testURL).end();

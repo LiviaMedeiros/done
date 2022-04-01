@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-require('../common');
-const { WPTRunner } = require('../common/wpt');
+require("../common");
+const { WPTRunner } = require("../common/wpt");
 
-const runner = new WPTRunner('html/webappapis/atob');
+const runner = new WPTRunner("html/webappapis/atob");
 
 // Needed to access to DOMException.
-runner.setFlags(['--expose-internals']);
+runner.setFlags(["--expose-internals"]);
 
 // Set a script that will be executed in the worker before running the tests.
 runner.setInitScript(`

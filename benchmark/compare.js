@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const { fork } = require('child_process');
-const { inspect } = require('util');
-const path = require('path');
-const CLI = require('./_cli.js');
-const BenchmarkProgress = require('./_benchmark_progress.js');
+const { fork } = require("child_process");
+const { inspect } = require("util");
+const path = require("path");
+const CLI = require("./_cli.js");
+const BenchmarkProgress = require("./_benchmark_progress.js");
 
 //
 // Parse arguments
@@ -24,18 +24,18 @@ const cli = new CLI(`usage: ./node compare.js [options] [--] <category> ...
                                 repeated)
   --set      variable=value     set benchmark variable (can be repeated)
   --no-progress                 don't show benchmark progress indicator
-`, { arrayArgs: ['set', 'filter', 'exclude'], boolArgs: ['no-progress'] });
+`, { arrayArgs: ["set", "filter", "exclude"], boolArgs: ["no-progress"] });
 
 if (!cli.optional.new || !cli.optional.old) {
  cli.abort(cli.usage);
 }
 
-const binaries = ['old', 'new'];
+const binaries = ["old", "new"];
 const runs = cli.optional.runs ? parseInt(cli.optional.runs, 10) : 30;
 const benchmarks = cli.benchmarks();
 
 if (benchmarks.length === 0) {
- console.error('No benchmarks found');
+ console.error("No benchmarks found");
  process.exitCode = 1;
  return;
 }
@@ -60,7 +60,7 @@ console.log('"binary","filename","configuration","rate","time"');
 
 const kStartOfQueue = 0;
 
-const showProgress = !cli.optional['no-progress'];
+const showProgress = !cli.optional["no-progress"];
 let progress;
 if (showProgress) {
  progress = new BenchmarkProgress(queue, benchmarks);
@@ -74,10 +74,10 @@ if (showProgress) {
   execPath: cli.optional[job.binary],
  });
 
- child.on('message', (data) => {
-  if (data.type === 'report') {
+ child.on("message", (data) => {
+  if (data.type === "report") {
    // Construct configuration string, " A=a, B=b, ..."
-   let conf = '';
+   let conf = "";
    for (const key of Object.keys(data.conf)) {
     conf += ` ${key}=${inspect(data.conf[key])}`;
    }
@@ -91,13 +91,13 @@ if (showProgress) {
     // One item in the subqueue has been completed.
     progress.completeConfig(data);
    }
-  } else if (showProgress && data.type === 'config') {
+  } else if (showProgress && data.type === "config") {
    // The child has computed the configurations, ready to run subqueue.
    progress.startSubqueue(data, i);
   }
  });
 
- child.once('close', (code) => {
+ child.once("close", (code) => {
   if (code) {
    process.exit(code);
   }

@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { subtle } = require('crypto').webcrypto;
+const assert = require("assert");
+const { subtle } = require("crypto").webcrypto;
 
-const dsa = require('../fixtures/crypto/dsa');
+const dsa = require("../fixtures/crypto/dsa");
 
 async function testVerify({ algorithm,
                             hash,
@@ -24,35 +24,35 @@ async function testVerify({ algorithm,
   wrongKeys,
  ] = await Promise.all([
   subtle.importKey(
-   'spki',
+   "spki",
    publicKeyBuffer,
    { name: algorithm.name, hash },
    false,
-   ['verify']),
+   ["verify"]),
   subtle.importKey(
-   'spki',
+   "spki",
    publicKeyBuffer,
    { name: algorithm.name, hash },
    false,
    [ /* No usages */ ]),
   subtle.importKey(
-   'pkcs8',
+   "pkcs8",
    privateKeyBuffer,
    { name: algorithm.name, hash },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
-   { name: 'HMAC', hash: 'SHA-256' },
+   { name: "HMAC", hash: "SHA-256" },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
    {
-    name: 'ECDSA',
-    namedCurve: 'P-521',
-    hash: 'SHA-256',
+    name: "ECDSA",
+    namedCurve: "P-521",
+    hash: "SHA-256",
    },
    false,
-   ['sign']),
+   ["sign"]),
  ]);
 
  assert(await subtle.verify(algorithm, publicKey, signature, plaintext));
@@ -108,7 +108,7 @@ async function testVerify({ algorithm,
 
  // Test failure when wrong hash is used
  {
-  const otherhash = hash === 'SHA-1' ? 'SHA-256' : 'SHA-1';
+  const otherhash = hash === "SHA-1" ? "SHA-256" : "SHA-1";
   assert(!(await subtle.verify({
    ...algorithm,
    hash: otherhash,
@@ -117,7 +117,7 @@ async function testVerify({ algorithm,
 
  await assert.rejects(
   subtle.verify(
-   { ...algorithm, hash: 'sha256' },
+   { ...algorithm, hash: "sha256" },
    publicKey,
    signature,
    copy),
@@ -140,35 +140,35 @@ async function testSign({
   wrongKeys,
  ] = await Promise.all([
   subtle.importKey(
-   'spki',
+   "spki",
    publicKeyBuffer,
    { name: algorithm.name, hash },
    false,
-   ['verify']),
+   ["verify"]),
   subtle.importKey(
-   'pkcs8',
+   "pkcs8",
    privateKeyBuffer,
    { name: algorithm.name, hash },
    false,
    [ /* No usages */ ]),
   subtle.importKey(
-   'pkcs8',
+   "pkcs8",
    privateKeyBuffer,
    { name: algorithm.name, hash },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
-   { name: 'HMAC', hash: 'SHA-256' },
+   { name: "HMAC", hash: "SHA-256" },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
    {
-    name: 'ECDSA',
-    namedCurve: 'P-521',
-    hash: 'SHA-256',
+    name: "ECDSA",
+    namedCurve: "P-521",
+    hash: "SHA-256",
    },
    false,
-   ['sign']),
+   ["sign"]),
  ]);
 
  {

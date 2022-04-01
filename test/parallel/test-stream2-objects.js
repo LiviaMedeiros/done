@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { Readable, Writable } = require('stream');
-const assert = require('assert');
+const common = require("../common");
+const { Readable, Writable } = require("stream");
+const assert = require("assert");
 
 function toArray(callback) {
  const stream = new Writable({ objectMode: true });
@@ -52,41 +52,41 @@ function fromArray(list) {
 
 {
  // Verify that objects can be read from the stream
- const r = fromArray([{ one: '1' }, { two: '2' }]);
+ const r = fromArray([{ one: "1" }, { two: "2" }]);
 
  const v1 = r.read();
  const v2 = r.read();
  const v3 = r.read();
 
- assert.deepStrictEqual(v1, { one: '1' });
- assert.deepStrictEqual(v2, { two: '2' });
+ assert.deepStrictEqual(v1, { one: "1" });
+ assert.deepStrictEqual(v2, { two: "2" });
  assert.strictEqual(v3, null);
 }
 
 {
  // Verify that objects can be piped into the stream
- const r = fromArray([{ one: '1' }, { two: '2' }]);
+ const r = fromArray([{ one: "1" }, { two: "2" }]);
 
  r.pipe(toArray(common.mustCall(function(list) {
   assert.deepStrictEqual(list, [
-   { one: '1' },
-   { two: '2' },
+   { one: "1" },
+   { two: "2" },
   ]);
  })));
 }
 
 {
  // Verify that read(n) is ignored
- const r = fromArray([{ one: '1' }, { two: '2' }]);
+ const r = fromArray([{ one: "1" }, { two: "2" }]);
  const value = r.read(2);
 
- assert.deepStrictEqual(value, { one: '1' });
+ assert.deepStrictEqual(value, { one: "1" });
 }
 
 {
  // Verify that objects can be synchronously read
  const r = new Readable({ objectMode: true });
- const list = [{ one: '1' }, { two: '2' }];
+ const list = [{ one: "1" }, { two: "2" }];
  r._read = function(n) {
   const item = list.shift();
   r.push(item || null);
@@ -94,8 +94,8 @@ function fromArray(list) {
 
  r.pipe(toArray(common.mustCall(function(list) {
   assert.deepStrictEqual(list, [
-   { one: '1' },
-   { two: '2' },
+   { one: "1" },
+   { two: "2" },
   ]);
  })));
 }
@@ -103,7 +103,7 @@ function fromArray(list) {
 {
  // Verify that objects can be asynchronously read
  const r = new Readable({ objectMode: true });
- const list = [{ one: '1' }, { two: '2' }];
+ const list = [{ one: "1" }, { two: "2" }];
  r._read = function(n) {
   const item = list.shift();
   process.nextTick(function() {
@@ -113,8 +113,8 @@ function fromArray(list) {
 
  r.pipe(toArray(common.mustCall(function(list) {
   assert.deepStrictEqual(list, [
-   { one: '1' },
-   { two: '2' },
+   { one: "1" },
+   { two: "2" },
   ]);
  })));
 }
@@ -125,7 +125,7 @@ function fromArray(list) {
   objectMode: true,
  });
  r._read = common.mustNotCall();
- const list = ['one', 'two', 'three'];
+ const list = ["one", "two", "three"];
  list.forEach(function(str) {
   r.push(str);
  });
@@ -143,11 +143,11 @@ function fromArray(list) {
  });
  r._read = common.mustNotCall();
 
- r.push('foobar');
+ r.push("foobar");
  r.push(null);
 
  r.pipe(toArray(common.mustCall(function(array) {
-  assert.deepStrictEqual(array, ['foobar']);
+  assert.deepStrictEqual(array, ["foobar"]);
  })));
 }
 
@@ -160,11 +160,11 @@ function fromArray(list) {
 
  r.push(false);
  r.push(0);
- r.push('');
+ r.push("");
  r.push(null);
 
  r.pipe(toArray(common.mustCall(function(array) {
-  assert.deepStrictEqual(array, [false, 0, '']);
+  assert.deepStrictEqual(array, [false, 0, ""]);
  })));
 }
 
@@ -175,7 +175,7 @@ function fromArray(list) {
   objectMode: true,
  });
  let calls = 0;
- const list = ['1', '2', '3', '4', '5', '6', '7', '8'];
+ const list = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
  r._read = function(n) {
   calls++;
@@ -188,13 +188,13 @@ function fromArray(list) {
  const v = r.read();
 
  assert.strictEqual(calls, 0);
- assert.strictEqual(v, '1');
+ assert.strictEqual(v, "1");
 
  const v2 = r.read();
- assert.strictEqual(v2, '2');
+ assert.strictEqual(v2, "2");
 
  const v3 = r.read();
- assert.strictEqual(v3, '3');
+ assert.strictEqual(v3, "3");
 
  assert.strictEqual(calls, 1);
 }
@@ -217,12 +217,12 @@ function fromArray(list) {
  const w = new Writable({ objectMode: true });
 
  w._write = function(chunk, encoding, cb) {
-  assert.deepStrictEqual(chunk, { foo: 'bar' });
+  assert.deepStrictEqual(chunk, { foo: "bar" });
   cb();
  };
 
- w.on('finish', common.mustCall());
- w.write({ foo: 'bar' });
+ w.on("finish", common.mustCall());
+ w.write({ foo: "bar" });
  w.end();
 }
 
@@ -236,7 +236,7 @@ function fromArray(list) {
   cb();
  };
 
- w.on('finish', common.mustCall(function() {
+ w.on("finish", common.mustCall(function() {
   assert.deepStrictEqual(list, [0, 1, 2, 3, 4]);
  }));
 
@@ -260,15 +260,15 @@ function fromArray(list) {
   process.nextTick(cb);
  };
 
- w.on('finish', common.mustCall(function() {
-  assert.deepStrictEqual(list, ['0', '1', '2', '3', '4']);
+ w.on("finish", common.mustCall(function() {
+  assert.deepStrictEqual(list, ["0", "1", "2", "3", "4"]);
  }));
 
- w.write('0');
- w.write('1');
- w.write('2');
- w.write('3');
- w.write('4');
+ w.write("0");
+ w.write("1");
+ w.write("2");
+ w.write("3");
+ w.write("4");
  w.end();
 }
 
@@ -280,7 +280,7 @@ function fromArray(list) {
  let called = false;
 
  w._write = function(chunk, encoding, cb) {
-  assert.strictEqual(chunk, 'foo');
+  assert.strictEqual(chunk, "foo");
 
   process.nextTick(function() {
    called = true;
@@ -288,10 +288,10 @@ function fromArray(list) {
   });
  };
 
- w.on('finish', common.mustCall(function() {
+ w.on("finish", common.mustCall(function() {
   assert.strictEqual(called, true);
  }));
 
- w.write('foo');
+ w.write("foo");
  w.end();
 }

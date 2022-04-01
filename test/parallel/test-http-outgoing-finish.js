@@ -19,30 +19,30 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
 http.createServer(function(req, res) {
  req.resume();
- req.on('end', function() {
+ req.on("end", function() {
   write(res);
  });
  this.close();
 }).listen(0, function() {
  const req = http.request({
   port: this.address().port,
-  method: 'PUT',
+  method: "PUT",
  });
  write(req);
- req.on('response', function(res) {
+ req.on("response", function(res) {
   res.resume();
  });
 });
 
-const buf = Buffer.alloc(1024 * 16, 'x');
+const buf = Buffer.alloc(1024 * 16, "x");
 function write(out) {
  const name = out.constructor.name;
  let finishEvent = false;
@@ -56,7 +56,7 @@ function write(out) {
  // nextTick because this is added as a listener before the endcb
  // is registered.  The order is not what we're testing here, just
  // that 'finish' isn't emitted until the stream is fully flushed.
- out.on('finish', function() {
+ out.on("finish", function() {
   finishEvent = true;
   console.error(`${name} finish event`);
   process.nextTick(function() {

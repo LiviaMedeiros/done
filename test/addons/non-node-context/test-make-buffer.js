@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
+const common = require("../../common");
+const assert = require("assert");
 const {
  makeBufferInNewContext,
 } = require(`./build/${common.buildType}/binding`);
@@ -12,12 +12,12 @@ const {
 assert.throws(
  () => makeBufferInNewContext(),
  (exception) => {
-  assert.strictEqual(exception.constructor.name, 'Error');
+  assert.strictEqual(exception.constructor.name, "Error");
   assert(!(exception.constructor instanceof Error));
 
-  assert.strictEqual(exception.code, 'ERR_BUFFER_CONTEXT_NOT_AVAILABLE');
+  assert.strictEqual(exception.code, "ERR_BUFFER_CONTEXT_NOT_AVAILABLE");
   assert.strictEqual(exception.message,
-                     'Buffer is not available for the current Context');
+                     "Buffer is not available for the current Context");
   return true;
  },
 );

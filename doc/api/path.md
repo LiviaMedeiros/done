@@ -10,7 +10,7 @@ The `path` module provides utilities for working with file and directory paths.
 It can be accessed using:
 
 ```js
-const path = require('path');
+const path = require("path");
 ```
 
 ## Windows vs. POSIX
@@ -25,14 +25,14 @@ So using `path.basename()` might yield different results on POSIX and Windows:
 On POSIX:
 
 ```js
-path.basename('C:\\temp\\myfile.html');
+path.basename("C:\\temp\\myfile.html");
 // Returns: 'C:\\temp\\myfile.html'
 ```
 
 On Windows:
 
 ```js
-path.basename('C:\\temp\\myfile.html');
+path.basename("C:\\temp\\myfile.html");
 // Returns: 'myfile.html'
 ```
 
@@ -42,7 +42,7 @@ operating system, use [`path.win32`][]:
 On POSIX and Windows:
 
 ```js
-path.win32.basename('C:\\temp\\myfile.html');
+path.win32.basename("C:\\temp\\myfile.html");
 // Returns: 'myfile.html'
 ```
 
@@ -52,7 +52,7 @@ operating system, use [`path.posix`][]:
 On POSIX and Windows:
 
 ```js
-path.posix.basename('/tmp/myfile.html');
+path.posix.basename("/tmp/myfile.html");
 // Returns: 'myfile.html'
 ```
 
@@ -81,10 +81,10 @@ the Unix `basename` command. Trailing directory separators are ignored, see
 [`path.sep`][].
 
 ```js
-path.basename('/foo/bar/baz/asdf/quux.html');
+path.basename("/foo/bar/baz/asdf/quux.html");
 // Returns: 'quux.html'
 
-path.basename('/foo/bar/baz/asdf/quux.html', '.html');
+path.basename("/foo/bar/baz/asdf/quux.html", ".html");
 // Returns: 'quux'
 ```
 
@@ -94,10 +94,10 @@ case-insensitive manner, this function does not. For example, `C:\\foo.html` and
 case-sensitive string:
 
 ```js
-path.win32.basename('C:\\foo.html', '.html');
+path.win32.basename("C:\\foo.html", ".html");
 // Returns: 'foo'
 
-path.win32.basename('C:\\foo.HTML', '.html');
+path.win32.basename("C:\\foo.HTML", ".html");
 // Returns: 'foo.HTML'
 ```
 
@@ -155,7 +155,7 @@ the Unix `dirname` command. Trailing directory separators are ignored, see
 [`path.sep`][].
 
 ```js
-path.dirname('/foo/bar/baz/asdf/quux');
+path.dirname("/foo/bar/baz/asdf/quux");
 // Returns: '/foo/bar/baz/asdf'
 ```
 
@@ -181,22 +181,22 @@ there are no `.` characters other than the first character of
 the basename of `path` (see `path.basename()`) , an empty string is returned.
 
 ```js
-path.extname('index.html');
+path.extname("index.html");
 // Returns: '.html'
 
-path.extname('index.coffee.md');
+path.extname("index.coffee.md");
 // Returns: '.md'
 
-path.extname('index.');
+path.extname("index.");
 // Returns: '.'
 
-path.extname('index');
+path.extname("index");
 // Returns: ''
 
-path.extname('.index');
+path.extname(".index");
 // Returns: ''
 
-path.extname('.index.md');
+path.extname(".index.md");
 // Returns: '.md'
 ```
 
@@ -232,9 +232,9 @@ For example, on POSIX:
 // `${dir}${path.sep}${base}`
 // will be returned. `root` is ignored.
 path.format({
- root: '/ignored',
- dir: '/home/user/dir',
- base: 'file.txt',
+ root: "/ignored",
+ dir: "/home/user/dir",
+ base: "file.txt",
 });
 // Returns: '/home/user/dir/file.txt'
 
@@ -242,17 +242,17 @@ path.format({
 // If only `root` is provided or `dir` is equal to `root` then the
 // platform separator will not be included. `ext` will be ignored.
 path.format({
- root: '/',
- base: 'file.txt',
- ext: 'ignored',
+ root: "/",
+ base: "file.txt",
+ ext: "ignored",
 });
 // Returns: '/file.txt'
 
 // `name` + `ext` will be used if `base` is not specified.
 path.format({
- root: '/',
- name: 'file',
- ext: '.txt',
+ root: "/",
+ name: "file",
+ ext: ".txt",
 });
 // Returns: '/file.txt'
 ```
@@ -261,8 +261,8 @@ On Windows:
 
 ```js
 path.format({
- dir: 'C:\\path\\dir',
- base: 'file.txt',
+ dir: "C:\\path\\dir",
+ base: "file.txt",
 });
 // Returns: 'C:\\path\\dir\\file.txt'
 ```
@@ -283,22 +283,22 @@ If the given `path` is a zero-length string, `false` will be returned.
 For example, on POSIX:
 
 ```js
-path.isAbsolute('/foo/bar'); // true
-path.isAbsolute('/baz/..');  // true
-path.isAbsolute('qux/');     // false
-path.isAbsolute('.');        // false
+path.isAbsolute("/foo/bar"); // true
+path.isAbsolute("/baz/..");  // true
+path.isAbsolute("qux/");     // false
+path.isAbsolute(".");        // false
 ```
 
 On Windows:
 
 ```js
-path.isAbsolute('//server');    // true
-path.isAbsolute('\\\\server');  // true
-path.isAbsolute('C:/foo/..');   // true
-path.isAbsolute('C:\\foo\\..'); // true
-path.isAbsolute('bar\\baz');    // false
-path.isAbsolute('bar/baz');     // false
-path.isAbsolute('.');           // false
+path.isAbsolute("//server");    // true
+path.isAbsolute("\\\\server");  // true
+path.isAbsolute("C:/foo/..");   // true
+path.isAbsolute("C:\\foo\\.."); // true
+path.isAbsolute("bar\\baz");    // false
+path.isAbsolute("bar/baz");     // false
+path.isAbsolute(".");           // false
 ```
 
 A [`TypeError`][] is thrown if `path` is not a string.
@@ -320,10 +320,10 @@ zero-length string then `'.'` will be returned, representing the current
 working directory.
 
 ```js
-path.join('/foo', 'bar', 'baz/asdf', 'quux', '..');
+path.join("/foo", "bar", "baz/asdf", "quux", "..");
 // Returns: '/foo/bar/baz/asdf'
 
-path.join('foo', {}, 'bar');
+path.join("foo", {}, "bar");
 // Throws 'TypeError: Path must be a string. Received {}'
 ```
 
@@ -352,14 +352,14 @@ current working directory.
 For example, on POSIX:
 
 ```js
-path.normalize('/foo/bar//baz/asdf/quux/..');
+path.normalize("/foo/bar//baz/asdf/quux/..");
 // Returns: '/foo/bar/baz/asdf'
 ```
 
 On Windows:
 
 ```js
-path.normalize('C:\\temp\\\\foo\\bar\\..\\');
+path.normalize("C:\\temp\\\\foo\\bar\\..\\");
 // Returns: 'C:\\temp\\foo\\'
 ```
 
@@ -367,7 +367,7 @@ Since Windows recognizes multiple path separators, both separators will be
 replaced by instances of the Windows preferred separator (`\`):
 
 ```js
-path.win32.normalize('C:////temp\\\\/\\/\\/foo/bar');
+path.win32.normalize("C:////temp\\\\/\\/\\/foo/bar");
 // Returns: 'C:\\temp\\foo\\bar'
 ```
 
@@ -397,7 +397,7 @@ The returned object will have the following properties:
 For example, on POSIX:
 
 ```js
-path.parse('/home/user/dir/file.txt');
+path.parse("/home/user/dir/file.txt");
 // Returns:
 // { root: '/',
 //   dir: '/home/user/dir',
@@ -419,7 +419,7 @@ path.parse('/home/user/dir/file.txt');
 On Windows:
 
 ```js
-path.parse('C:\\path\\dir\\file.txt');
+path.parse("C:\\path\\dir\\file.txt");
 // Returns:
 // { root: 'C:\\',
 //   dir: 'C:\\path\\dir',
@@ -482,14 +482,14 @@ directory will be used instead of the zero-length strings.
 For example, on POSIX:
 
 ```js
-path.relative('/data/orandea/test/aaa', '/data/orandea/impl/bbb');
+path.relative("/data/orandea/test/aaa", "/data/orandea/impl/bbb");
 // Returns: '../../impl/bbb'
 ```
 
 On Windows:
 
 ```js
-path.relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
+path.relative("C:\\orandea\\test\\aaa", "C:\\orandea\\impl\\bbb");
 // Returns: '..\\..\\impl\\bbb'
 ```
 
@@ -525,13 +525,13 @@ If no `path` segments are passed, `path.resolve()` will return the absolute path
 of the current working directory.
 
 ```js
-path.resolve('/foo/bar', './baz');
+path.resolve("/foo/bar", "./baz");
 // Returns: '/foo/bar/baz'
 
-path.resolve('/foo/bar', '/tmp/file/');
+path.resolve("/foo/bar", "/tmp/file/");
 // Returns: '/tmp/file'
 
-path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
+path.resolve("wwwroot", "static_files/png/", "../gif/image.gif");
 // If the current working directory is /home/myself/node,
 // this returns '/home/myself/node/wwwroot/static_files/gif/image.gif'
 ```
@@ -554,14 +554,14 @@ Provides the platform-specific path segment separator:
 For example, on POSIX:
 
 ```js
-'foo/bar/baz'.split(path.sep);
+"foo/bar/baz".split(path.sep);
 // Returns: ['foo', 'bar', 'baz']
 ```
 
 On Windows:
 
 ```js
-'foo\\bar\\baz'.split(path.sep);
+"foo\\bar\\baz".split(path.sep);
 // Returns: ['foo', 'bar', 'baz']
 ```
 

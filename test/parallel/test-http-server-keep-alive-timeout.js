@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const http = require('http');
-const net = require('net');
+const common = require("../common");
+const http = require("http");
+const net = require("net");
 
 const tests = [];
 
@@ -29,7 +29,7 @@ function serverTest(withPipeline, cb) {
  const server = http.createServer(common.mustCall((req, res) => {
   if (withPipeline)
    res.end();
-  if (req.url === '/3') {
+  if (req.url === "/3") {
    gotAll = true;
    if (timedout)
     done(server, req.socket, cb);
@@ -48,9 +48,9 @@ function serverTest(withPipeline, cb) {
    allowHalfOpen: true,
   };
   const c = net.connect(options, () => {
-   c.write('GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n');
-   c.write('GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n');
+   c.write("GET /1 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /2 HTTP/1.1\r\nHost: localhost\r\n\r\n");
+   c.write("GET /3 HTTP/1.1\r\nHost: localhost\r\n\r\n");
   });
  }));
 }

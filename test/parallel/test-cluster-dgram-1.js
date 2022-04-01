@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('dgram clustering is currently not supported on Windows.');
+ common.skip("dgram clustering is currently not supported on Windows.");
 
 const NUM_WORKERS = 4;
 const PACKETS_PER_WORKER = 10;
 
-const assert = require('assert');
-const cluster = require('cluster');
-const dgram = require('dgram');
+const assert = require("assert");
+const cluster = require("cluster");
+const dgram = require("dgram");
 
 if (cluster.isPrimary)
  primary();
@@ -45,13 +45,13 @@ function primary() {
   cluster.fork();
 
  // Wait until all workers are listening.
- cluster.on('listening', common.mustCall((worker, address) => {
+ cluster.on("listening", common.mustCall((worker, address) => {
   if (++listening < NUM_WORKERS)
    return;
 
   // Start sending messages.
-  const buf = Buffer.from('hello world');
-  const socket = dgram.createSocket('udp4');
+  const buf = Buffer.from("hello world");
+  const socket = dgram.createSocket("udp4");
   let sent = 0;
   doSend();
 
@@ -79,12 +79,12 @@ function primary() {
  function setupWorker(worker) {
   let received = 0;
 
-  worker.on('message', common.mustCall((msg) => {
+  worker.on("message", common.mustCall((msg) => {
    received = msg.received;
    worker.disconnect();
   }));
 
-  worker.on('exit', common.mustCall(() => {
+  worker.on("exit", common.mustCall(() => {
    assert.strictEqual(received, PACKETS_PER_WORKER);
   }));
  }
@@ -95,9 +95,9 @@ function worker() {
  let received = 0;
 
  // Create udp socket and start listening.
- const socket = dgram.createSocket('udp4');
+ const socket = dgram.createSocket("udp4");
 
- socket.on('message', common.mustCall((data, info) => {
+ socket.on("message", common.mustCall((data, info) => {
   received++;
 
   // Every 10 messages, notify the primary.

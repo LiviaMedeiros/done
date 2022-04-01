@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const loadavg = require('os').loadavg;
+const common = require("../common.js");
+const loadavg = require("os").loadavg;
 
 const bench = common.createBenchmark(main, {
  n: [5e6],

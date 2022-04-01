@@ -1,16 +1,16 @@
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
 // Verify connection with explicitly created client SecureContext.
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 const {
  assert, connect, keys, tls,
-} = require(fixtures.path('tls-connect'));
+} = require(fixtures.path("tls-connect"));
 
 connect({
  client: {
-  servername: 'agent1',
+  servername: "agent1",
   secureContext: tls.createSecureContext({
    ca: keys.agent1.ca,
   }),
@@ -26,7 +26,7 @@ connect({
 
 connect({
  client: {
-  servername: 'agent1',
+  servername: "agent1",
   secureContext: tls.createSecureContext({
    ca: keys.agent1.ca,
    ciphers: null,

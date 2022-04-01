@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 const {
  executionAsyncResource,
  executionAsyncId,
  createHook,
-} = require('async_hooks');
-const http = require('http');
+} = require("async_hooks");
+const http = require("http");
 
 const hooked = {};
 createHook({
@@ -17,7 +17,7 @@ createHook({
 }).enable();
 
 const server = http.createServer((req, res) => {
- res.end('ok');
+ res.end("ok");
 });
 
 server.listen(0, () => {

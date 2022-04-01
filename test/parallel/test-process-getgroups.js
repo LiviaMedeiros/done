@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // Check `id -G` and `process.getgroups()` return same groups.
 
 if (common.isOSX)
- common.skip('Output of `id -G` is unreliable on Darwin.');
+ common.skip("Output of `id -G` is unreliable on Darwin.");
 
-const assert = require('assert');
-const exec = require('child_process').exec;
+const assert = require("assert");
+const exec = require("child_process").exec;
 
-if (typeof process.getgroups === 'function') {
+if (typeof process.getgroups === "function") {
  const groups = unique(process.getgroups());
  assert(Array.isArray(groups));
  assert(groups.length > 0);
- exec('id -G', function(err, stdout) {
+ exec("id -G", function(err, stdout) {
   assert.ifError(err);
   const real_groups = unique(stdout.match(/\d+/g).map(Number));
   assert.deepStrictEqual(groups, real_groups);

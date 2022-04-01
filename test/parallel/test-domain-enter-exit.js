@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Make sure the domain stack is a stack
 
-require('../common');
-const assert = require('assert');
-const domain = require('domain');
+require("../common");
+const assert = require("assert");
+const domain = require("domain");
 
 function names(array) {
  return array.map(function(d) {
   return d.name;
- }).join(', ');
+ }).join(", ");
 }
 
 const a = domain.create();
-a.name = 'a';
+a.name = "a";
 const b = domain.create();
-b.name = 'b';
+b.name = "b";
 const c = domain.create();
-c.name = 'c';
+c.name = "c";
 
 a.enter(); // push
 assert.deepStrictEqual(domain._stack, [a],

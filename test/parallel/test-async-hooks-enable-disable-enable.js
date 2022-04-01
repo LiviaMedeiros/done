@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 // Regression test for https://github.com/nodejs/node/issues/27585.
 

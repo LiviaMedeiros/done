@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const h2 = require('http2');
-const net = require('net');
+const h2 = require("http2");
+const net = require("net");
 
 const preamble = Buffer.from([
  0x50, 0x52, 0x49, 0x20, 0x2a, 0x20, 0x48, 0x54, 0x54, 0x50, 0x2f,
@@ -55,21 +55,21 @@ const data = Buffer.from([
 let client;
 
 const server = h2.createServer({ settings: { initialWindowSize: 36 } });
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  // Set the high water mark to zero, since otherwise we still accept
  // reads from the source stream (if we can consume them).
  stream._readableState.highWaterMark = 0;
  stream.pause();
- stream.on('error', common.expectsError({
-  code: 'ERR_HTTP2_STREAM_ERROR',
-  name: 'Error',
-  message: 'Stream closed with error code NGHTTP2_FLOW_CONTROL_ERROR',
+ stream.on("error", common.expectsError({
+  code: "ERR_HTTP2_STREAM_ERROR",
+  name: "Error",
+  message: "Stream closed with error code NGHTTP2_FLOW_CONTROL_ERROR",
  }));
- stream.on('close', common.mustCall(() => {
+ stream.on("close", common.mustCall(() => {
   server.close();
   client.destroy();
  }));
- stream.on('end', common.mustNotCall());
+ stream.on("end", common.mustNotCall());
 });
 
 server.listen(0, () => {

@@ -27,7 +27,7 @@ The `http2` module provides an implementation of the [HTTP/2][] protocol. It
 can be accessed using:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 ```
 
 ## Determining if crypto support is unavailable
@@ -41,9 +41,9 @@ When using CommonJS, the error thrown can be caught using try/catch:
 ```cjs
 let http2;
 try {
- http2 = require('http2');
+ http2 = require("http2");
 } catch (err) {
- console.log('http2 support is disabled!');
+ console.log("http2 support is disabled!");
 }
 ```
 
@@ -59,9 +59,9 @@ of Node.js where crypto support is not enabled, consider using the
 ```mjs
 let http2;
 try {
- http2 = await import('http2');
+ http2 = await import("http2");
 } catch (err) {
- console.log('http2 support is disabled!');
+ console.log("http2 support is disabled!");
 }
 ```
 
@@ -85,22 +85,22 @@ Since there are no browsers known that support
 with browser clients.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require("http2");
+const fs = require("fs");
 
 const server = http2.createSecureServer({
- key: fs.readFileSync('localhost-privkey.pem'),
- cert: fs.readFileSync('localhost-cert.pem'),
+ key: fs.readFileSync("localhost-privkey.pem"),
+ cert: fs.readFileSync("localhost-cert.pem"),
 });
-server.on('error', (err) => console.error(err));
+server.on("error", (err) => console.error(err));
 
-server.on('stream', (stream, headers) => {
+server.on("stream", (stream, headers) => {
  // stream is a Duplex
  stream.respond({
-  'content-type': 'text/html; charset=utf-8',
-  ':status': 200,
+  "content-type": "text/html; charset=utf-8",
+  ":status": 200,
  });
- stream.end('<h1>Hello World</h1>');
+ stream.end("<h1>Hello World</h1>");
 });
 
 server.listen(8443);
@@ -118,25 +118,25 @@ openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' \
 The following illustrates an HTTP/2 client:
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
-const client = http2.connect('https://localhost:8443', {
- ca: fs.readFileSync('localhost-cert.pem'),
+const http2 = require("http2");
+const fs = require("fs");
+const client = http2.connect("https://localhost:8443", {
+ ca: fs.readFileSync("localhost-cert.pem"),
 });
-client.on('error', (err) => console.error(err));
+client.on("error", (err) => console.error(err));
 
-const req = client.request({ ':path': '/' });
+const req = client.request({ ":path": "/" });
 
-req.on('response', (headers, flags) => {
+req.on("response", (headers, flags) => {
  for (const name in headers) {
   console.log(`${name}: ${headers[name]}`);
  }
 });
 
-req.setEncoding('utf8');
-let data = '';
-req.on('data', (chunk) => { data += chunk; });
-req.on('end', () => {
+req.setEncoding("utf8");
+let data = "";
+req.on("data", (chunk) => { data += chunk; });
+req.on("end", () => {
  console.log(`\n${data}`);
  client.close();
 });
@@ -272,7 +272,7 @@ settings do not take effect until the `'localSettings'` event is emitted.
 ```js
 session.settings({ enablePush: false });
 
-session.on('localSettings', (settings) => {
+session.on("localSettings", (settings) => {
  /* Use the new settings */
 });
 ```
@@ -300,7 +300,7 @@ The `'remoteSettings'` event is emitted when a new `SETTINGS` frame is received
 from the connected peer.
 
 ```js
-session.on('remoteSettings', (settings) => {
+session.on("remoteSettings", (settings) => {
  /* Use the new settings */
 });
 ```
@@ -320,17 +320,17 @@ added: v8.4.0
 The `'stream'` event is emitted when a new `Http2Stream` is created.
 
 ```js
-const http2 = require('http2');
-session.on('stream', (stream, headers, flags) => {
- const method = headers[':method'];
- const path = headers[':path'];
+const http2 = require("http2");
+session.on("stream", (stream, headers, flags) => {
+ const method = headers[":method"];
+ const path = headers[":path"];
  // ...
  stream.respond({
-  ':status': 200,
-  'content-type': 'text/plain; charset=utf-8',
+  ":status": 200,
+  "content-type": "text/plain; charset=utf-8",
  });
- stream.write('hello ');
- stream.end('world');
+ stream.write("hello ");
+ stream.end("world");
 });
 ```
 
@@ -340,18 +340,18 @@ and would instead register a handler for the `'stream'` event emitted by the
 `http2.createSecureServer()`, respectively, as in the example below:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
 // Create an unencrypted HTTP/2 server
 const server = http2.createServer();
 
-server.on('stream', (stream, headers) => {
+server.on("stream", (stream, headers) => {
  stream.respond({
-  'content-type': 'text/html; charset=utf-8',
-  ':status': 200,
+  "content-type": "text/html; charset=utf-8",
+  ":status": 200,
  });
- stream.on('error', (error) => console.error(error));
- stream.end('<h1>Hello World</h1>');
+ stream.on("error", (error) => console.error(error));
+ stream.end("<h1>Hello World</h1>");
 });
 
 server.listen(80);
@@ -374,7 +374,7 @@ Its listener does not expect any arguments.
 
 ```js
 session.setTimeout(2000);
-session.on('timeout', () => { /* .. */ });
+session.on("timeout", () => { /* .. */ });
 ```
 
 #### `http2session.alpnProtocol`
@@ -561,7 +561,7 @@ acknowledgment was received, and a `Buffer` containing the 8-byte `PING`
 payload.
 
 ```js
-session.ping(Buffer.from('abcdefgh'), (err, duration, payload) => {
+session.ping(Buffer.from("abcdefgh"), (err, duration, payload) => {
  if (!err) {
   console.log(`Ping acknowledged in ${duration} milliseconds`);
   console.log(`With payload '${payload.toString()}'`);
@@ -607,11 +607,11 @@ The `windowSize` is the total window size to set, not
 the delta.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
 const server = http2.createServer();
 const expectedWindowSize = 2 ** 20;
-server.on('connect', (session) => {
+server.on("connect", (session) => {
 
  // Set local window size to be 2 ** 20
  session.setLocalWindowSize(expectedWindowSize);
@@ -763,15 +763,15 @@ added: v9.4.0
 Submits an `ALTSVC` frame (as defined by [RFC 7838][]) to the connected client.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
 const server = http2.createServer();
-server.on('session', (session) => {
+server.on("session", (session) => {
  // Set altsvc for origin https://example.org:80
- session.altsvc('h2=":8000"', 'https://example.org:80');
+ session.altsvc('h2=":8000"', "https://example.org:80");
 });
 
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  // Set altsvc for a specific stream
  stream.session.altsvc('h2=":8000"', stream.id);
 });
@@ -829,15 +829,15 @@ to advertise the set of origins for which the server is capable of providing
 authoritative responses.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const options = getSecureOptionsSomehow();
 const server = http2.createSecureServer(options);
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  stream.respond();
- stream.end('ok');
+ stream.end("ok");
 });
-server.on('session', (session) => {
- session.origin('https://example.com', 'https://example.org');
+server.on("session", (session) => {
+ session.origin("https://example.com", "https://example.org");
 });
 ```
 
@@ -856,13 +856,13 @@ Alternatively, the `origins` option may be used when creating a new HTTP/2
 server using the `http2.createSecureServer()` method:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const options = getSecureOptionsSomehow();
-options.origins = ['https://example.com', 'https://example.org'];
+options.origins = ["https://example.com", "https://example.org"];
 const server = http2.createSecureServer(options);
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  stream.respond();
- stream.end('ok');
+ stream.end("ok");
 });
 ```
 
@@ -890,10 +890,10 @@ ID. If no `origin` is provided in the `ALTSVC` frame, `origin` will
 be an empty string.
 
 ```js
-const http2 = require('http2');
-const client = http2.connect('https://example.org');
+const http2 = require("http2");
+const client = http2.connect("https://example.org");
 
-client.on('altsvc', (alt, origin, streamId) => {
+client.on("altsvc", (alt, origin, streamId) => {
  console.log(alt);
  console.log(origin);
  console.log(streamId);
@@ -914,10 +914,10 @@ the client. The event is emitted with an array of `origin` strings. The
 origins.
 
 ```js
-const http2 = require('http2');
-const client = http2.connect('https://example.org');
+const http2 = require("http2");
+const client = http2.connect("https://example.org");
 
-client.on('origin', (origins) => {
+client.on("origin", (origins) => {
  for (let n = 0; n < origins.length; n++)
   console.log(origins[n]);
 });
@@ -967,18 +967,18 @@ This method is only available if `http2session.type` is equal to
 `http2.constants.NGHTTP2_SESSION_CLIENT`.
 
 ```js
-const http2 = require('http2');
-const clientSession = http2.connect('https://localhost:1234');
+const http2 = require("http2");
+const clientSession = http2.connect("https://localhost:1234");
 const {
  HTTP2_HEADER_PATH,
  HTTP2_HEADER_STATUS,
 } = http2.constants;
 
-const req = clientSession.request({ [HTTP2_HEADER_PATH]: '/' });
-req.on('response', (headers) => {
+const req = clientSession.request({ [HTTP2_HEADER_PATH]: "/" });
+req.on("response", (headers) => {
  console.log(headers[HTTP2_HEADER_STATUS]);
- req.on('data', (chunk) => { /* .. */ });
- req.on('end', () => { /* .. */ });
+ req.on("data", (chunk) => { /* .. */ });
+ req.on("end", () => { /* .. */ });
 });
 ```
 
@@ -1038,8 +1038,8 @@ encoding used.
 
 ```js
 stream.respond({
- 'content-type': 'text/html; charset=utf-8',
- ':status': 200,
+ "content-type": "text/html; charset=utf-8",
+ ":status": 200,
 });
 ```
 
@@ -1181,7 +1181,7 @@ before trailers are received and the incoming data is not being read or
 listened for.
 
 ```js
-stream.on('trailers', (headers, flags) => {
+stream.on("trailers", (headers, flags) => {
  console.log(headers);
 });
 ```
@@ -1388,10 +1388,10 @@ changes:
 * `callback` {Function}
 
 ```js
-const http2 = require('http2');
-const client = http2.connect('http://example.org:8000');
+const http2 = require("http2");
+const client = http2.connect("http://example.org:8000");
 const { NGHTTP2_CANCEL } = http2.constants;
-const req = client.request({ ':path': '/' });
+const req = client.request({ ":path": "/" });
 
 // Cancel the stream if there's no activity after 5 seconds
 req.setTimeout(5000, () => req.close(NGHTTP2_CANCEL));
@@ -1437,14 +1437,14 @@ in order to keep the `Http2Stream` open after the final `DATA` frame so that
 trailers can be sent.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  stream.respond(undefined, { waitForTrailers: true });
- stream.on('wantTrailers', () => {
-  stream.sendTrailers({ xyz: 'abc' });
+ stream.on("wantTrailers", () => {
+  stream.sendTrailers({ xyz: "abc" });
  });
- stream.end('Hello World');
+ stream.end("Hello World");
 });
 ```
 
@@ -1486,7 +1486,7 @@ The listener callback is passed the [HTTP/2 Headers Object][] and flags
 associated with the headers.
 
 ```js
-stream.on('headers', (headers, flags) => {
+stream.on("headers", (headers, flags) => {
  console.log(headers);
 });
 ```
@@ -1502,7 +1502,7 @@ are received. The listener callback is passed the [HTTP/2 Headers Object][] and
 flags associated with the headers.
 
 ```js
-stream.on('push', (headers, flags) => {
+stream.on("push", (headers, flags) => {
  console.log(headers);
 });
 ```
@@ -1519,11 +1519,11 @@ invoked with two arguments: an `Object` containing the received
 [HTTP/2 Headers Object][], and flags associated with the headers.
 
 ```js
-const http2 = require('http2');
-const client = http2.connect('https://localhost');
-const req = client.request({ ':path': '/' });
-req.on('response', (headers, flags) => {
- console.log(headers[':status']);
+const http2 = require("http2");
+const client = http2.connect("https://localhost");
+const req = client.request({ ":path": "/" });
+req.on("response", (headers, flags) => {
+ console.log(headers[":status"]);
 });
 ```
 
@@ -1605,16 +1605,16 @@ instance created for the push stream passed as the second argument, or an
 `Error` passed as the first argument.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
- stream.respond({ ':status': 200 });
- stream.pushStream({ ':path': '/' }, (err, pushStream, headers) => {
+server.on("stream", (stream) => {
+ stream.respond({ ":status": 200 });
+ stream.pushStream({ ":path": "/" }, (err, pushStream, headers) => {
   if (err) throw err;
-  pushStream.respond({ ':status': 200 });
-  pushStream.end('some pushed data');
+  pushStream.respond({ ":status": 200 });
+  pushStream.end("some pushed data");
  });
- stream.end('some data');
+ stream.end("some data");
 });
 ```
 
@@ -1645,11 +1645,11 @@ changes:
     `'wantTrailers'` event after the final `DATA` frame has been sent.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
- stream.respond({ ':status': 200 });
- stream.end('some data');
+server.on("stream", (stream) => {
+ stream.respond({ ":status": 200 });
+ stream.end("some data");
 });
 ```
 
@@ -1664,14 +1664,14 @@ close when the final `DATA` frame is transmitted. User code must call either
 `Http2Stream`.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
- stream.respond({ ':status': 200 }, { waitForTrailers: true });
- stream.on('wantTrailers', () => {
-  stream.sendTrailers({ ABC: 'some value to send' });
+server.on("stream", (stream) => {
+ stream.respond({ ":status": 200 }, { waitForTrailers: true });
+ stream.on("wantTrailers", () => {
+  stream.sendTrailers({ ABC: "some value to send" });
  });
- stream.end('some data');
+ stream.end("some data");
 });
 ```
 
@@ -1712,21 +1712,21 @@ When used, the `Http2Stream` object's `Duplex` interface will be closed
 automatically.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require("http2");
+const fs = require("fs");
 
 const server = http2.createServer();
-server.on('stream', (stream) => {
- const fd = fs.openSync('/some/file', 'r');
+server.on("stream", (stream) => {
+ const fd = fs.openSync("/some/file", "r");
 
  const stat = fs.fstatSync(fd);
  const headers = {
-  'content-length': stat.size,
-  'last-modified': stat.mtime.toUTCString(),
-  'content-type': 'text/plain; charset=utf-8',
+  "content-length": stat.size,
+  "last-modified": stat.mtime.toUTCString(),
+  "content-type": "text/plain; charset=utf-8",
  };
  stream.respondWithFD(fd, headers);
- stream.on('close', () => fs.closeSync(fd));
+ stream.on("close", () => fs.closeSync(fd));
 });
 ```
 
@@ -1757,25 +1757,25 @@ close when the final `DATA` frame is transmitted. User code _must_ call either
 `Http2Stream`.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require("http2");
+const fs = require("fs");
 
 const server = http2.createServer();
-server.on('stream', (stream) => {
- const fd = fs.openSync('/some/file', 'r');
+server.on("stream", (stream) => {
+ const fd = fs.openSync("/some/file", "r");
 
  const stat = fs.fstatSync(fd);
  const headers = {
-  'content-length': stat.size,
-  'last-modified': stat.mtime.toUTCString(),
-  'content-type': 'text/plain; charset=utf-8',
+  "content-length": stat.size,
+  "last-modified": stat.mtime.toUTCString(),
+  "content-type": "text/plain; charset=utf-8",
  };
  stream.respondWithFD(fd, headers, { waitForTrailers: true });
- stream.on('wantTrailers', () => {
-  stream.sendTrailers({ ABC: 'some value to send' });
+ stream.on("wantTrailers", () => {
+  stream.sendTrailers({ ABC: "some value to send" });
  });
 
- stream.on('close', () => fs.closeSync(fd));
+ stream.on("close", () => fs.closeSync(fd));
 });
 ```
 
@@ -1824,21 +1824,21 @@ the stream will be destroyed.
 Example using a file path:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  function statCheck(stat, headers) {
-  headers['last-modified'] = stat.mtime.toUTCString();
+  headers["last-modified"] = stat.mtime.toUTCString();
  }
 
  function onError(err) {
   // stream.respond() can throw if the stream has been destroyed by
   // the other side.
   try {
-   if (err.code === 'ENOENT') {
-    stream.respond({ ':status': 404 });
+   if (err.code === "ENOENT") {
+    stream.respond({ ":status": 404 });
    } else {
-    stream.respond({ ':status': 500 });
+    stream.respond({ ":status": 500 });
    }
   } catch (err) {
    // Perform actual error handling.
@@ -1847,8 +1847,8 @@ server.on('stream', (stream) => {
   stream.end();
  }
 
- stream.respondWithFile('/some/file',
-                        { 'content-type': 'text/plain; charset=utf-8' },
+ stream.respondWithFile("/some/file",
+                        { "content-type": "text/plain; charset=utf-8" },
                         { statCheck, onError });
 });
 ```
@@ -1859,16 +1859,16 @@ results to determine if the file has been modified to return an appropriate
 `304` response:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
+server.on("stream", (stream) => {
  function statCheck(stat, headers) {
   // Check the stat here...
-  stream.respond({ ':status': 304 });
+  stream.respond({ ":status": 304 });
   return false; // Cancel the send operation
  }
- stream.respondWithFile('/some/file',
-                        { 'content-type': 'text/plain; charset=utf-8' },
+ stream.respondWithFile("/some/file",
+                        { "content-type": "text/plain; charset=utf-8" },
                         { statCheck });
 });
 ```
@@ -1894,14 +1894,14 @@ close when the final `DATA` frame is transmitted. User code must call either
 `Http2Stream`.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream) => {
- stream.respondWithFile('/some/file',
-                        { 'content-type': 'text/plain; charset=utf-8' },
+server.on("stream", (stream) => {
+ stream.respondWithFile("/some/file",
+                        { "content-type": "text/plain; charset=utf-8" },
                         { waitForTrailers: true });
- stream.on('wantTrailers', () => {
-  stream.sendTrailers({ ABC: 'some value to send' });
+ stream.on("wantTrailers", () => {
+  stream.sendTrailers({ ABC: "some value to send" });
  });
 });
 ```
@@ -2004,7 +2004,7 @@ an `Http2Session` associated with the server.
 See also [`Http2Session`'s `'stream'` event][].
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const {
  HTTP2_HEADER_METHOD,
  HTTP2_HEADER_PATH,
@@ -2013,16 +2013,16 @@ const {
 } = http2.constants;
 
 const server = http2.createServer();
-server.on('stream', (stream, headers, flags) => {
+server.on("stream", (stream, headers, flags) => {
  const method = headers[HTTP2_HEADER_METHOD];
  const path = headers[HTTP2_HEADER_PATH];
  // ...
  stream.respond({
   [HTTP2_HEADER_STATUS]: 200,
-  [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain; charset=utf-8',
+  [HTTP2_HEADER_CONTENT_TYPE]: "text/plain; charset=utf-8",
  });
- stream.write('hello ');
- stream.end('world');
+ stream.write("hello ");
+ stream.end("world");
 });
 ```
 
@@ -2219,7 +2219,7 @@ an `Http2Session` associated with the server.
 See also [`Http2Session`'s `'stream'` event][].
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const {
  HTTP2_HEADER_METHOD,
  HTTP2_HEADER_PATH,
@@ -2230,16 +2230,16 @@ const {
 const options = getOptionsSomehow();
 
 const server = http2.createSecureServer(options);
-server.on('stream', (stream, headers, flags) => {
+server.on("stream", (stream, headers, flags) => {
  const method = headers[HTTP2_HEADER_METHOD];
  const path = headers[HTTP2_HEADER_PATH];
  // ...
  stream.respond({
   [HTTP2_HEADER_STATUS]: 200,
-  [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain; charset=utf-8',
+  [HTTP2_HEADER_CONTENT_TYPE]: "text/plain; charset=utf-8",
  });
- stream.write('hello ');
- stream.end('world');
+ stream.write("hello ");
+ stream.end("world");
 });
 ```
 
@@ -2482,7 +2482,7 @@ Since there are no browsers known that support
 with browser clients.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
 // Create an unencrypted HTTP/2 server.
 // Since there are no browsers known that support
@@ -2490,12 +2490,12 @@ const http2 = require('http2');
 // is necessary when communicating with browser clients.
 const server = http2.createServer();
 
-server.on('stream', (stream, headers) => {
+server.on("stream", (stream, headers) => {
  stream.respond({
-  'content-type': 'text/html; charset=utf-8',
-  ':status': 200,
+  "content-type": "text/html; charset=utf-8",
+  ":status": 200,
  });
- stream.end('<h1>Hello World</h1>');
+ stream.end("<h1>Hello World</h1>");
 });
 
 server.listen(80);
@@ -2620,23 +2620,23 @@ Returns a `tls.Server` instance that creates and manages `Http2Session`
 instances.
 
 ```js
-const http2 = require('http2');
-const fs = require('fs');
+const http2 = require("http2");
+const fs = require("fs");
 
 const options = {
- key: fs.readFileSync('server-key.pem'),
- cert: fs.readFileSync('server-cert.pem'),
+ key: fs.readFileSync("server-key.pem"),
+ cert: fs.readFileSync("server-cert.pem"),
 };
 
 // Create a secure HTTP/2 server
 const server = http2.createSecureServer(options);
 
-server.on('stream', (stream, headers) => {
+server.on("stream", (stream, headers) => {
  stream.respond({
-  'content-type': 'text/html; charset=utf-8',
-  ':status': 200,
+  "content-type": "text/html; charset=utf-8",
+  ":status": 200,
  });
- stream.end('<h1>Hello World</h1>');
+ stream.end("<h1>Hello World</h1>");
 });
 
 server.listen(80);
@@ -2748,8 +2748,8 @@ changes:
 Returns a `ClientHttp2Session` instance.
 
 ```js
-const http2 = require('http2');
-const client = http2.connect('https://localhost:1234');
+const http2 = require("http2");
+const client = http2.connect("https://localhost:1234");
 
 /* Use the client */
 
@@ -2810,11 +2810,11 @@ HTTP/2 settings as specified in the [HTTP/2][] specification. This is intended
 for use with the `HTTP2-Settings` header field.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
 const packed = http2.getPackedSettings({ enablePush: false });
 
-console.log(packed.toString('base64'));
+console.log(packed.toString("base64"));
 // Prints: AAIAAAAA
 ```
 
@@ -2853,9 +2853,9 @@ to send more than one value per header field).
 
 ```js
 const headers = {
- ':status': '200',
- 'content-type': 'text-plain',
- 'ABC': ['has', 'more', 'than', 'one', 'value'],
+ ":status": "200",
+ "content-type": "text-plain",
+ "ABC": ["has", "more", "than", "one", "value"],
 };
 
 stream.respond(headers);
@@ -2884,10 +2884,10 @@ For incoming headers:
 * For all other headers, the values are joined together with ', '.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer();
-server.on('stream', (stream, headers) => {
- console.log(headers[':path']);
+server.on("stream", (stream, headers) => {
+ console.log(headers[":path"]);
  console.log(headers.ABC);
 });
 ```
@@ -2902,11 +2902,11 @@ the header name to the `[http2.sensitiveHeaders]` property as an array:
 
 ```js
 const headers = {
- ':status': '200',
- 'content-type': 'text-plain',
- 'cookie': 'some-cookie',
- 'other-sensitive-header': 'very secret data',
- [http2.sensitiveHeaders]: ['cookie', 'other-sensitive-header'],
+ ":status": "200",
+ "content-type": "text-plain",
+ "cookie": "some-cookie",
+ "other-sensitive-header": "very secret data",
+ [http2.sensitiveHeaders]: ["cookie", "other-sensitive-header"],
 };
 
 stream.respond(headers);
@@ -3017,18 +3017,18 @@ To receive pushed streams on the client, set a listener for the `'stream'`
 event on the `ClientHttp2Session`:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
-const client = http2.connect('http://localhost');
+const client = http2.connect("http://localhost");
 
-client.on('stream', (pushedStream, requestHeaders) => {
- pushedStream.on('push', (responseHeaders) => {
+client.on("stream", (pushedStream, requestHeaders) => {
+ pushedStream.on("push", (responseHeaders) => {
   // Process response headers
  });
- pushedStream.on('data', (chunk) => { /* handle pushed data */ });
+ pushedStream.on("data", (chunk) => { /* handle pushed data */ });
 });
 
-const req = client.request({ ':path': '/' });
+const req = client.request({ ":path": "/" });
 ```
 
 ### Supporting the `CONNECT` method
@@ -3039,13 +3039,13 @@ for TCP/IP connections.
 A simple TCP Server:
 
 ```js
-const net = require('net');
+const net = require("net");
 
 const server = net.createServer((socket) => {
- let name = '';
- socket.setEncoding('utf8');
- socket.on('data', (chunk) => name += chunk);
- socket.on('end', () => socket.end(`hello ${name}`));
+ let name = "";
+ socket.setEncoding("utf8");
+ socket.on("data", (chunk) => name += chunk);
+ socket.on("end", () => socket.end(`hello ${name}`));
 });
 
 server.listen(8000);
@@ -3054,18 +3054,18 @@ server.listen(8000);
 An HTTP/2 CONNECT proxy:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const { NGHTTP2_REFUSED_STREAM } = http2.constants;
-const net = require('net');
+const net = require("net");
 
 const proxy = http2.createServer();
-proxy.on('stream', (stream, headers) => {
- if (headers[':method'] !== 'CONNECT') {
+proxy.on("stream", (stream, headers) => {
+ if (headers[":method"] !== "CONNECT") {
   // Only accept CONNECT requests
   stream.close(NGHTTP2_REFUSED_STREAM);
   return;
  }
- const auth = new URL(`tcp://${headers[':authority']}`);
+ const auth = new URL(`tcp://${headers[":authority"]}`);
  // It's a very good idea to verify that hostname and port are
  // things this proxy should be connecting to.
  const socket = net.connect(auth.port, auth.hostname, () => {
@@ -3073,7 +3073,7 @@ proxy.on('stream', (stream, headers) => {
   socket.pipe(stream);
   stream.pipe(socket);
  });
- socket.on('error', (error) => {
+ socket.on("error", (error) => {
   stream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
  });
 });
@@ -3084,28 +3084,28 @@ proxy.listen(8001);
 An HTTP/2 CONNECT client:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 
-const client = http2.connect('http://localhost:8001');
+const client = http2.connect("http://localhost:8001");
 
 // Must not specify the ':path' and ':scheme' headers
 // for CONNECT requests or an error will be thrown.
 const req = client.request({
- ':method': 'CONNECT',
- ':authority': `localhost:${port}`,
+ ":method": "CONNECT",
+ ":authority": `localhost:${port}`,
 });
 
-req.on('response', (headers) => {
+req.on("response", (headers) => {
  console.log(headers[http2.constants.HTTP2_HEADER_STATUS]);
 });
-let data = '';
-req.setEncoding('utf8');
-req.on('data', (chunk) => data += chunk);
-req.on('end', () => {
+let data = "";
+req.setEncoding("utf8");
+req.on("data", (chunk) => data += chunk);
+req.on("end", () => {
  console.log(`The server says: ${data}`);
  client.close();
 });
-req.end('Jane');
+req.end("Jane");
 ```
 
 ### The extended `CONNECT` protocol
@@ -3118,7 +3118,7 @@ The use of the Extended CONNECT Protocol is enabled by HTTP/2 servers by using
 the `enableConnectProtocol` setting:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const settings = { enableConnectProtocol: true };
 const server = http2.createServer({ settings });
 ```
@@ -3128,11 +3128,11 @@ the extended CONNECT may be used, it may send `CONNECT` requests that use the
 `':protocol'` HTTP/2 pseudo-header:
 
 ```js
-const http2 = require('http2');
-const client = http2.connect('http://localhost:8080');
-client.on('remoteSettings', (settings) => {
+const http2 = require("http2");
+const client = http2.connect("http://localhost:8080");
+client.on("remoteSettings", (settings) => {
  if (settings.enableConnectProtocol) {
-  const req = client.request({ ':method': 'CONNECT', ':protocol': 'foo' });
+  const req = client.request({ ":method": "CONNECT", ":protocol": "foo" });
   // ...
  }
 });
@@ -3151,12 +3151,12 @@ The following example creates an HTTP/2 server using the compatibility
 API:
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer((req, res) => {
- res.setHeader('Content-Type', 'text/html');
- res.setHeader('X-Foo', 'bar');
- res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
- res.end('ok');
+ res.setHeader("Content-Type", "text/html");
+ res.setHeader("X-Foo", "bar");
+ res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+ res.end("ok");
 });
 ```
 
@@ -3180,11 +3180,11 @@ features of HTTP/2.
 The following example creates a server that supports both protocols:
 
 ```js
-const { createSecureServer } = require('http2');
-const { readFileSync } = require('fs');
+const { createSecureServer } = require("http2");
+const { readFileSync } = require("fs");
 
-const cert = readFileSync('./cert.pem');
-const key = readFileSync('./key.pem');
+const cert = readFileSync("./cert.pem");
+const key = readFileSync("./key.pem");
 
 const server = createSecureServer(
  { cert, key, allowHTTP1: true },
@@ -3193,9 +3193,9 @@ const server = createSecureServer(
 
 function onRequest(req, res) {
  // Detects if it is a HTTPS request or HTTP/2
- const { socket: { alpnProtocol } } = req.httpVersion === '2.0' ?
+ const { socket: { alpnProtocol } } = req.httpVersion === "2.0" ?
   req.stream.session : req;
- res.writeHead(200, { 'content-type': 'application/json' });
+ res.writeHead(200, { "content-type": "application/json" });
  res.end(JSON.stringify({
   alpnProtocol,
   httpVersion: req.httpVersion,
@@ -3500,7 +3500,7 @@ Then `request.url` will be:
 <!-- eslint-disable semi -->
 
 ```js
-'/status?name=ryan'
+"/status?name=ryan"
 ```
 
 To parse the url into its parts, `new URL()` can be used:
@@ -3664,7 +3664,7 @@ Reads out a header that has already been queued but not sent to the client.
 The name is case-insensitive.
 
 ```js
-const contentType = response.getHeader('content-type');
+const contentType = response.getHeader("content-type");
 ```
 
 #### `response.getHeaderNames()`
@@ -3679,8 +3679,8 @@ Returns an array containing the unique names of the current outgoing headers.
 All header names are lowercase.
 
 ```js
-response.setHeader('Foo', 'bar');
-response.setHeader('Set-Cookie', ['foo=bar', 'bar=baz']);
+response.setHeader("Foo", "bar");
+response.setHeader("Set-Cookie", ["foo=bar", "bar=baz"]);
 
 const headerNames = response.getHeaderNames();
 // headerNames === ['foo', 'set-cookie']
@@ -3706,8 +3706,8 @@ prototypically inherit from the JavaScript `Object`. This means that typical
 are not defined and _will not work_.
 
 ```js
-response.setHeader('Foo', 'bar');
-response.setHeader('Set-Cookie', ['foo=bar', 'bar=baz']);
+response.setHeader("Foo", "bar");
+response.setHeader("Set-Cookie", ["foo=bar", "bar=baz"]);
 
 const headers = response.getHeaders();
 // headers === { foo: 'bar', 'set-cookie': ['foo=bar', 'bar=baz'] }
@@ -3726,7 +3726,7 @@ Returns `true` if the header identified by `name` is currently set in the
 outgoing headers. The header name matching is case-insensitive.
 
 ```js
-const hasContentType = response.hasHeader('content-type');
+const hasContentType = response.hasHeader("content-type");
 ```
 
 #### `response.headersSent`
@@ -3750,7 +3750,7 @@ added: v8.4.0
 Removes a header that has been queued for implicit sending.
 
 ```js
-response.removeHeader('Content-Encoding');
+response.removeHeader("Content-Encoding");
 ```
 
 ### `response.req`
@@ -3791,13 +3791,13 @@ in the to-be-sent headers, its value will be replaced. Use an array of strings
 here to send multiple headers with the same name.
 
 ```js
-response.setHeader('Content-Type', 'text/html; charset=utf-8');
+response.setHeader("Content-Type", "text/html; charset=utf-8");
 ```
 
 or
 
 ```js
-response.setHeader('Set-Cookie', ['type=ninja', 'language=javascript']);
+response.setHeader("Set-Cookie", ["type=ninja", "language=javascript"]);
 ```
 
 Attempting to set a header field name or value that contains invalid characters
@@ -3810,10 +3810,10 @@ to [`response.writeHead()`][] given precedence.
 ```js
 // Returns content-type = text/plain
 const server = http2.createServer((req, res) => {
- res.setHeader('Content-Type', 'text/html; charset=utf-8');
- res.setHeader('X-Foo', 'bar');
- res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
- res.end('ok');
+ res.setHeader("Content-Type", "text/html; charset=utf-8");
+ res.setHeader("X-Foo", "bar");
+ res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+ res.end("ok");
 });
 ```
 
@@ -3862,7 +3862,7 @@ more information.
 All other interactions will be routed directly to the socket.
 
 ```js
-const http2 = require('http2');
+const http2 = require("http2");
 const server = http2.createServer((req, res) => {
  const ip = req.socket.remoteAddress;
  const port = req.socket.remotePort;
@@ -4000,10 +4000,10 @@ meaning within HTTP/2, the argument will have no effect and a process warning
 will be emitted.
 
 ```js
-const body = 'hello world';
+const body = "hello world";
 response.writeHead(200, {
- 'Content-Length': Buffer.byteLength(body),
- 'Content-Type': 'text/plain; charset=utf-8',
+ "Content-Length": Buffer.byteLength(body),
+ "Content-Type": "text/plain; charset=utf-8",
 });
 ```
 
@@ -4027,10 +4027,10 @@ to [`response.writeHead()`][] given precedence.
 ```js
 // Returns content-type = text/plain
 const server = http2.createServer((req, res) => {
- res.setHeader('Content-Type', 'text/html; charset=utf-8');
- res.setHeader('X-Foo', 'bar');
- res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
- res.end('ok');
+ res.setHeader("Content-Type", "text/html; charset=utf-8");
+ res.setHeader("X-Foo", "bar");
+ res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+ res.end("ok");
 });
 ```
 
@@ -4043,18 +4043,18 @@ The [Performance Observer][] API can be used to collect basic performance
 metrics for each `Http2Session` and `Http2Stream` instance.
 
 ```js
-const { PerformanceObserver } = require('perf_hooks');
+const { PerformanceObserver } = require("perf_hooks");
 
 const obs = new PerformanceObserver((items) => {
  const entry = items.getEntries()[0];
  console.log(entry.entryType);  // prints 'http2'
- if (entry.name === 'Http2Session') {
+ if (entry.name === "Http2Session") {
   // Entry contains statistics about the Http2Session
- } else if (entry.name === 'Http2Stream') {
+ } else if (entry.name === "Http2Stream") {
   // Entry contains statistics about the Http2Stream
  }
 });
-obs.observe({ entryTypes: ['http2'] });
+obs.observe({ entryTypes: ["http2"] });
 ```
 
 The `entryType` property of the `PerformanceEntry` will be equal to `'http2'`.

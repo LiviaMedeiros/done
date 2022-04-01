@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 {
- const s = fs.createWriteStream(path.join(tmpdir.path, 'rw'));
+ const s = fs.createWriteStream(path.join(tmpdir.path, "rw"));
 
  s.close(common.mustCall());
  s.close(common.mustCall());
 }
 
 {
- const s = fs.createWriteStream(path.join(tmpdir.path, 'rw2'));
+ const s = fs.createWriteStream(path.join(tmpdir.path, "rw2"));
 
  let emits = 0;
- s.on('close', () => {
+ s.on("close", () => {
   emits++;
  });
 
@@ -37,7 +37,7 @@ tmpdir.refresh();
 }
 
 {
- const s = fs.createWriteStream(path.join(tmpdir.path, 'rw'), {
+ const s = fs.createWriteStream(path.join(tmpdir.path, "rw"), {
   autoClose: false,
  });
 

@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const { Worker } = require('worker_threads');
+"use strict";
+const common = require("../common");
+const { Worker } = require("worker_threads");
 
 // This used to crash because the `.unref()` was unexpected while the Worker
 // was exiting.
@@ -8,7 +8,7 @@ const { Worker } = require('worker_threads');
 const w = new Worker(`
 require('worker_threads').parentPort.postMessage({});
 `, { eval: true });
-w.on('message', common.mustCall(() => {
+w.on("message", common.mustCall(() => {
  w.unref();
 }));
 

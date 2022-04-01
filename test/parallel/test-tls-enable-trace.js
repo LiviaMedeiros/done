@@ -1,28 +1,28 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-if (!common.hasCrypto) common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+if (!common.hasCrypto) common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
 
 // Test enableTrace: option for TLS.
 
-const assert = require('assert');
-const { fork } = require('child_process');
+const assert = require("assert");
+const { fork } = require("child_process");
 
-if (process.argv[2] === 'test')
+if (process.argv[2] === "test")
  return test();
 
-const binding = require('internal/test/binding').internalBinding;
+const binding = require("internal/test/binding").internalBinding;
 
-if (!binding('tls_wrap').HAVE_SSL_TRACE)
- return common.skip('no SSL_trace() compiled into openssl');
+if (!binding("tls_wrap").HAVE_SSL_TRACE)
+ return common.skip("no SSL_trace() compiled into openssl");
 
-const child = fork(__filename, ['test'], { silent: true });
+const child = fork(__filename, ["test"], { silent: true });
 
-let stderr = '';
-child.stderr.setEncoding('utf8');
-child.stderr.on('data', (data) => stderr += data);
-child.on('close', common.mustCall(() => {
+let stderr = "";
+child.stderr.setEncoding("utf8");
+child.stderr.on("data", (data) => stderr += data);
+child.on("close", common.mustCall(() => {
  assert.match(stderr, /Received Record/);
  assert.match(stderr, /ClientHello/);
 }));
@@ -31,14 +31,14 @@ child.on('close', common.mustCall(() => {
 child.stderr.pipe(process.stderr);
 child.stdout.pipe(process.stdout);
 
-child.on('exit', common.mustCall((code) => {
+child.on("exit", common.mustCall((code) => {
  assert.strictEqual(code, 0);
 }));
 
 function test() {
  const {
   connect, keys,
- } = require(fixtures.path('tls-connect'));
+ } = require(fixtures.path("tls-connect"));
 
  connect({
   client: {

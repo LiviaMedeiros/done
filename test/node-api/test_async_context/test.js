@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 // Flags: --gc-interval=100 --gc-global
 
-const common = require('../../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const {
  makeCallback,
  createAsyncResource,
@@ -19,7 +19,7 @@ const hook_result = {
 
 const test_hook = async_hooks.createHook({
  init: (id, type, triggerAsyncId, resource) => {
-  if (type === 'test_async') {
+  if (type === "test_async") {
    hook_result.id = id;
    hook_result.init_called = true;
    hook_result.resource = resource;

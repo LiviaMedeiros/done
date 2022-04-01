@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
 // Tests below are not from WPT.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasIntl) {
  // A handful of the tests fail when ICU is not included.
- common.skip('missing Intl');
+ common.skip("missing Intl");
 }
 
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
 
 const tests = require(
- fixtures.path('wpt', 'url', 'resources', 'urltestdata.json'),
+ fixtures.path("wpt", "url", "resources", "urltestdata.json"),
 );
 
 const originalFailures = tests.filter((test) => test.failure);
 
 const typeFailures = [
- { input: '' },
- { input: 'test' },
+ { input: "" },
+ { input: "test" },
  { input: undefined },
  { input: 0 },
  { input: true },
@@ -27,8 +27,8 @@ const typeFailures = [
  { input: null },
  { input: new Date() },
  { input: new RegExp() },
- { input: 'test', base: null },
- { input: 'http://nodejs.org', base: null },
+ { input: "test", base: null },
+ { input: "http://nodejs.org", base: null },
  { input: () => {} },
 ];
 
@@ -39,7 +39,7 @@ const typeFailures = [
 // > algorithm if the base URL cannot be parsed.
 const aboutBlankFailures = originalFailures
   .map((test) => ({
-  	input: 'about:blank',
+  	input: "about:blank",
   	base: test.input,
   	failure: true,
   }));
@@ -48,21 +48,21 @@ const failureTests = originalFailures
   .concat(typeFailures)
   .concat(aboutBlankFailures);
 
-const expectedError = { code: 'ERR_INVALID_URL', name: 'TypeError' };
+const expectedError = { code: "ERR_INVALID_URL", name: "TypeError" };
 
 for (const test of failureTests) {
  assert.throws(
   () => new URL(test.input, test.base),
   (error) => {
    assert.throws(() => { throw error; }, expectedError);
-   assert.strictEqual(`${error}`, 'TypeError [ERR_INVALID_URL]: Invalid URL');
-   assert.strictEqual(error.message, 'Invalid URL');
+   assert.strictEqual(`${error}`, "TypeError [ERR_INVALID_URL]: Invalid URL");
+   assert.strictEqual(error.message, "Invalid URL");
    return true;
   });
 }
 
 const additional_tests =
-  require(fixtures.path('url-tests-additional.js'));
+  require(fixtures.path("url-tests-additional.js"));
 
 for (const test of additional_tests) {
  const url = new URL(test.url);

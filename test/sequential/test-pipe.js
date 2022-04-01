@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
 
 const webPort = common.PORT;
 const tcpPort = webPort + 1;
@@ -47,17 +47,17 @@ const web = http.Server(common.mustCall((req, res) => {
  const socket = net.Stream();
  socket.connect(tcpPort);
 
- socket.on('connect', common.mustCall());
+ socket.on("connect", common.mustCall());
 
  req.pipe(socket);
 
- req.on('end', common.mustCall(() => {
+ req.on("end", common.mustCall(() => {
   res.writeHead(200);
-  res.write('thanks');
+  res.write("thanks");
   res.end();
  }));
 
- req.connection.on('error', (e) => {
+ req.connection.on("error", (e) => {
   assert.ifError(e);
  });
 }));
@@ -70,7 +70,7 @@ const tcp = net.Server(common.mustCall((s) => {
 
  let i = 0;
 
- s.on('data', (d) => {
+ s.on("data", (d) => {
   tcpLengthSeen += d.length;
   for (let j = 0; j < d.length; j++) {
    assert.strictEqual(d[j], buffer[i]);
@@ -78,11 +78,11 @@ const tcp = net.Server(common.mustCall((s) => {
   }
  });
 
- s.on('end', common.mustCall(() => {
+ s.on("end", common.mustCall(() => {
   s.end();
  }));
 
- s.on('error', (e) => {
+ s.on("error", (e) => {
   assert.ifError(e);
  });
 }));
@@ -95,13 +95,13 @@ function startClient() {
 
  const req = http.request({
   port: common.PORT,
-  method: 'GET',
-  path: '/',
-  headers: { 'content-length': buffer.length },
+  method: "GET",
+  path: "/",
+  headers: { "content-length": buffer.length },
  }, common.mustCall((res) => {
-  res.setEncoding('utf8');
-  res.on('data', common.mustCall((string) => {
-   assert.strictEqual(string, 'thanks');
+  res.setEncoding("utf8");
+  res.on("data", common.mustCall((string) => {
+   assert.strictEqual(string, "thanks");
    gotThanks = true;
   }));
  }));
@@ -109,7 +109,7 @@ function startClient() {
  req.end();
 }
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.ok(gotThanks);
  assert.strictEqual(tcpLengthSeen, bufferSize);
 });

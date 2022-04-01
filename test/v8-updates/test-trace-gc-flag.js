@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
 // This test verifies that `--trace-gc` flag is well integrated.
 // We'll check here, that the console outputs gc events properly.
-require('../common');
+require("../common");
 
-const assert = require('assert');
-const { spawnSync } = require('child_process');
+const assert = require("assert");
+const { spawnSync } = require("child_process");
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
 {
  const childProcess = spawnSync(process.execPath, [
-  '--trace-gc',
-  '--expose-gc',
-  fixtures.path('gc.js'),
+  "--trace-gc",
+  "--expose-gc",
+  fixtures.path("gc.js"),
  ]);
  const output = childProcess.stdout.toString().trim();
  const lines = splitByLine(output);

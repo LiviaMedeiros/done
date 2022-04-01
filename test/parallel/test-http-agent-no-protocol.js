@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const http = require('http');
-const url = require('url');
+"use strict";
+const common = require("../common");
+const http = require("http");
+const url = require("url");
 
 const server = http.createServer(common.mustCall((req, res) => {
  res.end();
-})).listen(0, '127.0.0.1', common.mustCall(() => {
+})).listen(0, "127.0.0.1", common.mustCall(() => {
  const opts = url.parse(`http://127.0.0.1:${server.address().port}/`);
 
  // Remove the `protocol` field… the `http` module should fall back

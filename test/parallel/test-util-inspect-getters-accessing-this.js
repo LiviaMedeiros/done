@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
 // This test ensures that util.inspect logs getters
 // which access this.
 
-const assert = require('assert');
+const assert = require("assert");
 
-const { inspect } = require('util');
+const { inspect } = require("util");
 
 {
  class X {
@@ -27,7 +27,7 @@ const { inspect } = require('util');
 
  assert.strictEqual(
   result,
-  'X { _y: 123, [y]: [Getter: 123] }',
+  "X { _y: 123, [y]: [Getter: 123] }",
  );
 }
 
@@ -59,9 +59,9 @@ const { inspect } = require('util');
 
  assert.strictEqual(
   result,
-  '<ref *1> B {\n' +
-    '  A: A { B: [Circular *1], [b]: [Getter] [Circular *1] },\n' +
-    '  [a]: [Getter] A { B: [Circular *1], [b]: [Getter] [Circular *1] }\n' +
-    '}',
+  "<ref *1> B {\n" +
+    "  A: A { B: [Circular *1], [b]: [Getter] [Circular *1] },\n" +
+    "  [a]: [Getter] A { B: [Circular *1], [b]: [Getter] [Circular *1] }\n" +
+    "}",
  );
 }

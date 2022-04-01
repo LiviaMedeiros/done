@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const { promisify } = require('util');
-const { readFile } = require('fs');
+const { promisify } = require("util");
+const { readFile } = require("fs");
 const sleep = promisify(setTimeout);
 const read = promisify(readFile);
-const common = require('../common.js');
+const common = require("../common.js");
 const {
  createHook,
  executionAsyncResource,
  executionAsyncId,
  AsyncLocalStorage,
-} = require('async_hooks');
-const { createServer } = require('http');
+} = require("async_hooks");
+const { createServer } = require("http");
 
 const bench = common.createBenchmark(main, {
- type: ['async-resource', 'destroy', 'async-local-storage'],
- asyncMethod: ['callbacks', 'async'],
- path: '/',
+ type: ["async-resource", "destroy", "async-local-storage"],
+ asyncMethod: ["callbacks", "async"],
+ path: "/",
  connections: 500,
  duration: 5,
  n: [1e6],
@@ -25,7 +25,7 @@ const bench = common.createBenchmark(main, {
 function buildCurrentResource(getServe) {
  const server = createServer(getServe(getCLS, setCLS));
  const hook = createHook({ init });
- const cls = Symbol('cls');
+ const cls = Symbol("cls");
  hook.enable();
 
  return {
@@ -139,7 +139,7 @@ function getServeAwait(getCLS, setCLS) {
   await sleep(10);
   await read(__filename);
   if (res.destroyed) return;
-  res.setHeader('content-type', 'application/json');
+  res.setHeader("content-type", "application/json");
   res.end(JSON.stringify({ cls: getCLS() }));
  };
 }
@@ -150,7 +150,7 @@ function getServeCallbacks(getCLS, setCLS) {
   setTimeout(() => {
    readFile(__filename, () => {
     if (res.destroyed) return;
-    res.setHeader('content-type', 'application/json');
+    res.setHeader("content-type", "application/json");
     res.end(JSON.stringify({ cls: getCLS() }));
    });
   }, 10);
@@ -158,14 +158,14 @@ function getServeCallbacks(getCLS, setCLS) {
 }
 
 const types = {
- 'async-resource': buildCurrentResource,
- 'destroy': buildDestroy,
- 'async-local-storage': buildAsyncLocalStorage,
+ "async-resource": buildCurrentResource,
+ "destroy": buildDestroy,
+ "async-local-storage": buildAsyncLocalStorage,
 };
 
 const asyncMethods = {
- 'callbacks': getServeCallbacks,
- 'async': getServeAwait,
+ "callbacks": getServeCallbacks,
+ "async": getServeAwait,
 };
 
 function main({ type, asyncMethod, connections, duration, path }) {
@@ -173,7 +173,7 @@ function main({ type, asyncMethod, connections, duration, path }) {
 
  server
     .listen(common.PORT)
-    .on('listening', () => {
+    .on("listening", () => {
 
     	bench.http({
     		path,

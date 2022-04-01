@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 const addon = require(`./build/${common.buildType}/3_callbacks`);
 
 addon.RunCallback(function(msg) {
- assert.strictEqual(msg, 'hello world');
+ assert.strictEqual(msg, "hello world");
 });
 
 function testRecv(desiredRecv) {
@@ -17,6 +17,6 @@ testRecv(undefined);
 testRecv(null);
 testRecv(5);
 testRecv(true);
-testRecv('Hello');
+testRecv("Hello");
 testRecv([]);
 testRecv({});

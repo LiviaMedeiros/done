@@ -1,10 +1,10 @@
 // Flags: --expose-internals
-'use strict';
-require('../common');
-const assert = require('assert');
-const { sleep } = require('internal/util');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { sleep } = require("internal/util");
 
-[undefined, null, '', {}, true, false].forEach((value) => {
+[undefined, null, "", {}, true, false].forEach((value) => {
  assert.throws(
   () => { sleep(value); },
   /The "msec" argument must be of type number/,

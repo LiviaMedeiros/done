@@ -4,18 +4,18 @@
 // Modify the require paths in the js code to pull from the build tree.
 // Triggered from the build-addons target in the Makefile and vcbuild.bat.
 
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir, writeFile } from "fs/promises";
 
-import gfm from 'remark-gfm';
-import remarkParse from 'remark-parse';
-import { toVFile } from 'to-vfile';
-import { unified } from 'unified';
+import gfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import { toVFile } from "to-vfile";
+import { unified } from "unified";
 
-const rootDir = new URL('../../', import.meta.url);
-const doc = new URL('./doc/api/addons.md', rootDir);
-const verifyDir = new URL('./test/addons/', rootDir);
+const rootDir = new URL("../../", import.meta.url);
+const doc = new URL("./doc/api/addons.md", rootDir);
+const verifyDir = new URL("./test/addons/", rootDir);
 
-const file = toVFile.readSync(doc, 'utf8');
+const file = toVFile.readSync(doc, "utf8");
 const tree = unified().use(remarkParse).use(gfm).parse(file);
 const addons = {};
 let id = 0;
@@ -23,12 +23,12 @@ let currentHeader;
 
 const validNames = /^\/\/\s+(.*\.(?:cc|h|js))[\r\n]/;
 tree.children.forEach((node) => {
- if (node.type === 'heading') {
+ if (node.type === "heading") {
   currentHeader = file.value.slice(
    node.children[0].position.start.offset,
    node.position.end.offset);
   addons[currentHeader] = { files: {} };
- } else if (node.type === 'code') {
+ } else if (node.type === "code") {
   const match = node.value.match(validNames);
   if (match !== null) {
    addons[currentHeader].files[match[1]] = node.value;
@@ -45,25 +45,25 @@ function verifyFiles(files, blockName) {
  const fileNames = Object.keys(files);
 
  // Must have a .cc and a .js to be a valid test.
- if (!fileNames.some((name) => name.endsWith('.cc')) ||
-      !fileNames.some((name) => name.endsWith('.js'))) {
+ if (!fileNames.some((name) => name.endsWith(".cc")) ||
+      !fileNames.some((name) => name.endsWith(".js"))) {
   return [];
  }
 
- blockName = blockName.toLowerCase().replace(/\s/g, '_').replace(/\W/g, '');
+ blockName = blockName.toLowerCase().replace(/\s/g, "_").replace(/\W/g, "");
  const dir = new URL(
-  `./${String(++id).padStart(2, '0')}_${blockName}/`,
+  `./${String(++id).padStart(2, "0")}_${blockName}/`,
   verifyDir,
  );
 
  files = fileNames.map((name) => {
-  if (name === 'test.js') {
+  if (name === "test.js") {
    files[name] = `'use strict';
 const common = require('../../common');
 ${files[name].replace(
   "'./build/Release/addon'",
   // eslint-disable-next-line no-template-curly-in-string
-  '`./build/${common.buildType}/addon`')}
+  "`./build/${common.buildType}/addon`")}
 `;
   }
   return {
@@ -74,13 +74,13 @@ ${files[name].replace(
  });
 
  files.push({
-  url: new URL('./binding.gyp', dir),
+  url: new URL("./binding.gyp", dir),
   content: JSON.stringify({
    targets: [
     {
-     target_name: 'addon',
+     target_name: "addon",
      sources: files.map(({ name }) => name),
-     includes: ['../common.gypi'],
+     includes: ["../common.gypi"],
     },
    ],
   }),

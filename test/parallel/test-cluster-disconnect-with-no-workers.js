@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
+"use strict";
+require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
 
 let disconnected;
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert(disconnected);
 });
 

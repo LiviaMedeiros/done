@@ -1,8 +1,8 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { sleep } = require('internal/util');
+const common = require("../common");
+const { sleep } = require("internal/util");
 
 // This test verifies that the next tick queue runs after each
 // individual Timeout, as well as each individual Immediate.

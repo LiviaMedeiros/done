@@ -17,13 +17,13 @@ Symbols created via `Symbol(string)` are local to the caller function.
 For this reason, we often use them to simulate private fields, like so:
 
 ```js
-const kField = Symbol('kField');
+const kField = Symbol("kField");
 
-console.log(kField === Symbol('kField')); // false
+console.log(kField === Symbol("kField")); // false
 
 class MyObject {
  constructor() {
-  this[kField] = 'something';
+  this[kField] = "something";
  }
 }
 
@@ -34,8 +34,8 @@ Symbols are not fully private, as the data could be accessed anyway:
 
 ```js
 for (const s of Object.getOwnPropertySymbols(obj)) {
- const desc = s.toString().replace(/Symbol\((.*)\)$/, '$1');
- if (desc === 'kField') {
+ const desc = s.toString().replace(/Symbol\((.*)\)$/, "$1");
+ if (desc === "kField") {
   console.log(obj[s]); // 'something'
  }
 }
@@ -60,8 +60,8 @@ authors use the same symbol
 for different reasons.
 
 ```js
-const s = Symbol.for('hello');
-console.log(s === Symbol.for('hello'));
+const s = Symbol.for("hello");
+console.log(s === Symbol.for("hello"));
 ```
 
 In the Node.js runtime we prefix all our global symbols with `nodejs.`,

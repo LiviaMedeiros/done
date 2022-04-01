@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 let dirc = 0;
@@ -88,15 +88,15 @@ function nextdir() {
  assert.throws(
   () => fs.mkdir(i, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
  assert.throws(
   () => fs.mkdirSync(i),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
 });
@@ -139,15 +139,15 @@ function nextdir() {
  const pathname = path.join(tmpdir.path, nextdir(), nextdir());
 
  fs.mkdirSync(path.dirname(pathname));
- fs.writeFileSync(pathname, '', 'utf8');
+ fs.writeFileSync(pathname, "", "utf8");
 
  assert.throws(
   () => { fs.mkdirSync(pathname, { recursive: true }); },
   {
-   code: 'EEXIST',
+   code: "EEXIST",
    message: /EEXIST: .*mkdir/,
-   name: 'Error',
-   syscall: 'mkdir',
+   name: "Error",
+   syscall: "mkdir",
   },
  );
 }
@@ -158,15 +158,15 @@ function nextdir() {
  const pathname = path.join(filename, nextdir(), nextdir());
 
  fs.mkdirSync(path.dirname(filename));
- fs.writeFileSync(filename, '', 'utf8');
+ fs.writeFileSync(filename, "", "utf8");
 
  assert.throws(
   () => { fs.mkdirSync(pathname, { recursive: true }); },
   {
-   code: 'ENOTDIR',
+   code: "ENOTDIR",
    message: /ENOTDIR: .*mkdir/,
-   name: 'Error',
-   syscall: 'mkdir',
+   name: "Error",
+   syscall: "mkdir",
    path: pathname, // See: https://github.com/nodejs/node/issues/28015
   },
  );
@@ -188,10 +188,10 @@ function nextdir() {
  const pathname = path.join(tmpdir.path, nextdir(), nextdir());
 
  fs.mkdirSync(path.dirname(pathname));
- fs.writeFileSync(pathname, '', 'utf8');
+ fs.writeFileSync(pathname, "", "utf8");
  fs.mkdir(pathname, { recursive: true }, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'EEXIST');
-  assert.strictEqual(err.syscall, 'mkdir');
+  assert.strictEqual(err.code, "EEXIST");
+  assert.strictEqual(err.syscall, "mkdir");
   assert.strictEqual(fs.statSync(pathname).isDirectory(), false);
  }));
 }
@@ -202,10 +202,10 @@ function nextdir() {
  const pathname = path.join(filename, nextdir(), nextdir());
 
  fs.mkdirSync(path.dirname(filename));
- fs.writeFileSync(filename, '', 'utf8');
+ fs.writeFileSync(filename, "", "utf8");
  fs.mkdir(pathname, { recursive: true }, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ENOTDIR');
-  assert.strictEqual(err.syscall, 'mkdir');
+  assert.strictEqual(err.code, "ENOTDIR");
+  assert.strictEqual(err.syscall, "mkdir");
   assert.strictEqual(fs.existsSync(pathname), false);
   // See: https://github.com/nodejs/node/issues/28015
   // The path field varies slightly in Windows errors, vs., other platforms
@@ -223,17 +223,17 @@ if (common.isMainThread && (common.isLinux || common.isOSX)) {
  process.chdir(pathname);
  fs.rmdirSync(pathname);
  assert.throws(
-  () => { fs.mkdirSync('X', { recursive: true }); },
+  () => { fs.mkdirSync("X", { recursive: true }); },
   {
-   code: 'ENOENT',
+   code: "ENOENT",
    message: /ENOENT: .*mkdir/,
-   name: 'Error',
-   syscall: 'mkdir',
+   name: "Error",
+   syscall: "mkdir",
   },
  );
- fs.mkdir('X', { recursive: true }, (err) => {
-  assert.strictEqual(err.code, 'ENOENT');
-  assert.strictEqual(err.syscall, 'mkdir');
+ fs.mkdir("X", { recursive: true }, (err) => {
+  assert.strictEqual(err.code, "ENOENT");
+  assert.strictEqual(err.syscall, "mkdir");
  });
 }
 
@@ -241,13 +241,13 @@ if (common.isMainThread && (common.isLinux || common.isOSX)) {
 // Anything else generates an error.
 {
  const pathname = path.join(tmpdir.path, nextdir());
- ['', 1, {}, [], null, Symbol('test'), () => {}].forEach((recursive) => {
+ ["", 1, {}, [], null, Symbol("test"), () => {}].forEach((recursive) => {
   const received = common.invalidArgTypeHelper(recursive);
   assert.throws(
    () => fs.mkdir(pathname, { recursive }, common.mustNotCall()),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
     message: 'The "options.recursive" property must be of type boolean.' +
           received,
    },
@@ -255,8 +255,8 @@ if (common.isMainThread && (common.isLinux || common.isOSX)) {
   assert.throws(
    () => fs.mkdirSync(pathname, { recursive }),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
     message: 'The "options.recursive" property must be of type boolean.' +
           received,
    },

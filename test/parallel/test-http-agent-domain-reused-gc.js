@@ -1,9 +1,9 @@
 // Flags: --expose-gc --expose-internals
-'use strict';
-const common = require('../common');
-const http = require('http');
-const async_hooks = require('async_hooks');
-const makeDuplexPair = require('../common/duplexpair');
+"use strict";
+const common = require("../common");
+const http = require("http");
+const async_hooks = require("async_hooks");
+const makeDuplexPair = require("../common/duplexpair");
 
 // Regression test for https://github.com/nodejs/node/issues/30122
 // When a domain is attached to an http Agent’s ReusedHandle object, that
@@ -19,7 +19,7 @@ const checkBeforeCalled = common.mustCallAtLeast();
 let reusedHandleId;
 async_hooks.createHook({
  init(id, type, triggerId, resource) {
-  if (resource.constructor.name === 'ReusedHandle') {
+  if (resource.constructor.name === "ReusedHandle") {
    reusedHandleId = id;
    checkInitCalled();
   }
@@ -37,7 +37,7 @@ async_hooks.createHook({
 // socket handle, etc.) and wrap the client side in a JSStreamSocket so we don’t
 // have to implement the whole _handle API ourselves.
 const { serverSide, clientSide } = makeDuplexPair();
-const JSStreamSocket = require('internal/js_stream_socket');
+const JSStreamSocket = require("internal/js_stream_socket");
 const wrappedClientSide = new JSStreamSocket(clientSide);
 
 // Consistency check: We use asyncReset exactly once.
@@ -47,11 +47,11 @@ wrappedClientSide._handle.asyncReset =
 // Dummy server implementation, could be any server for this test...
 const server = http.createServer(common.mustCall((req, res) => {
  res.writeHead(200, {
-  'Content-Type': 'text/plain',
+  "Content-Type": "text/plain",
  });
- res.end('Hello, world!');
+ res.end("Hello, world!");
 }, 2));
-server.emit('connection', serverSide);
+server.emit("connection", serverSide);
 
 // HTTP Agent that only returns the fake connection.
 class TestAgent extends http.Agent {
@@ -62,14 +62,14 @@ const agent = new TestAgent({ keepAlive: true, maxSockets: 1 });
 function makeRequest(cb) {
  const req = http.request({ agent }, common.mustCall((res) => {
   res.resume();
-  res.on('end', cb);
+  res.on("end", cb);
  }));
- req.end('');
+ req.end("");
 }
 
 // The actual test starts here:
 
-const domain = require('domain');
+const domain = require("domain");
 // Create the domain in question and a dummy “noDomain” domain that we use to
 // avoid attaching new async resources to the original domain.
 const d = domain.create();

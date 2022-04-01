@@ -1,25 +1,25 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
-const { internalBinding } = require('internal/test/binding');
-const constants = internalBinding('constants');
-const assert = require('assert');
+require("../common");
+const { internalBinding } = require("internal/test/binding");
+const constants = internalBinding("constants");
+const assert = require("assert");
 
 assert.deepStrictEqual(
- Object.keys(constants).sort(), ['crypto', 'fs', 'os', 'trace', 'zlib'],
+ Object.keys(constants).sort(), ["crypto", "fs", "os", "trace", "zlib"],
 );
 
 assert.deepStrictEqual(
- Object.keys(constants.os).sort(), ['UV_UDP_REUSEADDR', 'dlopen', 'errno',
-                                    'priority', 'signals'],
+ Object.keys(constants.os).sort(), ["UV_UDP_REUSEADDR", "dlopen", "errno",
+                                    "priority", "signals"],
 );
 
 // Make sure all the constants objects don't inherit from Object.prototype
 const inheritedProperties = Object.getOwnPropertyNames(Object.prototype);
 function test(obj) {
  assert(obj);
- assert.strictEqual(Object.prototype.toString.call(obj), '[object Object]');
+ assert.strictEqual(Object.prototype.toString.call(obj), "[object Object]");
  assert.strictEqual(Object.getPrototypeOf(obj), null);
 
  inheritedProperties.forEach((property) => {

@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const net = require('net');
-const assert = require('assert');
-const fs = require('fs');
+const common = require("../common");
+const net = require("net");
+const assert = require("assert");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 function closeServer() {
@@ -26,7 +26,7 @@ function randomPipePath() {
  const handlePath = randomPipePath();
  net.createServer()
     .listen(handlePath)
-    .on('listening', closeServer());
+    .on("listening", closeServer());
 }
 
 // Test listen({path})
@@ -34,7 +34,7 @@ function randomPipePath() {
  const handlePath = randomPipePath();
  net.createServer()
     .listen({ path: handlePath })
-    .on('listening', closeServer());
+    .on("listening", closeServer());
 }
 
 // Test listen(path, cb)
@@ -61,7 +61,7 @@ function randomPipePath() {
     	readableAll: true,
     	writableAll: true,
     }, common.mustCall(() => {
-    	if (process.platform !== 'win32') {
+    	if (process.platform !== "win32") {
     		const mode = fs.statSync(handlePath).mode;
     		assert.notStrictEqual(mode & fs.constants.S_IROTH, 0);
     		assert.notStrictEqual(mode & fs.constants.S_IWOTH, 0);
@@ -82,9 +82,9 @@ function randomPipePath() {
       	writableAll: true,
       }, common.mustNotCall());
 
-  server2.on('error', common.mustCall((err) => {
+  server2.on("error", common.mustCall((err) => {
    server1.close();
-   assert.strictEqual(err.code, 'EADDRINUSE');
+   assert.strictEqual(err.code, "EADDRINUSE");
    assert.match(err.message, /^listen EADDRINUSE: address already in use/);
   }));
  });

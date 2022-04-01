@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const Readable = require('stream').Readable;
+const common = require("../common");
+const Readable = require("stream").Readable;
 
 const bench = common.createBenchmark(main, {
  n: [1e3],

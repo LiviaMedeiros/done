@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 
 function loadPEM(n) {
@@ -34,69 +34,69 @@ function loadPEM(n) {
 }
 
 const serverOptions = {
- key: loadPEM('agent2-key'),
- cert: loadPEM('agent2-cert'),
+ key: loadPEM("agent2-key"),
+ cert: loadPEM("agent2-cert"),
 };
 
 const SNIContexts = {
- 'a.example.com': {
-  key: loadPEM('agent1-key'),
-  cert: loadPEM('agent1-cert'),
+ "a.example.com": {
+  key: loadPEM("agent1-key"),
+  cert: loadPEM("agent1-cert"),
  },
- 'asterisk.test.com': {
-  key: loadPEM('agent3-key'),
-  cert: loadPEM('agent3-cert'),
+ "asterisk.test.com": {
+  key: loadPEM("agent3-key"),
+  cert: loadPEM("agent3-cert"),
  },
- 'chain.example.com': {
-  key: loadPEM('agent6-key'),
+ "chain.example.com": {
+  key: loadPEM("agent6-key"),
   // NOTE: Contains ca3 chain cert
-  cert: loadPEM('agent6-cert'),
+  cert: loadPEM("agent6-cert"),
  },
 };
 
 test(
  {
-  ca: [loadPEM('ca1-cert')],
-  servername: 'a.example.com',
+  ca: [loadPEM("ca1-cert")],
+  servername: "a.example.com",
  },
  true,
- 'a.example.com',
+ "a.example.com",
 );
 
 test(
  {
-  ca: [loadPEM('ca2-cert')],
-  servername: 'b.test.com',
+  ca: [loadPEM("ca2-cert")],
+  servername: "b.test.com",
  },
  true,
- 'b.test.com',
+ "b.test.com",
 );
 
 test(
  {
-  ca: [loadPEM('ca2-cert')],
-  servername: 'a.b.test.com',
+  ca: [loadPEM("ca2-cert")],
+  servername: "a.b.test.com",
  },
  false,
- 'a.b.test.com',
+ "a.b.test.com",
 );
 
 test(
  {
-  ca: [loadPEM('ca1-cert')],
-  servername: 'c.wrong.com',
+  ca: [loadPEM("ca1-cert")],
+  servername: "c.wrong.com",
  },
  false,
- 'c.wrong.com',
+ "c.wrong.com",
 );
 
 test(
  {
-  ca: [loadPEM('ca1-cert')],
-  servername: 'chain.example.com',
+  ca: [loadPEM("ca1-cert")],
+  servername: "chain.example.com",
  },
  true,
- 'chain.example.com',
+ "chain.example.com",
 );
 
 function test(options, clientResult, serverResult) {
@@ -105,11 +105,11 @@ function test(options, clientResult, serverResult) {
   assert.strictEqual(c.authorized, false);
  });
 
- server.addContext('a.example.com', SNIContexts['a.example.com']);
- server.addContext('*.test.com', SNIContexts['asterisk.test.com']);
- server.addContext('chain.example.com', SNIContexts['chain.example.com']);
+ server.addContext("a.example.com", SNIContexts["a.example.com"]);
+ server.addContext("*.test.com", SNIContexts["asterisk.test.com"]);
+ server.addContext("chain.example.com", SNIContexts["chain.example.com"]);
 
- server.on('tlsClientError', common.mustNotCall());
+ server.on("tlsClientError", common.mustNotCall());
 
  server.listen(0, () => {
   const client = tls.connect({
@@ -118,12 +118,12 @@ function test(options, clientResult, serverResult) {
    rejectUnauthorized: false,
   }, () => {
    const result = client.authorizationError &&
-        (client.authorizationError === 'ERR_TLS_CERT_ALTNAME_INVALID');
+        (client.authorizationError === "ERR_TLS_CERT_ALTNAME_INVALID");
    assert.strictEqual(result, clientResult);
    client.end();
   });
 
-  client.on('close', common.mustCall(() => {
+  client.on("close", common.mustCall(() => {
    server.close();
   }));
  });

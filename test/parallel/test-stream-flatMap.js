@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 const {
  Readable,
-} = require('stream');
-const assert = require('assert');
-const { setTimeout } = require('timers/promises');
-const { createReadStream } = require('fs');
+} = require("stream");
+const assert = require("assert");
+const { setTimeout } = require("timers/promises");
+const { createReadStream } = require("fs");
 
 function oneTo5() {
  return Readable.from([1, 2, 3, 4, 5]);
@@ -57,13 +57,13 @@ function oneTo5() {
  // flatMap works on an objectMode stream where mappign returns a stream
  (async () => {
   const result = await oneTo5().flatMap(() => {
-   return createReadStream(fixtures.path('x.txt'));
+   return createReadStream(fixtures.path("x.txt"));
   }).toArray();
   // The resultant stream is in object mode so toArray shouldn't flatten
   assert.strictEqual(result.length, 5);
   assert.deepStrictEqual(
    Buffer.concat(result).toString(),
-   'xyz\n'.repeat(5),
+   "xyz\n".repeat(5),
   );
 
  })().then(common.mustCall());
@@ -83,7 +83,7 @@ function oneTo5() {
    console.log(item);
   }
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall());
 
  queueMicrotask(() => {
@@ -103,7 +103,7 @@ function oneTo5() {
    console.log(item);
   }
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall());
 }
 
@@ -111,7 +111,7 @@ function oneTo5() {
  // Error cases
  assert.throws(() => Readable.from([1]).flatMap(1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).flatMap((x) => x, {
-  concurrency: 'Foo',
+  concurrency: "Foo",
  }), /ERR_OUT_OF_RANGE/);
  assert.throws(() => Readable.from([1]).flatMap((x) => x, 1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).flatMap((x) => x, { signal: true }), /ERR_INVALID_ARG_TYPE/);
@@ -123,7 +123,7 @@ function oneTo5() {
 }
 {
  const stream = oneTo5();
- Object.defineProperty(stream, 'map', {
+ Object.defineProperty(stream, "map", {
   value: common.mustNotCall(() => {}),
  });
  // Check that map isn't getting called.

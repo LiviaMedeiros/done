@@ -1,13 +1,13 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 // The following tests assert that the node.cc PrintHelp() function
 // returns the proper set of cli options when invoked
 
-const assert = require('assert');
-const { exec } = require('child_process');
+const assert = require("assert");
+const { exec } = require("child_process");
 let stdOut;
 
 
@@ -25,14 +25,14 @@ function validateNodePrintHelp() {
 
  const cliHelpOptions = [
   { compileConstant: HAVE_OPENSSL,
-    flags: [ '--openssl-config=...', '--tls-cipher-list=...',
-             '--use-bundled-ca', '--use-openssl-ca',
-             '--enable-fips', '--force-fips' ] },
+    flags: [ "--openssl-config=...", "--tls-cipher-list=...",
+             "--use-bundled-ca", "--use-openssl-ca",
+             "--enable-fips", "--force-fips" ] },
   { compileConstant: NODE_HAVE_I18N_SUPPORT,
-    flags: [ '--icu-data-dir=...', 'NODE_ICU_DATA' ] },
+    flags: [ "--icu-data-dir=...", "NODE_ICU_DATA" ] },
   { compileConstant: HAVE_INSPECTOR,
-    flags: [ '--inspect-brk[=[host:]port]', '--inspect-port=[host:]port',
-             '--inspect[=[host:]port]' ] },
+    flags: [ "--inspect-brk[=[host:]port]", "--inspect-port=[host:]port",
+             "--inspect[=[host:]port]" ] },
  ];
 
  cliHelpOptions.forEach(testForSubstring);

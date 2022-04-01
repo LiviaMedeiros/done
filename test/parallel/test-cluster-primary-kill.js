@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
 
 if (cluster.isWorker) {
 
  // Keep the worker alive
- const http = require('http');
- http.Server().listen(0, '127.0.0.1');
+ const http = require("http");
+ http.Server().listen(0, "127.0.0.1");
 
-} else if (process.argv[2] === 'cluster') {
+} else if (process.argv[2] === "cluster") {
 
  const worker = cluster.fork();
 
@@ -40,7 +40,7 @@ if (cluster.isWorker) {
  });
 
  // Terminate the cluster process
- worker.once('listening', common.mustCall(() => {
+ worker.once("listening", common.mustCall(() => {
   setTimeout(() => {
    process.exit(0);
   }, 1000);
@@ -49,20 +49,20 @@ if (cluster.isWorker) {
 } else {
 
  // This is the testcase
- const fork = require('child_process').fork;
+ const fork = require("child_process").fork;
 
  // Spawn a cluster process
- const primary = fork(process.argv[1], ['cluster']);
+ const primary = fork(process.argv[1], ["cluster"]);
 
  // get pid info
  let pid = null;
- primary.once('message', (data) => {
+ primary.once("message", (data) => {
   pid = data.pid;
  });
 
  // When primary is dead
  let alive = true;
- primary.on('exit', common.mustCall((code) => {
+ primary.on("exit", common.mustCall((code) => {
 
   // Make sure that the primary died on purpose
   assert.strictEqual(code, 0);
@@ -78,8 +78,8 @@ if (cluster.isWorker) {
   pollWorker();
  }));
 
- process.once('exit', () => {
-  assert.strictEqual(typeof pid, 'number',
+ process.once("exit", () => {
+  assert.strictEqual(typeof pid, "number",
                      `got ${pid} instead of a worker pid`);
   assert.strictEqual(alive, false,
                      `worker was alive after primary died (alive = ${alive})`,

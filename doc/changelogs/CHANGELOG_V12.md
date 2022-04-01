@@ -1623,23 +1623,23 @@ HTTP request entering in a server, it will be possible to retrieve this id
 without having access the current HTTP request:
 
 ```js
-const http = require('http');
-const { AsyncLocalStorage } = require('async_hooks');
+const http = require("http");
+const { AsyncLocalStorage } = require("async_hooks");
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
 function logWithId(msg) {
  const id = asyncLocalStorage.getStore();
- console.log(`${id !== undefined ? id : '-'}: `, msg);
+ console.log(`${id !== undefined ? id : "-"}: `, msg);
 }
 
 let idSeq = 0;
 http.createServer((req, res) => {
  asyncLocalStorage.run(idSeq++, () => {
-  logWithId('start');
+  logWithId("start");
   // Imagine any chain of async operations here.
   setImmediate(() => {
-   logWithId('finish');
+   logWithId("finish");
    res.end();
   });
  });
@@ -1729,7 +1729,7 @@ myEmitter.on(EventEmitter.errorMonitor, (err) => {
  MyMonitoringTool.log(err);
 });
 
-myEmitter.emit('error', new Error('whoops!'));
+myEmitter.emit("error", new Error("whoops!"));
 // Still throws and crashes Node.js
 ```
 
@@ -1742,7 +1742,7 @@ the default behavior that exits the process by installing an
 `'uncaughtExceptionMonitor'` listener:
 
 ```js
-process.on('uncaughtExceptionMonitor', (err, origin) => {
+process.on("uncaughtExceptionMonitor", (err, origin) => {
  MyMonitoringTool.logSync(err, origin);
 });
 
@@ -1778,17 +1778,17 @@ The Console constructor (`require('console').Console`) now supports different gr
 This is useful in case you want different grouping width than 2 spaces.
 
 ```js
-const { Console } = require('console');
+const { Console } = require("console");
 const customConsole = new Console({
  stdout: process.stdout,
  stderr: process.stderr,
  groupIndentation: 10,
 });
 
-customConsole.log('foo');
+customConsole.log("foo");
 // 'foo'
 customConsole.group();
-customConsole.log('foo');
+customConsole.log("foo");
 //           'foo'
 ```
 
@@ -1800,9 +1800,9 @@ It is now possible to limit the length of strings while inspecting objects.
 This is possible by passing through the `maxStringLength` option similar to:
 
 ```js
-const { inspect } = require('util');
+const { inspect } = require("util");
 
-const string = inspect(['a'.repeat(1e8)], { maxStringLength: 10 });
+const string = inspect(["a".repeat(1e8)], { maxStringLength: 10 });
 
 console.log(string);
 // "[ 'aaaaaaaaaa'... 99999990 more characters ]"
@@ -2908,12 +2908,12 @@ The `assert` module now provides experimental `assert.match()` and
 string and matches (or does not match) the provided regular expression:
 
 ```js
-const assert = require('assert').strict;
+const assert = require("assert").strict;
 
-assert.match('I will fail', /pass/);
+assert.match("I will fail", /pass/);
 // AssertionError [ERR_ASSERTION]: The input did not match the regular ...
 
-assert.doesNotMatch('I will fail', /fail/);
+assert.doesNotMatch("I will fail", /fail/);
 // AssertionError [ERR_ASSERTION]: The input was expected to not match the ...
 ```
 
@@ -2980,17 +2980,17 @@ to compute the digest between updates:
 
 ```js
 // Calculate a rolling hash.
-const crypto = require('crypto');
-const hash = crypto.createHash('sha256');
+const crypto = require("crypto");
+const hash = crypto.createHash("sha256");
 
-hash.update('one');
-console.log(hash.copy().digest('hex'));
+hash.update("one");
+console.log(hash.copy().digest("hex"));
 
-hash.update('two');
-console.log(hash.copy().digest('hex'));
+hash.update("two");
+console.log(hash.copy().digest("hex"));
 
-hash.update('three');
-console.log(hash.copy().digest('hex'));
+hash.update("three");
+console.log(hash.copy().digest("hex"));
 
 // Etc.
 ```
@@ -3018,7 +3018,7 @@ Michaël Zasso [#30109](https://github.com/nodejs/node/pull/30109).
 The new `EventEmitter.on` static method allows to async iterate over events:
 
 ```js
-const { on, EventEmitter } = require('events');
+const { on, EventEmitter } = require("events");
 
 (async () => {
 
@@ -3026,11 +3026,11 @@ const { on, EventEmitter } = require('events');
 
  // Emit later on
  process.nextTick(() => {
-  ee.emit('foo', 'bar');
-  ee.emit('foo', 42);
+  ee.emit("foo", "bar");
+  ee.emit("foo", 42);
  });
 
- for await (const event of on(ee, 'foo')) {
+ for await (const event of on(ee, "foo")) {
   // The execution of this inner block is synchronous and it
   // processes one event at a time (even with await). Do not use
   // if concurrent execution is required.
@@ -3055,7 +3055,7 @@ myEmitter.on(EventEmitter.errorMonitor, (err) => {
  MyMonitoringTool.log(err);
 });
 
-myEmitter.emit('error', new Error('whoops!'));
+myEmitter.emit("error", new Error("whoops!"));
 // Still throws and crashes Node.js
 ```
 
@@ -3069,8 +3069,8 @@ can lead to an unhandled rejection in case of a thrown exception:
 ```js
 const ee = new EventEmitter();
 
-ee.on('something', async (value) => {
- throw new Error('kaboom');
+ee.on("something", async (value) => {
+ throw new Error("kaboom");
 });
 ```
 
@@ -3082,18 +3082,18 @@ is one, or to the `'error'` event handler if there is none.
 
 ```js
 const ee1 = new EventEmitter({ captureRejections: true });
-ee1.on('something', async (value) => {
- throw new Error('kaboom');
+ee1.on("something", async (value) => {
+ throw new Error("kaboom");
 });
 
-ee1.on('error', console.log);
+ee1.on("error", console.log);
 
 const ee2 = new EventEmitter({ captureRejections: true });
-ee2.on('something', async (value) => {
- throw new Error('kaboom');
+ee2.on("something", async (value) => {
+ throw new Error("kaboom");
 });
 
-ee2[Symbol.for('nodejs.rejection')] = console.log;
+ee2[Symbol.for("nodejs.rejection")] = console.log;
 ```
 
 Setting `EventEmitter.captureRejections = true` will change the default for all
@@ -3102,11 +3102,11 @@ new instances of `EventEmitter`.
 ```js
 EventEmitter.captureRejections = true;
 const ee1 = new EventEmitter();
-ee1.on('something', async (value) => {
- throw new Error('kaboom');
+ee1.on("something", async (value) => {
+ throw new Error("kaboom");
 });
 
-ee1.on('error', console.log);
+ee1.on("error", console.log);
 ```
 
 This is an experimental feature.

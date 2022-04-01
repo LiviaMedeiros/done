@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Readable,
-} = require('stream');
-const assert = require('assert');
-const { once } = require('events');
-const { setTimeout } = require('timers/promises');
+} = require("stream");
+const assert = require("assert");
+const { once } = require("events");
+const { setTimeout } = require("timers/promises");
 
 {
  // Filter works on synchronous streams with a synchronous predicate
@@ -90,7 +90,7 @@ const { setTimeout } = require('timers/promises');
  // Throwing an error during `filter` (sync)
  const stream = Readable.from([1, 2, 3, 4, 5]).filter((x) => {
   if (x === 3) {
-   throw new Error('boom');
+   throw new Error("boom");
   }
   return true;
  });
@@ -104,7 +104,7 @@ const { setTimeout } = require('timers/promises');
  // Throwing an error during `filter` (async)
  const stream = Readable.from([1, 2, 3, 4, 5]).filter(async (x) => {
   if (x === 3) {
-   throw new Error('boom');
+   throw new Error("boom");
   }
   return true;
  });
@@ -120,7 +120,7 @@ const { setTimeout } = require('timers/promises');
  let calls = 0;
  const stream = Readable.from([1, 2, 3, 4]).filter(async (_, { signal }) => {
   calls++;
-  await once(signal, 'abort');
+  await once(signal, "abort");
  }, { signal: ac.signal, concurrency: 2 });
  // pump
  assert.rejects(async () => {
@@ -129,7 +129,7 @@ const { setTimeout } = require('timers/promises');
    console.log(item);
   }
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall());
 
  setImmediate(() => {
@@ -157,7 +157,7 @@ const { setTimeout } = require('timers/promises');
  // Error cases
  assert.throws(() => Readable.from([1]).filter(1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).filter((x) => x, {
-  concurrency: 'Foo',
+  concurrency: "Foo",
  }), /ERR_OUT_OF_RANGE/);
  assert.throws(() => Readable.from([1]).filter((x) => x, 1), /ERR_INVALID_ARG_TYPE/);
 }
@@ -168,7 +168,7 @@ const { setTimeout } = require('timers/promises');
 }
 {
  const stream = Readable.from([1, 2, 3, 4, 5]);
- Object.defineProperty(stream, 'map', {
+ Object.defineProperty(stream, "map", {
   value: common.mustNotCall(() => {}),
  });
  // Check that map isn't getting called.

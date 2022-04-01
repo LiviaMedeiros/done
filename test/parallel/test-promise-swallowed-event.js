@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
-const rejection = new Error('Swallowed reject');
-const rejection2 = new TypeError('Weird');
-const resolveMessage = 'First call';
+const rejection = new Error("Swallowed reject");
+const rejection2 = new TypeError("Weird");
+const resolveMessage = "First call";
 const rejectPromise = new Promise((r) => setTimeout(r, 10, rejection2));
-const swallowedResolve = 'Swallowed resolve';
-const swallowedResolve2 = 'Foobar';
+const swallowedResolve = "Swallowed resolve";
+const swallowedResolve2 = "Foobar";
 
-process.on('multipleResolves', common.mustCall(handler, 4));
+process.on("multipleResolves", common.mustCall(handler, 4));
 
 const p1 = new Promise((resolve, reject) => {
  resolve(resolveMessage);
@@ -27,16 +27,16 @@ const p2 = new Promise((resolve, reject) => {
 }));
 
 const expected = [
- 'resolve',
+ "resolve",
  p1,
  swallowedResolve,
- 'reject',
+ "reject",
  p1,
  rejection,
- 'resolve',
+ "resolve",
  p2,
  swallowedResolve2,
- 'reject',
+ "reject",
  p2,
  rejection2,
 ];

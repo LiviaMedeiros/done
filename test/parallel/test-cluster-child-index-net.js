@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const Countdown = require('../common/countdown');
-const cluster = require('cluster');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const Countdown = require("../common/countdown");
+const cluster = require("cluster");
+const net = require("net");
 
 // Test an edge case when using `cluster` and `net.Server.listen()` to
 // the port of `0`.

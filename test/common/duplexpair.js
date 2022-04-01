@@ -1,9 +1,9 @@
-'use strict';
-const { Duplex } = require('stream');
-const assert = require('assert');
+"use strict";
+const { Duplex } = require("stream");
+const assert = require("assert");
 
-const kCallback = Symbol('Callback');
-const kOtherSide = Symbol('Other');
+const kCallback = Symbol("Callback");
+const kOtherSide = Symbol("Other");
 
 class DuplexSocket extends Duplex {
  constructor() {
@@ -32,7 +32,7 @@ class DuplexSocket extends Duplex {
  }
 
  _final(callback) {
-  this[kOtherSide].on('end', callback);
+  this[kOtherSide].on("end", callback);
   this[kOtherSide].push(null);
  }
 }

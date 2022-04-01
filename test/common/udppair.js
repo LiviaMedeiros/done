@@ -1,7 +1,7 @@
-'use strict';
-const { internalBinding } = require('internal/test/binding');
-const { JSUDPWrap } = internalBinding('js_udp_wrap');
-const EventEmitter = require('events');
+"use strict";
+const { internalBinding } = require("internal/test/binding");
+const { JSUDPWrap } = internalBinding("js_udp_wrap");
+const EventEmitter = require("events");
 
 // FakeUDPWrap is a testing utility that emulates a UDP connection
 // for the sake of making UDP tests more deterministic.
@@ -16,7 +16,7 @@ class FakeUDPWrap extends EventEmitter {
   this._handle.onwrite =
       (wrap, buffers, addr) => this._write(wrap, buffers, addr);
   this._handle.getsockname = (obj) => {
-   Object.assign(obj, { address: '127.0.0.1', family: 'IPv4', port: 1337 });
+   Object.assign(obj, { address: "127.0.0.1", family: "IPv4", port: 1337 });
    return 0;
   };
 
@@ -31,7 +31,7 @@ class FakeUDPWrap extends EventEmitter {
    this.emitReceived(this.bufferedReceived.shift());
    this.emitBufferedImmediate = setImmediate(this._emitBuffered);
   } else {
-   this.emit('wantRead');
+   this.emit("wantRead");
   }
  };
 
@@ -46,7 +46,7 @@ class FakeUDPWrap extends EventEmitter {
  }
 
  _write(wrap, buffers, addr) {
-  this.emit('send', { buffers, addr });
+  this.emit("send", { buffers, addr });
   setImmediate(() => this._handle.onSendDone(wrap, 0));
  }
 
@@ -64,7 +64,7 @@ class FakeUDPWrap extends EventEmitter {
    buffers,
    addr: {
     family = 4,
-    address = '127.0.0.1',
+    address = "127.0.0.1",
     port = 1337,
    },
    flags = 0,
@@ -72,9 +72,9 @@ class FakeUDPWrap extends EventEmitter {
 
   let familyInt;
   switch (family) {
-   case 'IPv4': familyInt = 4; break;
-   case 'IPv6': familyInt = 6; break;
-   default: throw new Error('bad family');
+   case "IPv4": familyInt = 4; break;
+   case "IPv6": familyInt = 6; break;
+   default: throw new Error("bad family");
   }
 
   for (const buffer of buffers) {
@@ -87,9 +87,9 @@ function makeUDPPair() {
  const serverSide = new FakeUDPWrap();
  const clientSide = new FakeUDPWrap();
 
- serverSide.on('send',
+ serverSide.on("send",
                (chk) => setImmediate(() => clientSide.emitReceived(chk)));
- clientSide.on('send',
+ clientSide.on("send",
                (chk) => setImmediate(() => serverSide.emitReceived(chk)));
 
  return { serverSide, clientSide };

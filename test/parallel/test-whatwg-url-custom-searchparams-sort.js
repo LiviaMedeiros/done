@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Tests below are not from WPT.
 
-require('../common');
-const { test, assert_array_equals } = require('../common/wpt').harness;
+require("../common");
+const { test, assert_array_equals } = require("../common/wpt").harness;
 
 // TODO(joyeecheung): upstream this to WPT, if possible - even
 // just as a test for large inputs. Other implementations may
@@ -11,19 +11,19 @@ const { test, assert_array_equals } = require('../common/wpt').harness;
 
 // Test bottom-up iterative stable merge sort because we only use that
 // algorithm to sort > 100 search params.
-const tests = [{ input: '', output: [] }];
+const tests = [{ input: "", output: [] }];
 const pairs = [];
 for (let i = 10; i < 100; i++) {
- pairs.push([`a${i}`, 'b']);
- tests[0].output.push([`a${i}`, 'b']);
+ pairs.push([`a${i}`, "b"]);
+ tests[0].output.push([`a${i}`, "b"]);
 }
 tests[0].input = pairs.sort(() => Math.random() > 0.5)
-  .map((pair) => pair.join('=')).join('&');
+  .map((pair) => pair.join("=")).join("&");
 
 tests.push(
  {
-  'input': 'z=a&=b&c=d',
-  'output': [['', 'b'], ['c', 'd'], ['z', 'a']],
+  "input": "z=a&=b&c=d",
+  "output": [["", "b"], ["c", "d"], ["z", "a"]],
  },
 );
 
@@ -39,7 +39,7 @@ tests.forEach((val) => {
  }, `Parse and sort: ${val.input}`);
 
  test(() => {
-  const url = new URL(`?${val.input}`, 'https://example/');
+  const url = new URL(`?${val.input}`, "https://example/");
   url.searchParams.sort();
   const params = new URLSearchParams(url.search);
   let i = 0;

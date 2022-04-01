@@ -1,17 +1,17 @@
-'use strict';
-const assert = require('assert');
-const util = require('util');
+"use strict";
+const assert = require("assert");
+const util = require("util");
 
 let internalBinding;
 try {
- internalBinding = require('internal/test/binding').internalBinding;
+ internalBinding = require("internal/test/binding").internalBinding;
 } catch (e) {
- console.log('using `test/common/heap.js` requires `--expose-internals`');
+ console.log("using `test/common/heap.js` requires `--expose-internals`");
  throw e;
 }
 
-const { buildEmbedderGraph } = internalBinding('heap_utils');
-const { getHeapSnapshot } = require('v8');
+const { buildEmbedderGraph } = internalBinding("heap_utils");
+const { getHeapSnapshot } = require("v8");
 
 function createJSHeapSnapshot(stream = getHeapSnapshot()) {
  stream.pause();
@@ -41,7 +41,7 @@ function createJSHeapSnapshot(stream = getHeapSnapshot()) {
    type,
    to: toNode,
    from: fromNode,
-   name: typeof name_or_index === 'string' ? name_or_index : null,
+   name: typeof name_or_index === "string" ? name_or_index : null,
   };
   toNode.incomingEdges.push(edge);
   fromNode.outgoingEdges.push(edge);
@@ -65,16 +65,16 @@ function readHeapInfo(raw, fields, types, strings) {
    let type = types[j];
    if (Array.isArray(type)) {
     item[name] = type[raw[i + j]];
-   } else if (name === 'name_or_index') {  // type === 'string_or_number'
-    if (item.type === 'element' || item.type === 'hidden')
-     type = 'number';
+   } else if (name === "name_or_index") {  // type === 'string_or_number'
+    if (item.type === "element" || item.type === "hidden")
+     type = "number";
     else
-     type = 'string';
+     type = "string";
    }
 
-   if (type === 'string') {
+   if (type === "string") {
     item[name] = strings[raw[i + j]];
-   } else if (type === 'number' || type === 'node') {
+   } else if (type === "number" || type === "node") {
     item[name] = raw[i + j];
    }
   }
@@ -112,7 +112,7 @@ class State {
  // Validate the v8 heap snapshot
  validateSnapshot(rootName, expected, { loose = false } = {}) {
   const rootNodes = this.snapshot.filter(
-   (node) => node.name === rootName && node.type !== 'string');
+   (node) => node.name === rootName && node.type !== "string");
   if (loose) {
    assert(rootNodes.length >= expected.length,
           `Expect to find at least ${expected.length} '${rootName}', ` +
@@ -127,7 +127,7 @@ class State {
   for (const expectation of expected) {
    if (expectation.children) {
     for (const expectedEdge of expectation.children) {
-     const check = typeof expectedEdge === 'function' ? expectedEdge :
+     const check = typeof expectedEdge === "function" ? expectedEdge :
       (edge) => (isEdge(edge, expectedEdge));
      const hasChild = rootNodes.some(
       (node) => node.outgoingEdges.some(check),
@@ -137,7 +137,7 @@ class State {
      // time.
      if (!hasChild) {
       throw new Error(
-       'expected to find child ' +
+       "expected to find child " +
               `${util.inspect(expectedEdge)} in ${inspectNode(rootNodes)}`);
      }
     }
@@ -163,7 +163,7 @@ class State {
   for (const expectation of expected) {
    if (expectation.children) {
     for (const expectedEdge of expectation.children) {
-     const check = typeof expectedEdge === 'function' ? expectedEdge :
+     const check = typeof expectedEdge === "function" ? expectedEdge :
       (edge) => (isEdge(edge, expectedEdge));
      // Don't use assert with a custom message here. Otherwise the
      // inspection in the message is done eagerly and wastes a lot of CPU
@@ -173,7 +173,7 @@ class State {
      );
      if (!hasChild) {
       throw new Error(
-       'expected to find child ' +
+       "expected to find child " +
               `${util.inspect(expectedEdge)} in ${inspectNode(rootNodes)}`);
      }
     }

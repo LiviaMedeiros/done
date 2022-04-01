@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 // This test ensures that tlsSocket.getFinished() and
 // tlsSocket.getPeerFinished() return undefined before
@@ -13,14 +13,14 @@ if (!common.hasCrypto)
 // verifying alice.getFinished() == bob.getPeerFinished()
 // and alice.getPeerFinished() == bob.getFinished().
 
-const assert = require('assert');
-const tls = require('tls');
+const assert = require("assert");
+const tls = require("tls");
 
 const msg = {};
 const pem = (n) => fixtures.readKey(`${n}.pem`);
 const server = tls.createServer({
- key: pem('agent1-key'),
- cert: pem('agent1-cert'),
+ key: pem("agent1-key"),
+ cert: pem("agent1-cert"),
 }, common.mustCall((alice) => {
  msg.server = {
   alice: alice.getFinished(),
@@ -47,7 +47,7 @@ server.listen(0, common.mustCall(() => {
  };
 }));
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(undefined, msg.before.alice);
  assert.strictEqual(undefined, msg.before.bob);
 

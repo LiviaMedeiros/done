@@ -19,66 +19,66 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // This test asserts the semantics of dgram::socket.bind({ exclusive })
 // when called from a cluster.Worker
 
-const assert = require('assert');
-const cluster = require('cluster');
-const dgram = require('dgram');
-const BYE = 'bye';
-const WORKER2_NAME = 'wrker2';
+const assert = require("assert");
+const cluster = require("cluster");
+const dgram = require("dgram");
+const BYE = "bye";
+const WORKER2_NAME = "wrker2";
 
 if (cluster.isPrimary) {
  const worker1 = cluster.fork();
 
  if (common.isWindows) {
-  worker1.on('error', common.mustCall((err) => {
+  worker1.on("error", common.mustCall((err) => {
    console.log(err);
-   assert.strictEqual(err.code, 'ENOTSUP');
+   assert.strictEqual(err.code, "ENOTSUP");
    worker1.kill();
   }));
   return;
  }
 
- worker1.on('message', common.mustCall((msg) => {
+ worker1.on("message", common.mustCall((msg) => {
   console.log(msg);
-  assert.strictEqual(msg, 'success');
+  assert.strictEqual(msg, "success");
 
   const worker2 = cluster.fork({ WORKER2_NAME });
-  worker2.on('message', common.mustCall((msg) => {
+  worker2.on("message", common.mustCall((msg) => {
    console.log(msg);
-   assert.strictEqual(msg, 'socket3:EADDRINUSE');
+   assert.strictEqual(msg, "socket3:EADDRINUSE");
 
    // finish test
    worker1.send(BYE);
    worker2.send(BYE);
   }));
-  worker2.on('exit', common.mustCall((code, signal) => {
+  worker2.on("exit", common.mustCall((code, signal) => {
    assert.strictEqual(signal, null);
    assert.strictEqual(code, 0);
   }));
  }));
- worker1.on('exit', common.mustCall((code, signal) => {
+ worker1.on("exit", common.mustCall((code, signal) => {
   assert.strictEqual(signal, null);
   assert.strictEqual(code, 0);
  }));
  // end primary code
 } else {
  // worker code
- process.on('message', common.mustCallAtLeast((msg) => {
+ process.on("message", common.mustCallAtLeast((msg) => {
   if (msg === BYE) process.exit(0);
  }), 1);
 
  const isSecondWorker = process.env.WORKER2_NAME === WORKER2_NAME;
- const socket1 = dgram.createSocket('udp4', common.mustNotCall());
- const socket2 = dgram.createSocket('udp4', common.mustNotCall());
- const socket3 = dgram.createSocket('udp4', common.mustNotCall());
+ const socket1 = dgram.createSocket("udp4", common.mustNotCall());
+ const socket2 = dgram.createSocket("udp4", common.mustNotCall());
+ const socket3 = dgram.createSocket("udp4", common.mustNotCall());
 
- socket1.on('error', (err) => assert.fail(err));
- socket2.on('error', (err) => assert.fail(err));
+ socket1.on("error", (err) => assert.fail(err));
+ socket2.on("error", (err) => assert.fail(err));
 
  // First worker should bind, second should err
  const socket3OnBind =
@@ -86,8 +86,8 @@ if (cluster.isPrimary) {
     	common.mustNotCall() :
     	common.mustCall(() => {
     		const port3 = socket3.address().port;
-    		assert.strictEqual(typeof port3, 'number');
-    		process.send('success');
+    		assert.strictEqual(typeof port3, "number");
+    		process.send("success");
     	});
  // An error is expected only in the second worker
  const socket3OnError =
@@ -102,11 +102,11 @@ if (cluster.isPrimary) {
  const opt3 = { address, port: common.PORT + 1, exclusive: true };
  socket1.bind(opt1, common.mustCall(() => {
   const port1 = socket1.address().port;
-  assert.strictEqual(typeof port1, 'number');
+  assert.strictEqual(typeof port1, "number");
   socket2.bind(opt2, common.mustCall(() => {
    const port2 = socket2.address().port;
-   assert.strictEqual(typeof port2, 'number');
-   socket3.on('error', socket3OnError);
+   assert.strictEqual(typeof port2, "number");
+   socket3.on("error", socket3OnError);
    socket3.bind(opt3, socket3OnBind);
   }));
  }));

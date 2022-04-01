@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
 // Test that the family option of https.get is honored.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 if (!common.hasIPv6)
- common.skip('no IPv6 support');
+ common.skip("no IPv6 support");
 
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const https = require('https');
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const https = require("https");
 
 {
  // Test that `https` machinery passes host name, and receives IP.
- const hostAddrIPv6 = '::1';
- const HOSTNAME = 'dummy';
+ const hostAddrIPv6 = "::1";
+ const HOSTNAME = "dummy";
  https.createServer({
-  cert: fixtures.readKey('agent1-cert.pem'),
-  key: fixtures.readKey('agent1-key.pem'),
+  cert: fixtures.readKey("agent1-cert.pem"),
+  key: fixtures.readKey("agent1-key.pem"),
  }, common.mustCall(function(req, res) {
   this.close();
   res.end();

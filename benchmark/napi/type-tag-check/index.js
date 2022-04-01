@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../../common.js');
+"use strict";
+const common = require("../../common.js");
 
 let binding;
 try {

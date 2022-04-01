@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const common = require('../../common');
-const assert = require('assert');
+const common = require("../../common");
+const assert = require("assert");
 const addon = require(`./build/${common.buildType}/8_passing_wrapped`);
 
 async function runTest() {
@@ -14,7 +14,7 @@ async function runTest() {
  // Make sure the native destructor gets called.
  obj1 = null;
  obj2 = null;
- await common.gcUntil('8_passing_wrapped',
+ await common.gcUntil("8_passing_wrapped",
                       () => (addon.finalizeCount() === 2));
 }
 runTest();

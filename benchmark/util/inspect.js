@@ -1,7 +1,7 @@
-'use strict';
-const util = require('util');
+"use strict";
+const util = require("util");
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const opts = {
  showHidden: { showHidden: true },
@@ -11,19 +11,19 @@ const opts = {
 const bench = common.createBenchmark(main, {
  n: [2e4],
  method: [
-  'Object',
-  'Object_empty',
-  'Object_deep_ln',
-  'String',
-  'String_complex',
-  'String_boxed',
-  'Date',
-  'Set',
-  'Error',
-  'Array',
-  'TypedArray',
-  'TypedArray_extra',
-  'Number',
+  "Object",
+  "Object_empty",
+  "Object_deep_ln",
+  "String",
+  "String_complex",
+  "String_boxed",
+  "Date",
+  "Set",
+  "Error",
+  "Array",
+  "TypedArray",
+  "TypedArray_extra",
+  "Number",
  ],
  option: Object.keys(opts),
 });
@@ -40,60 +40,60 @@ function main({ method, n, option }) {
  let obj;
  const options = opts[option];
  switch (method) {
-  case 'Object':
-   benchmark(n, { a: 'a', b: 'b', c: 'c', d: 'd' }, options);
+  case "Object":
+   benchmark(n, { a: "a", b: "b", c: "c", d: "d" }, options);
    break;
-  case 'Object_empty':
+  case "Object_empty":
    benchmark(n, {}, options);
    break;
-  case 'Object_deep_ln':
+  case "Object_deep_ln":
    if (options)
     options.depth = Infinity;
    obj = { first:
               { second:
                 { third:
-                  { a: 'first',
-                  		b: 'second',
-                  		c: 'third',
-                  		d: 'fourth',
-                  		e: 'fifth',
-                  		f: 'sixth',
-                  		g: 'seventh' } } } };
+                  { a: "first",
+                  		b: "second",
+                  		c: "third",
+                  		d: "fourth",
+                  		e: "fifth",
+                  		f: "sixth",
+                  		g: "seventh" } } } };
    benchmark(n, obj, options || { depth: Infinity });
    break;
-  case 'String':
-   benchmark(n, 'Simple string', options);
+  case "String":
+   benchmark(n, "Simple string", options);
    break;
-  case 'String_complex':
-   benchmark(n, 'This string\nhas to be\tescaped!', options);
+  case "String_complex":
+   benchmark(n, "This string\nhas to be\tescaped!", options);
    break;
-  case 'String_boxed':
-   benchmark(n, new String('string'), options);
+  case "String_boxed":
+   benchmark(n, new String("string"), options);
    break;
-  case 'Date':
+  case "Date":
    benchmark(n, new Date(), options);
    break;
-  case 'Set':
+  case "Set":
    obj = new Set([5, 3]);
    benchmark(n, obj, options);
    break;
-  case 'Error':
-   benchmark(n, new Error('error'), options);
+  case "Error":
+   benchmark(n, new Error("error"), options);
    break;
-  case 'Array':
+  case "Array":
    benchmark(n, Array(50).fill().map((_, i) => i), options);
    break;
-  case 'TypedArray':
+  case "TypedArray":
    obj = new Uint8Array(Array(50).fill().map((_, i) => i));
    benchmark(n, obj, options);
    break;
-  case 'TypedArray_extra':
+  case "TypedArray_extra":
    obj = new Uint8Array(Array(50).fill().map((_, i) => i));
-   obj.foo = 'bar';
-   obj[Symbol('baz')] = 5;
+   obj.foo = "bar";
+   obj[Symbol("baz")] = 5;
    benchmark(n, obj, options);
    break;
-  case 'Number':
+  case "Number":
    benchmark(n, 0, options);
    break;
   default:

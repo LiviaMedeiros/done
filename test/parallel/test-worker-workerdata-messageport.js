@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 const {
  Worker, MessageChannel,
-} = require('worker_threads');
+} = require("worker_threads");
 
 const channel = new MessageChannel();
 const workerData = { mesage: channel.port1 };
 const transferList = [channel.port1];
-const meowScript = () => 'meow';
+const meowScript = () => "meow";
 
 {
  // Should receive the transferList param.
@@ -37,7 +37,7 @@ const meowScript = () => 'meow';
   workerData: uint8Array,
   transferList: [uint8Array.buffer],
  }).on(
-  'message',
+  "message",
   (message) =>
    assert.deepStrictEqual(message, Uint8Array.of(1, 2, 3, 4)),
  );
@@ -54,8 +54,8 @@ const meowScript = () => 'meow';
   workerData,
   transferList: [],
  }), {
-  code: 'ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST',
-  message: 'Object that needs transfer was found in message but not ' +
-             'listed in transferList',
+  code: "ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST",
+  message: "Object that needs transfer was found in message but not " +
+             "listed in transferList",
  });
 }

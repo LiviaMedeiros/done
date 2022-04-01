@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const stream = require('stream');
+const stream = require("stream");
 let state = 0;
 
 
@@ -87,17 +87,17 @@ const t = new stream.Transform({
   });
  }, 1),
 });
-t.on('finish', common.mustCall(function() {
+t.on("finish", common.mustCall(function() {
  state++;
  // finishListener
  assert.strictEqual(state, 15);
 }, 1));
-t.on('end', common.mustCall(function() {
+t.on("end", common.mustCall(function() {
  state++;
  // endEvent
  assert.strictEqual(state, 16);
 }, 1));
-t.on('data', common.mustCall(function(d) {
+t.on("data", common.mustCall(function(d) {
  // dataListener
  assert.strictEqual(++state, d + 1);
 }, 3));

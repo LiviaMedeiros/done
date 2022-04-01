@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
 
 if (!common.isWindows)
- common.skip('This test is for Windows only.');
+ common.skip("This test is for Windows only.");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const DATA_VALUE = 'hello';
+const DATA_VALUE = "hello";
 
 // Refs: https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
 // Ignore '/', '\\' and ':'
@@ -29,18 +29,18 @@ const RESERVED_CHARACTERS = '<>"|?*';
 
 // Test for ':' (NTFS data streams).
 // Refs: https://msdn.microsoft.com/en-us/library/windows/desktop/bb540537.aspx
-const pathname = path.join(tmpdir.path, 'foo:bar');
+const pathname = path.join(tmpdir.path, "foo:bar");
 fs.writeFileSync(pathname, DATA_VALUE);
 
-let content = '';
+let content = "";
 const fileDataStream = fs.createReadStream(pathname, {
- encoding: 'utf8',
+ encoding: "utf8",
 });
 
-fileDataStream.on('data', (data) => {
+fileDataStream.on("data", (data) => {
  content += data;
 });
 
-fileDataStream.on('end', common.mustCall(() => {
+fileDataStream.on("end", common.mustCall(() => {
  assert.strictEqual(content, DATA_VALUE);
 }));

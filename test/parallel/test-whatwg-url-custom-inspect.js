@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
 // Tests below are not from WPT.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasIntl) {
  // A handful of the tests fail when ICU is not included.
- common.skip('missing Intl');
+ common.skip("missing Intl");
 }
 
-const util = require('util');
-const assert = require('assert');
+const util = require("util");
+const assert = require("assert");
 
-const url = new URL('https://username:password@host.name:8080/path/name/?que=ry#hash');
+const url = new URL("https://username:password@host.name:8080/path/name/?que=ry#hash");
 
 assert.strictEqual(
  util.inspect(url),
@@ -62,7 +62,7 @@ assert.strictEqual(
 
 assert.strictEqual(
  util.inspect({ a: url }, { depth: 0 }),
- '{ a: [URL] }');
+ "{ a: [URL] }");
 
 class MyURL extends URL {}
-assert(util.inspect(new MyURL(url.href)).startsWith('MyURL {'));
+assert(util.inspect(new MyURL(url.href)).startsWith("MyURL {"));

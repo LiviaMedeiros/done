@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 // This test ensures that the _writeableState.bufferedRequestCount and
 // the actual buffered request count are the same.
 
-const common = require('../common');
-const Stream = require('stream');
-const assert = require('assert');
+const common = require("../common");
+const Stream = require("stream");
+const assert = require("assert");
 
 class StreamWritable extends Stream.Writable {
  constructor() {

@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const fixtures = require('../common/fixtures');
+require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const fixtures = require("../common/fixtures");
 
 let openCount = 0;
 const _fsopen = fs.open;
@@ -11,7 +11,7 @@ const _fsclose = fs.close;
 
 const loopCount = 50;
 const totalCheck = 50;
-const emptyTxt = fixtures.path('empty.txt');
+const emptyTxt = fixtures.path("empty.txt");
 
 fs.open = function() {
  openCount++;
@@ -57,6 +57,6 @@ function testLeak(endFn, callback) {
  }, 2);
 }
 
-testLeak('close', function() {
- testLeak('destroy');
+testLeak("close", function() {
+ testLeak("destroy");
 });

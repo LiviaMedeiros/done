@@ -1,14 +1,14 @@
 // Call fs.readFile over and over again really fast.
 // Then see how many times it got called.
 // Yes, this is a silly benchmark.  Most benchmarks are silly.
-'use strict';
+"use strict";
 
-const path = require('path');
-const common = require('../common.js');
-const fs = require('fs');
-const assert = require('assert');
+const path = require("path");
+const common = require("../common.js");
+const fs = require("fs");
+const assert = require("assert");
 
-const tmpdir = require('../../test/common/tmpdir');
+const tmpdir = require("../../test/common/tmpdir");
 tmpdir.refresh();
 const filename = path.resolve(tmpdir.path,
                               `.removeme-benchmark-garbage-${process.pid}`);
@@ -25,7 +25,7 @@ function main({ len, duration, concurrent }) {
  } catch {
   // Continue regardless of error.
  }
- let data = Buffer.alloc(len, 'x');
+ let data = Buffer.alloc(len, "x");
  fs.writeFileSync(filename, data);
  data = null;
 
@@ -49,7 +49,7 @@ function main({ len, duration, concurrent }) {
 
  function afterRead(er, data) {
   if (er) {
-   if (er.code === 'ENOENT') {
+   if (er.code === "ENOENT") {
     // Only OK if unlinked by the timer from main.
     assert.ok(benchEnded);
     return;
@@ -58,7 +58,7 @@ function main({ len, duration, concurrent }) {
   }
 
   if (data.length !== len)
-   throw new Error('wrong number of bytes returned');
+   throw new Error("wrong number of bytes returned");
 
   reads++;
   if (!benchEnded)

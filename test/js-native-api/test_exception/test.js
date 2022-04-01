@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const common = require('../../common');
-const assert = require('assert');
-const theError = new Error('Some error');
+const common = require("../../common");
+const assert = require("assert");
+const theError = new Error("Some error");
 
 // The test module throws an error during Init, but in order for its exports to
 // not be lost, it attaches them to the error's "bindings" property. This way,
@@ -17,7 +17,7 @@ const test_exception = (function() {
  } catch (anException) {
   resultingException = anException;
  }
- assert.strictEqual(resultingException.message, 'Error during Init');
+ assert.strictEqual(resultingException.message, "Error during Init");
  return resultingException.binding;
 })();
 
@@ -38,13 +38,13 @@ const test_exception = (function() {
  // before it was handled on the JS side
  const exception_pending = test_exception.wasPending();
  assert.strictEqual(exception_pending, true,
-                    'Exception not pending as expected,' +
+                    "Exception not pending as expected," +
                      ` .wasPending() returned ${exception_pending}`);
 
  // Test that the native side does not capture a non-existing exception
  returnedError = test_exception.returnException(common.mustCall());
  assert.strictEqual(returnedError, undefined,
-                    'Returned error should be undefined when no exception is' +
+                    "Returned error should be undefined when no exception is" +
                      ` thrown, but ${returnedError} was passed`);
 }
 
@@ -66,13 +66,13 @@ const test_exception = (function() {
  // before it was handled on the JS side
  const exception_pending = test_exception.wasPending();
  assert.strictEqual(exception_pending, true,
-                    'Exception not pending as expected,' +
+                    "Exception not pending as expected," +
                      ` .wasPending() returned ${exception_pending}`);
 
  // Test that the native side does not capture a non-existing exception
  returnedError = test_exception.constructReturnException(common.mustCall());
  assert.strictEqual(returnedError, undefined,
-                    'Returned error should be undefined when no exception is' +
+                    "Returned error should be undefined when no exception is" +
                      ` thrown, but ${returnedError} was passed`);
 }
 
@@ -85,13 +85,13 @@ const test_exception = (function() {
   caughtError = anError;
  }
  assert.strictEqual(caughtError, undefined,
-                    'No exception originated on the native side, but' +
+                    "No exception originated on the native side, but" +
                      ` ${caughtError} was passed`);
 
  // Test that the exception state remains clear when no exception is thrown
  const exception_pending = test_exception.wasPending();
  assert.strictEqual(exception_pending, false,
-                    'Exception state did not remain clear as expected,' +
+                    "Exception state did not remain clear as expected," +
                      ` .wasPending() returned ${exception_pending}`);
 }
 
@@ -104,12 +104,12 @@ const test_exception = (function() {
   caughtError = anError;
  }
  assert.strictEqual(caughtError, undefined,
-                    'No exception originated on the native side, but' +
+                    "No exception originated on the native side, but" +
                      ` ${caughtError} was passed`);
 
  // Test that the exception state remains clear when no exception is thrown
  const exception_pending = test_exception.wasPending();
  assert.strictEqual(exception_pending, false,
-                    'Exception state did not remain clear as expected,' +
+                    "Exception state did not remain clear as expected," +
                      ` .wasPending() returned ${exception_pending}`);
 }

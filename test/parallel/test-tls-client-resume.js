@@ -19,27 +19,27 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
 // Check that the ticket from the first connection causes session resumption
 // when used to make a second connection.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const options = {
- key: fixtures.readKey('agent2-key.pem'),
- cert: fixtures.readKey('agent2-cert.pem'),
+ key: fixtures.readKey("agent2-key.pem"),
+ cert: fixtures.readKey("agent2-cert.pem"),
 };
 
 // create server
 const server = tls.Server(options, common.mustCall((socket) => {
- socket.end('Goodbye');
+ socket.end("Goodbye");
 }, 2));
 
 // start listening
@@ -52,7 +52,7 @@ server.listen(0, common.mustCall(function() {
   port: this.address().port,
   rejectUnauthorized: false,
  }, common.mustCall(() => {
-  tls13 = client1.getProtocol() === 'TLSv1.3';
+  tls13 = client1.getProtocol() === "TLSv1.3";
   assert.strictEqual(client1.isSessionReused(), false);
   sessionx = client1.getSession();
   assert(sessionx);
@@ -61,23 +61,23 @@ server.listen(0, common.mustCall(function() {
    reconnect();
  }));
 
- client1.on('data', common.mustCall((d) => {
+ client1.on("data", common.mustCall((d) => {
  }));
 
- client1.once('session', common.mustCall((session) => {
-  console.log('session1');
+ client1.once("session", common.mustCall((session) => {
+  console.log("session1");
   session1 = session;
   assert(session1);
   if (sessionx)
    reconnect();
  }));
 
- client1.on('session', () => {
-  console.log('client1 session#', ++sessions);
+ client1.on("session", () => {
+  console.log("client1 session#", ++sessions);
  });
 
- client1.on('close', () => {
-  console.log('client1 close');
+ client1.on("close", () => {
+  console.log("client1 close");
   assert.strictEqual(sessions, tls13 ? 2 : 1);
  });
 
@@ -100,12 +100,12 @@ server.listen(0, common.mustCall(function() {
   };
 
   const client2 = tls.connect(opts, common.mustCall(() => {
-   console.log('connect2');
+   console.log("connect2");
    assert.strictEqual(client2.isSessionReused(), true);
   }));
 
-  client2.on('close', common.mustCall(() => {
-   console.log('close2');
+  client2.on("close", common.mustCall(() => {
+   console.log("close2");
    server.close();
   }));
 

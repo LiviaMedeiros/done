@@ -1,12 +1,12 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const EventEmitter = require('events');
-const SocketListReceive = require('internal/socket_list').SocketListReceive;
+const common = require("../common");
+const assert = require("assert");
+const EventEmitter = require("events");
+const SocketListReceive = require("internal/socket_list").SocketListReceive;
 
-const key = 'test-key';
+const key = "test-key";
 
 // Verify that the message won't be sent when child is not connected.
 {
@@ -16,8 +16,8 @@ const key = 'test-key';
  });
 
  const list = new SocketListReceive(child, key);
- list.child.emit('internalMessage', { key, cmd: 'NODE_SOCKET_NOTIFY_CLOSE' });
- list.child.emit('internalMessage', { key, cmd: 'NODE_SOCKET_GET_COUNT' });
+ list.child.emit("internalMessage", { key, cmd: "NODE_SOCKET_NOTIFY_CLOSE" });
+ list.child.emit("internalMessage", { key, cmd: "NODE_SOCKET_GET_COUNT" });
 }
 
 // Verify that a "NODE_SOCKET_ALL_CLOSED" message will be sent.
@@ -25,13 +25,13 @@ const key = 'test-key';
  const child = Object.assign(new EventEmitter(), {
   connected: true,
   _send: common.mustCall((msg) => {
-   assert.strictEqual(msg.cmd, 'NODE_SOCKET_ALL_CLOSED');
+   assert.strictEqual(msg.cmd, "NODE_SOCKET_ALL_CLOSED");
    assert.strictEqual(msg.key, key);
   }),
  });
 
  const list = new SocketListReceive(child, key);
- list.child.emit('internalMessage', { key, cmd: 'NODE_SOCKET_NOTIFY_CLOSE' });
+ list.child.emit("internalMessage", { key, cmd: "NODE_SOCKET_NOTIFY_CLOSE" });
 }
 
 // Verify that a "NODE_SOCKET_COUNT" message will be sent.
@@ -39,14 +39,14 @@ const key = 'test-key';
  const child = Object.assign(new EventEmitter(), {
   connected: true,
   _send: common.mustCall((msg) => {
-   assert.strictEqual(msg.cmd, 'NODE_SOCKET_COUNT');
+   assert.strictEqual(msg.cmd, "NODE_SOCKET_COUNT");
    assert.strictEqual(msg.key, key);
    assert.strictEqual(msg.count, 0);
   }),
  });
 
  const list = new SocketListReceive(child, key);
- list.child.emit('internalMessage', { key, cmd: 'NODE_SOCKET_GET_COUNT' });
+ list.child.emit("internalMessage", { key, cmd: "NODE_SOCKET_GET_COUNT" });
 }
 
 // Verify that the connections count is added and an "empty" event
@@ -61,8 +61,8 @@ const key = 'test-key';
  list.add(obj);
  assert.strictEqual(list.connections, 1);
 
- list.on('empty', common.mustCall((self) => assert.strictEqual(self, list)));
+ list.on("empty", common.mustCall((self) => assert.strictEqual(self, list)));
 
- obj.socket.emit('close');
+ obj.socket.emit("close");
  assert.strictEqual(list.connections, 0);
 }

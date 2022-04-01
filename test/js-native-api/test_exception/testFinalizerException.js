@@ -1,6 +1,6 @@
-'use strict';
-if (process.argv[2] === 'child') {
- const common = require('../../common');
+"use strict";
+if (process.argv[2] === "child") {
+ const common = require("../../common");
  // Trying, catching the exception, and finding the bindings at the `Error`'s
  // `binding` property is done intentionally, because we're also testing what
  // happens when the add-on entry point throws. See test.js.
@@ -23,10 +23,10 @@ if (process.argv[2] === 'child') {
  return;
 }
 
-const assert = require('assert');
-const { spawnSync } = require('child_process');
+const assert = require("assert");
+const { spawnSync } = require("child_process");
 const child = spawnSync(process.execPath, [
- '--expose-gc', __filename, 'child',
+ "--expose-gc", __filename, "child",
 ]);
 assert.strictEqual(child.signal, null);
 assert.match(child.stderr.toString(), /Error during Finalize/);

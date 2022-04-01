@@ -3915,7 +3915,7 @@ JavaScript snippet:
 
 ```js
 const arr = [];
-arr[123] = 'hello';
+arr[123] = "hello";
 ```
 
 The equivalent can be done using Node-API values with the following snippet:
@@ -3966,8 +3966,8 @@ reasons. Consider the following JavaScript:
 ```js
 const obj = {};
 Object.defineProperties(obj, {
- 'foo': { value: 123, writable: true, configurable: true, enumerable: true },
- 'bar': { value: 456, writable: true, configurable: true, enumerable: true },
+ "foo": { value: 123, writable: true, configurable: true, enumerable: true },
+ "bar": { value: 456, writable: true, configurable: true, enumerable: true },
 });
 ```
 
@@ -4685,7 +4685,7 @@ NAPI_MODULE(NODE_GYP_MODULE_NAME, Init)
 Given the above code, the add-on can be used from JavaScript as follows:
 
 ```js
-const myaddon = require('./addon');
+const myaddon = require("./addon");
 myaddon.sayHello();
 ```
 
@@ -4793,7 +4793,7 @@ function MyObject(param) {
  this.param = param;
 }
 
-const arg = 'hello';
+const arg = "hello";
 const value = new MyObject(arg);
 ```
 
@@ -4865,14 +4865,14 @@ static methods rather than as the `this` value of prototype methods. In such
 cases there is a chance that they may be unwrapped incorrectly.
 
 ```js
-const myAddon = require('./build/Release/my_addon.node');
+const myAddon = require("./build/Release/my_addon.node");
 
 // `openDatabase()` returns a JavaScript object that wraps a native database
 // handle.
 const dbHandle = myAddon.openDatabase();
 
 // `query()` returns a JavaScript object that wraps a native query handle.
-const queryHandle = myAddon.query(dbHandle, 'Gimme ALL the things!');
+const queryHandle = myAddon.query(dbHandle, "Gimme ALL the things!");
 
 // There is an accidental error in the line below. The first parameter to
 // `myAddon.queryHasRecords()` should be the database handle (`dbHandle`), not

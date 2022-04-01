@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 
 // Testing api calls for arrays
 const test_typedarray = require(`./build/${common.buildType}/test_typedarray`);
@@ -49,7 +49,7 @@ arrayTypes.forEach((currentType) => {
  const theArray = test_typedarray.CreateTypedArray(template, buffer);
 
  assert.ok(theArray instanceof currentType,
-           'Type of new array should match that of the template. ' +
+           "Type of new array should match that of the template. " +
             `Expected type: ${currentType.name}, ` +
             `actual type: ${template.constructor.name}`);
  assert.notStrictEqual(theArray, template);

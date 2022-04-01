@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 // This tests a highly specific regression tied to the FixedQueue size, which
 // was introduced in Node.js 9.7.0: https://github.com/nodejs/node/pull/18617

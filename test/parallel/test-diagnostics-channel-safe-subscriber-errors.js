@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const dc = require('diagnostics_channel');
-const assert = require('assert');
+const common = require("../common");
+const dc = require("diagnostics_channel");
+const assert = require("assert");
 
 const input = {
- foo: 'bar',
+ foo: "bar",
 };
 
-const channel = dc.channel('fail');
+const channel = dc.channel("fail");
 
-const error = new Error('nope');
+const error = new Error("nope");
 
-process.on('uncaughtException', common.mustCall((err) => {
+process.on("uncaughtException", common.mustCall((err) => {
  assert.strictEqual(err, error);
 }));
 

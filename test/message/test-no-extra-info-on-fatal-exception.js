@@ -1,6 +1,6 @@
 // Flags: --no-extra-info-on-fatal-exception
 
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
-throw new Error('foo');
+throw new Error("foo");

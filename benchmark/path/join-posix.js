@@ -1,16 +1,16 @@
-'use strict';
-const common = require('../common.js');
-const { posix } = require('path');
+"use strict";
+const common = require("../common.js");
+const { posix } = require("path");
 
 const bench = common.createBenchmark(main, {
  paths: [
-  ['/foo', 'bar', '', 'baz/asdf', 'quux', '..'].join('|'),
+  ["/foo", "bar", "", "baz/asdf", "quux", ".."].join("|"),
  ],
  n: [1e5],
 });
 
 function main({ n, paths }) {
- const args = paths.split('|');
+ const args = paths.split("|");
  const copy = [...args];
  const orig = copy[1];
 

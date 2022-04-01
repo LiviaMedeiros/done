@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
 
 const s = http.createServer(function(req, res) {
  res.statusCode = 200;
- res.statusMessage = 'Custom Message';
- res.end('');
+ res.statusMessage = "Custom Message";
+ res.end("");
 });
 
 s.listen(0, test);
@@ -38,18 +38,18 @@ function test() {
  const client = net.connect(
   this.address().port,
   function() {
-   client.write('GET / HTTP/1.1\r\nConnection: close\r\n\r\n');
+   client.write("GET / HTTP/1.1\r\nConnection: close\r\n\r\n");
   },
  );
- client.on('data', function(chunk) {
+ client.on("data", function(chunk) {
   bufs.push(chunk);
  });
- client.on('end', function() {
+ client.on("end", function() {
   const head = Buffer.concat(bufs)
-      .toString('latin1')
-      .split('\r\n')[0];
-  assert.strictEqual(head, 'HTTP/1.1 200 Custom Message');
-  console.log('ok');
+      .toString("latin1")
+      .split("\r\n")[0];
+  assert.strictEqual(head, "HTTP/1.1 200 Custom Message");
+  console.log("ok");
   s.close();
  });
 }

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const BASE = 'string\ud801';
+const BASE = "string\ud801";
 
 const bench = common.createBenchmark(main, {
  n: [1e5],
@@ -10,7 +10,7 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ n, size }) {
- const { toUSVString } = require('util');
+ const { toUSVString } = require("util");
  const str = BASE.repeat(size);
 
  bench.start();

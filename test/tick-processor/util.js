@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Utilities for the tick-processor tests
 const {
@@ -7,7 +7,7 @@ const {
  isAIX,
  isLinuxPPCBE,
  isFreeBSD,
-} = require('../common');
+} = require("../common");
 
 module.exports = {
  isCPPSymbolsNotMapped: isWindows ||

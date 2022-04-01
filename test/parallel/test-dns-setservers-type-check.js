@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const { addresses } = require('../common/internet');
-const assert = require('assert');
-const dns = require('dns');
+"use strict";
+const common = require("../common");
+const { addresses } = require("../common/internet");
+const assert = require("assert");
+const dns = require("dns");
 const resolver = new dns.promises.Resolver();
 const dnsPromises = dns.promises;
 const promiseResolver = new dns.promises.Resolver();
@@ -18,8 +18,8 @@ const promiseResolver = new dns.promises.Resolver();
   },
  ].forEach((val) => {
   const errObj = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "servers" argument must be an instance of Array.' +
                common.invalidArgTypeHelper(val),
   };
@@ -58,8 +58,8 @@ const promiseResolver = new dns.promises.Resolver();
   ],
  ].forEach((val) => {
   const errObj = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "servers[0]" argument must be of type string.' +
                common.invalidArgTypeHelper(val[0]),
   };
@@ -90,11 +90,11 @@ const promiseResolver = new dns.promises.Resolver();
 {
  const {
   setServers,
- } = require('dns/promises');
+ } = require("dns/promises");
 
  // This should not throw any error.
  (async () => {
-  setServers([ '127.0.0.1' ]);
+  setServers([ "127.0.0.1" ]);
  })().then(common.mustCall());
 
  [
@@ -108,8 +108,8 @@ const promiseResolver = new dns.promises.Resolver();
   ],
  ].forEach((val) => {
   const errObj = {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "servers[0]" argument must be of type string.' +
               common.invalidArgTypeHelper(val[0]),
   };

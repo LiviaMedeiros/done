@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
-const passKey = fixtures.readKey('rsa_private_encrypted.pem');
-const rawKey = fixtures.readKey('rsa_private.pem');
-const cert = fixtures.readKey('rsa_cert.crt');
+const passKey = fixtures.readKey("rsa_private_encrypted.pem");
+const rawKey = fixtures.readKey("rsa_private.pem");
+const cert = fixtures.readKey("rsa_cert.crt");
 
 assert(Buffer.isBuffer(passKey));
 assert(Buffer.isBuffer(cert));
-assert.strictEqual(typeof passKey.toString(), 'string');
-assert.strictEqual(typeof cert.toString(), 'string');
+assert.strictEqual(typeof passKey.toString(), "string");
+assert.strictEqual(typeof cert.toString(), "string");
 
 function onSecureConnect() {
  return common.mustCall(function() { this.end(); });
@@ -43,7 +43,7 @@ function onSecureConnect() {
 
 const server = tls.Server({
  key: passKey,
- passphrase: 'password',
+ passphrase: "password",
  cert: cert,
  ca: [cert],
  requestCert: true,
@@ -55,7 +55,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: passKey,
-  passphrase: 'password',
+  passphrase: "password",
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -70,7 +70,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: rawKey,
-  passphrase: 'ignored',
+  passphrase: "ignored",
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -79,7 +79,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [passKey],
-  passphrase: 'password',
+  passphrase: "password",
   cert: [cert],
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -94,7 +94,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [rawKey],
-  passphrase: 'ignored',
+  passphrase: "ignored",
   cert: [cert],
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -103,7 +103,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: passKey.toString(),
-  passphrase: 'password',
+  passphrase: "password",
   cert: cert.toString(),
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -118,7 +118,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: rawKey.toString(),
-  passphrase: 'ignored',
+  passphrase: "ignored",
   cert: cert.toString(),
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -127,7 +127,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [passKey.toString()],
-  passphrase: 'password',
+  passphrase: "password",
   cert: [cert.toString()],
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -142,7 +142,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [rawKey.toString()],
-  passphrase: 'ignored',
+  passphrase: "ignored",
   cert: [cert.toString()],
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -150,15 +150,15 @@ server.listen(0, common.mustCall(function() {
  // Object[]
  tls.connect({
   port: this.address().port,
-  key: [{ pem: passKey, passphrase: 'password' }],
+  key: [{ pem: passKey, passphrase: "password" }],
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
 
  tls.connect({
   port: this.address().port,
-  key: [{ pem: passKey, passphrase: 'password' }],
-  passphrase: 'ignored',
+  key: [{ pem: passKey, passphrase: "password" }],
+  passphrase: "ignored",
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -166,28 +166,28 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [{ pem: passKey }],
-  passphrase: 'password',
+  passphrase: "password",
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
 
  tls.connect({
   port: this.address().port,
-  key: [{ pem: passKey.toString(), passphrase: 'password' }],
+  key: [{ pem: passKey.toString(), passphrase: "password" }],
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
 
  tls.connect({
   port: this.address().port,
-  key: [{ pem: rawKey, passphrase: 'ignored' }],
+  key: [{ pem: rawKey, passphrase: "ignored" }],
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
 
  tls.connect({
   port: this.address().port,
-  key: [{ pem: rawKey.toString(), passphrase: 'ignored' }],
+  key: [{ pem: rawKey.toString(), passphrase: "ignored" }],
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -195,7 +195,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [{ pem: rawKey }],
-  passphrase: 'ignored',
+  passphrase: "ignored",
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -203,7 +203,7 @@ server.listen(0, common.mustCall(function() {
  tls.connect({
   port: this.address().port,
   key: [{ pem: rawKey.toString() }],
-  passphrase: 'ignored',
+  passphrase: "ignored",
   cert: cert,
   rejectUnauthorized: false,
  }, onSecureConnect());
@@ -258,7 +258,7 @@ assert.throws(function() {
  tls.connect({
   port: server.address().port,
   key: passKey,
-  passphrase: 'invalid',
+  passphrase: "invalid",
   cert: cert,
   rejectUnauthorized: false,
  });
@@ -268,7 +268,7 @@ assert.throws(function() {
  tls.connect({
   port: server.address().port,
   key: [passKey],
-  passphrase: 'invalid',
+  passphrase: "invalid",
   cert: cert,
   rejectUnauthorized: false,
  });
@@ -278,7 +278,7 @@ assert.throws(function() {
  tls.connect({
   port: server.address().port,
   key: [{ pem: passKey }],
-  passphrase: 'invalid',
+  passphrase: "invalid",
   cert: cert,
   rejectUnauthorized: false,
  });
@@ -287,8 +287,8 @@ assert.throws(function() {
 assert.throws(function() {
  tls.connect({
   port: server.address().port,
-  key: [{ pem: passKey, passphrase: 'invalid' }],
-  passphrase: 'password', // Valid but unused
+  key: [{ pem: passKey, passphrase: "invalid" }],
+  passphrase: "password", // Valid but unused
   cert: cert,
   rejectUnauthorized: false,
  });

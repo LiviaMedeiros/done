@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { Readable } = require('stream');
-const readline = require('readline');
+const common = require("../common");
+const assert = require("assert");
+const { Readable } = require("stream");
+const readline = require("readline");
 
-const CONTENT = 'content';
+const CONTENT = "content";
 const TOTAL_LINES = 18;
 
 (async () => {

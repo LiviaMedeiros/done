@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('This test is disabled on windows.');
+ common.skip("This test is disabled on windows.");
 
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
-const cluster = require('cluster');
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
+const cluster = require("cluster");
 
-console.error('Cluster listen fd test', process.argv[2] || 'runner');
+console.error("Cluster listen fd test", process.argv[2] || "runner");
 
 // Process relationship is:
 //
@@ -37,13 +37,13 @@ console.error('Cluster listen fd test', process.argv[2] || 'runner');
 //   -> primary: the cluster primary
 //        -> worker: the cluster worker
 switch (process.argv[2]) {
- case 'primary': return primary();
- case 'worker': return worker();
+ case "primary": return primary();
+ case "worker": return worker();
 }
 
 let ok;
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.ok(ok);
 });
 
@@ -56,22 +56,22 @@ process.on('exit', function() {
 test(function(parent, port) {
  // Now make sure that we can request to the worker, then kill it.
  http.get({
-  server: 'localhost',
+  server: "localhost",
   port: port,
-  path: '/',
- }).on('response', function(res) {
-  let s = '';
-  res.on('data', function(c) {
+  path: "/",
+ }).on("response", function(res) {
+  let s = "";
+  res.on("data", function(c) {
    s += c.toString();
   });
-  res.on('end', function() {
+  res.on("end", function() {
    // Kill the worker before we start doing asserts.
    // it's really annoying when tests leave orphans!
    parent.kill();
-   parent.on('exit', function() {
-    assert.strictEqual(s, 'hello from worker\n');
+   parent.on("exit", function() {
+    assert.strictEqual(s, "hello from worker\n");
     assert.strictEqual(res.statusCode, 200);
-    console.log('ok');
+    console.log("ok");
     ok = true;
    });
   });
@@ -79,17 +79,17 @@ test(function(parent, port) {
 });
 
 function test(cb) {
- console.error('about to listen in parent');
+ console.error("about to listen in parent");
  const server = net.createServer(function(conn) {
-  console.error('connection on parent');
-  conn.end('hello from parent\n');
+  console.error("connection on parent");
+  conn.end("hello from parent\n");
  }).listen(0, function() {
   const port = this.address().port;
   console.error(`server listening on ${port}`);
 
-  const spawn = require('child_process').spawn;
-  const primary = spawn(process.execPath, [__filename, 'primary'], {
-   stdio: [ 0, 'pipe', 2, server._handle, 'ipc' ],
+  const spawn = require("child_process").spawn;
+  const primary = spawn(process.execPath, [__filename, "primary"], {
+   stdio: [ 0, "pipe", 2, server._handle, "ipc" ],
    detached: true,
   });
 
@@ -98,16 +98,16 @@ function test(cb) {
   // be accepted, because the primary has the fd open.
   server.close();
 
-  primary.on('exit', function(code) {
-   console.error('primary exited', code);
+  primary.on("exit", function(code) {
+   console.error("primary exited", code);
   });
 
-  primary.on('close', function() {
-   console.error('primary closed');
+  primary.on("close", function() {
+   console.error("primary closed");
   });
-  console.error('primary spawned');
-  primary.on('message', function(msg) {
-   if (msg === 'started worker') {
+  console.error("primary spawned");
+  primary.on("message", function(msg) {
+   if (msg === "started worker") {
     cb(primary, port);
    }
   });
@@ -115,34 +115,34 @@ function test(cb) {
 }
 
 function primary() {
- console.error('in primary, spawning worker');
+ console.error("in primary, spawning worker");
  cluster.setupPrimary({
-  args: [ 'worker' ],
+  args: [ "worker" ],
  });
  const worker = cluster.fork();
- worker.on('message', function(msg) {
-  if (msg === 'worker ready') {
-   process.send('started worker');
+ worker.on("message", function(msg) {
+  if (msg === "worker ready") {
+   process.send("started worker");
   }
  });
  // Prevent outliving our parent process in case it is abnormally killed -
  // under normal conditions our parent kills this process before exiting.
- process.on('disconnect', function() {
-  console.error('primary exit on disconnect');
+ process.on("disconnect", function() {
+  console.error("primary exit on disconnect");
   process.exit(0);
  });
 }
 
 
 function worker() {
- console.error('worker, about to create server and listen on fd=3');
+ console.error("worker, about to create server and listen on fd=3");
  // Start a server on fd=3
  http.createServer(function(req, res) {
-  console.error('request on worker');
-  console.error('%s %s', req.method, req.url, req.headers);
-  res.end('hello from worker\n');
+  console.error("request on worker");
+  console.error("%s %s", req.method, req.url, req.headers);
+  res.end("hello from worker\n");
  }).listen({ fd: 3 }, function() {
-  console.error('worker listening on fd=3');
-  process.send('worker ready');
+  console.error("worker listening on fd=3");
+  process.send("worker ready");
  });
 }

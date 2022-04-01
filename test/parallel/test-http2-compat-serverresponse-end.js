@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const {
  mustCall,
@@ -6,10 +6,10 @@ const {
  hasCrypto,
  platformTimeout,
  skip,
-} = require('../common');
+} = require("../common");
 if (!hasCrypto)
- skip('missing crypto');
-const { strictEqual } = require('assert');
+ skip("missing crypto");
+const { strictEqual } = require("assert");
 const {
  createServer,
  connect,
@@ -17,41 +17,41 @@ const {
   HTTP2_HEADER_STATUS,
   HTTP_STATUS_OK,
  },
-} = require('http2');
+} = require("http2");
 
 {
  // Http2ServerResponse.end accepts chunk, encoding, cb as args
  // It may be invoked repeatedly without throwing errors
  // but callback will only be called once
  const server = createServer(mustCall((request, response) => {
-  response.end('end', 'utf8', mustCall(() => {
+  response.end("end", "utf8", mustCall(() => {
    response.end(mustCall());
    process.nextTick(() => {
     response.end(mustCall());
     server.close();
    });
   }));
-  response.on('finish', mustCall(() => {
+  response.on("finish", mustCall(() => {
    response.end(mustCall());
   }));
   response.end(mustCall());
  }));
  server.listen(0, mustCall(() => {
-  let data = '';
+  let data = "";
   const { port } = server.address();
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.setEncoding('utf8');
-   request.on('data', (chunk) => (data += chunk));
-   request.on('end', mustCall(() => {
-    strictEqual(data, 'end');
+   request.setEncoding("utf8");
+   request.on("data", (chunk) => (data += chunk));
+   request.on("end", mustCall(() => {
+    strictEqual(data, "end");
     client.close();
    }));
    request.end();
@@ -72,14 +72,14 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.setEncoding('utf8');
-   request.on('end', mustCall(() => {
+   request.setEncoding("utf8");
+   request.on("end", mustCall(() => {
     client.close();
    }));
    request.end();
@@ -91,26 +91,26 @@ const {
 {
  // Http2ServerResponse.end can omit encoding arg, sets it to utf-8
  const server = createServer(mustCall((request, response) => {
-  response.end('test\uD83D\uDE00', mustCall(() => {
+  response.end("test\uD83D\uDE00", mustCall(() => {
    server.close();
   }));
  }));
  server.listen(0, mustCall(() => {
-  let data = '';
+  let data = "";
   const { port } = server.address();
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.setEncoding('utf8');
-   request.on('data', (chunk) => (data += chunk));
-   request.on('end', mustCall(() => {
-    strictEqual(data, 'test\uD83D\uDE00');
+   request.setEncoding("utf8");
+   request.on("data", (chunk) => (data += chunk));
+   request.on("end", mustCall(() => {
+    strictEqual(data, "test\uD83D\uDE00");
     client.close();
    }));
    request.end();
@@ -131,14 +131,14 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'GET',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "GET",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => client.close()));
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => client.close()));
    request.end();
    request.resume();
   }));
@@ -151,9 +151,9 @@ const {
  const server = createServer(mustCall((request, response) => {
   strictEqual(response.writableEnded, false);
   strictEqual(response.finished, false);
-  response.writeHead(HTTP_STATUS_OK, { foo: 'bar' });
+  response.writeHead(HTTP_STATUS_OK, { foo: "bar" });
   strictEqual(response.finished, false);
-  response.end('data', mustCall());
+  response.end("data", mustCall());
   strictEqual(response.writableEnded, true);
   strictEqual(response.finished, true);
  }));
@@ -162,19 +162,19 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'HEAD',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "HEAD",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('response', mustCall((headers, flags) => {
+   request.on("response", mustCall((headers, flags) => {
     strictEqual(headers[HTTP2_HEADER_STATUS], HTTP_STATUS_OK);
     strictEqual(flags, 5); // The end of stream flag is set
-    strictEqual(headers.foo, 'bar');
+    strictEqual(headers.foo, "bar");
    }));
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => {
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => {
     client.close();
     server.close();
    }));
@@ -188,7 +188,7 @@ const {
  // .end should trigger 'end' event on request if user did not attempt
  // to read from the request
  const server = createServer(mustCall((request, response) => {
-  request.on('end', mustCall());
+  request.on("end", mustCall());
   response.end();
  }));
  server.listen(0, mustCall(() => {
@@ -196,14 +196,14 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'HEAD',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "HEAD",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => {
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => {
     client.close();
     server.close();
    }));
@@ -217,8 +217,8 @@ const {
 {
  // Should be able to call .end with cb from stream 'close'
  const server = createServer(mustCall((request, response) => {
-  response.writeHead(HTTP_STATUS_OK, { foo: 'bar' });
-  response.stream.on('close', mustCall(() => {
+  response.writeHead(HTTP_STATUS_OK, { foo: "bar" });
+  response.stream.on("close", mustCall(() => {
    response.end(mustCall());
   }));
  }));
@@ -227,19 +227,19 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'HEAD',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "HEAD",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('response', mustCall((headers, flags) => {
+   request.on("response", mustCall((headers, flags) => {
     strictEqual(headers[HTTP2_HEADER_STATUS], HTTP_STATUS_OK);
     strictEqual(flags, 5); // The end of stream flag is set
-    strictEqual(headers.foo, 'bar');
+    strictEqual(headers.foo, "bar");
    }));
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => {
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => {
     client.close();
     server.close();
    }));
@@ -253,8 +253,8 @@ const {
  // Should be able to respond to HEAD request after timeout
  const server = createServer(mustCall((request, response) => {
   setTimeout(mustCall(() => {
-   response.writeHead(HTTP_STATUS_OK, { foo: 'bar' });
-   response.end('data', mustCall());
+   response.writeHead(HTTP_STATUS_OK, { foo: "bar" });
+   response.end("data", mustCall());
   }), platformTimeout(10));
  }));
  server.listen(0, mustCall(() => {
@@ -262,19 +262,19 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'HEAD',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "HEAD",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('response', mustCall((headers, flags) => {
+   request.on("response", mustCall((headers, flags) => {
     strictEqual(headers[HTTP2_HEADER_STATUS], HTTP_STATUS_OK);
     strictEqual(flags, 5); // The end of stream flag is set
-    strictEqual(headers.foo, 'bar');
+    strictEqual(headers.foo, "bar");
    }));
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => {
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => {
     client.close();
     server.close();
    }));
@@ -288,13 +288,13 @@ const {
  // Finish should only trigger after 'end' is called
  const server = createServer(mustCall((request, response) => {
   let finished = false;
-  response.writeHead(HTTP_STATUS_OK, { foo: 'bar' });
-  response.on('finish', mustCall(() => {
+  response.writeHead(HTTP_STATUS_OK, { foo: "bar" });
+  response.on("finish", mustCall(() => {
    finished = false;
   }));
-  response.end('data', mustCall(() => {
+  response.end("data", mustCall(() => {
    strictEqual(finished, false);
-   response.end('data', mustCall());
+   response.end("data", mustCall());
   }));
  }));
  server.listen(0, mustCall(() => {
@@ -302,19 +302,19 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'HEAD',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "HEAD",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('response', mustCall((headers, flags) => {
+   request.on("response", mustCall((headers, flags) => {
     strictEqual(headers[HTTP2_HEADER_STATUS], HTTP_STATUS_OK);
     strictEqual(flags, 5); // The end of stream flag is set
-    strictEqual(headers.foo, 'bar');
+    strictEqual(headers.foo, "bar");
    }));
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => {
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => {
     client.close();
     server.close();
    }));
@@ -327,7 +327,7 @@ const {
 {
  // Should be able to respond to HEAD with just .end
  const server = createServer(mustCall((request, response) => {
-  response.end('data', mustCall());
+  response.end("data", mustCall());
   response.end(mustCall());
  }));
  server.listen(0, mustCall(() => {
@@ -335,18 +335,18 @@ const {
   const url = `http://localhost:${port}`;
   const client = connect(url, mustCall(() => {
    const headers = {
-    ':path': '/',
-    ':method': 'HEAD',
-    ':scheme': 'http',
-    ':authority': `localhost:${port}`,
+    ":path": "/",
+    ":method": "HEAD",
+    ":scheme": "http",
+    ":authority": `localhost:${port}`,
    };
    const request = client.request(headers);
-   request.on('response', mustCall((headers, flags) => {
+   request.on("response", mustCall((headers, flags) => {
     strictEqual(headers[HTTP2_HEADER_STATUS], HTTP_STATUS_OK);
     strictEqual(flags, 5); // The end of stream flag is set
    }));
-   request.on('data', mustNotCall());
-   request.on('end', mustCall(() => {
+   request.on("data", mustNotCall());
+   request.on("end", mustCall(() => {
     client.close();
     server.close();
    }));

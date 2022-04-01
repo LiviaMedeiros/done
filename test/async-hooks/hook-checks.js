@@ -1,6 +1,6 @@
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 /**
  * Checks the expected invocations against the invocations that actually
@@ -21,11 +21,11 @@ exports.checkInvocations = function checkInvocations(activity, hooks, stage) {
 
  assert.ok(activity != null,
            `${stageInfo} Trying to check invocation for an activity, ` +
-            'but it was empty/undefined.',
+            "but it was empty/undefined.",
  );
 
  // Check that actual invocations for all hooks match the expected invocations
- [ 'init', 'before', 'after', 'destroy', 'promiseResolve' ].forEach(checkHook);
+ [ "init", "before", "after", "destroy", "promiseResolve" ].forEach(checkHook);
 
  function checkHook(k) {
   const val = hooks[k];
@@ -36,7 +36,7 @@ exports.checkInvocations = function checkInvocations(activity, hooks, stage) {
    // Didn't expect any invocations, but it was actually invoked
    const invocations = activity[k].length;
    const msg = `${stageInfo} Called "${k}" ${invocations} time(s), ` +
-                  'but expected no invocations.';
+                  "but expected no invocations.";
    assert(activity[k] === null && activity[k] === undefined, msg);
   } else {
    // Expected some invocations, make sure that it was invoked at all

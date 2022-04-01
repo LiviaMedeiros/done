@@ -1,13 +1,13 @@
 // Flags: --experimental-vm-modules
-'use strict';
+"use strict";
 
 // https://github.com/nodejs/node/issues/3020
 // Promises used to allow code to escape the timeout
 // set for runInContext, runInNewContext, and runInThisContext.
 
-const common = require('../common');
-const assert = require('assert');
-const vm = require('vm');
+const common = require("../common");
+const assert = require("assert");
+const vm = require("vm");
 
 const NS_PER_MS = 1000000n;
 
@@ -27,16 +27,16 @@ function loop() {
 
 assert.rejects(async () => {
  const module = new vm.SourceTextModule(
-  'Promise.resolve().then(() => loop()); loop();',
+  "Promise.resolve().then(() => loop()); loop();",
   {
    context: vm.createContext({
     hrtime,
     loop,
-   }, { microtaskMode: 'afterEvaluate' }),
+   }, { microtaskMode: "afterEvaluate" }),
   });
  await module.link(common.mustNotCall());
  await module.evaluate({ timeout: 5 });
 }, {
- code: 'ERR_SCRIPT_EXECUTION_TIMEOUT',
- message: 'Script execution timed out after 5ms',
+ code: "ERR_SCRIPT_EXECUTION_TIMEOUT",
+ message: "Script execution timed out after 5ms",
 });

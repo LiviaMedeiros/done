@@ -1,14 +1,14 @@
 // Flags: --expose-gc --noconcurrent_recompilation
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 if (process.config.variables.asan)
- common.skip('ASAN messes with memory measurements');
+ common.skip("ASAN messes with memory measurements");
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 
 const before = process.memoryUsage.rss();
 {

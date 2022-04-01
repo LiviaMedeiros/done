@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
-const dns = require('dns');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
+const dns = require("dns");
 
 {
  // Verify that the provided lookup function is called.
@@ -10,7 +10,7 @@ const dns = require('dns');
   dns.lookup(host, family, callback);
  });
 
- const socket = dgram.createSocket({ type: 'udp4', lookup });
+ const socket = dgram.createSocket({ type: "udp4", lookup });
 
  socket.bind(common.mustCall(() => {
   socket.close();
@@ -26,7 +26,7 @@ const dns = require('dns');
   originalLookup(host, family, callback);
  });
 
- const socket = dgram.createSocket({ type: 'udp4' });
+ const socket = dgram.createSocket({ type: "udp4" });
 
  socket.bind(common.mustCall(() => {
   socket.close();
@@ -35,12 +35,12 @@ const dns = require('dns');
 
 {
  // Verify that non-functions throw.
- [null, true, false, 0, 1, NaN, '', 'foo', {}, Symbol()].forEach((value) => {
+ [null, true, false, 0, 1, NaN, "", "foo", {}, Symbol()].forEach((value) => {
   assert.throws(() => {
-   dgram.createSocket({ type: 'udp4', lookup: value });
+   dgram.createSocket({ type: "udp4", lookup: value });
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "lookup" argument must be of type function.' +
                common.invalidArgTypeHelper(value),
   });

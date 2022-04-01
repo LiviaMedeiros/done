@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
 let mode_async;
 let mode_sync;
@@ -71,14 +71,14 @@ if (common.isWindows) {
  mode_sync = 0o644;
 }
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const file1 = path.join(tmpdir.path, 'a.js');
-const file2 = path.join(tmpdir.path, 'a1.js');
+const file1 = path.join(tmpdir.path, "a.js");
+const file2 = path.join(tmpdir.path, "a1.js");
 
 // Create file1.
-fs.closeSync(fs.openSync(file1, 'w'));
+fs.closeSync(fs.openSync(file1, "w"));
 
 fs.chmod(file1, mode_async.toString(8), common.mustSucceed(() => {
  if (common.isWindows) {
@@ -95,7 +95,7 @@ fs.chmod(file1, mode_async.toString(8), common.mustSucceed(() => {
  }
 }));
 
-fs.open(file2, 'w', common.mustSucceed((fd) => {
+fs.open(file2, "w", common.mustSucceed((fd) => {
  fs.fchmod(fd, mode_async.toString(8), common.mustSucceed(() => {
   if (common.isWindows) {
    assert.ok((fs.fstatSync(fd).mode & 0o777) & mode_async);
@@ -106,7 +106,7 @@ fs.open(file2, 'w', common.mustSucceed((fd) => {
   assert.throws(
    () => fs.fchmod(fd, {}),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    },
   );
 
@@ -123,7 +123,7 @@ fs.open(file2, 'w', common.mustSucceed((fd) => {
 
 // lchmod
 if (fs.lchmod) {
- const link = path.join(tmpdir.path, 'symbolic-link');
+ const link = path.join(tmpdir.path, "symbolic-link");
 
  fs.symlinkSync(file2, link);
 
@@ -138,16 +138,16 @@ if (fs.lchmod) {
 
 [false, 1, {}, [], null, undefined].forEach((input) => {
  const errObj = {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message: 'The "path" argument must be of type string or an instance ' +
-             'of Buffer or URL.' +
+             "of Buffer or URL." +
              common.invalidArgTypeHelper(input),
  };
  assert.throws(() => fs.chmod(input, 1, common.mustNotCall()), errObj);
  assert.throws(() => fs.chmodSync(input, 1), errObj);
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(openCount, 0);
 });

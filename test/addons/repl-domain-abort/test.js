@@ -19,29 +19,29 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
-const repl = require('repl');
-const stream = require('stream');
-const path = require('path');
-let buildPath = path.join(__dirname, 'build', common.buildType, 'binding');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
+const repl = require("repl");
+const stream = require("stream");
+const path = require("path");
+let buildPath = path.join(__dirname, "build", common.buildType, "binding");
 // On Windows, escape backslashes in the path before passing it to REPL.
 if (common.isWindows)
- buildPath = buildPath.replace(/\\/g, '/');
+ buildPath = buildPath.replace(/\\/g, "/");
 let cb_ran = false;
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert(cb_ran);
- console.log('ok');
+ console.log("ok");
 });
 
 const lines = [
  // This line shouldn't cause an assertion error.
  `require('${buildPath}')` +
   // Log output to double check callback ran.
-  '.method(function(v1, v2) {' +
-  'console.log(\'cb_ran\'); return v1 === true && v2 === false; });',
+  ".method(function(v1, v2) {" +
+  "console.log('cb_ran'); return v1 === true && v2 === false; });",
 ];
 
 const dInput = new stream.Readable();
@@ -54,7 +54,7 @@ dInput._read = function _read() {
 };
 
 dOutput._write = function _write(chunk, encoding, cb) {
- if (chunk.toString().startsWith('cb_ran'))
+ if (chunk.toString().startsWith("cb_ran"))
   cb_ran = true;
  cb();
 };

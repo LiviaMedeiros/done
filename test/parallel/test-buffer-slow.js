@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const buffer = require('buffer');
+require("../common");
+const assert = require("assert");
+const buffer = require("buffer");
 const SlowBuffer = buffer.SlowBuffer;
 
 const ones = [1, 1, 1, 1];
@@ -36,24 +36,24 @@ try {
 } catch (e) {
  // Don't match on message as it is from the JavaScript engine. V8 and
  // ChakraCore provide different messages.
- assert.strictEqual(e.name, 'RangeError');
+ assert.strictEqual(e.name, "RangeError");
 }
 
 // Should throw with invalid length type
 const bufferInvalidTypeMsg = {
- code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError',
+ code: "ERR_INVALID_ARG_TYPE",
+ name: "TypeError",
  message: /^The "size" argument must be of type number/,
 };
 assert.throws(() => SlowBuffer(), bufferInvalidTypeMsg);
 assert.throws(() => SlowBuffer({}), bufferInvalidTypeMsg);
-assert.throws(() => SlowBuffer('6'), bufferInvalidTypeMsg);
+assert.throws(() => SlowBuffer("6"), bufferInvalidTypeMsg);
 assert.throws(() => SlowBuffer(true), bufferInvalidTypeMsg);
 
 // Should throw with invalid length value
 const bufferMaxSizeMsg = {
- code: 'ERR_INVALID_ARG_VALUE',
- name: 'RangeError',
+ code: "ERR_INVALID_ARG_VALUE",
+ name: "RangeError",
  message: /^The argument 'size' is invalid\. Received [^"]*$/,
 };
 assert.throws(() => SlowBuffer(NaN), bufferMaxSizeMsg);

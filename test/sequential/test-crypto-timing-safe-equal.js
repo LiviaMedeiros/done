@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 
 // 'should consider equal strings to be equal'
 assert.strictEqual(
- crypto.timingSafeEqual(Buffer.from('foo'), Buffer.from('foo')),
+ crypto.timingSafeEqual(Buffer.from("foo"), Buffer.from("foo")),
  true,
 );
 
 // 'should consider unequal strings to be unequal'
 assert.strictEqual(
- crypto.timingSafeEqual(Buffer.from('foo'), Buffer.from('bar')),
+ crypto.timingSafeEqual(Buffer.from("foo"), Buffer.from("bar")),
  false,
 );
 
@@ -35,24 +35,24 @@ assert.strictEqual(
 assert.throws(
  () => crypto.timingSafeEqual(Buffer.from([1, 2, 3]), Buffer.from([1, 2])),
  {
-  code: 'ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH',
-  name: 'RangeError',
-  message: 'Input buffers must have the same byte length',
+  code: "ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH",
+  name: "RangeError",
+  message: "Input buffers must have the same byte length",
  },
 );
 
 assert.throws(
- () => crypto.timingSafeEqual('not a buffer', Buffer.from([1, 2])),
+ () => crypto.timingSafeEqual("not a buffer", Buffer.from([1, 2])),
  {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
  },
 );
 
 assert.throws(
- () => crypto.timingSafeEqual(Buffer.from([1, 2]), 'not a buffer'),
+ () => crypto.timingSafeEqual(Buffer.from([1, 2]), "not a buffer"),
  {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
  },
 );

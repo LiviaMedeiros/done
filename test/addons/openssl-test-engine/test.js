@@ -1,23 +1,23 @@
-'use strict';
-const common = require('../../common');
+"use strict";
+const common = require("../../common");
 
 // This tests crypto.setEngine().
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
+const assert = require("assert");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 
 
 assert.throws(() => crypto.setEngine(true), /ERR_INVALID_ARG_TYPE/);
-assert.throws(() => crypto.setEngine('/path/to/engine', 'notANumber'),
+assert.throws(() => crypto.setEngine("/path/to/engine", "notANumber"),
               /ERR_INVALID_ARG_TYPE/);
 
 {
- const invalidEngineName = 'xxx';
+ const invalidEngineName = "xxx";
  assert.throws(() => crypto.setEngine(invalidEngineName),
                /ERR_CRYPTO_ENGINE_UNKNOWN/);
  assert.throws(() => crypto.setEngine(invalidEngineName,
@@ -25,17 +25,17 @@ assert.throws(() => crypto.setEngine('/path/to/engine', 'notANumber'),
                /ERR_CRYPTO_ENGINE_UNKNOWN/);
 }
 
-crypto.setEngine('dynamic');
-crypto.setEngine('dynamic');
+crypto.setEngine("dynamic");
+crypto.setEngine("dynamic");
 
-crypto.setEngine('dynamic', crypto.constants.ENGINE_METHOD_RSA);
-crypto.setEngine('dynamic', crypto.constants.ENGINE_METHOD_RSA);
+crypto.setEngine("dynamic", crypto.constants.ENGINE_METHOD_RSA);
+crypto.setEngine("dynamic", crypto.constants.ENGINE_METHOD_RSA);
 
 const engine = path.join(__dirname,
                          `/build/${common.buildType}/testsetengine.engine`);
 
 if (!fs.existsSync(engine))
- common.skip('no engine');
+ common.skip("no engine");
 
 {
  const engineId = path.parse(engine).name;

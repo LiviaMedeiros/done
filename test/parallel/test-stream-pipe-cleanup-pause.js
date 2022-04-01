@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const stream = require('stream');
+"use strict";
+const common = require("../common");
+const stream = require("stream");
 
 const reader = new stream.Readable();
 const writer1 = new stream.Writable();
@@ -14,10 +14,10 @@ const buffer = Buffer.allocUnsafe(560000);
 reader._read = () => {};
 
 writer1._write = common.mustCall(function(chunk, encoding, cb) {
- this.emit('chunk-received');
+ this.emit("chunk-received");
  cb();
 }, 1);
-writer1.once('chunk-received', function() {
+writer1.once("chunk-received", function() {
  reader.unpipe(writer1);
  reader.pipe(writer2);
  reader.push(buffer);

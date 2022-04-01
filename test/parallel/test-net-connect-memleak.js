@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const common = require('../common');
-const onGC = require('../common/ongc');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const onGC = require("../common/ongc");
+const assert = require("assert");
+const net = require("net");
 
 // Test that the implicit listener for an 'connect' event on net.Sockets is
 // added using `once()`, i.e. can be gc'ed once that event has occurred.

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const vm = require('vm');
+const common = require("../../common");
+const assert = require("assert");
+const vm = require("vm");
 const binding = require(`./build/${common.buildType}/binding`);
 const makeCallback = binding.makeCallback;
 
@@ -33,12 +33,12 @@ const recv = {
  }),
 };
 
-assert.strictEqual(makeCallback(recv, 'one'), 42);
-assert.strictEqual(makeCallback(recv, 'two', 1337), 42);
+assert.strictEqual(makeCallback(recv, "one"), 42);
+assert.strictEqual(makeCallback(recv, "two", 1337), 42);
 
 // Check that callbacks on a receiver from a different context works.
-const foreignObject = vm.runInNewContext('({ fortytwo() { return 42; } })');
-assert.strictEqual(makeCallback(foreignObject, 'fortytwo'), 42);
+const foreignObject = vm.runInNewContext("({ fortytwo() { return 42; } })");
+assert.strictEqual(makeCallback(foreignObject, "fortytwo"), 42);
 
 // Check that the callback is made in the context of the receiver.
 const target = vm.runInNewContext(`
@@ -59,7 +59,7 @@ const forward = vm.runInNewContext(`
 // Runs in outer context.
 function endpoint($Object) {
  if (Object === $Object)
-  throw new Error('bad');
+  throw new Error("bad");
  return Object;
 }
 assert.strictEqual(makeCallback(process, forward, endpoint), Object);

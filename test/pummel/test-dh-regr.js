@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto) {
- common.skip('missing crypto');
+ common.skip("missing crypto");
 }
 
-if (process.config.variables.arm_version === '7') {
- common.skip('Too slow for armv7 bots');
+if (process.config.variables.arm_version === "7") {
+ common.skip("Too slow for armv7 bots");
 }
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 
 // FIPS requires length >= 1024 but we use 512/256 in this test to keep it from
 // taking too long and timing out in CI.
@@ -52,8 +52,8 @@ for (let i = 0; i < 2000; i++) {
  assert.deepStrictEqual(
   aSecret,
   bSecret,
-  'Secrets should be equal.\n' +
-    `aSecret: ${aSecret.toString('base64')}\n` +
-    `bSecret: ${bSecret.toString('base64')}`,
+  "Secrets should be equal.\n" +
+    `aSecret: ${aSecret.toString("base64")}\n` +
+    `bSecret: ${bSecret.toString("base64")}`,
  );
 }

@@ -1,9 +1,9 @@
 // Flags: --expose-gc
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { Worker } = require('worker_threads');
+const common = require("../common");
+const assert = require("assert");
+const { Worker } = require("worker_threads");
 
 {
  const sharedArrayBuffer = new SharedArrayBuffer(12);
@@ -21,12 +21,12 @@ const { Worker } = require('worker_threads');
   eval: true,
   workerData: { sharedArrayBuffer },
  });
- w.on('message', common.mustCall(() => {
-  assert.strictEqual(local.toString(), 'Hello world!');
+ w.on("message", common.mustCall(() => {
+  assert.strictEqual(local.toString(), "Hello world!");
   global.gc();
   w.terminate();
  }));
  w.postMessage({});
  // This would be a race condition if the memory regions were overlapping
- local.write('Hello ');
+ local.write("Hello ");
 }

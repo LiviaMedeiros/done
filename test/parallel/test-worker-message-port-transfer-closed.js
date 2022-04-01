@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { MessageChannel } = require('worker_threads');
+const common = require("../common");
+const assert = require("assert");
+const { MessageChannel } = require("worker_threads");
 
 // This tests various behaviors around transferring MessagePorts with closing
 // or closed handles.
@@ -17,15 +17,15 @@ function testSingle(closedPort, potentiallyOpenPort) {
  assert.throws(common.mustCall(() => {
   potentiallyOpenPort.postMessage(null, [arrayBuf, closedPort]);
  }), common.mustCall((err) => {
-  assert.strictEqual(err.name, 'DataCloneError');
+  assert.strictEqual(err.name, "DataCloneError");
   assert.strictEqual(err.message,
-                     'MessagePort in transfer list is already detached');
+                     "MessagePort in transfer list is already detached");
   assert.strictEqual(err.code, 25);
   assert.ok(err instanceof Error);
 
   const DOMException = err.constructor;
   assert.ok(err instanceof DOMException);
-  assert.strictEqual(DOMException.name, 'DOMException');
+  assert.strictEqual(DOMException.name, "DOMException");
 
   return true;
  }));
@@ -54,4 +54,4 @@ function tickUnref(n, fn) {
  setImmediate(tickUnref, n - 1, fn).unref();
 }
 
-tickUnref(10, common.mustNotCall('The communication channel is still open'));
+tickUnref(10, common.mustNotCall("The communication channel is still open"));

@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert');
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
  method: [
-  'object', 'nullProtoObject', 'nullProtoLiteralObject', 'storageObject',
-  'fakeMap', 'map',
+  "object", "nullProtoObject", "nullProtoLiteralObject", "storageObject",
+  "fakeMap", "map",
  ],
  n: [1e6],
 });
@@ -104,22 +104,22 @@ function runMap(n) {
 
 function main({ n, method }) {
  switch (method) {
-  case 'object':
+  case "object":
    runObject(n);
    break;
-  case 'nullProtoObject':
+  case "nullProtoObject":
    runNullProtoObject(n);
    break;
-  case 'nullProtoLiteralObject':
+  case "nullProtoLiteralObject":
    runNullProtoLiteralObject(n);
    break;
-  case 'storageObject':
+  case "storageObject":
    runStorageObject(n);
    break;
-  case 'fakeMap':
+  case "fakeMap":
    runFakeMap(n);
    break;
-  case 'map':
+  case "map":
    runMap(n);
    break;
   default:

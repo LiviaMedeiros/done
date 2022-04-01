@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
 // This test makes sure that when throwing an error from a domain, and then
 // handling that error in an uncaughtException handler by throwing an error
 // again, the exit code, signal and error messages are the ones we expect with
 // and without using --abort-on-uncaught-exception.
 
-const common = require('../common');
-const assert = require('assert');
-const child_process = require('child_process');
-const domain = require('domain');
+const common = require("../common");
+const assert = require("assert");
+const child_process = require("child_process");
+const domain = require("domain");
 
-const uncaughtExceptionHandlerErrMsg = 'boom from uncaughtException handler';
-const domainErrMsg = 'boom from domain';
+const uncaughtExceptionHandlerErrMsg = "boom from uncaughtException handler";
+const domainErrMsg = "boom from domain";
 
 const RAN_UNCAUGHT_EXCEPTION_HANDLER_EXIT_CODE = 42;
 
-if (process.argv[2] === 'child') {
- process.on('uncaughtException', common.mustCall(function onUncaught() {
-  if (process.execArgv.includes('--abort-on-uncaught-exception')) {
+if (process.argv[2] === "child") {
+ process.on("uncaughtException", common.mustCall(function onUncaught() {
+  if (process.execArgv.includes("--abort-on-uncaught-exception")) {
    // When passing --abort-on-uncaught-exception to the child process,
    // we want to make sure that this handler (the process' uncaughtException
    // event handler) wasn't called. Unfortunately we can't parse the child
@@ -57,14 +57,14 @@ function runTestWithoutAbortOnUncaughtException() {
    // message must include only the message of the error thrown from the
    // process' uncaughtException handler.
    assert(stderr.includes(uncaughtExceptionHandlerErrMsg),
-          'stderr output must include proper uncaughtException ' +
-             'handler\'s error\'s message');
+          "stderr output must include proper uncaughtException " +
+             "handler's error's message");
    assert(!stderr.includes(domainErrMsg),
-          'stderr output must not include domain\'s error\'s message');
+          "stderr output must not include domain's error's message");
 
    assert.notStrictEqual(err.code, 0,
-                         'child process should have exited with a ' +
-                            'non-zero exit code, but did not');
+                         "child process should have exited with a " +
+                            "non-zero exit code, but did not");
   },
  );
 }
@@ -74,26 +74,26 @@ function runTestWithAbortOnUncaughtException() {
   withAbortOnUncaughtException: true,
  }), function onTestDone(err, stdout, stderr) {
   assert.notStrictEqual(err.code, RAN_UNCAUGHT_EXCEPTION_HANDLER_EXIT_CODE,
-                        'child process should not have run its ' +
-                          'uncaughtException event handler');
+                        "child process should not have run its " +
+                          "uncaughtException event handler");
   assert(common.nodeProcessAborted(err.code, err.signal),
-         'process should have aborted, but did not');
+         "process should have aborted, but did not");
  });
 }
 
 function createTestCmdLine(options) {
- let testCmd = '';
+ let testCmd = "";
 
  if (!common.isWindows) {
   // Do not create core files, as it can take a lot of disk space on
   // continuous testing and developers' machines
-  testCmd += 'ulimit -c 0 && ';
+  testCmd += "ulimit -c 0 && ";
  }
 
  testCmd += `"${process.argv[0]}"`;
 
  if (options && options.withAbortOnUncaughtException) {
-  testCmd += ' --abort-on-uncaught-exception';
+  testCmd += " --abort-on-uncaught-exception";
  }
 
  testCmd += ` "${process.argv[1]}" child`;

@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
 // This test requires the program 'wrk'.
-const common = require('../common');
+const common = require("../common");
 
-const child_process = require('child_process');
-const result = child_process.spawnSync('wrk', ['-h']);
-if (result.error && result.error.code === 'ENOENT')
- common.skip('test requires `wrk` to be installed first');
+const child_process = require("child_process");
+const result = child_process.spawnSync("wrk", ["-h"]);
+if (result.error && result.error.code === "ENOENT")
+ common.skip("test requires `wrk` to be installed first");
 
-const assert = require('assert');
-const http = require('http');
-const url = require('url');
+const assert = require("assert");
+const http = require("http");
+const url = require("url");
 
-const body = 'hello world\n';
+const body = "hello world\n";
 const server = http.createServer((req, res) => {
  res.writeHead(200, {
-  'Content-Length': body.length,
-  'Content-Type': 'text/plain',
+  "Content-Length": body.length,
+  "Content-Type": "text/plain",
  });
  res.write(body);
  res.end();
@@ -49,28 +49,28 @@ let normalReqSec = 0;
 
 const runAb = (opts, callback) => {
  const args = [
-  '-c', opts.concurrent || 50,
-  '-t', opts.threads || 2,
-  '-d', opts.duration || '5s',
+  "-c", opts.concurrent || 50,
+  "-t", opts.threads || 2,
+  "-d", opts.duration || "5s",
  ];
 
  if (!opts.keepalive) {
-  args.push('-H');
-  args.push('Connection: close');
+  args.push("-H");
+  args.push("Connection: close");
  }
 
- args.push(url.format({ hostname: '127.0.0.1',
-                        port: opts.port, protocol: 'http' }));
+ args.push(url.format({ hostname: "127.0.0.1",
+                        port: opts.port, protocol: "http" }));
 
- const child = child_process.spawn('wrk', args);
+ const child = child_process.spawn("wrk", args);
  child.stderr.pipe(process.stderr);
- child.stdout.setEncoding('utf8');
+ child.stdout.setEncoding("utf8");
 
  let stdout;
 
- child.stdout.on('data', (data) => stdout += data);
+ child.stdout.on("data", (data) => stdout += data);
 
- child.on('close', (code, signal) => {
+ child.on("close", (code, signal) => {
   if (code) {
    console.error(code, signal);
    process.exit(code);
@@ -104,7 +104,7 @@ server.listen(0, () => {
  });
 });
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(
   normalReqSec > 50,
   true,
@@ -118,7 +118,7 @@ process.on('exit', () => {
  assert.strictEqual(
   normalReqSec < keepAliveReqSec,
   true,
-  'normalReqSec should be less than keepAliveReqSec, ' +
+  "normalReqSec should be less than keepAliveReqSec, " +
     `but ${normalReqSec} is greater than ${keepAliveReqSec}`,
  );
 });

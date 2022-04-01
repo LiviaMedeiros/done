@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 
 // Testing api calls for arrays
 const test_array = require(`./build/${common.buildType}/test_array`);
@@ -11,11 +11,11 @@ const array = [
  48,
  13493,
  9459324,
- { name: 'hello' },
+ { name: "hello" },
  [
-  'world',
-  'node',
-  'abi',
+  "world",
+  "node",
+  "abi",
  ],
 ];
 
@@ -50,7 +50,7 @@ assert(test_array.NewWithLength(4294967295) instanceof Array);
 
 {
  // Verify that array elements can be deleted.
- const arr = ['a', 'b', 'c', 'd'];
+ const arr = ["a", "b", "c", "d"];
 
  assert.strictEqual(arr.length, 4);
  assert.strictEqual(2 in arr, true);

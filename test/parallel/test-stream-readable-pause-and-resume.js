@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { Readable } = require('stream');
+const common = require("../common");
+const assert = require("assert");
+const { Readable } = require("stream");
 
 let ticks = 18;
 let expectedData = 19;
@@ -17,7 +17,7 @@ const rs = new Readable({
  },
 });
 
-rs.on('end', common.mustCall());
+rs.on("end", common.mustCall());
 readAndPause();
 
 function readAndPause() {
@@ -31,13 +31,13 @@ function readAndPause() {
    return;
 
   setImmediate(function() {
-   rs.removeListener('data', ondata);
+   rs.removeListener("data", ondata);
    readAndPause();
    rs.resume();
   });
  }, 1); // Only call ondata once
 
- rs.on('data', ondata);
+ rs.on("data", ondata);
 }
 
 {
@@ -47,9 +47,9 @@ function readAndPause() {
 
  function read() {}
 
- readable.setEncoding('utf8');
- readable.on('readable', read);
- readable.removeListener('readable', read);
+ readable.setEncoding("utf8");
+ readable.on("readable", read);
+ readable.removeListener("readable", read);
  readable.pause();
 
  process.nextTick(function() {
@@ -58,7 +58,7 @@ function readAndPause() {
 }
 
 {
- const { PassThrough } = require('stream');
+ const { PassThrough } = require("stream");
 
  const source3 = new PassThrough();
  const target3 = new PassThrough();
@@ -67,8 +67,8 @@ function readAndPause() {
  while (target3.write(chunk));
 
  source3.pipe(target3);
- target3.on('drain', common.mustCall(() => {
+ target3.on("drain", common.mustCall(() => {
   assert(!source3.isPaused());
  }));
- target3.on('data', () => {});
+ target3.on("data", () => {});
 }

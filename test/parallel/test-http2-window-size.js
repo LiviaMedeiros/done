@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 // This test ensures that servers are able to send data independent of window
 // size.
 // TODO: This test makes large buffer allocations (128KiB) and should be tested
 // on smaller / IoT platforms in case this poses problems for these targets.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
 
 // Given a list of buffers and an initial window size, have a server write
 // each buffer to the HTTP2 Writable stream, and let the client verify that
@@ -19,7 +19,7 @@ function run(buffers, initialWindowSize) {
   const expectedBuffer = Buffer.concat(buffers);
 
   const server = h2.createServer();
-  server.on('stream', (stream) => {
+  server.on("stream", (stream) => {
    let i = 0;
    const writeToStream = () => {
     const cont = () => {
@@ -34,35 +34,35 @@ function run(buffers, initialWindowSize) {
     if (drained) {
      cont();
     } else {
-     stream.once('drain', cont);
+     stream.once("drain", cont);
     }
    };
    writeToStream();
   });
   server.listen(0);
 
-  server.on('listening', common.mustCall(function() {
+  server.on("listening", common.mustCall(function() {
    const port = this.address().port;
 
    const client =
         h2.connect({
-        	authority: 'localhost',
-        	protocol: 'http:',
+        	authority: "localhost",
+        	protocol: "http:",
         	port,
         }, {
         	settings: {
         		initialWindowSize,
         	},
-        }).on('connect', common.mustCall(() => {
+        }).on("connect", common.mustCall(() => {
         	const req = client.request({
-        		':method': 'GET',
-        		':path': '/',
+        		":method": "GET",
+        		":path": "/",
         	});
         	const responses = [];
-        	req.on('data', (data) => {
+        	req.on("data", (data) => {
         		responses.push(data);
         	});
-        	req.on('end', common.mustCall(() => {
+        	req.on("end", common.mustCall(() => {
         		const actualBuffer = Buffer.concat(responses);
         		assert.strictEqual(Buffer.compare(actualBuffer, expectedBuffer), 0);
         		// shut down

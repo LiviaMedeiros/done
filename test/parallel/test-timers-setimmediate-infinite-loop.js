@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // This test ensures that if an Immediate callback clears subsequent
 // immediates we don't get stuck in an infinite loop.

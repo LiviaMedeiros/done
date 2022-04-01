@@ -1,17 +1,17 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 /* eslint-disable no-global-assign */
 
-require('../common');
+require("../common");
 
 const {
  structuredClone: _structuredClone,
-} = require('internal/structured_clone');
+} = require("internal/structured_clone");
 
 const {
  strictEqual,
  throws,
-} = require('assert');
+} = require("assert");
 
 strictEqual(globalThis.structuredClone, _structuredClone);
 structuredClone = undefined;

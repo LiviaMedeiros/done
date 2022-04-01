@@ -1,23 +1,23 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
-const cp = require('child_process');
-const { spawnSync } = require('child_process');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
+const cp = require("child_process");
+const { spawnSync } = require("child_process");
 
 // This is a sibling test to test/addons/uv-handle-leak.
 
 const bindingPath = path.resolve(
- __dirname, '..', 'addons', 'uv-handle-leak', 'build',
+ __dirname, "..", "addons", "uv-handle-leak", "build",
  `${common.buildType}/binding.node`);
 
 if (!fs.existsSync(bindingPath))
- common.skip('binding not built yet');
+ common.skip("binding not built yet");
 
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
 
- const { Worker } = require('worker_threads');
+ const { Worker } = require("worker_threads");
 
  // The worker thread loads and then unloads `bindingPath`. Because of this the
  // symbols in `bindingPath` are lost when the worker thread quits, but the
@@ -36,14 +36,14 @@ if (process.argv[2] === 'child') {
   binding.leakHandle(0x42);
   `, { eval: true });
 } else {
- const child = cp.spawnSync(process.execPath, [__filename, 'child']);
+ const child = cp.spawnSync(process.execPath, [__filename, "child"]);
  const stderr = child.stderr.toString();
 
- assert.strictEqual(child.stdout.toString(), '');
+ assert.strictEqual(child.stdout.toString(), "");
 
- const lines = stderr.split('\n');
+ const lines = stderr.split("\n");
 
- let state = 'initial';
+ let state = "initial";
 
  // Parse output that is formatted like this:
 
@@ -62,12 +62,12 @@ if (process.argv[2] === 'child') {
 
  function isGlibc() {
   try {
-   const lddOut = spawnSync('ldd', [process.execPath]).stdout;
-   const libcInfo = lddOut.toString().split('\n').map(
+   const lddOut = spawnSync("ldd", [process.execPath]).stdout;
+   const libcInfo = lddOut.toString().split("\n").map(
     (line) => line.match(/libc\.so.+=>\s*(\S+)\s/)).filter((info) => info);
    if (libcInfo.length === 0)
     return false;
-   const nmOut = spawnSync('nm', ['-D', libcInfo[0][1]]).stdout;
+   const nmOut = spawnSync("nm", ["-D", libcInfo[0][1]]).stdout;
    if (/gnu_get_libc_version/.test(nmOut))
     return true;
   } catch {
@@ -80,49 +80,49 @@ if (process.argv[2] === 'child') {
         common.isAIX ||
         (common.isLinux && !isGlibc()) ||
         common.isWindows)) {
-  assert(stderr.includes('ExampleOwnerClass'), stderr);
-  assert(stderr.includes('CloseCallback'), stderr);
-  assert(stderr.includes('example_instance'), stderr);
+  assert(stderr.includes("ExampleOwnerClass"), stderr);
+  assert(stderr.includes("CloseCallback"), stderr);
+  assert(stderr.includes("example_instance"), stderr);
  }
 
  while (lines.length > 0) {
   const line = lines.shift().trim();
 
   switch (state) {
-   case 'initial':
+   case "initial":
     assert.match(line, /^uv loop at \[.+\] has open handles:$/);
-    state = 'handle-start';
+    state = "handle-start";
     break;
-   case 'handle-start':
+   case "handle-start":
     if (/^uv loop at \[.+\] has \d+ open handles in total$/.test(line)) {
-     state = 'assertion-failure';
+     state = "assertion-failure";
      break;
     }
     assert.match(line, /^\[.+\] timer( \(active\))?$/);
-    state = 'close-callback';
+    state = "close-callback";
     break;
-   case 'close-callback':
+   case "close-callback":
     assert.match(line, /^Close callback:/);
-    state = 'data';
+    state = "data";
     break;
-   case 'data':
+   case "data":
     assert.match(line, /^Data: .+$/);
-    state = 'maybe-first-field';
+    state = "maybe-first-field";
     break;
-   case 'maybe-first-field':
+   case "maybe-first-field":
     if (!/^\(First field\)/.test(line)) {
      lines.unshift(line);
     }
-    state = 'handle-start';
+    state = "handle-start";
     break;
-   case 'assertion-failure':
+   case "assertion-failure":
     assert.match(line, /Assertion .+ failed/);
-    state = 'done';
+    state = "done";
     break;
-   case 'done':
+   case "done":
     break;
   }
  }
 
- assert.strictEqual(state, 'done');
+ assert.strictEqual(state, "done");
 }

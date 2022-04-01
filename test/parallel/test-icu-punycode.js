@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasIntl)
- common.skip('missing Intl');
+ common.skip("missing Intl");
 
-const { internalBinding } = require('internal/test/binding');
-const icu = internalBinding('icu');
-const assert = require('assert');
+const { internalBinding } = require("internal/test/binding");
+const icu = internalBinding("icu");
+const assert = require("assert");
 
 // Test hasConverter method
-assert(icu.hasConverter('utf-8'),
-       'hasConverter should report converter exists for utf-8');
-assert(!icu.hasConverter('x'),
-       'hasConverter should report converter does not exist for x');
+assert(icu.hasConverter("utf-8"),
+       "hasConverter should report converter exists for utf-8");
+assert(!icu.hasConverter("x"),
+       "hasConverter should report converter does not exist for x");
 
-const tests = require('../fixtures/url-idna.js');
-const fixtures = require('../fixtures/icu-punycode-toascii.json');
+const tests = require("../fixtures/url-idna.js");
+const fixtures = require("../fixtures/icu-punycode-toascii.json");
 
 {
  for (const [i, { ascii, unicode }] of tests.entries()) {
@@ -31,7 +31,7 @@ const fixtures = require('../fixtures/icu-punycode-toascii.json');
 
 {
  for (const [i, test] of fixtures.entries()) {
-  if (typeof test === 'string')
+  if (typeof test === "string")
    continue; // skip comments
   const { comment, input, output } = test;
   let caseComment = `case ${i + 1}`;
@@ -41,9 +41,9 @@ const fixtures = require('../fixtures/icu-punycode-toascii.json');
    assert.throws(
     () => icu.toASCII(input),
     {
-     code: 'ERR_INVALID_ARG_VALUE',
-     name: 'TypeError',
-     message: 'Cannot convert name to ASCII',
+     code: "ERR_INVALID_ARG_VALUE",
+     name: "TypeError",
+     message: "Cannot convert name to ASCII",
     },
    );
    icu.toASCII(input, true); // Should not throw.

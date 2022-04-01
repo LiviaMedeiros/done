@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 // just a simple http server and client.
 
-const common = require('../common');
-const onGC = require('../common/ongc');
+const common = require("../common");
+const onGC = require("../common/ongc");
 
-const cpus = require('os').cpus().length;
+const cpus = require("os").cpus().length;
 
 function serverHandler(req, res) {
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.end('Hello World\n');
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.end("Hello World\n");
 }
 
-const http = require('http');
+const http = require("http");
 let createClients = true;
 let done = 0;
 let count = 0;
@@ -29,8 +29,8 @@ function getAll() {
   return;
 
  const req = http.get({
-  hostname: 'localhost',
-  pathname: '/',
+  hostname: "localhost",
+  pathname: "/",
   port: server.address().port,
  }, cb);
 

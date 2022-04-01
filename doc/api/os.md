@@ -10,7 +10,7 @@ The `os` module provides operating system-related utility methods and
 properties. It can be accessed using:
 
 ```js
-const os = require('os');
+const os = require("os");
 ```
 
 ## `os.EOL`
@@ -78,7 +78,7 @@ The properties included on each object include:
 ```js
 [
  {
-  model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+  model: "Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz",
   speed: 2926,
   times: {
    user: 252020,
@@ -89,7 +89,7 @@ The properties included on each object include:
   },
  },
  {
-  model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+  model: "Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz",
   speed: 2926,
   times: {
    user: 306960,
@@ -100,7 +100,7 @@ The properties included on each object include:
   },
  },
  {
-  model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+  model: "Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz",
   speed: 2926,
   times: {
    user: 248450,
@@ -111,7 +111,7 @@ The properties included on each object include:
   },
  },
  {
-  model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+  model: "Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz",
   speed: 2926,
   times: {
    user: 256880,

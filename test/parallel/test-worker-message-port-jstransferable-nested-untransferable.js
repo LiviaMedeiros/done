@@ -1,11 +1,11 @@
 // Flags: --expose-internals --no-warnings
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 const {
  JSTransferable, kTransfer, kTransferList,
-} = require('internal/worker/js_transferable');
-const { MessageChannel } = require('worker_threads');
+} = require("internal/worker/js_transferable");
+const { MessageChannel } = require("worker_threads");
 
 // Transferring a JSTransferable that refers to another, untransferable, value
 // in its transfer list should not crash hard.
@@ -26,7 +26,7 @@ class OuterTransferable extends JSTransferable {
  [kTransfer] = common.mustCall(() => {
   return {
    data: { inner: this.inner },
-   deserializeInfo: 'does-not:matter',
+   deserializeInfo: "does-not:matter",
   };
  });
 }
@@ -35,4 +35,4 @@ const { port1 } = new MessageChannel();
 const ot = new OuterTransferable();
 assert.throws(() => {
  port1.postMessage(ot, [ot]);
-}, { name: 'DataCloneError' });
+}, { name: "DataCloneError" });

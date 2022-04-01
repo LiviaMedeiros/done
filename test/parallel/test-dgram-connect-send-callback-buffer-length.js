@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
-const dgram = require('dgram');
-const client = dgram.createSocket('udp4');
+const dgram = require("dgram");
+const client = dgram.createSocket("udp4");
 
 const buf = Buffer.allocUnsafe(256);
 const offset = 20;

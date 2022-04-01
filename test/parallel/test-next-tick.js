@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 process.nextTick(common.mustCall(function() {
  process.nextTick(common.mustCall(function() {
@@ -58,6 +58,6 @@ process.nextTick(() => {
  assert.deepStrictEqual(this, {});
 }, 1, 2, 3, 4);
 
-process.on('exit', function() {
+process.on("exit", function() {
  process.nextTick(common.mustNotCall());
 });

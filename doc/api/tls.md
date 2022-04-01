@@ -11,7 +11,7 @@ The `tls` module provides an implementation of the Transport Layer Security
 The module can be accessed using:
 
 ```js
-const tls = require('tls');
+const tls = require("tls");
 ```
 
 ## Determining if crypto support is unavailable
@@ -45,9 +45,9 @@ of Node.js where crypto support is not enabled, consider using the
 ```mjs
 let tls;
 try {
- tls = await import('tls');
+ tls = await import("tls");
 } catch (err) {
- console.log('tls support is disabled!');
+ console.log("tls support is disabled!");
 }
 ```
 
@@ -546,10 +546,10 @@ A typical use case is to append received lines to a common text file, which
 is later used by software (such as Wireshark) to decrypt the traffic:
 
 ```js
-const logFile = fs.createWriteStream('/tmp/ssl-keys.log', { flags: 'a' });
+const logFile = fs.createWriteStream("/tmp/ssl-keys.log", { flags: "a" });
 // ...
-server.on('keylog', (line, tlsSocket) => {
- if (tlsSocket.remoteAddress !== '...')
+server.on("keylog", (line, tlsSocket) => {
+ if (tlsSocket.remoteAddress !== "...")
   return; // Only log keys for a particular IP
  logFile.write(line);
 });
@@ -658,12 +658,12 @@ The following illustrates resuming a TLS session:
 
 ```js
 const tlsSessionStore = {};
-server.on('newSession', (id, data, cb) => {
- tlsSessionStore[id.toString('hex')] = data;
+server.on("newSession", (id, data, cb) => {
+ tlsSessionStore[id.toString("hex")] = data;
  cb();
 });
-server.on('resumeSession', (id, cb) => {
- cb(null, tlsSessionStore[id.toString('hex')] || null);
+server.on("resumeSession", (id, cb) => {
+ cb(null, tlsSessionStore[id.toString("hex")] || null);
 });
 ```
 
@@ -875,9 +875,9 @@ A typical use case is to append received lines to a common text file, which
 is later used by software (such as Wireshark) to decrypt the traffic:
 
 ```js
-const logFile = fs.createWriteStream('/tmp/ssl-keys.log', { flags: 'a' });
+const logFile = fs.createWriteStream("/tmp/ssl-keys.log", { flags: "a" });
 // ...
-tlsSocket.on('keylog', (line) => logFile.write(line));
+tlsSocket.on("keylog", (line) => logFile.write(line));
 ```
 
 ### Event: `'OCSPResponse'`
@@ -945,7 +945,7 @@ they will work for all TLS versions. Applications that only expect to
 get or use one session should listen for this event only once:
 
 ```js
-tlsSocket.once('session', (session) => {
+tlsSocket.once("session", (session) => {
  // The session can be used immediately or later.
  tls.connect({
   session: session,
@@ -1044,7 +1044,7 @@ Example
 ```js
 const keyingMaterial = tlsSocket.exportKeyingMaterial(
  128,
- 'client finished');
+ "client finished");
 
 /*
  Example return value of keyingMaterial:
@@ -1695,33 +1695,33 @@ The following illustrates a client for the echo server example from
 
 ```js
 // Assumes an echo server that is listening on port 8000.
-const tls = require('tls');
-const fs = require('fs');
+const tls = require("tls");
+const fs = require("fs");
 
 const options = {
  // Necessary only if the server requires client certificate authentication.
- key: fs.readFileSync('client-key.pem'),
- cert: fs.readFileSync('client-cert.pem'),
+ key: fs.readFileSync("client-key.pem"),
+ cert: fs.readFileSync("client-cert.pem"),
 
  // Necessary only if the server uses a self-signed certificate.
- ca: [ fs.readFileSync('server-cert.pem') ],
+ ca: [ fs.readFileSync("server-cert.pem") ],
 
  // Necessary only if the server's cert isn't for "localhost".
  checkServerIdentity: () => { return null; },
 };
 
 const socket = tls.connect(8000, options, () => {
- console.log('client connected',
-             socket.authorized ? 'authorized' : 'unauthorized');
+ console.log("client connected",
+             socket.authorized ? "authorized" : "unauthorized");
  process.stdin.pipe(socket);
  process.stdin.resume();
 });
-socket.setEncoding('utf8');
-socket.on('data', (data) => {
+socket.setEncoding("utf8");
+socket.on("data", (data) => {
  console.log(data);
 });
-socket.on('end', () => {
- console.log('server ends connection');
+socket.on("end", () => {
+ console.log("server ends connection");
 });
 ```
 
@@ -2102,29 +2102,29 @@ workers.
 The following illustrates a simple echo server:
 
 ```js
-const tls = require('tls');
-const fs = require('fs');
+const tls = require("tls");
+const fs = require("fs");
 
 const options = {
- key: fs.readFileSync('server-key.pem'),
- cert: fs.readFileSync('server-cert.pem'),
+ key: fs.readFileSync("server-key.pem"),
+ cert: fs.readFileSync("server-cert.pem"),
 
  // This is necessary only if using client certificate authentication.
  requestCert: true,
 
  // This is necessary only if the client uses a self-signed certificate.
- ca: [ fs.readFileSync('client-cert.pem') ],
+ ca: [ fs.readFileSync("client-cert.pem") ],
 };
 
 const server = tls.createServer(options, (socket) => {
- console.log('server connected',
-             socket.authorized ? 'authorized' : 'unauthorized');
- socket.write('welcome!\n');
- socket.setEncoding('utf8');
+ console.log("server connected",
+             socket.authorized ? "authorized" : "unauthorized");
+ socket.write("welcome!\n");
+ socket.setEncoding("utf8");
  socket.pipe(socket);
 });
 server.listen(8000, () => {
- console.log('server bound');
+ console.log("server bound");
 });
 ```
 

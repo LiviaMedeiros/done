@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const child = require('child_process');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const child = require("child_process");
+const fixtures = require("../common/fixtures");
 
 if (!common.isMainThread)
- common.skip('process.chdir is not available in Workers');
+ common.skip("process.chdir is not available in Workers");
 
 if (process.env.TEST_INIT) {
- return process.stdout.write('Loaded successfully!');
+ return process.stdout.write("Loaded successfully!");
 }
 
 process.env.TEST_INIT = 1;
@@ -45,20 +45,20 @@ function test(file, expected) {
  // Change CWD as we do this test so it's not dependent on current CWD
  // being in the test folder
  process.chdir(__dirname);
- test('test-init', 'Loaded successfully!');
- test('test-init.js', 'Loaded successfully!');
+ test("test-init", "Loaded successfully!");
+ test("test-init.js", "Loaded successfully!");
 }
 
 {
  // test-init-index is in fixtures dir as requested by ry, so go there
  process.chdir(fixtures.path());
- test('test-init-index', 'Loaded successfully!');
+ test("test-init-index", "Loaded successfully!");
 }
 
 {
  // Ensures that `node fs` does not mistakenly load the native 'fs' module
  // instead of the desired file and that the fs module loads as
  // expected in node
- process.chdir(fixtures.path('test-init-native'));
- test('fs', 'fs loaded successfully');
+ process.chdir(fixtures.path("test-init-native"));
+ test("fs", "fs loaded successfully");
 }

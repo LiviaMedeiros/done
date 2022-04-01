@@ -1,20 +1,20 @@
 // Flags: --no-warnings --expose-internals
 
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 const {
  newWritableStreamFromStreamWritable,
-} = require('internal/webstreams/adapters');
+} = require("internal/webstreams/adapters");
 
 const {
  Duplex,
  Writable,
  PassThrough,
-} = require('stream');
+} = require("stream");
 
 class TestWritable extends Writable {
  constructor(asyncWrite = false) {
@@ -35,7 +35,7 @@ class TestWritable extends Writable {
 
 [1, {}, false, []].forEach((arg) => {
  assert.throws(() => newWritableStreamFromStreamWritable(arg), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 });
 
@@ -44,9 +44,9 @@ class TestWritable extends Writable {
  // without errors.
 
  const writable = new TestWritable();
- writable.on('error', common.mustNotCall());
- writable.on('finish', common.mustCall());
- writable.on('close', common.mustCall());
+ writable.on("error", common.mustNotCall());
+ writable.on("finish", common.mustCall());
+ writable.on("close", common.mustCall());
 
  const writableStream = newWritableStreamFromStreamWritable(writable);
 
@@ -58,13 +58,13 @@ class TestWritable extends Writable {
 {
  // Aborting the WritableStream errors the stream.Writable
 
- const error = new Error('boom');
+ const error = new Error("boom");
  const writable = new TestWritable();
- writable.on('error', common.mustCall((reason) => {
+ writable.on("error", common.mustCall((reason) => {
   assert.strictEqual(reason, error);
  }));
- writable.on('finish', common.mustNotCall());
- writable.on('close', common.mustCall());
+ writable.on("finish", common.mustNotCall());
+ writable.on("close", common.mustCall());
 
  const writableStream = newWritableStreamFromStreamWritable(writable);
 
@@ -77,7 +77,7 @@ class TestWritable extends Writable {
  // Destroying the stream.Writable prematurely errors the
  // WritableStream
 
- const error = new Error('boom');
+ const error = new Error("boom");
  const writable = new TestWritable();
 
  const writableStream = newWritableStreamFromStreamWritable(writable);
@@ -92,7 +92,7 @@ class TestWritable extends Writable {
  const writableStream = newWritableStreamFromStreamWritable(writable);
 
  assert.rejects(writableStream.close(), {
-  code: 'ABORT_ERR',
+  code: "ABORT_ERR",
  });
 
  writable.end();
@@ -103,13 +103,13 @@ class TestWritable extends Writable {
  const writableStream = newWritableStreamFromStreamWritable(writable);
  const writer = writableStream.getWriter();
  const ec = new TextEncoder();
- writer.write(ec.encode('hello')).then(common.mustCall(() => {
+ writer.write(ec.encode("hello")).then(common.mustCall(() => {
   assert.strictEqual(writable.chunks.length, 1);
   assert.deepStrictEqual(
    writable.chunks[0],
    {
-    chunk: Buffer.from('hello'),
-    encoding: 'buffer',
+    chunk: Buffer.from("hello"),
+    encoding: "buffer",
    });
  }));
 }
@@ -117,20 +117,20 @@ class TestWritable extends Writable {
 {
  const writable = new TestWritable(true);
 
- writable.on('error', common.mustNotCall());
- writable.on('close', common.mustCall());
- writable.on('finish', common.mustCall());
+ writable.on("error", common.mustNotCall());
+ writable.on("close", common.mustCall());
+ writable.on("finish", common.mustCall());
 
  const writableStream = newWritableStreamFromStreamWritable(writable);
  const writer = writableStream.getWriter();
  const ec = new TextEncoder();
- writer.write(ec.encode('hello')).then(common.mustCall(() => {
+ writer.write(ec.encode("hello")).then(common.mustCall(() => {
   assert.strictEqual(writable.chunks.length, 1);
   assert.deepStrictEqual(
    writable.chunks[0],
    {
-    chunk: Buffer.from('hello'),
-    encoding: 'buffer',
+    chunk: Buffer.from("hello"),
+    encoding: "buffer",
    });
   writer.close().then(common.mustCall());
  }));
@@ -138,16 +138,16 @@ class TestWritable extends Writable {
 
 {
  const duplex = new PassThrough();
- duplex.setEncoding('utf8');
+ duplex.setEncoding("utf8");
  const writableStream = newWritableStreamFromStreamWritable(duplex);
  const ec = new TextEncoder();
  writableStream
     .getWriter()
-    .write(ec.encode('hello'))
+    .write(ec.encode("hello"))
     .then(common.mustCall());
 
- duplex.on('data', common.mustCall((chunk) => {
-  assert.strictEqual(chunk, 'hello');
+ duplex.on("data", common.mustCall((chunk) => {
+  assert.strictEqual(chunk, "hello");
  }));
 }
 

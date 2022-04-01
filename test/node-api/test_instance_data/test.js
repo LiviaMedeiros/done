@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 // Test API calls for instance data.
 
-const common = require('../../common');
+const common = require("../../common");
 
 if (module !== require.main) {
  // When required as a module, run the tests.
@@ -24,16 +24,16 @@ if (module !== require.main) {
 } else {
  // When launched as a script, run tests in either a child process or in a
  // worker thread.
- const assert = require('assert');
- const requireAs = require('../../common/require-as');
- const runOptions = { stdio: ['inherit', 'pipe', 'inherit'] };
- const { spawnSync } = require('child_process');
+ const assert = require("assert");
+ const requireAs = require("../../common/require-as");
+ const runOptions = { stdio: ["inherit", "pipe", "inherit"] };
+ const { spawnSync } = require("child_process");
 
  // Run tests in a child process.
- requireAs(__filename, ['--expose-gc'], runOptions, 'child');
+ requireAs(__filename, ["--expose-gc"], runOptions, "child");
 
  // Run tests in a worker thread in a child process.
- requireAs(__filename, ['--expose-gc'], runOptions, 'worker');
+ requireAs(__filename, ["--expose-gc"], runOptions, "worker");
 
  function testProcessExit(addonName) {
   // Make sure that process exit is clean when the instance data has
@@ -43,13 +43,13 @@ if (module !== require.main) {
       // Replace any backslashes with double backslashes because they'll be re-
       // interpreted back to single backslashes in the command line argument
       // to the child process. Windows needs this.
-      .replace(/\\/g, '\\\\');
-  const child = spawnSync(process.execPath, ['-e', `require('${path}');`]);
+      .replace(/\\/g, "\\\\");
+  const child = spawnSync(process.execPath, ["-e", `require('${path}');`]);
   assert.strictEqual(child.signal, null);
   assert.strictEqual(child.status, 0);
-  assert.strictEqual(child.stderr.toString(), 'addon_free');
+  assert.strictEqual(child.stderr.toString(), "addon_free");
  }
 
- testProcessExit('test_ref_then_set');
- testProcessExit('test_set_then_ref');
+ testProcessExit("test_ref_then_set");
+ testProcessExit("test_set_then_ref");
 }

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Test to validate massive dns lookups do not block filesytem I/O
 // (or any fast I/O). Prior to https://github.com/libuv/libuv/pull/1845
@@ -8,17 +8,17 @@
 // fast I/O can complete in at least in 1/100th of time for slow I/O.
 // TEST TIME TO COMPLETION: ~5 seconds.
 
-const common = require('../common');
-const dns = require('dns');
-const fs = require('fs');
-const assert = require('assert');
+const common = require("../common");
+const dns = require("dns");
+const fs = require("fs");
+const assert = require("assert");
 
 const start = Date.now();
 
 const slowIOmax = 100;
 let slowIOcount = 0;
 let fastIOdone = false;
-let slowIOend, fastIOend;
+let fastIOend, slowIOend;
 
 function onResolve() {
  slowIOcount++;
@@ -28,7 +28,7 @@ function onResolve() {
   // Conservative expectation: finish disc I/O
   // at least by when the net I/O completes.
   assert.ok(fastIOdone,
-            'fast I/O was throttled due to threadpool congestion.');
+            "fast I/O was throttled due to threadpool congestion.");
 
   // More realistic expectation: finish disc I/O at least within
   // a time duration that is half of net I/O.
@@ -39,7 +39,7 @@ function onResolve() {
   const slowIOtime = slowIOend - start;
   const expectedMax = slowIOtime / 2;
   assert.ok(fastIOtime < expectedMax,
-            'fast I/O took longer to complete, ' +
+            "fast I/O took longer to complete, " +
               `actual: ${fastIOtime}, expected: ${expectedMax}`);
  }
 }

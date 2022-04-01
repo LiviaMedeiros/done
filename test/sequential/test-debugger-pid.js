@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 
-const fixtures = require('../common/fixtures');
-const startCLI = require('../common/debugger');
+const fixtures = require("../common/fixtures");
+const startCLI = require("../common/debugger");
 
-const assert = require('assert');
-const { spawn } = require('child_process');
+const assert = require("assert");
+const { spawn } = require("child_process");
 
 
 function launchTarget(...args) {
@@ -16,7 +16,7 @@ function launchTarget(...args) {
 }
 
 {
- const script = fixtures.path('debugger', 'alive.js');
+ const script = fixtures.path("debugger", "alive.js");
  let cli = null;
  let target = null;
 
@@ -35,7 +35,7 @@ function launchTarget(...args) {
  return launchTarget(script)
     .then((childProc) => {
     	target = childProc;
-    	cli = startCLI(['-p', `${target.pid}`]);
+    	cli = startCLI(["-p", `${target.pid}`]);
     	return cli.waitForPrompt();
     })
     .then(() => cli.command('sb("alive.js", 3)'))
@@ -45,7 +45,7 @@ function launchTarget(...args) {
     	assert.match(
     		cli.output,
     		/> 3 {3}\+\+x;/,
-    		'marks the 3rd line');
+    		"marks the 3rd line");
     })
     .then(() => cleanup())
     .then(null, cleanup);

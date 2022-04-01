@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // socket.write was not resetting the timeout timer. See
 // https://github.com/joyent/node/issues/2002
 
-const common = require('../common');
-const net = require('net');
+const common = require("../common");
+const net = require("net");
 
 const seconds = 5;
 let counter = 0;

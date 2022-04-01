@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const http = require('http');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const http = require("http");
+const assert = require("assert");
 
 const server = http.createServer((req, res) => {
  let corked = false;
@@ -15,18 +15,18 @@ const server = http.createServer((req, res) => {
  assert.strictEqual(res.writableCorked, res.socket.writableCorked);
  res.cork();
  assert.strictEqual(res.writableCorked, res.socket.writableCorked);
- res.writeHead(200, { 'a-header': 'a-header-value' });
+ res.writeHead(200, { "a-header": "a-header-value" });
  res.uncork();
  assert.strictEqual(res.writableCorked, res.socket.writableCorked);
  corked = false;
- res.end('asd');
+ res.end("asd");
  assert.strictEqual(res.writableCorked, res.socket.writableCorked);
 });
 
 server.listen(0, () => {
  http.get({ port: server.address().port }, (res) => {
-  res.on('data', common.mustCall());
-  res.on('end', common.mustCall(() => {
+  res.on("data", common.mustCall());
+  res.on("end", common.mustCall(() => {
    server.close();
   }));
  });

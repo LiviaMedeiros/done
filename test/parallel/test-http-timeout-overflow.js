@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const http = require("http");
 
 const server = http.createServer(common.mustCall(function(req, res) {
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.end('OK');
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.end("OK");
 }));
 
 server.listen(0, function() {
@@ -33,12 +33,12 @@ server.listen(0, function() {
 
  const req = http.request({
   port: this.address().port,
-  path: '/',
+  path: "/",
   agent: false,
  }, function(res) {
   req.clearTimeout(callback);
 
-  res.on('end', common.mustCall(function() {
+  res.on("end", common.mustCall(function() {
    server.close();
   }));
 

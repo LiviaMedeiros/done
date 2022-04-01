@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- aligned: ['true', 'false'],
- method: ['swap16', 'swap32', 'swap64'/* , 'htons', 'htonl', 'htonll' */],
+ aligned: ["true", "false"],
+ method: ["swap16", "swap32", "swap64"/* , 'htons', 'htonl', 'htonll' */],
  len: [64, 256, 768, 1024, 2056, 8192],
  n: [1e6],
 }, {
@@ -74,8 +74,8 @@ function genMethod(method) {
  return (new Function(fnString))();
 }
 
-function main({ method, len, n, aligned = 'true' }) {
- const buf = createBuffer(len, aligned === 'true');
+function main({ method, len, n, aligned = "true" }) {
+ const buf = createBuffer(len, aligned === "true");
  const bufferSwap = genMethod(method);
 
  bufferSwap(n, buf);

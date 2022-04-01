@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const expected = Buffer.from('hello');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
+const expected = Buffer.from("hello");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 // fs.write with all parameters provided:
 {
- const filename = path.join(tmpdir.path, 'write1.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write1.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, expected.length);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
+   const found = fs.readFileSync(filename, "utf8");
    assert.strictEqual(found, expected.toString());
   });
 
@@ -47,29 +47,29 @@ tmpdir.refresh();
 
 // fs.write with a buffer, without the length parameter:
 {
- const filename = path.join(tmpdir.path, 'write2.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write2.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, 2);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
-   assert.strictEqual(found, 'lo');
+   const found = fs.readFileSync(filename, "utf8");
+   assert.strictEqual(found, "lo");
   });
 
-  fs.write(fd, Buffer.from('hello'), 3, cb);
+  fs.write(fd, Buffer.from("hello"), 3, cb);
  }));
 }
 
 // fs.write with a buffer, without the offset and length parameters:
 {
- const filename = path.join(tmpdir.path, 'write3.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write3.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, expected.length);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
+   const found = fs.readFileSync(filename, "utf8");
    assert.deepStrictEqual(expected.toString(), found);
   });
 
@@ -79,13 +79,13 @@ tmpdir.refresh();
 
 // fs.write with the offset passed as undefined followed by the callback:
 {
- const filename = path.join(tmpdir.path, 'write4.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write4.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, expected.length);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
+   const found = fs.readFileSync(filename, "utf8");
    assert.deepStrictEqual(expected.toString(), found);
   });
 
@@ -95,13 +95,13 @@ tmpdir.refresh();
 
 // fs.write with offset and length passed as undefined followed by the callback:
 {
- const filename = path.join(tmpdir.path, 'write5.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write5.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, expected.length);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
+   const found = fs.readFileSync(filename, "utf8");
    assert.strictEqual(found, expected.toString());
   });
 
@@ -111,13 +111,13 @@ tmpdir.refresh();
 
 // fs.write with a Uint8Array, without the offset and length parameters:
 {
- const filename = path.join(tmpdir.path, 'write6.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write6.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, expected.length);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
+   const found = fs.readFileSync(filename, "utf8");
    assert.strictEqual(found, expected.toString());
   });
 
@@ -127,20 +127,20 @@ tmpdir.refresh();
 
 // fs.write with invalid offset type
 {
- const filename = path.join(tmpdir.path, 'write7.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write7.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   assert.throws(() => {
    fs.write(fd,
-            Buffer.from('abcd'),
+            Buffer.from("abcd"),
             NaN,
             expected.length,
             0,
             common.mustNotCall());
   }, {
-   code: 'ERR_OUT_OF_RANGE',
-   name: 'RangeError',
+   code: "ERR_OUT_OF_RANGE",
+   name: "RangeError",
    message: 'The value of "offset" is out of range. ' +
-               'It must be an integer. Received NaN',
+               "It must be an integer. Received NaN",
   });
 
   fs.closeSync(fd);
@@ -149,13 +149,13 @@ tmpdir.refresh();
 
 // fs.write with a DataView, without the offset and length parameters:
 {
- const filename = path.join(tmpdir.path, 'write8.txt');
- fs.open(filename, 'w', 0o644, common.mustSucceed((fd) => {
+ const filename = path.join(tmpdir.path, "write8.txt");
+ fs.open(filename, "w", 0o644, common.mustSucceed((fd) => {
   const cb = common.mustSucceed((written) => {
    assert.strictEqual(written, expected.length);
    fs.closeSync(fd);
 
-   const found = fs.readFileSync(filename, 'utf8');
+   const found = fs.readFileSync(filename, "utf8");
    assert.strictEqual(found, expected.toString());
   });
 

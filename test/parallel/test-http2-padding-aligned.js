@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
 const { PADDING_STRATEGY_ALIGNED, PADDING_STRATEGY_CALLBACK } = http2.constants;
-const makeDuplexPair = require('../common/duplexpair');
+const makeDuplexPair = require("../common/duplexpair");
 
 {
- const testData = '<h1>Hello World.</h1>';
+ const testData = "<h1>Hello World.</h1>";
  const server = http2.createServer({
   paddingStrategy: PADDING_STRATEGY_ALIGNED,
  });
- server.on('stream', common.mustCall((stream, headers) => {
+ server.on("stream", common.mustCall((stream, headers) => {
   stream.respond({
-   'content-type': 'text/html',
-   ':status': 200,
+   "content-type": "text/html",
+   ":status": 200,
   });
   stream.end(testData);
  }));
@@ -38,29 +38,29 @@ const makeDuplexPair = require('../common/duplexpair');
  assert.strictEqual(
   (clientLengths.reduce((i, n) => i + n) - 9 - 9) % 8, 0);
 
- serverSide.on('data', common.mustCall((chunk) => {
+ serverSide.on("data", common.mustCall((chunk) => {
   assert.strictEqual(chunk.length, serverLengths.shift());
  }, serverLengths.length));
- clientSide.on('data', common.mustCall((chunk) => {
+ clientSide.on("data", common.mustCall((chunk) => {
   assert.strictEqual(chunk.length, clientLengths.shift());
  }, clientLengths.length));
 
- server.emit('connection', serverSide);
+ server.emit("connection", serverSide);
 
- const client = http2.connect('http://localhost:80', {
+ const client = http2.connect("http://localhost:80", {
   paddingStrategy: PADDING_STRATEGY_ALIGNED,
   createConnection: common.mustCall(() => clientSide),
  });
 
- const req = client.request({ ':path': '/a' });
+ const req = client.request({ ":path": "/a" });
 
- req.on('response', common.mustCall());
+ req.on("response", common.mustCall());
 
- req.setEncoding('utf8');
- req.on('data', common.mustCall((data) => {
+ req.setEncoding("utf8");
+ req.on("data", common.mustCall((data) => {
   assert.strictEqual(data, testData);
  }));
- req.on('close', common.mustCall(() => {
+ req.on("close", common.mustCall(() => {
   clientSide.destroy();
   clientSide.end();
  }));

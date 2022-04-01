@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
 // Tests basic functionality of util.deprecate().
 
-const assert = require('assert');
-const util = require('util');
+const assert = require("assert");
+const util = require("util");
 
 const expectedWarnings = new Map();
 
 // Emits deprecation only once if same function is called.
 {
- const msg = 'fhqwhgads';
+ const msg = "fhqwhgads";
  const fn = util.deprecate(() => {}, msg);
  expectedWarnings.set(msg, { code: undefined, count: 1 });
  fn();
@@ -20,7 +20,7 @@ const expectedWarnings = new Map();
 
 // Emits deprecation twice for different functions.
 {
- const msg = 'sterrance';
+ const msg = "sterrance";
  const fn1 = util.deprecate(() => {}, msg);
  const fn2 = util.deprecate(() => {}, msg);
  expectedWarnings.set(msg, { code: undefined, count: 2 });
@@ -31,8 +31,8 @@ const expectedWarnings = new Map();
 // Emits deprecation only once if optional code is the same, even for different
 // functions.
 {
- const msg = 'cannonmouth';
- const code = 'deprecatesque';
+ const msg = "cannonmouth";
+ const code = "deprecatesque";
  const fn1 = util.deprecate(() => {}, msg, code);
  const fn2 = util.deprecate(() => {}, msg, code);
  expectedWarnings.set(msg, { code, count: 1 });
@@ -42,8 +42,8 @@ const expectedWarnings = new Map();
  fn2();
 }
 
-process.on('warning', (warning) => {
- assert.strictEqual(warning.name, 'DeprecationWarning');
+process.on("warning", (warning) => {
+ assert.strictEqual(warning.name, "DeprecationWarning");
  assert.ok(expectedWarnings.has(warning.message));
  const expected = expectedWarnings.get(warning.message);
  assert.strictEqual(warning.code, expected.code);
@@ -52,6 +52,6 @@ process.on('warning', (warning) => {
   expectedWarnings.delete(warning.message);
 });
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.deepStrictEqual(expectedWarnings, new Map());
 });

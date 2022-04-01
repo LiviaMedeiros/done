@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const stream = require('stream');
+const stream = require("stream");
 
 class MyWritable extends stream.Writable {
  constructor(options) {
@@ -16,21 +16,21 @@ class MyWritable extends stream.Writable {
 
 {
  const m = new MyWritable({ objectMode: true });
- m.on('error', common.mustNotCall());
+ m.on("error", common.mustNotCall());
  assert.throws(() => {
   m.write(null);
  }, {
-  code: 'ERR_STREAM_NULL_VALUES',
+  code: "ERR_STREAM_NULL_VALUES",
  });
 }
 
 {
  const m = new MyWritable();
- m.on('error', common.mustNotCall());
+ m.on("error", common.mustNotCall());
  assert.throws(() => {
   m.write(false);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 }
 
@@ -40,8 +40,8 @@ class MyWritable extends stream.Writable {
 }
 
 { // Should not throw.
- const m = new MyWritable({ objectMode: true }).on('error', (e) => {
-  assert.ifError(e || new Error('should not get here'));
+ const m = new MyWritable({ objectMode: true }).on("error", (e) => {
+  assert.ifError(e || new Error("should not get here"));
  });
  m.write(false, assert.ifError);
 }

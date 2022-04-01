@@ -1272,8 +1272,8 @@ to enable testing it at a larger scale.
 With `diagnostics_channel`, Node.js core and module authors can publish contextual data about what they are doing at a given time. This could be the hostname and query string of a mysql query, for example. Just create a named channel with `dc.channel(name)` and call `channel.publish(data)` to send the data to any listeners to that channel.
 
 ```js
-const dc = require('diagnostics_channel');
-const channel = dc.channel('mysql.query');
+const dc = require("diagnostics_channel");
+const channel = dc.channel("mysql.query");
 
 MySQL.prototype.query = function query(queryString, values, callback) {
  // Broadcast query information whenever a query is made
@@ -1289,8 +1289,8 @@ MySQL.prototype.query = function query(queryString, values, callback) {
 Channels are like one big global event emitter but are split into separate objects to ensure they get the best performance. If nothing is listening to the channel, the publishing overhead should be as close to zero as possible. Consuming channel data is as easy as using `channel.subscribe(listener)` to run a function whenever a message is published to that channel.
 
 ```js
-const dc = require('diagnostics_channel');
-const channel = dc.channel('mysql.query');
+const dc = require("diagnostics_channel");
+const channel = dc.channel("mysql.query");
 
 channel.subscribe(({ query, host }) => {
  console.log(`mysql query to ${host}: ${query}`);
@@ -1307,7 +1307,7 @@ The new `crypto.randomUUID()` method now allows to generate random
 [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) Version 4 UUID strings:
 
 ```js
-const { randomUUID } = require('crypto');
+const { randomUUID } = require("crypto");
 
 console.log(randomUUID());
 // 'aa7c91a1-f8fc-4339-b9db-f93fc7233429'
@@ -3281,8 +3281,8 @@ Example Usage:
 ```js
 const target = getEventTargetSomehow();
 
-target.addEventListener('foo', (event) => {
- console.log('foo event happened!');
+target.addEventListener("foo", (event) => {
+ console.log("foo event happened!");
 });
 ```
 
@@ -3796,7 +3796,7 @@ that will count each time they are called. Then the `verify` method can be used
 to assert that the expected number of calls happened:
 
 ```js
-const assert = require('assert');
+const assert = require("assert");
 
 const tracker = new assert.CallTracker();
 
@@ -3813,7 +3813,7 @@ callsotherFunc();
 
 // Calls tracker.verify() and verifies if all tracker.calls() functions have
 // been called the right number of times.
-process.on('exit', () => {
+process.on("exit", () => {
  tracker.verify();
 });
 ```
@@ -3824,7 +3824,7 @@ about the errors, if there are any:
 <!-- eslint-disable max-len -->
 
 ```js
-const assert = require('assert');
+const assert = require("assert");
 
 const tracker = new assert.CallTracker();
 
@@ -3855,17 +3855,17 @@ The Console constructor (`require('console').Console`) now supports different gr
 This is useful in case you want different grouping width than 2 spaces.
 
 ```js
-const { Console } = require('console');
+const { Console } = require("console");
 const customConsole = new Console({
  stdout: process.stdout,
  stderr: process.stderr,
  groupIndentation: 10,
 });
 
-customConsole.log('foo');
+customConsole.log("foo");
 // 'foo'
 customConsole.group();
-customConsole.log('foo');
+customConsole.log("foo");
 //           'foo'
 ```
 

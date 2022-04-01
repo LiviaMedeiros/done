@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Readable,
-} = require('stream');
-const { deepStrictEqual, rejects, throws } = require('assert');
+} = require("stream");
+const { deepStrictEqual, rejects, throws } = require("assert");
 
 const { from } = Readable;
 
@@ -53,8 +53,8 @@ const naturals = () => from(async function*() {
  // Coercion
  (async () => {
   // The spec made me do this ^^
-  deepStrictEqual(await naturals().take('cat').toArray(), []);
-  deepStrictEqual(await naturals().take('2').toArray(), [1, 2]);
+  deepStrictEqual(await naturals().take("cat").toArray(), []);
+  deepStrictEqual(await naturals().take("2").toArray(), [1, 2]);
   deepStrictEqual(await naturals().take(true).toArray(), [1]);
  })().then(common.mustCall());
 }
@@ -64,11 +64,11 @@ const naturals = () => from(async function*() {
  const ac = new AbortController();
  rejects(
   Readable.from([1, 2, 3]).take(1, { signal: ac.signal }).toArray(), {
-   name: 'AbortError',
+   name: "AbortError",
   }).then(common.mustCall());
  rejects(
   Readable.from([1, 2, 3]).drop(1, { signal: ac.signal }).toArray(), {
-   name: 'AbortError',
+   name: "AbortError",
   }).then(common.mustCall());
  ac.abort();
 }
@@ -78,7 +78,7 @@ const naturals = () => from(async function*() {
  const signal = AbortSignal.abort();
  rejects(
   Readable.from([1, 2, 3]).take(1, { signal }).toArray(), {
-   name: 'AbortError',
+   name: "AbortError",
   }).then(common.mustCall());
 }
 

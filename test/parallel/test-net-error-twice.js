@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const buf = Buffer.alloc(10 * 1024 * 1024, 0x62);
 
@@ -38,12 +38,12 @@ function ready() {
 }
 
 const server = net.createServer(function onConnection(conn) {
- conn.on('error', function(err) {
+ conn.on("error", function(err) {
   errs.push(err);
   if (errs.length > 1 && errs[0] === errs[1])
-   assert.fail('Should not emit the same error twice');
+   assert.fail("Should not emit the same error twice");
  });
- conn.on('close', function() {
+ conn.on("close", function() {
   server.unref();
  });
  serverSocket = conn;
@@ -51,13 +51,13 @@ const server = net.createServer(function onConnection(conn) {
 }).listen(0, function() {
  const client = net.connect({ port: this.address().port });
 
- client.on('connect', function() {
+ client.on("connect", function() {
   clientSocket = client;
   ready();
  });
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  console.log(errs);
  assert.strictEqual(errs.length, 1);
 });

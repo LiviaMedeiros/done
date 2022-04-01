@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const { PassThrough } = require('stream');
+"use strict";
+const common = require("../common");
+const { PassThrough } = require("stream");
 
 const encode = new PassThrough({
  highWaterMark: 1,
@@ -22,7 +22,7 @@ const onData = common.mustCall(() => {
  }
 }, 4);
 
-encode.pipe(decode).on('data', onData);
+encode.pipe(decode).on("data", onData);
 
 send(Buffer.from([0x1]));
 send(Buffer.from([0x2]));

@@ -1,14 +1,14 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const {
  PromisePrototypeCatch,
  PromisePrototypeThen,
  SafePromisePrototypeFinally,
-} = require('internal/test/binding').primordials;
+} = require("internal/test/binding").primordials;
 
 Promise.prototype.catch = common.mustNotCall();
 Promise.prototype.finally = common.mustNotCall();

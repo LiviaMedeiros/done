@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { AsyncLocalStorage } = require('async_hooks');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { AsyncLocalStorage } = require("async_hooks");
+const http = require("http");
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
@@ -14,7 +14,7 @@ const N = 3;
 let responses = 0;
 
 const server = http.createServer(common.mustCall((req, res) => {
- res.end('ok');
+ res.end("ok");
 }, N));
 
 server.listen(0, common.mustCall(() => {

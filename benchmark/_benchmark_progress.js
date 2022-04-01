@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const readline = require('readline');
+const readline = require("readline");
 
 function pad(input, minLength, fill) {
  const result = String(input);
@@ -10,15 +10,15 @@ function pad(input, minLength, fill) {
 
 function fraction(numerator, denominator) {
  const fdenominator = String(denominator);
- const fnumerator = pad(numerator, fdenominator.length, ' ');
+ const fnumerator = pad(numerator, fdenominator.length, " ");
  return `${fnumerator}/${fdenominator}`;
 }
 
 function getTime(diff) {
  const time = Math.ceil(diff[0] + diff[1] / 1e9);
- const hours = pad(Math.floor(time / 3600), 2, '0');
- const minutes = pad(Math.floor((time % 3600) / 60), 2, '0');
- const seconds = pad((time % 3600) % 60, 2, '0');
+ const hours = pad(Math.floor(time / 3600), 2, "0");
+ const minutes = pad(Math.floor((time % 3600) / 60), 2, "0");
+ const seconds = pad((time % 3600) % 60, 2, "0");
  return `${hours}:${minutes}:${seconds}`;
 }
 
@@ -34,7 +34,7 @@ class BenchmarkProgress {
   this.startTime = process.hrtime();
   // Number of times each file will be run (roughly).
   this.runsPerFile = queue.length / benchmarks.length;
-  this.currentFile = '';  // Filename of current benchmark.
+  this.currentFile = "";  // Filename of current benchmark.
   // Number of configurations already run for the current file.
   this.completedConfig = 0;
   // Total number of configurations for the current file
@@ -96,9 +96,9 @@ class BenchmarkProgress {
    runRate = completedConfig / scheduledConfig;
   }
   const completedRate = ((completedRuns + runRate) / scheduledRuns);
-  const percent = pad(Math.floor(completedRate * 100), 3, ' ');
+  const percent = pad(Math.floor(completedRate * 100), 3, " ");
 
-  const caption = finished ? 'Done\n' : this.currentFile;
+  const caption = finished ? "Done\n" : this.currentFile;
   return `[${getTime(diff)}|% ${percent}| ` +
            `${fraction(completedFiles, scheduledFiles)} files | ` +
            `${fraction(completedRunsForFile, runsPerFile)} runs | ` +

@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
-const { spawnSync } = require('child_process');
-const { strictEqual } = require('assert');
+"use strict";
+const common = require("../common");
+const { spawnSync } = require("child_process");
+const { strictEqual } = require("assert");
 
 // FIXME add sunos support
 if (common.isSunOS)
  common.skip(`Unsupported platform [${process.platform}]`);
 // FIXME add IBMi support
 if (common.isIBMi)
- common.skip('Unsupported platform IBMi');
+ common.skip("Unsupported platform IBMi");
 
 // Explicitly assigning to process.title before starting the child process
 // is necessary otherwise *its* process.title is whatever the last
@@ -17,6 +17,6 @@ if (common.isIBMi)
 if (common.isWindows)
  process.title = process.execPath;
 
-const xs = 'x'.repeat(1024);
-const proc = spawnSync(process.execPath, ['-p', 'process.title', xs]);
+const xs = "x".repeat(1024);
+const proc = spawnSync(process.execPath, ["-p", "process.title", xs]);
 strictEqual(proc.stdout.toString().trim(), process.execPath);

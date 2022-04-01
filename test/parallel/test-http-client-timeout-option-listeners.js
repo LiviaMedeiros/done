@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
-const http = require('http');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const http = require("http");
+const assert = require("assert");
 
 const agent = new http.Agent({ keepAlive: true });
 
 const server = http.createServer((req, res) => {
- res.end('');
+ res.end("");
 });
 
 // Maximum allowed value for timeouts
@@ -14,10 +14,10 @@ const timeout = 2 ** 31 - 1;
 
 const options = {
  agent,
- method: 'GET',
+ method: "GET",
  port: undefined,
  host: common.localhostIPv4,
- path: '/',
+ path: "/",
  timeout: timeout,
 };
 
@@ -38,9 +38,9 @@ function doRequest(cb) {
   const sockets = agent.sockets[`${options.host}:${options.port}:`];
   assert.strictEqual(sockets.length, 1);
   const socket = sockets[0];
-  const numListeners = socket.listeners('timeout').length;
+  const numListeners = socket.listeners("timeout").length;
   response.resume();
-  response.once('end', common.mustCall(() => {
+  response.once("end", common.mustCall(() => {
    process.nextTick(cb, numListeners);
   }));
  })).end();

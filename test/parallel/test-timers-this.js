@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
 const immediateHandler = setImmediate(common.mustCall(function() {
  assert.strictEqual(this, immediateHandler);
@@ -29,7 +29,7 @@ const immediateHandler = setImmediate(common.mustCall(function() {
 
 const immediateArgsHandler = setImmediate(common.mustCall(function() {
  assert.strictEqual(this, immediateArgsHandler);
-}), 'args ...');
+}), "args ...");
 
 const intervalHandler = setInterval(common.mustCall(function() {
  clearInterval(intervalHandler);
@@ -39,7 +39,7 @@ const intervalHandler = setInterval(common.mustCall(function() {
 const intervalArgsHandler = setInterval(common.mustCall(function() {
  clearInterval(intervalArgsHandler);
  assert.strictEqual(this, intervalArgsHandler);
-}), 1, 'args ...');
+}), 1, "args ...");
 
 const timeoutHandler = setTimeout(common.mustCall(function() {
  assert.strictEqual(this, timeoutHandler);
@@ -47,4 +47,4 @@ const timeoutHandler = setTimeout(common.mustCall(function() {
 
 const timeoutArgsHandler = setTimeout(common.mustCall(function() {
  assert.strictEqual(this, timeoutArgsHandler);
-}), 1, 'args ...');
+}), 1, "args ...");

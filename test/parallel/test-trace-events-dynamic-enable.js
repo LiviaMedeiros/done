@@ -1,23 +1,23 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 common.skipIfWorker(); // https://github.com/nodejs/node/issues/22767
 
-const { internalBinding } = require('internal/test/binding');
+const { internalBinding } = require("internal/test/binding");
 
 const {
  trace: {
   TRACE_EVENT_PHASE_NESTABLE_ASYNC_BEGIN: kBeforeEvent,
  },
-} = internalBinding('constants');
+} = internalBinding("constants");
 
-const { trace } = internalBinding('trace_events');
+const { trace } = internalBinding("trace_events");
 
-const assert = require('assert');
-const { Session } = require('inspector');
+const assert = require("assert");
+const { Session } = require("inspector");
 
 const session = new Session();
 
@@ -37,30 +37,30 @@ async function test() {
 
  const events = [];
  let tracingComplete = false;
- session.on('NodeTracing.dataCollected', (n) => {
+ session.on("NodeTracing.dataCollected", (n) => {
   assert.ok(n && n.params && n.params.value);
   events.push(...n.params.value);  // append the events.
  });
- session.on('NodeTracing.tracingComplete', () => tracingComplete = true);
+ session.on("NodeTracing.tracingComplete", () => tracingComplete = true);
 
- trace(kBeforeEvent, 'foo', 'test1', 0, 'test');
+ trace(kBeforeEvent, "foo", "test1", 0, "test");
 
- const traceConfig = { includedCategories: ['foo'] };
- await post('NodeTracing.start', { traceConfig });
+ const traceConfig = { includedCategories: ["foo"] };
+ await post("NodeTracing.start", { traceConfig });
 
- trace(kBeforeEvent, 'foo', 'test2', 0, 'test');
- trace(kBeforeEvent, 'bar', 'test3', 0, 'test');
+ trace(kBeforeEvent, "foo", "test2", 0, "test");
+ trace(kBeforeEvent, "bar", "test3", 0, "test");
 
- await post('NodeTracing.stop', { traceConfig });
+ await post("NodeTracing.stop", { traceConfig });
 
- trace(kBeforeEvent, 'foo', 'test4', 0, 'test');
+ trace(kBeforeEvent, "foo", "test4", 0, "test");
  session.disconnect();
 
  assert.ok(tracingComplete);
 
  const marks = events.filter((t) => null !== /foo/.exec(t.cat));
  assert.strictEqual(marks.length, 1);
- assert.strictEqual(marks[0].name, 'test2');
+ assert.strictEqual(marks[0].name, "test2");
 }
 
 test();

@@ -1,14 +1,14 @@
 // Flags: --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 const {
  CompressionStream,
  DecompressionStream,
-} = require('stream/web');
+} = require("stream/web");
 
-const assert = require('assert');
+const assert = require("assert");
 const dec = new TextDecoder();
 
 async function test(format) {
@@ -22,38 +22,38 @@ async function test(format) {
 
  await Promise.all([
   reader.read().then(({ value, done }) => {
-   assert.strictEqual(dec.decode(value), 'hello');
+   assert.strictEqual(dec.decode(value), "hello");
   }),
   reader.read().then(({ done }) => assert(done)),
-  writer.write('hello'),
+  writer.write("hello"),
   writer.close(),
  ]);
 }
 
-Promise.all(['gzip', 'deflate'].map((i) => test(i))).then(common.mustCall());
+Promise.all(["gzip", "deflate"].map((i) => test(i))).then(common.mustCall());
 
-[1, 'hello', false, {}].forEach((i) => {
+[1, "hello", false, {}].forEach((i) => {
  assert.throws(() => new CompressionStream(i), {
-  code: 'ERR_INVALID_ARG_VALUE',
+  code: "ERR_INVALID_ARG_VALUE",
  });
  assert.throws(() => new DecompressionStream(i), {
-  code: 'ERR_INVALID_ARG_VALUE',
+  code: "ERR_INVALID_ARG_VALUE",
  });
 });
 
 assert.throws(
- () => Reflect.get(CompressionStream.prototype, 'readable', {}), {
-  code: 'ERR_INVALID_THIS',
+ () => Reflect.get(CompressionStream.prototype, "readable", {}), {
+  code: "ERR_INVALID_THIS",
  });
 assert.throws(
- () => Reflect.get(CompressionStream.prototype, 'writable', {}), {
-  code: 'ERR_INVALID_THIS',
+ () => Reflect.get(CompressionStream.prototype, "writable", {}), {
+  code: "ERR_INVALID_THIS",
  });
 assert.throws(
- () => Reflect.get(DecompressionStream.prototype, 'readable', {}), {
-  code: 'ERR_INVALID_THIS',
+ () => Reflect.get(DecompressionStream.prototype, "readable", {}), {
+  code: "ERR_INVALID_THIS",
  });
 assert.throws(
- () => Reflect.get(DecompressionStream.prototype, 'writable', {}), {
-  code: 'ERR_INVALID_THIS',
+ () => Reflect.get(DecompressionStream.prototype, "writable", {}), {
+  code: "ERR_INVALID_THIS",
  });

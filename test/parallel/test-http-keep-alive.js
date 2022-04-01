@@ -19,27 +19,27 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const server = http.createServer(common.mustCall((req, res) => {
- const body = 'hello world\n';
+ const body = "hello world\n";
 
- res.writeHead(200, { 'Content-Length': body.length });
+ res.writeHead(200, { "Content-Length": body.length });
  res.write(body);
  res.end();
 }, 3));
 
 const agent = new http.Agent({ maxSockets: 1 });
-const headers = { 'connection': 'keep-alive' };
+const headers = { "connection": "keep-alive" };
 let name;
 
 server.listen(0, common.mustCall(function() {
  name = agent.getName({ port: this.address().port });
  http.get({
-  path: '/', headers: headers, port: this.address().port, agent: agent,
+  path: "/", headers: headers, port: this.address().port, agent: agent,
  }, common.mustCall((response) => {
   assert.strictEqual(agent.sockets[name].length, 1);
   assert.strictEqual(agent.requests[name].length, 2);
@@ -47,7 +47,7 @@ server.listen(0, common.mustCall(function() {
  }));
 
  http.get({
-  path: '/', headers: headers, port: this.address().port, agent: agent,
+  path: "/", headers: headers, port: this.address().port, agent: agent,
  }, common.mustCall((response) => {
   assert.strictEqual(agent.sockets[name].length, 1);
   assert.strictEqual(agent.requests[name].length, 1);
@@ -55,9 +55,9 @@ server.listen(0, common.mustCall(function() {
  }));
 
  http.get({
-  path: '/', headers: headers, port: this.address().port, agent: agent,
+  path: "/", headers: headers, port: this.address().port, agent: agent,
  }, common.mustCall((response) => {
-  response.on('end', common.mustCall(() => {
+  response.on("end", common.mustCall(() => {
    assert.strictEqual(agent.sockets[name].length, 1);
    assert(!(name in agent.requests));
    server.close();
@@ -66,7 +66,7 @@ server.listen(0, common.mustCall(function() {
  }));
 }));
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert(!(name in agent.sockets));
  assert(!(name in agent.requests));
 });

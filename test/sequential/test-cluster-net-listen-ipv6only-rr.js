@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasIPv6)
- common.skip('no IPv6 support');
+ common.skip("no IPv6 support");
 
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 // This test ensures that the `ipv6Only` option in `net.Server.listen()`
 // works as expected when we use cluster with `SCHED_RR` schedulingPolicy.
 cluster.schedulingPolicy = cluster.SCHED_RR;
-const host = '::';
+const host = "::";
 const WORKER_ACCOUNT = 3;
 
 if (cluster.isPrimary) {
@@ -20,9 +20,9 @@ if (cluster.isPrimary) {
 
  for (let i = 0; i < WORKER_ACCOUNT; i += 1) {
   const myWorker = new Promise((resolve) => {
-   const worker = cluster.fork().on('exit', common.mustCall((statusCode) => {
+   const worker = cluster.fork().on("exit", common.mustCall((statusCode) => {
     assert.strictEqual(statusCode, 0);
-   })).on('listening', common.mustCall((workerAddress) => {
+   })).on("listening", common.mustCall((workerAddress) => {
     if (!address) {
      address = workerAddress;
     } else {
@@ -39,7 +39,7 @@ if (cluster.isPrimary) {
   // Make sure the `ipv6Only` option works. Should be able to use the port on
   // IPv4.
   const server = net.createServer().listen({
-   host: '0.0.0.0',
+   host: "0.0.0.0",
    port: address.port,
   }, common.mustCall(() => {
    // Exit.

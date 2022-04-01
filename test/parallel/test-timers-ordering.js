@@ -21,11 +21,11 @@
 
 // Flags: --expose-internals
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const { internalBinding } = require('internal/test/binding');
-const { getLibuvNow } = internalBinding('timers');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { internalBinding } = require("internal/test/binding");
+const { getLibuvNow } = internalBinding("timers");
 
 const N = 30;
 

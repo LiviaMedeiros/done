@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- method: ['for', 'for-of', 'for-in', 'forEach'],
+ method: ["for", "for-of", "for-in", "forEach"],
  count: [5, 10, 20, 100],
  n: [5e6],
 });
@@ -54,16 +54,16 @@ function main({ n, count, method }) {
   items[i] = i;
 
  switch (method) {
-  case 'for':
+  case "for":
    fn = useFor;
    break;
-  case 'for-of':
+  case "for-of":
    fn = useForOf;
    break;
-  case 'for-in':
+  case "for-in":
    fn = useForIn;
    break;
-  case 'forEach':
+  case "forEach":
    fn = useForEach;
    break;
   default:

@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
 const inputs = [
  undefined,
  null,
  true,
  false,
- '',
+ "",
  [],
  {},
  NaN,
  +Infinity,
  -Infinity,
  (1.0 / 0.0),      // sanity check
- parseFloat('x'),  // NaN
+ parseFloat("x"),  // NaN
  -10,
  -1,
  -0.5,

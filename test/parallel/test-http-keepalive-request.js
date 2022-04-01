@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
 
 let serverSocket = null;
@@ -64,7 +64,7 @@ function makeRequest(n) {
 
  req.end();
 
- req.on('socket', function(sock) {
+ req.on("socket", function(sock) {
   if (clientSocket) {
    assert.strictEqual(sock, clientSocket);
   } else {
@@ -72,13 +72,13 @@ function makeRequest(n) {
   }
  });
 
- req.on('response', function(res) {
-  let data = '';
-  res.setEncoding('utf8');
-  res.on('data', function(c) {
+ req.on("response", function(res) {
+  let data = "";
+  res.setEncoding("utf8");
+  res.on("data", function(c) {
    data += c;
   });
-  res.on('end', function() {
+  res.on("end", function() {
    assert.strictEqual(data, `/${n}`);
    setTimeout(function() {
     actualRequests++;
@@ -88,7 +88,7 @@ function makeRequest(n) {
  });
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(actualRequests, expectRequests);
- console.log('ok');
+ console.log("ok");
 });

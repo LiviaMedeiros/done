@@ -1,26 +1,26 @@
 // Flags: --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const {
  TextEncoderStream,
  TextDecoderStream,
-} = require('stream/web');
+} = require("stream/web");
 
 const kEuroBytes = Buffer.from([0xe2, 0x82, 0xac]);
 const kEuro = Buffer.from([0xe2, 0x82, 0xac]).toString();
 
-[1, false, [], {}, 'hello'].forEach((i) => {
+[1, false, [], {}, "hello"].forEach((i) => {
  assert.throws(() => new TextDecoderStream(i), {
-  code: 'ERR_ENCODING_NOT_SUPPORTED',
+  code: "ERR_ENCODING_NOT_SUPPORTED",
  });
 });
 
-[1, false, 'hello'].forEach((i) => {
+[1, false, "hello"].forEach((i) => {
  assert.throws(() => new TextDecoderStream(undefined, i), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 });
 
@@ -42,29 +42,29 @@ const kEuro = Buffer.from([0xe2, 0x82, 0xac]).toString();
   writer.close(),
  ]).then(common.mustCall());
 
- assert.strictEqual(tds.encoding, 'utf-8');
+ assert.strictEqual(tds.encoding, "utf-8");
  assert.strictEqual(tds.fatal, false);
  assert.strictEqual(tds.ignoreBOM, false);
 
  assert.throws(
-  () => Reflect.get(TextDecoderStream.prototype, 'encoding', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextDecoderStream.prototype, "encoding", {}), {
+   code: "ERR_INVALID_THIS",
   });
  assert.throws(
-  () => Reflect.get(TextDecoderStream.prototype, 'fatal', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextDecoderStream.prototype, "fatal", {}), {
+   code: "ERR_INVALID_THIS",
   });
  assert.throws(
-  () => Reflect.get(TextDecoderStream.prototype, 'ignoreBOM', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextDecoderStream.prototype, "ignoreBOM", {}), {
+   code: "ERR_INVALID_THIS",
   });
  assert.throws(
-  () => Reflect.get(TextDecoderStream.prototype, 'readable', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextDecoderStream.prototype, "readable", {}), {
+   code: "ERR_INVALID_THIS",
   });
  assert.throws(
-  () => Reflect.get(TextDecoderStream.prototype, 'writable', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextDecoderStream.prototype, "writable", {}), {
+   code: "ERR_INVALID_THIS",
   });
 }
 
@@ -85,18 +85,18 @@ const kEuro = Buffer.from([0xe2, 0x82, 0xac]).toString();
   writer.close(),
  ]).then(common.mustCall());
 
- assert.strictEqual(tds.encoding, 'utf-8');
+ assert.strictEqual(tds.encoding, "utf-8");
 
  assert.throws(
-  () => Reflect.get(TextEncoderStream.prototype, 'encoding', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextEncoderStream.prototype, "encoding", {}), {
+   code: "ERR_INVALID_THIS",
   });
  assert.throws(
-  () => Reflect.get(TextEncoderStream.prototype, 'readable', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextEncoderStream.prototype, "readable", {}), {
+   code: "ERR_INVALID_THIS",
   });
  assert.throws(
-  () => Reflect.get(TextEncoderStream.prototype, 'writable', {}), {
-   code: 'ERR_INVALID_THIS',
+  () => Reflect.get(TextEncoderStream.prototype, "writable", {}), {
+   code: "ERR_INVALID_THIS",
   });
 }

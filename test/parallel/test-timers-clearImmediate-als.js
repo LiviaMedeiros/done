@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { AsyncLocalStorage } = require('async_hooks');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { AsyncLocalStorage } = require("async_hooks");
 
 // This is an asynclocalstorage variant of test-timers-clearImmediate.js
 const asyncLocalStorage = new AsyncLocalStorage();
@@ -12,14 +12,14 @@ function next() {
  asyncLocalStorage.run(new Map(), common.mustCall(() => {
   const immediate = setImmediate(fn);
   const store = asyncLocalStorage.getStore();
-  store.set('immediate', immediate);
+  store.set("immediate", immediate);
  }));
 }
 
 function onImmediate() {
  const store = asyncLocalStorage.getStore();
- const immediate = store.get('immediate');
- assert.strictEqual(immediate.constructor.name, 'Immediate');
+ const immediate = store.get("immediate");
+ assert.strictEqual(immediate.constructor.name, "Immediate");
  clearImmediate(immediate);
 }
 

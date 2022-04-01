@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const domain = require('domain');
-const fs = require('fs');
-const vm = require('vm');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const domain = require("domain");
+const fs = require("fs");
+const vm = require("vm");
 
-process.on('warning', common.mustNotCall());
+process.on("warning", common.mustNotCall());
 
 {
  const d = domain.create();
@@ -93,7 +93,7 @@ process.on('warning', common.mustNotCall());
  const d2 = domain.create();
  let p;
  d1.run(common.mustCall(() => {
-  p = Promise.reject(new Error('foobar'));
+  p = Promise.reject(new Error("foobar"));
  }));
 
  d2.run(common.mustCall(() => {
@@ -129,10 +129,10 @@ process.on('warning', common.mustNotCall());
 {
  // Unhandled rejections become errors on the domain
  const d = domain.create();
- d.on('error', common.mustCall((e) => {
-  assert.strictEqual(e.message, 'foo');
+ d.on("error", common.mustCall((e) => {
+  assert.strictEqual(e.message, "foo");
  }));
  d.run(common.mustCall(() => {
-  Promise.reject(new Error('foo'));
+  Promise.reject(new Error("foo"));
  }));
 }

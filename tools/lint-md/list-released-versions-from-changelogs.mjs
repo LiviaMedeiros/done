@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs';
-import { createInterface } from 'node:readline';
+import fs from "node:fs";
+import { createInterface } from "node:readline";
 
-const dataFolder = new URL('../../doc/changelogs/', import.meta.url);
+const dataFolder = new URL("../../doc/changelogs/", import.meta.url);
 
 const result = [];
 async function getVersionsFromFile(file) {
@@ -13,13 +13,13 @@ async function getVersionsFromFile(file) {
   input,
   crlfDelay: Infinity,
  })) {
-  if (toc === false && line === '<table>') {
+  if (toc === false && line === "<table>") {
    toc = true;
-  } else if (toc && line[0] !== '<') {
+  } else if (toc && line[0] !== "<") {
    input.close();
    return;
-  } else if (toc && line.startsWith('<a')) {
-   result.push(line.slice(line.indexOf('>') + 1, -'</a><br/>'.length));
+  } else if (toc && line.startsWith("<a")) {
+   result.push(line.slice(line.indexOf(">") + 1, -"</a><br/>".length));
   }
  }
 }
@@ -37,4 +37,4 @@ for await (const dirent of dir) {
 
 await Promise.all(filesToCheck);
 
-console.log(`::set-output name=NODE_RELEASED_VERSIONS::${result.join(',')}`);
+console.log(`::set-output name=NODE_RELEASED_VERSIONS::${result.join(",")}`);

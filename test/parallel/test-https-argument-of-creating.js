@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const https = require('https');
-const tls = require('tls');
+const assert = require("assert");
+const https = require("https");
+const tls = require("tls");
 
 const dftProtocol = {};
 
 // Test for immutable `opts`
 {
- const opts = { foo: 'bar', ALPNProtocols: [ 'http/1.1' ] };
+ const opts = { foo: "bar", ALPNProtocols: [ "http/1.1" ] };
  const server = https.createServer(opts);
 
- tls.convertALPNProtocols([ 'http/1.1' ], dftProtocol);
- assert.deepStrictEqual(opts, { foo: 'bar', ALPNProtocols: [ 'http/1.1' ] });
+ tls.convertALPNProtocols([ "http/1.1" ], dftProtocol);
+ assert.deepStrictEqual(opts, { foo: "bar", ALPNProtocols: [ "http/1.1" ] });
  assert.strictEqual(server.ALPNProtocols.compare(dftProtocol.ALPNProtocols),
                     0);
 }
@@ -27,11 +27,11 @@ const dftProtocol = {};
  const mustNotCall = common.mustNotCall();
  const server = https.createServer(mustNotCall);
 
- tls.convertALPNProtocols([ 'http/1.1' ], dftProtocol);
+ tls.convertALPNProtocols([ "http/1.1" ], dftProtocol);
  assert.strictEqual(server.ALPNProtocols.compare(dftProtocol.ALPNProtocols),
                     0);
- assert.strictEqual(server.listeners('request').length, 1);
- assert.strictEqual(server.listeners('request')[0], mustNotCall);
+ assert.strictEqual(server.listeners("request").length, 1);
+ assert.strictEqual(server.listeners("request")[0], mustNotCall);
 }
 
 
@@ -41,5 +41,5 @@ const dftProtocol = {};
 
  assert.strictEqual(server.ALPNProtocols.compare(dftProtocol.ALPNProtocols),
                     0);
- assert.strictEqual(server.listeners('request').length, 0);
+ assert.strictEqual(server.listeners("request").length, 0);
 }

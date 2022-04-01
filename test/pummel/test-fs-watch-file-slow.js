@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+"use strict";
+require("../common");
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 
 tmpdir.refresh();
-const FILENAME = path.join(tmpdir.path, 'watch-me');
+const FILENAME = path.join(tmpdir.path, "watch-me");
 const TIMEOUT = 1300;
 
 let nevents = 0;
@@ -58,25 +58,25 @@ fs.watchFile(FILENAME, { interval: TIMEOUT - 250 }, function(curr, prev) {
  }
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(nevents, 4);
 });
 
 setTimeout(createFile, TIMEOUT);
 
 function createFile() {
- console.log('creating file');
- fs.writeFileSync(FILENAME, 'test');
+ console.log("creating file");
+ fs.writeFileSync(FILENAME, "test");
  setTimeout(touchFile, TIMEOUT);
 }
 
 function touchFile() {
- console.log('touch file');
- fs.writeFileSync(FILENAME, 'test');
+ console.log("touch file");
+ fs.writeFileSync(FILENAME, "test");
  setTimeout(removeFile, TIMEOUT);
 }
 
 function removeFile() {
- console.log('remove file');
+ console.log("remove file");
  fs.unlinkSync(FILENAME);
 }

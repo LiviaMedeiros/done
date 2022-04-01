@@ -78,7 +78,7 @@ The following example of an ES module imports the function from `addTwo.mjs`:
 
 ```js
 // app.mjs
-import { addTwo } from './addTwo.mjs';
+import { addTwo } from "./addTwo.mjs";
 
 // Prints: 6
 console.log(addTwo(4));
@@ -170,8 +170,8 @@ Modules are loaded multiple times if the `import` specifier used to resolve
 them has a different query or fragment.
 
 ```js
-import './foo.mjs?query=1'; // loads ./foo.mjs with query of "?query=1"
-import './foo.mjs?query=2'; // loads ./foo.mjs with query of "?query=2"
+import "./foo.mjs?query=1"; // loads ./foo.mjs with query of "?query=1"
+import "./foo.mjs?query=2"; // loads ./foo.mjs with query of "?query=2"
 ```
 
 The volume root may be referenced via `/`, `//` or `file:///`. Given the
@@ -222,7 +222,7 @@ modules. This URL scheme allows for builtin modules to be referenced by valid
 absolute URL strings.
 
 ```js
-import fs from 'node:fs/promises';
+import fs from "node:fs/promises";
 ```
 
 ## Import assertions
@@ -239,10 +239,10 @@ The [Import Assertions proposal][] adds an inline syntax for module import
 statements to pass on more information alongside the module specifier.
 
 ```js
-import fooData from './foo.json' assert { type: 'json' };
+import fooData from "./foo.json" assert { type: 'json' };
 
 const { default: barData } =
-  await import('./bar.json', { assert: { type: 'json' } });
+  await import("./bar.json", { assert: { type: 'json' } });
 ```
 
 Node.js supports the following `type` values, for which the assertion is
@@ -261,13 +261,13 @@ exports. Named exports of builtin modules are updated only by calling
 [`module.syncBuiltinESMExports()`][].
 
 ```js
-import EventEmitter from 'events';
+import EventEmitter from "events";
 const e = new EventEmitter();
 ```
 
 ```js
-import { readFile } from 'fs';
-readFile('./foo.txt', (err, source) => {
+import { readFile } from "fs";
+readFile("./foo.txt", (err, source) => {
  if (err) {
   console.error(err);
  } else {
@@ -277,11 +277,11 @@ readFile('./foo.txt', (err, source) => {
 ```
 
 ```js
-import fs, { readFileSync } from 'fs';
-import { syncBuiltinESMExports } from 'module';
-import { Buffer } from 'buffer';
+import fs, { readFileSync } from "fs";
+import { syncBuiltinESMExports } from "module";
+import { Buffer } from "buffer";
 
-fs.readFileSync = () => Buffer.from('Hello, ESM');
+fs.readFileSync = () => Buffer.from("Hello, ESM");
 syncBuiltinESMExports();
 
 fs.readFileSync === readFileSync;
@@ -309,8 +309,8 @@ current module file.
 This enables useful patterns such as relative file loading:
 
 ```js
-import { readFileSync } from 'fs';
-const buffer = readFileSync(new URL('./data.proto', import.meta.url));
+import { readFileSync } from "fs";
+const buffer = readFileSync(new URL("./data.proto", import.meta.url));
 ```
 
 ### `import.meta.resolve(specifier[, parent])`
@@ -389,11 +389,11 @@ module default import or its corresponding sugar syntax:
 <!-- eslint-disable no-duplicate-imports -->
 
 ```js
-import { default as cjs } from 'cjs';
+import { default as cjs } from "cjs";
 
 // The following import statement is "syntax sugar" (equivalent but sweeter)
 // for `{ default as cjsSugar }` in the above import statement:
-import cjsSugar from 'cjs';
+import cjsSugar from "cjs";
 
 console.log(cjs);
 console.log(cjs === cjsSugar);
@@ -429,7 +429,7 @@ For example, consider a CommonJS module written:
 
 ```cjs
 // cjs.cjs
-exports.name = 'exported';
+exports.name = "exported";
 ```
 
 The preceding module supports named imports in ES modules:
@@ -437,15 +437,15 @@ The preceding module supports named imports in ES modules:
 <!-- eslint-disable no-duplicate-imports -->
 
 ```js
-import { name } from './cjs.cjs';
+import { name } from "./cjs.cjs";
 console.log(name);
 // Prints: 'exported'
 
-import cjs from './cjs.cjs';
+import cjs from "./cjs.cjs";
 console.log(cjs);
 // Prints: { name: 'exported' }
 
-import * as m from './cjs.cjs';
+import * as m from "./cjs.cjs";
 console.log(m);
 // Prints: [Module] { default: { name: 'exported' }, name: 'exported' }
 ```
@@ -521,7 +521,7 @@ separate cache.
 JSON files can be referenced by `import`:
 
 ```js
-import packageConfig from './package.json' assert { type: 'json' };
+import packageConfig from "./package.json" assert { type: 'json' };
 ```
 
 The `assert { type: 'json' }` syntax is mandatory; see [Import Assertions][].
@@ -547,7 +547,7 @@ This integration is in line with the
 For example, an `index.mjs` containing:
 
 ```js
-import * as M from './module.wasm';
+import * as M from "./module.wasm";
 console.log(M);
 ```
 
@@ -580,7 +580,7 @@ export const five = await Promise.resolve(5);
 And a `b.mjs` with
 
 ```js
-import { five } from './a.mjs';
+import { five } from "./a.mjs";
 
 console.log(five); // Logs `5`
 ```
@@ -593,15 +593,15 @@ If a top level `await` expression never resolves, the `node` process will exit
 with a `13` [status code][].
 
 ```js
-import { spawn } from 'child_process';
-import { execPath } from 'process';
+import { spawn } from "child_process";
+import { execPath } from "process";
 
 spawn(execPath, [
- '--input-type=module',
- '--eval',
+ "--input-type=module",
+ "--eval",
  // Never-resolving Promise:
- 'await new Promise(() => {})',
-]).once('exit', (code) => {
+ "await new Promise(() => {})",
+]).once("exit", (code) => {
  console.log(code); // Logs `13`
 });
 ```
@@ -647,8 +647,8 @@ references to the local dependencies:
 
 ```mjs
 // file.mjs
-import worker_threads from 'worker_threads';
-import { configure, resize } from 'https://example.com/imagelib.mjs';
+import worker_threads from "worker_threads";
+import { configure, resize } from "https://example.com/imagelib.mjs";
 configure({ worker_threads });
 ```
 
@@ -763,7 +763,7 @@ export async function resolve(specifier, context, defaultResolve) {
   // case it's adding another value for matching conditional exports.
   return defaultResolve(specifier, {
    ...context,
-   conditions: [...context.conditions, 'another-condition'],
+   conditions: [...context.conditions, "another-condition"],
   });
  }
  // Defer to Node.js for all other specifiers.
@@ -851,7 +851,7 @@ export async function load(url, context, defaultLoad) {
     */
   return {
    format,
-   source: '...',
+   source: "...",
   };
  }
  // Defer to Node.js for all other URLs.
@@ -949,7 +949,7 @@ and there is no security.
 
 ```js
 // https-loader.mjs
-import { get } from 'https';
+import { get } from "https";
 
 export function resolve(specifier, context, defaultResolve) {
  const { parentURL = null } = context;
@@ -957,11 +957,11 @@ export function resolve(specifier, context, defaultResolve) {
  // Normally Node.js would error on specifiers starting with 'https://', so
  // this hook intercepts them and converts them into absolute URLs to be
  // passed along to the later hooks below.
- if (specifier.startsWith('https://')) {
+ if (specifier.startsWith("https://")) {
   return {
    url: specifier,
   };
- } else if (parentURL && parentURL.startsWith('https://')) {
+ } else if (parentURL && parentURL.startsWith("https://")) {
   return {
    url: new URL(specifier, parentURL).href,
   };
@@ -974,18 +974,18 @@ export function resolve(specifier, context, defaultResolve) {
 export function load(url, context, defaultLoad) {
  // For JavaScript to be loaded over the network, we need to fetch and
  // return it.
- if (url.startsWith('https://')) {
+ if (url.startsWith("https://")) {
   return new Promise((resolve, reject) => {
    get(url, (res) => {
-    let data = '';
-    res.on('data', (chunk) => data += chunk);
-    res.on('end', () => resolve({
+    let data = "";
+    res.on("data", (chunk) => data += chunk);
+    res.on("end", () => resolve({
      // This example assumes all network-provided JavaScript is ES module
      // code.
-     format: 'module',
+     format: "module",
      source: data,
     }));
-   }).on('error', (err) => reject(err));
+   }).on("error", (err) => reject(err));
   });
  }
 
@@ -996,7 +996,7 @@ export function load(url, context, defaultLoad) {
 
 ```js
 // main.mjs
-import { VERSION } from 'https://coffeescript.org/browser-compiler-modern/coffeescript.js';
+import { VERSION } from "https://coffeescript.org/browser-compiler-modern/coffeescript.js";
 
 console.log(VERSION);
 ```
@@ -1019,11 +1019,11 @@ purposes.
 
 ```js
 // coffeescript-loader.mjs
-import { readFile } from 'node:fs/promises';
-import { dirname, extname, resolve as resolvePath } from 'node:path';
-import { cwd } from 'node:process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import CoffeeScript from 'coffeescript';
+import { readFile } from "node:fs/promises";
+import { dirname, extname, resolve as resolvePath } from "node:path";
+import { cwd } from "node:process";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import CoffeeScript from "coffeescript";
 
 const baseURL = pathToFileURL(`${cwd()}/`).href;
 
@@ -1062,7 +1062,7 @@ export async function load(url, context, defaultLoad) {
   // `require.extensions` in order to process the files with the CommonJS
   // loader. Avoiding the need for a separate CommonJS handler is a future
   // enhancement planned for ES module loaders.
-  if (format === 'commonjs') {
+  if (format === "commonjs") {
    return { format };
   }
 
@@ -1099,18 +1099,18 @@ async function getPackageType(url) {
   url;
  // Compose a file path to a package.json in the same directory,
  // which may or may not exist
- const packagePath = resolvePath(dir, 'package.json');
+ const packagePath = resolvePath(dir, "package.json");
  // Try to read the possibly nonexistent package.json
- const type = await readFile(packagePath, { encoding: 'utf8' })
+ const type = await readFile(packagePath, { encoding: "utf8" })
     .then((filestring) => JSON.parse(filestring).type)
     .catch((err) => {
-    	if (err?.code !== 'ENOENT') console.error(err);
+    	if (err?.code !== "ENOENT") console.error(err);
     });
  // Ff package.json existed and contained a `type` field with a value, voila
  if (type) return type;
  // Otherwise, (if not at the root) continue checking the next directory up
  // If at the root, stop and return false
- return dir.length > 1 && getPackageType(resolvePath(dir, '..'));
+ return dir.length > 1 && getPackageType(resolvePath(dir, ".."));
 }
 ```
 

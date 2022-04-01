@@ -1,13 +1,13 @@
 // Flags: --expose-gc --no-deprecation
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { createSecureContext } = require('tls');
-const { createSecurePair } = require('tls');
+const assert = require("assert");
+const { createSecureContext } = require("tls");
+const { createSecurePair } = require("tls");
 
 const before = process.memoryUsage().external;
 {

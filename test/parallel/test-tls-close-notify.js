@@ -20,23 +20,23 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const { internalBinding } = require('internal/test/binding');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
-const { ShutdownWrap } = internalBinding('stream_wrap');
+const { internalBinding } = require("internal/test/binding");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
+const { ShutdownWrap } = internalBinding("stream_wrap");
 
 const server = tls.createServer({
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 }, function(c) {
  // Ensure that we receive 'end' event anyway.
- c.on('end', common.mustCall(function() {
+ c.on("end", common.mustCall(function() {
   server.close();
  }));
 }).listen(0, common.mustCall(function() {

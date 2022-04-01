@@ -1,15 +1,15 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cp = require('child_process');
-const internalCp = require('internal/child_process');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cp = require("child_process");
+const internalCp = require("internal/child_process");
 const oldSpawnSync = internalCp.spawnSync;
 
 // Verify that a shell is, in fact, executed
-const doesNotExist = cp.spawnSync('does-not-exist', { shell: true });
+const doesNotExist = cp.spawnSync("does-not-exist", { shell: true });
 
-assert.notStrictEqual(doesNotExist.file, 'does-not-exist');
+assert.notStrictEqual(doesNotExist.file, "does-not-exist");
 assert.strictEqual(doesNotExist.error, undefined);
 assert.strictEqual(doesNotExist.signal, null);
 
@@ -20,28 +20,28 @@ else
 
 // Verify that passing arguments works
 internalCp.spawnSync = common.mustCall(function(opts) {
- assert.strictEqual(opts.args[opts.args.length - 1].replace(/"/g, ''),
-                    'echo foo');
+ assert.strictEqual(opts.args[opts.args.length - 1].replace(/"/g, ""),
+                    "echo foo");
  return oldSpawnSync(opts);
 });
-const echo = cp.spawnSync('echo', ['foo'], { shell: true });
+const echo = cp.spawnSync("echo", ["foo"], { shell: true });
 internalCp.spawnSync = oldSpawnSync;
 
-assert.strictEqual(echo.stdout.toString().trim(), 'foo');
+assert.strictEqual(echo.stdout.toString().trim(), "foo");
 
 // Verify that shell features can be used
-const cmd = 'echo bar | cat';
+const cmd = "echo bar | cat";
 const command = cp.spawnSync(cmd, { shell: true });
 
-assert.strictEqual(command.stdout.toString().trim(), 'bar');
+assert.strictEqual(command.stdout.toString().trim(), "bar");
 
 // Verify that the environment is properly inherited
 const env = cp.spawnSync(`"${process.execPath}" -pe process.env.BAZ`, {
- env: { ...process.env, BAZ: 'buzz' },
+ env: { ...process.env, BAZ: "buzz" },
  shell: true,
 });
 
-assert.strictEqual(env.stdout.toString().trim(), 'buzz');
+assert.strictEqual(env.stdout.toString().trim(), "buzz");
 
 // Verify that the shell internals work properly across platforms.
 {
@@ -50,14 +50,14 @@ assert.strictEqual(env.stdout.toString().trim(), 'buzz');
  // Enable monkey patching process.platform.
  const originalPlatform = process.platform;
  let platform = null;
- Object.defineProperty(process, 'platform', { get: () => platform });
+ Object.defineProperty(process, "platform", { get: () => platform });
 
  function test(testPlatform, shell, shellOutput) {
   platform = testPlatform;
   const isCmd = /^(?:.*\\)?cmd(?:\.exe)?$/i.test(shellOutput);
-  const cmd = 'not_a_real_command';
+  const cmd = "not_a_real_command";
 
-  const shellFlags = isCmd ? ['/d', '/s', '/c'] : ['-c'];
+  const shellFlags = isCmd ? ["/d", "/s", "/c"] : ["-c"];
   const outputCmd = isCmd ? `"${cmd}"` : cmd;
   const windowsVerbatim = isCmd ? true : undefined;
   internalCp.spawnSync = common.mustCall(function(opts) {
@@ -76,24 +76,24 @@ assert.strictEqual(env.stdout.toString().trim(), 'buzz');
  }
 
  // Test Unix platforms with the default shell.
- test('darwin', true, '/bin/sh');
+ test("darwin", true, "/bin/sh");
 
  // Test Unix platforms with a user specified shell.
- test('darwin', '/bin/csh', '/bin/csh');
+ test("darwin", "/bin/csh", "/bin/csh");
 
  // Test Android platforms.
- test('android', true, '/system/bin/sh');
+ test("android", true, "/system/bin/sh");
 
  // Test Windows platforms with a user specified shell.
- test('win32', 'powershell.exe', 'powershell.exe');
+ test("win32", "powershell.exe", "powershell.exe");
 
  // Test Windows platforms with the default shell and no comspec.
  delete process.env.comspec;
- test('win32', true, 'cmd.exe');
+ test("win32", true, "cmd.exe");
 
  // Test Windows platforms with the default shell and a comspec value.
- process.env.comspec = 'powershell.exe';
- test('win32', true, process.env.comspec);
+ process.env.comspec = "powershell.exe";
+ test("win32", true, process.env.comspec);
 
  // Restore the original value of process.platform.
  platform = originalPlatform;

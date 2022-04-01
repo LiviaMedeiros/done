@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const cluster = require('cluster');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const cluster = require("cluster");
+const assert = require("assert");
 
 if (cluster.isPrimary) {
  const worker = cluster.fork();
- worker.on('disconnect', common.mustCall(() => {
+ worker.on("disconnect", common.mustCall(() => {
   assert.strictEqual(worker.isConnected(), false);
   worker.destroy();
  }));

@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 const test_async = require(`./build/${common.buildType}/test_async`);
 const iterations = 500;
 

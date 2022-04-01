@@ -1,19 +1,19 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
 // This test verifies that if the binary is compiled with code cache,
 // and the cache is used when built in modules are compiled.
 // Otherwise, verifies that no cache is used when compiling builtins.
 
-const { isMainThread } = require('../common');
-const assert = require('assert');
+const { isMainThread } = require("../common");
+const assert = require("assert");
 const {
  internalBinding,
-} = require('internal/test/binding');
+} = require("internal/test/binding");
 const {
  getCacheUsage,
  moduleCategories: { canBeRequired, cannotBeRequired },
-} = internalBinding('native_module');
+} = internalBinding("native_module");
 
 for (const key of canBeRequired) {
  require(`node:${key}`);
@@ -27,8 +27,8 @@ const {
 } = getCacheUsage();
 
 function extractModules(list) {
- return list.filter((m) => m.startsWith('NativeModule'))
-  .map((m) => m.replace('NativeModule ', ''));
+ return list.filter((m) => m.startsWith("NativeModule"))
+  .map((m) => m.replace("NativeModule ", ""));
 }
 
 const loadedModules = extractModules(process.moduleLoadList);
@@ -36,7 +36,7 @@ const loadedModules = extractModules(process.moduleLoadList);
 // Cross-compiled binaries do not have code cache, verifies that the builtins
 // are all compiled without cache and we are doing the bookkeeping right.
 if (!process.features.cached_builtins) {
- console.log('The binary is not configured with code cache');
+ console.log("The binary is not configured with code cache");
  assert(!process.config.variables.node_use_node_code_cache);
 
  if (isMainThread) {
@@ -55,7 +55,7 @@ if (!process.features.cached_builtins) {
  assert(process.config.variables.node_use_node_code_cache);
 
  if (!isMainThread) {
-  for (const key of [ 'internal/bootstrap/pre_execution' ]) {
+  for (const key of [ "internal/bootstrap/pre_execution" ]) {
    canBeRequired.add(key);
    cannotBeRequired.delete(key);
   }
@@ -72,5 +72,5 @@ if (!process.features.cached_builtins) {
    wrong.push(`"${key}" should've been compiled **with** code cache`);
   }
  }
- assert.strictEqual(wrong.length, 0, wrong.join('\n'));
+ assert.strictEqual(wrong.length, 0, wrong.join("\n"));
 }

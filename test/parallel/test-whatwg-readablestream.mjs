@@ -1,6 +1,6 @@
-import { mustCall } from '../common/index.mjs';
-import { ReadableStream } from 'stream/web';
-import assert from 'assert';
+import { mustCall } from "../common/index.mjs";
+import { ReadableStream } from "stream/web";
+import assert from "assert";
 
 {
  // Test tee() with close in the nextTick after enqueue
@@ -30,7 +30,7 @@ import assert from 'assert';
   ]);
 
   assert.strictEqual(dataReader1, dataReader2);
-  assert.strictEqual(dataReader1, 'foobar');
-  assert.strictEqual(dataReader2, 'foobar');
+  assert.strictEqual(dataReader1, "foobar");
+  assert.strictEqual(dataReader2, "foobar");
  })().then(mustCall());
 }

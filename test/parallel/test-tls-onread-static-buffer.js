@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const options = {
- key: fixtures.readKey('agent2-key.pem'),
- cert: fixtures.readKey('agent2-cert.pem'),
+ key: fixtures.readKey("agent2-key.pem"),
+ cert: fixtures.readKey("agent2-cert.pem"),
 };
 
-const smallMessage = Buffer.from('hello world');
+const smallMessage = Buffer.from("hello world");
 // Used to test .pause(), so needs to be larger than the internal buffer
-const largeMessage = Buffer.alloc(64 * 1024).fill('hello world');
+const largeMessage = Buffer.alloc(64 * 1024).fill("hello world");
 
 // Test typical usage
 tls.createServer(options, common.mustCall(function(socket) {
@@ -35,7 +35,7 @@ tls.createServer(options, common.mustCall(function(socket) {
     buffers.push(Buffer.from(buf.slice(0, nread)));
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, smallMessage.length);
   assert.deepStrictEqual(Buffer.concat(buffers), smallMessage);
  }));
@@ -63,7 +63,7 @@ tls.createServer(options, common.mustCall(function(socket) {
     incoming = newIncoming;
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, smallMessage.length);
   assert.deepStrictEqual(incoming, new Uint8Array(smallMessage));
  }));
@@ -94,7 +94,7 @@ tls.createServer(options, common.mustCall(function(socket) {
     incoming.push(Buffer.from(buf.slice(0, nread)));
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, smallMessage.length);
   assert.deepStrictEqual(Buffer.concat(incoming), smallMessage);
   assert.strictEqual(bufPoolUsage, 7);
@@ -129,7 +129,7 @@ tls.createServer(options, common.mustCall(function(socket) {
     incoming = newIncoming;
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, smallMessage.length);
   assert.deepStrictEqual(incoming, new Uint8Array(smallMessage));
   assert.strictEqual(bufPoolUsage, 7);
@@ -164,7 +164,7 @@ tls.createServer(options, common.mustCall(function(socket) {
     }
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, largeMessage.length);
   assert.deepStrictEqual(Buffer.concat(buffers), largeMessage);
  }));
@@ -199,7 +199,7 @@ tls.createServer(options, common.mustCall(function(socket) {
     return true;
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, largeMessage.length);
   assert.deepStrictEqual(Buffer.concat(buffers), largeMessage);
  }));

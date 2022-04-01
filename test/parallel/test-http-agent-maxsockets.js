@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const Countdown = require('../common/countdown');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const Countdown = require("../common/countdown");
 
 const agent = new http.Agent({
  keepAlive: true,
@@ -12,14 +12,14 @@ const agent = new http.Agent({
 });
 
 const server = http.createServer(common.mustCall((req, res) => {
- res.end('hello world');
+ res.end("hello world");
 }, 2));
 
 server.keepAliveTimeout = 0;
 
 function get(path, callback) {
  return http.get({
-  host: 'localhost',
+  host: "localhost",
   port: server.address().port,
   agent: agent,
   path: path,
@@ -41,10 +41,10 @@ function dec() {
 function onGet(res) {
  assert.strictEqual(res.statusCode, 200);
  res.resume();
- res.on('end', common.mustCall(dec));
+ res.on("end", common.mustCall(dec));
 }
 
 server.listen(0, common.mustCall(() => {
- get('/1', common.mustCall(onGet));
- get('/2', common.mustCall(onGet));
+ get("/1", common.mustCall(onGet));
+ get("/2", common.mustCall(onGet));
 }));

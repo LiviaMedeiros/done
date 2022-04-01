@@ -1,16 +1,16 @@
 // Flags: --no-warnings
 // The flag suppresses stderr output but the warning event will still emit
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
-const testMsg = 'A Warning';
-const testCode = 'CODE001';
-const testDetail = 'Some detail';
-const testType = 'CustomWarning';
+const testMsg = "A Warning";
+const testCode = "CODE001";
+const testDetail = "Some detail";
+const testType = "CustomWarning";
 
-process.on('warning', common.mustCall((warning) => {
+process.on("warning", common.mustCall((warning) => {
  assert(warning);
  assert.match(warning.name, /^(?:Warning|CustomWarning)/);
  assert.strictEqual(warning.message, testMsg);
@@ -53,7 +53,7 @@ process.emitWarning(warningNoToString);
 
 const warningThrowToString = new CustomWarning();
 warningThrowToString.toString = function() {
- throw new Error('invalid toString');
+ throw new Error("invalid toString");
 };
 process.emitWarning(warningThrowToString);
 
@@ -63,19 +63,19 @@ process.emitWarning(warningThrowToString);
  [{}],
  [true],
  [[]],
- ['', '', {}],
- ['', 1],
- ['', '', 1],
- ['', true],
- ['', '', true],
- ['', []],
- ['', '', []],
+ ["", "", {}],
+ ["", 1],
+ ["", "", 1],
+ ["", true],
+ ["", "", true],
+ ["", []],
+ ["", "", []],
  [],
- [undefined, 'foo', 'bar'],
+ [undefined, "foo", "bar"],
  [undefined],
 ].forEach((args) => {
  assert.throws(
   () => process.emitWarning(...args),
-  { code: 'ERR_INVALID_ARG_TYPE', name: 'TypeError' },
+  { code: "ERR_INVALID_ARG_TYPE", name: "TypeError" },
  );
 });

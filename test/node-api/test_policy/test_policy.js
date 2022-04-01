@@ -1,32 +1,32 @@
-'use strict';
-const common = require('../../common');
+"use strict";
+const common = require("../../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tmpdir = require('../../common/tmpdir');
-const { spawnSync } = require('child_process');
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
-const { pathToFileURL } = require('url');
+const assert = require("assert");
+const tmpdir = require("../../common/tmpdir");
+const { spawnSync } = require("child_process");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const { pathToFileURL } = require("url");
 
 tmpdir.refresh();
 
 function hash(algo, body) {
  const h = crypto.createHash(algo);
  h.update(body);
- return h.digest('base64');
+ return h.digest("base64");
 }
 
-const policyFilepath = path.join(tmpdir.path, 'policy');
+const policyFilepath = path.join(tmpdir.path, "policy");
 
 const depFilepath = require.resolve(`./build/${common.buildType}/binding.node`);
 const depURL = pathToFileURL(depFilepath);
 
 const tmpdirURL = pathToFileURL(tmpdir.path);
-if (!tmpdirURL.pathname.endsWith('/')) {
- tmpdirURL.pathname += '/';
+if (!tmpdirURL.pathname.endsWith("/")) {
+ tmpdirURL.pathname += "/";
 }
 
 const depBody = fs.readFileSync(depURL);
@@ -42,7 +42,7 @@ function writePolicy(...resources) {
 function test(shouldFail, resources) {
  writePolicy(...resources);
  const { status, stdout, stderr } = spawnSync(process.execPath, [
-  '--experimental-policy',
+  "--experimental-policy",
   policyFilepath,
   depFilepath,
  ]);
@@ -57,9 +57,9 @@ function test(shouldFail, resources) {
 
 test(false, [{
  url: depURL,
- integrity: `sha256-${hash('sha256', depBody)}`,
+ integrity: `sha256-${hash("sha256", depBody)}`,
 }]);
 test(true, [{
  url: depURL,
- integrity: `sha256akjsalkjdlaskjdk-${hash('sha256', depBody)}`,
+ integrity: `sha256akjsalkjdlaskjdk-${hash("sha256", depBody)}`,
 }]);

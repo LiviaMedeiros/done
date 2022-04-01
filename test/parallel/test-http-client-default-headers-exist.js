@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
-const { once } = require('events');
+const { once } = require("events");
 
 const expectedHeaders = {
- 'DELETE': ['host', 'connection'],
- 'GET': ['host', 'connection'],
- 'HEAD': ['host', 'connection'],
- 'OPTIONS': ['host', 'connection'],
- 'POST': ['host', 'connection', 'content-length'],
- 'PUT': ['host', 'connection', 'content-length'],
- 'TRACE': ['host', 'connection'],
+ "DELETE": ["host", "connection"],
+ "GET": ["host", "connection"],
+ "HEAD": ["host", "connection"],
+ "OPTIONS": ["host", "connection"],
+ "POST": ["host", "connection", "content-length"],
+ "PUT": ["host", "connection", "content-length"],
+ "TRACE": ["host", "connection"],
 };
 
 const expectedMethods = Object.keys(expectedHeaders);
@@ -65,6 +65,6 @@ server.listen(0, common.mustCall(() => {
    method: method,
    port: server.address().port,
   }).end();
-  return once(request, 'response');
+  return once(request, "response");
  })).then(common.mustCall(() => { server.close(); }));
 }));

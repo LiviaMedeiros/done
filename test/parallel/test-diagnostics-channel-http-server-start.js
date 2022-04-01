@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { AsyncLocalStorage } = require('async_hooks');
-const dc = require('diagnostics_channel');
-const assert = require('assert');
-const http = require('http');
+const common = require("../common");
+const { AsyncLocalStorage } = require("async_hooks");
+const dc = require("diagnostics_channel");
+const assert = require("assert");
+const http = require("http");
 
-const incomingStartChannel = dc.channel('http.server.request.start');
-const outgoingFinishChannel = dc.channel('http.server.response.finish');
+const incomingStartChannel = dc.channel("http.server.request.start");
+const outgoingFinishChannel = dc.channel("http.server.response.finish");
 
 const als = new AsyncLocalStorage();
 let context;
@@ -43,7 +43,7 @@ const server = http.createServer(common.mustCall((req, res) => {
  response = res;
 
  setTimeout(() => {
-  res.end('done');
+  res.end("done");
  }, 1);
 }));
 
@@ -51,7 +51,7 @@ server.listen(() => {
  const { port } = server.address();
  http.get(`http://localhost:${port}`, (res) => {
   res.resume();
-  res.on('end', () => {
+  res.on("end", () => {
    server.close();
   });
  });

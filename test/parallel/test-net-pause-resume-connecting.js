@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 let connections = 0;
 let dataEvents = 0;
@@ -32,7 +32,7 @@ let conn;
 // Server
 const server = net.createServer(function(conn) {
  connections++;
- conn.end('This was the year he fell to pieces.');
+ conn.end("This was the year he fell to pieces.");
 
  if (connections === 5)
   server.close();
@@ -40,39 +40,39 @@ const server = net.createServer(function(conn) {
 
 server.listen(0, function() {
  // Client 1
- conn = net.createConnection(this.address().port, 'localhost');
+ conn = net.createConnection(this.address().port, "localhost");
  conn.resume();
- conn.on('data', onDataOk);
+ conn.on("data", onDataOk);
 
 
  // Client 2
- conn = net.createConnection(this.address().port, 'localhost');
+ conn = net.createConnection(this.address().port, "localhost");
  conn.pause();
  conn.resume();
- conn.on('data', onDataOk);
+ conn.on("data", onDataOk);
 
 
  // Client 3
- conn = net.createConnection(this.address().port, 'localhost');
+ conn = net.createConnection(this.address().port, "localhost");
  conn.pause();
- conn.on('data', common.mustNotCall());
+ conn.on("data", common.mustNotCall());
  scheduleTearDown(conn);
 
 
  // Client 4
- conn = net.createConnection(this.address().port, 'localhost');
+ conn = net.createConnection(this.address().port, "localhost");
  conn.resume();
  conn.pause();
  conn.resume();
- conn.on('data', onDataOk);
+ conn.on("data", onDataOk);
 
 
  // Client 5
- conn = net.createConnection(this.address().port, 'localhost');
+ conn = net.createConnection(this.address().port, "localhost");
  conn.resume();
  conn.resume();
  conn.pause();
- conn.on('data', common.mustNotCall());
+ conn.on("data", common.mustNotCall());
  scheduleTearDown(conn);
 
  function onDataOk() {
@@ -81,7 +81,7 @@ server.listen(0, function() {
 
  function scheduleTearDown(conn) {
   setTimeout(function() {
-   conn.removeAllListeners('data');
+   conn.removeAllListeners("data");
    conn.resume();
   }, 100);
  }
@@ -89,7 +89,7 @@ server.listen(0, function() {
 
 
 // Exit sanity checks
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(connections, 5);
  assert.strictEqual(dataEvents, 3);
 });

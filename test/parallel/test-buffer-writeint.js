@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
 // Tests to verify signed integers are correctly written
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 const errorOutOfBounds = {
- code: 'ERR_OUT_OF_RANGE',
- name: 'RangeError',
+ code: "ERR_OUT_OF_RANGE",
+ name: "RangeError",
  message: new RegExp('^The value of "value" is out of range\\. ' +
-                      'It must be >= -\\d+ and <= \\d+\\. Received .+$'),
+                      "It must be >= -\\d+ and <= \\d+\\. Received .+$"),
 };
 
 // Test 8 bit
@@ -35,16 +35,16 @@ const errorOutOfBounds = {
  buffer.writeInt8(23, undefined);
  buffer.writeInt8(23);
 
- ['', '0', null, {}, [], () => {}, true, false].forEach((off) => {
+ ["", "0", null, {}, [], () => {}, true, false].forEach((off) => {
   assert.throws(
    () => buffer.writeInt8(23, off),
-   { code: 'ERR_INVALID_ARG_TYPE' });
+   { code: "ERR_INVALID_ARG_TYPE" });
  });
 
  [NaN, Infinity, -1, 1.01].forEach((off) => {
   assert.throws(
    () => buffer.writeInt8(23, off),
-   { code: 'ERR_OUT_OF_RANGE' });
+   { code: "ERR_OUT_OF_RANGE" });
  });
 }
 
@@ -73,7 +73,7 @@ const errorOutOfBounds = {
  buffer.writeInt16LE(-0x8000, 2);
  assert.ok(buffer.equals(new Uint8Array([ 0xff, 0x7f, 0x00, 0x80 ])));
 
- ['writeInt16BE', 'writeInt16LE'].forEach((fn) => {
+ ["writeInt16BE", "writeInt16LE"].forEach((fn) => {
 
   // Verify that default offset works fine.
   buffer[fn](23, undefined);
@@ -86,16 +86,16 @@ const errorOutOfBounds = {
    buffer[fn](-0x8000 - 1, 0);
   }, errorOutOfBounds);
 
-  ['', '0', null, {}, [], () => {}, true, false].forEach((off) => {
+  ["", "0", null, {}, [], () => {}, true, false].forEach((off) => {
    assert.throws(
     () => buffer[fn](23, off),
-    { code: 'ERR_INVALID_ARG_TYPE' });
+    { code: "ERR_INVALID_ARG_TYPE" });
   });
 
   [NaN, Infinity, -1, 1.01].forEach((off) => {
    assert.throws(
     () => buffer[fn](23, off),
-    { code: 'ERR_OUT_OF_RANGE' });
+    { code: "ERR_OUT_OF_RANGE" });
   });
  });
 }
@@ -135,7 +135,7 @@ const errorOutOfBounds = {
   0xff, 0xff, 0xff, 0x7f, 0x00, 0x00, 0x00, 0x80,
  ])));
 
- ['writeInt32BE', 'writeInt32LE'].forEach((fn) => {
+ ["writeInt32BE", "writeInt32LE"].forEach((fn) => {
 
   // Verify that default offset works fine.
   buffer[fn](23, undefined);
@@ -148,16 +148,16 @@ const errorOutOfBounds = {
    buffer[fn](-0x80000000 - 1, 0);
   }, errorOutOfBounds);
 
-  ['', '0', null, {}, [], () => {}, true, false].forEach((off) => {
+  ["", "0", null, {}, [], () => {}, true, false].forEach((off) => {
    assert.throws(
     () => buffer[fn](23, off),
-    { code: 'ERR_INVALID_ARG_TYPE' });
+    { code: "ERR_INVALID_ARG_TYPE" });
   });
 
   [NaN, Infinity, -1, 1.01].forEach((off) => {
    assert.throws(
     () => buffer[fn](23, off),
-    { code: 'ERR_OUT_OF_RANGE' });
+    { code: "ERR_OUT_OF_RANGE" });
   });
  });
 }
@@ -182,18 +182,18 @@ const errorOutOfBounds = {
  const data = Buffer.alloc(8);
 
  // Check byteLength.
- ['writeIntBE', 'writeIntLE'].forEach((fn) => {
-  ['', '0', null, {}, [], () => {}, true, false, undefined].forEach((bl) => {
+ ["writeIntBE", "writeIntLE"].forEach((fn) => {
+  ["", "0", null, {}, [], () => {}, true, false, undefined].forEach((bl) => {
    assert.throws(
     () => data[fn](23, 0, bl),
-    { code: 'ERR_INVALID_ARG_TYPE' });
+    { code: "ERR_INVALID_ARG_TYPE" });
   });
 
   [Infinity, -1].forEach((byteLength) => {
    assert.throws(
     () => data[fn](23, 0, byteLength),
     {
-     code: 'ERR_OUT_OF_RANGE',
+     code: "ERR_OUT_OF_RANGE",
      message: 'The value of "byteLength" is out of range. ' +
                    `It must be >= 1 and <= 6. Received ${byteLength}`,
     },
@@ -204,8 +204,8 @@ const errorOutOfBounds = {
    assert.throws(
     () => data[fn](42, 0, byteLength),
     {
-     code: 'ERR_OUT_OF_RANGE',
-     name: 'RangeError',
+     code: "ERR_OUT_OF_RANGE",
+     name: "RangeError",
      message: 'The value of "byteLength" is out of range. ' +
                    `It must be an integer. Received ${byteLength}`,
     });
@@ -214,7 +214,7 @@ const errorOutOfBounds = {
 
  // Test 1 to 6 bytes.
  for (let i = 1; i <= 6; i++) {
-  ['writeIntBE', 'writeIntLE'].forEach((fn) => {
+  ["writeIntBE", "writeIntLE"].forEach((fn) => {
    const min = -(2 ** (i * 8 - 1));
    const max = 2 ** (i * 8 - 1) - 1;
    let range = `>= ${min} and <= ${max}`;
@@ -223,24 +223,24 @@ const errorOutOfBounds = {
    }
    [min - 1, max + 1].forEach((val) => {
     const received = i > 4 ?
-     String(val).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1_') :
+     String(val).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1_") :
      val;
     assert.throws(() => {
      data[fn](val, 0, i);
     }, {
-     code: 'ERR_OUT_OF_RANGE',
-     name: 'RangeError',
+     code: "ERR_OUT_OF_RANGE",
+     name: "RangeError",
      message: 'The value of "value" is out of range. ' +
                    `It must be ${range}. Received ${received}`,
     });
    });
 
-   ['', '0', null, {}, [], () => {}, true, false, undefined].forEach((o) => {
+   ["", "0", null, {}, [], () => {}, true, false, undefined].forEach((o) => {
     assert.throws(
      () => data[fn](min, o, i),
      {
-      code: 'ERR_INVALID_ARG_TYPE',
-      name: 'TypeError',
+      code: "ERR_INVALID_ARG_TYPE",
+      name: "TypeError",
      });
    });
 
@@ -248,8 +248,8 @@ const errorOutOfBounds = {
     assert.throws(
      () => data[fn](min, offset, i),
      {
-      code: 'ERR_OUT_OF_RANGE',
-      name: 'RangeError',
+      code: "ERR_OUT_OF_RANGE",
+      name: "RangeError",
       message: 'The value of "offset" is out of range. ' +
                      `It must be >= 0 and <= ${8 - i}. Received ${offset}`,
      });
@@ -259,8 +259,8 @@ const errorOutOfBounds = {
     assert.throws(
      () => data[fn](max, offset, i),
      {
-      code: 'ERR_OUT_OF_RANGE',
-      name: 'RangeError',
+      code: "ERR_OUT_OF_RANGE",
+      name: "RangeError",
       message: 'The value of "offset" is out of range. ' +
                      `It must be an integer. Received ${offset}`,
      });

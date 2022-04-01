@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const EventEmitter = require('events');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const EventEmitter = require("events");
 
 {
  const ee = new EventEmitter();
@@ -32,9 +32,9 @@ const EventEmitter = require('events');
  // Sanity check
  assert.strictEqual(ee.addListener, ee.on);
 
- ee.on('newListener', function(event, listener) {
+ ee.on("newListener", function(event, listener) {
   // Don't track newListener listeners.
-  if (event === 'newListener')
+  if (event === "newListener")
    return;
 
   events_new_listener_emitted.push(event);
@@ -42,22 +42,22 @@ const EventEmitter = require('events');
  });
 
  const hello = common.mustCall(function(a, b) {
-  assert.strictEqual(a, 'a');
-  assert.strictEqual(b, 'b');
+  assert.strictEqual(a, "a");
+  assert.strictEqual(b, "b");
  });
 
- ee.once('newListener', function(name, listener) {
-  assert.strictEqual(name, 'hello');
+ ee.once("newListener", function(name, listener) {
+  assert.strictEqual(name, "hello");
   assert.strictEqual(listener, hello);
-  assert.deepStrictEqual(this.listeners('hello'), []);
+  assert.deepStrictEqual(this.listeners("hello"), []);
  });
 
- ee.on('hello', hello);
- ee.once('foo', assert.fail);
- assert.deepStrictEqual(['hello', 'foo'], events_new_listener_emitted);
+ ee.on("hello", hello);
+ ee.once("foo", assert.fail);
+ assert.deepStrictEqual(["hello", "foo"], events_new_listener_emitted);
  assert.deepStrictEqual([hello, assert.fail], listeners_new_listener_emitted);
 
- ee.emit('hello', 'a', 'b');
+ ee.emit("hello", "a", "b");
 }
 
 // Just make sure that this doesn't throw:
@@ -72,15 +72,15 @@ const EventEmitter = require('events');
  const listen2 = () => {};
  const ee = new EventEmitter();
 
- ee.once('newListener', function() {
-  assert.deepStrictEqual(ee.listeners('hello'), []);
-  ee.once('newListener', function() {
-   assert.deepStrictEqual(ee.listeners('hello'), []);
+ ee.once("newListener", function() {
+  assert.deepStrictEqual(ee.listeners("hello"), []);
+  ee.once("newListener", function() {
+   assert.deepStrictEqual(ee.listeners("hello"), []);
   });
-  ee.on('hello', listen2);
+  ee.on("hello", listen2);
  });
- ee.on('hello', listen1);
+ ee.on("hello", listen1);
  // The order of listeners on an event is not always the order in which the
  // listeners were added.
- assert.deepStrictEqual(ee.listeners('hello'), [listen2, listen1]);
+ assert.deepStrictEqual(ee.listeners("hello"), [listen2, listen1]);
 }

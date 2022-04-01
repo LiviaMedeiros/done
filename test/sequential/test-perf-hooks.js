@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { performance } = require('perf_hooks');
+const common = require("../common");
+const assert = require("assert");
+const { performance } = require("perf_hooks");
 
 if (!common.isMainThread)
- common.skip('bootstrapping workers works differently');
+ common.skip("bootstrapping workers works differently");
 
 assert(performance);
 assert(performance.nodeTiming);
-assert.strictEqual(typeof performance.timeOrigin, 'number');
+assert.strictEqual(typeof performance.timeOrigin, "number");
 // Use a fairly large epsilon value, since we can only guarantee that the node
 // process started up in 15 seconds.
 assert(Math.abs(performance.timeOrigin - Date.now()) < 15000);
@@ -17,8 +17,8 @@ assert(Math.abs(performance.timeOrigin - Date.now()) < 15000);
 const inited = performance.now();
 assert(inited < 15000);
 
-assert.strictEqual(performance.nodeTiming.name, 'node');
-assert.strictEqual(performance.nodeTiming.entryType, 'node');
+assert.strictEqual(performance.nodeTiming.name, "node");
+assert.strictEqual(performance.nodeTiming.entryType, "node");
 
 const delay = 250;
 function checkNodeTiming(props) {
@@ -26,7 +26,7 @@ function checkNodeTiming(props) {
 
  for (const prop of Object.keys(props)) {
   if (props[prop].around !== undefined) {
-   assert.strictEqual(typeof performance.nodeTiming[prop], 'number');
+   assert.strictEqual(typeof performance.nodeTiming[prop], "number");
    const delta = performance.nodeTiming[prop] - props[prop].around;
    assert(
     Math.abs(delta) < (props[prop].delay || delay),
@@ -41,8 +41,8 @@ function checkNodeTiming(props) {
 }
 
 checkNodeTiming({
- name: 'node',
- entryType: 'node',
+ name: "node",
+ entryType: "node",
  startTime: 0,
  duration: { around: performance.now() },
  nodeStart: { around: 0 },
@@ -55,8 +55,8 @@ checkNodeTiming({
 
 setTimeout(() => {
  checkNodeTiming({
-  name: 'node',
-  entryType: 'node',
+  name: "node",
+  entryType: "node",
   startTime: 0,
   duration: { around: performance.now() },
   nodeStart: { around: 0 },
@@ -68,10 +68,10 @@ setTimeout(() => {
  });
 }, 1000);
 
-process.on('exit', () => {
+process.on("exit", () => {
  checkNodeTiming({
-  name: 'node',
-  entryType: 'node',
+  name: "node",
+  entryType: "node",
   startTime: 0,
   duration: { around: performance.now() },
   nodeStart: { around: 0 },

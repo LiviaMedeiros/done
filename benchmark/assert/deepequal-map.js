@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 const { deepEqual, deepStrictEqual, notDeepEqual, notDeepStrictEqual } =
-  require('assert');
+  require("assert");
 
 const bench = common.createBenchmark(main, {
  n: [5e2],
  len: [5e2],
  strict: [0, 1],
  method: [
-  'deepEqual_primitiveOnly',
-  'deepEqual_objectOnly',
-  'deepEqual_mixed',
-  'notDeepEqual_primitiveOnly',
-  'notDeepEqual_objectOnly',
-  'notDeepEqual_mixed',
+  "deepEqual_primitiveOnly",
+  "deepEqual_objectOnly",
+  "deepEqual_mixed",
+  "notDeepEqual_primitiveOnly",
+  "notDeepEqual_objectOnly",
+  "notDeepEqual_mixed",
  ],
 });
 
@@ -34,43 +34,43 @@ function main({ n, len, method, strict }) {
  const array = Array(len).fill(1);
 
  switch (method) {
-  case 'deepEqual_primitiveOnly': {
+  case "deepEqual_primitiveOnly": {
    const values = array.map((_, i) => [`str_${i}`, 123]);
    benchmark(strict ? deepStrictEqual : deepEqual, n, values);
    break;
   }
-  case 'deepEqual_objectOnly': {
+  case "deepEqual_objectOnly": {
    const values = array.map((_, i) => [[`str_${i}`, 1], 123]);
    benchmark(strict ? deepStrictEqual : deepEqual, n, values);
    break;
   }
-  case 'deepEqual_mixed': {
+  case "deepEqual_mixed": {
    const values = array.map(
     (_, i) => [i % 2 ? [`str_${i}`, 1] : `str_${i}`, 123],
    );
    benchmark(strict ? deepStrictEqual : deepEqual, n, values);
    break;
   }
-  case 'notDeepEqual_primitiveOnly': {
+  case "notDeepEqual_primitiveOnly": {
    const values = array.map((_, i) => [`str_${i}`, 123]);
    const values2 = values.slice(0);
-   values2[Math.floor(len / 2)] = ['w00t', 123];
+   values2[Math.floor(len / 2)] = ["w00t", 123];
    benchmark(strict ? notDeepStrictEqual : notDeepEqual, n, values, values2);
    break;
   }
-  case 'notDeepEqual_objectOnly': {
+  case "notDeepEqual_objectOnly": {
    const values = array.map((_, i) => [[`str_${i}`, 1], 123]);
    const values2 = values.slice(0);
-   values2[Math.floor(len / 2)] = [['w00t'], 123];
+   values2[Math.floor(len / 2)] = [["w00t"], 123];
    benchmark(strict ? notDeepStrictEqual : notDeepEqual, n, values, values2);
    break;
   }
-  case 'notDeepEqual_mixed': {
+  case "notDeepEqual_mixed": {
    const values = array.map(
     (_, i) => [i % 2 ? [`str_${i}`, 1] : `str_${i}`, 123],
    );
    const values2 = values.slice(0);
-   values2[0] = ['w00t', 123];
+   values2[0] = ["w00t", 123];
    benchmark(strict ? notDeepStrictEqual : notDeepEqual, n, values, values2);
    break;
   }

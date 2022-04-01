@@ -1,28 +1,28 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Duplex,
  Writable,
  Transform,
-} = require('stream');
-const { setTimeout } = require('timers/promises');
-const assert = require('assert');
+} = require("stream");
+const { setTimeout } = require("timers/promises");
+const assert = require("assert");
 
 {
  class Foo extends Duplex {
   async _destroy(err, cb) {
    await setTimeout(common.platformTimeout(1));
-   throw new Error('boom');
+   throw new Error("boom");
   }
  }
 
  const foo = new Foo();
  foo.destroy();
- foo.on('error', common.expectsError({
-  message: 'boom',
+ foo.on("error", common.expectsError({
+  message: "boom",
  }));
- foo.on('close', common.mustCall(() => {
+ foo.on("close", common.mustCall(() => {
   assert(foo.destroyed);
  }));
 }
@@ -36,7 +36,7 @@ const assert = require('assert');
 
  const foo = new Foo();
  foo.destroy();
- foo.on('close', common.mustCall(() => {
+ foo.on("close", common.mustCall(() => {
   assert(foo.destroyed);
  }));
 }
@@ -55,7 +55,7 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.write('test', common.mustCall());
+ foo.write("test", common.mustCall());
 }
 
 {
@@ -73,8 +73,8 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.write('test', common.mustCall());
- foo.on('error', common.mustNotCall());
+ foo.write("test", common.mustCall());
+ foo.on("error", common.mustNotCall());
 }
 
 {
@@ -89,8 +89,8 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('finish', common.mustCall());
+ foo.end("hello");
+ foo.on("finish", common.mustCall());
 }
 
 {
@@ -106,8 +106,8 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('finish', common.mustCall());
+ foo.end("hello");
+ foo.on("finish", common.mustCall());
 }
 
 {
@@ -118,23 +118,23 @@ const assert = require('assert');
 
   async _final() {
    await setTimeout(common.platformTimeout(1));
-   throw new Error('boom');
+   throw new Error("boom");
   }
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('error', common.expectsError({
-  message: 'boom',
+ foo.end("hello");
+ foo.on("error", common.expectsError({
+  message: "boom",
  }));
- foo.on('close', common.mustCall());
+ foo.on("close", common.mustCall());
 }
 
 {
- const expected = ['hello', 'world'];
+ const expected = ["hello", "world"];
  class Foo extends Transform {
   async _flush() {
-   return 'world';
+   return "world";
   }
 
   _transform(chunk, encoding, callback) {
@@ -143,17 +143,17 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('data', common.mustCall((chunk) => {
+ foo.end("hello");
+ foo.on("data", common.mustCall((chunk) => {
   assert.strictEqual(chunk.toString(), expected.shift());
  }, 2));
 }
 
 {
- const expected = ['hello', 'world'];
+ const expected = ["hello", "world"];
  class Foo extends Transform {
   async _flush(callback) {
-   callback(null, 'world');
+   callback(null, "world");
   }
 
   _transform(chunk, encoding, callback) {
@@ -162,8 +162,8 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('data', common.mustCall((chunk) => {
+ foo.end("hello");
+ foo.on("data", common.mustCall((chunk) => {
   assert.strictEqual(chunk.toString(), expected.shift());
  }, 2));
 }
@@ -171,7 +171,7 @@ const assert = require('assert');
 {
  class Foo extends Transform {
   async _flush(callback) {
-   throw new Error('boom');
+   throw new Error("boom");
   }
 
   _transform(chunk, encoding, callback) {
@@ -180,12 +180,12 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('data', common.mustCall());
- foo.on('error', common.expectsError({
-  message: 'boom',
+ foo.end("hello");
+ foo.on("data", common.mustCall());
+ foo.on("error", common.expectsError({
+  message: "boom",
  }));
- foo.on('close', common.mustCall());
+ foo.on("close", common.mustCall());
 }
 
 {
@@ -196,9 +196,9 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('data', common.mustCall((chunk) => {
-  assert.strictEqual(chunk.toString(), 'HELLO');
+ foo.end("hello");
+ foo.on("data", common.mustCall((chunk) => {
+  assert.strictEqual(chunk.toString(), "HELLO");
  }));
 }
 
@@ -210,23 +210,23 @@ const assert = require('assert');
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('data', common.mustCall((chunk) => {
-  assert.strictEqual(chunk.toString(), 'HELLO');
+ foo.end("hello");
+ foo.on("data", common.mustCall((chunk) => {
+  assert.strictEqual(chunk.toString(), "HELLO");
  }));
 }
 
 {
  class Foo extends Transform {
   async _transform() {
-   throw new Error('boom');
+   throw new Error("boom");
   }
  }
 
  const foo = new Foo();
- foo.end('hello');
- foo.on('error', common.expectsError({
-  message: 'boom',
+ foo.end("hello");
+ foo.on("error", common.expectsError({
+  message: "boom",
  }));
- foo.on('close', common.mustCall());
+ foo.on("close", common.mustCall());
 }

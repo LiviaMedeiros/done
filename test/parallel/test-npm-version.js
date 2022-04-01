@@ -1,16 +1,16 @@
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
-const path = require('path');
-const assert = require('assert');
+const path = require("path");
+const assert = require("assert");
 
 const npmPathPackageJson = path.resolve(
  __dirname,
- '..',
- '..',
- 'deps',
- 'npm',
- 'package.json',
+ "..",
+ "..",
+ "deps",
+ "npm",
+ "package.json",
 );
 
 const pkg = require(npmPathPackageJson);

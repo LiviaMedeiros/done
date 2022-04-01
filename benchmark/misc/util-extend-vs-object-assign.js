@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const util = require('util');
+const common = require("../common.js");
+const util = require("util");
 
 const bench = common.createBenchmark(main, {
- type: ['extend', 'assign'],
+ type: ["extend", "assign"],
  n: [10e4],
 });
 
 function main({ n, type }) {
  let fn;
- if (type === 'extend') {
+ if (type === "extend") {
   fn = util._extend;
- } else if (type === 'assign') {
+ } else if (type === "assign") {
   fn = Object.assign;
  }
 

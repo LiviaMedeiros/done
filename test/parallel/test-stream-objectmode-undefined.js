@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { Readable, Writable, Transform } = require('stream');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { Readable, Writable, Transform } = require("stream");
 
 {
  const stream = new Readable({
@@ -12,7 +12,7 @@ const { Readable, Writable, Transform } = require('stream');
   }),
  });
 
- stream.on('data', common.mustCall((chunk) => {
+ stream.on("data", common.mustCall((chunk) => {
   assert.strictEqual(chunk, undefined);
  }));
 }
@@ -36,7 +36,7 @@ const { Readable, Writable, Transform } = require('stream');
   }),
  });
 
- stream.on('data', common.mustCall((chunk) => {
+ stream.on("data", common.mustCall((chunk) => {
   assert.strictEqual(chunk, undefined);
  }));
 

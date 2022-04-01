@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Flags: --expose-gc
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 const w = new globalThis.WeakRef({});
 

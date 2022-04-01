@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
-const Stream = require('stream');
+const Stream = require("stream");
 
 function getSrc() {
  // An old-style readable stream.
@@ -41,16 +41,16 @@ function getSrc() {
   paused = false;
  };
 
- const chunks = [ '', 'asdf', '', 'foo', '', 'bar', '' ];
+ const chunks = [ "", "asdf", "", "foo", "", "bar", "" ];
  const interval = setInterval(function() {
   if (paused)
    return;
 
   const chunk = chunks.shift();
   if (chunk !== undefined) {
-   src.emit('data', chunk);
+   src.emit("data", chunk);
   } else {
-   src.emit('end');
+   src.emit("end");
    clearInterval(interval);
   }
  }, 1);
@@ -59,15 +59,15 @@ function getSrc() {
 }
 
 
-const expect = 'asdffoobar';
+const expect = "asdffoobar";
 
 const server = http.createServer(function(req, res) {
- let actual = '';
- req.setEncoding('utf8');
- req.on('data', function(c) {
+ let actual = "";
+ req.setEncoding("utf8");
+ req.on("data", function(c) {
   actual += c;
  });
- req.on('end', function() {
+ req.on("end", function() {
   assert.strictEqual(actual, expect);
   getSrc().pipe(res);
  });
@@ -75,20 +75,20 @@ const server = http.createServer(function(req, res) {
 });
 
 server.listen(0, function() {
- const req = http.request({ port: this.address().port, method: 'POST' });
- let actual = '';
- req.on('response', function(res) {
-  res.setEncoding('utf8');
-  res.on('data', function(c) {
+ const req = http.request({ port: this.address().port, method: "POST" });
+ let actual = "";
+ req.on("response", function(res) {
+  res.setEncoding("utf8");
+  res.on("data", function(c) {
    actual += c;
   });
-  res.on('end', function() {
+  res.on("end", function() {
    assert.strictEqual(actual, expect);
   });
  });
  getSrc().pipe(req);
 });
 
-process.on('exit', function(c) {
- if (!c) console.log('ok');
+process.on("exit", function(c) {
+ if (!c) console.log("ok");
 });

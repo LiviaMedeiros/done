@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
+"use strict";
+require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
 
 const OK = 2;
 
@@ -30,12 +30,12 @@ if (cluster.isPrimary) {
 
  const worker = cluster.fork();
 
- worker.on('exit', (code) => {
+ worker.on("exit", (code) => {
   assert.strictEqual(code, OK);
   process.exit(0);
  });
 
- const result = worker.send('SOME MESSAGE');
+ const result = worker.send("SOME MESSAGE");
  assert.strictEqual(result, true);
 
  return;
@@ -58,21 +58,21 @@ const check = (m) => {
 
  assert.deepStrictEqual(messages[0], messages[1]);
 
- cluster.worker.once('error', (e) => {
-  assert.strictEqual(e, 'HI');
+ cluster.worker.once("error", (e) => {
+  assert.strictEqual(e, "HI");
   process.exit(OK);
  });
 
- process.emit('error', 'HI');
+ process.emit("error", "HI");
 };
 
-process.on('message', (m) => {
+process.on("message", (m) => {
  assert(!sawProcess);
  sawProcess = true;
  check(m);
 });
 
-cluster.worker.on('message', (m) => {
+cluster.worker.on("message", (m) => {
  assert(!sawWorker);
  sawWorker = true;
  check(m);

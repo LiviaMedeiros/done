@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
 
-const client = dgram.createSocket('udp4');
+const client = dgram.createSocket("udp4");
 
-const toSend = [Buffer.alloc(256, 'x'),
-                Buffer.alloc(256, 'y'),
-                Buffer.alloc(256, 'z'),
-                'hello'];
+const toSend = [Buffer.alloc(256, "x"),
+                Buffer.alloc(256, "y"),
+                Buffer.alloc(256, "z"),
+                "hello"];
 
 const received = [];
 let totalBytesSent = 0;
 let totalBytesReceived = 0;
 const arrayBufferViewsCount = common.getArrayBufferViews(
- Buffer.from(''),
+ Buffer.from(""),
 ).length;
 
-client.on('listening', common.mustCall(() => {
+client.on("listening", common.mustCall(() => {
  const port = client.address().port;
 
  client.send(toSend[0], 0, toSend[0].length, port);
@@ -43,7 +43,7 @@ client.on('listening', common.mustCall(() => {
  }
 }));
 
-client.on('message', common.mustCall((buf, info) => {
+client.on("message", common.mustCall((buf, info) => {
  received.push(buf.toString());
  totalBytesReceived += info.size;
 
@@ -54,7 +54,7 @@ client.on('message', common.mustCall((buf, info) => {
  // as well as every TypedArray in getArrayBufferViews()
 }, toSend.length + (toSend.length - 1) * arrayBufferViewsCount));
 
-client.on('close', common.mustCall((buf, info) => {
+client.on("close", common.mustCall((buf, info) => {
  // The replies may arrive out of order -> sort them before checking.
  received.sort();
 

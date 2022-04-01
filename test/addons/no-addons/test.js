@@ -1,18 +1,18 @@
 // Flags: --no-addons
 
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
+const common = require("../../common");
+const assert = require("assert");
 
 const bindingPath = require.resolve(`./build/${common.buildType}/binding`);
 
 const assertError = (error) => {
  assert(error instanceof Error);
- assert.strictEqual(error.code, 'ERR_DLOPEN_DISABLED');
+ assert.strictEqual(error.code, "ERR_DLOPEN_DISABLED");
  assert.strictEqual(
   error.message,
-  'Cannot load native addon because loading addons is disabled.',
+  "Cannot load native addon because loading addons is disabled.",
  );
 };
 

@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { promiseHooks } = require('v8');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { promiseHooks } = require("v8");
 
 const expected = [];
 
@@ -17,14 +17,14 @@ function testHook(name) {
  expected.push(error);
 }
 
-process.on('uncaughtException', common.mustCall((received) => {
+process.on("uncaughtException", common.mustCall((received) => {
  assert.strictEqual(received, expected.shift());
 }, 4));
 
-testHook('onInit');
-testHook('onSettled');
-testHook('onBefore');
-testHook('onAfter');
+testHook("onInit");
+testHook("onSettled");
+testHook("onBefore");
+testHook("onAfter");
 
 const stop = promiseHooks.onInit(common.mustCall(() => {}, 2));
 

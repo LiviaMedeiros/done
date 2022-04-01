@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 function FakeBuffer() { }
 Object.setPrototypeOf(FakeBuffer, Buffer);
@@ -22,7 +22,7 @@ assert.throws(function() {
 }, TypeError);
 
 assert.throws(function() {
- fb.write('foo');
+ fb.write("foo");
 }, TypeError);
 
 assert.throws(function() {

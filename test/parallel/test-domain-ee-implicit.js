@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const domain = require('domain');
-const EventEmitter = require('events');
+const common = require("../common");
+const assert = require("assert");
+const domain = require("domain");
+const EventEmitter = require("events");
 
 const d = new domain.Domain();
 let implicit;
 
-d.on('error', common.mustCall((err) => {
- assert.strictEqual(err.message, 'foobar');
+d.on("error", common.mustCall((err) => {
+ assert.strictEqual(err.message, "foobar");
  assert.strictEqual(err.domain, d);
  assert.strictEqual(err.domainEmitter, implicit);
  assert.strictEqual(err.domainBound, undefined);
@@ -24,5 +24,5 @@ d.run(common.mustCall(() => {
 
 setTimeout(common.mustCall(() => {
  // Escape from the domain, but implicit is still bound to it.
- implicit.emit('error', new Error('foobar'));
+ implicit.emit("error", new Error("foobar"));
 }), 1);

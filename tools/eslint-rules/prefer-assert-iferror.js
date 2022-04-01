@@ -3,13 +3,13 @@
  * @author Teddy Katz
  */
 
-'use strict';
+"use strict";
 
-const utils = require('./rules-utils.js');
+const utils = require("./rules-utils.js");
 
 module.exports = {
  meta: {
-  fixable: 'code',
+  fixable: "code",
  },
  create(context) {
   const sourceCode = context.getSourceCode();
@@ -27,26 +27,26 @@ module.exports = {
   }
 
   function checkAssertNode(node) {
-   if (utils.isRequired(node, ['assert'])) {
+   if (utils.isRequired(node, ["assert"])) {
     assertImported = true;
    }
   }
 
   return {
-   'CallExpression': (node) => checkAssertNode(node),
-   'IfStatement': (node) => {
-    const firstStatement = node.consequent.type === 'BlockStatement' ?
+   "CallExpression": (node) => checkAssertNode(node),
+   "IfStatement": (node) => {
+    const firstStatement = node.consequent.type === "BlockStatement" ?
      node.consequent.body[0] :
      node.consequent;
     if (
      firstStatement &&
-          firstStatement.type === 'ThrowStatement' &&
+          firstStatement.type === "ThrowStatement" &&
           hasSameTokens(node.test, firstStatement.argument)
     ) {
      const argument = sourceCode.getText(node.test);
      context.report({
       node: firstStatement,
-      message: 'Use assert.ifError({{argument}}) instead.',
+      message: "Use assert.ifError({{argument}}) instead.",
       data: { argument },
       fix: (fixer) => {
        if (assertImported) {

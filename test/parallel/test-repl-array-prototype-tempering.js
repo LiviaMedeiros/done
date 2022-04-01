@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { spawn } = require('child_process');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { spawn } = require("child_process");
 
-const replProcess = spawn(process.argv0, ['--interactive'], {
- stdio: ['pipe', 'pipe', 'inherit'],
+const replProcess = spawn(process.argv0, ["--interactive"], {
+ stdio: ["pipe", "pipe", "inherit"],
  windowsHide: true,
 });
 
-replProcess.on('error', common.mustNotCall());
+replProcess.on("error", common.mustNotCall());
 
 const replReadyState = (async function* () {
  let ready;
- const SPACE = ' '.charCodeAt();
- const BRACKET = '>'.charCodeAt();
- const DOT = '.'.charCodeAt();
- replProcess.stdout.on('data', (data) => {
+ const SPACE = " ".charCodeAt();
+ const BRACKET = ">".charCodeAt();
+ const DOT = ".".charCodeAt();
+ replProcess.stdout.on("data", (data) => {
   ready = data[data.length - 1] === SPACE && (
    data[data.length - 2] === BRACKET || (
     data[data.length - 2] === DOT &&
@@ -25,7 +25,7 @@ const replReadyState = (async function* () {
  });
 
  const processCrashed = new Promise((resolve, reject) =>
-  replProcess.on('exit', reject),
+  replProcess.on("exit", reject),
  );
  while (true) {
   await Promise.race([new Promise(setImmediate), processCrashed]);
@@ -38,8 +38,8 @@ const replReadyState = (async function* () {
 async function writeLn(data, expectedOutput) {
  await replReadyState.next();
  if (expectedOutput) {
-  replProcess.stdout.once('data', common.mustCall((data) =>
-   assert.match(data.toString('utf8'), expectedOutput),
+  replProcess.stdout.once("data", common.mustCall((data) =>
+   assert.match(data.toString("utf8"), expectedOutput),
   ));
  }
  await new Promise((resolve, reject) => replProcess.stdin.write(
@@ -51,14 +51,14 @@ async function writeLn(data, expectedOutput) {
 async function main() {
  await writeLn(
   'Object.defineProperty(Array.prototype, "-1", ' +
-        '{ get() { return this[this.length - 1]; } });',
+        "{ get() { return this[this.length - 1]; } });",
  );
 
  await writeLn(
-  '[3, 2, 1][-1];',
+  "[3, 2, 1][-1];",
   /^1\n(>\s)?$/,
  );
- await writeLn('.exit');
+ await writeLn(".exit");
 
  assert(!replProcess.connected);
 }

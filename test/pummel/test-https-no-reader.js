@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const https = require('https');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const https = require("https");
+const fixtures = require("../common/fixtures");
 
 const options = {
- key: fixtures.readKey('rsa_private.pem'),
- cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey("rsa_private.pem"),
+ cert: fixtures.readKey("rsa_cert.crt"),
 };
 
 const buf = Buffer.allocUnsafe(1024 * 1024);
@@ -45,7 +45,7 @@ const server = https.createServer(options, function(req, res) {
 
 server.listen(0, function() {
  const req = https.request({
-  method: 'POST',
+  method: "POST",
   port: server.address().port,
   rejectUnauthorized: false,
  }, function(res) {

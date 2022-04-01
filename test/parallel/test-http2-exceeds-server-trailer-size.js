@@ -1,33 +1,33 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { createServer, constants, connect } = require('http2');
+const assert = require("assert");
+const { createServer, constants, connect } = require("http2");
 
 const server = createServer();
 
-server.on('stream', (stream, headers) => {
+server.on("stream", (stream, headers) => {
  stream.respond(undefined, { waitForTrailers: true });
 
- stream.on('data', common.mustNotCall());
+ stream.on("data", common.mustNotCall());
 
- stream.on('wantTrailers', common.mustCall(() => {
+ stream.on("wantTrailers", common.mustCall(() => {
   // Trigger a frame error by sending a trailer that is too large
-  stream.sendTrailers({ 'test-trailer': 'X'.repeat(64 * 1024) });
+  stream.sendTrailers({ "test-trailer": "X".repeat(64 * 1024) });
  }));
 
- stream.on('frameError', common.mustCall((frameType, errorCode) => {
+ stream.on("frameError", common.mustCall((frameType, errorCode) => {
   assert.strictEqual(errorCode, constants.NGHTTP2_FRAME_SIZE_ERROR);
  }));
 
- stream.on('error', common.expectsError({
-  code: 'ERR_HTTP2_STREAM_ERROR',
+ stream.on("error", common.expectsError({
+  code: "ERR_HTTP2_STREAM_ERROR",
  }));
 
- stream.on('close', common.mustCall());
+ stream.on("close", common.mustCall());
 
  stream.end();
 });
@@ -35,17 +35,17 @@ server.on('stream', (stream, headers) => {
 server.listen(0, () => {
  const clientSession = connect(`http://localhost:${server.address().port}`);
 
- clientSession.on('frameError', common.mustNotCall());
- clientSession.on('close', common.mustCall(() => {
+ clientSession.on("frameError", common.mustNotCall());
+ clientSession.on("close", common.mustCall(() => {
   server.close();
  }));
 
  const clientStream = clientSession.request();
 
- clientStream.on('close', common.mustCall());
+ clientStream.on("close", common.mustCall());
  // These events mustn't be called once the frame size error is from the server
- clientStream.on('frameError', common.mustNotCall());
- clientStream.on('error', common.mustNotCall());
+ clientStream.on("frameError", common.mustNotCall());
+ clientStream.on("error", common.mustNotCall());
 
  clientStream.end();
 });

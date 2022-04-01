@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
 
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('internal/async_hooks');
-const initHooks = require('./init-hooks');
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("internal/async_hooks");
+const initHooks = require("./init-hooks");
 
 const expectedId = async_hooks.newAsyncId();
 const expectedTriggerId = async_hooks.newAsyncId();
-const expectedType = 'test_emit_init_type';
-const expectedResource = { key: 'test_emit_init_resource' };
+const expectedType = "test_emit_init_type";
+const expectedResource = { key: "test_emit_init_resource" };
 
 const hooks1 = initHooks({
  oninit: common.mustCall((id, type, triggerAsyncId, resource) => {

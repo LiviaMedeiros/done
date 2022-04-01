@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 
 // Testing handle scope api calls
 const testHandleScope =

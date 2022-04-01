@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 let destroyed;
 let success;
@@ -44,14 +44,14 @@ if (cluster.isPrimary) {
  server = net.createServer(function(conn) {
   server.close();
   worker.disconnect();
-  worker.once('disconnect', function() {
+  worker.once("disconnect", function() {
    setTimeout(function() {
     conn.destroy();
     destroyed = true;
    }, 1000);
-  }).once('exit', function() {
+  }).once("exit", function() {
    // Worker should not exit while it has a connection
-   assert(destroyed, 'worker exited before connection destroyed');
+   assert(destroyed, "worker exited before connection destroyed");
    success = true;
   });
 
@@ -59,15 +59,15 @@ if (cluster.isPrimary) {
   const port = this.address().port;
 
   worker = cluster.fork()
-      .on('online', function() {
+      .on("online", function() {
       	this.send({ port });
       });
  });
- process.on('exit', function() {
+ process.on("exit", function() {
   assert(success);
  });
 } else {
- process.on('message', function(msg) {
+ process.on("message", function(msg) {
   // We shouldn't exit, not while a network connection exists
   net.connect(msg.port);
  });

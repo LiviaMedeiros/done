@@ -19,24 +19,24 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const onGC = require('../common/ongc');
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const onGC = require("../common/ongc");
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 // Test that the implicit listener for an 'connect' event on tls.Sockets is
 // added using `once()`, i.e. can be gc'ed once that event has occurred.
 
 const server = tls.createServer({
- cert: fixtures.readKey('rsa_cert.crt'),
- key: fixtures.readKey('rsa_private.pem'),
+ cert: fixtures.readKey("rsa_cert.crt"),
+ key: fixtures.readKey("rsa_private.pem"),
 }).listen(0);
 
 let collected = false;

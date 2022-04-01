@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs').promises;
-const vm = require('vm');
-const { MessageChannel, moveMessagePortToContext } = require('worker_threads');
-const { once } = require('events');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs").promises;
+const vm = require("vm");
+const { MessageChannel, moveMessagePortToContext } = require("worker_threads");
+const { once } = require("events");
 
 (async function() {
  const fh = await fs.open(__filename);
@@ -14,7 +14,7 @@ const { once } = require('events');
  assert.throws(() => {
   port1.postMessage(fh);
  }, {
-  code: 'ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST',
+  code: "ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST",
  });
 
  // Check that transferring FileHandle instances works.
@@ -22,13 +22,13 @@ const { once } = require('events');
  port1.postMessage(fh, [ fh ]);
  assert.strictEqual(fh.fd, -1);
 
- const [ fh2 ] = await once(port2, 'message');
+ const [ fh2 ] = await once(port2, "message");
  assert.strictEqual(Object.getPrototypeOf(fh2), Object.getPrototypeOf(fh));
 
  assert.deepStrictEqual(await fh2.readFile(), await fs.readFile(__filename));
  await fh2.close();
 
- assert.rejects(() => fh.readFile(), { code: 'EBADF' });
+ assert.rejects(() => fh.readFile(), { code: "EBADF" });
 })().then(common.mustCall());
 
 (async function() {
@@ -51,14 +51,14 @@ const { once } = require('events');
  const ctx = vm.createContext();
  const port2moved = moveMessagePortToContext(port2, ctx);
  port2moved.onmessage = common.mustCall((msgEvent) => {
-  assert.strictEqual(msgEvent.data, 'second message');
+  assert.strictEqual(msgEvent.data, "second message");
   port1.close();
  });
  // TODO(addaleax): Switch this to a 'messageerror' event once MessagePort
  // implements EventTarget fully and in a cross-context manner.
  port2moved.onmessageerror = common.mustCall((event) => {
   assert.strictEqual(event.data.code,
-                     'ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE');
+                     "ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE");
  });
  port2moved.start();
 
@@ -66,7 +66,7 @@ const { once } = require('events');
  port1.postMessage(fh, [ fh ]);
  assert.strictEqual(fh.fd, -1);
 
- port1.postMessage('second message');
+ port1.postMessage("second message");
 })().then(common.mustCall());
 
 (async function() {
@@ -79,8 +79,8 @@ const { once } = require('events');
  assert.throws(() => {
   port1.postMessage(fh, [fh]);
  }, {
-  message: 'Cannot transfer FileHandle while in use',
-  name: 'DataCloneError',
+  message: "Cannot transfer FileHandle while in use",
+  name: "DataCloneError",
  });
 
  assert.deepStrictEqual(await readPromise, await fs.readFile(__filename));
@@ -96,8 +96,8 @@ const { once } = require('events');
  assert.throws(() => {
   port1.postMessage(fh, [fh]);
  }, {
-  message: 'Cannot transfer FileHandle while in use',
-  name: 'DataCloneError',
+  message: "Cannot transfer FileHandle while in use",
+  name: "DataCloneError",
  });
  await closePromise;
 })().then(common.mustCall());

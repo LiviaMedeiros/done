@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
-const common = require('../common');
-const onGC = require('../common/ongc');
+const common = require("../common");
+const onGC = require("../common/ongc");
 
 {
  onGC({}, { ongc: common.mustCall() });

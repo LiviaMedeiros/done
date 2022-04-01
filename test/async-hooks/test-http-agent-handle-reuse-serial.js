@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
-const common = require('../common');
-const initHooks = require('./init-hooks');
-const { checkInvocations } = require('./hook-checks');
-const assert = require('assert');
-const { async_id_symbol } = require('internal/async_hooks').symbols;
-const http = require('http');
+const common = require("../common");
+const initHooks = require("./init-hooks");
+const { checkInvocations } = require("./hook-checks");
+const assert = require("assert");
+const { async_id_symbol } = require("internal/async_hooks").symbols;
+const http = require("http");
 
 // Checks that the async resource used in init in case of a reused handle
 // is not reused. Test is based on parallel\test-async-hooks-http-agent.js.
@@ -24,21 +24,21 @@ const agent = new http.Agent({
 });
 
 const server = http.createServer(common.mustCall((req, res) => {
- req.once('data', common.mustCallAtLeast(() => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.write('foo');
+ req.once("data", common.mustCallAtLeast(() => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.write("foo");
  }));
- req.on('end', common.mustCall(() => {
-  res.end('bar');
+ req.on("end", common.mustCall(() => {
+  res.end("bar");
  }));
 }, 2)).listen(0, common.mustCall(() => {
  const port = server.address().port;
- const payload = 'hello world';
+ const payload = "hello world";
 
  // First request. This is useless except for adding a socket to the
  // agent’s pool for reuse.
  const r1 = http.request({
-  agent, port, method: 'POST',
+  agent, port, method: "POST",
  }, common.mustCall((res) => {
   // Remember which socket we used.
   const socket = res.socket;
@@ -47,8 +47,8 @@ const server = http.createServer(common.mustCall((req, res) => {
   // Check that request and response share their socket.
   assert.strictEqual(r1.socket, socket);
 
-  res.on('data', common.mustCallAtLeast(() => {}));
-  res.on('end', common.mustCall(() => {
+  res.on("data", common.mustCallAtLeast(() => {}));
+  res.on("end", common.mustCall(() => {
    // setImmediate() to give the agent time to register the freed socket.
    setImmediate(common.mustCall(() => {
     // The socket is free for reuse now.
@@ -59,8 +59,8 @@ const server = http.createServer(common.mustCall((req, res) => {
     // (hence the Content-Length header) and call .end() after the
     // response header has already been received.
     const r2 = http.request({
-     agent, port, method: 'POST', headers: {
-      'Content-Length': payload.length,
+     agent, port, method: "POST", headers: {
+      "Content-Length": payload.length,
      },
     }, common.mustCall((res) => {
      asyncIdAtSecondReq = res.socket[async_id_symbol];
@@ -68,10 +68,10 @@ const server = http.createServer(common.mustCall((req, res) => {
      assert.strictEqual(r2.socket, socket);
 
      // Empty payload, to hit the “right” code path.
-     r2.end('');
+     r2.end("");
 
-     res.on('data', common.mustCallAtLeast(() => {}));
-     res.on('end', common.mustCall(() => {
+     res.on("data", common.mustCallAtLeast(() => {}));
+     res.on("end", common.mustCall(() => {
       // Clean up to let the event loop stop.
       server.close();
       agent.destroy();
@@ -88,7 +88,7 @@ const server = http.createServer(common.mustCall((req, res) => {
 }));
 
 
-process.on('exit', onExit);
+process.on("exit", onExit);
 
 function onExit() {
  hooks.disable();
@@ -97,14 +97,14 @@ function onExit() {
 
  // Verify both invocations
  const first = activities.filter((x) => x.uid === asyncIdAtFirstReq)[0];
- checkInvocations(first, { init: 1, destroy: 1 }, 'when process exits');
+ checkInvocations(first, { init: 1, destroy: 1 }, "when process exits");
 
  const second = activities.filter((x) => x.uid === asyncIdAtSecondReq)[0];
- checkInvocations(second, { init: 1, destroy: 1 }, 'when process exits');
+ checkInvocations(second, { init: 1, destroy: 1 }, "when process exits");
 
  // Verify reuse handle has been wrapped
  assert.strictEqual(first.type, second.type);
- assert.ok(first.handle !== second.handle, 'Resource reused');
+ assert.ok(first.handle !== second.handle, "Resource reused");
  assert.ok(first.handle === second.handle.handle,
-           'Resource not wrapped correctly');
+           "Resource not wrapped correctly");
 }

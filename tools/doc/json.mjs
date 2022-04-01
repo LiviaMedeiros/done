@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import html from 'remark-html';
-import { unified } from 'unified';
-import { selectAll } from 'unist-util-select';
+import html from "remark-html";
+import { unified } from "unified";
+import { selectAll } from "unist-util-select";
 
-import * as common from './common.mjs';
+import * as common from "./common.mjs";
 
 // Unified processor: input is https://github.com/syntax-tree/mdast,
 // output is: https://gist.github.com/1777387.
@@ -35,13 +35,13 @@ export function jsonAPI({ filename }) {
   const stabilityExpr = /^Stability: ([0-5])(?:\s*-\s*)?(.*)$/s;
 
   // Extract definitions.
-  const definitions = selectAll('definition', tree);
+  const definitions = selectAll("definition", tree);
 
   // Determine the start, stop, and depth of each section.
   const sections = [];
   let section = null;
   tree.children.forEach((node, i) => {
-   if (node.type === 'heading' &&
+   if (node.type === "heading" &&
           !exampleHeading.test(textJoin(node.children, file))) {
     if (section) section.stop = i - 1;
     section = { start: i, stop: tree.children.length, depth: node.depth };
@@ -50,7 +50,7 @@ export function jsonAPI({ filename }) {
   });
 
   // Collect and capture results.
-  const result = { type: 'module', source: filename };
+  const result = { type: "module", source: filename };
   while (sections.length > 0) {
    doSection(sections.shift(), result);
   }
@@ -59,7 +59,7 @@ export function jsonAPI({ filename }) {
   // Process a single section (recursively, including subsections).
   function doSection(section, parent) {
    if (section.depth - parent.depth > 1) {
-    throw new Error('Inappropriate heading level\n' +
+    throw new Error("Inappropriate heading level\n" +
                         JSON.stringify(section));
    }
 
@@ -80,10 +80,10 @@ export function jsonAPI({ filename }) {
    // from the markdown itself.
    nodes.forEach((node, i) => {
     // Input: <!-- name=module -->; output: {name: module}.
-    if (node.type === 'html') {
+    if (node.type === "html") {
      node.value = node.value.replace(metaExpr, (_0, key, value) => {
       current[key.trim()] = value.trim();
-      return '';
+      return "";
      });
      if (!node.value.trim()) delete nodes[i];
     }
@@ -92,16 +92,16 @@ export function jsonAPI({ filename }) {
     // <!-- YAML
     // added: v1.0.0
     // -->
-    if (node.type === 'html' && common.isYAMLBlock(node.value)) {
+    if (node.type === "html" && common.isYAMLBlock(node.value)) {
      current.meta = common.extractAndParseYAML(node.value);
      delete nodes[i];
     }
 
     // Stability marker: > Stability: ...
     if (
-     node.type === 'blockquote' && node.children.length === 1 &&
-          node.children[0].type === 'paragraph' &&
-          nodes.slice(0, i).every((node) => node.type === 'list')
+     node.type === "blockquote" && node.children.length === 1 &&
+          node.children[0].type === "paragraph" &&
+          nodes.slice(0, i).every((node) => node.type === "list")
     ) {
      const text = textJoin(node.children[0].children, file);
      const stability = text.match(stabilityExpr);
@@ -117,7 +117,7 @@ export function jsonAPI({ filename }) {
    nodes = nodes.filter(() => true);
 
    // If the first node is a list, extract it.
-   const list = nodes[0] && nodes[0].type === 'list' ?
+   const list = nodes[0] && nodes[0].type === "list" ?
     nodes.shift() : null;
 
    // Now figure out what this list actually means.
@@ -126,14 +126,14 @@ export function jsonAPI({ filename }) {
     list.children.map((child) => parseListItem(child, file)) : [];
 
    switch (current.type) {
-    case 'ctor':
-    case 'classMethod':
-    case 'method': {
+    case "ctor":
+    case "classMethod":
+    case "method": {
      // Each item is an argument, unless the name is 'return',
      // in which case it's the return value.
      const sig = {};
      sig.params = values.filter((value) => {
-      if (value.name === 'return') {
+      if (value.name === "return") {
        sig.return = value;
        return false;
       }
@@ -143,7 +143,7 @@ export function jsonAPI({ filename }) {
      current.signatures = [sig];
      break;
     }
-    case 'property':
+    case "property":
      // There should be only one item, which is the value.
      // Copy the data up to the section.
      if (values.length) {
@@ -155,7 +155,7 @@ export function jsonAPI({ filename }) {
 
       for (const key in signature) {
        if (signature[key]) {
-        if (key === 'type') {
+        if (key === "type") {
          current.typeof = signature.type;
         } else {
          current[key] = signature[key];
@@ -165,7 +165,7 @@ export function jsonAPI({ filename }) {
      }
      break;
 
-    case 'event':
+    case "event":
      // Event: each item is an argument.
      current.params = values;
      break;
@@ -184,11 +184,11 @@ export function jsonAPI({ filename }) {
     current.desc = unified()
           .use(function() {
           	this.Parser = () => (
-          		{ type: 'root', children: nodes.concat(definitions) }
+          		{ type: "root", children: nodes.concat(definitions) }
           	);
           })
           .use(html, { sanitize: false })
-          .processSync('').toString().trim();
+          .processSync("").toString().trim();
     if (!current.desc) delete current.desc;
    }
 
@@ -200,18 +200,18 @@ export function jsonAPI({ filename }) {
    // If type is not set, default type based on parent type, and
    // set displayName and name properties.
    if (!current.type) {
-    current.type = (parent.type === 'misc' ? 'misc' : 'module');
+    current.type = (parent.type === "misc" ? "misc" : "module");
     current.displayName = current.name;
     current.name = current.name.toLowerCase()
-          .trim().replace(/\s+/g, '_');
+          .trim().replace(/\s+/g, "_");
    }
 
    // Pluralize type to determine which 'bucket' to put this section in.
    let plur;
-   if (current.type.slice(-1) === 's') {
+   if (current.type.slice(-1) === "s") {
     plur = `${current.type}es`;
-   } else if (current.type.slice(-1) === 'y') {
-    plur = current.type.replace(/y$/, 'ies');
+   } else if (current.type.slice(-1) === "y") {
+    plur = current.type.replace(/y$/, "ies");
    } else {
     plur = `${current.type}s`;
    }
@@ -219,7 +219,7 @@ export function jsonAPI({ filename }) {
    // Classes sometimes have various 'ctor' children
    // which are actually just descriptions of a constructor class signature.
    // Merge them into the parent.
-   if (current.type === 'class' && current.ctors) {
+   if (current.type === "class" && current.ctors) {
     current.signatures = current.signatures || [];
     const sigs = current.signatures;
     current.ctors.forEach((ctor) => {
@@ -234,7 +234,7 @@ export function jsonAPI({ filename }) {
 
    // Properties are a bit special.
    // Their "type" is the type of object, not "property".
-   if (current.type === 'property') {
+   if (current.type === "property") {
     if (current.typeof) {
      current.type = current.typeof;
      delete current.typeof;
@@ -246,17 +246,17 @@ export function jsonAPI({ filename }) {
    // If the parent's type is 'misc', then it's just a random
    // collection of stuff, like the "globals" section.
    // Make the children top-level items.
-   if (current.type === 'misc') {
+   if (current.type === "misc") {
     Object.keys(current).forEach((key) => {
      switch (key) {
-      case 'textRaw':
-      case 'name':
-      case 'type':
-      case 'desc':
-      case 'miscs':
+      case "textRaw":
+      case "name":
+      case "type":
+      case "desc":
+      case "miscs":
        return;
       default:
-       if (parent.type === 'misc') {
+       if (parent.type === "misc") {
         return;
        }
        if (parent[key] && Array.isArray(parent[key])) {
@@ -290,9 +290,9 @@ function parseSignature(text, sig) {
 
  let [, sigParams] = text.match(paramExpr) || [];
  if (!sigParams) return;
- sigParams = sigParams.split(',');
+ sigParams = sigParams.split(",");
  let optionalLevel = 0;
- const optionalCharDict = { '[': 1, ' ': 0, ']': -1 };
+ const optionalCharDict = { "[": 1, " ": 0, "]": -1 };
  sigParams.forEach((sigParam, i) => {
   sigParam = sigParam.trim();
   if (!sigParam) {
@@ -318,7 +318,7 @@ function parseSignature(text, sig) {
   }
   sigParam = sigParam.substring(0, pos + 1);
 
-  const eq = sigParam.indexOf('=');
+  const eq = sigParam.indexOf("=");
   if (eq !== -1) {
    defaultValue = sigParam.substr(eq + 1);
    sigParam = sigParam.substr(0, eq);
@@ -343,7 +343,7 @@ function parseSignature(text, sig) {
    }
 
    if (!listParam) {
-    if (sigParam.startsWith('...')) {
+    if (sigParam.startsWith("...")) {
      listParam = { name: sigParam };
     } else {
      throw new Error(
@@ -374,11 +374,11 @@ const defaultExpr = /\s*\*\*Default:\*\*\s*([^]+)$/i;
 function parseListItem(item, file) {
  const current = {};
 
- current.textRaw = item.children.filter((node) => node.type !== 'list')
+ current.textRaw = item.children.filter((node) => node.type !== "list")
     .map((node) => (
     	file.value.slice(node.position.start.offset, node.position.end.offset)),
     )
-    .join('').replace(/\s+/g, ' ').replace(/<!--.*?-->/sg, '');
+    .join("").replace(/\s+/g, " ").replace(/<!--.*?-->/sg, "");
  let text = current.textRaw;
 
  if (!text) {
@@ -389,33 +389,33 @@ function parseListItem(item, file) {
  // Anything left over is 'desc'.
 
  if (returnExpr.test(text)) {
-  current.name = 'return';
-  text = text.replace(returnExpr, '');
+  current.name = "return";
+  text = text.replace(returnExpr, "");
  } else {
   const [, name] = text.match(nameExpr) || [];
   if (name) {
    current.name = name;
-   text = text.replace(nameExpr, '');
+   text = text.replace(nameExpr, "");
   }
  }
 
  const [, type] = text.match(typeExpr) || [];
  if (type) {
   current.type = type;
-  text = text.replace(typeExpr, '');
+  text = text.replace(typeExpr, "");
  }
 
- text = text.replace(leadingHyphen, '');
+ text = text.replace(leadingHyphen, "");
 
  const [, defaultValue] = text.match(defaultExpr) || [];
  if (defaultValue) {
-  current.default = defaultValue.replace(/\.$/, '');
-  text = text.replace(defaultExpr, '');
+  current.default = defaultValue.replace(/\.$/, "");
+  text = text.replace(defaultExpr, "");
  }
 
  if (text) current.desc = text;
 
- const options = item.children.find((child) => child.type === 'list');
+ const options = item.children.find((child) => child.type === "list");
  if (options) {
   current.options = options.children.map((child) => (
    parseListItem(child, file)
@@ -430,16 +430,16 @@ function parseListItem(item, file) {
 // To reduce escape slashes in RegExp string components.
 const r = String.raw;
 
-const eventPrefix = '^Event: +';
-const classPrefix = '^[Cc]lass: +';
-const ctorPrefix = '^(?:[Cc]onstructor: +)?`?new +';
-const classMethodPrefix = '^Static method: +';
-const maybeClassPropertyPrefix = '(?:Class property: +)?';
+const eventPrefix = "^Event: +";
+const classPrefix = "^[Cc]lass: +";
+const ctorPrefix = "^(?:[Cc]onstructor: +)?`?new +";
+const classMethodPrefix = "^Static method: +";
+const maybeClassPropertyPrefix = "(?:Class property: +)?";
 
 const maybeQuote = '[\'"]?';
 const notQuotes = '[^\'"]+';
 
-const maybeBacktick = '`?';
+const maybeBacktick = "`?";
 
 // To include constructs like `readable\[Symbol.asyncIterator\]()`
 // or `readable.\_read(size)` (with Markdown escapes).
@@ -456,23 +456,23 @@ const callWithParams = r`\([^)]*\)`;
 const maybeExtends = `(?: +extends +${maybeAncestors}${classId})?`;
 
 const headingExpressions = [
- { type: 'event', re: RegExp(
-  `${eventPrefix}${maybeBacktick}${maybeQuote}(${notQuotes})${maybeQuote}${maybeBacktick}$`, 'i') },
+ { type: "event", re: RegExp(
+  `${eventPrefix}${maybeBacktick}${maybeQuote}(${notQuotes})${maybeQuote}${maybeBacktick}$`, "i") },
 
- { type: 'class', re: RegExp(
-  `${classPrefix}${maybeBacktick}(${maybeAncestors}${classId})${maybeExtends}${maybeBacktick}$`, '') },
+ { type: "class", re: RegExp(
+  `${classPrefix}${maybeBacktick}(${maybeAncestors}${classId})${maybeExtends}${maybeBacktick}$`, "") },
 
- { type: 'ctor', re: RegExp(
-  `${ctorPrefix}(${maybeAncestors}${classId})${callWithParams}${maybeBacktick}$`, '') },
+ { type: "ctor", re: RegExp(
+  `${ctorPrefix}(${maybeAncestors}${classId})${callWithParams}${maybeBacktick}$`, "") },
 
- { type: 'classMethod', re: RegExp(
-  `${classMethodPrefix}${maybeBacktick}${maybeAncestors}(${id})${callWithParams}${maybeBacktick}$`, 'i') },
+ { type: "classMethod", re: RegExp(
+  `${classMethodPrefix}${maybeBacktick}${maybeAncestors}(${id})${callWithParams}${maybeBacktick}$`, "i") },
 
- { type: 'method', re: RegExp(
-  `^${maybeBacktick}${maybeAncestors}(${id})${callWithParams}${maybeBacktick}$`, 'i') },
+ { type: "method", re: RegExp(
+  `^${maybeBacktick}${maybeAncestors}(${id})${callWithParams}${maybeBacktick}$`, "i") },
 
- { type: 'property', re: RegExp(
-  `^${maybeClassPropertyPrefix}${maybeBacktick}${ancestors}(${id})${maybeBacktick}$`, 'i') },
+ { type: "property", re: RegExp(
+  `^${maybeClassPropertyPrefix}${maybeBacktick}${ancestors}(${id})${maybeBacktick}$`, "i") },
 ];
 
 function newSection(header, file) {
@@ -490,18 +490,18 @@ function newSection(header, file) {
 
 function textJoin(nodes, file) {
  return nodes.map((node) => {
-  if (node.type === 'linkReference') {
+  if (node.type === "linkReference") {
    return file.value.slice(node.position.start.offset,
                            node.position.end.offset);
-  } else if (node.type === 'inlineCode') {
+  } else if (node.type === "inlineCode") {
    return `\`${node.value}\``;
-  } else if (node.type === 'strong') {
+  } else if (node.type === "strong") {
    return `**${textJoin(node.children, file)}**`;
-  } else if (node.type === 'emphasis') {
+  } else if (node.type === "emphasis") {
    return `_${textJoin(node.children, file)}_`;
   } else if (node.children) {
    return textJoin(node.children, file);
   }
   return node.value;
- }).join('');
+ }).join("");
 }

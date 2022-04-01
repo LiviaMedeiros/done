@@ -2,17 +2,17 @@
  * @fileoverview Ensure modules are not required twice at top level of a module
  * @author devsnek
  */
-'use strict';
+"use strict";
 
-const { isRequireCall, isString } = require('./rules-utils.js');
+const { isRequireCall, isString } = require("./rules-utils.js");
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
 const secondLevelTypes = [
- 'FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression',
- 'ClassBody', 'MethodDefinition',
+ "FunctionDeclaration", "FunctionExpression", "ArrowFunctionExpression",
+ "ClassBody", "MethodDefinition",
 ];
 
 function isTopLevel(node) {
@@ -26,7 +26,7 @@ function isTopLevel(node) {
 }
 
 module.exports = (context) => {
- if (context.parserOptions.sourceType === 'module') {
+ if (context.parserOptions.sourceType === "module") {
   return {};
  }
 
@@ -51,7 +51,7 @@ module.exports = (context) => {
     if (required.has(moduleName)) {
      context.report(
       node,
-      '\'{{moduleName}}\' require is duplicated.',
+      "'{{moduleName}}' require is duplicated.",
       { moduleName },
      );
     } else {

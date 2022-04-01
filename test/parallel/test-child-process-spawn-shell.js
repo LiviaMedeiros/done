@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cp = require('child_process');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cp = require("child_process");
 
 // Verify that a shell is, in fact, executed
-const doesNotExist = cp.spawn('does-not-exist', { shell: true });
+const doesNotExist = cp.spawn("does-not-exist", { shell: true });
 
-assert.notStrictEqual(doesNotExist.spawnfile, 'does-not-exist');
-doesNotExist.on('error', common.mustNotCall());
-doesNotExist.on('exit', common.mustCall((code, signal) => {
+assert.notStrictEqual(doesNotExist.spawnfile, "does-not-exist");
+doesNotExist.on("error", common.mustNotCall());
+doesNotExist.on("exit", common.mustCall((code, signal) => {
  assert.strictEqual(signal, null);
 
  if (common.isWindows)
@@ -18,47 +18,47 @@ doesNotExist.on('exit', common.mustCall((code, signal) => {
 }));
 
 // Verify that passing arguments works
-const echo = cp.spawn('echo', ['foo'], {
- encoding: 'utf8',
+const echo = cp.spawn("echo", ["foo"], {
+ encoding: "utf8",
  shell: true,
 });
-let echoOutput = '';
+let echoOutput = "";
 
-assert.strictEqual(echo.spawnargs[echo.spawnargs.length - 1].replace(/"/g, ''),
-                   'echo foo');
-echo.stdout.on('data', (data) => {
+assert.strictEqual(echo.spawnargs[echo.spawnargs.length - 1].replace(/"/g, ""),
+                   "echo foo");
+echo.stdout.on("data", (data) => {
  echoOutput += data;
 });
-echo.on('close', common.mustCall((code, signal) => {
- assert.strictEqual(echoOutput.trim(), 'foo');
+echo.on("close", common.mustCall((code, signal) => {
+ assert.strictEqual(echoOutput.trim(), "foo");
 }));
 
 // Verify that shell features can be used
-const cmd = 'echo bar | cat';
+const cmd = "echo bar | cat";
 const command = cp.spawn(cmd, {
- encoding: 'utf8',
+ encoding: "utf8",
  shell: true,
 });
-let commandOutput = '';
+let commandOutput = "";
 
-command.stdout.on('data', (data) => {
+command.stdout.on("data", (data) => {
  commandOutput += data;
 });
-command.on('close', common.mustCall((code, signal) => {
- assert.strictEqual(commandOutput.trim(), 'bar');
+command.on("close", common.mustCall((code, signal) => {
+ assert.strictEqual(commandOutput.trim(), "bar");
 }));
 
 // Verify that the environment is properly inherited
 const env = cp.spawn(`"${process.execPath}" -pe process.env.BAZ`, {
- env: { ...process.env, BAZ: 'buzz' },
- encoding: 'utf8',
+ env: { ...process.env, BAZ: "buzz" },
+ encoding: "utf8",
  shell: true,
 });
-let envOutput = '';
+let envOutput = "";
 
-env.stdout.on('data', (data) => {
+env.stdout.on("data", (data) => {
  envOutput += data;
 });
-env.on('close', common.mustCall((code, signal) => {
- assert.strictEqual(envOutput.trim(), 'buzz');
+env.on("close", common.mustCall((code, signal) => {
+ assert.strictEqual(envOutput.trim(), "buzz");
 }));

@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 // This tests that the lower bits of mode > 0o777 still works in fs APIs.
 
-const common = require('../common');
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+const common = require("../common");
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
 let mode;
 // On Windows chmod is only able to manipulate write permission
@@ -17,17 +17,17 @@ if (common.isWindows) {
 
 const maskToIgnore = 0o10000;
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 function test(mode, asString) {
- const suffix = asString ? 'str' : 'num';
+ const suffix = asString ? "str" : "num";
  const input = asString ?
   (mode | maskToIgnore).toString(8) : (mode | maskToIgnore);
 
  {
   const file = path.join(tmpdir.path, `chmod-async-${suffix}.txt`);
-  fs.writeFileSync(file, 'test', 'utf-8');
+  fs.writeFileSync(file, "test", "utf-8");
 
   fs.chmod(file, input, common.mustSucceed(() => {
    assert.strictEqual(fs.statSync(file).mode & 0o777, mode);
@@ -36,7 +36,7 @@ function test(mode, asString) {
 
  {
   const file = path.join(tmpdir.path, `chmodSync-${suffix}.txt`);
-  fs.writeFileSync(file, 'test', 'utf-8');
+  fs.writeFileSync(file, "test", "utf-8");
 
   fs.chmodSync(file, input);
   assert.strictEqual(fs.statSync(file).mode & 0o777, mode);
@@ -44,8 +44,8 @@ function test(mode, asString) {
 
  {
   const file = path.join(tmpdir.path, `fchmod-async-${suffix}.txt`);
-  fs.writeFileSync(file, 'test', 'utf-8');
-  fs.open(file, 'w', common.mustSucceed((fd) => {
+  fs.writeFileSync(file, "test", "utf-8");
+  fs.open(file, "w", common.mustSucceed((fd) => {
    fs.fchmod(fd, input, common.mustSucceed(() => {
     assert.strictEqual(fs.fstatSync(fd).mode & 0o777, mode);
     fs.close(fd, assert.ifError);
@@ -55,8 +55,8 @@ function test(mode, asString) {
 
  {
   const file = path.join(tmpdir.path, `fchmodSync-${suffix}.txt`);
-  fs.writeFileSync(file, 'test', 'utf-8');
-  const fd = fs.openSync(file, 'w');
+  fs.writeFileSync(file, "test", "utf-8");
+  const fd = fs.openSync(file, "w");
 
   fs.fchmodSync(fd, input);
   assert.strictEqual(fs.fstatSync(fd).mode & 0o777, mode);
@@ -67,7 +67,7 @@ function test(mode, asString) {
  if (fs.lchmod) {
   const link = path.join(tmpdir.path, `lchmod-src-${suffix}`);
   const file = path.join(tmpdir.path, `lchmod-dest-${suffix}`);
-  fs.writeFileSync(file, 'test', 'utf-8');
+  fs.writeFileSync(file, "test", "utf-8");
   fs.symlinkSync(file, link);
 
   fs.lchmod(link, input, common.mustSucceed(() => {
@@ -78,7 +78,7 @@ function test(mode, asString) {
  if (fs.lchmodSync) {
   const link = path.join(tmpdir.path, `lchmodSync-src-${suffix}`);
   const file = path.join(tmpdir.path, `lchmodSync-dest-${suffix}`);
-  fs.writeFileSync(file, 'test', 'utf-8');
+  fs.writeFileSync(file, "test", "utf-8");
   fs.symlinkSync(file, link);
 
   fs.lchmodSync(link, input);

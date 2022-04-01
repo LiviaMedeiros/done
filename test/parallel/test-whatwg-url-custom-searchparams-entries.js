@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 // Tests below are not from WPT.
-const params = new URLSearchParams('a=b&c=d');
+const params = new URLSearchParams("a=b&c=d");
 const entries = params.entries();
-assert.strictEqual(typeof entries[Symbol.iterator], 'function');
+assert.strictEqual(typeof entries[Symbol.iterator], "function");
 assert.strictEqual(entries[Symbol.iterator](), entries);
 assert.deepStrictEqual(entries.next(), {
- value: ['a', 'b'],
+ value: ["a", "b"],
  done: false,
 });
 assert.deepStrictEqual(entries.next(), {
- value: ['c', 'd'],
+ value: ["c", "d"],
  done: false,
 });
 assert.deepStrictEqual(entries.next(), {
@@ -28,14 +28,14 @@ assert.deepStrictEqual(entries.next(), {
 assert.throws(() => {
  entries.next.call(undefined);
 }, {
- code: 'ERR_INVALID_THIS',
- name: 'TypeError',
+ code: "ERR_INVALID_THIS",
+ name: "TypeError",
  message: 'Value of "this" must be of type URLSearchParamsIterator',
 });
 assert.throws(() => {
  params.entries.call(undefined);
 }, {
- code: 'ERR_INVALID_THIS',
- name: 'TypeError',
+ code: "ERR_INVALID_THIS",
+ name: "TypeError",
  message: 'Value of "this" must be of type URLSearchParams',
 });

@@ -19,28 +19,28 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
-const https = require('https');
-const http = require('http');
+const fixtures = require("../common/fixtures");
+const https = require("https");
+const http = require("http");
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
-const body = 'hello world\n';
+const body = "hello world\n";
 
 // Try first with http server
 
 const server_http = http.createServer(function(req, res) {
- console.log('got HTTP request');
- res.writeHead(200, { 'content-type': 'text/plain' });
+ console.log("got HTTP request");
+ res.writeHead(200, { "content-type": "text/plain" });
  res.end(body);
 });
 
@@ -64,8 +64,8 @@ server_http.listen(0, function() {
 // mirrored in tls.js's CryptoStream)
 
 const server_https = https.createServer(options, function(req, res) {
- console.log('got HTTPS request');
- res.writeHead(200, { 'content-type': 'text/plain' });
+ console.log("got HTTPS request");
+ res.writeHead(200, { "content-type": "text/plain" });
  res.end(body);
 });
 

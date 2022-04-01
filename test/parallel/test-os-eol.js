@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const os = require('os');
+const common = require("../common");
+const assert = require("assert");
+const os = require("os");
 
-const eol = common.isWindows ? '\r\n' : '\n';
+const eol = common.isWindows ? "\r\n" : "\n";
 
 assert.strictEqual(os.EOL, eol);
 
@@ -12,7 +12,7 @@ assert.strictEqual(os.EOL, eol);
 // varies between different JavaScript engines.
 assert.throws(function() { os.EOL = 123; }, TypeError);
 
-const foo = 'foo';
+const foo = "foo";
 Object.defineProperties(os, {
  EOL: {
   configurable: true,

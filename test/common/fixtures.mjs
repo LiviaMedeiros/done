@@ -1,4 +1,4 @@
-import fixtures from './fixtures.js';
+import fixtures from "./fixtures.js";
 
 const {
  fixturesDir,

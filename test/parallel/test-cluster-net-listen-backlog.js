@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 // Monkey-patch `net.Server.listen`
-const net = require('net');
-const cluster = require('cluster');
+const net = require("net");
+const cluster = require("cluster");
 
 // Force round-robin scheduling policy
 // as Windows defaults to SCHED_NONE
@@ -19,7 +19,7 @@ if (cluster.isMaster) {
  net.Server.prototype.listen = common.mustCall(
   function(...args) {
    const options = args[0];
-   if (typeof options === 'object') {
+   if (typeof options === "object") {
     assert(options.backlog, kExpectedBacklog);
    } else {
     assert(args[1], kExpectedBacklog);
@@ -29,7 +29,7 @@ if (cluster.isMaster) {
  );
 
  const worker = cluster.fork();
- worker.on('message', () => {
+ worker.on("message", () => {
   worker.disconnect();
  });
 } else {

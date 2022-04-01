@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const net = require('net');
+require("../common");
+const assert = require("assert");
+const net = require("net");
 const NUM = 8;
 const connections = [];
 const clients = [];

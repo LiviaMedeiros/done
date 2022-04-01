@@ -1,11 +1,11 @@
 // Flags: --report-uncaught-exception
-'use strict';
+"use strict";
 // Test report is suppressed on uncaught exception hook.
-const common = require('../common');
-const assert = require('assert');
-const helper = require('../common/report');
-const tmpdir = require('../common/tmpdir');
-const error = new Error('test error');
+const common = require("../common");
+const assert = require("assert");
+const helper = require("../common/report");
+const tmpdir = require("../common/tmpdir");
+const error = new Error("test error");
 
 tmpdir.refresh();
 process.report.directory = tmpdir.path;
@@ -14,9 +14,9 @@ process.report.directory = tmpdir.path;
 process.setUncaughtExceptionCaptureCallback(common.mustCall());
 
 // Make sure this is ignored due to the above override.
-process.on('uncaughtException', common.mustNotCall());
+process.on("uncaughtException", common.mustNotCall());
 
-process.on('exit', (code) => {
+process.on("exit", (code) => {
  assert.strictEqual(code, 0);
  // Make sure no reports are generated.
  const reports = helper.findReports(process.pid, tmpdir.path);

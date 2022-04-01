@@ -1,27 +1,27 @@
 // Flags: --no-warnings --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 const {
  WritableStream,
-} = require('stream/web');
+} = require("stream/web");
 
 const {
  newStreamWritableFromWritableStream,
-} = require('internal/webstreams/adapters');
+} = require("internal/webstreams/adapters");
 
 const {
  finished,
  pipeline,
  Readable,
-} = require('stream');
+} = require("stream");
 
 const {
  kState,
-} = require('internal/webstreams/util');
+} = require("internal/webstreams/util");
 
 class TestSource {
  constructor() {
@@ -48,7 +48,7 @@ class TestSource {
 
 [1, {}, false, []].forEach((arg) => {
  assert.throws(() => newStreamWritableFromWritableStream(arg), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 });
 
@@ -60,13 +60,13 @@ class TestSource {
 
  assert(writableStream.locked);
 
- writable.end('chunk');
+ writable.end("chunk");
 
- writable.on('close', common.mustCall(() => {
+ writable.on("close", common.mustCall(() => {
   assert(writableStream.locked);
-  assert.strictEqual(writableStream[kState].state, 'closed');
+  assert.strictEqual(writableStream[kState].state, "closed");
   assert.strictEqual(source.chunks.length, 1);
-  assert.deepStrictEqual(source.chunks[0], Buffer.from('chunk'));
+  assert.deepStrictEqual(source.chunks[0], Buffer.from("chunk"));
  }));
 }
 
@@ -81,9 +81,9 @@ class TestSource {
 
  writable.destroy();
 
- writable.on('close', common.mustCall(() => {
+ writable.on("close", common.mustCall(() => {
   assert(writableStream.locked);
-  assert.strictEqual(writableStream[kState].state, 'closed');
+  assert.strictEqual(writableStream[kState].state, "closed");
   assert.strictEqual(source.chunks.length, 0);
  }));
 }
@@ -91,7 +91,7 @@ class TestSource {
 {
  // Destroying the stream.Writable with an error should error
  // the writableStream
- const error = new Error('boom');
+ const error = new Error("boom");
  const source = new TestSource();
  const writableStream = new WritableStream(source);
  const writable = newStreamWritableFromWritableStream(writableStream);
@@ -100,13 +100,13 @@ class TestSource {
 
  writable.destroy(error);
 
- writable.on('error', common.mustCall((reason) => {
+ writable.on("error", common.mustCall((reason) => {
   assert.strictEqual(reason, error);
  }));
 
- writable.on('close', common.mustCall(() => {
+ writable.on("close", common.mustCall(() => {
   assert(writableStream.locked);
-  assert.strictEqual(writableStream[kState].state, 'errored');
+  assert.strictEqual(writableStream[kState].state, "errored");
   assert.strictEqual(writableStream[kState].storedError, error);
   assert.strictEqual(source.chunks.length, 0);
  }));
@@ -116,7 +116,7 @@ class TestSource {
  // Attempting to close, abort, or getWriter on writableStream
  // should fail because it is locked. An internal error in
  // writableStream should error the writable.
- const error = new Error('boom');
+ const error = new Error("boom");
  const source = new TestSource();
  const writableStream = new WritableStream(source);
  const writable = newStreamWritableFromWritableStream(writableStream);
@@ -124,18 +124,18 @@ class TestSource {
  assert(writableStream.locked);
 
  assert.rejects(writableStream.close(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 
  assert.rejects(writableStream.abort(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 
  assert.throws(() => writableStream.getWriter(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 
- writable.on('error', common.mustCall((reason) => {
+ writable.on("error", common.mustCall((reason) => {
   assert.strictEqual(error, reason);
  }));
 
@@ -147,14 +147,14 @@ class TestSource {
  const writableStream = new WritableStream(source);
  const writable = newStreamWritableFromWritableStream(writableStream);
 
- writable.on('error', common.mustNotCall());
- writable.on('finish', common.mustCall());
- writable.on('close', common.mustCall(() => {
+ writable.on("error", common.mustNotCall());
+ writable.on("finish", common.mustCall());
+ writable.on("close", common.mustCall(() => {
   assert.strictEqual(source.chunks.length, 1);
-  assert.deepStrictEqual(source.chunks[0], Buffer.from('hello'));
+  assert.deepStrictEqual(source.chunks[0], Buffer.from("hello"));
  }));
 
- writable.write('hello', common.mustCall());
+ writable.write("hello", common.mustCall());
  writable.end();
 }
 
@@ -166,14 +166,14 @@ class TestSource {
     	decodeStrings: false,
     });
 
- writable.on('error', common.mustNotCall());
- writable.on('finish', common.mustCall());
- writable.on('close', common.mustCall(() => {
+ writable.on("error", common.mustNotCall());
+ writable.on("finish", common.mustCall());
+ writable.on("close", common.mustCall(() => {
   assert.strictEqual(source.chunks.length, 1);
-  assert.strictEqual(source.chunks[0], 'hello');
+  assert.strictEqual(source.chunks[0], "hello");
  }));
 
- writable.write('hello', common.mustCall());
+ writable.write("hello", common.mustCall());
  writable.end();
 }
 
@@ -187,14 +187,14 @@ class TestSource {
     	});
  assert(writable.writableObjectMode);
 
- writable.on('error', common.mustNotCall());
- writable.on('finish', common.mustCall());
- writable.on('close', common.mustCall(() => {
+ writable.on("error", common.mustNotCall());
+ writable.on("finish", common.mustCall());
+ writable.on("close", common.mustCall(() => {
   assert.strictEqual(source.chunks.length, 1);
-  assert.strictEqual(source.chunks[0], 'hello');
+  assert.strictEqual(source.chunks[0], "hello");
  }));
 
- writable.write('hello', common.mustCall());
+ writable.write("hello", common.mustCall());
  writable.end();
 }
 
@@ -207,11 +207,11 @@ class TestSource {
 
  finished(writable, common.mustCall());
 
- writable.write('hello');
- writable.write('hello');
- writable.write('hello');
- writable.write('world');
- writable.write('world');
+ writable.write("hello");
+ writable.write("hello");
+ writable.write("hello");
+ writable.write("world");
+ writable.write("world");
  writable.end();
 }
 
@@ -224,8 +224,8 @@ class TestSource {
 
  const readable = new Readable({
   read() {
-   readable.push(Buffer.from('hello'));
-   readable.push(Buffer.from('world'));
+   readable.push(Buffer.from("hello"));
+   readable.push(Buffer.from("world"));
    readable.push(null);
   },
  });

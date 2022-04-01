@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
 // This test ensures piping from `stdin` isn't broken.
 // https://github.com/nodejs/node/issues/5927
 
-const assert = require('assert');
-const readline = require('readline');
+const assert = require("assert");
+const readline = require("readline");
 
 const rl = readline.createInterface(process.stdin, process.stdout);
 rl.resume();

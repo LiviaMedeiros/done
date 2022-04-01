@@ -1,13 +1,13 @@
 // Flags: --loader ./test/fixtures/es-module-loaders/hook-resolve-type.mjs
-import { allowGlobals } from '../common/index.mjs';
-import * as fixtures from '../common/fixtures.mjs';
-import { strict as assert } from 'assert';
-import * as fs from 'fs';
+import { allowGlobals } from "../common/index.mjs";
+import * as fixtures from "../common/fixtures.mjs";
+import { strict as assert } from "assert";
+import * as fs from "fs";
 
 allowGlobals(global.getModuleTypeStats);
 
 const basePath =
-  new URL('./node_modules/', import.meta.url);
+  new URL("./node_modules/", import.meta.url);
 
 const rel = (file) => new URL(file, basePath);
 const createDir = (path) => {
@@ -16,13 +16,13 @@ const createDir = (path) => {
  }
 };
 
-const moduleName = 'module-counter-by-type';
+const moduleName = "module-counter-by-type";
 
 const moduleDir = rel(`${moduleName}`);
 createDir(basePath);
 createDir(moduleDir);
 fs.cpSync(
- fixtures.path('es-modules', moduleName),
+ fixtures.path("es-modules", moduleName),
  moduleDir,
  { recursive: true },
 );

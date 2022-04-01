@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-require('../common');
-const { WPTRunner } = require('../common/wpt');
+require("../common");
+const { WPTRunner } = require("../common/wpt");
 
-const runner = new WPTRunner('webmessaging/broadcastchannel');
+const runner = new WPTRunner("webmessaging/broadcastchannel");
 
 runner.setInitScript(`
   const { BroadcastChannel } = require('worker_threads');

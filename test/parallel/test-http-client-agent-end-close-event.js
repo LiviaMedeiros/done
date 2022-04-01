@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const server = http.createServer(common.mustCall((req, res) => {
- res.end('hello');
+ res.end("hello");
 }));
 
 const keepAliveAgent = new http.Agent({ keepAlive: true });
@@ -16,14 +16,14 @@ server.listen(0, common.mustCall(() => {
  });
 
  req
-    .on('response', common.mustCall((res) => {
+    .on("response", common.mustCall((res) => {
     	res
-        .on('close', common.mustCall(() => {
+        .on("close", common.mustCall(() => {
         	assert.strictEqual(req.destroyed, true);
         	server.close();
         	keepAliveAgent.destroy();
         }))
-        .on('data', common.mustCall());
+        .on("data", common.mustCall());
     }))
     .end();
 }));

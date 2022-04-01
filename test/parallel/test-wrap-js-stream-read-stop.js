@@ -1,10 +1,10 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const WrapStream = require('internal/js_stream_socket');
-const Stream = require('stream');
+require("../common");
+const assert = require("assert");
+const WrapStream = require("internal/js_stream_socket");
+const Stream = require("stream");
 
 class FakeStream extends Stream {
  constructor() {

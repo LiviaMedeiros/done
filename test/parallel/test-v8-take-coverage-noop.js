@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 if (!process.features.inspector) return;
 
-require('../common');
-const fixtures = require('../common/fixtures');
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
-const fs = require('fs');
-const { spawnSync } = require('child_process');
+require("../common");
+const fixtures = require("../common/fixtures");
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
+const fs = require("fs");
+const { spawnSync } = require("child_process");
 
 tmpdir.refresh();
 
@@ -15,13 +15,13 @@ tmpdir.refresh();
 const intervals = 40;
 {
  const output = spawnSync(process.execPath, [
-  '-r',
-  fixtures.path('v8-coverage', 'take-coverage'),
-  fixtures.path('v8-coverage', 'interval'),
+  "-r",
+  fixtures.path("v8-coverage", "take-coverage"),
+  fixtures.path("v8-coverage", "interval"),
  ], {
   env: {
    ...process.env,
-   NODE_DEBUG_NATIVE: 'INSPECTOR_PROFILER',
+   NODE_DEBUG_NATIVE: "INSPECTOR_PROFILER",
    TEST_INTERVALS: intervals,
   },
  });

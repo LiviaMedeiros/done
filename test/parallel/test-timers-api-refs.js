@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const timers = require('timers');
+"use strict";
+const common = require("../common");
+const timers = require("timers");
 
 // Delete global APIs to make sure they're not relied on by the internal timers
 // code

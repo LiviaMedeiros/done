@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const { createBenchmark } = require('../common.js');
-const { format } = require('util');
+const { createBenchmark } = require("../common.js");
+const { format } = require("util");
 
 const methods = [
- 'restAndSpread',
- 'argumentsAndApply',
- 'restAndApply',
- 'predefined',
+ "restAndSpread",
+ "argumentsAndApply",
+ "restAndApply",
+ "predefined",
 ];
 
 const bench = createBenchmark(main, {
@@ -28,22 +28,22 @@ function usingArgumentsAndApply() {
 }
 
 function usingPredefined() {
- format('part 1', 'part', 2, 'part 3', 'part', 4);
+ format("part 1", "part", 2, "part 3", "part", 4);
 }
 
 function main({ n, method, args }) {
  let fn;
  switch (method) {
-  case 'restAndSpread':
+  case "restAndSpread":
    fn = usingRestAndSpread;
    break;
-  case 'restAndApply':
+  case "restAndApply":
    fn = usingRestAndApply;
    break;
-  case 'argumentsAndApply':
+  case "argumentsAndApply":
    fn = usingArgumentsAndApply;
    break;
-  case 'predefined':
+  case "predefined":
    fn = usingPredefined;
    break;
   default:
@@ -52,6 +52,6 @@ function main({ n, method, args }) {
 
  bench.start();
  for (let i = 0; i < n; i++)
-  fn('part 1', 'part', 2, 'part 3', 'part', 4);
+  fn("part 1", "part", 2, "part 3", "part", 4);
  bench.end(n);
 }

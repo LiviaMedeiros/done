@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- type: ['hide-stackframes-throw', 'direct-call-throw',
-        'hide-stackframes-noerr', 'direct-call-noerr'],
+ type: ["hide-stackframes-throw", "direct-call-throw",
+        "hide-stackframes-noerr", "direct-call-noerr"],
  n: [10e4],
 }, {
- flags: ['--expose-internals'],
+ flags: ["--expose-internals"],
 });
 
 function main({ n, type }) {
@@ -16,20 +16,20 @@ function main({ n, type }) {
   codes: {
    ERR_INVALID_ARG_TYPE,
   },
- } = require('internal/errors');
+ } = require("internal/errors");
 
  const testfn = (value) => {
-  if (typeof value !== 'number') {
-   throw new ERR_INVALID_ARG_TYPE('Benchmark', 'number', value);
+  if (typeof value !== "number") {
+   throw new ERR_INVALID_ARG_TYPE("Benchmark", "number", value);
   }
  };
 
  let fn = testfn;
- if (type.startsWith('hide-stackframe'))
+ if (type.startsWith("hide-stackframe"))
   fn = hideStackFrames(testfn);
  let value = 42;
- if (type.endsWith('-throw'))
-  value = 'err';
+ if (type.endsWith("-throw"))
+  value = "err";
 
  bench.start();
 

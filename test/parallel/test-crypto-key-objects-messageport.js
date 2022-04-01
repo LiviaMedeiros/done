@@ -1,31 +1,31 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { createSecretKey, generateKeyPairSync, randomBytes } = require('crypto');
-const { createContext } = require('vm');
+const assert = require("assert");
+const { createSecretKey, generateKeyPairSync, randomBytes } = require("crypto");
+const { createContext } = require("vm");
 const {
  MessageChannel,
  Worker,
  moveMessagePortToContext,
  parentPort,
-} = require('worker_threads');
+} = require("worker_threads");
 
 function keyToString(key) {
  let ret;
- if (key.type === 'secret') {
-  ret = key.export().toString('hex');
+ if (key.type === "secret") {
+  ret = key.export().toString("hex");
  } else {
-  ret = key.export({ type: 'pkcs1', format: 'pem' });
+  ret = key.export({ type: "pkcs1", format: "pem" });
  }
  return ret;
 }
 
 // Worker threads simply reply with their representation of the received key.
 if (process.env.HAS_STARTED_WORKER) {
- return parentPort.once('message', ({ key }) => {
+ return parentPort.once("message", ({ key }) => {
   parentPort.postMessage(keyToString(key));
  });
 }
@@ -35,7 +35,7 @@ process.env.HAS_STARTED_WORKER = 1;
 
 // The main thread generates keys and passes them to worker threads.
 const secretKey = createSecretKey(randomBytes(32));
-const { publicKey, privateKey } = generateKeyPairSync('rsa', {
+const { publicKey, privateKey } = generateKeyPairSync("rsa", {
  modulusLength: 1024,
 });
 
@@ -51,7 +51,7 @@ for (const [key, repr] of keys) {
   port1.postMessage({ key });
   assert.strictEqual(keyToString(key), repr);
 
-  port2.once('message', common.mustCall(({ key }) => {
+  port2.once("message", common.mustCall(({ key }) => {
    assert.strictEqual(keyToString(key), repr);
   }));
  }
@@ -59,10 +59,10 @@ for (const [key, repr] of keys) {
  {
   // Test 2: Across threads.
   const worker = new Worker(__filename);
-  worker.once('message', common.mustCall((receivedRepresentation) => {
+  worker.once("message", common.mustCall((receivedRepresentation) => {
    assert.strictEqual(receivedRepresentation, repr);
   }));
-  worker.on('disconnect', () => console.log('disconnect'));
+  worker.on("disconnect", () => console.log("disconnect"));
   worker.postMessage({ key });
  }
 
@@ -77,7 +77,7 @@ for (const [key, repr] of keys) {
   // implements EventTarget fully and in a cross-context manner.
   port2moved.onmessageerror = common.mustCall((event) => {
    assert.strictEqual(event.data.code,
-                      'ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE');
+                      "ERR_MESSAGE_TARGET_CONTEXT_UNAVAILABLE");
   });
 
   port2moved.start();

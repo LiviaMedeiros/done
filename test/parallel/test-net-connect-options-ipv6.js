@@ -21,20 +21,20 @@
 
 // Test that the family option of net.connect is honored.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasIPv6)
- common.skip('no IPv6 support');
+ common.skip("no IPv6 support");
 
-const assert = require('assert');
-const net = require('net');
+const assert = require("assert");
+const net = require("net");
 
-const hostAddrIPv6 = '::1';
-const HOSTNAME = 'dummy';
+const hostAddrIPv6 = "::1";
+const HOSTNAME = "dummy";
 
 const server = net.createServer({ allowHalfOpen: true }, (socket) => {
  socket.resume();
- socket.on('end', common.mustCall());
+ socket.on("end", common.mustCall());
  socket.end();
 });
 
@@ -53,14 +53,14 @@ function tryConnect() {
  // No `mustCall`, since test could skip, and it's the only path to `close`.
  const client = net.connect(connectOpt, () => {
   client.resume();
-  client.on('end', () => {
+  client.on("end", () => {
    // Wait for next uv tick and make sure the socket stream is writable.
    setTimeout(function() {
     assert(client.writable);
     client.end();
    }, 10);
   });
-  client.on('close', () => server.close());
+  client.on("close", () => server.close());
  });
 }
 

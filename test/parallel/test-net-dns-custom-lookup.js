@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 function check(addressType, cb) {
  const server = net.createServer(function(client) {
@@ -10,14 +10,14 @@ function check(addressType, cb) {
   cb && cb();
  });
 
- const address = addressType === 4 ? common.localhostIPv4 : '::1';
+ const address = addressType === 4 ? common.localhostIPv4 : "::1";
  server.listen(0, address, common.mustCall(function() {
   net.connect({
    port: this.address().port,
-   host: 'localhost',
+   host: "localhost",
    family: addressType,
    lookup: lookup,
-  }).on('lookup', common.mustCall(function(err, ip, type) {
+  }).on("lookup", common.mustCall(function(err, ip, type) {
    assert.strictEqual(err, null);
    assert.strictEqual(address, ip);
    assert.strictEqual(type, addressType);
@@ -32,7 +32,7 @@ function check(addressType, cb) {
    });
   } else {
    process.nextTick(function() {
-    cb(null, '::1', 6);
+    cb(null, "::1", 6);
    });
   }
  }
@@ -45,10 +45,10 @@ check(4, function() {
 // Verify that bad lookup() IPs are handled.
 {
  net.connect({
-  host: 'localhost',
+  host: "localhost",
   port: 80,
   lookup(host, dnsopts, cb) {
    cb(null, undefined, 4);
   },
- }).on('error', common.expectsError({ code: 'ERR_INVALID_IP_ADDRESS' }));
+ }).on("error", common.expectsError({ code: "ERR_INVALID_IP_ADDRESS" }));
 }

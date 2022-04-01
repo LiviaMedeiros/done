@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
 (function foobar() {
- require('domain');
+ require("domain");
 })();
 
 assert.throws(
@@ -11,13 +11,13 @@ assert.throws(
  (err) => {
   common.expectsError(
    {
-    code: 'ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE',
-    name: 'Error',
+    code: "ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE",
+    name: "Error",
     message: /^The `domain` module is in use, which is mutually/,
    },
   )(err);
 
-  assert(err.stack.includes('-'.repeat(40)),
+  assert(err.stack.includes("-".repeat(40)),
          `expected ${err.stack} to contain dashes`);
 
   const location = `at foobar (${__filename}:`;

@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const net = require('net');
-const crypto = require('crypto');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const net = require("net");
+const crypto = require("crypto");
+const fixtures = require("../common/fixtures");
 
 const keys = crypto.randomBytes(48);
 const serverLog = [];
@@ -44,14 +44,14 @@ function createServer() {
  let previousKey = null;
 
  const server = tls.createServer({
-  key: fixtures.readKey('agent1-key.pem'),
-  cert: fixtures.readKey('agent1-cert.pem'),
+  key: fixtures.readKey("agent1-key.pem"),
+  cert: fixtures.readKey("agent1-cert.pem"),
   ticketKeys: keys,
  }, function(c) {
   serverLog.push(id);
   // TODO(@sam-github) Triggers close_notify before NewSessionTicket bug.
   // c.end();
-  c.end('x');
+  c.end("x");
 
   counter++;
 
@@ -70,7 +70,7 @@ function createServer() {
    if (c.isSessionReused())
     server.setTicketKeys(keys);
    else
-    s.once('session', () => {
+    s.once("session", () => {
      server.setTicketKeys(keys);
     });
   }
@@ -83,7 +83,7 @@ function createServer() {
   } else if (counter === 3) {
    // Use keys from counter=2
   } else {
-   throw new Error('UNREACHABLE');
+   throw new Error("UNREACHABLE");
   }
  });
 
@@ -97,7 +97,7 @@ const servers = naturalServers.concat(naturalServers).concat(naturalServers);
 
 // Create one TCP server and balance sockets to multiple TLS server instances
 const shared = net.createServer(function(c) {
- servers.shift().emit('connection', c);
+ servers.shift().emit("connection", c);
 }).listen(0, function() {
  start(function() {
   shared.close();
@@ -123,28 +123,28 @@ function start(callback) {
    rejectUnauthorized: false,
   }, function() {
    if (s.isSessionReused())
-    ticketLog.push(s.getTLSTicket().toString('hex'));
+    ticketLog.push(s.getTLSTicket().toString("hex"));
   });
-  s.on('data', () => {
+  s.on("data", () => {
    s.end();
   });
-  s.on('close', function() {
+  s.on("close", function() {
    if (--left === 0)
     callback();
    else
     connect();
   });
-  s.on('session', (session) => {
+  s.on("session", (session) => {
    sess = sess || session;
   });
-  s.once('session', (session) => onNewSession(s, session));
-  s.once('session', () => ticketLog.push(s.getTLSTicket().toString('hex')));
+  s.once("session", (session) => onNewSession(s, session));
+  s.once("session", () => ticketLog.push(s.getTLSTicket().toString("hex")));
  }
 
  connect();
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(ticketLog.length, serverLog.length);
  for (let i = 0; i < naturalServers.length - 1; i++) {
   assert.notStrictEqual(serverLog[i], serverLog[i + 1]);

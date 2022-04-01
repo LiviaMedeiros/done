@@ -1,17 +1,17 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (common.isWindows)
- common.skip('test not supported on Windows');
+ common.skip("test not supported on Windows");
 
-const assert = require('assert');
+const assert = require("assert");
 
-if (process.argv[2] === 'child') {
- const fs = require('fs');
+if (process.argv[2] === "child") {
+ const fs = require("fs");
 
- assert.strictEqual(process.listenerCount('SIGUSR2'), 1);
- process.kill(process.pid, 'SIGUSR2');
- process.kill(process.pid, 'SIGUSR2');
+ assert.strictEqual(process.listenerCount("SIGUSR2"), 1);
+ process.kill(process.pid, "SIGUSR2");
+ process.kill(process.pid, "SIGUSR2");
 
  // Asynchronously wait for the snapshot. Use an async loop to be a bit more
  // robust in case platform or machine differences throw off the timing.
@@ -29,11 +29,11 @@ if (process.argv[2] === 'child') {
   }
  })();
 } else {
- const { spawnSync } = require('child_process');
- const tmpdir = require('../common/tmpdir');
+ const { spawnSync } = require("child_process");
+ const tmpdir = require("../common/tmpdir");
 
  tmpdir.refresh();
- const args = ['--heapsnapshot-signal', 'SIGUSR2', __filename, 'child'];
+ const args = ["--heapsnapshot-signal", "SIGUSR2", __filename, "child"];
  const child = spawnSync(process.execPath, args, { cwd: tmpdir.path });
 
  assert.strictEqual(child.status, 0);

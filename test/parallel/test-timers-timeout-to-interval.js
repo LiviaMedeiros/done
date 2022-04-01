@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // This isn't officially supported but nonetheless is something that is
 // currently possible and as such it shouldn't cause the process to crash

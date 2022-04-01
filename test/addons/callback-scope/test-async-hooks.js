@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const { runInCallbackScope } = require(`./build/${common.buildType}/binding`);
 
 let insideHook = false;

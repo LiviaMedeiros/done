@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fs = require('fs');
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fs = require("fs");
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 {
@@ -24,17 +24,17 @@ tmpdir.refresh();
     if (that.autoClose)
      that.destroy();
 
-    that.emit('error', err);
+    that.emit("error", err);
    } else {
     that.fd = fd;
-    that.emit('open', fd);
+    that.emit("open", fd);
     that.read();
    }
   });
  });
 
- const r = new ReadStream(fixtures.path('x.txt'))
-    .on('open', common.mustCall((fd) => {
+ const r = new ReadStream(fixtures.path("x.txt"))
+    .on("open", common.mustCall((fd) => {
     	assert.strictEqual(fd, r.fd);
     	r.destroy();
     }));
@@ -54,16 +54,16 @@ tmpdir.refresh();
   fs.open(that.path, that.flags, that.mode, function(err, fd) {
    if (err) {
     that.destroy();
-    that.emit('error', err);
+    that.emit("error", err);
    } else {
     that.fd = fd;
-    that.emit('open', fd);
+    that.emit("open", fd);
    }
   });
  });
 
  const w = new WriteStream(`${tmpdir.path}/dummy`)
-    .on('open', common.mustCall((fd) => {
+    .on("open", common.mustCall((fd) => {
     	assert.strictEqual(fd, w.fd);
     	w.destroy();
     }));

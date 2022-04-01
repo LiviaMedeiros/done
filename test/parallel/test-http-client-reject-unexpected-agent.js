@@ -1,17 +1,17 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const baseOptions = {
- method: 'GET',
+ method: "GET",
  port: undefined,
  host: common.localhostIPv4,
 };
 
 const failingAgentOptions = [
  true,
- 'agent',
+ "agent",
  {},
  1,
  () => null,
@@ -26,7 +26,7 @@ const acceptableAgentOptions = [
 ];
 
 const server = http.createServer((req, res) => {
- res.end('hello');
+ res.end("hello");
 });
 
 let numberOfResponses = 0;
@@ -35,7 +35,7 @@ function createRequest(agent) {
  const options = Object.assign(baseOptions, { agent });
  const request = http.request(options);
  request.end();
- request.on('response', common.mustCall(() => {
+ request.on("response", common.mustCall(() => {
   numberOfResponses++;
   if (numberOfResponses === acceptableAgentOptions.length) {
    server.close();
@@ -50,10 +50,10 @@ server.listen(0, baseOptions.host, common.mustCall(function() {
   assert.throws(
    () => createRequest(agent),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
     message: 'The "options.agent" property must be one of Agent-like ' +
-                 'Object, undefined, or false.' +
+                 "Object, undefined, or false." +
                  common.invalidArgTypeHelper(agent),
    },
   );
@@ -64,6 +64,6 @@ server.listen(0, baseOptions.host, common.mustCall(function() {
  });
 }));
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(numberOfResponses, acceptableAgentOptions.length);
 });

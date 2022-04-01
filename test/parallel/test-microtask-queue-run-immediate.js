@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 function enqueueMicrotask(fn) {
  Promise.resolve().then(fn);
@@ -29,7 +29,7 @@ function enqueueMicrotask(fn) {
 
 let done = 0;
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(done, 2);
 });
 

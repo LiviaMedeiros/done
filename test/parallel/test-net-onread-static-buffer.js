@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
-const message = Buffer.from('hello world');
+const message = Buffer.from("hello world");
 
 // Test typical usage
 net.createServer(common.mustCall(function(socket) {
@@ -23,7 +23,7 @@ net.createServer(common.mustCall(function(socket) {
     buffers.push(Buffer.from(buf.slice(0, nread)));
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, message.length);
   assert.deepStrictEqual(Buffer.concat(buffers), message);
  }));
@@ -50,7 +50,7 @@ net.createServer(common.mustCall(function(socket) {
     incoming = newIncoming;
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, message.length);
   assert.deepStrictEqual(incoming, new Uint8Array(message));
  }));
@@ -80,7 +80,7 @@ net.createServer(common.mustCall(function(socket) {
     incoming.push(Buffer.from(buf.slice(0, nread)));
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, message.length);
   assert.deepStrictEqual(Buffer.concat(incoming), message);
   assert.strictEqual(bufPoolUsage, 7);
@@ -114,7 +114,7 @@ net.createServer(common.mustCall(function(socket) {
     incoming = newIncoming;
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, message.length);
   assert.deepStrictEqual(incoming, new Uint8Array(message));
   assert.strictEqual(bufPoolUsage, 7);
@@ -147,7 +147,7 @@ net.createServer(common.mustCall(function(socket) {
     }, 100);
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, message.length);
   assert.deepStrictEqual(Buffer.concat(buffers), message);
  }));
@@ -179,7 +179,7 @@ net.createServer(common.mustCall(function(socket) {
     return false;
    },
   },
- }).on('data', common.mustNotCall()).on('end', common.mustCall(() => {
+ }).on("data", common.mustNotCall()).on("end", common.mustCall(() => {
   assert.strictEqual(received, message.length);
   assert.deepStrictEqual(Buffer.concat(buffers), message);
  }));

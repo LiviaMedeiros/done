@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const Countdown = require('../common/countdown');
+"use strict";
+const common = require("../common");
+const Countdown = require("../common/countdown");
 
-const http = require('http');
-const net = require('net');
+const http = require("http");
+const net = require("net");
 
 const seeds = [ 3, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4 ];
 const countdown = new Countdown(seeds.length, () => server.close());
@@ -33,29 +33,29 @@ const countdown = new Countdown(seeds.length, () => server.close());
 // via either the req or res.
 const server = http.createServer(common.mustCall(function(req, res) {
  switch (req.url) {
-  case '/1':
+  case "/1":
    return setImmediate(function() {
     req.socket.destroy();
-    server.emit('requestDone');
+    server.emit("requestDone");
    });
 
-  case '/2':
+  case "/2":
    return process.nextTick(function() {
     res.destroy();
-    server.emit('requestDone');
+    server.emit("requestDone");
    });
 
    // In one case, actually send a response in 2 chunks
-  case '/3':
-   res.write('hello ');
+  case "/3":
+   res.write("hello ");
    return setImmediate(function() {
-    res.end('world!');
-    server.emit('requestDone');
+    res.end("world!");
+    server.emit("requestDone");
    });
 
   default:
    res.destroy();
-   server.emit('requestDone');
+   server.emit("requestDone");
  }
 }, seeds.length));
 
@@ -66,15 +66,15 @@ function generator(seeds) {
  return seeds.map(function(r) {
   return `GET /${r} HTTP/1.1\r\n` +
            `Host: localhost:${port}\r\n` +
-           '\r\n' +
-           '\r\n';
- }).join('');
+           "\r\n" +
+           "\r\n";
+ }).join("");
 }
 
 
 server.listen(0, common.mustCall(function() {
  const client = net.connect({ port: this.address().port });
- server.on('requestDone', function() {
+ server.on("requestDone", function() {
   countdown.dec();
  });
 

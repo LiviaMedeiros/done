@@ -1,22 +1,22 @@
-import fs from 'fs';
+import fs from "fs";
 
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkStringify from 'remark-stringify';
-import presetLintNode from 'remark-preset-lint-node';
-import { read } from 'to-vfile';
-import { reporter } from 'vfile-reporter';
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
+import presetLintNode from "remark-preset-lint-node";
+import { read } from "to-vfile";
+import { reporter } from "vfile-reporter";
 
 const paths = process.argv.slice(2);
 
 if (!paths.length) {
- console.error('Usage: lint-md.mjs <path> [<path> ...]');
+ console.error("Usage: lint-md.mjs <path> [<path> ...]");
  process.exit(1);
 }
 
 let format = false;
 
-if (paths[0] === '--format') {
+if (paths[0] === "--format") {
  paths.shift();
  format = true;
 }
@@ -42,7 +42,7 @@ paths.forEach(async (path) => {
  } else {
   if (isDifferent) {
    process.exitCode = 1;
-   const cmd = process.platform === 'win32' ? 'vcbuild' : 'make';
+   const cmd = process.platform === "win32" ? "vcbuild" : "make";
    console.error(`${path} is not formatted. Please run '${cmd} format-md'.`);
   }
   if (result.messages.length) {

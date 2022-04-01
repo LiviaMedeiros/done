@@ -18,11 +18,11 @@ The `AsyncLocalStorage` and `AsyncResource` classes are part of the
 `async_hooks` module:
 
 ```mjs
-import { AsyncLocalStorage, AsyncResource } from 'async_hooks';
+import { AsyncLocalStorage, AsyncResource } from "async_hooks";
 ```
 
 ```cjs
-const { AsyncLocalStorage, AsyncResource } = require('async_hooks');
+const { AsyncLocalStorage, AsyncResource } = require("async_hooks");
 ```
 
 ## Class: `AsyncLocalStorage`
@@ -49,30 +49,30 @@ that assigns IDs to incoming HTTP requests and includes them in messages
 logged within each request.
 
 ```mjs
-import http from 'http';
-import { AsyncLocalStorage } from 'async_hooks';
+import http from "http";
+import { AsyncLocalStorage } from "async_hooks";
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
 function logWithId(msg) {
  const id = asyncLocalStorage.getStore();
- console.log(`${id !== undefined ? id : '-'}:`, msg);
+ console.log(`${id !== undefined ? id : "-"}:`, msg);
 }
 
 let idSeq = 0;
 http.createServer((req, res) => {
  asyncLocalStorage.run(idSeq++, () => {
-  logWithId('start');
+  logWithId("start");
   // Imagine any chain of async operations here
   setImmediate(() => {
-   logWithId('finish');
+   logWithId("finish");
    res.end();
   });
  });
 }).listen(8080);
 
-http.get('http://localhost:8080');
-http.get('http://localhost:8080');
+http.get("http://localhost:8080");
+http.get("http://localhost:8080");
 // Prints:
 //   0: start
 //   1: start
@@ -81,30 +81,30 @@ http.get('http://localhost:8080');
 ```
 
 ```cjs
-const http = require('http');
-const { AsyncLocalStorage } = require('async_hooks');
+const http = require("http");
+const { AsyncLocalStorage } = require("async_hooks");
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
 function logWithId(msg) {
  const id = asyncLocalStorage.getStore();
- console.log(`${id !== undefined ? id : '-'}:`, msg);
+ console.log(`${id !== undefined ? id : "-"}:`, msg);
 }
 
 let idSeq = 0;
 http.createServer((req, res) => {
  asyncLocalStorage.run(idSeq++, () => {
-  logWithId('start');
+  logWithId("start");
   // Imagine any chain of async operations here
   setImmediate(() => {
-   logWithId('finish');
+   logWithId("finish");
    res.end();
   });
  });
 }).listen(8080);
 
-http.get('http://localhost:8080');
-http.get('http://localhost:8080');
+http.get("http://localhost:8080");
+http.get("http://localhost:8080");
 // Prints:
 //   0: start
 //   1: start
@@ -205,15 +205,15 @@ to use the latter method.
 ```js
 const store = { id: 1 };
 
-emitter.on('my-event', () => {
+emitter.on("my-event", () => {
  asyncLocalStorage.enterWith(store);
 });
-emitter.on('my-event', () => {
+emitter.on("my-event", () => {
  asyncLocalStorage.getStore(); // Returns the same object
 });
 
 asyncLocalStorage.getStore(); // Returns undefined
-emitter.emit('my-event');
+emitter.emit("my-event");
 asyncLocalStorage.getStore(); // Returns the same object
 ```
 
@@ -304,7 +304,7 @@ the following pattern should be used:
 ```js
 async function fn() {
  await asyncLocalStorage.run(new Map(), () => {
-  asyncLocalStorage.getStore().set('key', value);
+  asyncLocalStorage.getStore().set("key", value);
   return foo(); // The return value of foo will be awaited
  });
 }
@@ -348,7 +348,7 @@ The `init` hook will trigger when an `AsyncResource` is instantiated.
 The following is an overview of the `AsyncResource` API.
 
 ```mjs
-import { AsyncResource, executionAsyncId } from 'async_hooks';
+import { AsyncResource, executionAsyncId } from "async_hooks";
 
 // AsyncResource() is meant to be extended. Instantiating a
 // new AsyncResource() also triggers init. If triggerAsyncId is omitted then
@@ -376,7 +376,7 @@ asyncResource.triggerAsyncId();
 ```
 
 ```cjs
-const { AsyncResource, executionAsyncId } = require('async_hooks');
+const { AsyncResource, executionAsyncId } = require("async_hooks");
 
 // AsyncResource() is meant to be extended. Instantiating a
 // new AsyncResource() also triggers init. If triggerAsyncId is omitted then
@@ -422,7 +422,7 @@ Example usage:
 ```js
 class DBQuery extends AsyncResource {
  constructor(db) {
-  super('DBQuery');
+  super("DBQuery");
   this.db = db;
  }
 
@@ -535,15 +535,15 @@ Assuming that the task is adding two numbers, using a file named
 `task_processor.js` with the following content:
 
 ```mjs
-import { parentPort } from 'worker_threads';
-parentPort.on('message', (task) => {
+import { parentPort } from "worker_threads";
+parentPort.on("message", (task) => {
  parentPort.postMessage(task.a + task.b);
 });
 ```
 
 ```cjs
-const { parentPort } = require('worker_threads');
-parentPort.on('message', (task) => {
+const { parentPort } = require("worker_threads");
+parentPort.on("message", (task) => {
  parentPort.postMessage(task.a + task.b);
 });
 ```
@@ -551,17 +551,17 @@ parentPort.on('message', (task) => {
 a Worker pool around it could use the following structure:
 
 ```mjs
-import { AsyncResource } from 'async_hooks';
-import { EventEmitter } from 'events';
-import path from 'path';
-import { Worker } from 'worker_threads';
+import { AsyncResource } from "async_hooks";
+import { EventEmitter } from "events";
+import path from "path";
+import { Worker } from "worker_threads";
 
-const kTaskInfo = Symbol('kTaskInfo');
-const kWorkerFreedEvent = Symbol('kWorkerFreedEvent');
+const kTaskInfo = Symbol("kTaskInfo");
+const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
 
 class WorkerPoolTaskInfo extends AsyncResource {
  constructor(callback) {
-  super('WorkerPoolTaskInfo');
+  super("WorkerPoolTaskInfo");
   this.callback = callback;
  }
 
@@ -593,8 +593,8 @@ export default class WorkerPool extends EventEmitter {
  }
 
  addNewWorker() {
-  const worker = new Worker(new URL('task_processer.js', import.meta.url));
-  worker.on('message', (result) => {
+  const worker = new Worker(new URL("task_processer.js", import.meta.url));
+  worker.on("message", (result) => {
    // In case of success: Call the callback that was passed to `runTask`,
    // remove the `TaskInfo` associated with the Worker, and mark it as free
    // again.
@@ -603,13 +603,13 @@ export default class WorkerPool extends EventEmitter {
    this.freeWorkers.push(worker);
    this.emit(kWorkerFreedEvent);
   });
-  worker.on('error', (err) => {
+  worker.on("error", (err) => {
    // In case of an uncaught exception: Call the callback that was passed to
    // `runTask` with the error.
    if (worker[kTaskInfo])
     worker[kTaskInfo].done(err, null);
    else
-    this.emit('error', err);
+    this.emit("error", err);
    // Remove the worker from the list and start a new Worker to replace the
    // current one.
    this.workers.splice(this.workers.indexOf(worker), 1);
@@ -639,17 +639,17 @@ export default class WorkerPool extends EventEmitter {
 ```
 
 ```cjs
-const { AsyncResource } = require('async_hooks');
-const { EventEmitter } = require('events');
-const path = require('path');
-const { Worker } = require('worker_threads');
+const { AsyncResource } = require("async_hooks");
+const { EventEmitter } = require("events");
+const path = require("path");
+const { Worker } = require("worker_threads");
 
-const kTaskInfo = Symbol('kTaskInfo');
-const kWorkerFreedEvent = Symbol('kWorkerFreedEvent');
+const kTaskInfo = Symbol("kTaskInfo");
+const kWorkerFreedEvent = Symbol("kWorkerFreedEvent");
 
 class WorkerPoolTaskInfo extends AsyncResource {
  constructor(callback) {
-  super('WorkerPoolTaskInfo');
+  super("WorkerPoolTaskInfo");
   this.callback = callback;
  }
 
@@ -681,8 +681,8 @@ class WorkerPool extends EventEmitter {
  }
 
  addNewWorker() {
-  const worker = new Worker(path.resolve(__dirname, 'task_processor.js'));
-  worker.on('message', (result) => {
+  const worker = new Worker(path.resolve(__dirname, "task_processor.js"));
+  worker.on("message", (result) => {
    // In case of success: Call the callback that was passed to `runTask`,
    // remove the `TaskInfo` associated with the Worker, and mark it as free
    // again.
@@ -691,13 +691,13 @@ class WorkerPool extends EventEmitter {
    this.freeWorkers.push(worker);
    this.emit(kWorkerFreedEvent);
   });
-  worker.on('error', (err) => {
+  worker.on("error", (err) => {
    // In case of an uncaught exception: Call the callback that was passed to
    // `runTask` with the error.
    if (worker[kTaskInfo])
     worker[kTaskInfo].done(err, null);
    else
-    this.emit('error', err);
+    this.emit("error", err);
    // Remove the worker from the list and start a new Worker to replace the
    // current one.
    this.workers.splice(this.workers.indexOf(worker), 1);
@@ -737,8 +737,8 @@ were scheduled.
 This pool could be used as follows:
 
 ```mjs
-import WorkerPool from './worker_pool.js';
-import os from 'os';
+import WorkerPool from "./worker_pool.js";
+import os from "os";
 
 const pool = new WorkerPool(os.cpus().length);
 
@@ -753,8 +753,8 @@ for (let i = 0; i < 10; i++) {
 ```
 
 ```cjs
-const WorkerPool = require('./worker_pool.js');
-const os = require('os');
+const WorkerPool = require("./worker_pool.js");
+const os = require("os");
 
 const pool = new WorkerPool(os.cpus().length);
 
@@ -779,14 +779,14 @@ associate an event listener with the correct execution context. The same
 approach can be applied to a [`Stream`][] or a similar event-driven class.
 
 ```mjs
-import { createServer } from 'http';
-import { AsyncResource, executionAsyncId } from 'async_hooks';
+import { createServer } from "http";
+import { AsyncResource, executionAsyncId } from "async_hooks";
 
 const server = createServer((req, res) => {
- req.on('close', AsyncResource.bind(() => {
+ req.on("close", AsyncResource.bind(() => {
   // Execution context is bound to the current outer scope.
  }));
- req.on('close', () => {
+ req.on("close", () => {
   // Execution context is bound to the scope that caused 'close' to emit.
  });
  res.end();
@@ -794,14 +794,14 @@ const server = createServer((req, res) => {
 ```
 
 ```cjs
-const { createServer } = require('http');
-const { AsyncResource, executionAsyncId } = require('async_hooks');
+const { createServer } = require("http");
+const { AsyncResource, executionAsyncId } = require("async_hooks");
 
 const server = createServer((req, res) => {
- req.on('close', AsyncResource.bind(() => {
+ req.on("close", AsyncResource.bind(() => {
   // Execution context is bound to the current outer scope.
  }));
- req.on('close', () => {
+ req.on("close", () => {
   // Execution context is bound to the scope that caused 'close' to emit.
  });
  res.end();

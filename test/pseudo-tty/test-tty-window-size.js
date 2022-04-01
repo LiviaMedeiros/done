@@ -1,10 +1,10 @@
 // Flags: --expose-internals --no-warnings
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { WriteStream } = require('tty');
-const { internalBinding } = require('internal/test/binding');
-const { TTY } = internalBinding('tty_wrap');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { WriteStream } = require("tty");
+const { internalBinding } = require("internal/test/binding");
+const { TTY } = internalBinding("tty_wrap");
 const getWindowSize = TTY.prototype.getWindowSize;
 
 function monkeyPatchGetWindowSize(fn) {
@@ -33,8 +33,8 @@ function monkeyPatchGetWindowSize(fn) {
  // window size from the handle.
  const stream = WriteStream(1);
 
- stream.on('error', common.mustCall((err) => {
-  assert.strictEqual(err.syscall, 'getWindowSize');
+ stream.on("error", common.mustCall((err) => {
+  assert.strictEqual(err.syscall, "getWindowSize");
  }));
 
  monkeyPatchGetWindowSize(function() {
@@ -54,7 +54,7 @@ function monkeyPatchGetWindowSize(fn) {
 
  const stream = WriteStream(1);
 
- stream.on('resize', common.mustCall(() => {
+ stream.on("resize", common.mustCall(() => {
   assert.strictEqual(stream.columns, 82);
   assert.strictEqual(stream.rows, 26);
  }));

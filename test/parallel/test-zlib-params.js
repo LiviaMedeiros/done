@@ -1,10 +1,10 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
-const fixtures = require('../common/fixtures');
+"use strict";
+require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
+const fixtures = require("../common/fixtures");
 
-const file = fixtures.readSync('person.jpg');
+const file = fixtures.readSync("person.jpg");
 const chunkSize = 12 * 1024;
 const opts = { level: 9, strategy: zlib.constants.Z_DEFAULT_STRATEGY };
 const deflater = zlib.createDeflate(opts);
@@ -29,6 +29,6 @@ deflater.write(chunk1, function() {
  while (deflater.read());
 });
 
-process.once('exit', function() {
+process.once("exit", function() {
  assert.deepStrictEqual(actual, expected);
 });

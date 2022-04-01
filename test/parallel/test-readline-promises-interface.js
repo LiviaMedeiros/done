@@ -1,16 +1,16 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 common.skipIfDumbTerminal();
 
-const assert = require('assert');
-const readline = require('readline/promises');
+const assert = require("assert");
+const readline = require("readline/promises");
 const {
  getStringWidth,
  stripVTControlCharacters,
-} = require('internal/util/inspect');
-const EventEmitter = require('events').EventEmitter;
-const { Writable, Readable } = require('stream');
+} = require("internal/util/inspect");
+const EventEmitter = require("events").EventEmitter;
+const { Writable, Readable } = require("stream");
 
 class FakeInput extends EventEmitter {
  resume() {}
@@ -62,21 +62,21 @@ function assertCursorRowsAndCols(rli, rows, cols) {
  assert.throws(() => {
   readline.createInterface({
    input,
-   completer: 'string is not valid',
+   completer: "string is not valid",
   });
  }, {
-  name: 'TypeError',
-  code: 'ERR_INVALID_ARG_VALUE',
+  name: "TypeError",
+  code: "ERR_INVALID_ARG_VALUE",
  });
 
  assert.throws(() => {
   readline.createInterface({
    input,
-   completer: '',
+   completer: "",
   });
  }, {
-  name: 'TypeError',
-  code: 'ERR_INVALID_ARG_VALUE',
+  name: "TypeError",
+  code: "ERR_INVALID_ARG_VALUE",
  });
 
  assert.throws(() => {
@@ -85,33 +85,33 @@ function assertCursorRowsAndCols(rli, rows, cols) {
    completer: false,
   });
  }, {
-  name: 'TypeError',
-  code: 'ERR_INVALID_ARG_VALUE',
+  name: "TypeError",
+  code: "ERR_INVALID_ARG_VALUE",
  });
 
  // Constructor throws if history is not an array
- ['not an array', 123, 123n, {}, true, Symbol(), null].forEach((history) => {
+ ["not an array", 123, 123n, {}, true, Symbol(), null].forEach((history) => {
   assert.throws(() => {
    readline.createInterface({
     input,
     history,
    });
   }, {
-   name: 'TypeError',
-   code: 'ERR_INVALID_ARG_TYPE',
+   name: "TypeError",
+   code: "ERR_INVALID_ARG_TYPE",
   });
  });
 
  // Constructor throws if historySize is not a positive number
- ['not a number', -1, NaN, {}, true, Symbol(), null].forEach((historySize) => {
+ ["not a number", -1, NaN, {}, true, Symbol(), null].forEach((historySize) => {
   assert.throws(() => {
    readline.createInterface({
     input,
     historySize,
    });
   }, {
-   name: 'RangeError',
-   code: 'ERR_INVALID_ARG_VALUE',
+   name: "RangeError",
+   code: "ERR_INVALID_ARG_VALUE",
   });
  });
 
@@ -123,17 +123,17 @@ function assertCursorRowsAndCols(rli, rows, cols) {
   }),
   {
    message: 'The value of "tabSize" is out of range. ' +
-                'It must be >= 1 && < 4294967296. Received 0',
-   code: 'ERR_OUT_OF_RANGE',
+                "It must be >= 1 && < 4294967296. Received 0",
+   code: "ERR_OUT_OF_RANGE",
   },
  );
 
  assert.throws(
   () => new readline.Interface({
    input,
-   tabSize: '4',
+   tabSize: "4",
   }),
-  { code: 'ERR_INVALID_ARG_TYPE' },
+  { code: "ERR_INVALID_ARG_TYPE" },
  );
 
  assert.throws(
@@ -142,9 +142,9 @@ function assertCursorRowsAndCols(rli, rows, cols) {
    tabSize: 4.5,
   }),
   {
-   code: 'ERR_OUT_OF_RANGE',
+   code: "ERR_OUT_OF_RANGE",
    message: 'The value of "tabSize" is out of range. ' +
-                'It must be an integer. Received 4.5',
+                "It must be an integer. Received 4.5",
   },
  );
 }
@@ -153,8 +153,8 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 {
  const fi = new FakeInput();
  const rli = new readline.Interface(fi, {});
- rli.on('line', common.mustNotCall());
- fi.emit('data', 'a');
+ rli.on("line", common.mustNotCall());
+ fi.emit("data", "a");
  rli.close();
 }
 
@@ -162,22 +162,22 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 // `end` event(last line is). \r should behave like \n when alone.
 {
  const [rli, fi] = getInterface({ terminal: true });
- const expectedLines = ['foo', 'bar', 'baz', 'bat'];
- rli.on('line', common.mustCall((line) => {
+ const expectedLines = ["foo", "bar", "baz", "bat"];
+ rli.on("line", common.mustCall((line) => {
   assert.strictEqual(line, expectedLines.shift());
  }, expectedLines.length - 1));
- fi.emit('data', expectedLines.join('\r'));
+ fi.emit("data", expectedLines.join("\r"));
  rli.close();
 }
 
 // \r at start of input should output blank line
 {
  const [rli, fi] = getInterface({ terminal: true });
- const expectedLines = ['', 'foo' ];
- rli.on('line', common.mustCall((line) => {
+ const expectedLines = ["", "foo" ];
+ rli.on("line", common.mustCall((line) => {
   assert.strictEqual(line, expectedLines.shift());
  }, expectedLines.length));
- fi.emit('data', '\rfoo\r');
+ fi.emit("data", "\rfoo\r");
  rli.close();
 }
 
@@ -185,13 +185,13 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 {
  const completer = (line) => [[], line];
  const [rli, fi] = getInterface({ terminal: true, completer });
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'foo');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "foo");
  }));
- for (const character of '\tfo\to\t') {
-  fi.emit('data', character);
+ for (const character of "\tfo\to\t") {
+  fi.emit("data", character);
  }
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
@@ -199,11 +199,11 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 // character
 {
  const [rli, fi] = getInterface({ terminal: true });
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '\t');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "\t");
  }));
- fi.emit('data', '\t');
- fi.emit('data', '\n');
+ fi.emit("data", "\t");
+ fi.emit("data", "\n");
  rli.close();
 }
 
@@ -211,13 +211,13 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 // the history array
 {
  const [rli, fi] = getInterface({ terminal: true });
- const expectedLines = ['foo', 'bar', 'baz', 'bat'];
- rli.on('history', common.mustCall((history) => {
+ const expectedLines = ["foo", "bar", "baz", "bat"];
+ rli.on("history", common.mustCall((history) => {
   const expectedHistory = expectedLines.slice(0, history.length).reverse();
   assert.deepStrictEqual(history, expectedHistory);
  }, expectedLines.length));
  for (const line of expectedLines) {
-  fi.emit('data', `${line}\n`);
+  fi.emit("data", `${line}\n`);
  }
  rli.close();
 }
@@ -226,16 +226,16 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 // the line being processed
 {
  const [rli, fi] = getInterface({ terminal: true });
- const expectedLine = 'foo';
- rli.on('history', common.mustCall((history) => {
+ const expectedLine = "foo";
+ rli.on("history", common.mustCall((history) => {
   assert.strictEqual(history[0], expectedLine);
   history.shift();
  }));
- rli.on('line', common.mustCall((line) => {
+ rli.on("line", common.mustCall((line) => {
   assert.strictEqual(line, expectedLine);
   assert.strictEqual(rli.history.length, 0);
  }));
- fi.emit('data', `${expectedLine}\n`);
+ fi.emit("data", `${expectedLine}\n`);
  rli.close();
 }
 
@@ -246,73 +246,73 @@ function assertCursorRowsAndCols(rli, rows, cols) {
   terminal: true,
   removeHistoryDuplicates: true,
  });
- const expectedLines = ['foo', 'bar', 'baz', 'bar', 'bat', 'bat'];
+ const expectedLines = ["foo", "bar", "baz", "bar", "bat", "bat"];
  // ['foo', 'baz', 'bar', bat'];
  let callCount = 0;
- rli.on('line', function(line) {
+ rli.on("line", function(line) {
   assert.strictEqual(line, expectedLines[callCount]);
   callCount++;
  });
- fi.emit('data', `${expectedLines.join('\n')}\n`);
+ fi.emit("data", `${expectedLines.join("\n")}\n`);
  assert.strictEqual(callCount, expectedLines.length);
- fi.emit('keypress', '.', { name: 'up' }); // 'bat'
+ fi.emit("keypress", ".", { name: "up" }); // 'bat'
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'bar'
+ fi.emit("keypress", ".", { name: "up" }); // 'bar'
  assert.notStrictEqual(rli.line, expectedLines[--callCount]);
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'baz'
+ fi.emit("keypress", ".", { name: "up" }); // 'baz'
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'foo'
+ fi.emit("keypress", ".", { name: "up" }); // 'foo'
  assert.notStrictEqual(rli.line, expectedLines[--callCount]);
  assert.strictEqual(rli.line, expectedLines[--callCount]);
  assert.strictEqual(callCount, 0);
- fi.emit('keypress', '.', { name: 'down' }); // 'baz'
- assert.strictEqual(rli.line, 'baz');
+ fi.emit("keypress", ".", { name: "down" }); // 'baz'
+ assert.strictEqual(rli.line, "baz");
  assert.strictEqual(rli.historyIndex, 2);
- fi.emit('keypress', '.', { name: 'n', ctrl: true }); // 'bar'
- assert.strictEqual(rli.line, 'bar');
+ fi.emit("keypress", ".", { name: "n", ctrl: true }); // 'bar'
+ assert.strictEqual(rli.line, "bar");
  assert.strictEqual(rli.historyIndex, 1);
- fi.emit('keypress', '.', { name: 'n', ctrl: true });
- assert.strictEqual(rli.line, 'bat');
+ fi.emit("keypress", ".", { name: "n", ctrl: true });
+ assert.strictEqual(rli.line, "bat");
  assert.strictEqual(rli.historyIndex, 0);
  // Activate the substring history search.
- fi.emit('keypress', '.', { name: 'down' }); // 'bat'
- assert.strictEqual(rli.line, 'bat');
+ fi.emit("keypress", ".", { name: "down" }); // 'bat'
+ assert.strictEqual(rli.line, "bat");
  assert.strictEqual(rli.historyIndex, -1);
  // Deactivate substring history search.
- fi.emit('keypress', '.', { name: 'backspace' }); // 'ba'
+ fi.emit("keypress", ".", { name: "backspace" }); // 'ba'
  assert.strictEqual(rli.historyIndex, -1);
- assert.strictEqual(rli.line, 'ba');
+ assert.strictEqual(rli.line, "ba");
  // Activate the substring history search.
- fi.emit('keypress', '.', { name: 'down' }); // 'ba'
+ fi.emit("keypress", ".", { name: "down" }); // 'ba'
  assert.strictEqual(rli.historyIndex, -1);
- assert.strictEqual(rli.line, 'ba');
- fi.emit('keypress', '.', { name: 'down' }); // 'ba'
+ assert.strictEqual(rli.line, "ba");
+ fi.emit("keypress", ".", { name: "down" }); // 'ba'
  assert.strictEqual(rli.historyIndex, -1);
- assert.strictEqual(rli.line, 'ba');
- fi.emit('keypress', '.', { name: 'up' }); // 'bat'
+ assert.strictEqual(rli.line, "ba");
+ fi.emit("keypress", ".", { name: "up" }); // 'bat'
  assert.strictEqual(rli.historyIndex, 0);
- assert.strictEqual(rli.line, 'bat');
- fi.emit('keypress', '.', { name: 'up' }); // 'bar'
+ assert.strictEqual(rli.line, "bat");
+ fi.emit("keypress", ".", { name: "up" }); // 'bar'
  assert.strictEqual(rli.historyIndex, 1);
- assert.strictEqual(rli.line, 'bar');
- fi.emit('keypress', '.', { name: 'up' }); // 'baz'
+ assert.strictEqual(rli.line, "bar");
+ fi.emit("keypress", ".", { name: "up" }); // 'baz'
  assert.strictEqual(rli.historyIndex, 2);
- assert.strictEqual(rli.line, 'baz');
- fi.emit('keypress', '.', { name: 'up' }); // 'ba'
+ assert.strictEqual(rli.line, "baz");
+ fi.emit("keypress", ".", { name: "up" }); // 'ba'
  assert.strictEqual(rli.historyIndex, 4);
- assert.strictEqual(rli.line, 'ba');
- fi.emit('keypress', '.', { name: 'up' }); // 'ba'
+ assert.strictEqual(rli.line, "ba");
+ fi.emit("keypress", ".", { name: "up" }); // 'ba'
  assert.strictEqual(rli.historyIndex, 4);
- assert.strictEqual(rli.line, 'ba');
+ assert.strictEqual(rli.line, "ba");
  // Deactivate substring history search and reset history index.
- fi.emit('keypress', '.', { name: 'right' }); // 'ba'
+ fi.emit("keypress", ".", { name: "right" }); // 'ba'
  assert.strictEqual(rli.historyIndex, -1);
- assert.strictEqual(rli.line, 'ba');
+ assert.strictEqual(rli.line, "ba");
  // Substring history search activated.
- fi.emit('keypress', '.', { name: 'up' }); // 'ba'
+ fi.emit("keypress", ".", { name: "up" }); // 'ba'
  assert.strictEqual(rli.historyIndex, 0);
- assert.strictEqual(rli.line, 'bat');
+ assert.strictEqual(rli.line, "bat");
  rli.close();
 }
 
@@ -323,24 +323,24 @@ function assertCursorRowsAndCols(rli, rows, cols) {
   terminal: true,
   removeHistoryDuplicates: false,
  });
- const expectedLines = ['foo', 'bar', 'baz', 'bar', 'bat', 'bat'];
+ const expectedLines = ["foo", "bar", "baz", "bar", "bat", "bat"];
  let callCount = 0;
- rli.on('line', function(line) {
+ rli.on("line", function(line) {
   assert.strictEqual(line, expectedLines[callCount]);
   callCount++;
  });
- fi.emit('data', `${expectedLines.join('\n')}\n`);
+ fi.emit("data", `${expectedLines.join("\n")}\n`);
  assert.strictEqual(callCount, expectedLines.length);
- fi.emit('keypress', '.', { name: 'up' }); // 'bat'
+ fi.emit("keypress", ".", { name: "up" }); // 'bat'
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'bar'
+ fi.emit("keypress", ".", { name: "up" }); // 'bar'
  assert.notStrictEqual(rli.line, expectedLines[--callCount]);
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'baz'
+ fi.emit("keypress", ".", { name: "up" }); // 'baz'
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'bar'
+ fi.emit("keypress", ".", { name: "up" }); // 'bar'
  assert.strictEqual(rli.line, expectedLines[--callCount]);
- fi.emit('keypress', '.', { name: 'up' }); // 'foo'
+ fi.emit("keypress", ".", { name: "up" }); // 'foo'
  assert.strictEqual(rli.line, expectedLines[--callCount]);
  assert.strictEqual(callCount, 0);
  rli.close();
@@ -351,39 +351,39 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 {
  const [rli, fi] = getInterface({ terminal: true });
  const keys = [];
- const err = new Error('bad thing happened');
- fi.on('keypress', function(key) {
+ const err = new Error("bad thing happened");
+ fi.on("keypress", function(key) {
   keys.push(key);
-  if (key === 'X') {
+  if (key === "X") {
    throw err;
   }
  });
  assert.throws(
-  () => fi.emit('data', 'fooX'),
+  () => fi.emit("data", "fooX"),
   (e) => {
    assert.strictEqual(e, err);
    return true;
   },
  );
- fi.emit('data', 'bar');
- assert.strictEqual(keys.join(''), 'fooXbar');
+ fi.emit("data", "bar");
+ assert.strictEqual(keys.join(""), "fooXbar");
  rli.close();
 }
 
 // History is bound
 {
  const [rli, fi] = getInterface({ terminal: true, historySize: 2 });
- const lines = ['line 1', 'line 2', 'line 3'];
- fi.emit('data', lines.join('\n') + '\n');
+ const lines = ["line 1", "line 2", "line 3"];
+ fi.emit("data", lines.join("\n") + "\n");
  assert.strictEqual(rli.history.length, 2);
- assert.strictEqual(rli.history[0], 'line 3');
- assert.strictEqual(rli.history[1], 'line 2');
+ assert.strictEqual(rli.history[0], "line 3");
+ assert.strictEqual(rli.history[1], "line 2");
 }
 
 // Question
 {
  const [rli] = getInterface({ terminal: true });
- const expectedLines = ['foo'];
+ const expectedLines = ["foo"];
  rli.question(expectedLines[0]).then(() => rli.close());
  assertCursorRowsAndCols(rli, 0, expectedLines[0].length);
  rli.close();
@@ -392,8 +392,8 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 // Sending a multi-line question
 {
  const [rli] = getInterface({ terminal: true });
- const expectedLines = ['foo', 'bar'];
- rli.question(expectedLines.join('\n')).then(() => rli.close());
+ const expectedLines = ["foo", "bar"];
+ rli.question(expectedLines.join("\n")).then(() => rli.close());
  assertCursorRowsAndCols(
   rli, expectedLines.length - 1, expectedLines.slice(-1)[0].length);
  rli.close();
@@ -401,290 +401,290 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 
 {
  // Beginning and end of line
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
- fi.emit('keypress', '.', { ctrl: true, name: 'a' });
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
+ fi.emit("keypress", ".", { ctrl: true, name: "a" });
  assertCursorRowsAndCols(rli, 0, 0);
- fi.emit('keypress', '.', { ctrl: true, name: 'e' });
+ fi.emit("keypress", ".", { ctrl: true, name: "e" });
  assertCursorRowsAndCols(rli, 0, 19);
  rli.close();
 }
 
 {
  // Back and Forward one character
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
  assertCursorRowsAndCols(rli, 0, 19);
 
  // Back one character
- fi.emit('keypress', '.', { ctrl: true, name: 'b' });
+ fi.emit("keypress", ".", { ctrl: true, name: "b" });
  assertCursorRowsAndCols(rli, 0, 18);
  // Back one character
- fi.emit('keypress', '.', { ctrl: true, name: 'b' });
+ fi.emit("keypress", ".", { ctrl: true, name: "b" });
  assertCursorRowsAndCols(rli, 0, 17);
  // Forward one character
- fi.emit('keypress', '.', { ctrl: true, name: 'f' });
+ fi.emit("keypress", ".", { ctrl: true, name: "f" });
  assertCursorRowsAndCols(rli, 0, 18);
  // Forward one character
- fi.emit('keypress', '.', { ctrl: true, name: 'f' });
+ fi.emit("keypress", ".", { ctrl: true, name: "f" });
  assertCursorRowsAndCols(rli, 0, 19);
  rli.close();
 }
 
 // Back and Forward one astral character
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', '💻');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "💻");
 
  // Move left one character/code point
- fi.emit('keypress', '.', { name: 'left' });
+ fi.emit("keypress", ".", { name: "left" });
  assertCursorRowsAndCols(rli, 0, 0);
 
  // Move right one character/code point
- fi.emit('keypress', '.', { name: 'right' });
+ fi.emit("keypress", ".", { name: "right" });
  assertCursorRowsAndCols(rli, 0, 2);
 
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '💻');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "💻");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // Two astral characters left
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', '💻');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "💻");
 
  // Move left one character/code point
- fi.emit('keypress', '.', { name: 'left' });
+ fi.emit("keypress", ".", { name: "left" });
  assertCursorRowsAndCols(rli, 0, 0);
 
- fi.emit('data', '🐕');
+ fi.emit("data", "🐕");
  assertCursorRowsAndCols(rli, 0, 2);
 
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '🐕💻');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "🐕💻");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // Two astral characters right
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', '💻');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "💻");
 
  // Move left one character/code point
- fi.emit('keypress', '.', { name: 'right' });
+ fi.emit("keypress", ".", { name: "right" });
  assertCursorRowsAndCols(rli, 0, 2);
 
- fi.emit('data', '🐕');
+ fi.emit("data", "🐕");
  assertCursorRowsAndCols(rli, 0, 4);
 
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '💻🐕');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "💻🐕");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 {
  // `wordLeft` and `wordRight`
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
- fi.emit('keypress', '.', { ctrl: true, name: 'left' });
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
+ fi.emit("keypress", ".", { ctrl: true, name: "left" });
  assertCursorRowsAndCols(rli, 0, 16);
- fi.emit('keypress', '.', { meta: true, name: 'b' });
+ fi.emit("keypress", ".", { meta: true, name: "b" });
  assertCursorRowsAndCols(rli, 0, 10);
- fi.emit('keypress', '.', { ctrl: true, name: 'right' });
+ fi.emit("keypress", ".", { ctrl: true, name: "right" });
  assertCursorRowsAndCols(rli, 0, 16);
- fi.emit('keypress', '.', { meta: true, name: 'f' });
+ fi.emit("keypress", ".", { meta: true, name: "f" });
  assertCursorRowsAndCols(rli, 0, 19);
  rli.close();
 }
 
 // `deleteWordLeft`
 [
- { ctrl: true, name: 'w' },
- { ctrl: true, name: 'backspace' },
- { meta: true, name: 'backspace' },
+ { ctrl: true, name: "w" },
+ { ctrl: true, name: "backspace" },
+ { meta: true, name: "backspace" },
 ].forEach((deleteWordLeftKey) => {
- let [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
- fi.emit('keypress', '.', { ctrl: true, name: 'left' });
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'the quick fox');
+ let [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
+ fi.emit("keypress", ".", { ctrl: true, name: "left" });
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "the quick fox");
  }));
- fi.emit('keypress', '.', deleteWordLeftKey);
- fi.emit('data', '\n');
+ fi.emit("keypress", ".", deleteWordLeftKey);
+ fi.emit("data", "\n");
  rli.close();
 
  // No effect if pressed at beginning of line
- [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
- fi.emit('keypress', '.', { ctrl: true, name: 'a' });
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'the quick brown fox');
+ [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
+ fi.emit("keypress", ".", { ctrl: true, name: "a" });
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "the quick brown fox");
  }));
- fi.emit('keypress', '.', deleteWordLeftKey);
- fi.emit('data', '\n');
+ fi.emit("keypress", ".", deleteWordLeftKey);
+ fi.emit("data", "\n");
  rli.close();
 });
 
 // `deleteWordRight`
 [
- { ctrl: true, name: 'delete' },
- { meta: true, name: 'delete' },
- { meta: true, name: 'd' },
+ { ctrl: true, name: "delete" },
+ { meta: true, name: "delete" },
+ { meta: true, name: "d" },
 ].forEach((deleteWordRightKey) => {
- let [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
- fi.emit('keypress', '.', { ctrl: true, name: 'left' });
- fi.emit('keypress', '.', { ctrl: true, name: 'left' });
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'the quick fox');
+ let [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
+ fi.emit("keypress", ".", { ctrl: true, name: "left" });
+ fi.emit("keypress", ".", { ctrl: true, name: "left" });
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "the quick fox");
  }));
- fi.emit('keypress', '.', deleteWordRightKey);
- fi.emit('data', '\n');
+ fi.emit("keypress", ".", deleteWordRightKey);
+ fi.emit("data", "\n");
  rli.close();
 
  // No effect if pressed at end of line
- [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'the quick brown fox');
+ [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "the quick brown fox");
  }));
- fi.emit('keypress', '.', deleteWordRightKey);
- fi.emit('data', '\n');
+ fi.emit("keypress", ".", deleteWordRightKey);
+ fi.emit("data", "\n");
  rli.close();
 });
 
 // deleteLeft
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
  assertCursorRowsAndCols(rli, 0, 19);
 
  // Delete left character
- fi.emit('keypress', '.', { ctrl: true, name: 'h' });
+ fi.emit("keypress", ".", { ctrl: true, name: "h" });
  assertCursorRowsAndCols(rli, 0, 18);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'the quick brown fo');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "the quick brown fo");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // deleteLeft astral character
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', '💻');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "💻");
  assertCursorRowsAndCols(rli, 0, 2);
  // Delete left character
- fi.emit('keypress', '.', { ctrl: true, name: 'h' });
+ fi.emit("keypress", ".", { ctrl: true, name: "h" });
  assertCursorRowsAndCols(rli, 0, 0);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // deleteRight
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
 
  // Go to the start of the line
- fi.emit('keypress', '.', { ctrl: true, name: 'a' });
+ fi.emit("keypress", ".", { ctrl: true, name: "a" });
  assertCursorRowsAndCols(rli, 0, 0);
 
  // Delete right character
- fi.emit('keypress', '.', { ctrl: true, name: 'd' });
+ fi.emit("keypress", ".", { ctrl: true, name: "d" });
  assertCursorRowsAndCols(rli, 0, 0);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'he quick brown fox');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "he quick brown fox");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // deleteRight astral character
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', '💻');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "💻");
 
  // Go to the start of the line
- fi.emit('keypress', '.', { ctrl: true, name: 'a' });
+ fi.emit("keypress", ".", { ctrl: true, name: "a" });
  assertCursorRowsAndCols(rli, 0, 0);
 
  // Delete right character
- fi.emit('keypress', '.', { ctrl: true, name: 'd' });
+ fi.emit("keypress", ".", { ctrl: true, name: "d" });
  assertCursorRowsAndCols(rli, 0, 0);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // deleteLineLeft
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
  assertCursorRowsAndCols(rli, 0, 19);
 
  // Delete from current to start of line
- fi.emit('keypress', '.', { ctrl: true, shift: true, name: 'backspace' });
+ fi.emit("keypress", ".", { ctrl: true, shift: true, name: "backspace" });
  assertCursorRowsAndCols(rli, 0, 0);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // deleteLineRight
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick brown fox');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick brown fox");
 
  // Go to the start of the line
- fi.emit('keypress', '.', { ctrl: true, name: 'a' });
+ fi.emit("keypress", ".", { ctrl: true, name: "a" });
  assertCursorRowsAndCols(rli, 0, 0);
 
  // Delete from current to end of line
- fi.emit('keypress', '.', { ctrl: true, shift: true, name: 'delete' });
+ fi.emit("keypress", ".", { ctrl: true, shift: true, name: "delete" });
  assertCursorRowsAndCols(rli, 0, 0);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, '');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // Close readline interface
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('keypress', '.', { ctrl: true, name: 'c' });
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("keypress", ".", { ctrl: true, name: "c" });
  assert(rli.closed);
 }
 
 // Multi-line input cursor position
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
  fi.columns = 10;
- fi.emit('data', 'multi-line text');
+ fi.emit("data", "multi-line text");
  assertCursorRowsAndCols(rli, 1, 5);
  rli.close();
 }
 
 // Multi-line input cursor position and long tabs
 {
- const [rli, fi] = getInterface({ tabSize: 16, terminal: true, prompt: '' });
+ const [rli, fi] = getInterface({ tabSize: 16, terminal: true, prompt: "" });
  fi.columns = 10;
- fi.emit('data', 'multi-line\ttext \t');
+ fi.emit("data", "multi-line\ttext \t");
  assert.strictEqual(rli.cursor, 17);
  assertCursorRowsAndCols(rli, 3, 2);
  rli.close();
@@ -692,8 +692,8 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 
 // Check for the default tab size.
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- fi.emit('data', 'the quick\tbrown\tfox');
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ fi.emit("data", "the quick\tbrown\tfox");
  assert.strictEqual(rli.cursor, 19);
  // The first tab is 7 spaces long, the second one 3 spaces.
  assertCursorRowsAndCols(rli, 0, 27);
@@ -703,58 +703,58 @@ function assertCursorRowsAndCols(rli, rows, cols) {
 {
  const [rli, fi] = getInterface({
   terminal: true,
-  prompt: '\nfilledline\nwraping text\n> ',
+  prompt: "\nfilledline\nwraping text\n> ",
  });
  fi.columns = 10;
- fi.emit('data', 't');
+ fi.emit("data", "t");
  assertCursorRowsAndCols(rli, 4, 3);
  rli.close();
 }
 
 // Clear the whole screen
 {
- const [rli, fi] = getInterface({ terminal: true, prompt: '' });
- const lines = ['line 1', 'line 2', 'line 3'];
- fi.emit('data', lines.join('\n'));
- fi.emit('keypress', '.', { ctrl: true, name: 'l' });
+ const [rli, fi] = getInterface({ terminal: true, prompt: "" });
+ const lines = ["line 1", "line 2", "line 3"];
+ fi.emit("data", lines.join("\n"));
+ fi.emit("keypress", ".", { ctrl: true, name: "l" });
  assertCursorRowsAndCols(rli, 0, 6);
- rli.on('line', common.mustCall((line) => {
-  assert.strictEqual(line, 'line 3');
+ rli.on("line", common.mustCall((line) => {
+  assert.strictEqual(line, "line 3");
  }));
- fi.emit('data', '\n');
+ fi.emit("data", "\n");
  rli.close();
 }
 
 // Wide characters should be treated as two columns.
-assert.strictEqual(getStringWidth('a'), 1);
-assert.strictEqual(getStringWidth('あ'), 2);
-assert.strictEqual(getStringWidth('谢'), 2);
-assert.strictEqual(getStringWidth('고'), 2);
+assert.strictEqual(getStringWidth("a"), 1);
+assert.strictEqual(getStringWidth("あ"), 2);
+assert.strictEqual(getStringWidth("谢"), 2);
+assert.strictEqual(getStringWidth("고"), 2);
 assert.strictEqual(getStringWidth(String.fromCodePoint(0x1f251)), 2);
-assert.strictEqual(getStringWidth('abcde'), 5);
-assert.strictEqual(getStringWidth('古池や'), 6);
-assert.strictEqual(getStringWidth('ノード.js'), 9);
-assert.strictEqual(getStringWidth('你好'), 4);
-assert.strictEqual(getStringWidth('안녕하세요'), 10);
-assert.strictEqual(getStringWidth('A\ud83c\ude00BC'), 5);
-assert.strictEqual(getStringWidth('👨‍👩‍👦‍👦'), 8);
-assert.strictEqual(getStringWidth('🐕𐐷あ💻😀'), 9);
+assert.strictEqual(getStringWidth("abcde"), 5);
+assert.strictEqual(getStringWidth("古池や"), 6);
+assert.strictEqual(getStringWidth("ノード.js"), 9);
+assert.strictEqual(getStringWidth("你好"), 4);
+assert.strictEqual(getStringWidth("안녕하세요"), 10);
+assert.strictEqual(getStringWidth("A\ud83c\ude00BC"), 5);
+assert.strictEqual(getStringWidth("👨‍👩‍👦‍👦"), 8);
+assert.strictEqual(getStringWidth("🐕𐐷あ💻😀"), 9);
 // TODO(BridgeAR): This should have a width of 4.
-assert.strictEqual(getStringWidth('⓬⓪'), 2);
-assert.strictEqual(getStringWidth('\u0301\u200D\u200E'), 0);
+assert.strictEqual(getStringWidth("⓬⓪"), 2);
+assert.strictEqual(getStringWidth("\u0301\u200D\u200E"), 0);
 
 // Check if vt control chars are stripped
-assert.strictEqual(stripVTControlCharacters('\u001b[31m> \u001b[39m'), '> ');
+assert.strictEqual(stripVTControlCharacters("\u001b[31m> \u001b[39m"), "> ");
 assert.strictEqual(
- stripVTControlCharacters('\u001b[31m> \u001b[39m> '),
- '> > ',
+ stripVTControlCharacters("\u001b[31m> \u001b[39m> "),
+ "> > ",
 );
-assert.strictEqual(stripVTControlCharacters('\u001b[31m\u001b[39m'), '');
-assert.strictEqual(stripVTControlCharacters('> '), '> ');
-assert.strictEqual(getStringWidth('\u001b[31m> \u001b[39m'), 2);
-assert.strictEqual(getStringWidth('\u001b[31m> \u001b[39m> '), 4);
-assert.strictEqual(getStringWidth('\u001b[31m\u001b[39m'), 0);
-assert.strictEqual(getStringWidth('> '), 2);
+assert.strictEqual(stripVTControlCharacters("\u001b[31m\u001b[39m"), "");
+assert.strictEqual(stripVTControlCharacters("> "), "> ");
+assert.strictEqual(getStringWidth("\u001b[31m> \u001b[39m"), 2);
+assert.strictEqual(getStringWidth("\u001b[31m> \u001b[39m> "), 4);
+assert.strictEqual(getStringWidth("\u001b[31m\u001b[39m"), 0);
+assert.strictEqual(getStringWidth("> "), 2);
 
 // Check EventEmitter memory leak
 for (let i = 0; i < 12; i++) {
@@ -773,7 +773,7 @@ for (let i = 0; i < 12; i++) {
   const [rli, fi] = getInterface({ terminal, historySize: 0 });
   assert.strictEqual(rli.historySize, 0);
 
-  fi.emit('data', 'asdf\n');
+  fi.emit("data", "asdf\n");
   assert.deepStrictEqual(rli.history, []);
   rli.close();
  }
@@ -783,18 +783,18 @@ for (let i = 0; i < 12; i++) {
   const [rli, fi] = getInterface({ terminal });
   assert.strictEqual(rli.historySize, 30);
 
-  fi.emit('data', 'asdf\n');
-  assert.deepStrictEqual(rli.history, terminal ? ['asdf'] : []);
+  fi.emit("data", "asdf\n");
+  assert.deepStrictEqual(rli.history, terminal ? ["asdf"] : []);
   rli.close();
  }
 
  // Sending a full line
  {
   const [rli, fi] = getInterface({ terminal });
-  rli.on('line', common.mustCall((line) => {
-   assert.strictEqual(line, 'asdf');
+  rli.on("line", common.mustCall((line) => {
+   assert.strictEqual(line, "asdf");
   }));
-  fi.emit('data', 'asdf\n');
+  fi.emit("data", "asdf\n");
  }
 
  // Ensure that options.signal.removeEventListener was called
@@ -804,13 +804,13 @@ for (let i = 0; i < 12; i++) {
   const [rli] = getInterface({ terminal });
   signal.removeEventListener = common.mustCall(
    (event, onAbortFn) => {
-    assert.strictEqual(event, 'abort');
-    assert.strictEqual(onAbortFn.name, 'onAbort');
+    assert.strictEqual(event, "abort");
+    assert.strictEqual(onAbortFn.name, "onAbort");
    });
 
-  rli.question('hello?', { signal }).then(common.mustCall());
+  rli.question("hello?", { signal }).then(common.mustCall());
 
-  rli.write('bar\n');
+  rli.write("bar\n");
   ac.abort();
   rli.close();
  }
@@ -818,23 +818,23 @@ for (let i = 0; i < 12; i++) {
  // Sending a blank line
  {
   const [rli, fi] = getInterface({ terminal });
-  rli.on('line', common.mustCall((line) => {
-   assert.strictEqual(line, '');
+  rli.on("line", common.mustCall((line) => {
+   assert.strictEqual(line, "");
   }));
-  fi.emit('data', '\n');
+  fi.emit("data", "\n");
  }
 
  // Sending a single character with no newline and then a newline
  {
   const [rli, fi] = getInterface({ terminal });
   let called = false;
-  rli.on('line', (line) => {
+  rli.on("line", (line) => {
    called = true;
-   assert.strictEqual(line, 'a');
+   assert.strictEqual(line, "a");
   });
-  fi.emit('data', 'a');
+  fi.emit("data", "a");
   assert.ok(!called);
-  fi.emit('data', '\n');
+  fi.emit("data", "\n");
   assert.ok(called);
   rli.close();
  }
@@ -842,22 +842,22 @@ for (let i = 0; i < 12; i++) {
  // Sending multiple newlines at once
  {
   const [rli, fi] = getInterface({ terminal });
-  const expectedLines = ['foo', 'bar', 'baz'];
-  rli.on('line', common.mustCall((line) => {
+  const expectedLines = ["foo", "bar", "baz"];
+  rli.on("line", common.mustCall((line) => {
    assert.strictEqual(line, expectedLines.shift());
   }, expectedLines.length));
-  fi.emit('data', `${expectedLines.join('\n')}\n`);
+  fi.emit("data", `${expectedLines.join("\n")}\n`);
   rli.close();
  }
 
  // Sending multiple newlines at once that does not end with a new line
  {
   const [rli, fi] = getInterface({ terminal });
-  const expectedLines = ['foo', 'bar', 'baz', 'bat'];
-  rli.on('line', common.mustCall((line) => {
+  const expectedLines = ["foo", "bar", "baz", "bat"];
+  rli.on("line", common.mustCall((line) => {
    assert.strictEqual(line, expectedLines.shift());
   }, expectedLines.length - 1));
-  fi.emit('data', expectedLines.join('\n'));
+  fi.emit("data", expectedLines.join("\n"));
   rli.close();
  }
 
@@ -865,30 +865,30 @@ for (let i = 0; i < 12; i++) {
  // line and a `end` event
  {
   const [rli, fi] = getInterface({ terminal });
-  const expectedLines = ['foo', 'bar', 'baz', ''];
-  rli.on('line', common.mustCall((line) => {
+  const expectedLines = ["foo", "bar", "baz", ""];
+  rli.on("line", common.mustCall((line) => {
    assert.strictEqual(line, expectedLines.shift());
   }, expectedLines.length - 1));
-  rli.on('close', common.mustCall());
-  fi.emit('data', expectedLines.join('\n'));
-  fi.emit('end');
+  rli.on("close", common.mustCall());
+  fi.emit("data", expectedLines.join("\n"));
+  fi.emit("end");
   rli.close();
  }
 
  // Sending a multi-byte utf8 char over multiple writes
  {
-  const buf = Buffer.from('☮', 'utf8');
+  const buf = Buffer.from("☮", "utf8");
   const [rli, fi] = getInterface({ terminal });
   let callCount = 0;
-  rli.on('line', function(line) {
+  rli.on("line", function(line) {
    callCount++;
-   assert.strictEqual(line, buf.toString('utf8'));
+   assert.strictEqual(line, buf.toString("utf8"));
   });
   for (const i of buf) {
-   fi.emit('data', Buffer.from([i]));
+   fi.emit("data", Buffer.from([i]));
   }
   assert.strictEqual(callCount, 0);
-  fi.emit('data', '\n');
+  fi.emit("data", "\n");
   assert.strictEqual(callCount, 1);
   rli.close();
  }
@@ -896,20 +896,20 @@ for (let i = 0; i < 12; i++) {
  // Calling readline without `new`
  {
   const [rli, fi] = getInterface({ terminal });
-  rli.on('line', common.mustCall((line) => {
-   assert.strictEqual(line, 'asdf');
+  rli.on("line", common.mustCall((line) => {
+   assert.strictEqual(line, "asdf");
   }));
-  fi.emit('data', 'asdf\n');
+  fi.emit("data", "asdf\n");
   rli.close();
  }
 
  // Calling the question callback
  {
   const [rli] = getInterface({ terminal });
-  rli.question('foo?').then(common.mustCall((answer) => {
-   assert.strictEqual(answer, 'bar');
+  rli.question("foo?").then(common.mustCall((answer) => {
+   assert.strictEqual(answer, "bar");
   }));
-  rli.write('bar\n');
+  rli.write("bar\n");
   rli.close();
  }
 
@@ -918,21 +918,21 @@ for (let i = 0; i < 12; i++) {
   const ac = new AbortController();
   const signal = ac.signal;
   const [rli] = getInterface({ terminal });
-  rli.on('line', common.mustCall((line) => {
-   assert.strictEqual(line, 'bar');
+  rli.on("line", common.mustCall((line) => {
+   assert.strictEqual(line, "bar");
   }));
-  assert.rejects(rli.question('hello?', { signal }), { name: 'AbortError' })
+  assert.rejects(rli.question("hello?", { signal }), { name: "AbortError" })
         .then(common.mustCall());
   ac.abort();
-  rli.write('bar\n');
+  rli.write("bar\n");
   rli.close();
  }
 
  (async () => {
   const [rli] = getInterface({ terminal });
-  const signal = AbortSignal.abort('boom');
-  await assert.rejects(rli.question('hello', { signal }), {
-   cause: 'boom',
+  const signal = AbortSignal.abort("boom");
+  await assert.rejects(rli.question("hello", { signal }), {
+   cause: "boom",
   });
   rli.close();
  })().then(common.mustCall());
@@ -944,9 +944,9 @@ for (let i = 0; i < 12; i++) {
   ac.abort();
   const [rli] = getInterface({ terminal });
   assert.rejects(
-   rli.question('hello?', { signal }),
+   rli.question("hello?", { signal }),
    {
-    name: 'AbortError',
+    name: "AbortError",
    },
   ).then(common.mustCall());
   rli.close();
@@ -955,23 +955,23 @@ for (let i = 0; i < 12; i++) {
  // Can create a new readline Interface with a null output argument
  {
   const [rli, fi] = getInterface({ output: null, terminal });
-  rli.on('line', common.mustCall((line) => {
-   assert.strictEqual(line, 'asdf');
+  rli.on("line", common.mustCall((line) => {
+   assert.strictEqual(line, "asdf");
   }));
-  fi.emit('data', 'asdf\n');
+  fi.emit("data", "asdf\n");
 
-  rli.setPrompt('ddd> ');
+  rli.setPrompt("ddd> ");
   rli.prompt();
   rli.write("really shouldn't be seeing this");
-  rli.question('What do you think of node.js? ', function(answer) {
-   console.log('Thank you for your valuable feedback:', answer);
+  rli.question("What do you think of node.js? ", function(answer) {
+   console.log("Thank you for your valuable feedback:", answer);
    rli.close();
   });
  }
 
  // Calling the getPrompt method
  {
-  const expectedPrompts = ['$ ', '> '];
+  const expectedPrompts = ["$ ", "> "];
   const [rli] = getInterface({ terminal });
   for (const prompt of expectedPrompts) {
    rli.setPrompt(prompt);
@@ -981,8 +981,8 @@ for (let i = 0; i < 12; i++) {
 
  {
   const expected = terminal ?
-   ['\u001b[1G', '\u001b[0J', '$ ', '\u001b[3G'] :
-   ['$ '];
+   ["\u001b[1G", "\u001b[0J", "$ ", "\u001b[3G"] :
+   ["$ "];
 
   const output = new Writable({
    write: common.mustCall((chunk, enc, cb) => {
@@ -995,18 +995,18 @@ for (let i = 0; i < 12; i++) {
   const rl = readline.createInterface({
    input: new Readable({ read: common.mustCall() }),
    output,
-   prompt: '$ ',
+   prompt: "$ ",
    terminal,
   });
 
   rl.prompt();
 
-  assert.strictEqual(rl.getPrompt(), '$ ');
+  assert.strictEqual(rl.getPrompt(), "$ ");
  }
 
  {
   const fi = new FakeInput();
-  assert.deepStrictEqual(fi.listeners(terminal ? 'keypress' : 'data'), []);
+  assert.deepStrictEqual(fi.listeners(terminal ? "keypress" : "data"), []);
  }
 
  // Emit two line events when the delay
@@ -1015,12 +1015,12 @@ for (let i = 0; i < 12; i++) {
   const crlfDelay = 200;
   const [rli, fi] = getInterface({ terminal, crlfDelay });
   let callCount = 0;
-  rli.on('line', function(line) {
+  rli.on("line", function(line) {
    callCount++;
   });
-  fi.emit('data', '\r');
+  fi.emit("data", "\r");
   setTimeout(common.mustCall(() => {
-   fi.emit('data', '\n');
+   fi.emit("data", "\n");
    assert.strictEqual(callCount, 2);
    rli.close();
   }), crlfDelay + 10);
@@ -1037,12 +1037,12 @@ for (let i = 0; i < 12; i++) {
   const delay = 200;
   const [rli, fi] = getInterface({ terminal, crlfDelay });
   let callCount = 0;
-  rli.on('line', function(line) {
+  rli.on("line", function(line) {
    callCount++;
   });
-  fi.emit('data', '\r');
+  fi.emit("data", "\r");
   setTimeout(common.mustCall(() => {
-   fi.emit('data', '\n');
+   fi.emit("data", "\n");
    assert.strictEqual(callCount, 1);
    rli.close();
   }), delay);
@@ -1054,26 +1054,26 @@ for (let i = 0; i < 12; i++) {
  // \r\n should emit one line event, not two
  {
   const [rli, fi] = getInterface({ terminal, crlfDelay });
-  const expectedLines = ['foo', 'bar', 'baz', 'bat'];
-  rli.on('line', common.mustCall((line) => {
+  const expectedLines = ["foo", "bar", "baz", "bat"];
+  rli.on("line", common.mustCall((line) => {
    assert.strictEqual(line, expectedLines.shift());
   }, expectedLines.length - 1));
-  fi.emit('data', expectedLines.join('\r\n'));
+  fi.emit("data", expectedLines.join("\r\n"));
   rli.close();
  }
 
  // \r\n should emit one line event when split across multiple writes.
  {
   const [rli, fi] = getInterface({ terminal, crlfDelay });
-  const expectedLines = ['foo', 'bar', 'baz', 'bat'];
+  const expectedLines = ["foo", "bar", "baz", "bat"];
   let callCount = 0;
-  rli.on('line', common.mustCall((line) => {
+  rli.on("line", common.mustCall((line) => {
    assert.strictEqual(line, expectedLines[callCount]);
    callCount++;
   }, expectedLines.length));
   expectedLines.forEach((line) => {
-   fi.emit('data', `${line}\r`);
-   fi.emit('data', '\n');
+   fi.emit("data", `${line}\r`);
+   fi.emit("data", "\n");
   });
   rli.close();
  }
@@ -1084,10 +1084,10 @@ for (let i = 0; i < 12; i++) {
   const delay = 125;
   const [rli, fi] = getInterface({ terminal, crlfDelay });
   let callCount = 0;
-  rli.on('line', () => callCount++);
-  fi.emit('data', '\r');
+  rli.on("line", () => callCount++);
+  fi.emit("data", "\r");
   setTimeout(common.mustCall(() => {
-   fi.emit('data', '\n');
+   fi.emit("data", "\n");
    assert.strictEqual(callCount, 1);
    rli.close();
   }), delay);
@@ -1098,7 +1098,7 @@ for (let i = 0; i < 12; i++) {
 {
  const input = new Readable({
   read() {
-   this.push('\x1B[1;5D'); // CTRL + Left
+   this.push("\x1B[1;5D"); // CTRL + Left
    this.push(null);
   },
  });
@@ -1113,6 +1113,6 @@ for (let i = 0; i < 12; i++) {
   output,
   terminal: true,
  });
- rl.line = `a${' '.repeat(1e6)}a`;
+ rl.line = `a${" ".repeat(1e6)}a`;
  rl.cursor = rl.line.length;
 }

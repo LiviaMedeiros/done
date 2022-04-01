@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 if (!common.canCreateSymLink())
- common.skip('insufficient privileges');
+ common.skip("insufficient privileges");
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
 let linkTime;
 let fileTime;
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 // Test creating and reading symbolic link
-const linkData = fixtures.path('/cycles/root.js');
-const linkPath = path.join(tmpdir.path, 'symlink1.js');
+const linkData = fixtures.path("/cycles/root.js");
+const linkPath = path.join(tmpdir.path, "symlink1.js");
 
 fs.symlink(linkData, linkPath, common.mustSucceed(() => {
  fs.lstat(linkPath, common.mustSucceed((stats) => {
@@ -55,8 +55,8 @@ fs.symlink(linkData, linkPath, common.mustSucceed(() => {
 
 // Test invalid symlink
 {
- const linkData = fixtures.path('/not/exists/file');
- const linkPath = path.join(tmpdir.path, 'symlink2.js');
+ const linkData = fixtures.path("/not/exists/file");
+ const linkPath = path.join(tmpdir.path, "symlink2.js");
 
  fs.symlink(linkData, linkPath, common.mustSucceed(() => {
   assert(!fs.existsSync(linkPath));
@@ -65,26 +65,26 @@ fs.symlink(linkData, linkPath, common.mustSucceed(() => {
 
 [false, 1, {}, [], null, undefined].forEach((input) => {
  const errObj = {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message: /target|path/,
  };
- assert.throws(() => fs.symlink(input, '', common.mustNotCall()), errObj);
- assert.throws(() => fs.symlinkSync(input, ''), errObj);
+ assert.throws(() => fs.symlink(input, "", common.mustNotCall()), errObj);
+ assert.throws(() => fs.symlinkSync(input, ""), errObj);
 
- assert.throws(() => fs.symlink('', input, common.mustNotCall()), errObj);
- assert.throws(() => fs.symlinkSync('', input), errObj);
+ assert.throws(() => fs.symlink("", input, common.mustNotCall()), errObj);
+ assert.throws(() => fs.symlinkSync("", input), errObj);
 });
 
 const errObj = {
- code: 'ERR_FS_INVALID_SYMLINK_TYPE',
- name: 'Error',
+ code: "ERR_FS_INVALID_SYMLINK_TYPE",
+ name: "Error",
  message:
     'Symlink type must be one of "dir", "file", or "junction". Received "🍏"',
 };
-assert.throws(() => fs.symlink('', '', '🍏', common.mustNotCall()), errObj);
-assert.throws(() => fs.symlinkSync('', '', '🍏'), errObj);
+assert.throws(() => fs.symlink("", "", "🍏", common.mustNotCall()), errObj);
+assert.throws(() => fs.symlinkSync("", "", "🍏"), errObj);
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.notStrictEqual(linkTime, fileTime);
 });

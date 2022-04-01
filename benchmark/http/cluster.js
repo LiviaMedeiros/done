@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 const PORT = common.PORT;
 
-const cluster = require('cluster');
+const cluster = require("cluster");
 let bench;
 if (cluster.isMaster) {
  bench = common.createBenchmark(main, {
   // Unicode confuses ab on os x.
-  type: ['bytes', 'buffer'],
+  type: ["bytes", "buffer"],
   len: [4, 1024, 102400],
   c: [50, 500],
   duration: 5,
  });
 } else {
  const port = parseInt(process.env.PORT || PORT);
- require('../fixtures/simple-http-server.js').listen(port);
+ require("../fixtures/simple-http-server.js").listen(port);
 }
 
 function main({ type, len, c, duration }) {
@@ -23,7 +23,7 @@ function main({ type, len, c, duration }) {
  const w1 = cluster.fork();
  const w2 = cluster.fork();
 
- cluster.on('listening', () => {
+ cluster.on("listening", () => {
   workers++;
   if (workers < 2)
    return;

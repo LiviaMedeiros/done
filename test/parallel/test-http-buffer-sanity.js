@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const bufferSize = 5 * 1024 * 1024;
 let measuredSize = 0;
@@ -37,7 +37,7 @@ const server = http.Server(function(req, res) {
 
  let i = 0;
 
- req.on('data', (d) => {
+ req.on("data", (d) => {
   measuredSize += d.length;
   for (let j = 0; j < d.length; j++) {
    assert.strictEqual(d[j], buffer[i]);
@@ -45,10 +45,10 @@ const server = http.Server(function(req, res) {
   }
  });
 
- req.on('end', common.mustCall(() => {
+ req.on("end", common.mustCall(() => {
   assert.strictEqual(measuredSize, bufferSize);
   res.writeHead(200);
-  res.write('thanks');
+  res.write("thanks");
   res.end();
  }));
 });
@@ -56,15 +56,15 @@ const server = http.Server(function(req, res) {
 server.listen(0, common.mustCall(() => {
  const req = http.request({
   port: server.address().port,
-  method: 'POST',
-  path: '/',
-  headers: { 'content-length': buffer.length },
+  method: "POST",
+  path: "/",
+  headers: { "content-length": buffer.length },
  }, common.mustCall((res) => {
-  res.setEncoding('utf8');
-  let data = '';
-  res.on('data', (chunk) => data += chunk);
-  res.on('end', common.mustCall(() => {
-   assert.strictEqual(data, 'thanks');
+  res.setEncoding("utf8");
+  let data = "";
+  res.on("data", (chunk) => data += chunk);
+  res.on("end", common.mustCall(() => {
+   assert.strictEqual(data, "thanks");
   }));
  }));
  req.end(buffer);

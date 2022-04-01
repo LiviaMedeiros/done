@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const http = require("http");
 
 const server = http.createServer(common.mustCall((req, res) => {
  req.pipe(res);
- res.on('error', common.mustNotCall());
- res.on('close', common.mustCall(() => {
-  res.end('asd');
+ res.on("error", common.mustNotCall());
+ res.on("close", common.mustCall(() => {
+  res.end("asd");
   process.nextTick(() => {
    server.close();
   });
@@ -15,10 +15,10 @@ const server = http.createServer(common.mustCall((req, res) => {
  http
     .request({
     	port: server.address().port,
-    	method: 'PUT',
+    	method: "PUT",
     })
-    .on('response', (res) => {
+    .on("response", (res) => {
     	res.destroy();
     })
-    .write('asd');
+    .write("asd");
 });

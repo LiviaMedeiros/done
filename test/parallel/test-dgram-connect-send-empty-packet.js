@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const dgram = require('dgram');
+const assert = require("assert");
+const dgram = require("dgram");
 
-const client = dgram.createSocket('udp4');
+const client = dgram.createSocket("udp4");
 
 client.bind(0, common.mustCall(function() {
  client.connect(client.address().port, common.mustCall(() => {
-  client.on('message', common.mustCall(callback));
+  client.on("message", common.mustCall(callback));
   const buf = Buffer.alloc(1);
 
   const interval = setInterval(function() {

@@ -19,34 +19,34 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 if (cluster.isWorker) {
  net.createServer((socket) => {
-  socket.end('echo');
- }).listen(0, '127.0.0.1');
+  socket.end("echo");
+ }).listen(0, "127.0.0.1");
 
  net.createServer((socket) => {
-  socket.end('echo');
- }).listen(0, '127.0.0.1');
+  socket.end("echo");
+ }).listen(0, "127.0.0.1");
 } else if (cluster.isPrimary) {
  const servers = 2;
  const serverPorts = new Set();
 
  // Test a single TCP server
  const testConnection = (port, cb) => {
-  const socket = net.connect(port, '127.0.0.1', () => {
+  const socket = net.connect(port, "127.0.0.1", () => {
    // buffer result
-   let result = '';
-   socket.on('data', (chunk) => { result += chunk; });
+   let result = "";
+   socket.on("data", (chunk) => { result += chunk; });
 
    // check result
-   socket.on('end', common.mustCall(() => {
-    cb(result === 'echo');
+   socket.on("end", common.mustCall(() => {
+    cb(result === "echo");
     serverPorts.delete(port);
    }));
   });
@@ -74,7 +74,7 @@ if (cluster.isWorker) {
   let online = 0;
 
   for (let i = 0, l = workers; i < l; i++) {
-   cluster.fork().on('listening', common.mustCall((address) => {
+   cluster.fork().on("listening", common.mustCall((address) => {
     serverPorts.add(address.port);
 
     online += 1;

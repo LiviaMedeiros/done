@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 // The following benchmark sets up n * 1e6 unpooled timeouts,
 // then measures their execution on the next uv tick

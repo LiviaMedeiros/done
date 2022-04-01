@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const http = require('http');
-const assert = require('assert');
-const { Writable } = require('stream');
-const Countdown = require('../common/countdown');
+const common = require("../common");
+const http = require("http");
+const assert = require("assert");
+const { Writable } = require("stream");
+const Countdown = require("../common/countdown");
 
 const N = 2;
 let abortRequest = true;
 
 const server = http.Server(common.mustCall((req, res) => {
- const headers = { 'Content-Type': 'text/plain' };
- headers['Content-Length'] = 50;
+ const headers = { "Content-Type": "text/plain" };
+ headers["Content-Length"] = 50;
  const socket = res.socket;
  res.writeHead(200, headers);
- res.write('aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd');
+ res.write("aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd");
  if (abortRequest) {
   process.nextTick(() => socket.destroy());
  } else {
-  process.nextTick(() => res.end('eeeeeeeeee'));
+  process.nextTick(() => res.end("eeeeeeeeee"));
  }
 }, N));
 
@@ -34,13 +34,13 @@ const reqCountdown = new Countdown(N, common.mustCall());
 function download() {
  const opts = {
   port: server.address().port,
-  path: '/',
+  path: "/",
  };
  const req = http.get(opts);
- req.on('error', common.mustNotCall());
- req.on('response', (res) => {
+ req.on("error", common.mustNotCall());
+ req.on("response", (res) => {
   assert.strictEqual(res.statusCode, 200);
-  assert.strictEqual(res.headers.connection, 'close');
+  assert.strictEqual(res.headers.connection, "close");
   let aborted = false;
   const writable = new Writable({
    write(chunk, encoding, callback) {
@@ -57,22 +57,22 @@ function download() {
    callback();
   };
   if (!abortRequest) {
-   res.on('end', common.mustCall(() => {
+   res.on("end", common.mustCall(() => {
     reqCountdown.dec();
    }));
-   res.on('error', common.mustNotCall());
+   res.on("error", common.mustNotCall());
   } else {
-   res.on('aborted', common.mustCall(() => {
+   res.on("aborted", common.mustCall(() => {
     aborted = true;
     reqCountdown.dec();
     writable.end();
    }));
-   res.on('error', common.expectsError({
-    code: 'ECONNRESET',
+   res.on("error", common.expectsError({
+    code: "ECONNRESET",
    }));
   }
 
-  writable.on('finish', () => {
+  writable.on("finish", () => {
    assert.strictEqual(aborted, abortRequest);
    finishCountdown.dec();
    if (finishCountdown.remaining === 0) return;

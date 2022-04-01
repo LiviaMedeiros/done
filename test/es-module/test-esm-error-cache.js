@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
-const file = '../fixtures/syntax/bad_syntax.mjs';
+const file = "../fixtures/syntax/bad_syntax.mjs";
 
 let error;
 (async () => {
  try {
   await import(file);
  } catch (e) {
-  assert.strictEqual(e.name, 'SyntaxError');
+  assert.strictEqual(e.name, "SyntaxError");
   error = e;
  }
 

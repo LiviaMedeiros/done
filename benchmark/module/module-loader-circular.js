@@ -1,11 +1,11 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
-const common = require('../common.js');
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const common = require("../common.js");
 
-const tmpdir = require('../../test/common/tmpdir');
+const tmpdir = require("../../test/common/tmpdir");
 const benchmarkDirectory =
-  path.resolve(tmpdir.path, 'benchmark-module-circular');
+  path.resolve(tmpdir.path, "benchmark-module-circular");
 
 const bench = common.createBenchmark(main, {
  n: [1e4],
@@ -14,8 +14,8 @@ const bench = common.createBenchmark(main, {
 function main({ n }) {
  tmpdir.refresh();
 
- const aDotJS = path.join(benchmarkDirectory, 'a.js');
- const bDotJS = path.join(benchmarkDirectory, 'b.js');
+ const aDotJS = path.join(benchmarkDirectory, "a.js");
+ const bDotJS = path.join(benchmarkDirectory, "b.js");
 
  fs.mkdirSync(benchmarkDirectory);
  fs.writeFileSync(aDotJS, 'require("./b.js");');

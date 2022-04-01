@@ -2,7 +2,7 @@
  * @fileoverview Prohibit the use of assert operators ( ===, !==, ==, != )
  */
 
-'use strict';
+"use strict";
 
 const astSelector = 'ExpressionStatement[expression.type="CallExpression"]' +
                     '[expression.callee.name="assert"]' +
@@ -13,10 +13,10 @@ function parseError(method, op) {
 }
 
 const preferredAssertMethod = {
- '===': 'strictEqual',
- '!==': 'notStrictEqual',
- '==': 'equal',
- '!=': 'notEqual',
+ "===": "strictEqual",
+ "!==": "notStrictEqual",
+ "==": "equal",
+ "!=": "notEqual",
 };
 
 module.exports = function(context) {
@@ -44,5 +44,5 @@ module.exports = function(context) {
 };
 
 module.exports.meta = {
- fixable: 'code',
+ fixable: "code",
 };

@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const execFile = require('child_process').execFile;
-const { getEventListeners } = require('events');
-const { getSystemErrorName } = require('util');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const assert = require("assert");
+const execFile = require("child_process").execFile;
+const { getEventListeners } = require("events");
+const { getSystemErrorName } = require("util");
+const fixtures = require("../common/fixtures");
 
-const fixture = fixtures.path('exit.js');
-const echoFixture = fixtures.path('echo.js');
-const execOpts = { encoding: 'utf8', shell: true };
+const fixture = fixtures.path("exit.js");
+const echoFixture = fixtures.path("echo.js");
+const execOpts = { encoding: "utf8", shell: true };
 
 {
  execFile(
@@ -34,13 +34,13 @@ const execOpts = { encoding: 'utf8', shell: true };
   assert.strictEqual(err.killed, true);
   assert.strictEqual(err.signal, null);
   assert.strictEqual(err.cmd, process.execPath);
-  assert.strictEqual(stdout.trim(), '');
-  assert.strictEqual(stderr.trim(), '');
+  assert.strictEqual(stdout.trim(), "");
+  assert.strictEqual(stderr.trim(), "");
  });
  const child = execFile(process.execPath, callback);
 
  child.kill();
- child.emit('close', code, null);
+ child.emit("close", code, null);
 }
 
 {
@@ -55,8 +55,8 @@ const execOpts = { encoding: 'utf8', shell: true };
 
  const test = () => {
   const check = common.mustCall((err) => {
-   assert.strictEqual(err.code, 'ABORT_ERR');
-   assert.strictEqual(err.name, 'AbortError');
+   assert.strictEqual(err.code, "ABORT_ERR");
+   assert.strictEqual(err.name, "AbortError");
    assert.strictEqual(err.signal, undefined);
   });
   execFile(process.execPath, [echoFixture, 0], { signal }, check);
@@ -72,8 +72,8 @@ const execOpts = { encoding: 'utf8', shell: true };
  const signal = AbortSignal.abort();
 
  const check = common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ABORT_ERR');
-  assert.strictEqual(err.name, 'AbortError');
+  assert.strictEqual(err.code, "ABORT_ERR");
+  assert.strictEqual(err.name, "AbortError");
   assert.strictEqual(err.signal, undefined);
  });
  execFile(process.execPath, [echoFixture, 0], { signal }, check);
@@ -85,8 +85,8 @@ const execOpts = { encoding: 'utf8', shell: true };
  assert.throws(() => {
   const callback = common.mustNotCall(() => {});
 
-  execFile(process.execPath, [echoFixture, 0], { signal: 'hello' }, callback);
- }, { code: 'ERR_INVALID_ARG_TYPE', name: 'TypeError' });
+  execFile(process.execPath, [echoFixture, 0], { signal: "hello" }, callback);
+ }, { code: "ERR_INVALID_ARG_TYPE", name: "TypeError" });
 }
 {
  // Verify that the process completing removes the abort listener

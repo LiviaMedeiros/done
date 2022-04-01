@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common.js');
-const http = require('http');
+"use strict";
+const common = require("../common.js");
+const http = require("http");
 
 const bench = common.createBenchmark(main, {
  connections: [50], // Concurrent connections
@@ -16,11 +16,11 @@ function main({ connections, headers, w, duration }) {
 
  server.listen(common.PORT, () => {
   const headers = {
-   'Content-Type': 'text/plain',
-   'Accept': 'text/plain',
-   'User-Agent': 'nodejs-benchmark',
-   'Date': new Date().toString(),
-   'Cache-Control': 'no-cache',
+   "Content-Type": "text/plain",
+   "Accept": "text/plain",
+   "User-Agent": "nodejs-benchmark",
+   "Date": new Date().toString(),
+   "Cache-Control": "no-cache",
   };
   for (let i = 0; i < headers; i++) {
    // Note:
@@ -28,10 +28,10 @@ function main({ connections, headers, w, duration }) {
    // - wrk can only send trailing OWS. This is a side-effect of wrk
    // processing requests with http-parser before sending them, causing
    // leading OWS to be stripped.
-   headers[`foo${i}`] = `some header value ${i}${' \t'.repeat(w / 2)}`;
+   headers[`foo${i}`] = `some header value ${i}${" \t".repeat(w / 2)}`;
   }
   bench.http({
-   path: '/',
+   path: "/",
    connections,
    headers,
    duration,

@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
-const truthyValues = [true, 1, 'true', {}, []];
+const truthyValues = [true, 1, "true", {}, []];
 const delays = [[123, 0], [456123, 456], [-123000, 0], [undefined, 0]];
-const falseyValues = [false, 0, ''];
+const falseyValues = [false, 0, ""];
 
 const genSetKeepAlive = (desiredEnable, desiredDelay) => (enable, delay) => {
  assert.strictEqual(enable, desiredEnable);
@@ -29,7 +29,7 @@ for (const value of truthyValues) {
     genSetKeepAlive(true, delay[1]),
    );
 
-   client.on('end', common.mustCall(function() {
+   client.on("end", common.mustCall(function() {
     server.close();
    }));
   }));
@@ -49,7 +49,7 @@ for (const value of falseyValues) {
 
   client._handle.setKeepAlive = common.mustNotCall();
 
-  client.on('end', common.mustCall(function() {
+  client.on("end", common.mustCall(function() {
    server.close();
   }));
  }));

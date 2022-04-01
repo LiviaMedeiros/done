@@ -1,9 +1,9 @@
 // Flags: --unhandled-rejections=none
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 function throwErr() {
- throw new Error('Error from proxy');
+ throw new Error("Error from proxy");
 }
 
 const thorny = new Proxy({}, {
@@ -22,7 +22,7 @@ const thorny = new Proxy({}, {
  construct: throwErr,
 });
 
-process.on('warning', common.mustNotCall());
+process.on("warning", common.mustNotCall());
 
 // Ensure this doesn't crash
 Promise.reject(thorny);

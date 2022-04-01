@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const options = {
- method: 'GET',
+ method: "GET",
  port: undefined,
- host: '127.0.0.1',
- path: '/',
+ host: "127.0.0.1",
+ path: "/",
 };
 
 const server = http.createServer(function(req, res) {
@@ -40,7 +40,7 @@ server.listen(0, options.host, function() {
  const req = http.request(options, function(res) {
   // This space intentionally left blank
  });
- req.on('close', function() {
+ req.on("close", function() {
   assert.strictEqual(req.destroyed, true);
   server.close();
  });
@@ -49,6 +49,6 @@ server.listen(0, options.host, function() {
  }
  const s = req.setTimeout(1, destroy);
  assert.ok(s instanceof http.ClientRequest);
- req.on('error', destroy);
+ req.on("error", destroy);
  req.end();
 });

@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 {
  const server = http.createServer(common.mustCall((req, res) => {
-  res.end('asd');
+  res.end("asd");
  }));
 
  server.listen(0, common.mustCall(() => {
@@ -15,7 +15,7 @@ const http = require('http');
    assert.strictEqual(res.destroyed, false);
    res.destroy();
    assert.strictEqual(res.destroyed, true);
-   res.on('close', common.mustCall(() => {
+   res.on("close", common.mustCall(() => {
     server.close();
    }));
   }));
@@ -24,7 +24,7 @@ const http = require('http');
 
 {
  const server = http.createServer(common.mustCall((req, res) => {
-  res.end('asd');
+  res.end("asd");
  }));
 
  server.listen(0, common.mustCall(() => {
@@ -32,7 +32,7 @@ const http = require('http');
    port: server.address().port,
   }, common.mustCall((res) => {
    assert.strictEqual(res.destroyed, false);
-   res.on('close', common.mustCall(() => {
+   res.on("close", common.mustCall(() => {
     assert.strictEqual(res.destroyed, true);
     server.close();
    })).resume();

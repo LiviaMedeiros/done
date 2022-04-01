@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Stream,
  Writable,
@@ -10,21 +10,21 @@ const {
  PassThrough,
  Duplex,
  addAbortSignal,
-} = require('stream');
-const pipelinep = require('stream/promises').pipeline;
-const assert = require('assert');
-const http = require('http');
-const { promisify } = require('util');
-const net = require('net');
-const tsp = require('timers/promises');
+} = require("stream");
+const pipelinep = require("stream/promises").pipeline;
+const assert = require("assert");
+const http = require("http");
+const { promisify } = require("util");
+const net = require("net");
+const tsp = require("timers/promises");
 
 {
  let finished = false;
  const processed = [];
  const expected = [
-  Buffer.from('a'),
-  Buffer.from('b'),
-  Buffer.from('c'),
+  Buffer.from("a"),
+  Buffer.from("b"),
+  Buffer.from("c"),
  ];
 
  const read = new Readable({
@@ -38,7 +38,7 @@ const tsp = require('timers/promises');
   },
  });
 
- write.on('finish', () => {
+ write.on("finish", () => {
   finished = true;
  });
 
@@ -80,11 +80,11 @@ const tsp = require('timers/promises');
   },
  });
 
- read.push('data');
+ read.push("data");
  setImmediate(() => read.destroy());
 
  pipeline(read, write, common.mustCall((err) => {
-  assert.ok(err, 'should have an error');
+  assert.ok(err, "should have an error");
  }));
 }
 
@@ -99,11 +99,11 @@ const tsp = require('timers/promises');
   },
  });
 
- read.push('data');
- setImmediate(() => read.destroy(new Error('kaboom')));
+ read.push("data");
+ setImmediate(() => read.destroy(new Error("kaboom")));
 
  const dst = pipeline(read, write, common.mustCall((err) => {
-  assert.deepStrictEqual(err, new Error('kaboom'));
+  assert.deepStrictEqual(err, new Error("kaboom"));
  }));
 
  assert.strictEqual(dst, write);
@@ -116,7 +116,7 @@ const tsp = require('timers/promises');
 
  const transform = new Transform({
   transform(data, enc, cb) {
-   cb(new Error('kaboom'));
+   cb(new Error("kaboom"));
   },
  });
 
@@ -126,30 +126,30 @@ const tsp = require('timers/promises');
   },
  });
 
- read.on('close', common.mustCall());
- transform.on('close', common.mustCall());
- write.on('close', common.mustCall());
+ read.on("close", common.mustCall());
+ transform.on("close", common.mustCall());
+ write.on("close", common.mustCall());
 
  [read, transform, write].forEach((stream) => {
-  stream.on('error', common.mustCall((err) => {
-   assert.deepStrictEqual(err, new Error('kaboom'));
+  stream.on("error", common.mustCall((err) => {
+   assert.deepStrictEqual(err, new Error("kaboom"));
   }));
  });
 
  const dst = pipeline(read, transform, write, common.mustCall((err) => {
-  assert.deepStrictEqual(err, new Error('kaboom'));
+  assert.deepStrictEqual(err, new Error("kaboom"));
  }));
 
  assert.strictEqual(dst, write);
 
- read.push('hello');
+ read.push("hello");
 }
 
 {
  const server = http.createServer((req, res) => {
   const rs = new Readable({
    read() {
-    rs.push('hello');
+    rs.push("hello");
     rs.push(null);
    },
   });
@@ -163,13 +163,13 @@ const tsp = require('timers/promises');
   });
 
   req.end();
-  req.on('response', (res) => {
+  req.on("response", (res) => {
    const buf = [];
-   res.on('data', (data) => buf.push(data));
-   res.on('end', common.mustCall(() => {
+   res.on("data", (data) => buf.push(data));
+   res.on("end", common.mustCall(() => {
     assert.deepStrictEqual(
      Buffer.concat(buf),
-     Buffer.from('hello'),
+     Buffer.from("hello"),
     );
     server.close();
    }));
@@ -186,7 +186,7 @@ const tsp = require('timers/promises');
      return;
     }
     sent = true;
-    rs.push('hello');
+    rs.push("hello");
    },
    destroy: common.mustCall((err, cb) => {
     // Prevents fd leaks by destroying http pipelines
@@ -203,7 +203,7 @@ const tsp = require('timers/promises');
   });
 
   req.end();
-  req.on('response', (res) => {
+  req.on("response", (res) => {
    setImmediate(() => {
     res.destroy();
     server.close();
@@ -220,7 +220,7 @@ const tsp = require('timers/promises');
     if (sent++ > 10) {
      return;
     }
-    rs.push('hello');
+    rs.push("hello");
    },
    destroy: common.mustCall((err, cb) => {
     cb();
@@ -235,7 +235,7 @@ const tsp = require('timers/promises');
  const badSink = new Writable({
   write(data, enc, cb) {
    cnt--;
-   if (cnt === 0) cb(new Error('kaboom'));
+   if (cnt === 0) cb(new Error("kaboom"));
    else cb();
   },
  });
@@ -246,9 +246,9 @@ const tsp = require('timers/promises');
   });
 
   req.end();
-  req.on('response', (res) => {
+  req.on("response", (res) => {
    pipeline(res, badSink, common.mustCall((err) => {
-    assert.deepStrictEqual(err, new Error('kaboom'));
+    assert.deepStrictEqual(err, new Error("kaboom"));
     server.close();
    }));
   });
@@ -271,7 +271,7 @@ const tsp = require('timers/promises');
     if (sent++ > 10) {
      return;
     }
-    rs.push('hello');
+    rs.push("hello");
    },
   });
 
@@ -279,9 +279,9 @@ const tsp = require('timers/promises');
    server.close();
   }));
 
-  req.on('response', (res) => {
+  req.on("response", (res) => {
    let cnt = 10;
-   res.on('data', () => {
+   res.on("data", () => {
     cnt--;
     if (cnt === 0) rs.destroy();
    });
@@ -297,13 +297,13 @@ const tsp = require('timers/promises');
    },
   });
 
-  tr.on('close', common.mustCall());
+  tr.on("close", common.mustCall());
   return tr;
  };
 
  const rs = new Readable({
   read() {
-   rs.push('hello');
+   rs.push("hello");
   },
  });
 
@@ -312,13 +312,13 @@ const tsp = require('timers/promises');
  const ws = new Writable({
   write(data, enc, cb) {
    cnt--;
-   if (cnt === 0) return cb(new Error('kaboom'));
+   if (cnt === 0) return cb(new Error("kaboom"));
    cb();
   },
  });
 
- rs.on('close', common.mustCall());
- ws.on('close', common.mustCall());
+ rs.on("close", common.mustCall());
+ ws.on("close", common.mustCall());
 
  pipeline(
   rs,
@@ -330,7 +330,7 @@ const tsp = require('timers/promises');
   makeTransform(),
   ws,
   common.mustCall((err) => {
-   assert.deepStrictEqual(err, new Error('kaboom'));
+   assert.deepStrictEqual(err, new Error("kaboom"));
   }),
  );
 }
@@ -340,16 +340,16 @@ const tsp = require('timers/promises');
 
  oldStream.pause = oldStream.resume = () => {};
  oldStream.write = (data) => {
-  oldStream.emit('data', data);
+  oldStream.emit("data", data);
   return true;
  };
  oldStream.end = () => {
-  oldStream.emit('end');
+  oldStream.emit("end");
  };
 
  const expected = [
-  Buffer.from('hello'),
-  Buffer.from('world'),
+  Buffer.from("hello"),
+  Buffer.from("world"),
  ];
 
  const rs = new Readable({
@@ -370,7 +370,7 @@ const tsp = require('timers/promises');
 
  let finished = false;
 
- ws.on('finish', () => {
+ ws.on("finish", () => {
   finished = true;
  });
 
@@ -379,7 +379,7 @@ const tsp = require('timers/promises');
   oldStream,
   ws,
   common.mustSucceed(() => {
-   assert(finished, 'last stream finished');
+   assert(finished, "last stream finished");
   }),
  );
 }
@@ -389,30 +389,30 @@ const tsp = require('timers/promises');
 
  oldStream.pause = oldStream.resume = () => {};
  oldStream.write = (data) => {
-  oldStream.emit('data', data);
+  oldStream.emit("data", data);
   return true;
  };
  oldStream.end = () => {
-  oldStream.emit('end');
+  oldStream.emit("end");
  };
 
  const destroyableOldStream = new Stream();
 
  destroyableOldStream.pause = destroyableOldStream.resume = () => {};
  destroyableOldStream.destroy = common.mustCall(() => {
-  destroyableOldStream.emit('close');
+  destroyableOldStream.emit("close");
  });
  destroyableOldStream.write = (data) => {
-  destroyableOldStream.emit('data', data);
+  destroyableOldStream.emit("data", data);
   return true;
  };
  destroyableOldStream.end = () => {
-  destroyableOldStream.emit('end');
+  destroyableOldStream.emit("end");
  };
 
  const rs = new Readable({
   read() {
-   rs.destroy(new Error('stop'));
+   rs.destroy(new Error("stop"));
   },
  });
 
@@ -424,7 +424,7 @@ const tsp = require('timers/promises');
 
  let finished = false;
 
- ws.on('finish', () => {
+ ws.on("finish", () => {
   finished = true;
  });
 
@@ -434,8 +434,8 @@ const tsp = require('timers/promises');
   destroyableOldStream,
   ws,
   common.mustCall((err) => {
-   assert.deepStrictEqual(err, new Error('stop'));
-   assert(!finished, 'should not finish');
+   assert.deepStrictEqual(err, new Error("stop"));
+   assert(!finished, "should not finish");
   }),
  );
 }
@@ -454,12 +454,12 @@ const tsp = require('timers/promises');
    },
   });
 
-  read.push('data');
+  read.push("data");
   read.push(null);
 
   let finished = false;
 
-  write.on('finish', () => {
+  write.on("finish", () => {
    finished = true;
   });
 
@@ -480,7 +480,7 @@ const tsp = require('timers/promises');
   async function* producer() {
    ac.abort();
    await Promise.resolve();
-   yield '8';
+   yield "8";
   }
 
   const w = new Writable({
@@ -491,7 +491,7 @@ const tsp = require('timers/promises');
   await pipelinePromise(producer, w, { signal });
  }
 
- assert.rejects(run, { name: 'AbortError' }).then(common.mustCall());
+ assert.rejects(run, { name: "AbortError" }).then(common.mustCall());
 }
 
 {
@@ -501,11 +501,11 @@ const tsp = require('timers/promises');
   const ac = new AbortController();
   const { signal } = ac;
   async function* producer() {
-   yield '5';
+   yield "5";
    await Promise.resolve();
    ac.abort();
    await Promise.resolve();
-   yield '8';
+   yield "8";
   }
 
   const w = new Writable({
@@ -516,7 +516,7 @@ const tsp = require('timers/promises');
   await pipelinePromise(producer, w, { signal });
  }
 
- assert.rejects(run, { name: 'AbortError' }).then(common.mustCall());
+ assert.rejects(run, { name: "AbortError" }).then(common.mustCall());
 }
 
 {
@@ -525,9 +525,9 @@ const tsp = require('timers/promises');
  async function run() {
   const signal = AbortSignal.abort();
   async function* producer() {
-   yield '5';
+   yield "5";
    await Promise.resolve();
-   yield '8';
+   yield "8";
   }
 
   const w = new Writable({
@@ -538,7 +538,7 @@ const tsp = require('timers/promises');
   await pipelinePromise(producer, w, { signal });
  }
 
- assert.rejects(run, { name: 'AbortError' }).then(common.mustCall());
+ assert.rejects(run, { name: "AbortError" }).then(common.mustCall());
 }
 
 {
@@ -548,7 +548,7 @@ const tsp = require('timers/promises');
 
  const transform = new Transform({
   transform(data, enc, cb) {
-   cb(new Error('kaboom'));
+   cb(new Error("kaboom"));
   },
  });
 
@@ -560,36 +560,36 @@ const tsp = require('timers/promises');
 
  assert.throws(
   () => pipeline(read, transform, write),
-  { code: 'ERR_INVALID_ARG_TYPE' },
+  { code: "ERR_INVALID_ARG_TYPE" },
  );
 }
 
 {
  const server = http.Server(function(req, res) {
-  res.write('asd');
+  res.write("asd");
  });
  server.listen(0, function() {
   http.get({ port: this.address().port }, (res) => {
    const stream = new PassThrough();
 
-   stream.on('error', common.mustCall());
+   stream.on("error", common.mustCall());
 
    pipeline(
     res,
     stream,
     common.mustCall((err) => {
-     assert.strictEqual(err.message, 'oh no');
+     assert.strictEqual(err.message, "oh no");
      server.close();
     }),
    );
 
-   stream.destroy(new Error('oh no'));
-  }).on('error', common.mustNotCall());
+   stream.destroy(new Error("oh no"));
+  }).on("error", common.mustNotCall());
  });
 }
 
 {
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
@@ -597,15 +597,15 @@ const tsp = require('timers/promises');
   },
  });
  pipeline(function*() {
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }(), w, common.mustSucceed(() => {
-  assert.strictEqual(res, 'helloworld');
+  assert.strictEqual(res, "helloworld");
  }));
 }
 
 {
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
@@ -614,15 +614,15 @@ const tsp = require('timers/promises');
  });
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }(), w, common.mustSucceed(() => {
-  assert.strictEqual(res, 'helloworld');
+  assert.strictEqual(res, "helloworld");
  }));
 }
 
 {
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
@@ -630,15 +630,15 @@ const tsp = require('timers/promises');
   },
  });
  pipeline(function*() {
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, w, common.mustSucceed(() => {
-  assert.strictEqual(res, 'helloworld');
+  assert.strictEqual(res, "helloworld");
  }));
 }
 
 {
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
@@ -647,19 +647,19 @@ const tsp = require('timers/promises');
  });
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, w, common.mustSucceed(() => {
-  assert.strictEqual(res, 'helloworld');
+  assert.strictEqual(res, "helloworld");
  }));
 }
 
 {
- let res = '';
+ let res = "";
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, async function*(source) {
   for await (const chunk of source) {
    yield chunk.toUpperCase();
@@ -669,27 +669,27 @@ const tsp = require('timers/promises');
    res += chunk;
   }
  }, common.mustSucceed(() => {
-  assert.strictEqual(res, 'HELLOWORLD');
+  assert.strictEqual(res, "HELLOWORLD");
  }));
 }
 
 {
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, async function*(source) {
   for await (const chunk of source) {
    yield chunk.toUpperCase();
   }
  }, async function(source) {
-  let ret = '';
+  let ret = "";
   for await (const chunk of source) {
    ret += chunk;
   }
   return ret;
  }, common.mustSucceed((val) => {
-  assert.strictEqual(val, 'HELLOWORLD');
+  assert.strictEqual(val, "HELLOWORLD");
  }));
 }
 
@@ -698,14 +698,14 @@ const tsp = require('timers/promises');
 
  const ret = pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
+  yield "hello";
  }, async function*(source) { // eslint-disable-line require-yield
   for await (const chunk of source) { } // eslint-disable-line no-unused-vars, no-empty
  }, common.mustCall((err) => {
   assert.strictEqual(err, undefined);
  }));
  ret.resume();
- assert.strictEqual(typeof ret.pipe, 'function');
+ assert.strictEqual(typeof ret.pipe, "function");
 }
 
 {
@@ -714,22 +714,22 @@ const tsp = require('timers/promises');
 
  const ret = pipeline(async function*() { // eslint-disable-line require-yield
   await Promise.resolve();
-  throw new Error('kaboom');
+  throw new Error("kaboom");
  }, async function*(source) { // eslint-disable-line require-yield
   for await (const chunk of source) { } // eslint-disable-line no-unused-vars, no-empty
  }, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
  }));
  ret.resume();
- assert.strictEqual(typeof ret.pipe, 'function');
+ assert.strictEqual(typeof ret.pipe, "function");
 }
 
 {
  const s = new PassThrough();
  pipeline(async function*() { // eslint-disable-line require-yield
-  throw new Error('kaboom');
+  throw new Error("kaboom");
  }, s, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
   assert.strictEqual(s.destroyed, true);
  }));
 }
@@ -737,9 +737,9 @@ const tsp = require('timers/promises');
 {
  const s = new PassThrough();
  pipeline(async function*() { // eslint-disable-line require-yield
-  throw new Error('kaboom');
+  throw new Error("kaboom");
  }(), s, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
   assert.strictEqual(s.destroyed, true);
  }));
 }
@@ -747,9 +747,9 @@ const tsp = require('timers/promises');
 {
  const s = new PassThrough();
  pipeline(function*() { // eslint-disable-line require-yield
-  throw new Error('kaboom');
+  throw new Error("kaboom");
  }, s, common.mustCall((err, val) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
   assert.strictEqual(s.destroyed, true);
  }));
 }
@@ -757,9 +757,9 @@ const tsp = require('timers/promises');
 {
  const s = new PassThrough();
  pipeline(function*() { // eslint-disable-line require-yield
-  throw new Error('kaboom');
+  throw new Error("kaboom");
  }(), s, common.mustCall((err, val) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
   assert.strictEqual(s.destroyed, true);
  }));
 }
@@ -768,14 +768,14 @@ const tsp = require('timers/promises');
  const s = new PassThrough();
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, s, async function(source) {
   for await (const chunk of source) { // eslint-disable-line no-unused-vars
-   throw new Error('kaboom');
+   throw new Error("kaboom");
   }
  }, common.mustCall((err, val) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
   assert.strictEqual(s.destroyed, true);
  }));
 }
@@ -783,34 +783,34 @@ const tsp = require('timers/promises');
 {
  const s = new PassThrough();
  const ret = pipeline(function() {
-  return ['hello', 'world'];
+  return ["hello", "world"];
  }, s, async function*(source) { // eslint-disable-line require-yield
   for await (const chunk of source) { // eslint-disable-line no-unused-vars
-   throw new Error('kaboom');
+   throw new Error("kaboom");
   }
  }, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
   assert.strictEqual(s.destroyed, true);
  }));
  ret.resume();
- assert.strictEqual(typeof ret.pipe, 'function');
+ assert.strictEqual(typeof ret.pipe, "function");
 }
 
 {
  // Legacy streams without async iterator.
 
  const s = new PassThrough();
- s.push('asd');
+ s.push("asd");
  s.push(null);
  s[Symbol.asyncIterator] = null;
- let ret = '';
+ let ret = "";
  pipeline(s, async function(source) {
   for await (const chunk of source) {
    ret += chunk;
   }
  }, common.mustCall((err) => {
   assert.strictEqual(err, undefined);
-  assert.strictEqual(ret, 'asd');
+  assert.strictEqual(ret, "asd");
  }));
 }
 
@@ -819,21 +819,21 @@ const tsp = require('timers/promises');
 
  const s = new Stream();
  process.nextTick(() => {
-  s.emit('data', 'asd');
-  s.emit('end');
+  s.emit("data", "asd");
+  s.emit("end");
  });
  // 'destroyer' can be called multiple times,
  // once from stream wrapper and
  // once from iterator wrapper.
  s.close = common.mustCallAtLeast(1);
- let ret = '';
+ let ret = "";
  pipeline(s, async function(source) {
   for await (const chunk of source) {
    ret += chunk;
   }
  }, common.mustCall((err) => {
   assert.strictEqual(err, undefined);
-  assert.strictEqual(ret, 'asd');
+  assert.strictEqual(ret, "asd");
  }));
 }
 
@@ -842,12 +842,12 @@ const tsp = require('timers/promises');
 
  const s = new Stream();
  process.nextTick(() => {
-  s.emit('error', new Error('kaboom'));
+  s.emit("error", new Error("kaboom"));
  });
  s.destroy = common.mustCall();
  pipeline(s, async function(source) {
  }, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
  }));
 }
 
@@ -857,7 +857,7 @@ const tsp = require('timers/promises');
   pipeline(function(source) {
   }, s, () => {});
  }, (err) => {
-  assert.strictEqual(err.code, 'ERR_INVALID_RETURN_VALUE');
+  assert.strictEqual(err.code, "ERR_INVALID_RETURN_VALUE");
   assert.strictEqual(s.destroyed, false);
   return true;
  });
@@ -869,7 +869,7 @@ const tsp = require('timers/promises');
   pipeline(s, function(source) {
   }, s, () => {});
  }, (err) => {
-  assert.strictEqual(err.code, 'ERR_INVALID_RETURN_VALUE');
+  assert.strictEqual(err.code, "ERR_INVALID_RETURN_VALUE");
   assert.strictEqual(s.destroyed, false);
   return true;
  });
@@ -881,7 +881,7 @@ const tsp = require('timers/promises');
   pipeline(s, function(source) {
   }, () => {});
  }, (err) => {
-  assert.strictEqual(err.code, 'ERR_INVALID_RETURN_VALUE');
+  assert.strictEqual(err.code, "ERR_INVALID_RETURN_VALUE");
   assert.strictEqual(s.destroyed, false);
   return true;
  });
@@ -893,58 +893,58 @@ const tsp = require('timers/promises');
   pipeline(s, function*(source) {
   }, () => {});
  }, (err) => {
-  assert.strictEqual(err.code, 'ERR_INVALID_RETURN_VALUE');
+  assert.strictEqual(err.code, "ERR_INVALID_RETURN_VALUE");
   assert.strictEqual(s.destroyed, false);
   return true;
  });
 }
 
 {
- let res = '';
+ let res = "";
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, new Transform({
   transform(chunk, encoding, cb) {
-   cb(new Error('kaboom'));
+   cb(new Error("kaboom"));
   },
  }), async function(source) {
   for await (const chunk of source) {
    res += chunk;
   }
  }, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
-  assert.strictEqual(res, '');
+  assert.strictEqual(err.message, "kaboom");
+  assert.strictEqual(res, "");
  }));
 }
 
 {
- let res = '';
+ let res = "";
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, new Transform({
   transform(chunk, encoding, cb) {
-   process.nextTick(cb, new Error('kaboom'));
+   process.nextTick(cb, new Error("kaboom"));
   },
  }), async function(source) {
   for await (const chunk of source) {
    res += chunk;
   }
  }, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
-  assert.strictEqual(res, '');
+  assert.strictEqual(err.message, "kaboom");
+  assert.strictEqual(res, "");
  }));
 }
 
 {
- let res = '';
+ let res = "";
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
+  yield "hello";
+  yield "world";
  }, new Transform({
   decodeStrings: false,
   transform(chunk, encoding, cb) {
@@ -955,7 +955,7 @@ const tsp = require('timers/promises');
    res += chunk;
   }
  }, common.mustSucceed(() => {
-  assert.strictEqual(res, 'HELLOWORLD');
+  assert.strictEqual(res, "HELLOWORLD");
  }));
 }
 
@@ -963,11 +963,11 @@ const tsp = require('timers/promises');
  // Ensure no unhandled rejection from async function.
 
  pipeline(async function*() {
-  yield 'hello';
+  yield "hello";
  }, async function(source) {
-  throw new Error('kaboom');
+  throw new Error("kaboom");
  }, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
+  assert.strictEqual(err.message, "kaboom");
  }));
 }
 
@@ -994,9 +994,9 @@ const tsp = require('timers/promises');
  pipeline(r, w, (err) => {
   assert.strictEqual(err, undefined);
  });
- r.push('asd');
+ r.push("asd");
  r.push(null);
- r.emit('close');
+ r.emit("close");
 }
 
 {
@@ -1043,11 +1043,11 @@ const tsp = require('timers/promises');
 }
 
 {
- let res = '';
+ let res = "";
  const rs = new Readable({
   read() {
    setImmediate(() => {
-    rs.push('hello');
+    rs.push("hello");
    });
   },
  });
@@ -1056,21 +1056,21 @@ const tsp = require('timers/promises');
  });
  pipeline(rs, async function*(stream) { // eslint-disable-line require-yield
   for await (const chunk of stream) { // eslint-disable-line no-unused-vars
-   throw new Error('kaboom');
+   throw new Error("kaboom");
   }
  }, async function *(source) { // eslint-disable-line require-yield
   for await (const chunk of source) {
    res += chunk;
   }
  }, ws, common.mustCall((err) => {
-  assert.strictEqual(err.message, 'kaboom');
-  assert.strictEqual(res, '');
+  assert.strictEqual(err.message, "kaboom");
+  assert.strictEqual(res, "");
  }));
 }
 
 {
  const server = http.createServer((req, res) => {
-  req.socket.on('error', common.mustNotCall());
+  req.socket.on("error", common.mustNotCall());
   pipeline(req, new PassThrough(), (err) => {
    assert.ifError(err);
    res.end();
@@ -1080,12 +1080,12 @@ const tsp = require('timers/promises');
 
  server.listen(0, () => {
   const req = http.request({
-   method: 'PUT',
+   method: "PUT",
    port: server.address().port,
   });
-  req.end('asd123');
-  req.on('response', common.mustCall());
-  req.on('error', common.mustNotCall());
+  req.end("asd123");
+  req.on("response", common.mustCall());
+  req.on("error", common.mustNotCall());
  });
 }
 
@@ -1115,16 +1115,16 @@ const tsp = require('timers/promises');
    }
   },
   common.mustCall((err) => {
-   assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+   assert.strictEqual(err.code, "ERR_STREAM_PREMATURE_CLOSE");
   }),
  );
- src.push('asd');
+ src.push("asd");
  dst.destroy();
 }
 
 {
  pipeline(async function * () {
-  yield 'asd';
+  yield "asd";
  }, async function * (source) {
   for await (const chunk of source) {
    yield { chunk };
@@ -1145,7 +1145,7 @@ const tsp = require('timers/promises');
    callback();
   },
  });
- src.on('close', () => {
+ src.on("close", () => {
   closed = true;
  });
  src.push(null);
@@ -1163,7 +1163,7 @@ const tsp = require('timers/promises');
   },
  });
  const dst = new Duplex({});
- src.on('close', common.mustCall(() => {
+ src.on("close", common.mustCall(() => {
   closed = true;
  }));
  src.push(null);
@@ -1177,7 +1177,7 @@ const tsp = require('timers/promises');
   // echo server
   pipeline(socket, socket, common.mustSucceed());
   // 13 force destroys the socket before it has a chance to emit finish
-  socket.on('finish', common.mustCall(() => {
+  socket.on("finish", common.mustCall(() => {
    server.close();
   }));
  })).listen(0, common.mustCall(() => {
@@ -1213,7 +1213,7 @@ const tsp = require('timers/promises');
 
  pipeline(d, sink, common.mustSucceed());
 
- d.write('test');
+ d.write("test");
  d.end();
 }
 
@@ -1221,7 +1221,7 @@ const tsp = require('timers/promises');
  const server = net.createServer(common.mustCall((socket) => {
   // echo server
   pipeline(socket, socket, common.mustSucceed());
-  socket.on('finish', common.mustCall(() => {
+  socket.on("finish", common.mustCall(() => {
    server.close();
   }));
  })).listen(0, common.mustCall(() => {
@@ -1260,7 +1260,7 @@ const tsp = require('timers/promises');
 
  pipeline(d, sink, common.mustSucceed());
 
- d.write('test');
+ d.write("test");
  d.end();
 }
 
@@ -1268,10 +1268,10 @@ const tsp = require('timers/promises');
  const r = new Readable({
   read() {},
  });
- r.push('hello');
- r.push('world');
+ r.push("hello");
+ r.push("world");
  r.push(null);
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
@@ -1279,7 +1279,7 @@ const tsp = require('timers/promises');
   },
  });
  pipeline([r, w], common.mustSucceed(() => {
-  assert.strictEqual(res, 'helloworld');
+  assert.strictEqual(res, "helloworld");
  }));
 }
 
@@ -1312,7 +1312,7 @@ const tsp = require('timers/promises');
   return {
    get then() {
     if (counter++) {
-     throw new Error('Cannot access `then` more than once');
+     throw new Error("Cannot access `then` more than once");
     }
     return Function.prototype;
    },
@@ -1340,7 +1340,7 @@ const tsp = require('timers/promises');
    }
   }
  }());
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
@@ -1348,8 +1348,8 @@ const tsp = require('timers/promises');
   },
  });
  const cb = common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
-  assert.strictEqual(res, '012345');
+  assert.strictEqual(err.name, "AbortError");
+  assert.strictEqual(res, "012345");
   assert.strictEqual(w.destroyed, true);
   assert.strictEqual(r.destroyed, true);
   assert.strictEqual(pipelined.destroyed, true);
@@ -1361,24 +1361,24 @@ const tsp = require('timers/promises');
  pipeline([1, 2, 3], PassThrough({ objectMode: true }),
           common.mustSucceed(() => {}));
 
- let res = '';
+ let res = "";
  const w = new Writable({
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
   },
  });
- pipeline(['1', '2', '3'], w, common.mustSucceed(() => {
-  assert.strictEqual(res, '123');
+ pipeline(["1", "2", "3"], w, common.mustSucceed(() => {
+  assert.strictEqual(res, "123");
  }));
 }
 
 {
- const content = 'abc';
+ const content = "abc";
  pipeline(Buffer.from(content), PassThrough({ objectMode: true }),
           common.mustSucceed(() => {}));
 
- let res = '';
+ let res = "";
  pipeline(Buffer.from(content), async function*(previous) {
   for await (const val of previous) {
    res += String.fromCharCode(val);
@@ -1401,7 +1401,7 @@ const tsp = require('timers/promises');
   },
   { signal },
  ).catch(common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
+  assert.strictEqual(err.name, "AbortError");
  }));
  ac.abort();
 }
@@ -1409,20 +1409,20 @@ const tsp = require('timers/promises');
 {
  async function run() {
   let finished = false;
-  let text = '';
+  let text = "";
   const write = new Writable({
    write(data, enc, cb) {
     text += data;
     cb();
    },
   });
-  write.on('finish', () => {
+  write.on("finish", () => {
    finished = true;
   });
 
-  await pipelinep([Readable.from('Hello World!'), write]);
+  await pipelinep([Readable.from("Hello World!"), write]);
   assert(finished);
-  assert.strictEqual(text, 'Hello World!');
+  assert.strictEqual(text, "Hello World!");
  }
 
  run();
@@ -1430,20 +1430,20 @@ const tsp = require('timers/promises');
 
 {
  let finished = false;
- let text = '';
+ let text = "";
  const write = new Writable({
   write(data, enc, cb) {
    text += data;
    cb();
   },
  });
- write.on('finish', () => {
+ write.on("finish", () => {
   finished = true;
  });
 
- pipeline([Readable.from('Hello World!'), write], common.mustSucceed(() => {
+ pipeline([Readable.from("Hello World!"), write], common.mustSucceed(() => {
   assert(finished);
-  assert.strictEqual(text, 'Hello World!');
+  assert.strictEqual(text, "Hello World!");
  }));
 }
 
@@ -1492,11 +1492,11 @@ const tsp = require('timers/promises');
  const s = new PassThrough({ objectMode: true });
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
-  yield 'world';
+  yield "hello";
+  yield "world";
+  yield "world";
  }, s, async function(source) {
-  let ret = '';
+  let ret = "";
   let n = 0;
   for await (const chunk of source) {
    if (n++ > 1) {
@@ -1507,7 +1507,7 @@ const tsp = require('timers/promises');
   return ret;
  }, common.mustCall((err, val) => {
   assert.strictEqual(err, undefined);
-  assert.strictEqual(val, 'helloworld');
+  assert.strictEqual(val, "helloworld");
   assert.strictEqual(s.destroyed, true);
  }));
 }
@@ -1516,9 +1516,9 @@ const tsp = require('timers/promises');
  const s = new PassThrough({ objectMode: true });
  pipeline(async function*() {
   await Promise.resolve();
-  yield 'hello';
-  yield 'world';
-  yield 'world';
+  yield "hello";
+  yield "world";
+  yield "world";
  }, s, async function(source) {
   return null;
  }, common.mustCall((err, val) => {

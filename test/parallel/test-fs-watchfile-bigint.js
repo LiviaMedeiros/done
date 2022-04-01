@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
 // Flags: --expose-internals
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
-const { BigIntStats } = require('internal/fs/utils');
-const fs = require('fs');
-const path = require('path');
+const assert = require("assert");
+const { BigIntStats } = require("internal/fs/utils");
+const fs = require("fs");
+const path = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 
-const enoentFile = path.join(tmpdir.path, 'non-existent-file');
+const enoentFile = path.join(tmpdir.path, "non-existent-file");
 const expectedStatObject = new BigIntStats(
  0n,                                        // dev
  0n,                                        // mode
@@ -49,7 +49,7 @@ const watcher =
   		assert.deepStrictEqual(prev, expectedStatObject);
   		// Create the file now, so that the callback will be called back once the
   		// event loop notices it.
-  		fs.closeSync(fs.openSync(enoentFile, 'w'));
+  		fs.closeSync(fs.openSync(enoentFile, "w"));
   		fileExists = true;
   	} else {
   		// If the ino (inode) value is greater than zero, it means that the file
@@ -66,4 +66,4 @@ const watcher =
 
 // 'stop' should only be emitted once - stopping a stopped watcher should
 // not trigger a 'stop' event.
-watcher.on('stop', common.mustCall(function onStop() {}));
+watcher.on("stop", common.mustCall(function onStop() {}));

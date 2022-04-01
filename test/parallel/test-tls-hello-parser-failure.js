@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 // This test ensures that the tls parser causes a client error if the client
 // sends invalid data.
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
+const assert = require("assert");
+const tls = require("tls");
 
-const net = require('net');
+const net = require("net");
 
 const options = {
- key: fixtures.readKey('rsa_private.pem'),
- cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey("rsa_private.pem"),
+ cert: fixtures.readKey("rsa_cert.crt"),
 };
 
 const bonkers = Buffer.alloc(1024 * 1024, 42);
@@ -53,13 +53,13 @@ const server = tls.createServer(options, function(c) {
   client.write(bonkers);
  });
 
- client.once('error', common.mustCall(function(err) {
+ client.once("error", common.mustCall(function(err) {
   clearImmediate(writeAgain);
   client.destroy();
   server.close();
  }));
 
- client.on('close', common.mustCall(function(hadError) {
+ client.on("close", common.mustCall(function(hadError) {
   // Confirm that client errored
   assert.strictEqual(hadError, true);
  }));

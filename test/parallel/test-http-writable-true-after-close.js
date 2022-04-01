@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { get, createServer } = require('http');
+const common = require("../common");
+const assert = require("assert");
+const { get, createServer } = require("http");
 
 // res.writable should not be set to false after it has finished sending
 // Ref: https://github.com/nodejs/node/issues/15029
@@ -17,9 +17,9 @@ const server = createServer(common.mustCall((req, res) => {
  });
 
  // on CentOS 5, 'finish' is emitted
- res.on('finish', listener);
+ res.on("finish", listener);
  // Everywhere else, 'close' is emitted
- res.on('close', listener);
+ res.on("close", listener);
 
  get(`http://127.0.0.1:${internal.address().port}`, common.mustCall((inner) => {
   inner.pipe(res);
@@ -30,11 +30,11 @@ const server = createServer(common.mustCall((req, res) => {
   res.writeHead(200);
   setImmediate(common.mustCall(() => {
    external.abort();
-   res.end('Hello World\n');
+   res.end("Hello World\n");
   }));
  }).listen(0, () => {
   external = get(`http://127.0.0.1:${server.address().port}`);
-  external.on('error', common.mustCall(() => {
+  external.on("error", common.mustCall(() => {
    server.close();
    internal.close();
   }));

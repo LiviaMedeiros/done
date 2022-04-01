@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const tls = require('tls');
+const common = require("../common.js");
+const tls = require("tls");
 
 const bench = common.createBenchmark(main, {
  n: [1, 50000],
 });
 
 function main({ n }) {
- const input = ['ABC', 'XYZ123', 'FOO'];
+ const input = ["ABC", "XYZ123", "FOO"];
  let m = {};
  // First call dominates results
  if (n > 1) {

@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
 // This tests that if the socket is still in the 'connecting' state
 // when the user calls socket.end() ('finish'), the socket would emit
 // 'connect' and defer the handling until the 'connect' event is handled.
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
-const { addresses } = require('../common/internet');
+const { addresses } = require("../common/internet");
 const {
  errorLookupMock,
  mockedErrorCode,
  mockedSysCall,
-} = require('../common/dns');
+} = require("../common/dns");
 
 const client = net.connect({
  host: addresses.INVALID_HOST,
@@ -42,17 +42,17 @@ const client = net.connect({
  lookup: common.mustCall(errorLookupMock()),
 }, common.mustNotCall());
 
-client.once('error', common.mustCall((error) => {
+client.once("error", common.mustCall((error) => {
  // TODO(BridgeAR): Add a better way to handle not defined properties using
  // `assert.throws(fn, object)`.
- assert.ok(!('port' in error));
- assert.ok(!('host' in error));
+ assert.ok(!("port" in error));
+ assert.ok(!("host" in error));
  assert.throws(() => { throw error; }, {
   code: mockedErrorCode,
   errno: mockedErrorCode,
   syscall: mockedSysCall,
   hostname: addresses.INVALID_HOST,
-  message: 'getaddrinfo ENOTFOUND something.invalid',
+  message: "getaddrinfo ENOTFOUND something.invalid",
  });
 }));
 

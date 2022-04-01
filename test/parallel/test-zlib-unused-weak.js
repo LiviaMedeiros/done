@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc --no-concurrent-array-buffer-sweeping
-require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
+require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
 
 // Tests that native zlib handles start out their life as weak handles.
 

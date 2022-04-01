@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const stream = require('stream');
+const common = require("../common");
+const assert = require("assert");
+const stream = require("stream");
 
 let pushes = 0;
 const total = 65500 + 40 * 1024;

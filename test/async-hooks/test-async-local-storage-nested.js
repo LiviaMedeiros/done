@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const { AsyncLocalStorage } = require('async_hooks');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { AsyncLocalStorage } = require("async_hooks");
 
 const asyncLocalStorage = new AsyncLocalStorage();
 const outer = {};

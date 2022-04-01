@@ -19,27 +19,27 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const url = require('url');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const url = require("url");
 
 const invalidUrls = [
- 'file:///whatever',
- 'mailto:asdf@asdf.com',
- 'ftp://www.example.com',
- 'javascript:alert(\'hello\');',
- 'xmpp:foo@bar.com',
- 'f://some.host/path',
+ "file:///whatever",
+ "mailto:asdf@asdf.com",
+ "ftp://www.example.com",
+ "javascript:alert('hello');",
+ "xmpp:foo@bar.com",
+ "f://some.host/path",
 ];
 
 invalidUrls.forEach((invalid) => {
  assert.throws(
   () => { http.request(url.parse(invalid)); },
   {
-   code: 'ERR_INVALID_PROTOCOL',
-   name: 'TypeError',
+   code: "ERR_INVALID_PROTOCOL",
+   name: "TypeError",
   },
  );
 });

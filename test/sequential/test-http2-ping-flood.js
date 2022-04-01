@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const http2 = require('http2');
-const net = require('net');
+const assert = require("assert");
+const http2 = require("http2");
+const net = require("net");
 
-const http2util = require('../common/http2');
+const http2util = require("../common/http2");
 
 // Test that ping flooding causes the session to be torn down
 
@@ -19,14 +19,14 @@ const server = http2.createServer();
 
 let interval;
 
-server.on('stream', common.mustNotCall());
-server.on('session', common.mustCall((session) => {
- session.on('error', (e) => {
-  assert.strictEqual(e.code, 'ERR_HTTP2_ERROR');
-  assert(e.message.includes('Flooding was detected'));
+server.on("stream", common.mustNotCall());
+server.on("session", common.mustCall((session) => {
+ session.on("error", (e) => {
+  assert.strictEqual(e.code, "ERR_HTTP2_ERROR");
+  assert(e.message.includes("Flooding was detected"));
   clearInterval(interval);
  });
- session.on('close', common.mustCall(() => {
+ session.on("close", common.mustCall(() => {
   server.close();
  }));
 }));
@@ -41,7 +41,7 @@ server.listen(0, common.mustCall(() => {
  // the inbound frames and whether those just happen to overflow nghttp2's
  // outbound queue. The threshold at which the flood error occurs can vary
  // from one system to another, and from one test run to another.
- client.on('connect', common.mustCall(() => {
+ client.on("connect", common.mustCall(() => {
   client.write(http2util.kClientMagic, () => {
    client.write(kSettings.data, () => {
     interval = setInterval(() => {
@@ -56,5 +56,5 @@ server.listen(0, common.mustCall(() => {
  // and timing. We do not really care if one is emitted here or not, as the
  // error on the server side is what we are testing for. Do not make this
  // a common.mustCall() and there's no need to check the error details.
- client.on('error', () => {});
+ client.on("error", () => {});
 }));

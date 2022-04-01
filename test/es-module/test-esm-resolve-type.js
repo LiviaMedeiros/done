@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
 
 /**
@@ -7,27 +7,27 @@
  * { url: <url_value>, format: <'module'|'commonjs'|undefined> };
  */
 
-const common = require('../common');
-const tmpdir = require('../common/tmpdir');
-const fixtures = require('../common/fixtures');
-const path = require('path');
-const fs = require('fs');
-const url = require('url');
+const common = require("../common");
+const tmpdir = require("../common/tmpdir");
+const fixtures = require("../common/fixtures");
+const path = require("path");
+const fs = require("fs");
+const url = require("url");
 
 if (!common.isMainThread) {
  common.skip(
-  'test-esm-resolve-type.js: process.chdir is not available in Workers',
+  "test-esm-resolve-type.js: process.chdir is not available in Workers",
  );
 }
 
-const assert = require('assert');
+const assert = require("assert");
 const {
  defaultResolve: resolve,
-} = require('internal/modules/esm/resolve');
+} = require("internal/modules/esm/resolve");
 
 const rel = (file) => path.join(tmpdir.path, file);
 const previousCwd = process.cwd();
-const nmDir = rel('node_modules');
+const nmDir = rel("node_modules");
 
 try {
  tmpdir.refresh();
@@ -37,10 +37,10 @@ try {
 	 * with the defaultResolver
 	 */
  [
-  [ '/es-modules/package-type-module/index.js', 'module' ],
-  [ '/es-modules/package-type-commonjs/index.js', 'commonjs' ],
-  [ '/es-modules/package-without-type/index.js', 'commonjs' ],
-  [ '/es-modules/package-without-pjson/index.js', 'commonjs' ],
+  [ "/es-modules/package-type-module/index.js", "module" ],
+  [ "/es-modules/package-type-commonjs/index.js", "commonjs" ],
+  [ "/es-modules/package-without-type/index.js", "commonjs" ],
+  [ "/es-modules/package-without-pjson/index.js", "commonjs" ],
  ].forEach(async (testVariant) => {
   const [ testScript, expectedType ] = testVariant;
   const resolvedPath = path.resolve(fixtures.path(testScript));
@@ -55,10 +55,10 @@ try {
 	 * for test-module-ne: everything .js that is not 'module' is 'commonjs'
 	 */
 
- [ [ 'test-module-mainjs', 'js', 'module', 'module'],
-   [ 'test-module-mainmjs', 'mjs', 'module', 'module'],
-   [ 'test-module-cjs', 'js', 'commonjs', 'commonjs'],
-   [ 'test-module-ne', 'js', undefined, 'commonjs'],
+ [ [ "test-module-mainjs", "js", "module", "module"],
+   [ "test-module-mainmjs", "mjs", "module", "module"],
+   [ "test-module-cjs", "js", "commonjs", "commonjs"],
+   [ "test-module-ne", "js", undefined, "commonjs"],
  ].forEach(async (testVariant) => {
   const [ moduleName,
           moduleExtenstion,
@@ -87,7 +87,7 @@ try {
   };
   fs.writeFileSync(pkg, JSON.stringify(pkgJsonContent));
   fs.writeFileSync(script,
-                   'export function esm-resolve-tester() {return 42}');
+                   "export function esm-resolve-tester() {return 42}");
 
   const resolveResult = await resolve(`${moduleName}`);
   assert.strictEqual(resolveResult.format, expectedResolvedType);
@@ -130,7 +130,7 @@ try {
 		 *  is [1], source for 'format' value is [2]
 		 */
 
-  const moduleName = 'my-dual-package';
+  const moduleName = "my-dual-package";
 
   const mDir = rel(`node_modules/${moduleName}`);
   const esSubDir = rel(`node_modules/${moduleName}/es`);
@@ -146,35 +146,35 @@ try {
   createDir(cjsSubDir);
 
   const mainPkgJsonContent = {
-   type: 'commonjs',
+   type: "commonjs",
    exports: {
-    '.': {
-     'require': './lib/index.js',
-     'import': './es/index.js',
-     'default': './lib/index.js',
+    ".": {
+     "require": "./lib/index.js",
+     "import": "./es/index.js",
+     "default": "./lib/index.js",
     },
-    './package.json': './package.json',
+    "./package.json": "./package.json",
    },
   };
   const esmPkgJsonContent = {
-   type: 'module',
+   type: "module",
   };
 
   fs.writeFileSync(pkg, JSON.stringify(mainPkgJsonContent));
   fs.writeFileSync(esmPkg, JSON.stringify(esmPkgJsonContent));
   fs.writeFileSync(
    esScript,
-   'export function esm-resolve-tester() {return 42}',
+   "export function esm-resolve-tester() {return 42}",
   );
   fs.writeFileSync(
    cjsScript,
-   'module.exports = {esm-resolve-tester: () => {return 42}}',
+   "module.exports = {esm-resolve-tester: () => {return 42}}",
   );
 
   // test the resolve
   const resolveResult = await resolve(`${moduleName}`);
-  assert.strictEqual(resolveResult.format, 'module');
-  assert.ok(resolveResult.url.includes('my-dual-package/es/index.js'));
+  assert.strictEqual(resolveResult.format, "module");
+  assert.ok(resolveResult.url.includes("my-dual-package/es/index.js"));
  }
 
  testDualPackageWithJsMainScriptAndModuleType();
@@ -182,16 +182,16 @@ try {
  // TestParameters are ModuleName, mainRequireScript, mainImportScript,
  // mainPackageType, subdirPkgJsonType, expectedResolvedFormat, mainSuffix
  [
-  [ 'mjs-mod-mod', 'index.js', 'index.mjs', 'module', 'module', 'module'],
-  [ 'mjs-com-com', 'idx.js', 'idx.mjs', 'commonjs', 'commonjs', 'module'],
-  [ 'mjs-mod-com', 'index.js', 'imp.mjs', 'module', 'commonjs', 'module'],
-  [ 'cjs-mod-mod', 'index.cjs', 'imp.cjs', 'module', 'module', 'commonjs'],
-  [ 'js-com-com', 'index.js', 'imp.js', 'commonjs', 'commonjs', 'commonjs'],
-  [ 'js-com-mod', 'index.js', 'imp.js', 'commonjs', 'module', 'module'],
-  [ 'qmod', 'index.js', 'imp.js', 'commonjs', 'module', 'module', '?k=v'],
-  [ 'hmod', 'index.js', 'imp.js', 'commonjs', 'module', 'module', '#Key'],
-  [ 'qhmod', 'index.js', 'imp.js', 'commonjs', 'module', 'module', '?k=v#h'],
-  [ 'ts-mod-com', 'index.js', 'imp.ts', 'module', 'commonjs', undefined],
+  [ "mjs-mod-mod", "index.js", "index.mjs", "module", "module", "module"],
+  [ "mjs-com-com", "idx.js", "idx.mjs", "commonjs", "commonjs", "module"],
+  [ "mjs-mod-com", "index.js", "imp.mjs", "module", "commonjs", "module"],
+  [ "cjs-mod-mod", "index.cjs", "imp.cjs", "module", "module", "commonjs"],
+  [ "js-com-com", "index.js", "imp.js", "commonjs", "commonjs", "commonjs"],
+  [ "js-com-mod", "index.js", "imp.js", "commonjs", "module", "module"],
+  [ "qmod", "index.js", "imp.js", "commonjs", "module", "module", "?k=v"],
+  [ "hmod", "index.js", "imp.js", "commonjs", "module", "module", "#Key"],
+  [ "qhmod", "index.js", "imp.js", "commonjs", "module", "module", "?k=v#h"],
+  [ "ts-mod-com", "index.js", "imp.ts", "module", "commonjs", undefined],
  ].forEach(async (testVariant) => {
   const [
    moduleName,
@@ -200,7 +200,7 @@ try {
    mainPackageType,
    subdirPackageType,
    expectedResolvedFormat,
-   mainSuffix = '' ] = testVariant;
+   mainSuffix = "" ] = testVariant;
 
   const mDir = rel(`node_modules/${moduleName}`);
   const subDir = rel(`node_modules/${moduleName}/subdir`);
@@ -216,12 +216,12 @@ try {
   const mainPkgJsonContent = {
    type: mainPackageType,
    exports: {
-    '.': {
-     'require': `./subdir/${mainRequireScript}${mainSuffix}`,
-     'import': `./subdir/${mainImportScript}${mainSuffix}`,
-     'default': `./subdir/${mainRequireScript}${mainSuffix}`,
+    ".": {
+     "require": `./subdir/${mainRequireScript}${mainSuffix}`,
+     "import": `./subdir/${mainImportScript}${mainSuffix}`,
+     "default": `./subdir/${mainRequireScript}${mainSuffix}`,
     },
-    './package.json': './package.json',
+    "./package.json": "./package.json",
    },
   };
   const subdirPkgJsonContent = {
@@ -232,11 +232,11 @@ try {
   fs.writeFileSync(subdirPkg, JSON.stringify(subdirPkgJsonContent));
   fs.writeFileSync(
    esScript,
-   'export function esm-resolve-tester() {return 42}',
+   "export function esm-resolve-tester() {return 42}",
   );
   fs.writeFileSync(
    cjsScript,
-   'module.exports = {esm-resolve-tester: () => {return 42}}',
+   "module.exports = {esm-resolve-tester: () => {return 42}}",
   );
 
   // test the resolve

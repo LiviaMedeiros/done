@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const expected = 10000;
 let responses = 0;
@@ -33,22 +33,22 @@ const server = http.Server(function(req, res) {
  requests++;
  assert.strictEqual(req.connection, connection);
  res.writeHead(200);
- res.end('hello world\n');
+ res.end("hello world\n");
 });
 
-server.once('connection', function(c) {
+server.once("connection", function(c) {
  connection = c;
 });
 
 server.listen(0, function connect() {
  const request = http.get({
   port: server.address().port,
-  path: '/',
+  path: "/",
   headers: {
-   'Connection': 'Keep-alive',
+   "Connection": "Keep-alive",
   },
  }, function(res) {
-  res.on('end', function() {
+  res.on("end", function() {
    if (++responses < expected) {
     connect();
    } else {
@@ -56,14 +56,14 @@ server.listen(0, function connect() {
    }
   });
   res.resume();
- }).on('error', function(e) {
+ }).on("error", function(e) {
   console.log(e.message);
   process.exit(1);
  });
  request.agent.maxSockets = 1;
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(responses, expected);
  assert.strictEqual(requests, expected);
 });

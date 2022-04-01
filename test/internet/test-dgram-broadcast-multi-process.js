@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.inFreeBSDJail)
- common.skip('in a FreeBSD jail');
+ common.skip("in a FreeBSD jail");
 
-const assert = require('assert');
-const dgram = require('dgram');
-const util = require('util');
-const networkInterfaces = require('os').networkInterfaces();
-const { fork } = require('child_process');
-const LOCAL_BROADCAST_HOST = '255.255.255.255';
+const assert = require("assert");
+const dgram = require("dgram");
+const util = require("util");
+const networkInterfaces = require("os").networkInterfaces();
+const { fork } = require("child_process");
+const LOCAL_BROADCAST_HOST = "255.255.255.255";
 const TIMEOUT = common.platformTimeout(5000);
 const messages = [
- Buffer.from('First message to send'),
- Buffer.from('Second message to send'),
- Buffer.from('Third message to send'),
- Buffer.from('Fourth message to send'),
+ Buffer.from("First message to send"),
+ Buffer.from("Second message to send"),
+ Buffer.from("Third message to send"),
+ Buffer.from("Fourth message to send"),
 ];
 
 let bindAddress = null;
@@ -47,7 +47,7 @@ get_bindAddress: for (const name in networkInterfaces) {
  const interfaces = networkInterfaces[name];
  for (let i = 0; i < interfaces.length; i++) {
   const localInterface = interfaces[i];
-  if (!localInterface.internal && localInterface.family === 'IPv4') {
+  if (!localInterface.internal && localInterface.family === "IPv4") {
    bindAddress = localInterface.address;
    break get_bindAddress;
   }
@@ -55,7 +55,7 @@ get_bindAddress: for (const name in networkInterfaces) {
 }
 assert.ok(bindAddress);
 
-if (process.argv[2] !== 'child') {
+if (process.argv[2] !== "child") {
  const workers = {};
  const listeners = 3;
  let listening = 0;
@@ -66,9 +66,9 @@ if (process.argv[2] !== 'child') {
 
  // Exit the test if it doesn't succeed within TIMEOUT
  timer = setTimeout(() => {
-  console.error('[PARENT] Responses were not received within %d ms.',
+  console.error("[PARENT] Responses were not received within %d ms.",
                 TIMEOUT);
-  console.error('[PARENT] Fail');
+  console.error("[PARENT] Fail");
 
   killSubprocesses(workers);
 
@@ -78,13 +78,13 @@ if (process.argv[2] !== 'child') {
  // Launch child processes
  for (let x = 0; x < listeners; x++) {
   (function() {
-   const worker = fork(process.argv[1], ['child']);
+   const worker = fork(process.argv[1], ["child"]);
    workers[worker.pid] = worker;
 
    worker.messagesReceived = [];
 
    // Handle the death of workers
-   worker.on('exit', (code, signal) => {
+   worker.on("exit", (code, signal) => {
     // Don't consider this the true death if the worker
     // has finished successfully
     // or if the exit code is 0
@@ -93,7 +93,7 @@ if (process.argv[2] !== 'child') {
     }
 
     dead += 1;
-    console.error('[PARENT] Worker %d died. %d dead of %d',
+    console.error("[PARENT] Worker %d died. %d dead of %d",
                   worker.pid,
                   dead,
                   listeners);
@@ -101,8 +101,8 @@ if (process.argv[2] !== 'child') {
     assert.notStrictEqual(signal, null);
 
     if (dead === listeners) {
-     console.error('[PARENT] All workers have died.');
-     console.error('[PARENT] Fail');
+     console.error("[PARENT] All workers have died.");
+     console.error("[PARENT] Fail");
 
      killSubprocesses(workers);
 
@@ -110,7 +110,7 @@ if (process.argv[2] !== 'child') {
     }
    });
 
-   worker.on('message', (msg) => {
+   worker.on("message", (msg) => {
     if (msg.listening) {
      listening += 1;
 
@@ -124,15 +124,15 @@ if (process.argv[2] !== 'child') {
      if (worker.messagesReceived.length === messages.length) {
       done += 1;
       worker.isDone = true;
-      console.error('[PARENT] %d received %d messages total.',
+      console.error("[PARENT] %d received %d messages total.",
                     worker.pid,
                     worker.messagesReceived.length);
      }
 
      if (done === listeners) {
-      console.error('[PARENT] All workers have received the ' +
-                          'required number of ' +
-                          'messages. Will now compare.');
+      console.error("[PARENT] All workers have received the " +
+                          "required number of " +
+                          "messages. Will now compare.");
 
       Object.keys(workers).forEach((pid) => {
        const worker = workers[pid];
@@ -148,7 +148,7 @@ if (process.argv[2] !== 'child') {
         }
        });
 
-       console.error('[PARENT] %d received %d matching messages.',
+       console.error("[PARENT] %d received %d matching messages.",
                      worker.pid,
                      count);
 
@@ -156,7 +156,7 @@ if (process.argv[2] !== 'child') {
       });
 
       clearTimeout(timer);
-      console.error('[PARENT] Success');
+      console.error("[PARENT] Success");
       killSubprocesses(workers);
      }
     }
@@ -165,19 +165,19 @@ if (process.argv[2] !== 'child') {
  }
 
  const sendSocket = dgram.createSocket({
-  type: 'udp4',
+  type: "udp4",
   reuseAddr: true,
  });
 
  // Bind the address explicitly for sending
  // INADDR_BROADCAST to only one interface
  sendSocket.bind(common.PORT, bindAddress);
- sendSocket.on('listening', () => {
+ sendSocket.on("listening", () => {
   sendSocket.setBroadcast(true);
  });
 
- sendSocket.on('close', () => {
-  console.error('[PARENT] sendSocket closed');
+ sendSocket.on("close", () => {
+  console.error("[PARENT] sendSocket closed");
  });
 
  sendSocket.sendNext = function() {
@@ -198,7 +198,7 @@ if (process.argv[2] !== 'child') {
    LOCAL_BROADCAST_HOST,
    (err) => {
     assert.ifError(err);
-    console.error('[PARENT] sent %s to %s:%s',
+    console.error("[PARENT] sent %s to %s:%s",
                   util.inspect(buf.toString()),
                   LOCAL_BROADCAST_HOST, common.PORT);
 
@@ -215,18 +215,18 @@ if (process.argv[2] !== 'child') {
  }
 }
 
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  const receivedMessages = [];
  const listenSocket = dgram.createSocket({
-  type: 'udp4',
+  type: "udp4",
   reuseAddr: true,
  });
 
- listenSocket.on('message', (buf, rinfo) => {
+ listenSocket.on("message", (buf, rinfo) => {
   // Receive udp messages only sent from parent
   if (rinfo.address !== bindAddress) return;
 
-  console.error('[CHILD] %s received %s from %j',
+  console.error("[CHILD] %s received %s from %j",
                 process.pid,
                 util.inspect(buf.toString()),
                 rinfo);
@@ -240,14 +240,14 @@ if (process.argv[2] === 'child') {
   }
  });
 
- listenSocket.on('close', () => {
+ listenSocket.on("close", () => {
   // HACK: Wait to exit the process to ensure that the parent
   // process has had time to receive all messages via process.send()
   // This may be indicative of some other issue.
   setTimeout(() => { process.exit(); }, 1000);
  });
 
- listenSocket.on('listening', () => { process.send({ listening: true }); });
+ listenSocket.on("listening", () => { process.send({ listening: true }); });
 
  listenSocket.bind(common.PORT);
 }

@@ -1,8 +1,8 @@
 // Flags: --expose-internals --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const {
  ReadableStream,
@@ -10,51 +10,51 @@ const {
  ReadableStreamDefaultReader,
  ReadableStreamBYOBReader,
  ReadableStreamBYOBRequest,
-} = require('stream/web');
+} = require("stream/web");
 
 const {
  kState,
-} = require('internal/webstreams/util');
+} = require("internal/webstreams/util");
 
 const {
  open,
-} = require('fs/promises');
+} = require("fs/promises");
 
 const {
  readFileSync,
-} = require('fs');
+} = require("fs");
 
 const {
  Buffer,
-} = require('buffer');
+} = require("buffer");
 
 const {
  inspect,
-} = require('util');
+} = require("util");
 
 {
  const r = new ReadableStream({
-  type: 'bytes',
+  type: "bytes",
  });
 
  assert(r[kState].controller instanceof ReadableByteStreamController);
 
- assert.strictEqual(typeof r.locked, 'boolean');
- assert.strictEqual(typeof r.cancel, 'function');
- assert.strictEqual(typeof r.getReader, 'function');
- assert.strictEqual(typeof r.pipeThrough, 'function');
- assert.strictEqual(typeof r.pipeTo, 'function');
- assert.strictEqual(typeof r.tee, 'function');
+ assert.strictEqual(typeof r.locked, "boolean");
+ assert.strictEqual(typeof r.cancel, "function");
+ assert.strictEqual(typeof r.getReader, "function");
+ assert.strictEqual(typeof r.pipeThrough, "function");
+ assert.strictEqual(typeof r.pipeTo, "function");
+ assert.strictEqual(typeof r.tee, "function");
 
- ['', null, 'asdf'].forEach((mode) => {
+ ["", null, "asdf"].forEach((mode) => {
   assert.throws(() => r.getReader({ mode }), {
-   code: 'ERR_INVALID_ARG_VALUE',
+   code: "ERR_INVALID_ARG_VALUE",
   });
  });
 
- [1, 'asdf'].forEach((options) => {
+ [1, "asdf"].forEach((options) => {
   assert.throws(() => r.getReader(options), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
  });
 
@@ -63,7 +63,7 @@ const {
  assert(r.locked);
  assert(defaultReader instanceof ReadableStreamDefaultReader);
  defaultReader.releaseLock();
- const byobReader = r.getReader({ mode: 'byob' });
+ const byobReader = r.getReader({ mode: "byob" });
  assert(byobReader instanceof ReadableStreamBYOBReader);
 }
 
@@ -96,20 +96,20 @@ class Source {
   }
 
   assert.throws(() => byobRequest.respondWithNewView({}), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
 
   byobRequest.respond(bytesRead);
 
   assert.throws(() => byobRequest.respond(bytesRead), {
-   code: 'ERR_INVALID_STATE',
+   code: "ERR_INVALID_STATE",
   });
   assert.throws(() => byobRequest.respondWithNewView(view), {
-   code: 'ERR_INVALID_STATE',
+   code: "ERR_INVALID_STATE",
   });
  }
 
- get type() { return 'bytes'; }
+ get type() { return "bytes"; }
 
  get autoAllocateChunkSize() { return 1024; }
 }
@@ -119,7 +119,7 @@ class Source {
  assert(stream[kState].controller instanceof ReadableByteStreamController);
 
  async function read(stream) {
-  const reader = stream.getReader({ mode: 'byob' });
+  const reader = stream.getReader({ mode: "byob" });
 
   const chunks = [];
   let result;
@@ -173,7 +173,7 @@ class Source {
  const stream = new ReadableStream(new Source());
  assert(stream[kState].controller instanceof ReadableByteStreamController);
 
- const error = new Error('boom');
+ const error = new Error("boom");
 
  async function read(stream) {
   // eslint-disable-next-line no-unused-vars
@@ -186,56 +186,56 @@ class Source {
 
 {
  assert.throws(() => {
-  Reflect.get(ReadableStreamBYOBRequest.prototype, 'view', {});
+  Reflect.get(ReadableStreamBYOBRequest.prototype, "view", {});
  }, {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
 
  assert.throws(() => ReadableStreamBYOBRequest.prototype.respond.call({}), {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
 
  assert.throws(() => {
   ReadableStreamBYOBRequest.prototype.respondWithNewView.call({});
  }, {
-  code: 'ERR_INVALID_THIS',
+  code: "ERR_INVALID_THIS",
  });
 }
 
 {
- const readable = new ReadableStream({ type: 'bytes' });
- const reader = readable.getReader({ mode: 'byob' });
+ const readable = new ReadableStream({ type: "bytes" });
+ const reader = readable.getReader({ mode: "byob" });
  reader.releaseLock();
  reader.releaseLock();
  assert.rejects(reader.read(new Uint8Array(10)), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
  assert.rejects(reader.cancel(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 }
 
 {
  let controller;
  new ReadableStream({
-  type: 'bytes',
+  type: "bytes",
   start(c) { controller = c; },
  });
  assert.throws(() => controller.enqueue(1), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
  controller.close();
  assert.throws(() => controller.enqueue(new Uint8Array(10)), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
  assert.throws(() => controller.close(), {
-  code: 'ERR_INVALID_STATE',
+  code: "ERR_INVALID_STATE",
  });
 }
 
 {
  const stream = new ReadableStream({
-  type: 'bytes',
+  type: "bytes",
   pull(c) {
    const v = new Uint8Array(c.byobRequest.view.buffer, 0, 3);
    v.set([20, 21, 22]);
@@ -245,13 +245,13 @@ class Source {
  const buffer = new ArrayBuffer(10);
  const view = new Uint8Array(buffer, 0, 3);
  view.set([10, 11, 12]);
- const reader = stream.getReader({ mode: 'byob' });
+ const reader = stream.getReader({ mode: "byob" });
  reader.read(view);
 }
 
 {
  const stream = new ReadableStream({
-  type: 'bytes',
+  type: "bytes",
   autoAllocateChunkSize: 10,
   pull(c) {
    const v = new Uint8Array(c.byobRequest.view.buffer, 0, 3);

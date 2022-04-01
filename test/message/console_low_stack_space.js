@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 // Copy console accessor because requiring ../common touches it
-const consoleDescriptor = Object.getOwnPropertyDescriptor(global, 'console');
-Object.defineProperty(global, 'console', {
+const consoleDescriptor = Object.getOwnPropertyDescriptor(global, "console");
+Object.defineProperty(global, "console", {
  configurable: true,
  writable: true,
  value: {},
 });
 
-require('../common');
+require("../common");
 
 // This test checks that, if Node cannot put together the `console` object
 // because it is low on stack space while doing so, it can succeed later
@@ -31,4 +31,4 @@ function a() {
 
 a();
 
-compiledConsole.log('Hello, World!');
+compiledConsole.log("Hello, World!");

@@ -19,33 +19,33 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // See https://github.com/joyent/node/issues/3257
 
-const common = require('../common');
-const http = require('http');
+const common = require("../common");
+const http = require("http");
 
 const server = http.createServer(function(req, res) {
  req.resume();
- req.once('end', function() {
+ req.once("end", function() {
   res.writeHead(200);
   res.end();
   server.close();
  });
 });
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 server.listen(common.PIPE, function() {
  const req = http.request({
   socketPath: common.PIPE,
-  headers: { 'Content-Length': '1' },
-  method: 'POST',
-  path: '/',
+  headers: { "Content-Length": "1" },
+  method: "POST",
+  path: "/",
  });
 
- req.write('.');
+ req.write(".");
 
  sched(function() { req.end(); }, 5);
 });

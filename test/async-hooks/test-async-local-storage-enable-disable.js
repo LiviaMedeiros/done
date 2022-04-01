@@ -1,14 +1,14 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const { AsyncLocalStorage } = require('async_hooks');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { AsyncLocalStorage } = require("async_hooks");
 
 const asyncLocalStorage = new AsyncLocalStorage();
 
 asyncLocalStorage.run(new Map(), () => {
- asyncLocalStorage.getStore().set('foo', 'bar');
+ asyncLocalStorage.getStore().set("foo", "bar");
  process.nextTick(() => {
-  assert.strictEqual(asyncLocalStorage.getStore().get('foo'), 'bar');
+  assert.strictEqual(asyncLocalStorage.getStore().get("foo"), "bar");
   process.nextTick(() => {
    assert.strictEqual(asyncLocalStorage.getStore(), undefined);
   });
@@ -24,8 +24,8 @@ asyncLocalStorage.run(new Map(), () => {
 
   process.nextTick(() => {
    assert.strictEqual(asyncLocalStorage.getStore(), undefined);
-   asyncLocalStorage.run(new Map().set('bar', 'foo'), () => {
-    assert.strictEqual(asyncLocalStorage.getStore().get('bar'), 'foo');
+   asyncLocalStorage.run(new Map().set("bar", "foo"), () => {
+    assert.strictEqual(asyncLocalStorage.getStore().get("bar"), "foo");
    });
   });
  });

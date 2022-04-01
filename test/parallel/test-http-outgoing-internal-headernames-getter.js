@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const { OutgoingMessage } = require('http');
-const assert = require('assert');
+const { OutgoingMessage } = require("http");
+const assert = require("assert");
 
-const warn = 'OutgoingMessage.prototype._headerNames is deprecated';
-common.expectWarning('DeprecationWarning', warn, 'DEP0066');
+const warn = "OutgoingMessage.prototype._headerNames is deprecated";
+common.expectWarning("DeprecationWarning", warn, "DEP0066");
 
 {
  // Tests for _headerNames get method
@@ -16,8 +16,8 @@ common.expectWarning('DeprecationWarning', warn, 'DEP0066');
 {
  // Tests _headerNames getter result after setting a header.
  const outgoingMessage = new OutgoingMessage();
- outgoingMessage.setHeader('key', 'value');
+ outgoingMessage.setHeader("key", "value");
  const expect = Object.create(null);
- expect.key = 'key';
+ expect.key = "key";
  assert.deepStrictEqual(outgoingMessage._headerNames, expect);
 }

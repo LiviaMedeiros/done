@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
 
 const originalConnect = net.Socket.prototype.connect;
 
@@ -22,10 +22,10 @@ server.listen(0, common.mustCall(() => {
  assert.strictEqual(server.noDelay, true);
 
  const req = http.request({
-  method: 'GET',
+  method: "GET",
   port: server.address().port,
  }, common.mustCall((res) => {
-  res.on('end', () => {
+  res.on("end", () => {
    server.close();
    res.req.socket.end();
   });

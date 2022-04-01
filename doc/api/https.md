@@ -40,9 +40,9 @@ of Node.js where crypto support is not enabled, consider using the
 ```mjs
 let https;
 try {
- https = await import('https');
+ https = await import("https");
 } catch (err) {
- console.log('https support is disabled!');
+ console.log("https support is disabled!");
 }
 ```
 
@@ -109,8 +109,8 @@ later used by software (such as Wireshark) to decrypt the traffic:
 
 ```js
 // ...
-https.globalAgent.on('keylog', (line, tlsSocket) => {
- fs.appendFileSync('/tmp/ssl-keys.log', line, { mode: 0o600 });
+https.globalAgent.on("keylog", (line, tlsSocket) => {
+ fs.appendFileSync("/tmp/ssl-keys.log", line, { mode: 0o600 });
 });
 ```
 
@@ -215,34 +215,34 @@ added: v0.3.4
 
 ```js
 // curl -k https://localhost:8000/
-const https = require('https');
-const fs = require('fs');
+const https = require("https");
+const fs = require("fs");
 
 const options = {
- key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
- cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem'),
+ key: fs.readFileSync("test/fixtures/keys/agent2-key.pem"),
+ cert: fs.readFileSync("test/fixtures/keys/agent2-cert.pem"),
 };
 
 https.createServer(options, (req, res) => {
  res.writeHead(200);
- res.end('hello world\n');
+ res.end("hello world\n");
 }).listen(8000);
 ```
 
 Or
 
 ```js
-const https = require('https');
-const fs = require('fs');
+const https = require("https");
+const fs = require("fs");
 
 const options = {
- pfx: fs.readFileSync('test/fixtures/test_cert.pfx'),
- passphrase: 'sample',
+ pfx: fs.readFileSync("test/fixtures/test_cert.pfx"),
+ passphrase: "sample",
 };
 
 https.createServer(options, (req, res) => {
  res.writeHead(200);
- res.end('hello world\n');
+ res.end("hello world\n");
 }).listen(8000);
 ```
 
@@ -274,17 +274,17 @@ string, it is automatically parsed with [`new URL()`][]. If it is a [`URL`][]
 object, it will be automatically converted to an ordinary `options` object.
 
 ```js
-const https = require('https');
+const https = require("https");
 
-https.get('https://encrypted.google.com/', (res) => {
- console.log('statusCode:', res.statusCode);
- console.log('headers:', res.headers);
+https.get("https://encrypted.google.com/", (res) => {
+ console.log("statusCode:", res.statusCode);
+ console.log("headers:", res.headers);
 
- res.on('data', (d) => {
+ res.on("data", (d) => {
   process.stdout.write(d);
  });
 
-}).on('error', (e) => {
+}).on("error", (e) => {
  console.error(e);
 });
 ```
@@ -353,25 +353,25 @@ class. The `ClientRequest` instance is a writable stream. If one needs to
 upload a file with a POST request, then write to the `ClientRequest` object.
 
 ```js
-const https = require('https');
+const https = require("https");
 
 const options = {
- hostname: 'encrypted.google.com',
+ hostname: "encrypted.google.com",
  port: 443,
- path: '/',
- method: 'GET',
+ path: "/",
+ method: "GET",
 };
 
 const req = https.request(options, (res) => {
- console.log('statusCode:', res.statusCode);
- console.log('headers:', res.headers);
+ console.log("statusCode:", res.statusCode);
+ console.log("headers:", res.headers);
 
- res.on('data', (d) => {
+ res.on("data", (d) => {
   process.stdout.write(d);
  });
 });
 
-req.on('error', (e) => {
+req.on("error", (e) => {
  console.error(e);
 });
 req.end();
@@ -381,12 +381,12 @@ Example using options from [`tls.connect()`][]:
 
 ```js
 const options = {
- hostname: 'encrypted.google.com',
+ hostname: "encrypted.google.com",
  port: 443,
- path: '/',
- method: 'GET',
- key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
- cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem'),
+ path: "/",
+ method: "GET",
+ key: fs.readFileSync("test/fixtures/keys/agent2-key.pem"),
+ cert: fs.readFileSync("test/fixtures/keys/agent2-cert.pem"),
 };
 options.agent = new https.Agent(options);
 
@@ -399,12 +399,12 @@ Alternatively, opt out of connection pooling by not using an [`Agent`][].
 
 ```js
 const options = {
- hostname: 'encrypted.google.com',
+ hostname: "encrypted.google.com",
  port: 443,
- path: '/',
- method: 'GET',
- key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
- cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem'),
+ path: "/",
+ method: "GET",
+ key: fs.readFileSync("test/fixtures/keys/agent2-key.pem"),
+ cert: fs.readFileSync("test/fixtures/keys/agent2-cert.pem"),
  agent: false,
 };
 
@@ -416,7 +416,7 @@ const req = https.request(options, (res) => {
 Example using a [`URL`][] as `options`:
 
 ```js
-const options = new URL('https://abc:xyz@example.com');
+const options = new URL("https://abc:xyz@example.com");
 
 const req = https.request(options, (res) => {
  // ...
@@ -427,18 +427,18 @@ Example pinning on certificate fingerprint, or the public key (similar to
 `pin-sha256`):
 
 ```js
-const tls = require('tls');
-const https = require('https');
-const crypto = require('crypto');
+const tls = require("tls");
+const https = require("https");
+const crypto = require("crypto");
 
 function sha256(s) {
- return crypto.createHash('sha256').update(s).digest('base64');
+ return crypto.createHash("sha256").update(s).digest("base64");
 }
 const options = {
- hostname: 'github.com',
+ hostname: "github.com",
  port: 443,
- path: '/',
- method: 'GET',
+ path: "/",
+ method: "GET",
  checkServerIdentity: function(host, cert) {
   // Make sure the certificate is issued to the host we are connected to
   const err = tls.checkServerIdentity(host, cert);
@@ -447,21 +447,21 @@ const options = {
   }
 
   // Pin the public key, similar to HPKP pin-sha25 pinning
-  const pubkey256 = 'pL1+qb9HTMRZJmuC/bB/ZI9d302BYrrqiVuRyW+DGrU=';
+  const pubkey256 = "pL1+qb9HTMRZJmuC/bB/ZI9d302BYrrqiVuRyW+DGrU=";
   if (sha256(cert.pubkey) !== pubkey256) {
-   const msg = 'Certificate verification error: ' +
+   const msg = "Certificate verification error: " +
         `The public key of '${cert.subject.CN}' ` +
-        'does not match our pinned fingerprint';
+        "does not match our pinned fingerprint";
    return new Error(msg);
   }
 
   // Pin the exact certificate, rather than the pub key
-  const cert256 = '25:FE:39:32:D9:63:8C:8A:FC:A1:9A:29:87:' +
-      'D8:3E:4C:1D:98:DB:71:E4:1A:48:03:98:EA:22:6A:BD:8B:93:16';
+  const cert256 = "25:FE:39:32:D9:63:8C:8A:FC:A1:9A:29:87:" +
+      "D8:3E:4C:1D:98:DB:71:E4:1A:48:03:98:EA:22:6A:BD:8B:93:16";
   if (cert.fingerprint256 !== cert256) {
-   const msg = 'Certificate verification error: ' +
+   const msg = "Certificate verification error: " +
         `The certificate of '${cert.subject.CN}' ` +
-        'does not match our pinned fingerprint';
+        "does not match our pinned fingerprint";
    return new Error(msg);
   }
 
@@ -471,11 +471,11 @@ const options = {
   // internet, while pinning the public key of the service in sensitive
   // environments.
   do {
-   console.log('Subject Common Name:', cert.subject.CN);
-   console.log('  Certificate SHA256 fingerprint:', cert.fingerprint256);
+   console.log("Subject Common Name:", cert.subject.CN);
+   console.log("  Certificate SHA256 fingerprint:", cert.fingerprint256);
 
-   hash = crypto.createHash('sha256');
-   console.log('  Public key ping-sha256:', sha256(cert.pubkey));
+   hash = crypto.createHash("sha256");
+   console.log("  Public key ping-sha256:", sha256(cert.pubkey));
 
    lastprint256 = cert.fingerprint256;
    cert = cert.issuerCertificate;
@@ -486,15 +486,15 @@ const options = {
 
 options.agent = new https.Agent(options);
 const req = https.request(options, (res) => {
- console.log('All OK. Server matched our pinned cert or public key');
- console.log('statusCode:', res.statusCode);
+ console.log("All OK. Server matched our pinned cert or public key");
+ console.log("statusCode:", res.statusCode);
  // Print the HPKP values
- console.log('headers:', res.headers['public-key-pins']);
+ console.log("headers:", res.headers["public-key-pins"]);
 
- res.on('data', (d) => {});
+ res.on("data", (d) => {});
 });
 
-req.on('error', (e) => {
+req.on("error", (e) => {
  console.error(e.message);
 });
 req.end();

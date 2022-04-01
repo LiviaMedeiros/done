@@ -1,16 +1,16 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
-const fs = require('fs');
-const { getSystemErrorName } = require('util');
-const { internalBinding } = require('internal/test/binding');
-const { TCP, constants: TCPConstants } = internalBinding('tcp_wrap');
-const { Pipe, constants: PipeConstants } = internalBinding('pipe_wrap');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
+const fs = require("fs");
+const { getSystemErrorName } = require("util");
+const { internalBinding } = require("internal/test/binding");
+const { TCP, constants: TCPConstants } = internalBinding("tcp_wrap");
+const { Pipe, constants: PipeConstants } = internalBinding("pipe_wrap");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 function closeServer() {
@@ -37,11 +37,11 @@ function randomPipePath() {
 }
 
 function randomHandle(type) {
- let handle, errno, handleName;
- if (type === 'tcp') {
+ let errno, handle, handleName;
+ if (type === "tcp") {
   handle = new TCP(TCPConstants.SOCKET);
-  errno = handle.bind('0.0.0.0', 0);
-  handleName = 'arbitrary tcp port';
+  errno = handle.bind("0.0.0.0", 0);
+  handleName = "arbitrary tcp port";
  } else {
   const path = randomPipePath();
   handle = new Pipe(PipeConstants.SOCKET);
@@ -65,17 +65,17 @@ function randomHandle(type) {
 {
  // Test listen(tcp)
  net.createServer()
-    .listen(randomHandle('tcp'))
-    .on('listening', closeServer());
+    .listen(randomHandle("tcp"))
+    .on("listening", closeServer());
  // Test listen(tcp, cb)
  net.createServer()
-    .listen(randomHandle('tcp'), closeServer());
+    .listen(randomHandle("tcp"), closeServer());
 }
 
 function randomPipes(number) {
  const arr = [];
  for (let i = 0; i < number; ++i) {
-  arr.push(randomHandle('pipe'));
+  arr.push(randomHandle("pipe"));
  }
  return arr;
 }
@@ -86,7 +86,7 @@ if (!common.isWindows) {  // Windows doesn't support {fd: <n>}
  // Test listen(pipe)
  net.createServer()
     .listen(handles[0])
-    .on('listening', closePipeServer(handles[0]));
+    .on("listening", closePipeServer(handles[0]));
  // Test listen(pipe, cb)
  net.createServer()
     .listen(handles[1], closePipeServer(handles[1]));
@@ -95,28 +95,28 @@ if (!common.isWindows) {  // Windows doesn't support {fd: <n>}
 {
  // Test listen({handle: tcp}, cb)
  net.createServer()
-    .listen({ handle: randomHandle('tcp') }, closeServer());
+    .listen({ handle: randomHandle("tcp") }, closeServer());
  // Test listen({handle: tcp})
  net.createServer()
-    .listen({ handle: randomHandle('tcp') })
-    .on('listening', closeServer());
+    .listen({ handle: randomHandle("tcp") })
+    .on("listening", closeServer());
  // Test listen({_handle: tcp}, cb)
  net.createServer()
-    .listen({ _handle: randomHandle('tcp') }, closeServer());
+    .listen({ _handle: randomHandle("tcp") }, closeServer());
  // Test listen({_handle: tcp})
  net.createServer()
-    .listen({ _handle: randomHandle('tcp') })
-    .on('listening', closeServer());
+    .listen({ _handle: randomHandle("tcp") })
+    .on("listening", closeServer());
 }
 
 if (!common.isWindows) {  // Windows doesn't support {fd: <n>}
  // Test listen({fd: tcp.fd}, cb)
  net.createServer()
-    .listen({ fd: randomHandle('tcp').fd }, closeServer());
+    .listen({ fd: randomHandle("tcp").fd }, closeServer());
  // Test listen({fd: tcp.fd})
  net.createServer()
-    .listen({ fd: randomHandle('tcp').fd })
-    .on('listening', closeServer());
+    .listen({ fd: randomHandle("tcp").fd })
+    .on("listening", closeServer());
 }
 
 if (!common.isWindows) {  // Windows doesn't support {fd: <n>}
@@ -127,30 +127,30 @@ if (!common.isWindows) {  // Windows doesn't support {fd: <n>}
  // Test listen({handle: pipe})
  net.createServer()
     .listen({ handle: handles[1] })
-    .on('listening', closePipeServer(handles[1]));
+    .on("listening", closePipeServer(handles[1]));
  // Test listen({_handle: pipe}, cb)
  net.createServer()
     .listen({ _handle: handles[2] }, closePipeServer(handles[2]));
  // Test listen({_handle: pipe})
  net.createServer()
     .listen({ _handle: handles[3] })
-    .on('listening', closePipeServer(handles[3]));
+    .on("listening", closePipeServer(handles[3]));
  // Test listen({fd: pipe.fd}, cb)
  net.createServer()
     .listen({ fd: handles[4].fd }, closePipeServer(handles[4]));
  // Test listen({fd: pipe.fd})
  net.createServer()
     .listen({ fd: handles[5].fd })
-    .on('listening', closePipeServer(handles[5]));
+    .on("listening", closePipeServer(handles[5]));
 }
 
 if (!common.isWindows) {  // Windows doesn't support {fd: <n>}
  // Test invalid fd
- const fd = fs.openSync(__filename, 'r');
+ const fd = fs.openSync(__filename, "r");
  net.createServer()
     .listen({ fd }, common.mustNotCall())
-    .on('error', common.mustCall(function(err) {
-    	assert.strictEqual(String(err), 'Error: listen EINVAL: invalid argument');
+    .on("error", common.mustCall(function(err) {
+    	assert.strictEqual(String(err), "Error: listen EINVAL: invalid argument");
     	this.close();
     }));
 }

@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const domain = require('domain');
-const http = require('http');
-const assert = require('assert');
-const debug = require('util').debuglog('test');
+"use strict";
+const common = require("../common");
+const domain = require("domain");
+const http = require("http");
+const assert = require("assert");
+const debug = require("util").debuglog("test");
 
-process.on('warning', common.mustNotCall());
+process.on("warning", common.mustNotCall());
 
-const objects = { foo: 'bar', baz: {}, num: 42, arr: [1, 2, 3] };
+const objects = { foo: "bar", baz: {}, num: 42, arr: [1, 2, 3] };
 objects.baz.asdf = objects;
 
 let serverCaught = 0;
@@ -40,18 +40,18 @@ const server = http.createServer(function(req, res) {
  dom.add(req);
  dom.add(res);
 
- dom.on('error', function(er) {
+ dom.on("error", function(er) {
   serverCaught++;
-  debug('horray! got a server error', er);
+  debug("horray! got a server error", er);
   // Try to send a 500.  If that fails, oh well.
-  res.writeHead(500, { 'content-type': 'text/plain' });
-  res.end(er.stack || er.message || 'Unknown error');
+  res.writeHead(500, { "content-type": "text/plain" });
+  res.end(er.stack || er.message || "Unknown error");
  });
 
  dom.run(function() {
   // Now, an action that has the potential to fail!
   // if you request 'baz', then it'll throw a JSON circular ref error.
-  const data = JSON.stringify(objects[req.url.replace(/[^a-z]/g, '')]);
+  const data = JSON.stringify(objects[req.url.replace(/[^a-z]/g, "")]);
 
   // This line will throw if you pick an unknown key
   assert.notStrictEqual(data, undefined);
@@ -70,49 +70,49 @@ function next() {
  let requests = 0;
  let responses = 0;
 
- makeReq('/');
- makeReq('/foo');
- makeReq('/arr');
- makeReq('/baz');
- makeReq('/num');
+ makeReq("/");
+ makeReq("/foo");
+ makeReq("/arr");
+ makeReq("/baz");
+ makeReq("/num");
 
  function makeReq(p) {
   requests++;
 
   const dom = domain.create();
-  dom.on('error', function(er) {
+  dom.on("error", function(er) {
    clientCaught++;
-   debug('client error', er);
+   debug("client error", er);
    req.socket.destroy();
   });
 
-  const req = http.get({ host: 'localhost', port: port, path: p });
+  const req = http.get({ host: "localhost", port: port, path: p });
   dom.add(req);
-  req.on('response', function(res) {
+  req.on("response", function(res) {
    responses++;
    debug(`requests=${requests} responses=${responses}`);
    if (responses === requests) {
-    debug('done, closing server');
+    debug("done, closing server");
     // no more coming.
     server.close();
    }
 
    dom.add(res);
-   let d = '';
-   res.on('data', function(c) {
+   let d = "";
+   res.on("data", function(c) {
     d += c;
    });
-   res.on('end', function() {
-    debug('trying to parse json', d);
+   res.on("end", function() {
+    debug("trying to parse json", d);
     d = JSON.parse(d);
-    debug('json!', d);
+    debug("json!", d);
    });
   });
  }
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(serverCaught, 2);
  assert.strictEqual(clientCaught, 2);
- debug('ok');
+ debug("ok");
 });

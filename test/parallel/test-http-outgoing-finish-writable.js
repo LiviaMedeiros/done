@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 // Verify that after calling end() on an `OutgoingMessage` (or a type that
 // inherits from `OutgoingMessage`), its `writable` property is not set to false
@@ -23,11 +23,11 @@ const server = http.createServer(common.mustCall(function(req, res) {
 
 server.listen(0);
 
-server.on('listening', common.mustCall(function() {
+server.on("listening", common.mustCall(function() {
  const clientRequest = http.request({
   port: server.address().port,
-  method: 'GET',
-  path: '/',
+  method: "GET",
+  path: "/",
  });
 
  assert.strictEqual(clientRequest.writable, true);

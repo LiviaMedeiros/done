@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { ok, strictEqual } = require('assert');
-const { setImmediate: pause } = require('timers/promises');
+const common = require("../common");
+const { ok, strictEqual } = require("assert");
+const { setImmediate: pause } = require("timers/promises");
 
 function deferred() {
  let res;
@@ -19,8 +19,8 @@ function deferred() {
  const resolvers = [deferred1, deferred2];
 
  mc.port1.onmessage = common.mustCall(({ data }) => {
-  data.addEventListener('abort', common.mustCall(() => {
-   strictEqual(data.reason, 'boom');
+  data.addEventListener("abort", common.mustCall(() => {
+   strictEqual(data.reason, "boom");
   }));
   resolvers.shift().res();
  }, 2);
@@ -34,13 +34,13 @@ function deferred() {
 
  // Although we're using transfer semantics, the local AbortSignal
  // is still usable locally.
- ac.signal.addEventListener('abort', common.mustCall(() => {
-  strictEqual(ac.signal.reason, 'boom');
+ ac.signal.addEventListener("abort", common.mustCall(() => {
+  strictEqual(ac.signal.reason, "boom");
  }));
 
  await Promise.all([ deferred1.promise, deferred2.promise ]);
 
- ac.abort('boom');
+ ac.abort("boom");
 
  // Because the postMessage used by the underlying AbortSignal
  // takes at least one turn of the event loop to be processed,
@@ -54,14 +54,14 @@ function deferred() {
 })().then(common.mustCall());
 
 {
- const signal = AbortSignal.abort('boom');
+ const signal = AbortSignal.abort("boom");
  ok(signal.aborted);
- strictEqual(signal.reason, 'boom');
+ strictEqual(signal.reason, "boom");
  const mc = new MessageChannel();
  mc.port1.onmessage = common.mustCall(({ data }) => {
   ok(data instanceof AbortSignal);
   ok(data.aborted);
-  strictEqual(data.reason, 'boom');
+  strictEqual(data.reason, "boom");
   mc.port1.close();
  });
  mc.port2.postMessage(signal, [signal]);

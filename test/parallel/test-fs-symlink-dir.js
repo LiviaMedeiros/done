@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // Test creating a symbolic link pointing to a directory.
 // Ref: https://github.com/nodejs/node/pull/23724
@@ -7,22 +7,22 @@ const common = require('../common');
 
 
 if (!common.canCreateSymLink())
- common.skip('insufficient privileges');
+ common.skip("insufficient privileges");
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 const linkTargets = [
- 'relative-target',
- path.join(tmpdir.path, 'absolute-target'),
+ "relative-target",
+ path.join(tmpdir.path, "absolute-target"),
 ];
 const linkPaths = [
- path.relative(process.cwd(), path.join(tmpdir.path, 'relative-path')),
- path.join(tmpdir.path, 'absolute-path'),
+ path.relative(process.cwd(), path.join(tmpdir.path, "relative-path")),
+ path.join(tmpdir.path, "absolute-path"),
 ];
 
 function testSync(target, path) {
@@ -57,7 +57,7 @@ for (const linkTarget of linkTargets) {
   }));
  }
 
- for (const linkTarget of linkTargets.map((p) => p + '-broken')) {
+ for (const linkTarget of linkTargets.map((p) => p + "-broken")) {
   for (const linkPath of linkPaths) {
    testSync(linkTarget, `${linkPath}-${path.basename(linkTarget)}-sync`);
    testAsync(linkTarget, `${linkPath}-${path.basename(linkTarget)}-async`);

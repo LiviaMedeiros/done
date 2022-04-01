@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
-const multicastAddress = '224.0.0.114';
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
+const multicastAddress = "224.0.0.114";
 
-const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
+const setup = dgram.createSocket.bind(dgram, { type: "udp4", reuseAddr: true });
 
 // addMembership() on closed socket should throw
 {
@@ -14,8 +14,8 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
   assert.throws(() => {
    socket.addMembership(multicastAddress);
   }, {
-   code: 'ERR_SOCKET_DGRAM_NOT_RUNNING',
-   name: 'Error',
+   code: "ERR_SOCKET_DGRAM_NOT_RUNNING",
+   name: "Error",
    message: /^Not running$/,
   });
  }));
@@ -28,8 +28,8 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
   assert.throws(() => {
    socket.dropMembership(multicastAddress);
   }, {
-   code: 'ERR_SOCKET_DGRAM_NOT_RUNNING',
-   name: 'Error',
+   code: "ERR_SOCKET_DGRAM_NOT_RUNNING",
+   name: "Error",
    message: /^Not running$/,
   });
  }));
@@ -41,8 +41,8 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
  assert.throws(() => {
   socket.addMembership();
  }, {
-  code: 'ERR_MISSING_ARGS',
-  name: 'TypeError',
+  code: "ERR_MISSING_ARGS",
+  name: "TypeError",
   message: /^The "multicastAddress" argument must be specified$/,
  });
  socket.close();
@@ -54,8 +54,8 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
  assert.throws(() => {
   socket.dropMembership();
  }, {
-  code: 'ERR_MISSING_ARGS',
-  name: 'TypeError',
+  code: "ERR_MISSING_ARGS",
+  name: "TypeError",
   message: /^The "multicastAddress" argument must be specified$/,
  });
  socket.close();
@@ -64,7 +64,7 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
 // addMembership() with invalid multicast address should throw
 {
  const socket = setup();
- assert.throws(() => { socket.addMembership('256.256.256.256'); },
+ assert.throws(() => { socket.addMembership("256.256.256.256"); },
                /^Error: addMembership EINVAL$/);
  socket.close();
 }
@@ -72,7 +72,7 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
 // dropMembership() with invalid multicast address should throw
 {
  const socket = setup();
- assert.throws(() => { socket.dropMembership('256.256.256.256'); },
+ assert.throws(() => { socket.dropMembership("256.256.256.256"); },
                /^Error: dropMembership EINVAL$/);
  socket.close();
 }
@@ -83,9 +83,9 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
  assert.throws(() => {
   socket.addSourceSpecificMembership(0, multicastAddress);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: 'The "sourceAddress" argument must be of type string. ' +
-    'Received type number (0)',
+    "Received type number (0)",
  });
  socket.close();
 }
@@ -96,9 +96,9 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
  assert.throws(() => {
   socket.addSourceSpecificMembership(multicastAddress, 0);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: 'The "groupAddress" argument must be of type string. ' +
-    'Received type number (0)',
+    "Received type number (0)",
  });
  socket.close();
 }
@@ -107,10 +107,10 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
 {
  const socket = setup();
  assert.throws(() => {
-  socket.addSourceSpecificMembership(multicastAddress, '0');
+  socket.addSourceSpecificMembership(multicastAddress, "0");
  }, {
-  code: 'EINVAL',
-  message: 'addSourceSpecificMembership EINVAL',
+  code: "EINVAL",
+  message: "addSourceSpecificMembership EINVAL",
  });
  socket.close();
 }
@@ -121,9 +121,9 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
  assert.throws(() => {
   socket.dropSourceSpecificMembership(0, multicastAddress);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: 'The "sourceAddress" argument must be of type string. ' +
-    'Received type number (0)',
+    "Received type number (0)",
  });
  socket.close();
 }
@@ -134,9 +134,9 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
  assert.throws(() => {
   socket.dropSourceSpecificMembership(multicastAddress, 0);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: 'The "groupAddress" argument must be of type string. ' +
-    'Received type number (0)',
+    "Received type number (0)",
  });
  socket.close();
 }
@@ -145,10 +145,10 @@ const setup = dgram.createSocket.bind(dgram, { type: 'udp4', reuseAddr: true });
 {
  const socket = setup();
  assert.throws(() => {
-  socket.dropSourceSpecificMembership(multicastAddress, '0');
+  socket.dropSourceSpecificMembership(multicastAddress, "0");
  }, {
-  code: 'EINVAL',
-  message: 'dropSourceSpecificMembership EINVAL',
+  code: "EINVAL",
+  message: "dropSourceSpecificMembership EINVAL",
  });
  socket.close();
 }

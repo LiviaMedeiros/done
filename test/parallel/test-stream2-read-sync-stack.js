@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const Readable = require('stream').Readable;
+"use strict";
+const common = require("../common");
+const Readable = require("stream").Readable;
 
 // This tests synchronous read callbacks and verifies that even if they nest
 // heavily the process handles it without an error
@@ -35,12 +35,12 @@ r._read = function(n) {
  r.push(chunk);
 };
 
-r.on('readable', function onReadable() {
+r.on("readable", function onReadable() {
  if (!(r.readableLength % 256))
-  console.error('readable', r.readableLength);
+  console.error("readable", r.readableLength);
  r.read(N * 2);
 });
 
-r.on('end', common.mustCall());
+r.on("end", common.mustCall());
 
 r.read(0);

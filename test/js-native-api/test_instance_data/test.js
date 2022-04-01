@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 // Test API calls for instance data.
 
-const common = require('../../common');
-const assert = require('assert');
+const common = require("../../common");
+const assert = require("assert");
 
 if (module !== require.main) {
  // When required as a module, run the tests.
@@ -22,19 +22,19 @@ if (module !== require.main) {
 } else {
  // When launched as a script, run tests in either a child process or in a
  // worker thread.
- const requireAs = require('../../common/require-as');
- const runOptions = { stdio: ['inherit', 'pipe', 'inherit'] };
+ const requireAs = require("../../common/require-as");
+ const runOptions = { stdio: ["inherit", "pipe", "inherit"] };
 
  function checkOutput(child) {
   assert.strictEqual(child.status, 0);
   assert.strictEqual(
    (child.stdout.toString().split(/\r\n?|\n/) || [])[0],
-   'deleting addon data');
+   "deleting addon data");
  }
 
  // Run tests in a child process.
- checkOutput(requireAs(__filename, ['--expose-gc'], runOptions, 'child'));
+ checkOutput(requireAs(__filename, ["--expose-gc"], runOptions, "child"));
 
  // Run tests in a worker thread in a child process.
- checkOutput(requireAs(__filename, ['--expose-gc'], runOptions, 'worker'));
+ checkOutput(requireAs(__filename, ["--expose-gc"], runOptions, "worker"));
 }

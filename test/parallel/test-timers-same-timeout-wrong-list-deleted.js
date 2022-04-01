@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // This is a regression test for https://github.com/nodejs/node/issues/7722.
 //
@@ -9,7 +9,7 @@
 // no reference exists to it in its list, it cannot be canceled and its
 // callback is not called when the timeout elapses.
 
-const common = require('../common');
+const common = require("../common");
 
 const TIMEOUT = common.platformTimeout(100);
 

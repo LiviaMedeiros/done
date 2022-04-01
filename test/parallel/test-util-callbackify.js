@@ -1,26 +1,26 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // This test checks that the semantics of `util.callbackify` are as described in
 // the API docs
 
-const assert = require('assert');
-const { callbackify } = require('util');
-const { execFile } = require('child_process');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const { callbackify } = require("util");
+const { execFile } = require("child_process");
+const fixtures = require("../common/fixtures");
 
 const values = [
- 'hello world',
+ "hello world",
  null,
  undefined,
  false,
  0,
  {},
- { key: 'value' },
- Symbol('I am a symbol'),
+ { key: "value" },
+ Symbol("I am a symbol"),
  function ok() {},
- ['array', 'with', 4, 'values'],
- new Error('boo'),
+ ["array", "with", 4, "values"],
+ new Error("boo"),
 ];
 
 {
@@ -72,13 +72,13 @@ const values = [
 
   const cbAsyncFn = callbackify(asyncFn);
   assert.strictEqual(cbAsyncFn.length, 1);
-  assert.strictEqual(cbAsyncFn.name, 'asyncFnCallbackified');
+  assert.strictEqual(cbAsyncFn.name, "asyncFnCallbackified");
   cbAsyncFn(common.mustCall((err, ret) => {
    assert.strictEqual(ret, undefined);
    if (err instanceof Error) {
-    if ('reason' in err) {
+    if ("reason" in err) {
      assert(!value);
-     assert.strictEqual(err.code, 'ERR_FALSY_VALUE_REJECTION');
+     assert.strictEqual(err.code, "ERR_FALSY_VALUE_REJECTION");
      assert.strictEqual(err.reason, value);
     } else {
      assert.strictEqual(String(value).endsWith(err.message), true);
@@ -93,7 +93,7 @@ const values = [
    return Promise.reject(value);
   }
   const obj = {};
-  Object.defineProperty(promiseFn, 'name', {
+  Object.defineProperty(promiseFn, "name", {
    value: obj,
    writable: false,
    enumerable: false,
@@ -105,9 +105,9 @@ const values = [
   cbPromiseFn(common.mustCall((err, ret) => {
    assert.strictEqual(ret, undefined);
    if (err instanceof Error) {
-    if ('reason' in err) {
+    if ("reason" in err) {
      assert(!value);
-     assert.strictEqual(err.code, 'ERR_FALSY_VALUE_REJECTION');
+     assert.strictEqual(err.code, "ERR_FALSY_VALUE_REJECTION");
      assert.strictEqual(err.reason, value);
     } else {
      assert.strictEqual(String(value).endsWith(err.message), true);
@@ -130,9 +130,9 @@ const values = [
   cbThenableFn(common.mustCall((err, ret) => {
    assert.strictEqual(ret, undefined);
    if (err instanceof Error) {
-    if ('reason' in err) {
+    if ("reason" in err) {
      assert(!value);
-     assert.strictEqual(err.code, 'ERR_FALSY_VALUE_REJECTION');
+     assert.strictEqual(err.code, "ERR_FALSY_VALUE_REJECTION");
      assert.strictEqual(err.reason, value);
     } else {
      assert.strictEqual(String(value).endsWith(err.message), true);
@@ -168,7 +168,7 @@ const values = [
    return Promise.resolve(arg);
   }
   const obj = {};
-  Object.defineProperty(promiseFn, 'length', {
+  Object.defineProperty(promiseFn, "length", {
    value: obj,
    writable: false,
    enumerable: false,
@@ -214,14 +214,14 @@ const values = [
 
 {
  // Test that callback that throws emits an `uncaughtException` event
- const fixture = fixtures.path('uncaught-exceptions', 'callbackify1.js');
+ const fixture = fixtures.path("uncaught-exceptions", "callbackify1.js");
  execFile(
   process.execPath,
   [fixture],
   common.mustCall((err, stdout, stderr) => {
    assert.strictEqual(err.code, 1);
-   assert.strictEqual(Object.getPrototypeOf(err).name, 'Error');
-   assert.strictEqual(stdout, '');
+   assert.strictEqual(Object.getPrototypeOf(err).name, "Error");
+   assert.strictEqual(stdout, "");
    const errLines = stderr.trim().split(/[\r\n]+/);
    const errLine = errLines.find((l) => /^Error/.exec(l));
    assert.strictEqual(errLine, `Error: ${fixture}`);
@@ -231,7 +231,7 @@ const values = [
 
 {
  // Test that handled `uncaughtException` works and passes rejection reason
- const fixture = fixtures.path('uncaught-exceptions', 'callbackify2.js');
+ const fixture = fixtures.path("uncaught-exceptions", "callbackify2.js");
  execFile(
   process.execPath,
   [fixture],
@@ -239,19 +239,19 @@ const values = [
    assert.strictEqual(
     stdout.trim(),
     `ifError got unwanted exception: ${fixture}`);
-   assert.strictEqual(stderr, '');
+   assert.strictEqual(stderr, "");
   }),
  );
 }
 
 {
  // Verify that non-function inputs throw.
- ['foo', null, undefined, false, 0, {}, Symbol(), []].forEach((value) => {
+ ["foo", null, undefined, false, 0, {}, Symbol(), []].forEach((value) => {
   assert.throws(() => {
    callbackify(value);
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "original" argument must be of type function.' +
                common.invalidArgTypeHelper(value),
   });
@@ -267,14 +267,14 @@ const values = [
  const args = [];
 
  // Verify that the last argument to the callbackified function is a function.
- ['foo', null, undefined, false, 0, {}, Symbol(), []].forEach((value) => {
+ ["foo", null, undefined, false, 0, {}, Symbol(), []].forEach((value) => {
   args.push(value);
   assert.throws(() => {
    cb(...args);
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
-   message: 'The last argument must be of type function.' +
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
+   message: "The last argument must be of type function." +
                common.invalidArgTypeHelper(value),
   });
  });

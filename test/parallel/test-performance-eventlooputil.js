@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const { mustCall } = require('../common');
+const { mustCall } = require("../common");
 
 const TIMEOUT = 10;
 const SPIN_DUR = 50;
 
-const assert = require('assert');
-const { performance } = require('perf_hooks');
-const { Worker, parentPort } = require('worker_threads');
+const assert = require("assert");
+const { performance } = require("perf_hooks");
+const { Worker, parentPort } = require("worker_threads");
 
 const { nodeTiming, eventLoopUtilization } = performance;
 const elu = eventLoopUtilization();
@@ -22,9 +22,9 @@ if (nodeTiming.loopStart === -1) {
                         { idle: 0, active: 0, utilization: 0 });
 }
 
-const nodeTimingProps = ['name', 'entryType', 'startTime', 'duration',
-                         'nodeStart', 'v8Start', 'environment', 'loopStart',
-                         'loopExit', 'bootstrapComplete', 'idleTime'];
+const nodeTimingProps = ["name", "entryType", "startTime", "duration",
+                         "nodeStart", "v8Start", "environment", "loopStart",
+                         "loopExit", "bootstrapComplete", "idleTime"];
 for (const p of nodeTimingProps)
  assert.ok(typeof JSON.parse(JSON.stringify(nodeTiming))[p] ===
     typeof nodeTiming[p]);
@@ -95,15 +95,15 @@ function runCalcTest(elu1) {
 function runWorkerTest() {
  // Use argv to detect whether we're running as a Worker called by this test
  // vs. this test also being called as a Worker.
- if (process.argv[2] === 'iamalive') {
+ if (process.argv[2] === "iamalive") {
   parentPort.postMessage(JSON.stringify(eventLoopUtilization()));
   return;
  }
 
  const elu1 = eventLoopUtilization();
- const worker = new Worker(__filename, { argv: [ 'iamalive' ] });
+ const worker = new Worker(__filename, { argv: [ "iamalive" ] });
 
- worker.on('message', mustCall((msg) => {
+ worker.on("message", mustCall((msg) => {
   const elu2 = eventLoopUtilization(elu1);
   const data = JSON.parse(msg);
 

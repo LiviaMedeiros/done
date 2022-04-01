@@ -1,27 +1,27 @@
-'use strict';
+"use strict";
 
 // Flags: --expose-internals
 
-const common = require('../common');
-const stream = require('stream');
-const repl = require('internal/repl');
-const assert = require('assert');
+const common = require("../common");
+const stream = require("stream");
+const repl = require("internal/repl");
+const assert = require("assert");
 
 // Array of [useGlobal, expectedResult] pairs
 const globalTestCases = [
- [false, 'undefined'],
- [true, '\'tacos\''],
- [undefined, 'undefined'],
+ [false, "undefined"],
+ [true, "'tacos'"],
+ [undefined, "undefined"],
 ];
 
 const globalTest = (useGlobal, cb, output) => (err, repl) => {
  if (err)
   return cb(err);
 
- let str = '';
- output.on('data', (data) => (str += data));
- global.lunch = 'tacos';
- repl.write('global.lunch;\n');
+ let str = "";
+ output.on("data", (data) => (str += data));
+ global.lunch = "tacos";
+ repl.write("global.lunch;\n");
  repl.close();
  delete global.lunch;
  cb(null, str.trim());
@@ -46,19 +46,19 @@ const processTest = (useGlobal, cb, output) => (err, repl) => {
  if (err)
   return cb(err);
 
- let str = '';
- output.on('data', (data) => (str += data));
+ let str = "";
+ output.on("data", (data) => (str += data));
 
  // If useGlobal is false, then `let process` should work
- repl.write('let process;\n');
- repl.write('21 * 2;\n');
+ repl.write("let process;\n");
+ repl.write("21 * 2;\n");
  repl.close();
  cb(null, str.trim());
 };
 
 for (const option of processTestCases) {
  runRepl(option, processTest, common.mustSucceed((output) => {
-  assert.strictEqual(output, 'undefined\n42');
+  assert.strictEqual(output, "undefined\n42");
  }));
 }
 
@@ -71,7 +71,7 @@ function runRepl(useGlobal, testFunc, cb) {
   useGlobal: useGlobal,
   useColors: false,
   terminal: false,
-  prompt: '',
+  prompt: "",
  };
 
  repl.createInternalRepl(

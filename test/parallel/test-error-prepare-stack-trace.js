@@ -1,8 +1,8 @@
 // Flags: --enable-source-maps
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 // Error.prepareStackTrace() can be overridden with source maps enabled.
 {
@@ -11,7 +11,7 @@ const assert = require('assert');
   prepareCalled = true;
  };
  try {
-  throw new Error('foo');
+  throw new Error("foo");
  } catch (err) {
   err.stack; // eslint-disable-line no-unused-expressions
  }

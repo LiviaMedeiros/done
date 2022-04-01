@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 // This test ensures that fast-path PromiseHook assigns async ids
 // to already created promises when the native hook function is

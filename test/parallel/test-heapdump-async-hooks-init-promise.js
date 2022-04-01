@@ -1,9 +1,9 @@
 // Flags: --expose-gc
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
-const v8 = require('v8');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
+const v8 = require("v8");
 
 // Regression test for https://github.com/nodejs/node/issues/28786
 // Make sure that creating a heap snapshot inside an async_hooks hook
@@ -17,7 +17,7 @@ const promiseIds = [];
 
 async_hooks.createHook({
  init(id, type) {
-  if (type === 'PROMISE') {
+  if (type === "PROMISE") {
    createSnapshot();
    promiseIds.push(id);
   }

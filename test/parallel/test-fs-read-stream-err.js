@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
 
 const stream = fs.createReadStream(__filename, {
  bufferSize: 64,
 });
-const err = new Error('BAM');
+const err = new Error("BAM");
 
-stream.on('error', common.mustCall((err_) => {
+stream.on("error", common.mustCall((err_) => {
  process.nextTick(common.mustCall(() => {
   assert.strictEqual(stream.fd, null);
   assert.strictEqual(err_, err);
@@ -53,11 +53,11 @@ fs.read = function() {
   });
   // It should not be called again!
   fs.read = () => {
-   throw new Error('BOOM!');
+   throw new Error("BOOM!");
   };
  });
 };
 
-stream.on('data', (buf) => {
- stream.on('data', common.mustNotCall("no more 'data' events should follow"));
+stream.on("data", (buf) => {
+ stream.on("data", common.mustNotCall("no more 'data' events should follow"));
 });

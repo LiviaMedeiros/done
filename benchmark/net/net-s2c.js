@@ -1,14 +1,14 @@
 // Test the speed of .pipe() with sockets
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 const PORT = common.PORT;
 
 const bench = common.createBenchmark(main, {
  sendchunklen: [256, 32 * 1024, 128 * 1024, 16 * 1024 * 1024],
- type: ['utf', 'asc', 'buf'],
+ type: ["utf", "asc", "buf"],
  recvbuflen: [0, 64 * 1024, 1024 * 1024],
- recvbufgenfn: ['true', 'false'],
+ recvbufgenfn: ["true", "false"],
  dur: [5],
 }, {
  test: { sendchunklen: 256 },
@@ -24,16 +24,16 @@ function main({ dur, sendchunklen, type, recvbuflen, recvbufgenfn }) {
   recvbuf = Buffer.alloc(recvbuflen);
 
  switch (type) {
-  case 'buf':
-   chunk = Buffer.alloc(sendchunklen, 'x');
+  case "buf":
+   chunk = Buffer.alloc(sendchunklen, "x");
    break;
-  case 'utf':
-   encoding = 'utf8';
-   chunk = 'ü'.repeat(sendchunklen / 2);
+  case "utf":
+   encoding = "utf8";
+   chunk = "ü".repeat(sendchunklen / 2);
    break;
-  case 'asc':
-   encoding = 'ascii';
-   chunk = 'x'.repeat(sendchunklen);
+  case "asc":
+   encoding = "ascii";
+   chunk = "x".repeat(sendchunklen);
    break;
   default:
    throw new Error(`invalid type: ${type}`);
@@ -47,7 +47,7 @@ function main({ dur, sendchunklen, type, recvbuflen, recvbufgenfn }) {
   socketOpts = { port: PORT };
  } else {
   let buffer = recvbuf;
-  if (recvbufgenfn === 'true') {
+  if (recvbufgenfn === "true") {
    let bufidx = -1;
    const bufpool = [
     recvbuf,
@@ -77,7 +77,7 @@ function main({ dur, sendchunklen, type, recvbuflen, recvbufgenfn }) {
 
  server.listen(PORT, () => {
   const socket = net.connect(socketOpts);
-  socket.on('connect', () => {
+  socket.on("connect", () => {
    bench.start();
 
    if (recvbuf === undefined)
@@ -93,7 +93,7 @@ function main({ dur, sendchunklen, type, recvbuflen, recvbufgenfn }) {
  });
 }
 
-const net = require('net');
+const net = require("net");
 
 function Writer() {
  this.writable = true;
@@ -102,9 +102,9 @@ function Writer() {
 Writer.prototype.write = function(chunk, encoding, cb) {
  received += chunk.length;
 
- if (typeof encoding === 'function')
+ if (typeof encoding === "function")
   encoding();
- else if (typeof cb === 'function')
+ else if (typeof cb === "function")
   cb();
 
  return true;
@@ -121,7 +121,7 @@ function flow() {
  const dest = this.dest;
  const res = dest.write(chunk, encoding);
  if (!res)
-  dest.once('drain', this.flow);
+  dest.once("drain", this.flow);
  else
   process.nextTick(this.flow);
 }

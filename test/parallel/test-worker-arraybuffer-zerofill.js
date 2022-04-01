@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const { Worker } = require('worker_threads');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { Worker } = require("worker_threads");
 
 // Make sure that allocating uninitialized ArrayBuffers in one thread does not
 // affect the zero-initialization in other threads.
@@ -24,7 +24,7 @@ function allocBuffers() {
 const interval = setInterval(allocBuffers, 0);
 
 let messages = 0;
-w.on('message', (sum) => {
+w.on("message", (sum) => {
  assert.strictEqual(sum, 0);
  if (messages++ === 100) {
   clearInterval(interval);

@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const https = require('https');
+const assert = require("assert");
+const https = require("https");
 
 const agent = new https.Agent();
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 const expectedHeader = /^HTTP\/1\.1 200 OK/;
@@ -20,15 +20,15 @@ const expectedBody = /hello world\n/;
 const expectCertError = /^Error: unable to verify the first certificate$/;
 
 const checkRequest = (socket, server) => {
- let result = '';
- socket.on('connect', common.mustCall((data) => {
-  socket.write('GET / HTTP/1.1\r\n\r\n');
+ let result = "";
+ socket.on("connect", common.mustCall((data) => {
+  socket.write("GET / HTTP/1.1\r\n\r\n");
   socket.end();
  }));
- socket.on('data', common.mustCall((chunk) => {
+ socket.on("data", common.mustCall((chunk) => {
   result += chunk;
  }));
- socket.on('end', common.mustCall(() => {
+ socket.on("end", common.mustCall(() => {
   assert.match(result, expectedHeader);
   assert.match(result, expectedBody);
   server.close();
@@ -37,7 +37,7 @@ const checkRequest = (socket, server) => {
 
 function createServer() {
  return https.createServer(options, (req, res) => {
-  res.end('hello world\n');
+  res.end("hello world\n");
  });
 }
 
@@ -46,7 +46,7 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = {
    port: port,
    host: host,
@@ -64,7 +64,7 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = {
    rejectUnauthorized: false,
    _agentKey: agent.getName({ port, host }),
@@ -79,7 +79,7 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = {
    rejectUnauthorized: false,
    _agentKey: agent.getName({ port, host }),
@@ -94,7 +94,7 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = {
    rejectUnauthorized: false,
   };
@@ -108,10 +108,10 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = null;
   const socket = agent.createConnection(port, host, options);
-  socket.on('error', common.mustCall((e) => {
+  socket.on("error", common.mustCall((e) => {
    assert.match(e.toString(), expectCertError);
    server.close();
   }));
@@ -123,10 +123,10 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = undefined;
   const socket = agent.createConnection(port, host, options);
-  socket.on('error', common.mustCall((e) => {
+  socket.on("error", common.mustCall((e) => {
    assert.match(e.toString(), expectCertError);
    server.close();
   }));
@@ -138,17 +138,17 @@ function createServer() {
  const server = createServer();
  server.listen(0, common.mustCall(() => {
   const port = server.address().port;
-  const host = 'localhost';
+  const host = "localhost";
   const options = {
    port: 3000,
    rejectUnauthorized: false,
   };
 
   const socket = agent.createConnection(port, host, options);
-  socket.on('connect', common.mustCall((data) => {
+  socket.on("connect", common.mustCall((data) => {
    socket.end();
   }));
-  socket.on('end', common.mustCall(() => {
+  socket.on("end", common.mustCall(() => {
    assert.deepStrictEqual(options, {
     port: 3000, rejectUnauthorized: false,
    });

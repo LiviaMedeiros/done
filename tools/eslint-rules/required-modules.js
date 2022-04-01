@@ -2,9 +2,9 @@
  * @fileoverview Require usage of specified node modules.
  * @author Rich Trott
  */
-'use strict';
+"use strict";
 
-const { isRequireCall, isString } = require('./rules-utils.js');
+const { isRequireCall, isString } = require("./rules-utils.js");
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -16,7 +16,7 @@ module.exports = function(context) {
  const requiredModules = options ? Object.keys(options).map((x) => {
   return [ x, new RegExp(options[x]) ];
  }) : [];
- const isESM = context.parserOptions.sourceType === 'module';
+ const isESM = context.parserOptions.sourceType === "module";
 
  const foundModules = [];
 
@@ -53,7 +53,7 @@ module.exports = function(context) {
  }
 
  const rules = {
-  'Program:exit'(node) {
+  "Program:exit"(node) {
    if (foundModules.length < requiredModules.length) {
     const missingModules = requiredModules.filter(
      ([module]) => foundModules.indexOf(module) === -1,
@@ -93,9 +93,9 @@ module.exports = function(context) {
 
 module.exports.meta = {
  schema: [{
-  'type': 'object',
-  'additionalProperties': {
-   'type': 'string',
+  "type": "object",
+  "additionalProperties": {
+   "type": "string",
   },
  }],
 };

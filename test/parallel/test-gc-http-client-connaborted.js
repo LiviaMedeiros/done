@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 // just like test-gc-http-client.js,
 // but aborting every connection that comes in.
 
-const common = require('../common');
-const onGC = require('../common/ongc');
+const common = require("../common");
+const onGC = require("../common/ongc");
 
-const http = require('http');
+const http = require("http");
 const todo = 500;
 let done = 0;
 let count = 0;
@@ -29,10 +29,10 @@ function getall() {
   return;
 
  const req = http.get({
-  hostname: 'localhost',
-  pathname: '/',
+  hostname: "localhost",
+  pathname: "/",
   port: server.address().port,
- }, cb).on('error', cb);
+ }, cb).on("error", cb);
 
  count++;
  onGC(req, { ongc });
@@ -52,7 +52,7 @@ setInterval(status, 100).unref();
 
 function status() {
  global.gc();
- console.log('Done: %d/%d', done, todo);
- console.log('Collected: %d/%d', countGC, count);
+ console.log("Done: %d/%d", done, todo);
+ console.log("Collected: %d/%d", countGC, count);
  if (countGC === todo) server.close();
 }

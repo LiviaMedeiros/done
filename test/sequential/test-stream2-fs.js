@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
+"use strict";
+require("../common");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
 
-const fs = require('fs');
+const fs = require("fs");
 const FSReadable = fs.ReadStream;
 
-const path = require('path');
-const file = path.resolve(fixtures.path('x1024.txt'));
+const path = require("path");
+const file = path.resolve(fixtures.path("x1024.txt"));
 
 const size = fs.statSync(file).size;
 
 const expectLengths = [1024];
 
-const Stream = require('stream');
+const Stream = require("stream");
 
 class TestWriter extends Stream {
  constructor() {
@@ -51,20 +51,20 @@ class TestWriter extends Stream {
 
  end(c) {
   if (c) this.buffer.push(c.toString());
-  this.emit('results', this.buffer);
+  this.emit("results", this.buffer);
  }
 }
 
 const r = new FSReadable(file);
 const w = new TestWriter();
 
-w.on('results', function(res) {
+w.on("results", function(res) {
  console.error(res, w.length);
  assert.strictEqual(w.length, size);
  assert.deepStrictEqual(res.map(function(c) {
   return c.length;
  }), expectLengths);
- console.log('ok');
+ console.log("ok");
 });
 
 r.pipe(w);

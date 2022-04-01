@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const { Writable } = require('stream');
-const { Console } = require('console');
+"use strict";
+require("../common");
+const { Writable } = require("stream");
+const { Console } = require("console");
 
 const stream = new Writable({
  write() {
@@ -11,4 +11,4 @@ const stream = new Writable({
 
 const console = new Console({ stdout: stream });
 
-console.log('test'); // Should not throw
+console.log("test"); // Should not throw

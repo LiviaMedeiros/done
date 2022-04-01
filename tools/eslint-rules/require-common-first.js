@@ -1,18 +1,18 @@
 /**
  * @fileoverview Require `common` module first in our tests.
  */
-'use strict';
+"use strict";
 
-const path = require('path');
-const { isRequireCall, isString } = require('./rules-utils.js');
+const path = require("path");
+const { isRequireCall, isString } = require("./rules-utils.js");
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
 module.exports = function(context) {
- const requiredModule = 'common';
- const isESM = context.parserOptions.sourceType === 'module';
+ const requiredModule = "common";
+ const isESM = context.parserOptions.sourceType === "module";
  const foundModules = [];
 
  /**
@@ -21,8 +21,8 @@ module.exports = function(context) {
 	 * @returns {string} module name
 	 */
  function getModuleName(str) {
-  if (str === '../common/index.mjs') {
-   return 'common';
+  if (str === "../common/index.mjs") {
+   return "common";
   }
 
   return path.basename(str);
@@ -44,14 +44,14 @@ module.exports = function(context) {
  }
 
  const rules = {
-  'Program:exit'(node) {
+  "Program:exit"(node) {
    // The common module should be loaded in the first place.
    const notLoadedFirst = foundModules.indexOf(requiredModule) !== 0;
    if (notLoadedFirst) {
     context.report(
      node,
      'Mandatory module "{{moduleName}}" must be loaded ' +
-          'before any other modules.',
+          "before any other modules.",
      { moduleName: requiredModule },
     );
    }

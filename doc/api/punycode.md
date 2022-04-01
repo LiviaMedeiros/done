@@ -21,7 +21,7 @@ The `punycode` module is a bundled version of the [Punycode.js][] module. It
 can be accessed using:
 
 ```js
-const punycode = require('punycode');
+const punycode = require("punycode");
 ```
 
 [Punycode][] is a character encoding scheme defined by RFC 3492 that is
@@ -51,8 +51,8 @@ The `punycode.decode()` method converts a [Punycode][] string of ASCII-only
 characters to the equivalent string of Unicode codepoints.
 
 ```js
-punycode.decode('maana-pta'); // 'mañana'
-punycode.decode('--dqo34k'); // '☃-⌘'
+punycode.decode("maana-pta"); // 'mañana'
+punycode.decode("--dqo34k"); // '☃-⌘'
 ```
 
 ## `punycode.encode(string)`
@@ -67,8 +67,8 @@ The `punycode.encode()` method converts a string of Unicode codepoints to a
 [Punycode][] string of ASCII-only characters.
 
 ```js
-punycode.encode('mañana'); // 'maana-pta'
-punycode.encode('☃-⌘'); // '--dqo34k'
+punycode.encode("mañana"); // 'maana-pta'
+punycode.encode("☃-⌘"); // '--dqo34k'
 ```
 
 ## `punycode.toASCII(domain)`
@@ -86,9 +86,9 @@ already only contains ASCII characters will have no effect.
 
 ```js
 // encode domain names
-punycode.toASCII('mañana.com');  // 'xn--maana-pta.com'
-punycode.toASCII('☃-⌘.com');   // 'xn----dqo34k.com'
-punycode.toASCII('example.com'); // 'example.com'
+punycode.toASCII("mañana.com");  // 'xn--maana-pta.com'
+punycode.toASCII("☃-⌘.com");   // 'xn----dqo34k.com'
+punycode.toASCII("example.com"); // 'example.com'
 ```
 
 ## `punycode.toUnicode(domain)`
@@ -105,9 +105,9 @@ encoded parts of the domain name are be converted.
 
 ```js
 // decode domain names
-punycode.toUnicode('xn--maana-pta.com'); // 'mañana.com'
-punycode.toUnicode('xn----dqo34k.com');  // '☃-⌘.com'
-punycode.toUnicode('example.com');       // 'example.com'
+punycode.toUnicode("xn--maana-pta.com"); // 'mañana.com'
+punycode.toUnicode("xn----dqo34k.com");  // '☃-⌘.com'
+punycode.toUnicode("example.com");       // 'example.com'
 ```
 
 ## `punycode.ucs2`
@@ -128,9 +128,9 @@ The `punycode.ucs2.decode()` method returns an array containing the numeric
 codepoint values of each Unicode symbol in the string.
 
 ```js
-punycode.ucs2.decode('abc'); // [0x61, 0x62, 0x63]
+punycode.ucs2.decode("abc"); // [0x61, 0x62, 0x63]
 // surrogate pair for U+1D306 tetragram for centre:
-punycode.ucs2.decode('\uD834\uDF06'); // [0x1D306]
+punycode.ucs2.decode("\uD834\uDF06"); // [0x1D306]
 ```
 
 ### `punycode.ucs2.encode(codePoints)`

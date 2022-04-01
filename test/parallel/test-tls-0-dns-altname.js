@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 // Check getPeerCertificate can properly handle '\0' for fix CVE-2009-2408.
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const server = tls.createServer({
- key: fixtures.readSync(['0-dns', '0-dns-key.pem']),
- cert: fixtures.readSync(['0-dns', '0-dns-cert.pem']),
+ key: fixtures.readSync(["0-dns", "0-dns-key.pem"]),
+ cert: fixtures.readSync(["0-dns", "0-dns-cert.pem"]),
 }, common.mustCall((c) => {
- c.once('data', common.mustCall(() => {
+ c.once("data", common.mustCall(() => {
   c.destroy();
   server.close();
  }));
@@ -45,10 +45,10 @@ const server = tls.createServer({
   const cert = c.getPeerCertificate();
   assert.strictEqual(cert.subjectaltname,
                      'DNS:"good.example.org\\u0000.evil.example.com", ' +
-                           'DNS:just-another.example.com, ' +
-                           'IP Address:8.8.8.8, ' +
-                           'IP Address:8.8.4.4, ' +
-                           'DNS:last.example.com');
-  c.write('ok');
+                           "DNS:just-another.example.com, " +
+                           "IP Address:8.8.8.8, " +
+                           "IP Address:8.8.4.4, " +
+                           "DNS:last.example.com");
+  c.write("ok");
  }));
 }));

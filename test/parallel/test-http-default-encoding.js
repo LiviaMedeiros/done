@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
 
-const expected = 'This is a unicode text: سلام';
-let result = '';
+const expected = "This is a unicode text: سلام";
+let result = "";
 
 const server = http.Server((req, res) => {
- req.setEncoding('utf8');
- req.on('data', (chunk) => {
+ req.setEncoding("utf8");
+ req.on("data", (chunk) => {
   result += chunk;
- }).on('end', () => {
+ }).on("end", () => {
   server.close();
   res.writeHead(200);
-  res.end('hello world\n');
+  res.end("hello world\n");
  });
 
 });
@@ -42,17 +42,17 @@ const server = http.Server((req, res) => {
 server.listen(0, function() {
  http.request({
   port: this.address().port,
-  path: '/',
-  method: 'POST',
+  path: "/",
+  method: "POST",
  }, (res) => {
   console.log(res.statusCode);
   res.resume();
- }).on('error', (e) => {
+ }).on("error", (e) => {
   console.log(e.message);
   process.exit(1);
  }).end(expected);
 });
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(result, expected);
 });

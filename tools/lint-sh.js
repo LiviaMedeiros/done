@@ -1,22 +1,22 @@
 #!/usr/bin/env node
-'use strict';
+"use strict";
 
-const { execSync, spawn } = require('child_process');
-const { promises: fs, readdirSync, statSync } = require('fs');
-const { extname, join, relative, resolve } = require('path');
+const { execSync, spawn } = require("child_process");
+const { promises: fs, readdirSync, statSync } = require("fs");
+const { extname, join, relative, resolve } = require("path");
 
-const FIX_MODE_ENABLED = process.argv.includes('--fix');
-const USE_NPX = process.argv.includes('--from-npx');
+const FIX_MODE_ENABLED = process.argv.includes("--fix");
+const USE_NPX = process.argv.includes("--from-npx");
 
-const SHELLCHECK_EXE_NAME = 'shellcheck';
-const SHELLCHECK_OPTIONS = ['--shell=sh', '--severity=info', '--enable=all'];
-if (FIX_MODE_ENABLED) SHELLCHECK_OPTIONS.push('--format=diff');
-else if (process.env.GITHUB_ACTIONS) SHELLCHECK_OPTIONS.push('--format=json');
+const SHELLCHECK_EXE_NAME = "shellcheck";
+const SHELLCHECK_OPTIONS = ["--shell=sh", "--severity=info", "--enable=all"];
+if (FIX_MODE_ENABLED) SHELLCHECK_OPTIONS.push("--format=diff");
+else if (process.env.GITHUB_ACTIONS) SHELLCHECK_OPTIONS.push("--format=json");
 
 const SPAWN_OPTIONS = {
  cwd: null,
  shell: false,
- stdio: ['pipe', 'pipe', 'inherit'],
+ stdio: ["pipe", "pipe", "inherit"],
 };
 
 function* findScriptFilesRecursively(dirPath) {
@@ -27,24 +27,24 @@ function* findScriptFilesRecursively(dirPath) {
 
   if (
    entry.isDirectory() &&
-      entry.name !== 'build' &&
-      entry.name !== 'changelogs' &&
-      entry.name !== 'deps' &&
-      entry.name !== 'fixtures' &&
-      entry.name !== 'gyp' &&
-      entry.name !== 'inspector_protocol' &&
-      entry.name !== 'node_modules' &&
-      entry.name !== 'out' &&
-      entry.name !== 'tmp'
+      entry.name !== "build" &&
+      entry.name !== "changelogs" &&
+      entry.name !== "deps" &&
+      entry.name !== "fixtures" &&
+      entry.name !== "gyp" &&
+      entry.name !== "inspector_protocol" &&
+      entry.name !== "node_modules" &&
+      entry.name !== "out" &&
+      entry.name !== "tmp"
   ) {
    yield* findScriptFilesRecursively(path);
-  } else if (entry.isFile() && extname(entry.name) === '.sh') {
+  } else if (entry.isFile() && extname(entry.name) === ".sh") {
    yield path;
   }
  }
 }
 
-const expectedHashBang = Buffer.from('#!/bin/sh\n');
+const expectedHashBang = Buffer.from("#!/bin/sh\n");
 async function hasInvalidHashBang(fd) {
  const { length } = expectedHashBang;
 
@@ -55,7 +55,7 @@ async function hasInvalidHashBang(fd) {
 }
 
 async function checkFiles(...files) {
- const flags = FIX_MODE_ENABLED ? 'r+' : 'r';
+ const flags = FIX_MODE_ENABLED ? "r+" : "r";
  await Promise.all(
   files.map(async (file) => {
    const fd = await fs.open(file, flags);
@@ -64,8 +64,8 @@ async function checkFiles(...files) {
      const file = await fd.readFile();
 
      const fileContent =
-            file[0] === '#'.charCodeAt() ?
-            	file.subarray(file.indexOf('\n') + 1) :
+            file[0] === "#".charCodeAt() ?
+            	file.subarray(file.indexOf("\n") + 1) :
             	file;
 
      const toWrite = Buffer.concat([expectedHashBang, fileContent]);
@@ -76,7 +76,7 @@ async function checkFiles(...files) {
      console.error(
       (process.env.GITHUB_ACTIONS ?
        `::error file=${file},line=1,col=1::` :
-       'Fixable with --fix: ') +
+       "Fixable with --fix: ") +
               `Invalid hashbang for ${file} (expected /bin/sh).`,
      );
     }
@@ -88,7 +88,7 @@ async function checkFiles(...files) {
  const stdout = await new Promise((resolve, reject) => {
   const SHELLCHECK_EXE =
       process.env.SHELLCHECK ||
-      execSync('command -v ' + (USE_NPX ? 'npx' : SHELLCHECK_EXE_NAME))
+      execSync("command -v " + (USE_NPX ? "npx" : SHELLCHECK_EXE_NAME))
         .toString()
         .trim();
   const NPX_OPTIONS = USE_NPX ? [SHELLCHECK_EXE_NAME] : [];
@@ -104,31 +104,31 @@ async function checkFiles(...files) {
    ],
    SPAWN_OPTIONS,
   );
-  shellcheck.once('error', reject);
+  shellcheck.once("error", reject);
 
-  let json = '';
+  let json = "";
   let childProcess = shellcheck;
   if (FIX_MODE_ENABLED) {
    const GIT_EXE =
-        process.env.GIT || execSync('command -v git').toString().trim();
+        process.env.GIT || execSync("command -v git").toString().trim();
 
-   const gitApply = spawn(GIT_EXE, ['apply'], SPAWN_OPTIONS);
+   const gitApply = spawn(GIT_EXE, ["apply"], SPAWN_OPTIONS);
    shellcheck.stdout.pipe(gitApply.stdin);
-   shellcheck.once('exit', (code) => {
+   shellcheck.once("exit", (code) => {
     if (!process.exitCode && code) process.exitCode = code;
    });
    gitApply.stdout.pipe(process.stdout);
 
-   gitApply.once('error', reject);
+   gitApply.once("error", reject);
    childProcess = gitApply;
   } else if (process.env.GITHUB_ACTIONS) {
-   shellcheck.stdout.on('data', (chunk) => {
+   shellcheck.stdout.on("data", (chunk) => {
     json += chunk;
    });
   } else {
    shellcheck.stdout.pipe(process.stdout);
   }
-  childProcess.once('exit', (code) => {
+  childProcess.once("exit", (code) => {
    if (!process.exitCode && code) process.exitCode = code;
    resolve(json);
   });
@@ -146,23 +146,23 @@ async function checkFiles(...files) {
 
 const USAGE_STR =
   `Usage: ${process.argv[1]} <path> [--fix] [--from-npx]\n` +
-  '\n' +
-  'Environment variables:\n' +
-  ' - SHELLCHECK: absolute path to `shellcheck`. If not provided, the\n' +
-  '   script will use the result of `command -v shellcheck`, or\n' +
-  '   `$(command -v npx) shellcheck` if the flag `--from-npx` is provided\n' +
-  '   (may require an internet connection).\n' +
-  ' - GIT: absolute path to `git`. If not provided, the \n' +
-  '   script will use the result of `command -v git`.\n';
+  "\n" +
+  "Environment variables:\n" +
+  " - SHELLCHECK: absolute path to `shellcheck`. If not provided, the\n" +
+  "   script will use the result of `command -v shellcheck`, or\n" +
+  "   `$(command -v npx) shellcheck` if the flag `--from-npx` is provided\n" +
+  "   (may require an internet connection).\n" +
+  " - GIT: absolute path to `git`. If not provided, the \n" +
+  "   script will use the result of `command -v git`.\n";
 
 if (
  process.argv.length < 3 ||
-  process.argv.includes('-h') ||
-  process.argv.includes('--help')
+  process.argv.includes("-h") ||
+  process.argv.includes("--help")
 ) {
  console.log(USAGE_STR);
 } else {
- console.log('Running Shell scripts checker...');
+ console.log("Running Shell scripts checker...");
  const entryPoint = resolve(process.argv[2]);
  const stats = statSync(entryPoint, { throwIfNoEntry: false });
 
@@ -178,7 +178,7 @@ if (
   SPAWN_OPTIONS.cwd = process.cwd();
   checkFiles(entryPoint).catch(onError);
  } else {
-  onError(new Error('You must provide a valid directory or file path. ' +
+  onError(new Error("You must provide a valid directory or file path. " +
                       `Received '${process.argv[2]}'.`));
  }
 }

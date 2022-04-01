@@ -1,19 +1,19 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
-const payload = 'a'.repeat(800004);
+const payload = "a".repeat(800004);
 
 if (cluster.isPrimary) {
  const server = net.createServer();
 
- server.on('connection', common.mustCall((socket) => { socket.unref(); }));
+ server.on("connection", common.mustCall((socket) => { socket.unref(); }));
 
  const worker = cluster.fork();
- worker.on('message', common.mustCall(({ payload: received }, handle) => {
+ worker.on("message", common.mustCall(({ payload: received }, handle) => {
   assert.strictEqual(payload, received);
   assert(handle instanceof net.Socket);
   server.close();
@@ -29,7 +29,7 @@ if (cluster.isPrimary) {
   });
  }));
 } else {
- process.on('message', common.mustCall(({ payload: received }, handle) => {
+ process.on("message", common.mustCall(({ payload: received }, handle) => {
   assert.strictEqual(payload, received);
   assert(handle instanceof net.Socket);
 

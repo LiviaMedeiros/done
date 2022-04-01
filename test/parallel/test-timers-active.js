@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const active = require('timers').active;
+"use strict";
+require("../common");
+const assert = require("assert");
+const active = require("timers").active;
 
 // active() should create timers for these
 const legitTimers = [

@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
 
 const {
  Http2ServerRequest,

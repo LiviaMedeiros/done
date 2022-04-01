@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { Worker } = require('worker_threads');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { Worker } = require("worker_threads");
 
 const w = new Worker(
  `const fn = (err) => {
@@ -14,9 +14,9 @@ const w = new Worker(
   `,
  { eval: true },
 );
-w.on('message', common.mustNotCall());
-w.on('error', common.mustCall((err) => {
+w.on("message", common.mustNotCall());
+w.on("error", common.mustCall((err) => {
  assert.strictEqual(err.stack, undefined);
- assert.strictEqual(err.message, 'fhqwhgads');
- assert.strictEqual(err.name, 'Error');
+ assert.strictEqual(err.message, "fhqwhgads");
+ assert.strictEqual(err.name, "Error");
 }));

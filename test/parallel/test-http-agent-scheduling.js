@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 function createServer(count) {
  return http.createServer(common.mustCallAtLeast((req, res) => {
@@ -14,12 +14,12 @@ function createServer(count) {
 function makeRequest(url, agent, callback) {
  http
     .request(url, { agent }, (res) => {
-    	let data = '';
-    	res.setEncoding('ascii');
-    	res.on('data', (c) => {
+    	let data = "";
+    	res.setEncoding("ascii");
+    	res.on("data", (c) => {
     		data += c;
     	});
-    	res.on('end', () => {
+    	res.on("end", () => {
     		process.nextTick(callback, data);
     	});
     })
@@ -79,7 +79,7 @@ function fifoTest() {
   const agent = new http.Agent({
    keepAlive: true,
    maxSockets: 5,
-   scheduling: 'fifo',
+   scheduling: "fifo",
   });
 
   bulkRequest(url, agent, (ports) => {
@@ -107,7 +107,7 @@ function lifoTest() {
   const agent = new http.Agent({
    keepAlive: true,
    maxSockets: 5,
-   scheduling: 'lifo',
+   scheduling: "lifo",
   });
 
   bulkRequest(url, agent, (ports) => {
@@ -131,10 +131,10 @@ function badSchedulingOptionTest() {
   new http.Agent({
    keepAlive: true,
    maxSockets: 5,
-   scheduling: 'filo',
+   scheduling: "filo",
   });
  } catch (err) {
-  assert.strictEqual(err.code, 'ERR_INVALID_ARG_VALUE');
+  assert.strictEqual(err.code, "ERR_INVALID_ARG_VALUE");
   assert.strictEqual(
    err.message,
    "The argument 'scheduling' must be one of: 'fifo', 'lifo'. " +

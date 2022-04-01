@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const { Writable } = require('stream');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const { Writable } = require("stream");
+const assert = require("assert");
 
 // Ensure callback is always invoked before
 // error is emitted. Regardless if error was
@@ -15,10 +15,10 @@ const assert = require('assert');
    cb(new Error());
   }),
  });
- writable.on('error', common.mustCall(() => {
+ writable.on("error", common.mustCall(() => {
   assert.strictEqual(callbackCalled, true);
  }));
- writable.write('hi', common.mustCall(() => {
+ writable.write("hi", common.mustCall(() => {
   callbackCalled = true;
  }));
 }
@@ -31,10 +31,10 @@ const assert = require('assert');
    process.nextTick(cb, new Error());
   }),
  });
- writable.on('error', common.mustCall(() => {
+ writable.on("error", common.mustCall(() => {
   assert.strictEqual(callbackCalled, true);
  }));
- writable.write('hi', common.mustCall(() => {
+ writable.write("hi", common.mustCall(() => {
   callbackCalled = true;
  }));
 }
@@ -47,11 +47,11 @@ const assert = require('assert');
   }),
  });
 
- writable.on('error', common.mustCall());
+ writable.on("error", common.mustCall());
 
  let cnt = 0;
  // Ensure we don't live lock on sync error
- while (writable.write('a'))
+ while (writable.write("a"))
   cnt++;
 
  assert.strictEqual(cnt, 0);

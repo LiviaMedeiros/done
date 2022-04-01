@@ -1,5 +1,5 @@
-import '../common/index.mjs';
-import four from '../fixtures/async-error.js';
+import "../common/index.mjs";
+import four from "../fixtures/async-error.js";
 
 async function main() {
  try {

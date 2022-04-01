@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
-const net = require('net');
-const http = require('http');
+const net = require("net");
+const http = require("http");
 
 
 let requests_recv = 0;
@@ -39,30 +39,30 @@ function createTestServer() {
 function testServer() {
  http.Server.call(this, () => {});
 
- this.on('connection', function() {
+ this.on("connection", function() {
   requests_recv++;
  });
 
- this.on('request', function(req, res) {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.write('okay');
+ this.on("request", function(req, res) {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.write("okay");
   res.end();
  });
 
- this.on('upgrade', function(req, socket, upgradeHead) {
-  socket.write('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
-                 'Upgrade: WebSocket\r\n' +
-                 'Connection: Upgrade\r\n' +
-                 '\r\n\r\n');
+ this.on("upgrade", function(req, socket, upgradeHead) {
+  socket.write("HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
+                 "Upgrade: WebSocket\r\n" +
+                 "Connection: Upgrade\r\n" +
+                 "\r\n\r\n");
 
   request_upgradeHead = upgradeHead;
 
-  socket.on('data', function(d) {
-   const data = d.toString('utf8');
-   if (data === 'kill') {
+  socket.on("data", function(d) {
+   const data = d.toString("utf8");
+   if (data === "kill") {
     socket.end();
    } else {
-    socket.write(data, 'utf8');
+    socket.write(data, "utf8");
    }
   });
  });
@@ -81,37 +81,37 @@ function writeReq(socket, data, encoding) {
 // connection: Upgrade with listener
 function test_upgrade_with_listener() {
  const conn = net.createConnection(server.address().port);
- conn.setEncoding('utf8');
+ conn.setEncoding("utf8");
  let state = 0;
 
- conn.on('connect', function() {
+ conn.on("connect", function() {
   writeReq(conn,
-           'GET / HTTP/1.1\r\n' +
-             'Upgrade: WebSocket\r\n' +
-             'Connection: Upgrade\r\n' +
-             '\r\n' +
-             'WjN}|M(6');
+           "GET / HTTP/1.1\r\n" +
+             "Upgrade: WebSocket\r\n" +
+             "Connection: Upgrade\r\n" +
+             "\r\n" +
+             "WjN}|M(6");
  });
 
- conn.on('data', function(data) {
+ conn.on("data", function(data) {
   state++;
 
-  assert.strictEqual(typeof data, 'string');
+  assert.strictEqual(typeof data, "string");
 
   if (state === 1) {
-   assert.strictEqual(data.substr(0, 12), 'HTTP/1.1 101');
-   assert.strictEqual(request_upgradeHead.toString('utf8'), 'WjN}|M(6');
-   conn.write('test', 'utf8');
+   assert.strictEqual(data.substr(0, 12), "HTTP/1.1 101");
+   assert.strictEqual(request_upgradeHead.toString("utf8"), "WjN}|M(6");
+   conn.write("test", "utf8");
   } else if (state === 2) {
-   assert.strictEqual(data, 'test');
-   conn.write('kill', 'utf8');
+   assert.strictEqual(data, "test");
+   conn.write("kill", "utf8");
   }
  });
 
- conn.on('end', function() {
+ conn.on("end", function() {
   assert.strictEqual(state, 2);
   conn.end();
-  server.removeAllListeners('upgrade');
+  server.removeAllListeners("upgrade");
   test_upgrade_no_listener();
  });
 }
@@ -119,23 +119,23 @@ function test_upgrade_with_listener() {
 // connection: Upgrade, no listener
 function test_upgrade_no_listener() {
  const conn = net.createConnection(server.address().port);
- conn.setEncoding('utf8');
+ conn.setEncoding("utf8");
 
- conn.on('connect', function() {
+ conn.on("connect", function() {
   writeReq(conn,
-           'GET / HTTP/1.1\r\n' +
-             'Upgrade: WebSocket\r\n' +
-             'Connection: Upgrade\r\n' +
-             '\r\n');
+           "GET / HTTP/1.1\r\n" +
+             "Upgrade: WebSocket\r\n" +
+             "Connection: Upgrade\r\n" +
+             "\r\n");
  });
 
- conn.once('data', (data) => {
-  assert.strictEqual(typeof data, 'string');
-  assert.strictEqual(data.substr(0, 12), 'HTTP/1.1 200');
+ conn.once("data", (data) => {
+  assert.strictEqual(typeof data, "string");
+  assert.strictEqual(data.substr(0, 12), "HTTP/1.1 200");
   conn.end();
  });
 
- conn.on('close', function() {
+ conn.on("close", function() {
   test_standard_http();
  });
 }
@@ -143,19 +143,19 @@ function test_upgrade_no_listener() {
 // connection: normal
 function test_standard_http() {
  const conn = net.createConnection(server.address().port);
- conn.setEncoding('utf8');
+ conn.setEncoding("utf8");
 
- conn.on('connect', function() {
-  writeReq(conn, 'GET / HTTP/1.1\r\n\r\n');
+ conn.on("connect", function() {
+  writeReq(conn, "GET / HTTP/1.1\r\n\r\n");
  });
 
- conn.once('data', function(data) {
-  assert.strictEqual(typeof data, 'string');
-  assert.strictEqual(data.substr(0, 12), 'HTTP/1.1 200');
+ conn.once("data", function(data) {
+  assert.strictEqual(typeof data, "string");
+  assert.strictEqual(data.substr(0, 12), "HTTP/1.1 200");
   conn.end();
  });
 
- conn.on('close', function() {
+ conn.on("close", function() {
   server.close();
  });
 }
@@ -170,7 +170,7 @@ server.listen(0, function() {
 
 
 // Fin.
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(requests_recv, 3);
  assert.strictEqual(requests_sent, 3);
 });

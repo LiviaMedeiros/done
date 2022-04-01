@@ -1,9 +1,9 @@
-'use strict';
-require('../common');
-const ArrayStream = require('../common/arraystream');
-const assert = require('assert');
-const repl = require('repl');
-const vm = require('vm');
+"use strict";
+require("../common");
+const ArrayStream = require("../common/arraystream");
+const assert = require("assert");
+const repl = require("repl");
+const vm = require("vm");
 
 // Create a dummy stream that does nothing.
 const stream = new ArrayStream();
@@ -16,7 +16,7 @@ const stream = new ArrayStream();
   useGlobal: false,
  });
 
- let output = '';
+ let output = "";
  stream.write = function(d) {
   output += d;
  };
@@ -28,19 +28,19 @@ const stream = new ArrayStream();
  assert.notStrictEqual(r.context.console, console);
  assert.notStrictEqual(r.context.Object, Object);
 
- stream.run(['({} instanceof Object)']);
+ stream.run(["({} instanceof Object)"]);
 
- assert.strictEqual(output, 'true\n> ');
+ assert.strictEqual(output, "true\n> ");
 
  const context = r.createContext();
  // Ensure that the repl context gets its own "console" instance.
- assert(context.console instanceof require('console').Console);
+ assert(context.console instanceof require("console").Console);
 
  // Ensure that the repl's global property is the context.
  assert.strictEqual(context.global, context);
 
  // Ensure that the repl console instance is writable.
- context.console = 'foo';
+ context.console = "foo";
  r.close();
 }
 
@@ -52,10 +52,10 @@ const stream = new ArrayStream();
  assert.strictEqual(server.lines.length, 0);
 
  // An assignment to '_' in the repl server
- server.write('_ = 500;\n');
+ server.write("_ = 500;\n");
  assert.ok(server.underscoreAssigned);
  assert.strictEqual(server.lines.length, 1);
- assert.strictEqual(server.lines[0], '_ = 500;');
+ assert.strictEqual(server.lines[0], "_ = 500;");
  assert.strictEqual(server.last, 500);
 
  // Use the server to create a new context
@@ -65,7 +65,7 @@ const stream = new ArrayStream();
  // have side effects on the server
  assert.ok(server.underscoreAssigned);
  assert.strictEqual(server.lines.length, 1);
- assert.strictEqual(server.lines[0], '_ = 500;');
+ assert.strictEqual(server.lines[0], "_ = 500;");
  assert.strictEqual(server.last, 500);
 
  // Reset the server context
@@ -76,7 +76,7 @@ const stream = new ArrayStream();
  // Ensure that assigning to '_' in the new context
  // does not change the value in our server.
  assert.ok(!server.underscoreAssigned);
- vm.runInContext('_ = 1000;\n', context);
+ vm.runInContext("_ = 1000;\n", context);
 
  assert.ok(!server.underscoreAssigned);
  assert.strictEqual(server.lines.length, 0);

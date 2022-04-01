@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 
 const ArrayIteratorPrototype =
@@ -9,5 +9,5 @@ const ArrayIteratorPrototype =
 delete Array.prototype[Symbol.iterator];
 delete ArrayIteratorPrototype.next;
 
-require('../common/fixtures');
-import('../fixtures/es-modules/test-esm-ok.mjs').then(common.mustCall());
+require("../common/fixtures");
+import("../fixtures/es-modules/test-esm-ok.mjs").then(common.mustCall());

@@ -1,12 +1,12 @@
-import { readFileSync, writeFileSync } from 'fs';
-import https from 'https';
+import { readFileSync, writeFileSync } from "fs";
+import https from "https";
 
-const srcRoot = new URL('../../', import.meta.url);
+const srcRoot = new URL("../../", import.meta.url);
 
 const isRelease = () => {
  const re = /#define NODE_VERSION_IS_RELEASE 0/;
- const file = new URL('./src/node_version.h', srcRoot);
- return !re.test(readFileSync(file, { encoding: 'utf8' }));
+ const file = new URL("./src/node_version.h", srcRoot);
+ return !re.test(readFileSync(file, { encoding: "utf8" }));
 };
 
 const getUrl = (url) => {
@@ -16,14 +16,14 @@ const getUrl = (url) => {
     reject(new Error(
      `Failed to get ${url}, status code ${response.statusCode}`));
    }
-   response.setEncoding('utf8');
-   let body = '';
-   response.on('aborted', () => reject());
-   response.on('data', (data) => body += data);
-   response.on('end', () => resolve(body));
+   response.setEncoding("utf8");
+   let body = "";
+   response.on("aborted", () => reject());
+   response.on("data", (data) => body += data);
+   response.on("end", () => resolve(body));
   });
-  request.on('error', (err) => reject(err));
-  request.on('timeout', () => request.abort());
+  request.on("error", (err) => reject(err));
+  request.on("timeout", () => request.abort());
  });
 };
 
@@ -34,11 +34,11 @@ async function versions() {
  // The CHANGELOG.md on release branches may not reference newer semver
  // majors of Node.js so fetch and parse the version from the master branch.
  const url =
-    'https://raw.githubusercontent.com/nodejs/node/HEAD/CHANGELOG.md';
+    "https://raw.githubusercontent.com/nodejs/node/HEAD/CHANGELOG.md";
  let changelog;
- const file = new URL('./CHANGELOG.md', srcRoot);
+ const file = new URL("./CHANGELOG.md", srcRoot);
  if (kNoInternet) {
-  changelog = readFileSync(file, { encoding: 'utf8' });
+  changelog = readFileSync(file, { encoding: "utf8" });
  } else {
   try {
    changelog = await getUrl(url);
@@ -48,7 +48,7 @@ async function versions() {
     throw e;
    } else {
     console.warn(`Unable to retrieve ${url}. Falling back to ${file}.`);
-    changelog = readFileSync(file, { encoding: 'utf8' });
+    changelog = readFileSync(file, { encoding: "utf8" });
    }
   }
  }

@@ -1,16 +1,16 @@
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const https = require('https');
+const assert = require("assert");
+const https = require("https");
 
 const serverOptions = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 let requests = 0;
@@ -57,7 +57,7 @@ server.listen(0, common.mustCall(() => {
    rejectUnauthorized: false,
   }, (res) => {
    assert.strictEqual(Object.keys(res.headers).length, expected);
-   res.on('end', () => {
+   res.on("end", () => {
     if (++responses < maxAndExpected.length) {
      doRequest();
     } else {

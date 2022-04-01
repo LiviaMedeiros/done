@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const { Readable, pipeline } = require('stream');
-const http2 = require('http2');
+ common.skip("missing crypto");
+const { Readable, pipeline } = require("stream");
+const http2 = require("http2");
 
 {
  const server = http2.createServer((req, res) => {
@@ -14,11 +14,11 @@ const http2 = require('http2');
  server.listen(0, () => {
   const url = `http://localhost:${server.address().port}`;
   const client = http2.connect(url);
-  const req = client.request({ ':method': 'POST' });
+  const req = client.request({ ":method": "POST" });
 
   const rs = new Readable({
    read() {
-    rs.push('hello');
+    rs.push("hello");
    },
   });
 
@@ -28,7 +28,7 @@ const http2 = require('http2');
   }));
 
   let cnt = 10;
-  req.on('data', (data) => {
+  req.on("data", (data) => {
    cnt--;
    if (cnt === 0) rs.destroy();
   });

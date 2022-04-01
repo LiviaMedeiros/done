@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 // All of these values should cause http.request() to throw synchronously
 // when passed as the value of either options.hostname or options.host
@@ -13,10 +13,10 @@ vals.forEach((v) => {
  assert.throws(
   () => http.request({ hostname: v }),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "options.hostname" property must be of ' +
-               'type string or one of undefined or null.' +
+               "type string or one of undefined or null." +
                received,
   },
  );
@@ -24,10 +24,10 @@ vals.forEach((v) => {
  assert.throws(
   () => http.request({ host: v }),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "options.host" property must be of ' +
-               'type string or one of undefined or null.' +
+               "type string or one of undefined or null." +
                received,
   },
  );
@@ -36,7 +36,7 @@ vals.forEach((v) => {
 // These values are OK and should not throw synchronously.
 // Only testing for 'hostname' validation so ignore connection errors.
 const dontCare = () => {};
-['', undefined, null].forEach((v) => {
- http.request({ hostname: v }).on('error', dontCare).end();
- http.request({ host: v }).on('error', dontCare).end();
+["", undefined, null].forEach((v) => {
+ http.request({ hostname: v }).on("error", dontCare).end();
+ http.request({ host: v }).on("error", dontCare).end();
 });

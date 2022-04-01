@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const ArrayStream = require('../common/arraystream');
-const assert = require('assert');
-const repl = require('repl');
+"use strict";
+require("../common");
+const ArrayStream = require("../common/arraystream");
+const assert = require("assert");
+const repl = require("repl");
 let terminalExit = 0;
 let regularExit = 0;
 
@@ -39,10 +39,10 @@ function testTerminalMode() {
 
  process.nextTick(function() {
   // Manually fire a ^D keypress
-  stream.emit('data', '\u0004');
+  stream.emit("data", "\u0004");
  });
 
- r1.on('exit', function() {
+ r1.on("exit", function() {
   // Should be fired from the simulated ^D keypress
   terminalExit++;
   testRegularMode();
@@ -57,16 +57,16 @@ function testRegularMode() {
  });
 
  process.nextTick(function() {
-  stream.emit('end');
+  stream.emit("end");
  });
 
- r2.on('exit', function() {
+ r2.on("exit", function() {
   // Should be fired from the simulated 'end' event
   regularExit++;
  });
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(terminalExit, 1);
  assert.strictEqual(regularExit, 1);
 });

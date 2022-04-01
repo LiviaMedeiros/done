@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 function loadPEM(n) {
  return fixtures.readKey(`${n}.pem`);
@@ -20,8 +20,8 @@ function checkResults(result, expected) {
 }
 
 function runTest(clientsOptions, serverOptions, cb) {
- serverOptions.key = loadPEM('agent2-key');
- serverOptions.cert = loadPEM('agent2-cert');
+ serverOptions.key = loadPEM("agent2-key");
+ serverOptions.cert = loadPEM("agent2-cert");
  const results = [];
  let clientIndex = 0;
  let serverIndex = 0;
@@ -48,7 +48,7 @@ function runTest(clientsOptions, serverOptions, cb) {
     connectClient(options);
    } else {
     server.close();
-    server.on('close', () => {
+    server.on("close", () => {
      cb(results);
     });
    }
@@ -60,26 +60,26 @@ function runTest(clientsOptions, serverOptions, cb) {
 // Server: ALPN, Client: ALPN
 function Test1() {
  const serverOptions = {
-  ALPNProtocols: ['a', 'b', 'c'],
+  ALPNProtocols: ["a", "b", "c"],
  };
 
  const clientsOptions = [{
-  ALPNProtocols: ['a', 'b', 'c'],
+  ALPNProtocols: ["a", "b", "c"],
  }, {
-  ALPNProtocols: ['c', 'b', 'e'],
+  ALPNProtocols: ["c", "b", "e"],
  }, {
-  ALPNProtocols: ['first-priority-unsupported', 'x', 'y'],
+  ALPNProtocols: ["first-priority-unsupported", "x", "y"],
  }];
 
  runTest(clientsOptions, serverOptions, function(results) {
   // 'a' is selected by ALPN
   checkResults(results[0],
-               { server: { ALPN: 'a' },
-                 client: { ALPN: 'a' } });
+               { server: { ALPN: "a" },
+                 client: { ALPN: "a" } });
   // 'b' is selected by ALPN
   checkResults(results[1],
-               { server: { ALPN: 'b' },
-                 client: { ALPN: 'b' } });
+               { server: { ALPN: "b" },
+                 client: { ALPN: "b" } });
   // Nothing is selected by ALPN
   checkResults(results[2],
                { server: { ALPN: false },
@@ -92,7 +92,7 @@ function Test1() {
 // Server: ALPN, Client: Nothing
 function Test2() {
  const serverOptions = {
-  ALPNProtocols: ['a', 'b', 'c'],
+  ALPNProtocols: ["a", "b", "c"],
  };
 
  const clientsOptions = [{}, {}, {}];
@@ -120,11 +120,11 @@ function Test3() {
  const serverOptions = {};
 
  const clientsOptions = [{
-  ALPNrotocols: ['a', 'b', 'c'],
+  ALPNrotocols: ["a", "b", "c"],
  }, {
-  ALPNProtocols: ['c', 'b', 'e'],
+  ALPNProtocols: ["c", "b", "e"],
  }, {
-  ALPNProtocols: ['first-priority-unsupported', 'x', 'y'],
+  ALPNProtocols: ["first-priority-unsupported", "x", "y"],
  }];
 
  runTest(clientsOptions, serverOptions, function(results) {

@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const server = net.createServer(common.mustCall((s) => {
- console.error('SERVER: got connection');
+ console.error("SERVER: got connection");
  s.end();
 }));
 
 server.listen(0, common.mustCall(() => {
  const c = net.createConnection(server.address().port);
- c.on('close', common.mustCall(() => {
+ c.on("close", common.mustCall(() => {
   /* eslint-disable no-unused-expressions */
-  console.error('connection closed');
+  console.error("connection closed");
   assert.strictEqual(c._handle, null);
   // Calling functions / accessing properties of a closed socket should not
   // throw.

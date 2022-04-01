@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
 // Regression test for https://github.com/nodejs/node-v0.x-archive/issues/8897.
 
-const common = require('../common');
-const net = require('net');
-const Countdown = require('../common/countdown');
+const common = require("../common");
+const net = require("net");
+const Countdown = require("../common/countdown");
 
 const clients = [];
 
@@ -33,11 +33,11 @@ server.listen(0, common.mustCall(() => {
 
  {
   const client = net.connect({ port: server.address().port });
-  client.on('end', () => countdown.dec());
+  client.on("end", () => countdown.dec());
  }
 
  {
   const client = net.connect({ port: server.address().port });
-  client.on('end', () => countdown.dec());
+  client.on("end", () => countdown.dec());
  }
 }));

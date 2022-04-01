@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 let i;
 
 const N = 30;
@@ -35,19 +35,19 @@ function get_printer(timeout) {
 }
 
 process.nextTick(function() {
- console.log('Running from nextTick');
- done.push('nextTick');
+ console.log("Running from nextTick");
+ done.push("nextTick");
 });
 
 for (i = 0; i < N; i += 1) {
  setTimeout(get_printer(i), i);
 }
 
-console.log('Running from main.');
+console.log("Running from main.");
 
 
-process.on('exit', function() {
- assert.strictEqual(done[0], 'nextTick');
+process.on("exit", function() {
+ assert.strictEqual(done[0], "nextTick");
  // Disabling this test. I don't think we can ensure the order
  // for (i = 0; i < N; i += 1) {
  //  assert.strictEqual(i, done[i + 1]);

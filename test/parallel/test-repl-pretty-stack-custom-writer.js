@@ -1,15 +1,15 @@
-'use strict';
-require('../common');
-const { PassThrough } = require('stream');
-const assert = require('assert');
-const repl = require('repl');
+"use strict";
+require("../common");
+const { PassThrough } = require("stream");
+const assert = require("assert");
+const repl = require("repl");
 
 {
  const input = new PassThrough();
  const output = new PassThrough();
 
  const r = repl.start({
-  prompt: '',
+  prompt: "",
   input,
   output,
   writer: String,
@@ -19,5 +19,5 @@ const repl = require('repl');
 
  r.write('throw new Error("foo[a]")\n');
  r.close();
- assert.strictEqual(output.read().toString(), 'Uncaught Error: foo[a]\n');
+ assert.strictEqual(output.read().toString(), "Uncaught Error: foo[a]\n");
 }

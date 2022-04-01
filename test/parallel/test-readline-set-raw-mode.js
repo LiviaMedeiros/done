@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const readline = require('readline');
-const Stream = require('stream');
+"use strict";
+require("../common");
+const assert = require("assert");
+const readline = require("readline");
+const Stream = require("stream");
 
 const stream = new Stream();
 let expectedRawMode = true;
@@ -85,6 +85,6 @@ assert(rawModeCalled);
 assert(!resumeCalled);
 assert(pauseCalled);
 
-assert.deepStrictEqual(stream.listeners('keypress'), []);
+assert.deepStrictEqual(stream.listeners("keypress"), []);
 // One data listener for the keypress events.
-assert.strictEqual(stream.listeners('data').length, 1);
+assert.strictEqual(stream.listeners("data").length, 1);

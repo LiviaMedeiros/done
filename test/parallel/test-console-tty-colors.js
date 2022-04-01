@@ -1,16 +1,16 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const util = require('util');
-const { Writable } = require('stream');
-const { Console } = require('console');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const util = require("util");
+const { Writable } = require("stream");
+const { Console } = require("console");
 
 function check(isTTY, colorMode, expectedColorMode, inspectOptions) {
  const items = [
   1,
   { a: 2 },
-  [ 'foo' ],
-  { '\\a': '\\bar' },
+  [ "foo" ],
+  { "\\a": "\\bar" },
  ];
 
  let i = 0;
@@ -40,10 +40,10 @@ function check(isTTY, colorMode, expectedColorMode, inspectOptions) {
  }
 }
 
-check(true, 'auto', true);
-check(false, 'auto', false);
+check(true, "auto", true);
+check(false, "auto", false);
 check(false, undefined, true, { colors: true, compact: false });
-check(true, 'auto', true, { compact: false });
+check(true, "auto", true, { compact: false });
 check(true, undefined, false, { colors: false });
 check(true, true, true);
 check(false, true, true);
@@ -56,7 +56,7 @@ check(false, false, false);
   write: common.mustNotCall(),
  });
 
- [0, 'true', null, {}, [], () => {}].forEach((colorMode) => {
+ [0, "true", null, {}, [], () => {}].forEach((colorMode) => {
   const received = util.inspect(colorMode);
   assert.throws(
    () => {
@@ -68,12 +68,12 @@ check(false, false, false);
    },
    {
     message: `The argument 'colorMode' is invalid. Received ${received}`,
-    code: 'ERR_INVALID_ARG_VALUE',
+    code: "ERR_INVALID_ARG_VALUE",
    },
   );
  });
 
- [true, false, 'auto'].forEach((colorMode) => {
+ [true, false, "auto"].forEach((colorMode) => {
   assert.throws(
    () => {
     new Console({
@@ -88,7 +88,7 @@ check(false, false, false);
    {
     message: 'Option "options.inspectOptions.color" cannot be used in ' +
                  'combination with option "colorMode"',
-    code: 'ERR_INCOMPATIBLE_OPTION_PAIR',
+    code: "ERR_INCOMPATIBLE_OPTION_PAIR",
    },
   );
  });

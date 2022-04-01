@@ -1,10 +1,10 @@
 // Flags: --experimental-wasi-unstable-preview1
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { WASI } = require('wasi');
-const { Worker, parentPort } = require('worker_threads');
+const common = require("../common");
+const assert = require("assert");
+const { WASI } = require("wasi");
+const { Worker, parentPort } = require("worker_threads");
 
 // void _start(void) { for (;;); }
 const bytecode = new Uint8Array([
@@ -26,8 +26,8 @@ const bytecode = new Uint8Array([
 if (!process.env.HAS_STARTED_WORKER) {
  process.env.HAS_STARTED_WORKER = 1;
  const worker = new Worker(__filename);
- worker.once('message', (message) => {
-  assert.strictEqual(message, 'start');
+ worker.once("message", (message) => {
+  assert.strictEqual(message, "start");
   setTimeout(() => worker.terminate(), common.platformTimeout(50));
  });
 } else {
@@ -39,6 +39,6 @@ async function go() {
  const imports = { wasi_snapshot_preview1: wasi.wasiImport };
  const module = await WebAssembly.compile(bytecode);
  const instance = await WebAssembly.instantiate(module, imports);
- parentPort.postMessage('start');
+ parentPort.postMessage("start");
  wasi.start(instance);
 }

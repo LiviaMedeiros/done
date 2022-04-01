@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const util = require('util');
+require("../common");
+const assert = require("assert");
+const util = require("util");
 const { AssertionError } = assert;
-const defaultMsgStart = 'Expected values to be strictly deep-equal:\n';
+const defaultMsgStart = "Expected values to be strictly deep-equal:\n";
 const defaultMsgStartFull = `${defaultMsgStart}+ actual - expected`;
 
 // Disable colored output to prevent color codes from breaking assertion
 // message comparisons. This should only be an issue when process.stdout
 // is a TTY.
 if (process.stdout.isTTY)
- process.env.NODE_DISABLE_COLORS = '1';
+ process.env.NODE_DISABLE_COLORS = "1";
 
 // Template tag function turning an error message into a RegExp
 // for assert.throws()
 function re(literals, ...values) {
- let result = 'Expected values to be loosely deep-equal:\n\n';
+ let result = "Expected values to be loosely deep-equal:\n\n";
  for (const [i, value] of values.entries()) {
   const str = util.inspect(value, {
    compact: false,
@@ -31,7 +31,7 @@ function re(literals, ...values) {
   result += `${str}${literals[i + 1]}`;
  }
  return {
-  code: 'ERR_ASSERTION',
+  code: "ERR_ASSERTION",
   message: result,
  };
 }
@@ -49,10 +49,10 @@ const buf = Buffer.from(arr);
 assert.throws(
  () => assert.deepStrictEqual(arr, buf),
  {
-  code: 'ERR_ASSERTION',
+  code: "ERR_ASSERTION",
   message: `${defaultMsgStartFull} ... Lines skipped\n\n` +
-             '+ Uint8Array(4) [\n' +
-             '- Buffer(4) [Uint8Array] [\n    120,\n...\n    122,\n    10\n  ]',
+             "+ Uint8Array(4) [\n" +
+             "- Buffer(4) [Uint8Array] [\n    120,\n...\n    122,\n    10\n  ]",
  },
 );
 assert.deepEqual(arr, buf);
@@ -64,15 +64,15 @@ assert.deepEqual(arr, buf);
  assert.throws(
   () => assert.deepStrictEqual(buf2, buf),
   {
-   code: 'ERR_ASSERTION',
+   code: "ERR_ASSERTION",
    message: `${defaultMsgStartFull}\n\n` +
-               '  Buffer(4) [Uint8Array] [\n' +
-               '    120,\n' +
-               '    121,\n' +
-               '    122,\n' +
-               '    10,\n' +
-               '+   prop: 1\n' +
-               '  ]',
+               "  Buffer(4) [Uint8Array] [\n" +
+               "    120,\n" +
+               "    121,\n" +
+               "    122,\n" +
+               "    10,\n" +
+               "+   prop: 1\n" +
+               "  ]",
   },
  );
  assert.notDeepEqual(buf2, buf);
@@ -84,47 +84,47 @@ assert.deepEqual(arr, buf);
  assert.throws(
   () => assert.deepStrictEqual(arr, arr2),
   {
-   code: 'ERR_ASSERTION',
+   code: "ERR_ASSERTION",
    message: `${defaultMsgStartFull}\n\n` +
-               '  Uint8Array(4) [\n' +
-               '    120,\n' +
-               '    121,\n' +
-               '    122,\n' +
-               '    10,\n' +
-               '-   prop: 5\n' +
-               '  ]',
+               "  Uint8Array(4) [\n" +
+               "    120,\n" +
+               "    121,\n" +
+               "    122,\n" +
+               "    10,\n" +
+               "-   prop: 5\n" +
+               "  ]",
   },
  );
  assert.notDeepEqual(arr, arr2);
 }
 
-const date = new Date('2016');
+const date = new Date("2016");
 
 class MyDate extends Date {
  constructor(...args) {
   super(...args);
-  this[0] = '1';
+  this[0] = "1";
  }
 }
 
-const date2 = new MyDate('2016');
+const date2 = new MyDate("2016");
 
 assertNotDeepOrStrict(date, date2);
 assert.throws(
  () => assert.deepStrictEqual(date, date2),
  {
-  code: 'ERR_ASSERTION',
+  code: "ERR_ASSERTION",
   message: `${defaultMsgStartFull}\n\n` +
-             '+ 2016-01-01T00:00:00.000Z\n- MyDate 2016-01-01T00:00:00.000Z' +
+             "+ 2016-01-01T00:00:00.000Z\n- MyDate 2016-01-01T00:00:00.000Z" +
              " {\n-   '0': '1'\n- }",
  },
 );
 assert.throws(
  () => assert.deepStrictEqual(date2, date),
  {
-  code: 'ERR_ASSERTION',
+  code: "ERR_ASSERTION",
   message: `${defaultMsgStartFull}\n\n` +
-             '+ MyDate 2016-01-01T00:00:00.000Z {\n' +
+             "+ MyDate 2016-01-01T00:00:00.000Z {\n" +
              "+   '0': '1'\n+ }\n- 2016-01-01T00:00:00.000Z",
  },
 );
@@ -132,18 +132,18 @@ assert.throws(
 class MyRegExp extends RegExp {
  constructor(...args) {
   super(...args);
-  this[0] = '1';
+  this[0] = "1";
  }
 }
 
-const re1 = new RegExp('test');
-const re2 = new MyRegExp('test');
+const re1 = new RegExp("test");
+const re2 = new MyRegExp("test");
 
 assertNotDeepOrStrict(re1, re2);
 assert.throws(
  () => assert.deepStrictEqual(re1, re2),
  {
-  code: 'ERR_ASSERTION',
+  code: "ERR_ASSERTION",
   message: `${defaultMsgStartFull}\n\n` +
              "+ /test/\n- MyRegExp /test/ {\n-   '0': '1'\n- }",
  },
@@ -154,7 +154,7 @@ assert.throws(
 {
  const similar = new Set([
   { 0: 1 },  // Object
-  new String('1'),  // Object
+  new String("1"),  // Object
   [1],  // Array
   date2,  // Date with this[0] = '1'
   re2,  // RegExp with this[0] = '1'
@@ -173,7 +173,7 @@ assert.throws(
     assert.notDeepEqual(a, b);
     assert.throws(
      () => assert.deepStrictEqual(a, b),
-     { code: 'ERR_ASSERTION' },
+     { code: "ERR_ASSERTION" },
     );
    }
   }
@@ -195,7 +195,7 @@ function assertNotDeepOrStrict(a, b, err) {
  );
  assert.throws(
   () => assert.deepStrictEqual(a, b),
-  err || { code: 'ERR_ASSERTION' },
+  err || { code: "ERR_ASSERTION" },
  );
 
  assert.throws(
@@ -204,7 +204,7 @@ function assertNotDeepOrStrict(a, b, err) {
  );
  assert.throws(
   () => assert.deepStrictEqual(b, a),
-  err || { code: 'ERR_ASSERTION' },
+  err || { code: "ERR_ASSERTION" },
  );
 }
 
@@ -212,13 +212,13 @@ function assertOnlyDeepEqual(a, b, err) {
  assert.deepEqual(a, b);
  assert.throws(
   () => assert.deepStrictEqual(a, b),
-  err || { code: 'ERR_ASSERTION' },
+  err || { code: "ERR_ASSERTION" },
  );
 
  assert.deepEqual(b, a);
  assert.throws(
   () => assert.deepStrictEqual(b, a),
-  err || { code: 'ERR_ASSERTION' },
+  err || { code: "ERR_ASSERTION" },
  );
 }
 
@@ -229,7 +229,7 @@ assertDeepAndStrictEqual(new Map(), new Map());
 assertDeepAndStrictEqual(new Set([1, 2, 3]), new Set([1, 2, 3]));
 assertNotDeepOrStrict(new Set([1, 2, 3]), new Set([1, 2, 3, 4]));
 assertNotDeepOrStrict(new Set([1, 2, 3, 4]), new Set([1, 2, 3]));
-assertDeepAndStrictEqual(new Set(['1', '2', '3']), new Set(['1', '2', '3']));
+assertDeepAndStrictEqual(new Set(["1", "2", "3"]), new Set(["1", "2", "3"]));
 assertDeepAndStrictEqual(new Set([[1, 2], [3, 4]]), new Set([[3, 4], [1, 2]]));
 assertNotDeepOrStrict(new Set([{ a: 0 }]), new Set([{ a: 1 }]));
 assertNotDeepOrStrict(new Set([Symbol()]), new Set([Symbol()]));
@@ -258,15 +258,15 @@ assertNotDeepOrStrict(new Set([1]), [1]);
 assertNotDeepOrStrict(new Set(), []);
 assertNotDeepOrStrict(new Set(), {});
 
-assertNotDeepOrStrict(new Map([['a', 1]]), { a: 1 });
+assertNotDeepOrStrict(new Map([["a", 1]]), { a: 1 });
 assertNotDeepOrStrict(new Map(), []);
 assertNotDeepOrStrict(new Map(), {});
 
-assertOnlyDeepEqual(new Set(['1']), new Set([1]));
+assertOnlyDeepEqual(new Set(["1"]), new Set([1]));
 
-assertOnlyDeepEqual(new Map([['1', 'a']]), new Map([[1, 'a']]));
-assertOnlyDeepEqual(new Map([['a', '1']]), new Map([['a', 1]]));
-assertNotDeepOrStrict(new Map([['a', '1']]), new Map([['a', 2]]));
+assertOnlyDeepEqual(new Map([["1", "a"]]), new Map([[1, "a"]]));
+assertOnlyDeepEqual(new Map([["a", "1"]]), new Map([["a", 1]]));
+assertNotDeepOrStrict(new Map([["a", "1"]]), new Map([["a", 2]]));
 
 assertDeepAndStrictEqual(new Set([{}]), new Set([{}]));
 
@@ -284,8 +284,8 @@ assertNotDeepOrStrict(
  new Map([[{ x: 1 }, 5], [{ x: 2 }, 5]]),
 );
 
-assertNotDeepOrStrict(new Set([3, '3']), new Set([3, 4]));
-assertNotDeepOrStrict(new Map([[3, 0], ['3', 0]]), new Map([[3, 0], [4, 0]]));
+assertNotDeepOrStrict(new Set([3, "3"]), new Set([3, 4]));
+assertNotDeepOrStrict(new Map([[3, 0], ["3", 0]]), new Map([[3, 0], [4, 0]]));
 
 assertNotDeepOrStrict(
  new Set([{ a: 1 }, { a: 1 }, { a: 2 }]),
@@ -294,34 +294,34 @@ assertNotDeepOrStrict(
 
 // Mixed primitive and object keys
 assertDeepAndStrictEqual(
- new Map([[1, 'a'], [{}, 'a']]),
- new Map([[1, 'a'], [{}, 'a']]),
+ new Map([[1, "a"], [{}, "a"]]),
+ new Map([[1, "a"], [{}, "a"]]),
 );
 assertDeepAndStrictEqual(
- new Set([1, 'a', [{}, 'a']]),
- new Set([1, 'a', [{}, 'a']]),
+ new Set([1, "a", [{}, "a"]]),
+ new Set([1, "a", [{}, "a"]]),
 );
 
 // This is an awful case, where a map contains multiple equivalent keys:
 assertOnlyDeepEqual(
- new Map([[1, 'a'], ['1', 'b']]),
- new Map([['1', 'a'], [true, 'b']]),
+ new Map([[1, "a"], ["1", "b"]]),
+ new Map([["1", "a"], [true, "b"]]),
 );
 assertNotDeepOrStrict(
- new Set(['a']),
- new Set(['b']),
+ new Set(["a"]),
+ new Set(["b"]),
 );
 assertDeepAndStrictEqual(
- new Map([[{}, 'a'], [{}, 'b']]),
- new Map([[{}, 'b'], [{}, 'a']]),
+ new Map([[{}, "a"], [{}, "b"]]),
+ new Map([[{}, "b"], [{}, "a"]]),
 );
 assertOnlyDeepEqual(
- new Map([[true, 'a'], ['1', 'b'], [1, 'a']]),
- new Map([['1', 'a'], [1, 'b'], [true, 'a']]),
+ new Map([[true, "a"], ["1", "b"], [1, "a"]]),
+ new Map([["1", "a"], [1, "b"], [true, "a"]]),
 );
 assertNotDeepOrStrict(
- new Map([[true, 'a'], ['1', 'b'], [1, 'c']]),
- new Map([['1', 'a'], [1, 'b'], [true, 'a']]),
+ new Map([[true, "a"], ["1", "b"], [1, "c"]]),
+ new Map([["1", "a"], [1, "b"], [true, "a"]]),
 );
 
 // Similar object keys
@@ -345,11 +345,11 @@ assertOnlyDeepEqual(
 // Similar primitive key / values
 assertNotDeepOrStrict(
  new Set([1, true, false]),
- new Set(['1', 0, '0']),
+ new Set(["1", 0, "0"]),
 );
 assertNotDeepOrStrict(
  new Map([[1, 5], [true, 5], [false, 5]]),
- new Map([['1', 5], [0, 5], ['0', 5]]),
+ new Map([["1", 5], [0, 5], ["0", 5]]),
 );
 
 // Undefined value in Map
@@ -358,8 +358,8 @@ assertDeepAndStrictEqual(
  new Map([[1, undefined]]),
 );
 assertOnlyDeepEqual(
- new Map([[1, null], ['', '0']]),
- new Map([['1', undefined], [false, 0]]),
+ new Map([[1, null], ["", "0"]]),
+ new Map([["1", undefined], [false, 0]]),
 );
 assertNotDeepOrStrict(
  new Map([[1, undefined]]),
@@ -372,17 +372,17 @@ assertDeepAndStrictEqual(
  new Map([[null, 3]]),
 );
 assertOnlyDeepEqual(
- new Map([[undefined, null], ['+000', 2n]]),
- new Map([[null, undefined], [false, '2']]),
+ new Map([[undefined, null], ["+000", 2n]]),
+ new Map([[null, undefined], [false, "2"]]),
 );
 
 assertOnlyDeepEqual(
- new Set([null, '', 1n, 5, 2n, false]),
- new Set([undefined, 0, 5n, true, '2', '-000']),
+ new Set([null, "", 1n, 5, 2n, false]),
+ new Set([undefined, 0, 5n, true, "2", "-000"]),
 );
 assertNotDeepOrStrict(
- new Set(['']),
- new Set(['0']),
+ new Set([""]),
+ new Set(["0"]),
 );
 assertOnlyDeepEqual(
  new Map([[1, {}]]),
@@ -448,12 +448,12 @@ assertNotDeepOrStrict(
  // eslint-disable-next-line func-style
  const returnArguments = function() { return arguments; };
 
- const someArgs = returnArguments('a');
- const sameArgs = returnArguments('a');
- const diffArgs = returnArguments('b');
+ const someArgs = returnArguments("a");
+ const sameArgs = returnArguments("a");
+ const diffArgs = returnArguments("b");
 
- assertNotDeepOrStrict(someArgs, ['a']);
- assertNotDeepOrStrict(someArgs, { '0': 'a' });
+ assertNotDeepOrStrict(someArgs, ["a"]);
+ assertNotDeepOrStrict(someArgs, { "0": "a" });
  assertNotDeepOrStrict(someArgs, diffArgs);
  assertDeepAndStrictEqual(someArgs, sameArgs);
 }
@@ -494,10 +494,10 @@ assertNotDeepOrStrict(
  const m2 = new Map();
  const obj = { a: 5, b: 6 };
  m1.set(1, obj);
- m1.set(2, 'hi');
+ m1.set(2, "hi");
  m1.set(3, [1, 2, 3]);
 
- m2.set(2, 'hi'); // different order
+ m2.set(2, "hi"); // different order
  m2.set(1, obj);
  m2.set(3, [1, 2, 3]); // Deep equal, but not reference equal.
 
@@ -517,12 +517,12 @@ assertNotDeepOrStrict(
 
 {
  const map1 = new Map([[1, 1]]);
- const map2 = new Map([[1, '1']]);
+ const map2 = new Map([[1, "1"]]);
  assert.deepEqual(map1, map2);
  assert.throws(
   () => assert.deepStrictEqual(map1, map2),
   {
-   code: 'ERR_ASSERTION',
+   code: "ERR_ASSERTION",
    message: `${defaultMsgStartFull}\n\n` +
                "  Map(1) {\n+   1 => 1\n-   1 => '1'\n  }",
   },
@@ -584,10 +584,10 @@ assertNotDeepOrStrict(
 
 // Handle different error messages
 {
- const err1 = new Error('foo1');
- assertNotDeepOrStrict(err1, new Error('foo2'), assert.AssertionError);
- assertNotDeepOrStrict(err1, new TypeError('foo1'), assert.AssertionError);
- assertDeepAndStrictEqual(err1, new Error('foo1'));
+ const err1 = new Error("foo1");
+ assertNotDeepOrStrict(err1, new Error("foo2"), assert.AssertionError);
+ assertNotDeepOrStrict(err1, new TypeError("foo1"), assert.AssertionError);
+ assertDeepAndStrictEqual(err1, new Error("foo1"));
  assertNotDeepOrStrict(err1, {}, AssertionError);
 }
 
@@ -598,7 +598,7 @@ assertDeepAndStrictEqual([ 1, 2, NaN, 4 ], [ 1, 2, NaN, 4 ]);
 
 // Handle boxed primitives
 {
- const boxedString = new String('test');
+ const boxedString = new String("test");
  const boxedSymbol = Object(Symbol());
 
  const fakeBoxedSymbol = {};
@@ -606,7 +606,7 @@ assertDeepAndStrictEqual([ 1, 2, NaN, 4 ], [ 1, 2, NaN, 4 ]);
  Object.defineProperty(
   fakeBoxedSymbol,
   Symbol.toStringTag,
-  { enumerable: false, value: 'Symbol' },
+  { enumerable: false, value: "Symbol" },
  );
 
  assertNotDeepOrStrict(new Boolean(true), Object(false));
@@ -618,9 +618,9 @@ assertDeepAndStrictEqual([ 1, 2, NaN, 4 ], [ 1, 2, NaN, 4 ]);
  assertDeepAndStrictEqual(boxedSymbol, boxedSymbol);
  assertDeepAndStrictEqual(Object(true), Object(true));
  assertDeepAndStrictEqual(Object(2), Object(2));
- assertDeepAndStrictEqual(boxedString, Object('test'));
+ assertDeepAndStrictEqual(boxedString, Object("test"));
  boxedString.slow = true;
- assertNotDeepOrStrict(boxedString, Object('test'));
+ assertNotDeepOrStrict(boxedString, Object("test"));
  boxedSymbol.slow = true;
  assertNotDeepOrStrict(boxedSymbol, {});
  assertNotDeepOrStrict(boxedSymbol, fakeBoxedSymbol);
@@ -651,8 +651,8 @@ assertDeepAndStrictEqual(-0, -0);
  b[symbol1] = true;
  assertDeepAndStrictEqual(a, b);
  // The same as TypedArrays is valid for boxed primitives
- const boxedStringA = new String('test');
- const boxedStringB = new String('test');
+ const boxedStringA = new String("test");
+ const boxedStringB = new String("test");
  boxedStringA[symbol1] = true;
  assertOnlyDeepEqual(boxedStringA, boxedStringB);
  boxedStringA[symbol1] = true;
@@ -684,16 +684,16 @@ assertDeepAndStrictEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
 
 assert.throws(() => { assert.deepEqual(new Date(), new Date(2000, 3, 14)); },
               AssertionError,
-              'deepEqual(new Date(), new Date(2000, 3, 14))');
+              "deepEqual(new Date(), new Date(2000, 3, 14))");
 
 assert.throws(
  () => { assert.notDeepEqual(new Date(2000, 3, 14), new Date(2000, 3, 14)); },
  AssertionError,
- 'notDeepEqual(new Date(2000, 3, 14), new Date(2000, 3, 14))',
+ "notDeepEqual(new Date(2000, 3, 14), new Date(2000, 3, 14))",
 );
 
 assert.throws(
- () => { assert.notDeepEqual('a'.repeat(1024), 'a'.repeat(1024)); },
+ () => { assert.notDeepEqual("a".repeat(1024), "a".repeat(1024)); },
  AssertionError,
  'notDeepEqual("a".repeat(1024), "a".repeat(1024))',
 );
@@ -717,26 +717,26 @@ assertNotDeepOrStrict(/a/igm, /a/im);
  assert.notDeepEqual(re1, /a/g);
 }
 
-assert.deepEqual(4, '4');
+assert.deepEqual(4, "4");
 assert.deepEqual(true, 1);
-assert.throws(() => assert.deepEqual(4, '5'),
+assert.throws(() => assert.deepEqual(4, "5"),
               AssertionError,
-              'deepEqual( 4, \'5\')');
+              "deepEqual( 4, '5')");
 
 // Having the same number of owned properties && the same set of keys.
 assert.deepEqual({ a: 4 }, { a: 4 });
-assert.deepEqual({ a: 4, b: '2' }, { a: 4, b: '2' });
-assert.deepEqual([4], ['4']);
+assert.deepEqual({ a: 4, b: "2" }, { a: 4, b: "2" });
+assert.deepEqual([4], ["4"]);
 assert.throws(
  () => assert.deepEqual({ a: 4 }, { a: 4, b: true }), AssertionError);
-assert.notDeepEqual(['a'], { 0: 'a' });
-assert.deepEqual({ a: 4, b: '1' }, { b: '1', a: 4 });
+assert.notDeepEqual(["a"], { 0: "a" });
+assert.deepEqual({ a: 4, b: "1" }, { b: "1", a: 4 });
 const a1 = [1, 2, 3];
 const a2 = [1, 2, 3];
-a1.a = 'test';
+a1.a = "test";
 a1.b = true;
 a2.b = true;
-a2.a = 'test';
+a2.a = "test";
 assert.throws(() => assert.deepEqual(Object.keys(a1), Object.keys(a2)),
               AssertionError);
 assertDeepAndStrictEqual(a1, a2);
@@ -760,26 +760,26 @@ function nameBuilder2(first, last) {
 }
 nameBuilder2.prototype = nbRoot;
 
-const nb1 = new nameBuilder('Ryan', 'Dahl');
-let nb2 = new nameBuilder2('Ryan', 'Dahl');
+const nb1 = new nameBuilder("Ryan", "Dahl");
+let nb2 = new nameBuilder2("Ryan", "Dahl");
 
 assert.deepEqual(nb1, nb2);
 
 nameBuilder2.prototype = Object;
-nb2 = new nameBuilder2('Ryan', 'Dahl');
+nb2 = new nameBuilder2("Ryan", "Dahl");
 assert.deepEqual(nb1, nb2);
 
 // Primitives
 assertNotDeepOrStrict(null, {});
 assertNotDeepOrStrict(undefined, {});
-assertNotDeepOrStrict('a', ['a']);
-assertNotDeepOrStrict('a', { 0: 'a' });
+assertNotDeepOrStrict("a", ["a"]);
+assertNotDeepOrStrict("a", { 0: "a" });
 assertNotDeepOrStrict(1, {});
 assertNotDeepOrStrict(true, {});
 assertNotDeepOrStrict(Symbol(), {});
 assertNotDeepOrStrict(Symbol(), Symbol());
 
-assertOnlyDeepEqual(4, '4');
+assertOnlyDeepEqual(4, "4");
 assertOnlyDeepEqual(true, 1);
 
 {
@@ -788,8 +788,8 @@ assertOnlyDeepEqual(true, 1);
 }
 
 // Primitive wrappers and object.
-assertNotDeepOrStrict(new String('a'), ['a']);
-assertNotDeepOrStrict(new String('a'), { 0: 'a' });
+assertNotDeepOrStrict(new String("a"), ["a"]);
+assertNotDeepOrStrict(new String("a"), { 0: "a" });
 assertNotDeepOrStrict(new Number(1), {});
 assertNotDeepOrStrict(new Boolean(true), {});
 
@@ -801,13 +801,13 @@ assert.deepStrictEqual(new Date(2000, 3, 14), new Date(2000, 3, 14));
 assert.throws(
  () => assert.deepStrictEqual(new Date(), new Date(2000, 3, 14)),
  AssertionError,
- 'deepStrictEqual(new Date(), new Date(2000, 3, 14))',
+ "deepStrictEqual(new Date(), new Date(2000, 3, 14))",
 );
 
 assert.throws(
  () => assert.notDeepStrictEqual(new Date(2000, 3, 14), new Date(2000, 3, 14)),
  {
-  name: 'AssertionError',
+  name: "AssertionError",
   message: 'Expected "actual" not to be strictly deep-equal to:\n\n' +
              util.inspect(new Date(2000, 3, 14)),
  },
@@ -818,36 +818,36 @@ assert.notDeepStrictEqual(new Date(), new Date(2000, 3, 14));
 assert.throws(
  () => assert.deepStrictEqual(/ab/, /a/),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n+ /ab/\n- /a/`,
  });
 assert.throws(
  () => assert.deepStrictEqual(/a/g, /a/),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n+ /a/g\n- /a/`,
  });
 assert.throws(
  () => assert.deepStrictEqual(/a/i, /a/),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n+ /a/i\n- /a/`,
  });
 assert.throws(
  () => assert.deepStrictEqual(/a/m, /a/),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n+ /a/m\n- /a/`,
  });
 assert.throws(
  () => assert.deepStrictEqual(/aa/igm, /aa/im),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n+ /aa/gim\n- /aa/im\n      ^`,
  });
 
@@ -859,7 +859,7 @@ assert.throws(
 
 assert.throws(
  // eslint-disable-next-line no-restricted-syntax
- () => assert.deepStrictEqual(4, '4'),
+ () => assert.deepStrictEqual(4, "4"),
  { message: `${defaultMsgStart}\n4 !== '4'\n` },
 );
 
@@ -871,36 +871,36 @@ assert.throws(
 
 // Having the same number of owned properties && the same set of keys.
 assert.deepStrictEqual({ a: 4 }, { a: 4 });
-assert.deepStrictEqual({ a: 4, b: '2' }, { a: 4, b: '2' });
-assert.throws(() => assert.deepStrictEqual([4], ['4']),
+assert.deepStrictEqual({ a: 4, b: "2" }, { a: 4, b: "2" });
+assert.throws(() => assert.deepStrictEqual([4], ["4"]),
               {
-               code: 'ERR_ASSERTION',
-               name: 'AssertionError',
+               code: "ERR_ASSERTION",
+               name: "AssertionError",
                message: `${defaultMsgStartFull}\n\n  [\n+   4\n-   '4'\n  ]`,
               });
 assert.throws(
  () => assert.deepStrictEqual({ a: 4 }, { a: 4, b: true }),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n  ` +
-             '{\n    a: 4,\n-   b: true\n  }',
+             "{\n    a: 4,\n-   b: true\n  }",
  });
 assert.throws(
- () => assert.deepStrictEqual(['a'], { 0: 'a' }),
+ () => assert.deepStrictEqual(["a"], { 0: "a" }),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n` +
              "+ [\n+   'a'\n+ ]\n- {\n-   '0': 'a'\n- }",
  });
 
 /* eslint-enable */
 
-assertDeepAndStrictEqual({ a: 4, b: '1' }, { b: '1', a: 4 });
+assertDeepAndStrictEqual({ a: 4, b: "1" }, { b: "1", a: 4 });
 
 assert.throws(
- () => assert.deepStrictEqual([0, 1, 2, 'a', 'b'], [0, 1, 2, 'b', 'a']),
+ () => assert.deepStrictEqual([0, 1, 2, "a", "b"], [0, 1, 2, "b", "a"]),
  AssertionError);
 
 // Prototype check.
@@ -914,39 +914,39 @@ function Constructor2(first, last) {
  this.last = last;
 }
 
-const obj1 = new Constructor1('Ryan', 'Dahl');
-let obj2 = new Constructor2('Ryan', 'Dahl');
+const obj1 = new Constructor1("Ryan", "Dahl");
+let obj2 = new Constructor2("Ryan", "Dahl");
 
 assert.throws(() => assert.deepStrictEqual(obj1, obj2), AssertionError);
 
 Constructor2.prototype = Constructor1.prototype;
-obj2 = new Constructor2('Ryan', 'Dahl');
+obj2 = new Constructor2("Ryan", "Dahl");
 
 assertDeepAndStrictEqual(obj1, obj2);
 
 // Check extra properties on errors.
 {
- const a = new TypeError('foo');
- const b = new TypeError('foo');
- a.foo = 'bar';
- b.foo = 'baz.';
+ const a = new TypeError("foo");
+ const b = new TypeError("foo");
+ a.foo = "bar";
+ b.foo = "baz.";
 
  assert.throws(
   () => assert.throws(
    () => assert.deepStrictEqual(a, b),
    {
-    operator: 'throws',
+    operator: "throws",
     message: `${defaultMsgStartFull}\n\n` +
-                '  [TypeError: foo] {\n+   foo: \'bar\'\n-   foo: \'baz\'\n  }',
+                "  [TypeError: foo] {\n+   foo: 'bar'\n-   foo: 'baz'\n  }",
    },
   ),
   {
-   message: 'Expected values to be strictly deep-equal:\n' +
-        '+ actual - expected ... Lines skipped\n' +
-        '\n' +
-        '  Comparison {\n' +
+   message: "Expected values to be strictly deep-equal:\n" +
+        "+ actual - expected ... Lines skipped\n" +
+        "\n" +
+        "  Comparison {\n" +
         "    message: 'Expected values to be strictly deep-equal:\\n' +\n" +
-        '...\n' +
+        "...\n" +
         "      '  [TypeError: foo] {\\n' +\n" +
         "      \"+   foo: 'bar'\\n\" +\n" +
         "+     \"-   foo: 'baz.'\\n\" +\n" +
@@ -954,7 +954,7 @@ assertDeepAndStrictEqual(obj1, obj2);
         "      '  }',\n" +
         "+   operator: 'deepStrictEqual'\n" +
         "-   operator: 'throws'\n" +
-        '  }',
+        "  }",
   },
  );
 }
@@ -968,7 +968,7 @@ assertDeepAndStrictEqual(obj1, obj2);
  assert.throws(
   () => assert.deepStrictEqual(arrProxy, [1, 2, 3]),
   { message: `${defaultMsgStartFull}\n\n` +
-               '  [\n    1,\n    2,\n-   3\n  ]' },
+               "  [\n    1,\n    2,\n-   3\n  ]" },
  );
  util.inspect.defaultOptions = tmp;
 
@@ -978,7 +978,7 @@ assertDeepAndStrictEqual(obj1, obj2);
  assert.throws(
   () => assert.deepStrictEqual(invalidTrap, [1, 2, 3]),
   {
-   name: 'TypeError',
+   name: "TypeError",
    message: "'ownKeys' on proxy: trap result did not include 'length'",
   },
  );
@@ -998,8 +998,8 @@ assertDeepAndStrictEqual(obj1, obj2);
  assert.throws(
   () => assert.deepStrictEqual(a, b),
   {
-   code: 'ERR_ASSERTION',
-   name: 'AssertionError',
+   code: "ERR_ASSERTION",
+   name: "AssertionError",
    message: /\.\.\./g,
   },
  );
@@ -1022,23 +1022,23 @@ assertDeepAndStrictEqual(obj1, obj2);
 assert.throws(
  () => assert.deepStrictEqual([1, 2, 3], [1, 2]),
  {
-  code: 'ERR_ASSERTION',
-  name: 'AssertionError',
+  code: "ERR_ASSERTION",
+  name: "AssertionError",
   message: `${defaultMsgStartFull}\n\n` +
-            '  [\n' +
-            '    1,\n' +
-            '    2,\n' +
-            '+   3\n' +
-            '  ]',
+            "  [\n" +
+            "    1,\n" +
+            "    2,\n" +
+            "+   3\n" +
+            "  ]",
  },
 );
 
 // Verify that manipulating the `getTime()` function has no impact on the time
 // verification.
 {
- const a = new Date('2000');
- const b = new Date('2000');
- Object.defineProperty(a, 'getTime', {
+ const a = new Date("2000");
+ const b = new Date("2000");
+ Object.defineProperty(a, "getTime", {
   value: () => 5,
  });
  assertDeepAndStrictEqual(a, b);
@@ -1055,7 +1055,7 @@ assert.throws(
   2: 3,
   length: 3,
  };
- Object.defineProperty(o, 'length', { enumerable: false });
+ Object.defineProperty(o, "length", { enumerable: false });
  assertNotDeepOrStrict(o, a);
 }
 
@@ -1064,13 +1064,13 @@ assert.throws(
  const a = {
   0: 1,
   1: 1,
-  2: 'broken',
+  2: "broken",
  };
  Object.setPrototypeOf(a, Object.getPrototypeOf([]));
  Object.defineProperty(a, Symbol.toStringTag, {
-  value: 'Array',
+  value: "Array",
  });
- Object.defineProperty(a, 'length', {
+ Object.defineProperty(a, "length", {
   value: 2,
  });
  assertNotDeepOrStrict(a, [1, 1]);
@@ -1078,24 +1078,24 @@ assert.throws(
 
 // Verify that changed tags will still check for the error message.
 {
- const err = new Error('foo');
- err[Symbol.toStringTag] = 'Foobar';
- const err2 = new Error('bar');
- err2[Symbol.toStringTag] = 'Foobar';
+ const err = new Error("foo");
+ err[Symbol.toStringTag] = "Foobar";
+ const err2 = new Error("bar");
+ err2[Symbol.toStringTag] = "Foobar";
  assertNotDeepOrStrict(err, err2, AssertionError);
 }
 
 // Check for non-native errors.
 {
- const source = new Error('abc');
+ const source = new Error("abc");
  const err = Object.create(
   Object.getPrototypeOf(source), Object.getOwnPropertyDescriptors(source));
- Object.defineProperty(err, 'message', { value: 'foo' });
+ Object.defineProperty(err, "message", { value: "foo" });
  const err2 = Object.create(
   Object.getPrototypeOf(source), Object.getOwnPropertyDescriptors(source));
- Object.defineProperty(err2, 'message', { value: 'bar' });
- err[Symbol.toStringTag] = 'Foo';
- err2[Symbol.toStringTag] = 'Foo';
+ Object.defineProperty(err2, "message", { value: "bar" });
+ err[Symbol.toStringTag] = "Foo";
+ err2[Symbol.toStringTag] = "Foo";
  assert.notDeepStrictEqual(err, err2);
 }
 
@@ -1103,11 +1103,11 @@ assert.throws(
 {
  const a = new Number(5);
  const b = new Number(5);
- Object.defineProperty(a, 'valueOf', {
-  value: () => { throw new Error('failed'); },
+ Object.defineProperty(a, "valueOf", {
+  value: () => { throw new Error("failed"); },
  });
- Object.defineProperty(b, 'valueOf', {
-  value: () => { throw new Error('failed'); },
+ Object.defineProperty(b, "valueOf", {
+  value: () => { throw new Error("failed"); },
  });
  assertDeepAndStrictEqual(a, b);
 }
@@ -1123,8 +1123,8 @@ assert.throws(
  assert.throws(
   () => assert.deepStrictEqual(a, b),
   {
-   code: 'ERR_ASSERTION',
-   name: 'AssertionError',
+   code: "ERR_ASSERTION",
+   name: "AssertionError",
    message: /a: \[Getter: 5]\n- {3}a: \[Getter: 6]\n {2}/,
   },
  );
@@ -1135,20 +1135,20 @@ assert.throws(
 
 // Verify object types being identical on both sides.
 {
- let a = Buffer.from('test');
+ let a = Buffer.from("test");
  let b = Object.create(
   Object.getPrototypeOf(a),
   Object.getOwnPropertyDescriptors(a),
  );
  Object.defineProperty(b, Symbol.toStringTag, {
-  value: 'Uint8Array',
+  value: "Uint8Array",
  });
  assertNotDeepOrStrict(a, b);
 
  a = new Uint8Array(10);
  b = new Int8Array(10);
  Object.defineProperty(b, Symbol.toStringTag, {
-  value: 'Uint8Array',
+  value: "Uint8Array",
  });
  Object.setPrototypeOf(b, Uint8Array.prototype);
  assertNotDeepOrStrict(a, b);
@@ -1156,9 +1156,9 @@ assert.throws(
  a = [1, 2, 3];
  b = { 0: 1, 1: 2, 2: 3 };
  Object.setPrototypeOf(b, Array.prototype);
- Object.defineProperty(b, 'length', { value: 3, enumerable: false });
+ Object.defineProperty(b, "length", { value: 3, enumerable: false });
  Object.defineProperty(b, Symbol.toStringTag, {
-  value: 'Array',
+  value: "Array",
  });
  assertNotDeepOrStrict(a, b);
 
@@ -1168,7 +1168,7 @@ assert.throws(
   Object.getOwnPropertyDescriptors(a),
  );
  Object.defineProperty(b, Symbol.toStringTag, {
-  value: 'Date',
+  value: "Date",
  });
  assertNotDeepOrStrict(a, b);
 
@@ -1178,7 +1178,7 @@ assert.throws(
   Object.getOwnPropertyDescriptors(a),
  );
  Object.defineProperty(b, Symbol.toStringTag, {
-  value: 'RegExp',
+  value: "RegExp",
  });
  assertNotDeepOrStrict(a, b);
 
@@ -1186,14 +1186,14 @@ assert.throws(
  b = /abc/;
  Object.setPrototypeOf(b, Array.prototype);
  Object.defineProperty(b, Symbol.toStringTag, {
-  value: 'Array',
+  value: "Array",
  });
  assertNotDeepOrStrict(a, b);
 
  a = Object.create(null);
- b = new RangeError('abc');
+ b = new RangeError("abc");
  Object.defineProperty(a, Symbol.toStringTag, {
-  value: 'Error',
+  value: "Error",
  });
  Object.setPrototypeOf(b, null);
  assertNotDeepOrStrict(a, b, assert.AssertionError);
@@ -1204,7 +1204,7 @@ assert.throws(
  // Regression test for https://github.com/nodejs/node/issues/37710
  const a = { x: 1 };
  const b = { y: 1 };
- Object.defineProperty(b, 'x', { value: 1 });
+ Object.defineProperty(b, "x", { value: 1 });
 
  assertNotDeepOrStrict(a, b);
 }

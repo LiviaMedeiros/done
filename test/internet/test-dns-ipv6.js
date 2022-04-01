@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common');
-const { addresses } = require('../common/internet');
+"use strict";
+const common = require("../common");
+const { addresses } = require("../common/internet");
 if (!common.hasIPv6)
- common.skip('this test, no IPv6 support');
+ common.skip("this test, no IPv6 support");
 
-const assert = require('assert');
-const dns = require('dns');
-const net = require('net');
+const assert = require("assert");
+const dns = require("dns");
+const net = require("net");
 const dnsPromises = dns.promises;
 const isIPv6 = net.isIPv6;
 
@@ -36,7 +36,7 @@ function TEST(f) {
 }
 
 function checkWrap(req) {
- assert.ok(typeof req === 'object');
+ assert.ok(typeof req === "object");
 }
 
 TEST(async function test_resolve6(done) {
@@ -65,7 +65,7 @@ TEST(async function test_reverse_ipv6(done) {
   assert.ok(res.length > 0);
 
   for (let i = 0; i < res.length; i++) {
-   assert.ok(typeof res[i] === 'string');
+   assert.ok(typeof res[i] === "string");
   }
  }
 
@@ -140,7 +140,7 @@ TEST(function test_lookup_ipv6_hint(done) {
    // FreeBSD does not support V4MAPPED
    if (common.isFreeBSD) {
     assert(err instanceof Error);
-    assert.strictEqual(err.code, 'EAI_BADFLAGS');
+    assert.strictEqual(err.code, "EAI_BADFLAGS");
     assert.strictEqual(err.hostname, addresses.INET_HOST);
     assert.match(err.message, /getaddrinfo EAI_BADFLAGS/);
     done();
@@ -165,10 +165,10 @@ TEST(async function test_lookup_ip_ipv6(done) {
   assert.strictEqual(res.family, 6);
  }
 
- validateResult(await dnsPromises.lookup('::1'));
+ validateResult(await dnsPromises.lookup("::1"));
 
  const req = dns.lookup(
-  '::1',
+  "::1",
   common.mustSucceed((ip, family) => {
    validateResult({ address: ip, family });
    done();
@@ -208,17 +208,17 @@ TEST(async function test_lookup_all_ipv6(done) {
 
 TEST(function test_lookupservice_ip_ipv6(done) {
  const req = dns.lookupService(
-  '::1', 80,
+  "::1", 80,
   common.mustCall((err, host, service) => {
    if (err) {
     // Not skipping the test, rather checking an alternative result,
     // i.e. that ::1 may not be configured (e.g. in /etc/hosts)
-    assert.strictEqual(err.code, 'ENOTFOUND');
+    assert.strictEqual(err.code, "ENOTFOUND");
     return done();
    }
-   assert.strictEqual(typeof host, 'string');
+   assert.strictEqual(typeof host, "string");
    assert(host);
-   assert(['http', 'www', '80'].includes(service));
+   assert(["http", "www", "80"].includes(service));
    done();
   }),
  );

@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 let unref_interval = false;
 let unref_timer = false;
@@ -40,8 +40,8 @@ assert.strictEqual(timer.hasRef(), false);
 
 setInterval(() => {}, 10).unref().ref().unref();
 
-setInterval(common.mustNotCall('Interval should not fire'), LONG_TIME).unref();
-setTimeout(common.mustNotCall('Timer should not fire'), LONG_TIME).unref();
+setInterval(common.mustNotCall("Interval should not fire"), LONG_TIME).unref();
+setTimeout(common.mustNotCall("Timer should not fire"), LONG_TIME).unref();
 
 const interval = setInterval(common.mustCall(() => {
  unref_interval = true;

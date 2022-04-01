@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 const {
  assert, connect, keys, tls,
-} = require(fixtures.path('tls-connect'));
+} = require(fixtures.path("tls-connect"));
 
 // Use ec10 and agent10, they are the only identities with intermediate CAs.
 const client = keys.ec10;
@@ -13,8 +13,8 @@ const server = keys.agent10;
 
 // The certificates aren't for "localhost", so override the identity check.
 function checkServerIdentity(hostname, cert) {
- assert.strictEqual(hostname, 'localhost');
- assert.strictEqual(cert.subject.CN, 'agent10.example.com');
+ assert.strictEqual(hostname, "localhost");
+ assert.strictEqual(cert.subject.CN, "agent10.example.com");
 }
 
 // Split out the single end-entity cert and the subordinate CA for later use.
@@ -66,7 +66,7 @@ connect({
 // Request cert from TLS1.2 client that doesn't have one.
 connect({
  client: {
-  maxVersion: 'TLSv1.2',
+  maxVersion: "TLSv1.2",
   ca: server.ca,
   checkServerIdentity,
  },
@@ -78,13 +78,13 @@ connect({
  },
 }, function(err, pair, cleanup) {
  assert.strictEqual(pair.server.err.code,
-                    'ERR_SSL_PEER_DID_NOT_RETURN_A_CERTIFICATE');
- assert.strictEqual(pair.client.err.code, 'ECONNRESET');
+                    "ERR_SSL_PEER_DID_NOT_RETURN_A_CERTIFICATE");
+ assert.strictEqual(pair.client.err.code, "ECONNRESET");
  return cleanup();
 });
 
 // Request cert from TLS1.3 client that doesn't have one.
-if (tls.DEFAULT_MAX_VERSION === 'TLSv1.3') connect({
+if (tls.DEFAULT_MAX_VERSION === "TLSv1.3") connect({
  client: {
   ca: server.ca,
   checkServerIdentity,
@@ -97,14 +97,14 @@ if (tls.DEFAULT_MAX_VERSION === 'TLSv1.3') connect({
  },
 }, function(err, pair, cleanup) {
  assert.strictEqual(pair.server.err.code,
-                    'ERR_SSL_PEER_DID_NOT_RETURN_A_CERTIFICATE');
+                    "ERR_SSL_PEER_DID_NOT_RETURN_A_CERTIFICATE");
 
  // TLS1.3 client completes handshake before server, and its only after the
  // server handshakes, requests certs, gets back a zero-length list of certs,
  // and sends a fatal Alert to the client that the client discovers there has
  // been a fatal error.
- pair.client.conn.once('error', common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_SSL_TLSV13_ALERT_CERTIFICATE_REQUIRED');
+ pair.client.conn.once("error", common.mustCall((err) => {
+  assert.strictEqual(err.code, "ERR_SSL_TLSV13_ALERT_CERTIFICATE_REQUIRED");
   cleanup();
  }));
 });
@@ -134,13 +134,13 @@ connect({
  client: {
   key: client.key,
   cert: client.single,
-  ca: server.ca + '\n' + server.subca,
+  ca: server.ca + "\n" + server.subca,
   checkServerIdentity,
  },
  server: {
   key: server.key,
   cert: server.single,
-  ca: client.ca + '\n' + client.subca,
+  ca: client.ca + "\n" + client.subca,
   requestCert: true,
  },
 }, function(err, pair, cleanup) {
@@ -153,13 +153,13 @@ connect({
  client: {
   key: client.key,
   cert: client.single,
-  ca: [server.ca + '\n' + server.subca],
+  ca: [server.ca + "\n" + server.subca],
   checkServerIdentity,
  },
  server: {
   key: server.key,
   cert: server.single,
-  ca: [client.ca + '\n' + client.subca],
+  ca: [client.ca + "\n" + client.subca],
   requestCert: true,
  },
 }, function(err, pair, cleanup) {
@@ -178,7 +178,7 @@ connect({
   cert: server.single,
  },
 }, function(err, pair, cleanup) {
- assert.strictEqual(err.code, 'UNABLE_TO_VERIFY_LEAF_SIGNATURE');
+ assert.strictEqual(err.code, "UNABLE_TO_VERIFY_LEAF_SIGNATURE");
  return cleanup();
 });
 
@@ -199,7 +199,7 @@ connect({
 }, function(err, pair, cleanup) {
  assert.ifError(pair.client.error);
  assert.ifError(pair.server.error);
- assert.strictEqual(err.code, 'ECONNRESET');
+ assert.strictEqual(err.code, "ECONNRESET");
  return cleanup();
 });
 
@@ -213,7 +213,7 @@ connect({
   cert: server.cert,
  },
 }, function(err, pair, cleanup) {
- assert.strictEqual(err.code, 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY');
+ assert.strictEqual(err.code, "UNABLE_TO_GET_ISSUER_CERT_LOCALLY");
  return cleanup();
 });
 
@@ -224,10 +224,10 @@ connect({
  },
  server: {
   key: server.key,
-  cert: server.cert + '\n' + server.ca,
+  cert: server.cert + "\n" + server.ca,
  },
 }, function(err, pair, cleanup) {
- assert.strictEqual(err.code, 'SELF_SIGNED_CERT_IN_CHAIN');
+ assert.strictEqual(err.code, "SELF_SIGNED_CERT_IN_CHAIN");
  return cleanup();
 });
 
@@ -239,7 +239,7 @@ connect({
  },
  server: {
   key: server.key,
-  cert: server.cert + '\n' + server.ca,
+  cert: server.cert + "\n" + server.ca,
  },
 }, function(err, pair, cleanup) {
  assert.ifError(err);
@@ -261,7 +261,7 @@ connect({
   requestCert: true,
  },
 }, function(err, pair, cleanup) {
- assert.strictEqual(err.code, 'ECONNRESET');
+ assert.strictEqual(err.code, "ECONNRESET");
  return cleanup();
 });
 
@@ -279,7 +279,7 @@ connect({
   requestCert: true,
  },
 }, function(err, pair, cleanup) {
- assert.strictEqual(err.code, 'ECONNRESET');
+ assert.strictEqual(err.code, "ECONNRESET");
  return cleanup();
 });
 
@@ -288,7 +288,7 @@ connect({
  client: {
   key: client.key,
   cert: client.cert,
-  ca: server.ca.replace(/CERTIFICATE/g, 'TRUSTED CERTIFICATE'),
+  ca: server.ca.replace(/CERTIFICATE/g, "TRUSTED CERTIFICATE"),
   checkServerIdentity,
  },
  server: {
@@ -313,7 +313,7 @@ connect({
  server: {
   key: server.key,
   cert: server.cert,
-  ca: client.ca.replace(/CERTIFICATE/g, 'TRUSTED CERTIFICATE'),
+  ca: client.ca.replace(/CERTIFICATE/g, "TRUSTED CERTIFICATE"),
   requestCert: true,
  },
 }, function(err, pair, cleanup) {
@@ -326,7 +326,7 @@ connect({
  client: {
   key: client.key,
   cert: client.cert,
-  ca: server.ca.replace(/CERTIFICATE/g, 'X509 CERTIFICATE'),
+  ca: server.ca.replace(/CERTIFICATE/g, "X509 CERTIFICATE"),
   checkServerIdentity,
  },
  server: {
@@ -351,7 +351,7 @@ connect({
  server: {
   key: server.key,
   cert: server.cert,
-  ca: client.ca.replace(/CERTIFICATE/g, 'X509 CERTIFICATE'),
+  ca: client.ca.replace(/CERTIFICATE/g, "X509 CERTIFICATE"),
   requestCert: true,
  },
 }, function(err, pair, cleanup) {

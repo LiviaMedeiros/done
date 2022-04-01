@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
 function AsmModule() {
- 'use asm';
+ "use asm";
 
  function add(a, b) {
   a = a | 0;

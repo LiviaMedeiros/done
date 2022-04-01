@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common.js');
-const { win32 } = require('path');
+"use strict";
+const common = require("../common.js");
+const { win32 } = require("path");
 
 const bench = common.createBenchmark(main, {
  path: [
-  'foo\\bar',
-  'C:\\foo',
-  '\\\\foo\\bar',
-  '\\\\?\\foo',
+  "foo\\bar",
+  "C:\\foo",
+  "\\\\foo\\bar",
+  "\\\\?\\foo",
  ],
  n: [1e5],
 });

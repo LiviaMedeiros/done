@@ -1,40 +1,40 @@
-'use strict';
+"use strict";
 
 // This test makes sure that `writeFile()` always writes from the current
 // position of the file, instead of truncating the file, when used with file
 // descriptors.
 
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const join = require('path').join;
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const join = require("path").join;
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 {
  /* writeFileSync() test. */
- const filename = join(tmpdir.path, 'test.txt');
+ const filename = join(tmpdir.path, "test.txt");
 
  /* Open the file descriptor. */
- const fd = fs.openSync(filename, 'w');
+ const fd = fs.openSync(filename, "w");
  try {
   /* Write only five characters, so that the position moves to five. */
-  assert.strictEqual(fs.writeSync(fd, 'Hello'), 5);
-  assert.strictEqual(fs.readFileSync(filename).toString(), 'Hello');
+  assert.strictEqual(fs.writeSync(fd, "Hello"), 5);
+  assert.strictEqual(fs.readFileSync(filename).toString(), "Hello");
 
   /* Write some more with writeFileSync(). */
-  fs.writeFileSync(fd, 'World');
+  fs.writeFileSync(fd, "World");
 
   /* New content should be written at position five, instead of zero. */
-  assert.strictEqual(fs.readFileSync(filename).toString(), 'HelloWorld');
+  assert.strictEqual(fs.readFileSync(filename).toString(), "HelloWorld");
  } finally {
   fs.closeSync(fd);
  }
 }
 
 const fdsToCloseOnExit = [];
-process.on('beforeExit', common.mustCall(() => {
+process.on("beforeExit", common.mustCall(() => {
  for (const fd of fdsToCloseOnExit) {
   try {
    fs.closeSync(fd);
@@ -46,20 +46,20 @@ process.on('beforeExit', common.mustCall(() => {
 
 {
  /* writeFile() test. */
- const file = join(tmpdir.path, 'test1.txt');
+ const file = join(tmpdir.path, "test1.txt");
 
  /* Open the file descriptor. */
- fs.open(file, 'w', common.mustSucceed((fd) => {
+ fs.open(file, "w", common.mustSucceed((fd) => {
   fdsToCloseOnExit.push(fd);
   /* Write only five characters, so that the position moves to five. */
-  fs.write(fd, 'Hello', common.mustSucceed((bytes) => {
+  fs.write(fd, "Hello", common.mustSucceed((bytes) => {
    assert.strictEqual(bytes, 5);
-   assert.strictEqual(fs.readFileSync(file).toString(), 'Hello');
+   assert.strictEqual(fs.readFileSync(file).toString(), "Hello");
 
    /* Write some more with writeFile(). */
-   fs.writeFile(fd, 'World', common.mustSucceed(() => {
+   fs.writeFile(fd, "World", common.mustSucceed(() => {
     /* New content should be written at position five, instead of zero. */
-    assert.strictEqual(fs.readFileSync(file).toString(), 'HelloWorld');
+    assert.strictEqual(fs.readFileSync(file).toString(), "HelloWorld");
    }));
   }));
  }));
@@ -68,11 +68,11 @@ process.on('beforeExit', common.mustCall(() => {
 
 // Test read-only file descriptor
 {
- const file = join(tmpdir.path, 'test.txt');
+ const file = join(tmpdir.path, "test.txt");
 
- fs.open(file, 'r', common.mustSucceed((fd) => {
+ fs.open(file, "r", common.mustSucceed((fd) => {
   fdsToCloseOnExit.push(fd);
-  fs.writeFile(fd, 'World', common.expectsError(/EBADF/));
+  fs.writeFile(fd, "World", common.expectsError(/EBADF/));
  }));
 }
 
@@ -80,12 +80,12 @@ process.on('beforeExit', common.mustCall(() => {
 {
  const controller = new AbortController();
  const signal = controller.signal;
- const file = join(tmpdir.path, 'test.txt');
+ const file = join(tmpdir.path, "test.txt");
 
- fs.open(file, 'w', common.mustSucceed((fd) => {
+ fs.open(file, "w", common.mustSucceed((fd) => {
   fdsToCloseOnExit.push(fd);
-  fs.writeFile(fd, 'World', { signal }, common.expectsError({
-   name: 'AbortError',
+  fs.writeFile(fd, "World", { signal }, common.expectsError({
+   name: "AbortError",
   }));
  }));
 

@@ -19,41 +19,41 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const testCases = [
- { ca: ['ca1-cert'],
-   key: 'agent2-key',
-   cert: 'agent2-cert',
+ { ca: ["ca1-cert"],
+   key: "agent2-key",
+   cert: "agent2-cert",
    servers: [
-    { ok: true, key: 'agent1-key', cert: 'agent1-cert' },
-    { ok: false, key: 'agent2-key', cert: 'agent2-cert' },
-    { ok: false, key: 'agent3-key', cert: 'agent3-cert' },
+    { ok: true, key: "agent1-key", cert: "agent1-cert" },
+    { ok: false, key: "agent2-key", cert: "agent2-cert" },
+    { ok: false, key: "agent3-key", cert: "agent3-cert" },
    ] },
 
  { ca: [],
-   key: 'agent2-key',
-   cert: 'agent2-cert',
+   key: "agent2-key",
+   cert: "agent2-cert",
    servers: [
-    { ok: false, key: 'agent1-key', cert: 'agent1-cert' },
-    { ok: false, key: 'agent2-key', cert: 'agent2-cert' },
-    { ok: false, key: 'agent3-key', cert: 'agent3-cert' },
+    { ok: false, key: "agent1-key", cert: "agent1-cert" },
+    { ok: false, key: "agent2-key", cert: "agent2-cert" },
+    { ok: false, key: "agent3-key", cert: "agent3-cert" },
    ] },
 
- { ca: ['ca1-cert', 'ca2-cert'],
-   key: 'agent2-key',
-   cert: 'agent2-cert',
+ { ca: ["ca1-cert", "ca2-cert"],
+   key: "agent2-key",
+   cert: "agent2-cert",
    servers: [
-    { ok: true, key: 'agent1-key', cert: 'agent1-cert' },
-    { ok: false, key: 'agent2-key', cert: 'agent2-cert' },
-    { ok: true, key: 'agent3-key', cert: 'agent3-cert' },
+    { ok: true, key: "agent1-key", cert: "agent1-cert" },
+    { ok: false, key: "agent2-key", cert: "agent2-cert" },
+    { ok: true, key: "agent3-key", cert: "agent3-cert" },
    ] },
 ];
 
@@ -82,17 +82,17 @@ function testServers(index, servers, clientOptions, cb) {
  }
 
  const server = tls.createServer(serverOptions, common.mustCall(function(s) {
-  s.end('hello world\n');
+  s.end("hello world\n");
  }));
 
  server.listen(0, common.mustCall(function() {
-  let b = '';
+  let b = "";
 
-  console.error('connecting...');
+  console.error("connecting...");
   clientOptions.port = this.address().port;
   const client = tls.connect(clientOptions, common.mustCall(function() {
    const authorized = client.authorized ||
-          (client.authorizationError === 'ERR_TLS_CERT_ALTNAME_INVALID');
+          (client.authorizationError === "ERR_TLS_CERT_ALTNAME_INVALID");
 
    console.error(`expected: ${ok} authed: ${authorized}`);
 
@@ -100,15 +100,15 @@ function testServers(index, servers, clientOptions, cb) {
    server.close();
   }));
 
-  client.on('data', function(d) {
+  client.on("data", function(d) {
    b += d.toString();
   });
 
-  client.on('end', common.mustCall(function() {
-   assert.strictEqual(b, 'hello world\n');
+  client.on("end", common.mustCall(function() {
+   assert.strictEqual(b, "hello world\n");
   }));
 
-  client.on('close', common.mustCall(function() {
+  client.on("close", common.mustCall(function() {
    testServers(index + 1, servers, clientOptions, cb);
   }));
  }));
@@ -138,7 +138,7 @@ function runTest(testIndex) {
 runTest(0);
 
 
-process.on('exit', function() {
+process.on("exit", function() {
  console.log(`successful tests: ${successfulTests}`);
  assert.strictEqual(successfulTests, testCases.length);
 });

@@ -19,22 +19,22 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
-const message_to_send = 'A message to send';
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
+const message_to_send = "A message to send";
 
-const server = dgram.createSocket('udp4');
-server.on('message', common.mustCall((msg, rinfo) => {
+const server = dgram.createSocket("udp4");
+server.on("message", common.mustCall((msg, rinfo) => {
  assert.strictEqual(rinfo.address, common.localhostIPv4);
  assert.strictEqual(msg.toString(), message_to_send.toString());
  server.send(msg, 0, msg.length, rinfo.port, rinfo.address);
 }));
-server.on('listening', common.mustCall(() => {
- const client = dgram.createSocket('udp4');
+server.on("listening", common.mustCall(() => {
+ const client = dgram.createSocket("udp4");
  const port = server.address().port;
- client.on('message', common.mustCall((msg, rinfo) => {
+ client.on("message", common.mustCall((msg, rinfo) => {
   assert.strictEqual(rinfo.address, common.localhostIPv4);
   assert.strictEqual(rinfo.port, port);
   assert.strictEqual(msg.toString(), message_to_send.toString());
@@ -45,8 +45,8 @@ server.on('listening', common.mustCall(() => {
              0,
              message_to_send.length,
              port,
-             'localhost');
- client.on('close', common.mustCall());
+             "localhost");
+ client.on("close", common.mustCall());
 }));
-server.on('close', common.mustCall());
+server.on("close", common.mustCall());
 server.bind(0);

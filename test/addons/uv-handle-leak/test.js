@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../../common');
+"use strict";
+const common = require("../../common");
 const bindingPath = require.resolve(`./build/${common.buildType}/binding`);
 const binding = require(bindingPath);
 
@@ -13,9 +13,9 @@ const binding = require(bindingPath);
 try {
  // We don’t want to run this in Workers because they do actually enforce
  // a clean-exit policy.
- const { isMainThread } = require('worker_threads');
+ const { isMainThread } = require("worker_threads");
  if (!isMainThread)
-  common.skip('Cannot run test in environment with clean-exit policy');
+  common.skip("Cannot run test in environment with clean-exit policy");
 } catch {
  // Continue regardless of error.
 }

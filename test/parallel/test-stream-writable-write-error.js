@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { Writable } = require('stream');
+const { Writable } = require("stream");
 
 function expectError(w, args, code, sync) {
  if (sync) {
@@ -20,7 +20,7 @@ function expectError(w, args, code, sync) {
    assert.strictEqual(err.code, code);
   }));
   ticked = true;
-  w.on('error', common.mustCall((err) => {
+  w.on("error", common.mustCall((err) => {
    errorCalled = true;
    assert.strictEqual(err.code, code);
   }));
@@ -34,7 +34,7 @@ function test(autoDestroy) {
    _write() {},
   });
   w.end();
-  expectError(w, ['asd'], 'ERR_STREAM_WRITE_AFTER_END');
+  expectError(w, ["asd"], "ERR_STREAM_WRITE_AFTER_END");
  }
 
  {
@@ -50,7 +50,7 @@ function test(autoDestroy) {
    autoDestroy,
    _write() {},
   });
-  expectError(w, [null], 'ERR_STREAM_NULL_VALUES', true);
+  expectError(w, [null], "ERR_STREAM_NULL_VALUES", true);
  }
 
  {
@@ -58,7 +58,7 @@ function test(autoDestroy) {
    autoDestroy,
    _write() {},
   });
-  expectError(w, [{}], 'ERR_INVALID_ARG_TYPE', true);
+  expectError(w, [{}], "ERR_INVALID_ARG_TYPE", true);
  }
 
  {
@@ -67,7 +67,7 @@ function test(autoDestroy) {
    autoDestroy,
    _write() {},
   });
-  expectError(w, ['asd', 'noencoding'], 'ERR_UNKNOWN_ENCODING', true);
+  expectError(w, ["asd", "noencoding"], "ERR_UNKNOWN_ENCODING", true);
  }
 }
 

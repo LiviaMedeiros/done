@@ -93,37 +93,37 @@ The code is required in case the name is set to `'DeprecationWarning'`.
 Examples:
 
 ```js
-const { expectWarning } = require('../common');
+const { expectWarning } = require("../common");
 
-expectWarning('Warning', 'Foobar is really bad');
+expectWarning("Warning", "Foobar is really bad");
 
-expectWarning('DeprecationWarning', 'Foobar is deprecated', 'DEP0XXX');
+expectWarning("DeprecationWarning", "Foobar is deprecated", "DEP0XXX");
 
-expectWarning('DeprecationWarning', [
- 'Foobar is deprecated', 'DEP0XXX',
+expectWarning("DeprecationWarning", [
+ "Foobar is deprecated", "DEP0XXX",
 ]);
 
-expectWarning('DeprecationWarning', [
- ['Foobar is deprecated', 'DEP0XXX'],
- ['Baz is also deprecated', 'DEP0XX2'],
+expectWarning("DeprecationWarning", [
+ ["Foobar is deprecated", "DEP0XXX"],
+ ["Baz is also deprecated", "DEP0XX2"],
 ]);
 
-expectWarning('DeprecationWarning', {
- DEP0XXX: 'Foobar is deprecated',
- DEP0XX2: 'Baz is also deprecated',
+expectWarning("DeprecationWarning", {
+ DEP0XXX: "Foobar is deprecated",
+ DEP0XX2: "Baz is also deprecated",
 });
 
 expectWarning({
  DeprecationWarning: {
-  DEP0XXX: 'Foobar is deprecated',
-  DEP0XX1: 'Baz is also deprecated',
+  DEP0XXX: "Foobar is deprecated",
+  DEP0XX1: "Baz is also deprecated",
  },
  Warning: [
-  ['Multiple array entries are fine', 'SpecialWarningCode'],
-  ['No code is also fine'],
+  ["Multiple array entries are fine", "SpecialWarningCode"],
+  ["No code is also fine"],
  ],
- SingleEntry: ['This will also work', 'WarningCode'],
- SingleString: 'Single string entries without code will also work',
+ SingleEntry: ["This will also work", "WarningCode"],
+ SingleString: "Single string entries without code will also work",
 });
 ```
 
@@ -358,10 +358,10 @@ Logs '1..0 # Skipped: ' + `msg`
 Platform normalized `pwd` command options. Usage example:
 
 ```js
-const common = require('../common');
-const { spawn } = require('child_process');
+const common = require("../common");
+const { spawn } = require("child_process");
 
-spawn(...common.pwdCommand, { stdio: ['pipe'] });
+spawn(...common.pwdCommand, { stdio: ["pipe"] });
 ```
 
 ### `requireNoPackageJSONAbove([dir])`
@@ -418,9 +418,9 @@ a given array.
 <!-- eslint-disable no-undef, node-core/require-common-first, node-core/required-modules -->
 
 ```js
-const ArrayStream = require('../common/arraystream');
+const ArrayStream = require("../common/arraystream");
 const stream = new ArrayStream();
-stream.run(['a', 'b', 'c']);
+stream.run(["a", "b", "c"]);
 ```
 
 It can be used within tests as a simple mock stream.
@@ -435,10 +435,10 @@ requests). The Countdown will fail the test if the remainder did not reach 0.
 <!-- eslint-disable strict, node-core/require-common-first, node-core/required-modules -->
 
 ```js
-const Countdown = require('../common/countdown');
+const Countdown = require("../common/countdown");
 
 function doSomething() {
- console.log('.');
+ console.log(".");
 }
 
 const countdown = new Countdown(2, doSomething);
@@ -680,12 +680,12 @@ Create a heap dump and an embedder graph copy and validate occurrences.
 <!-- eslint-disable no-undef, node-core/require-common-first, node-core/required-modules -->
 
 ```js
-validateSnapshotNodes('TLSWRAP', [
+validateSnapshotNodes("TLSWRAP", [
  {
   children: [
-   { name: 'enc_out' },
-   { name: 'enc_in' },
-   { name: 'TLSWrap' },
+   { name: "enc_out" },
+   { name: "enc_in" },
+   { name: "TLSWrap" },
   ],
  },
 ]);
@@ -699,14 +699,14 @@ The `hijackstdio` module provides utility functions for temporarily redirecting
 <!-- eslint-disable no-undef, node-core/require-common-first, node-core/required-modules -->
 
 ```js
-const { hijackStdout, restoreStdout } = require('../common/hijackstdio');
+const { hijackStdout, restoreStdout } = require("../common/hijackstdio");
 
 hijackStdout((data) => {
  /* Do something with data */
  restoreStdout();
 });
 
-console.log('this is sent to the hijacked listener');
+console.log("this is sent to the hijacked listener");
 ```
 
 ### `hijackStderr(listener)`
@@ -747,7 +747,7 @@ frames for testing of HTTP/2 endpoints
 <!-- eslint-disable no-unused-vars, node-core/require-common-first, node-core/required-modules -->
 
 ```js
-const http2 = require('../common/http2');
+const http2 = require("../common/http2");
 ```
 
 ### Class: Frame
@@ -898,10 +898,10 @@ The `ongc` module allows a garbage collection listener to be installed. The
 module exports a single `onGC()` function.
 
 ```js
-require('../common');
-const onGC = require('../common/ongc');
+require("../common");
+const onGC = require("../common/ongc");
 
-onGC({}, { ongc() { console.log('collected'); } });
+onGC({}, { ongc() { console.log("collected"); } });
 ```
 
 ### `onGC(target, listener)`

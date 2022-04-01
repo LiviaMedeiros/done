@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const util = require('util');
-const common = require('../common.js');
+const util = require("util");
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  n: [1e5],

@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const PassThrough = require('stream').PassThrough;
-const readline = require('readline');
+const common = require("../common");
+const assert = require("assert");
+const PassThrough = require("stream").PassThrough;
+const readline = require("readline");
 
 common.skipIfDumbTerminal();
 
@@ -18,29 +18,29 @@ readline.createInterface({
  input: iStream,
  output: oStream,
  completer: function(line, cb) {
-  cb(null, [['process.stdout', 'process.stdin', 'process.stderr'], line]);
+  cb(null, [["process.stdout", "process.stdin", "process.stderr"], line]);
  },
 });
 
-let output = '';
+let output = "";
 
-oStream.on('data', function(data) {
+oStream.on("data", function(data) {
  output += data;
 });
 
-oStream.on('end', common.mustCall(() => {
- const expect = 'process.stdout\r\n' +
-                 'process.stdin\r\n' +
-                 'process.stderr';
+oStream.on("end", common.mustCall(() => {
+ const expect = "process.stdout\r\n" +
+                 "process.stdin\r\n" +
+                 "process.stderr";
  assert.match(output, new RegExp(expect));
 }));
 
-iStream.write('process.s\t');
+iStream.write("process.s\t");
 
 // Completion works.
 assert.match(output, /process\.std\b/);
 // Completion doesn’t show all results yet.
 assert.doesNotMatch(output, /stdout/);
 
-iStream.write('\t');
+iStream.write("\t");
 oStream.end();

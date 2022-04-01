@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const { Console } = require('console');
-const { Writable } = require('stream');
-const async_hooks = require('async_hooks');
+"use strict";
+const common = require("../common");
+const { Console } = require("console");
+const { Writable } = require("stream");
+const async_hooks = require("async_hooks");
 
 // Make sure that repeated calls to console.log(), and by extension
 // stream.write() for the underlying stream, allocate exactly 1 tick object.
@@ -16,7 +16,7 @@ const checkTickCreated = common.mustCall();
 
 async_hooks.createHook({
  init(id, type, triggerId, resoure) {
-  if (type === 'TickObject') checkTickCreated();
+  if (type === "TickObject") checkTickCreated();
  },
 }).enable();
 

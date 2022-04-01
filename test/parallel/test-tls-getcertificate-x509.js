@@ -1,28 +1,28 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
-const { X509Certificate } = require('crypto');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
+const { X509Certificate } = require("crypto");
 
 const options = {
- key: fixtures.readKey('agent6-key.pem'),
- cert: fixtures.readKey('agent6-cert.pem'),
+ key: fixtures.readKey("agent6-key.pem"),
+ cert: fixtures.readKey("agent6-cert.pem"),
 };
 
 const server = tls.createServer(options, function(cleartext) {
- cleartext.end('World');
+ cleartext.end("World");
 });
 
-server.once('secureConnection', common.mustCall(function(socket) {
+server.once("secureConnection", common.mustCall(function(socket) {
  const cert = socket.getX509Certificate();
  assert(cert instanceof X509Certificate);
  assert.strictEqual(
   cert.serialNumber,
-  'D0082F458B6EFBE8');
+  "D0082F458B6EFBE8");
 }));
 
 server.listen(0, common.mustCall(function() {
@@ -35,9 +35,9 @@ server.listen(0, common.mustCall(function() {
   assert.strictEqual(peerCert.issuerCertificate.issuerCertificate, undefined);
   assert.strictEqual(
    peerCert.issuerCertificate.serialNumber,
-   'ECC9B856270DA9A7',
+   "ECC9B856270DA9A7",
   );
   server.close();
  }));
- socket.end('Hello');
+ socket.end("Hello");
 }));

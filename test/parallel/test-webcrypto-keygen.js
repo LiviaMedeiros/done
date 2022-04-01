@@ -1,143 +1,143 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { types: { isCryptoKey } } = require('util');
+const assert = require("assert");
+const { types: { isCryptoKey } } = require("util");
 const {
  webcrypto: { subtle, CryptoKey },
  createSecretKey,
-} = require('crypto');
+} = require("crypto");
 
 const allUsages = [
- 'encrypt',
- 'decrypt',
- 'sign',
- 'verify',
- 'deriveBits',
- 'deriveKey',
- 'wrapKey',
- 'unwrapKey',
+ "encrypt",
+ "decrypt",
+ "sign",
+ "verify",
+ "deriveBits",
+ "deriveKey",
+ "wrapKey",
+ "unwrapKey",
 ];
 const vectors = {
- 'AES-CTR': {
+ "AES-CTR": {
   algorithm: { length: 256 },
   usages: [
-   'encrypt',
-   'decrypt',
-   'wrapKey',
-   'unwrapKey',
+   "encrypt",
+   "decrypt",
+   "wrapKey",
+   "unwrapKey",
   ],
   mandatoryUsages: [],
  },
- 'AES-CBC': {
+ "AES-CBC": {
   algorithm: { length: 256 },
   usages: [
-   'encrypt',
-   'decrypt',
-   'wrapKey',
-   'unwrapKey',
+   "encrypt",
+   "decrypt",
+   "wrapKey",
+   "unwrapKey",
   ],
   mandatoryUsages: [],
  },
- 'AES-GCM': {
+ "AES-GCM": {
   algorithm: { length: 256 },
   usages: [
-   'encrypt',
-   'decrypt',
-   'wrapKey',
-   'unwrapKey',
+   "encrypt",
+   "decrypt",
+   "wrapKey",
+   "unwrapKey",
   ],
   mandatoryUsages: [],
  },
- 'AES-KW': {
+ "AES-KW": {
   algorithm: { length: 256 },
   usages: [
-   'wrapKey',
-   'unwrapKey',
+   "wrapKey",
+   "unwrapKey",
   ],
   mandatoryUsages: [],
  },
- 'HMAC': {
-  algorithm: { length: 256, hash: 'SHA-256' },
+ "HMAC": {
+  algorithm: { length: 256, hash: "SHA-256" },
   usages: [
-   'sign',
-   'verify',
+   "sign",
+   "verify",
   ],
   mandatoryUsages: [],
  },
- 'RSASSA-PKCS1-v1_5': {
+ "RSASSA-PKCS1-v1_5": {
   algorithm: {
    modulusLength: 1024,
    publicExponent: new Uint8Array([1, 0, 1]),
-   hash: 'SHA-256',
+   hash: "SHA-256",
   },
   usages: [
-   'sign',
-   'verify',
+   "sign",
+   "verify",
   ],
-  mandatoryUsages: ['sign'],
+  mandatoryUsages: ["sign"],
  },
- 'RSA-PSS': {
+ "RSA-PSS": {
   algorithm: {
    modulusLength: 1024,
    publicExponent: new Uint8Array([1, 0, 1]),
-   hash: 'SHA-256',
+   hash: "SHA-256",
   },
   usages: [
-   'sign',
-   'verify',
+   "sign",
+   "verify",
   ],
-  mandatoryUsages: ['sign'],
+  mandatoryUsages: ["sign"],
  },
- 'RSA-OAEP': {
+ "RSA-OAEP": {
   algorithm: {
    modulusLength: 1024,
    publicExponent: new Uint8Array([1, 0, 1]),
-   hash: 'SHA-256',
+   hash: "SHA-256",
   },
   usages: [
-   'encrypt',
-   'decrypt',
-   'wrapKey',
-   'unwrapKey',
+   "encrypt",
+   "decrypt",
+   "wrapKey",
+   "unwrapKey",
   ],
   mandatoryUsages: [
-   'decrypt',
-   'unwrapKey',
+   "decrypt",
+   "unwrapKey",
   ],
  },
- 'ECDSA': {
-  algorithm: { namedCurve: 'P-521' },
+ "ECDSA": {
+  algorithm: { namedCurve: "P-521" },
   usages: [
-   'sign',
-   'verify',
+   "sign",
+   "verify",
   ],
-  mandatoryUsages: ['sign'],
+  mandatoryUsages: ["sign"],
  },
- 'ECDH': {
-  algorithm: { namedCurve: 'P-521' },
+ "ECDH": {
+  algorithm: { namedCurve: "P-521" },
   usages: [
-   'deriveKey',
-   'deriveBits',
+   "deriveKey",
+   "deriveBits",
   ],
   mandatoryUsages: [
-   'deriveKey',
-   'deriveBits',
+   "deriveKey",
+   "deriveBits",
   ],
  },
- 'NODE-DSA': {
-  algorithm: { modulusLength: 1024, hash: 'SHA-256' },
+ "NODE-DSA": {
+  algorithm: { modulusLength: 1024, hash: "SHA-256" },
   usages: [
-   'sign',
-   'verify',
+   "sign",
+   "verify",
   ],
   mandatoryUsages: [
-   'sign',
-   'verify',
+   "sign",
+   "verify",
   ],
  },
 };
@@ -148,32 +148,32 @@ const vectors = {
   return assert.rejects(
    // The extractable and usages values are invalid here also,
    // but the unrecognized algorithm name should be caught first.
-   subtle.generateKey(algorithm, 7, ['zebra']), {
+   subtle.generateKey(algorithm, 7, ["zebra"]), {
     message: /Unrecognized name/,
    });
  }
 
  const tests = [
-  'AES',
-  { name: 'AES' },
-  { name: 'AES-CMAC' },
-  { name: 'AES-CFB' },
-  { name: 'HMAC', hash: 'MD5' },
+  "AES",
+  { name: "AES" },
+  { name: "AES-CMAC" },
+  { name: "AES-CFB" },
+  { name: "HMAC", hash: "MD5" },
   {
-   name: 'RSA',
-   hash: 'SHA-256',
+   name: "RSA",
+   hash: "SHA-256",
    modulusLength: 2048,
    publicExponent: new Uint8Array([1, 0, 1]),
   },
   {
-   name: 'RSA-PSS',
-   hash: 'SHA',
+   name: "RSA-PSS",
+   hash: "SHA",
    modulusLength: 2048,
    publicExponent: new Uint8Array([1, 0, 1]),
   },
   {
-   name: 'EC',
-   namedCurve: 'P521',
+   name: "EC",
+   namedCurve: "P521",
   },
  ].map(async (algorithm) => test(algorithm));
 
@@ -230,8 +230,8 @@ const vectors = {
   assert(publicKey instanceof CryptoKey);
   assert(privateKey instanceof CryptoKey);
 
-  assert.strictEqual(publicKey.type, 'public');
-  assert.strictEqual(privateKey.type, 'private');
+  assert.strictEqual(publicKey.type, "public");
+  assert.strictEqual(privateKey.type, "private");
   assert.strictEqual(publicKey.extractable, true);
   assert.strictEqual(privateKey.extractable, true);
   assert.deepStrictEqual(publicKey.usages, publicUsages);
@@ -248,33 +248,33 @@ const vectors = {
   // Missing parameters
   await assert.rejects(
    subtle.generateKey({ name, publicExponent, hash }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
 
   await assert.rejects(
    subtle.generateKey({ name, modulusLength, hash }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
 
   await assert.rejects(
    subtle.generateKey({ name, modulusLength }, true, usages), {
-    code: 'ERR_MISSING_OPTION',
+    code: "ERR_MISSING_OPTION",
    });
 
-  await Promise.all(['', true, {}].map((modulusLength) => {
+  await Promise.all(["", true, {}].map((modulusLength) => {
    return assert.rejects(subtle.generateKey({
     name,
     modulusLength,
     publicExponent,
     hash,
    }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
   }));
 
   await Promise.all(
    [
-    '',
+    "",
     true,
     {},
     1,
@@ -284,7 +284,7 @@ const vectors = {
     return assert.rejects(
      subtle.generateKey(
       { name, modulusLength, publicExponent, hash }, true, usages),
-     { code: 'ERR_INVALID_ARG_TYPE' });
+     { code: "ERR_INVALID_ARG_TYPE" });
    }));
 
   await Promise.all([true, {}, 1, []].map((hash) => {
@@ -298,53 +298,53 @@ const vectors = {
    });
   }));
 
-  await Promise.all(['', {}, 1, []].map((extractable) => {
+  await Promise.all(["", {}, 1, []].map((extractable) => {
    return assert.rejects(subtle.generateKey({
     name,
     modulusLength,
     publicExponent,
     hash,
    }, extractable, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
   }));
 
-  await Promise.all(['', {}, 1, false].map((usages) => {
+  await Promise.all(["", {}, 1, false].map((usages) => {
    return assert.rejects(subtle.generateKey({
     name,
     modulusLength,
     publicExponent,
     hash,
    }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
   }));
  }
 
  const kTests = [
   [
-   'RSASSA-PKCS1-v1_5',
+   "RSASSA-PKCS1-v1_5",
    1024,
    Buffer.from([1, 0, 1]),
-   'SHA-256',
-   ['sign'],
-   ['verify'],
+   "SHA-256",
+   ["sign"],
+   ["verify"],
   ],
   [
-   'RSA-PSS',
+   "RSA-PSS",
    2048,
    Buffer.from([1, 0, 1]),
-   'SHA-512',
-   ['sign'],
-   ['verify'],
+   "SHA-512",
+   ["sign"],
+   ["verify"],
   ],
   [
-   'RSA-OAEP',
+   "RSA-OAEP",
    1024,
    Buffer.from([3]),
-   'SHA-384',
-   ['decrypt', 'unwrapKey'],
-   ['encrypt', 'wrapKey'],
+   "SHA-384",
+   ["decrypt", "unwrapKey"],
+   ["encrypt", "wrapKey"],
   ],
  ];
 
@@ -375,8 +375,8 @@ const vectors = {
   assert(isCryptoKey(publicKey));
   assert(isCryptoKey(privateKey));
 
-  assert.strictEqual(publicKey.type, 'public');
-  assert.strictEqual(privateKey.type, 'private');
+  assert.strictEqual(publicKey.type, "public");
+  assert.strictEqual(privateKey.type, "private");
   assert.strictEqual(publicKey.extractable, true);
   assert.strictEqual(privateKey.extractable, true);
   assert.deepStrictEqual(publicKey.usages, publicUsages);
@@ -390,34 +390,34 @@ const vectors = {
   [1, true, {}, [], undefined, null].forEach(async (namedCurve) => {
    await assert.rejects(
     subtle.generateKey({ name, namedCurve }, true, privateUsages), {
-     code: 'ERR_INVALID_ARG_TYPE',
+     code: "ERR_INVALID_ARG_TYPE",
     });
   });
  }
 
  const kTests = [
   [
-   'ECDSA',
-   'P-384',
-   ['sign'],
-   ['verify'],
+   "ECDSA",
+   "P-384",
+   ["sign"],
+   ["verify"],
   ],
   [
-   'ECDSA',
-   'P-521',
-   ['sign'],
-   ['verify'],
+   "ECDSA",
+   "P-521",
+   ["sign"],
+   ["verify"],
   ],
   [
-   'ECDH',
-   'P-384',
-   ['deriveKey', 'deriveBits'],
+   "ECDH",
+   "P-384",
+   ["deriveKey", "deriveBits"],
    [],
   ],
   [
-   'ECDH',
-   'P-521',
-   ['deriveKey', 'deriveBits'],
+   "ECDH",
+   "P-521",
+   ["deriveKey", "deriveBits"],
    [],
   ],
  ];
@@ -440,7 +440,7 @@ const vectors = {
   assert(key);
   assert(isCryptoKey(key));
 
-  assert.strictEqual(key.type, 'secret');
+  assert.strictEqual(key.type, "secret");
   assert.strictEqual(key.extractable, true);
   assert.deepStrictEqual(key.usages, usages);
   assert.strictEqual(key.algorithm.name, name);
@@ -450,27 +450,27 @@ const vectors = {
   [1, 100, 257].forEach(async (length) => {
    await assert.rejects(
     subtle.generateKey({ name, length }, true, usages), {
-     code: 'ERR_INVALID_ARG_VALUE',
+     code: "ERR_INVALID_ARG_VALUE",
     });
   });
 
-  ['', {}, [], false, null, undefined].forEach(async (length) => {
+  ["", {}, [], false, null, undefined].forEach(async (length) => {
    await assert.rejects(
     subtle.generateKey({ name, length }, true, usages), {
-     code: 'ERR_INVALID_ARG_TYPE',
+     code: "ERR_INVALID_ARG_TYPE",
     });
   });
  }
 
  const kTests = [
-  [ 'AES-CTR', 128, ['encrypt', 'decrypt', 'wrapKey']],
-  [ 'AES-CTR', 256, ['encrypt', 'decrypt', 'unwrapKey']],
-  [ 'AES-CBC', 128, ['encrypt', 'decrypt']],
-  [ 'AES-CBC', 256, ['encrypt', 'decrypt']],
-  [ 'AES-GCM', 128, ['encrypt', 'decrypt']],
-  [ 'AES-GCM', 256, ['encrypt', 'decrypt']],
-  [ 'AES-KW', 128, ['wrapKey', 'unwrapKey']],
-  [ 'AES-KW', 256, ['wrapKey', 'unwrapKey']],
+  [ "AES-CTR", 128, ["encrypt", "decrypt", "wrapKey"]],
+  [ "AES-CTR", 256, ["encrypt", "decrypt", "unwrapKey"]],
+  [ "AES-CBC", 128, ["encrypt", "decrypt"]],
+  [ "AES-CBC", 256, ["encrypt", "decrypt"]],
+  [ "AES-GCM", 128, ["encrypt", "decrypt"]],
+  [ "AES-GCM", 256, ["encrypt", "decrypt"]],
+  [ "AES-KW", 128, ["wrapKey", "unwrapKey"]],
+  [ "AES-KW", 256, ["wrapKey", "unwrapKey"]],
  ];
 
  const tests = Promise.all(kTests.map((args) => test(...args)));
@@ -482,52 +482,52 @@ const vectors = {
 {
  async function test(length, hash, usages) {
   const key = await subtle.generateKey({
-   name: 'HMAC',
+   name: "HMAC",
    length,
    hash,
   }, true, usages);
 
   if (length === undefined) {
    switch (hash) {
-    case 'SHA-1': length = 160; break;
-    case 'SHA-256': length = 256; break;
-    case 'SHA-384': length = 384; break;
-    case 'SHA-512': length = 512; break;
+    case "SHA-1": length = 160; break;
+    case "SHA-256": length = 256; break;
+    case "SHA-384": length = 384; break;
+    case "SHA-512": length = 512; break;
    }
   }
 
   assert(key);
   assert(isCryptoKey(key));
 
-  assert.strictEqual(key.type, 'secret');
+  assert.strictEqual(key.type, "secret");
   assert.strictEqual(key.extractable, true);
   assert.deepStrictEqual(key.usages, usages);
-  assert.strictEqual(key.algorithm.name, 'HMAC');
+  assert.strictEqual(key.algorithm.name, "HMAC");
   assert.strictEqual(key.algorithm.length, length);
   assert.strictEqual(key.algorithm.hash.name, hash);
 
-  ['', {}, [], false, null].forEach(async (length) => {
+  ["", {}, [], false, null].forEach(async (length) => {
    await assert.rejects(
-    subtle.generateKey({ name: 'HMAC', length, hash }, true, usages), {
-     code: 'ERR_INVALID_ARG_TYPE',
+    subtle.generateKey({ name: "HMAC", length, hash }, true, usages), {
+     code: "ERR_INVALID_ARG_TYPE",
     });
   });
 
   [1, {}, [], false, null].forEach(async (hash) => {
    await assert.rejects(
-    subtle.generateKey({ name: 'HMAC', length, hash }, true, usages), {
+    subtle.generateKey({ name: "HMAC", length, hash }, true, usages), {
      message: /Unrecognized name/,
     });
   });
  }
 
  const kTests = [
-  [ undefined, 'SHA-1', ['sign', 'verify']],
-  [ undefined, 'SHA-256', ['sign', 'verify']],
-  [ undefined, 'SHA-384', ['sign', 'verify']],
-  [ undefined, 'SHA-512', ['sign', 'verify']],
-  [ 128, 'SHA-256', ['sign', 'verify']],
-  [ 1024, 'SHA-512', ['sign', 'verify']],
+  [ undefined, "SHA-1", ["sign", "verify"]],
+  [ undefined, "SHA-256", ["sign", "verify"]],
+  [ undefined, "SHA-384", ["sign", "verify"]],
+  [ undefined, "SHA-512", ["sign", "verify"]],
+  [ 128, "SHA-256", ["sign", "verify"]],
+  [ 1024, "SHA-512", ["sign", "verify"]],
  ];
 
  const tests = Promise.all(kTests.map((args) => test(...args)));
@@ -557,8 +557,8 @@ const vectors = {
   assert(isCryptoKey(publicKey));
   assert(isCryptoKey(privateKey));
 
-  assert.strictEqual(publicKey.type, 'public');
-  assert.strictEqual(privateKey.type, 'private');
+  assert.strictEqual(publicKey.type, "public");
+  assert.strictEqual(privateKey.type, "private");
   assert.strictEqual(publicKey.extractable, true);
   assert.strictEqual(privateKey.extractable, true);
   assert.deepStrictEqual(publicKey.usages, publicUsages);
@@ -573,21 +573,21 @@ const vectors = {
   // Missing parameters
   await assert.rejects(
    subtle.generateKey({ name, hash }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
 
   await assert.rejects(
    subtle.generateKey({ name, modulusLength }, true, usages), {
-    code: 'ERR_MISSING_OPTION',
+    code: "ERR_MISSING_OPTION",
    });
 
-  await Promise.all(['', true, {}].map((modulusLength) => {
+  await Promise.all(["", true, {}].map((modulusLength) => {
    return assert.rejects(subtle.generateKey({
     name,
     modulusLength,
     hash,
    }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
   }));
 
@@ -601,34 +601,34 @@ const vectors = {
    });
   }));
 
-  await Promise.all(['', {}, 1, []].map((extractable) => {
+  await Promise.all(["", {}, 1, []].map((extractable) => {
    return assert.rejects(subtle.generateKey({
     name,
     modulusLength,
     hash,
    }, extractable, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
   }));
 
-  await Promise.all(['', {}, 1, false].map((usages) => {
+  await Promise.all(["", {}, 1, false].map((usages) => {
    return assert.rejects(subtle.generateKey({
     name,
     modulusLength,
     hash,
    }, true, usages), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    });
   }));
  }
 
  const kTests = [
   [
-   'NODE-DSA',
+   "NODE-DSA",
    1024,
-   'SHA-256',
-   ['sign'],
-   ['verify'],
+   "SHA-256",
+   ["sign"],
+   ["verify"],
   ],
  ];
 
@@ -641,26 +641,26 @@ const vectors = {
 (async function() {
  const { publicKey, privateKey } =
     await subtle.generateKey({
-    	name: 'NODE-DH',
-    	group: 'modp15',
-    }, true, ['deriveKey']);
+    	name: "NODE-DH",
+    	group: "modp15",
+    }, true, ["deriveKey"]);
  assert(publicKey);
  assert(privateKey);
  assert(isCryptoKey(publicKey));
  assert(isCryptoKey(privateKey));
- assert.strictEqual(publicKey.type, 'public');
- assert.strictEqual(privateKey.type, 'private');
- assert.strictEqual(publicKey.algorithm.name, 'NODE-DH');
- assert.strictEqual(privateKey.algorithm.name, 'NODE-DH');
- assert.strictEqual(publicKey.algorithm.group, 'modp15');
- assert.strictEqual(privateKey.algorithm.group, 'modp15');
+ assert.strictEqual(publicKey.type, "public");
+ assert.strictEqual(privateKey.type, "private");
+ assert.strictEqual(publicKey.algorithm.name, "NODE-DH");
+ assert.strictEqual(privateKey.algorithm.name, "NODE-DH");
+ assert.strictEqual(publicKey.algorithm.group, "modp15");
+ assert.strictEqual(privateKey.algorithm.group, "modp15");
 })().then(common.mustCall());
 
 // End user code cannot create CryptoKey directly
-assert.throws(() => new CryptoKey(), { code: 'ERR_ILLEGAL_CONSTRUCTOR' });
+assert.throws(() => new CryptoKey(), { code: "ERR_ILLEGAL_CONSTRUCTOR" });
 
 {
- const buffer = Buffer.from('Hello World');
+ const buffer = Buffer.from("Hello World");
  const keyObject = createSecretKey(buffer);
  assert(!isCryptoKey(buffer));
  assert(!isCryptoKey(keyObject));

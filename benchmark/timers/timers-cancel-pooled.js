@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common.js');
-const assert = require('assert');
+"use strict";
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
  n: [5e6],
@@ -27,5 +27,5 @@ function main({ n }) {
 }
 
 function cb() {
- assert.fail('Timer should not call callback');
+ assert.fail("Timer should not call callback");
 }

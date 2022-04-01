@@ -1,29 +1,29 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  n: [5e6],
- type: ['depth', 'depth1', 'breadth', 'breadth1', 'breadth4', 'clear'],
+ type: ["depth", "depth1", "breadth", "breadth1", "breadth4", "clear"],
 });
 
 function main({ n, type }) {
  switch (type) {
-  case 'depth':
+  case "depth":
    depth(n);
    break;
-  case 'depth1':
+  case "depth1":
    depth1(n);
    break;
-  case 'breadth':
+  case "breadth":
    breadth(n);
    break;
-  case 'breadth1':
+  case "breadth1":
    breadth1(n);
    break;
-  case 'breadth4':
+  case "breadth4":
    breadth4(n);
    break;
-  case 'clear':
+  case "clear":
    clear(n);
    break;
  }

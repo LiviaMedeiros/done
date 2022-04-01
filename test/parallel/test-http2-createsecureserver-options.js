@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const http2 = require('http2');
+const assert = require("assert");
+const http2 = require("http2");
 
 // Error if invalid options are passed to createSecureServer.
-const invalidOptions = [() => {}, 1, 'test', null, Symbol('test')];
+const invalidOptions = [() => {}, 1, "test", null, Symbol("test")];
 invalidOptions.forEach((invalidOption) => {
  assert.throws(
   () => http2.createSecureServer(invalidOption),
   {
-   name: 'TypeError',
-   code: 'ERR_INVALID_ARG_TYPE',
+   name: "TypeError",
+   code: "ERR_INVALID_ARG_TYPE",
    message: 'The "options" argument must be of type object.' +
                common.invalidArgTypeHelper(invalidOption),
   },
@@ -26,8 +26,8 @@ invalidOptions.forEach((invalidSettingsOption) => {
  assert.throws(
   () => http2.createSecureServer({ settings: invalidSettingsOption }),
   {
-   name: 'TypeError',
-   code: 'ERR_INVALID_ARG_TYPE',
+   name: "TypeError",
+   code: "ERR_INVALID_ARG_TYPE",
    message: 'The "options.settings" property must be of type object.' +
                common.invalidArgTypeHelper(invalidSettingsOption),
   },
@@ -40,15 +40,15 @@ Object.entries({
   {
    val: -1,
    err: {
-    name: 'RangeError',
-    code: 'ERR_OUT_OF_RANGE',
+    name: "RangeError",
+    code: "ERR_OUT_OF_RANGE",
    },
   },
   {
    val: Number.NEGATIVE_INFINITY,
    err: {
-    name: 'RangeError',
-    code: 'ERR_OUT_OF_RANGE',
+    name: "RangeError",
+    code: "ERR_OUT_OF_RANGE",
    },
   },
  ],
@@ -56,15 +56,15 @@ Object.entries({
   {
    val: -1,
    err: {
-    name: 'RangeError',
-    code: 'ERR_OUT_OF_RANGE',
+    name: "RangeError",
+    code: "ERR_OUT_OF_RANGE",
    },
   },
   {
    val: Number.NEGATIVE_INFINITY,
    err: {
-    name: 'RangeError',
-    code: 'ERR_OUT_OF_RANGE',
+    name: "RangeError",
+    code: "ERR_OUT_OF_RANGE",
    },
   },
  ],

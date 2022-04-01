@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common.js');
-const querystring = require('querystring');
+"use strict";
+const common = require("../common.js");
+const querystring = require("querystring");
 const searchParams = common.searchParams;
 
 const bench = common.createBenchmark(main, {
  searchParam: Object.keys(searchParams),
- method: ['legacy', 'whatwg'],
+ method: ["legacy", "whatwg"],
  n: [1e6],
 });
 
@@ -34,10 +34,10 @@ function main({ searchParam, n, method }) {
  }
 
  switch (method) {
-  case 'legacy':
+  case "legacy":
    useLegacy(n, param);
    break;
-  case 'whatwg':
+  case "whatwg":
    useWHATWG(n, param);
    break;
   default:

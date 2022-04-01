@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Hijack stdout and stderr
 const stdWrite = {};
@@ -25,8 +25,8 @@ function restoreWritable(name) {
 }
 
 module.exports = {
- hijackStdout: hijackStdWritable.bind(null, 'stdout'),
- hijackStderr: hijackStdWritable.bind(null, 'stderr'),
- restoreStdout: restoreWritable.bind(null, 'stdout'),
- restoreStderr: restoreWritable.bind(null, 'stderr'),
+ hijackStdout: hijackStdWritable.bind(null, "stdout"),
+ hijackStderr: hijackStdWritable.bind(null, "stderr"),
+ restoreStdout: restoreWritable.bind(null, "stdout"),
+ restoreStderr: restoreWritable.bind(null, "stderr"),
 };

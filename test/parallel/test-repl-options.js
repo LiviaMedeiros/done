@@ -21,12 +21,12 @@
 
 // Flags: --pending-deprecation
 
-'use strict';
-const common = require('../common');
-const ArrayStream = require('../common/arraystream');
-const assert = require('assert');
-const repl = require('repl');
-const cp = require('child_process');
+"use strict";
+const common = require("../common");
+const ArrayStream = require("../common/arraystream");
+const assert = require("assert");
+const repl = require("repl");
+const cp = require("child_process");
 
 assert.strictEqual(repl.repl, undefined);
 repl._builtinLibs; // eslint-disable-line no-unused-expressions
@@ -34,9 +34,9 @@ repl._builtinLibs; // eslint-disable-line no-unused-expressions
 common.expectWarning({
  DeprecationWarning: {
   DEP0142:
-      'repl._builtinLibs is deprecated. Check module.builtinModules instead',
-  DEP0141: 'repl.inputStream and repl.outputStream are deprecated. ' +
-             'Use repl.input and repl.output instead',
+      "repl._builtinLibs is deprecated. Check module.builtinModules instead",
+  DEP0141: "repl.inputStream and repl.outputStream are deprecated. " +
+             "Use repl.input and repl.output instead",
  },
 });
 
@@ -96,15 +96,15 @@ const r3 = () => repl.start({
 });
 
 assert.throws(r3, {
- code: 'ERR_INVALID_REPL_EVAL_CONFIG',
- name: 'TypeError',
+ code: "ERR_INVALID_REPL_EVAL_CONFIG",
+ name: "TypeError",
  message: 'Cannot specify both "breakEvalOnSigint" and "eval" for REPL',
 });
 
 // 4, Verify that defaults are used when no arguments are provided
 const r4 = repl.start();
 
-assert.strictEqual(r4.getPrompt(), '> ');
+assert.strictEqual(r4.getPrompt(), "> ");
 assert.strictEqual(r4.input, process.stdin);
 assert.strictEqual(r4.output, process.stdout);
 assert.strictEqual(r4.terminal, !!r4.output.isTTY);
@@ -117,22 +117,22 @@ r4.close();
 
 // Check the standalone REPL
 {
- const child = cp.spawn(process.execPath, ['--interactive']);
- let output = '';
+ const child = cp.spawn(process.execPath, ["--interactive"]);
+ let output = "";
 
- child.stdout.setEncoding('utf8');
- child.stdout.on('data', (data) => {
+ child.stdout.setEncoding("utf8");
+ child.stdout.on("data", (data) => {
   output += data;
  });
 
- child.on('exit', common.mustCall(() => {
-  const results = output.replace(/^> /mg, '').split('\n').slice(2);
-  assert.deepStrictEqual(results, ['undefined', '']);
+ child.on("exit", common.mustCall(() => {
+  const results = output.replace(/^> /mg, "").split("\n").slice(2);
+  assert.deepStrictEqual(results, ["undefined", ""]);
  }));
 
  child.stdin.write(
   'assert.ok(util.inspect(repl.repl, {depth: -1}).includes("REPLServer"));\n',
  );
- child.stdin.write('.exit');
+ child.stdin.write(".exit");
  child.stdin.end();
 }

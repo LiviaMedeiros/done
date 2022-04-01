@@ -1,39 +1,39 @@
-'use strict';
+"use strict";
 
 {
  function setupTheme() {
-  const kCustomPreference = 'customDarkTheme';
+  const kCustomPreference = "customDarkTheme";
   const userSettings = sessionStorage.getItem(kCustomPreference);
-  const themeToggleButton = document.getElementById('theme-toggle-btn');
+  const themeToggleButton = document.getElementById("theme-toggle-btn");
 
   if (userSettings === null && window.matchMedia) {
-   const mq = window.matchMedia('(prefers-color-scheme: dark)');
+   const mq = window.matchMedia("(prefers-color-scheme: dark)");
 
-   if ('onchange' in mq) {
+   if ("onchange" in mq) {
     function mqChangeListener(e) {
-     document.documentElement.classList.toggle('dark-mode', e.matches);
+     document.documentElement.classList.toggle("dark-mode", e.matches);
     }
-    mq.addEventListener('change', mqChangeListener);
+    mq.addEventListener("change", mqChangeListener);
     if (themeToggleButton) {
-     themeToggleButton.addEventListener('click', function() {
-      mq.removeEventListener('change', mqChangeListener);
+     themeToggleButton.addEventListener("click", function() {
+      mq.removeEventListener("change", mqChangeListener);
      }, { once: true });
     }
    }
 
    if (mq.matches) {
-    document.documentElement.classList.add('dark-mode');
+    document.documentElement.classList.add("dark-mode");
    }
-  } else if (userSettings === 'true') {
-   document.documentElement.classList.add('dark-mode');
+  } else if (userSettings === "true") {
+   document.documentElement.classList.add("dark-mode");
   }
 
   if (themeToggleButton) {
    themeToggleButton.hidden = false;
-   themeToggleButton.addEventListener('click', function() {
+   themeToggleButton.addEventListener("click", function() {
     sessionStorage.setItem(
      kCustomPreference,
-     document.documentElement.classList.toggle('dark-mode'),
+     document.documentElement.classList.toggle("dark-mode"),
     );
    });
   }
@@ -42,32 +42,32 @@
  function setupPickers() {
   function closeAllPickers() {
    for (const picker of pickers) {
-    picker.parentNode.classList.remove('expanded');
+    picker.parentNode.classList.remove("expanded");
    }
 
-   window.removeEventListener('click', closeAllPickers);
-   window.removeEventListener('keydown', onKeyDown);
+   window.removeEventListener("click", closeAllPickers);
+   window.removeEventListener("keydown", onKeyDown);
   }
 
   function onKeyDown(e) {
-   if (e.key === 'Escape') {
+   if (e.key === "Escape") {
     closeAllPickers();
    }
   }
 
-  const pickers = document.querySelectorAll('.picker-header > a');
+  const pickers = document.querySelectorAll(".picker-header > a");
 
   for (const picker of pickers) {
    const parentNode = picker.parentNode;
 
-   picker.addEventListener('click', (e) => {
+   picker.addEventListener("click", (e) => {
     e.preventDefault();
 
     /*
           closeAllPickers as window event trigger already closed all the pickers,
           if it already closed there is nothing else to do here
         */
-    if (parentNode.classList.contains('expanded')) {
+    if (parentNode.classList.contains("expanded")) {
      return;
     }
 
@@ -77,21 +77,21 @@
         */
 
     requestAnimationFrame(() => {
-     parentNode.classList.add('expanded');
-     window.addEventListener('click', closeAllPickers);
-     window.addEventListener('keydown', onKeyDown);
+     parentNode.classList.add("expanded");
+     window.addEventListener("click", closeAllPickers);
+     window.addEventListener("keydown", onKeyDown);
     });
    });
   }
  }
 
  function setupStickyHeaders() {
-  const header = document.querySelector('.header');
+  const header = document.querySelector(".header");
   let ignoreNextIntersection = false;
 
   new IntersectionObserver(
    ([e]) => {
-    const currentStatus = header.classList.contains('is-pinned');
+    const currentStatus = header.classList.contains("is-pinned");
     const newStatus = e.intersectionRatio < 1;
 
     // Same status, do nothing
@@ -113,7 +113,7 @@
      ignoreNextIntersection = false;
     }, 50);
 
-    header.classList.toggle('is-pinned', newStatus);
+    header.classList.toggle("is-pinned", newStatus);
    },
    { threshold: [1] },
   ).observe(header);
@@ -121,7 +121,7 @@
 
  function bootstrap() {
   // Check if we have JavaScript support
-  document.documentElement.classList.add('has-js');
+  document.documentElement.classList.add("has-js");
 
   // Restore user mode preferences
   setupTheme();
@@ -133,8 +133,8 @@
   setupStickyHeaders();
  }
 
- if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootstrap, { once: true });
+ if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootstrap, { once: true });
  } else {
   bootstrap();
  }

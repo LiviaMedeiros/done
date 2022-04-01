@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { readFileSync, promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs, readFileSync } from "fs";
+import path from "path";
 
-import raw from 'rehype-raw';
-import htmlStringify from 'rehype-stringify';
-import gfm from 'remark-gfm';
-import markdown from 'remark-parse';
-import remark2rehype from 'remark-rehype';
-import frontmatter from 'remark-frontmatter';
-import { unified } from 'unified';
+import raw from "rehype-raw";
+import htmlStringify from "rehype-stringify";
+import gfm from "remark-gfm";
+import markdown from "remark-parse";
+import remark2rehype from "remark-rehype";
+import frontmatter from "remark-frontmatter";
+import { unified } from "unified";
 
-import * as html from './html.mjs';
-import * as json from './json.mjs';
-import { replaceLinks } from './markdown.mjs';
+import * as html from "./html.mjs";
+import * as json from "./json.mjs";
+import { replaceLinks } from "./markdown.mjs";
 
-const linksMapperFile = new URL('links-mapper.json', import.meta.url);
-const linksMapper = JSON.parse(readFileSync(linksMapperFile, 'utf8'));
+const linksMapperFile = new URL("links-mapper.json", import.meta.url);
+const linksMapper = JSON.parse(readFileSync(linksMapperFile, "utf8"));
 
 // Parse the args.
 // Don't use nopt or whatever for this. It's simple enough.
@@ -49,22 +49,22 @@ let versions = [];
 
 async function main() {
  for (const arg of args) {
-  if (!arg.startsWith('--')) {
+  if (!arg.startsWith("--")) {
    filename = arg;
-  } else if (arg.startsWith('--node-version=')) {
-   nodeVersion = arg.replace(/^--node-version=/, '');
-  } else if (arg.startsWith('--output-directory=')) {
-   outputDir = arg.replace(/^--output-directory=/, '');
-  } else if (arg.startsWith('--apilinks=')) {
-   const linkFile = arg.replace(/^--apilinks=/, '');
-   const data = await fs.readFile(linkFile, 'utf8');
+  } else if (arg.startsWith("--node-version=")) {
+   nodeVersion = arg.replace(/^--node-version=/, "");
+  } else if (arg.startsWith("--output-directory=")) {
+   outputDir = arg.replace(/^--output-directory=/, "");
+  } else if (arg.startsWith("--apilinks=")) {
+   const linkFile = arg.replace(/^--apilinks=/, "");
+   const data = await fs.readFile(linkFile, "utf8");
    if (!data.trim()) {
     throw new Error(`${linkFile} is empty`);
    }
    apilinks = JSON.parse(data);
-  } else if (arg.startsWith('--versions-file=')) {
-   const versionsFile = arg.replace(/^--versions-file=/, '');
-   const data = await fs.readFile(versionsFile, 'utf8');
+  } else if (arg.startsWith("--versions-file=")) {
+   const versionsFile = arg.replace(/^--versions-file=/, "");
+   const data = await fs.readFile(versionsFile, "utf8");
    if (!data.trim()) {
     throw new Error(`${versionsFile} is empty`);
    }
@@ -75,12 +75,12 @@ async function main() {
  nodeVersion = nodeVersion || process.version;
 
  if (!filename) {
-  throw new Error('No input file specified');
+  throw new Error("No input file specified");
  } else if (!outputDir) {
-  throw new Error('No output directory specified');
+  throw new Error("No output directory specified");
  }
 
- const input = await fs.readFile(filename, 'utf8');
+ const input = await fs.readFile(filename, "utf8");
 
  const content = await unified()
     .use(frontmatter)
@@ -99,7 +99,7 @@ async function main() {
 
  const myHtml = await html.toHTML({ input, content, filename, nodeVersion,
                                     versions });
- const basename = path.basename(filename, '.md');
+ const basename = path.basename(filename, ".md");
  const htmlTarget = path.join(outputDir, `${basename}.html`);
  const jsonTarget = path.join(outputDir, `${basename}.json`);
 
@@ -112,7 +112,7 @@ async function main() {
 main()
   .then((tasks) => {
   	// Filter rejected tasks
-  	const errors = tasks.filter(({ status }) => status === 'rejected')
+  	const errors = tasks.filter(({ status }) => status === "rejected")
       .map(({ reason }) => reason);
 
   	// Log errors

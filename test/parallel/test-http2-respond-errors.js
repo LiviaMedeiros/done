@@ -1,29 +1,29 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const { internalBinding } = require('internal/test/binding');
-const { Http2Stream } = internalBinding('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const { internalBinding } = require("internal/test/binding");
+const { Http2Stream } = internalBinding("http2");
 
 const server = http2.createServer();
 
 Http2Stream.prototype.respond = () => 1;
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
 
  // Send headers
- stream.respond({ 'content-type': 'text/plain' });
+ stream.respond({ "content-type": "text/plain" });
 
  // Should throw if headers already sent
  assert.throws(
   () => stream.respond(),
   {
-   name: 'Error',
-   code: 'ERR_HTTP2_HEADERS_SENT',
-   message: 'Response has already been initiated.',
+   name: "Error",
+   code: "ERR_HTTP2_HEADERS_SENT",
+   message: "Response has already been initiated.",
   },
  );
 
@@ -32,9 +32,9 @@ server.on('stream', common.mustCall((stream) => {
  assert.throws(
   () => stream.respond(),
   {
-   name: 'Error',
-   code: 'ERR_HTTP2_INVALID_STREAM',
-   message: 'The stream has been destroyed',
+   name: "Error",
+   code: "ERR_HTTP2_INVALID_STREAM",
+   message: "The stream has been destroyed",
   },
  );
 }));
@@ -43,7 +43,7 @@ server.listen(0, common.mustCall(() => {
  const client = http2.connect(`http://localhost:${server.address().port}`);
  const req = client.request();
 
- req.on('end', common.mustCall(() => {
+ req.on("end", common.mustCall(() => {
   client.close();
   server.close();
  }));

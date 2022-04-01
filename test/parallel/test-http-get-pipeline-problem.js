@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // In previous versions of Node.js (e.g., 0.6.0), this sort of thing would halt
 // after http.globalAgent.maxSockets number of files.
 // See https://groups.google.com/forum/#!topic/nodejs-dev/V5fB69hFa9o
-const common = require('../common');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const http = require('http');
-const fs = require('fs');
-const Countdown = require('../common/countdown');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const http = require("http");
+const fs = require("fs");
+const Countdown = require("../common/countdown");
 
 http.globalAgent.maxSockets = 1;
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const image = fixtures.readSync('/person.jpg');
+const image = fixtures.readSync("/person.jpg");
 
 console.log(`image.length = ${image.length}`);
 
@@ -48,9 +48,9 @@ const responseCountdown = new Countdown(total, common.mustCall(() => {
 const server = http.Server(function(req, res) {
  setTimeout(function() {
   res.writeHead(200, {
-   'content-type': 'image/jpeg',
-   'connection': 'close',
-   'content-length': image.length,
+   "content-type": "image/jpeg",
+   "connection": "close",
+   "content-length": image.length,
   });
   res.end(image);
  }, 1);
@@ -64,7 +64,7 @@ server.listen(0, function() {
 
    const opts = {
     port: server.address().port,
-    headers: { connection: 'close' },
+    headers: { connection: "close" },
    };
 
    http.get(opts, function(res) {
@@ -72,12 +72,12 @@ server.listen(0, function() {
     const s = fs.createWriteStream(`${tmpdir.path}/${x}.jpg`);
     res.pipe(s);
 
-    s.on('finish', function() {
+    s.on("finish", function() {
      console.error(`done ${x}`);
      responseCountdown.dec();
     });
-   }).on('error', function(e) {
-    console.error('error! ', e.message);
+   }).on("error", function(e) {
+    console.error("error! ", e.message);
     throw e;
    });
   })();

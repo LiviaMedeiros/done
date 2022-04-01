@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
 
 let requests_sent = 0;
 let requests_done = 0;
 const options = {
- method: 'GET',
+ method: "GET",
  port: undefined,
- host: '127.0.0.1',
+ host: "127.0.0.1",
 };
 
 const server = http.createServer((req, res) => {
@@ -38,7 +38,7 @@ const server = http.createServer((req, res) => {
  if (reqid % 2) {
   // Do not reply the request
  } else {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.writeHead(200, { "Content-Type": "text/plain" });
   res.write(reqid.toString());
   res.end();
  }
@@ -51,20 +51,20 @@ server.listen(0, options.host, function() {
   options.path = `/${requests_sent}`;
   const req = http.request(options);
   req.id = requests_sent;
-  req.on('response', (res) => {
-   res.on('data', function(data) {
+  req.on("response", (res) => {
+   res.on("data", function(data) {
     console.log(`res#${this.req.id} data:${data}`);
    });
-   res.on('end', function(data) {
+   res.on("end", function(data) {
     console.log(`res#${this.req.id} end`);
     requests_done += 1;
     req.destroy();
    });
   });
-  req.on('close', function() {
+  req.on("close", function() {
    console.log(`req#${this.id} close`);
   });
-  req.on('error', function() {
+  req.on("error", function() {
    console.log(`req#${this.id} error`);
    this.destroy();
   });
@@ -87,7 +87,7 @@ server.listen(0, options.host, function() {
  }, 100);
 });
 
-process.on('exit', () => {
+process.on("exit", () => {
  console.error(`done=${requests_done} sent=${requests_sent}`);
  // Check that timeout on http request was not called too much
  assert.strictEqual(requests_done, requests_sent);

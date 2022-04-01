@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const vm = require('vm');
+"use strict";
+require("../common");
+const vm = require("vm");
 
-console.error('before');
+console.error("before");
 
 // undefined reference
-vm.runInNewContext('foo.bar = 5;');
+vm.runInNewContext("foo.bar = 5;");
 
-console.error('after');
+console.error("after");

@@ -1,10 +1,10 @@
 // Flags: --expose-internals --dns-result-order=ipv4first
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { internalBinding } = require('internal/test/binding');
-const cares = internalBinding('cares_wrap');
-const { promisify } = require('util');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { internalBinding } = require("internal/test/binding");
+const cares = internalBinding("cares_wrap");
+const { promisify } = require("util");
 
 // Test that --dns-result-order=ipv4first works as expected.
 
@@ -15,7 +15,7 @@ cares.getaddrinfo = common.mustCallAtLeast((...args) => {
  originalGetaddrinfo(...args);
 }, 1);
 
-const dns = require('dns');
+const dns = require("dns");
 const dnsPromises = dns.promises;
 
 let verbatim;
@@ -37,15 +37,15 @@ function allowFailed(fn) {
   callsLength += 1;
  };
 
- await allowFailed(promisify(dns.lookup)('example.org'));
+ await allowFailed(promisify(dns.lookup)("example.org"));
  checkParameter(false);
 
- await allowFailed(dnsPromises.lookup('example.org'));
+ await allowFailed(dnsPromises.lookup("example.org"));
  checkParameter(false);
 
- await allowFailed(promisify(dns.lookup)('example.org', {}));
+ await allowFailed(promisify(dns.lookup)("example.org", {}));
  checkParameter(false);
 
- await allowFailed(dnsPromises.lookup('example.org', {}));
+ await allowFailed(dnsPromises.lookup("example.org", {}));
  checkParameter(false);
 })().then(common.mustCall());

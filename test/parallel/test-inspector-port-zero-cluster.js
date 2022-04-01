@@ -1,6 +1,6 @@
 // Flags: --inspect=0
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 common.skipIfWorker();
@@ -8,13 +8,13 @@ common.skipIfWorker();
 // Assert that even when started with `--inspect=0` workers are assigned
 // consecutive (i.e. deterministically predictable) debug ports
 
-const assert = require('assert');
-const cluster = require('cluster');
+const assert = require("assert");
+const cluster = require("cluster");
 
 function serialFork() {
  return new Promise((res) => {
   const worker = cluster.fork();
-  worker.on('exit', common.mustCall((code, signal) => {
+  worker.on("exit", common.mustCall((code, signal) => {
    // code 0 is normal
    // code 12 can happen if inspector could not bind because of a port clash
    if (code !== 0 && code !== 12)

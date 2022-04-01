@@ -1,11 +1,11 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { StreamWrap } = require('internal/js_stream_socket');
-const { Duplex } = require('stream');
-const { internalBinding } = require('internal/test/binding');
-const { ShutdownWrap } = internalBinding('stream_wrap');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { StreamWrap } = require("internal/js_stream_socket");
+const { Duplex } = require("stream");
+const { internalBinding } = require("internal/test/binding");
+const { ShutdownWrap } = internalBinding("stream_wrap");
 
 // This test makes sure that when a wrapped stream is waiting for
 // a "drain" event to `doShutdown`, the instance will work correctly when a
@@ -34,11 +34,11 @@ const { ShutdownWrap } = internalBinding('stream_wrap');
  );
 
  // Make sure that the 'drain' events will be emitted.
- testDuplex.on('drain', common.mustCall(() => {
-  console.log('testDuplex drain');
+ testDuplex.on("drain", common.mustCall(() => {
+  console.log("testDuplex drain");
  }));
 
- assert.strictEqual(typeof resolve, 'function');
+ assert.strictEqual(typeof resolve, "function");
 
  const req = new ShutdownWrap();
  req.oncomplete = common.mustCall();

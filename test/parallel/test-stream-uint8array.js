@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { Readable, Writable } = require('stream');
+const { Readable, Writable } = require("stream");
 
 const ABC = new Uint8Array([0x41, 0x42, 0x43]);
 const DEF = new Uint8Array([0x44, 0x45, 0x46]);
@@ -16,9 +16,9 @@ const GHI = new Uint8Array([0x47, 0x48, 0x49]);
   write: common.mustCall((chunk, encoding, cb) => {
    assert(chunk instanceof Buffer);
    if (n++ === 0) {
-    assert.strictEqual(String(chunk), 'ABC');
+    assert.strictEqual(String(chunk), "ABC");
    } else {
-    assert.strictEqual(String(chunk), 'DEF');
+    assert.strictEqual(String(chunk), "DEF");
    }
 
    cb();
@@ -38,7 +38,7 @@ const GHI = new Uint8Array([0x47, 0x48, 0x49]);
    assert(!(chunk instanceof Buffer));
    assert(chunk instanceof Uint8Array);
    assert.strictEqual(chunk, ABC);
-   assert.strictEqual(encoding, 'utf8');
+   assert.strictEqual(encoding, "utf8");
    cb();
   }),
  });
@@ -53,15 +53,15 @@ const GHI = new Uint8Array([0x47, 0x48, 0x49]);
  const writable = new Writable({
   write: common.mustCall((chunk, encoding, cb) => {
    assert(chunk instanceof Buffer);
-   assert.strictEqual(encoding, 'buffer');
-   assert.strictEqual(String(chunk), 'ABC');
+   assert.strictEqual(encoding, "buffer");
+   assert.strictEqual(String(chunk), "ABC");
    callback = cb;
   }),
   writev: common.mustCall((chunks, cb) => {
    assert.strictEqual(chunks.length, 2);
-   assert.strictEqual(chunks[0].encoding, 'buffer');
-   assert.strictEqual(chunks[1].encoding, 'buffer');
-   assert.strictEqual(chunks[0].chunk + chunks[1].chunk, 'DEFGHI');
+   assert.strictEqual(chunks[0].encoding, "buffer");
+   assert.strictEqual(chunks[1].encoding, "buffer");
+   assert.strictEqual(chunks[0].chunk + chunks[1].chunk, "DEFGHI");
   }),
  });
 
@@ -91,11 +91,11 @@ const GHI = new Uint8Array([0x47, 0x48, 0x49]);
   read() {},
  });
 
- readable.setEncoding('utf8');
+ readable.setEncoding("utf8");
 
  readable.push(DEF);
  readable.unshift(ABC);
 
  const out = readable.read();
- assert.strictEqual(out, 'ABCDEF');
+ assert.strictEqual(out, "ABCDEF");
 }

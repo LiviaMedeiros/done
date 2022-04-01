@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fs = require('fs');
-const tmpdir = require('../../test/common/tmpdir');
+const common = require("../common");
+const fs = require("fs");
+const tmpdir = require("../../test/common/tmpdir");
 tmpdir.refresh();
 let dirc = 0;
 

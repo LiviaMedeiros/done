@@ -1,12 +1,12 @@
-'use strict';
-const common = require('../common.js');
-const dc = require('diagnostics_channel');
-const { AsyncLocalStorage } = require('async_hooks');
-const http = require('http');
+"use strict";
+const common = require("../common.js");
+const dc = require("diagnostics_channel");
+const { AsyncLocalStorage } = require("async_hooks");
+const http = require("http");
 
 const bench = common.createBenchmark(main, {
- apm: ['none', 'diagnostics_channel', 'patch'],
- type: 'buffer',
+ apm: ["none", "diagnostics_channel", "patch"],
+ type: "buffer",
  len: 1024,
  chunks: 4,
  connections: [50, 500],
@@ -17,9 +17,9 @@ const bench = common.createBenchmark(main, {
 function main({ apm, connections, duration, type, len, chunks, chunkedEnc }) {
  const done = { none, patch, diagnostics_channel }[apm]();
 
- const server = require('../fixtures/simple-http-server.js')
+ const server = require("../fixtures/simple-http-server.js")
     .listen(common.PORT)
-    .on('listening', () => {
+    .on("listening", () => {
     	const path = `/${type}/${len}/${chunks}/normal/${chunkedEnc}`;
     	bench.http({
     		path,
@@ -41,13 +41,13 @@ function patch() {
  const { emit } = http.Server.prototype;
  function wrappedEmit(...args) {
   const [name, req, res] = args;
-  if (name === 'request') {
+  if (name === "request") {
    als.enterWith({
     url: req.url,
     start: process.hrtime.bigint(),
    });
 
-   res.on('finish', () => {
+   res.on("finish", () => {
     times.push({
      ...als.getStore(),
      statusCode: res.statusCode,
@@ -68,8 +68,8 @@ function diagnostics_channel() {
  const als = new AsyncLocalStorage();
  const times = [];
 
- const start = dc.channel('http.server.request.start');
- const finish = dc.channel('http.server.response.finish');
+ const start = dc.channel("http.server.request.start");
+ const finish = dc.channel("http.server.response.finish");
 
  function onStart(req) {
   als.enterWith({

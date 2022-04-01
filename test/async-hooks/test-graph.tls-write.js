@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 if (!common.hasIPv6)
- common.skip('IPv6 support required');
+ common.skip("IPv6 support required");
 
-const initHooks = require('./init-hooks');
-const verifyGraph = require('./verify-graph');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const initHooks = require("./init-hooks");
+const verifyGraph = require("./verify-graph");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const hooks = initHooks();
 hooks.enable();
@@ -20,11 +20,11 @@ hooks.enable();
 //
 const server = tls
   .createServer({
-  	cert: fixtures.readKey('rsa_cert.crt'),
-  	key: fixtures.readKey('rsa_private.pem'),
+  	cert: fixtures.readKey("rsa_cert.crt"),
+  	key: fixtures.readKey("rsa_private.pem"),
   })
-  .on('listening', common.mustCall(onlistening))
-  .on('secureConnection', common.mustCall(onsecureConnection))
+  .on("listening", common.mustCall(onlistening))
+  .on("secureConnection", common.mustCall(onsecureConnection))
   .listen(0);
 
 function onlistening() {
@@ -33,7 +33,7 @@ function onlistening() {
  //
  tls
     .connect(server.address().port, { rejectUnauthorized: false })
-    .on('secureConnect', common.mustCall(onsecureConnect));
+    .on("secureConnect", common.mustCall(onsecureConnect));
 }
 
 function onsecureConnection() {}
@@ -50,22 +50,22 @@ function onsecureConnect() {
 
 function onserverClosed() {}
 
-process.on('exit', onexit);
+process.on("exit", onexit);
 
 function onexit() {
  hooks.disable();
 
  verifyGraph(
   hooks,
-  [ { type: 'TCPSERVERWRAP', id: 'tcpserver:1', triggerAsyncId: null },
-    { type: 'TCPWRAP', id: 'tcp:1', triggerAsyncId: 'tcpserver:1' },
-    { type: 'TLSWRAP', id: 'tls:1', triggerAsyncId: 'tcpserver:1' },
-    { type: 'GETADDRINFOREQWRAP',
-      id: 'getaddrinforeq:1', triggerAsyncId: 'tls:1' },
-    { type: 'TCPCONNECTWRAP',
-      id: 'tcpconnect:1', triggerAsyncId: 'tcp:1' },
-    { type: 'TCPWRAP', id: 'tcp:2', triggerAsyncId: 'tcpserver:1' },
-    { type: 'TLSWRAP', id: 'tls:2', triggerAsyncId: 'tcpserver:1' },
+  [ { type: "TCPSERVERWRAP", id: "tcpserver:1", triggerAsyncId: null },
+    { type: "TCPWRAP", id: "tcp:1", triggerAsyncId: "tcpserver:1" },
+    { type: "TLSWRAP", id: "tls:1", triggerAsyncId: "tcpserver:1" },
+    { type: "GETADDRINFOREQWRAP",
+      id: "getaddrinforeq:1", triggerAsyncId: "tls:1" },
+    { type: "TCPCONNECTWRAP",
+      id: "tcpconnect:1", triggerAsyncId: "tcp:1" },
+    { type: "TCPWRAP", id: "tcp:2", triggerAsyncId: "tcpserver:1" },
+    { type: "TLSWRAP", id: "tls:2", triggerAsyncId: "tcpserver:1" },
   ],
  );
 }

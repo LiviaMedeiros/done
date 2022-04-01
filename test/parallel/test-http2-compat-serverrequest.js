@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
-const net = require('net');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
+const net = require("net");
 
 // Http2ServerRequest should expose convenience properties
 
 const server = h2.createServer();
 server.listen(0, common.mustCall(function() {
  const port = server.address().port;
- server.once('request', common.mustCall(function(request, response) {
+ server.once("request", common.mustCall(function(request, response) {
   const expected = {
-   version: '2.0',
+   version: "2.0",
    httpVersionMajor: 2,
    httpVersionMinor: 0,
   };
@@ -27,7 +27,7 @@ server.listen(0, common.mustCall(function() {
   assert.ok(request.connection instanceof net.Socket);
   assert.strictEqual(request.socket, request.connection);
 
-  response.on('finish', common.mustCall(function() {
+  response.on("finish", common.mustCall(function() {
    process.nextTick(() => {
     assert.ok(request.socket);
     server.close();
@@ -39,13 +39,13 @@ server.listen(0, common.mustCall(function() {
  const url = `http://localhost:${port}`;
  const client = h2.connect(url, common.mustCall(function() {
   const headers = {
-   ':path': '/foobar',
-   ':method': 'GET',
-   ':scheme': 'http',
-   ':authority': `localhost:${port}`,
+   ":path": "/foobar",
+   ":method": "GET",
+   ":scheme": "http",
+   ":authority": `localhost:${port}`,
   };
   const request = client.request(headers);
-  request.on('end', common.mustCall(function() {
+  request.on("end", common.mustCall(function() {
    client.close();
   }));
   request.end();

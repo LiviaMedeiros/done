@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
-const fork = require('child_process').fork;
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
+const fork = require("child_process").fork;
 
-const sock = dgram.createSocket('udp4');
+const sock = dgram.createSocket("udp4");
 
 const testNumber = parseInt(process.argv[2], 10);
 
 const propertiesToTest = [
- '_handle',
- '_receiving',
- '_bindState',
- '_queue',
- '_reuseAddr',
+ "_handle",
+ "_receiving",
+ "_bindState",
+ "_queue",
+ "_reuseAddr",
 ];
 
 const methodsToTest = [
- '_healthCheck',
- '_stopReceiving',
+ "_healthCheck",
+ "_stopReceiving",
 ];
 
 const propertyCases = propertiesToTest.map((propName) => {
@@ -27,18 +27,18 @@ const propertyCases = propertiesToTest.map((propName) => {
   () => {
    // Test property getter
    common.expectWarning(
-    'DeprecationWarning',
+    "DeprecationWarning",
     `Socket.prototype.${propName} is deprecated`,
-    'DEP0112',
+    "DEP0112",
    );
    sock[propName]; // eslint-disable-line no-unused-expressions
   },
   () => {
    // Test property setter
    common.expectWarning(
-    'DeprecationWarning',
+    "DeprecationWarning",
     `Socket.prototype.${propName} is deprecated`,
-    'DEP0112',
+    "DEP0112",
    );
    sock[propName] = null;
   },
@@ -48,9 +48,9 @@ const propertyCases = propertiesToTest.map((propName) => {
 const methodCases = methodsToTest.map((propName) => {
  return () => {
   common.expectWarning(
-   'DeprecationWarning',
+   "DeprecationWarning",
    `Socket.prototype.${propName}() is deprecated`,
-   'DEP0112',
+   "DEP0112",
   );
   sock[propName]();
  };
@@ -68,7 +68,7 @@ if (Number.isNaN(testNumber)) {
   fork(process.argv[1], [ String(i) ]));
 
  children.forEach((child) => {
-  child.on('close', (code) => {
+  child.on("close", (code) => {
    // Pass on child exit code
    if (code > 0) {
     process.exit(code);

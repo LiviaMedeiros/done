@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 // Regression test for https://github.com/nodejs/node/issues/30080:
 // An uncaught exception inside a queueMicrotask callback should not lead
@@ -12,25 +12,25 @@ const events = [];
 
 async_hooks.createHook({
  init(id, type, triggerId, resource) {
-  if (type === 'Microtask') {
+  if (type === "Microtask") {
    µtaskId = id;
-   events.push('init');
+   events.push("init");
   }
  },
  before(id) {
-  if (id === µtaskId) events.push('before');
+  if (id === µtaskId) events.push("before");
  },
  after(id) {
-  if (id === µtaskId) events.push('after');
+  if (id === µtaskId) events.push("after");
  },
  destroy(id) {
-  if (id === µtaskId) events.push('destroy');
+  if (id === µtaskId) events.push("destroy");
  },
 }).enable();
 
 queueMicrotask(() => { throw new Error(); });
 
-process.on('uncaughtException', common.mustCall());
-process.on('exit', () => {
- assert.deepStrictEqual(events, ['init', 'after', 'before', 'destroy']);
+process.on("uncaughtException", common.mustCall());
+process.on("exit", () => {
+ assert.deepStrictEqual(events, ["init", "after", "before", "destroy"]);
 });

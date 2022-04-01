@@ -19,26 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
 
-const expected = 'Post Body For Test';
+const expected = "Post Body For Test";
 
 const server = http.Server(function(req, res) {
- let result = '';
+ let result = "";
 
- req.setEncoding('utf8');
- req.on('data', function(chunk) {
+ req.setEncoding("utf8");
+ req.on("data", function(chunk) {
   result += chunk;
  });
 
- req.on('end', function() {
+ req.on("end", function() {
   assert.strictEqual(result, expected);
   server.close();
   res.writeHead(200);
-  res.end('hello world\n');
+  res.end("hello world\n");
  });
 
 });
@@ -46,12 +46,12 @@ const server = http.Server(function(req, res) {
 server.listen(0, function() {
  const req = http.request({
   port: this.address().port,
-  path: '/',
-  method: 'POST',
+  path: "/",
+  method: "POST",
  }, function(res) {
   console.log(res.statusCode);
   res.resume();
- }).on('error', function(e) {
+ }).on("error", function(e) {
   console.log(e.message);
   process.exit(1);
  });

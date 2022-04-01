@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // Test fs.readFile using a file descriptor.
 
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const fs = require('fs');
-const fn = fixtures.path('empty.txt');
-const join = require('path').join;
-const tmpdir = require('../common/tmpdir');
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const fs = require("fs");
+const fn = fixtures.path("empty.txt");
+const join = require("path").join;
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 tempFd(function(fd, close) {
@@ -19,8 +19,8 @@ tempFd(function(fd, close) {
 });
 
 tempFd(function(fd, close) {
- fs.readFile(fd, 'utf8', function(err, data) {
-  assert.strictEqual(data, '');
+ fs.readFile(fd, "utf8", function(err, data) {
+  assert.strictEqual(data, "");
   close();
  });
 });
@@ -30,11 +30,11 @@ tempFdSync(function(fd) {
 });
 
 tempFdSync(function(fd) {
- assert.strictEqual(fs.readFileSync(fd, 'utf8'), '');
+ assert.strictEqual(fs.readFileSync(fd, "utf8"), "");
 });
 
 function tempFd(callback) {
- fs.open(fn, 'r', function(err, fd) {
+ fs.open(fn, "r", function(err, fd) {
   assert.ifError(err);
   callback(fd, function() {
    fs.close(fd, function(err) {
@@ -45,7 +45,7 @@ function tempFd(callback) {
 }
 
 function tempFdSync(callback) {
- const fd = fs.openSync(fn, 'r');
+ const fd = fs.openSync(fn, "r");
  callback(fd);
  fs.closeSync(fd);
 }
@@ -55,37 +55,37 @@ function tempFdSync(callback) {
  // position of the file, instead of reading from the beginning of the file,
  // when used with file descriptors.
 
- const filename = join(tmpdir.path, 'test.txt');
- fs.writeFileSync(filename, 'Hello World');
+ const filename = join(tmpdir.path, "test.txt");
+ fs.writeFileSync(filename, "Hello World");
 
  {
   // Tests the fs.readFileSync().
-  const fd = fs.openSync(filename, 'r');
+  const fd = fs.openSync(filename, "r");
 
   // Read only five bytes, so that the position moves to five.
   const buf = Buffer.alloc(5);
   assert.strictEqual(fs.readSync(fd, buf, 0, 5), 5);
-  assert.strictEqual(buf.toString(), 'Hello');
+  assert.strictEqual(buf.toString(), "Hello");
 
   // readFileSync() should read from position five, instead of zero.
-  assert.strictEqual(fs.readFileSync(fd).toString(), ' World');
+  assert.strictEqual(fs.readFileSync(fd).toString(), " World");
 
   fs.closeSync(fd);
  }
 
  {
   // Tests the fs.readFile().
-  fs.open(filename, 'r', common.mustSucceed((fd) => {
+  fs.open(filename, "r", common.mustSucceed((fd) => {
    const buf = Buffer.alloc(5);
 
    // Read only five bytes, so that the position moves to five.
    fs.read(fd, buf, 0, 5, null, common.mustSucceed((bytes) => {
     assert.strictEqual(bytes, 5);
-    assert.strictEqual(buf.toString(), 'Hello');
+    assert.strictEqual(buf.toString(), "Hello");
 
     fs.readFile(fd, common.mustSucceed((data) => {
      // readFile() should read from position five, instead of zero.
-     assert.strictEqual(data.toString(), ' World');
+     assert.strictEqual(data.toString(), " World");
 
      fs.closeSync(fd);
     }));

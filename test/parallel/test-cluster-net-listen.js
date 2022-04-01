@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 if (cluster.isPrimary) {
  // Ensure that the worker exits peacefully
- cluster.fork().on('exit', common.mustCall(function(statusCode) {
+ cluster.fork().on("exit", common.mustCall(function(statusCode) {
   assert.strictEqual(statusCode, 0);
  }));
 } else {

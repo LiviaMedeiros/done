@@ -1,9 +1,9 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
+"use strict";
+require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
 
-const bigData = Buffer.alloc(10240, 'x');
+const bigData = Buffer.alloc(10240, "x");
 
 const opts = {
  level: 0,
@@ -28,18 +28,18 @@ const ws = deflater._writableState;
 const beforeFlush = ws.needDrain;
 let afterFlush = ws.needDrain;
 
-deflater.on('data', () => {
+deflater.on("data", () => {
 });
 
 deflater.flush(function(err) {
  afterFlush = ws.needDrain;
 });
 
-deflater.on('drain', function() {
+deflater.on("drain", function() {
  drainCount++;
 });
 
-process.once('exit', function() {
+process.once("exit", function() {
  assert.strictEqual(
   beforeFlush, true);
  assert.strictEqual(

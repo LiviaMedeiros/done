@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-require('../common');
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
-const { spawnSync } = require('child_process');
-const fixtures = require('../common/fixtures');
-const fs = require('fs');
+require("../common");
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
+const { spawnSync } = require("child_process");
+const fixtures = require("../common/fixtures");
+const fs = require("fs");
 const env = {
  ...process.env,
- NODE_DEBUG_NATIVE: 'diagnostics',
+ NODE_DEBUG_NATIVE: "diagnostics",
 };
 
 {
  tmpdir.refresh();
  const child = spawnSync(process.execPath, [
-  fixtures.path('workload', 'grow-worker.js'),
+  fixtures.path("workload", "grow-worker.js"),
  ], {
   cwd: tmpdir.path,
   env: {
@@ -31,9 +31,9 @@ const env = {
   // There should be one snapshot taken and then after the
   // snapshot heap limit callback is popped, the OOM callback
   // becomes effective.
-  assert(stderr.includes('ERR_WORKER_OUT_OF_MEMORY'));
+  assert(stderr.includes("ERR_WORKER_OUT_OF_MEMORY"));
   const list = fs.readdirSync(tmpdir.path)
-      .filter((file) => file.endsWith('.heapsnapshot'));
+      .filter((file) => file.endsWith(".heapsnapshot"));
   assert.strictEqual(list.length, 1);
  }
 }

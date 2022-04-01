@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 // This test verifies that passing a huge number to read(size)
 // will push up the highWaterMark, and cause the stream to read
 // more data continuously, but without triggering a nextTick
 // warning or RangeError.
 
-const Readable = require('stream').Readable;
+const Readable = require("stream").Readable;
 
 // Throw an error if we trigger a nextTick warning.
 process.throwDeprecation = true;
@@ -53,7 +53,7 @@ function flow(stream, size, callback) {
  const chunk = stream.read(size);
 
  if (!chunk)
-  stream.once('readable', flow.bind(null, stream, size, callback));
+  stream.once("readable", flow.bind(null, stream, size, callback));
  else
   callback(chunk);
 
@@ -65,7 +65,7 @@ flow(stream, 5000, function() {
  console.log(`complete (${depth})`);
 });
 
-process.on('exit', function(code) {
+process.on("exit", function(code) {
  assert.strictEqual(reads, 2);
  // We pushed up the high water mark
  assert.strictEqual(stream.readableHighWaterMark, 8192);
@@ -73,5 +73,5 @@ process.on('exit', function(code) {
  assert.strictEqual(stream.readableLength, 0);
  assert(!code);
  assert.strictEqual(depth, 0);
- console.log('ok');
+ console.log("ok");
 });

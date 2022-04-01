@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common.js');
-const zlib = require('zlib');
+"use strict";
+const common = require("../common.js");
+const zlib = require("zlib");
 
 const bench = common.createBenchmark(main, {
  inputLen: [16 * 1024 * 1024],
@@ -9,7 +9,7 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ n, inputLen, chunkLen }) {
- const input = zlib.deflateSync(Buffer.alloc(inputLen, 'a'));
+ const input = zlib.deflateSync(Buffer.alloc(inputLen, "a"));
 
  let i = 0;
  bench.start();
@@ -17,7 +17,7 @@ function main({ n, inputLen, chunkLen }) {
   let p = 0;
   const inflater = zlib.createInflate();
   inflater.resume();
-  inflater.on('finish', () => {
+  inflater.on("finish", () => {
    if (i++ === n)
     return bench.end(n);
    next();

@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
 
 let requests = 0;
 let responses = 0;
@@ -69,7 +69,7 @@ server.listen(0, function() {
    headers: headers,
   }, function(res) {
    assert.strictEqual(Object.keys(res.headers).length, expected);
-   res.on('end', function() {
+   res.on("end", function() {
     if (++responses < maxAndExpected.length) {
      doRequest();
     } else {
@@ -83,7 +83,7 @@ server.listen(0, function() {
  }
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(requests, maxAndExpected.length);
  assert.strictEqual(responses, maxAndExpected.length);
 });

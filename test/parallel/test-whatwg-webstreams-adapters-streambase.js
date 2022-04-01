@@ -1,27 +1,27 @@
 // Flags: --expose-internals --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 const {
  internalBinding,
-} = require('internal/test/binding');
+} = require("internal/test/binding");
 
 const {
  newWritableStreamFromStreamBase,
  newReadableStreamFromStreamBase,
-} = require('internal/webstreams/adapters');
+} = require("internal/webstreams/adapters");
 
 const {
  JSStream,
-} = internalBinding('js_stream');
+} = internalBinding("js_stream");
 
 {
  const stream = new JSStream();
  stream.onwrite = common.mustCall((req, buf) => {
-  assert.deepStrictEqual(buf[0], Buffer.from('hello'));
+  assert.deepStrictEqual(buf[0], Buffer.from("hello"));
   req.oncomplete();
  });
 
@@ -29,11 +29,11 @@ const {
 
  const writer = writable.getWriter();
 
- writer.write(Buffer.from('hello')).then(common.mustCall());
+ writer.write(Buffer.from("hello")).then(common.mustCall());
 }
 
 {
- const buf = Buffer.from('hello');
+ const buf = Buffer.from("hello");
  const check = new Uint8Array(buf);
 
  const stream = new JSStream();

@@ -19,19 +19,19 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const MESSAGE = 'catch me if you can';
+const MESSAGE = "catch me if you can";
 
-process.on('uncaughtException', common.mustCall((e) => {
- console.log('uncaught exception! 1');
+process.on("uncaughtException", common.mustCall((e) => {
+ console.log("uncaught exception! 1");
  assert.strictEqual(MESSAGE, e.message);
 }));
 
-process.on('uncaughtException', common.mustCall((e) => {
- console.log('uncaught exception! 2');
+process.on("uncaughtException", common.mustCall((e) => {
+ console.log("uncaught exception! 2");
  assert.strictEqual(MESSAGE, e.message);
 }));
 

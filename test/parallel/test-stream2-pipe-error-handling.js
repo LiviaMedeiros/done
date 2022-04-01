@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const stream = require('stream');
+"use strict";
+require("../common");
+const assert = require("assert");
+const stream = require("stream");
 
 {
  let count = 1000;
@@ -48,17 +48,17 @@ const stream = require('stream');
  source.pipe(dest);
 
  let gotErr = null;
- dest.on('error', function(err) {
+ dest.on("error", function(err) {
   gotErr = err;
  });
 
  let unpipedSource;
- dest.on('unpipe', function(src) {
+ dest.on("unpipe", function(src) {
   unpipedSource = src;
  });
 
- const err = new Error('This stream turned into bacon.');
- dest.emit('error', err);
+ const err = new Error("This stream turned into bacon.");
+ dest.emit("error", err);
  assert.strictEqual(gotErr, err);
  assert.strictEqual(unpipedSource, source);
  assert.strictEqual(unpipedDest, dest);
@@ -88,15 +88,15 @@ const stream = require('stream');
  source.pipe(dest);
 
  let unpipedSource;
- dest.on('unpipe', function(src) {
+ dest.on("unpipe", function(src) {
   unpipedSource = src;
  });
 
- const err = new Error('This stream turned into bacon.');
+ const err = new Error("This stream turned into bacon.");
 
  let gotErr = null;
  try {
-  dest.emit('error', err);
+  dest.emit("error", err);
  } catch (e) {
   gotErr = e;
  }

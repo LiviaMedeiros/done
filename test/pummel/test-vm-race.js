@@ -1,6 +1,6 @@
-'use strict';
-require('../common');
-const vm = require('vm');
+"use strict";
+require("../common");
+const vm = require("vm");
 
 // We're testing a race condition so we just have to spin this in a loop
 // for a little while and see if it breaks. The condition being tested
@@ -9,10 +9,10 @@ const vm = require('vm');
 const sandbox = { timeout: 5 };
 const context = vm.createContext(sandbox);
 const script = new vm.Script(
- 'var d = Date.now() + timeout;while (d > Date.now());',
+ "var d = Date.now() + timeout;while (d > Date.now());",
 );
 const immediate = setImmediate(function() {
- throw new Error('Detected vm race condition!');
+ throw new Error("Detected vm race condition!");
 });
 
 // When this condition was first discovered this test would fail in 50ms

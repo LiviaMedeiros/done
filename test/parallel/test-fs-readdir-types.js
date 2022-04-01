@@ -1,18 +1,18 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 
-const { internalBinding } = require('internal/test/binding');
-const binding = internalBinding('fs');
+const { internalBinding } = require("internal/test/binding");
+const binding = internalBinding("fs");
 
 const readdirDir = tmpdir.path;
-const files = ['empty', 'files', 'for', 'just', 'testing'];
-const constants = require('fs').constants;
+const files = ["empty", "files", "for", "just", "testing"];
+const constants = require("fs").constants;
 const types = {
  isDirectory: constants.UV_DIRENT_DIR,
  isFile: constants.UV_DIRENT_FILE,
@@ -29,7 +29,7 @@ tmpdir.refresh();
 
 // Create the necessary files
 files.forEach(function(currentFile) {
- fs.closeSync(fs.openSync(`${readdirDir}/${currentFile}`, 'w'));
+ fs.closeSync(fs.openSync(`${readdirDir}/${currentFile}`, "w"));
 });
 
 
@@ -57,8 +57,8 @@ fs.readdir(__filename, {
  assert.throws(
   () => { throw err; },
   {
-   code: 'ENOTDIR',
-   name: 'Error',
+   code: "ENOTDIR",
+   name: "Error",
    message: `ENOTDIR: not a directory, scandir '${__filename}'`,
   },
  );
@@ -81,7 +81,7 @@ fs.readdir(readdirDir, {
 // Check for correct types when the binding returns unknowns
 const UNKNOWN = constants.UV_DIRENT_UNKNOWN;
 const oldReaddir = binding.readdir;
-process.on('beforeExit', () => { binding.readdir = oldReaddir; });
+process.on("beforeExit", () => { binding.readdir = oldReaddir; });
 binding.readdir = common.mustCall((path, encoding, types, req, ctx) => {
  if (req) {
   const oldCb = req.oncomplete;
@@ -109,7 +109,7 @@ fs.readdir(readdirDir, {
 
 // Dirent types
 for (const method of typeMethods) {
- const dirent = new fs.Dirent('foo', types[method]);
+ const dirent = new fs.Dirent("foo", types[method]);
  for (const testMethod of typeMethods) {
   assert.strictEqual(dirent[testMethod](), testMethod === method);
  }

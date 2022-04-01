@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const Countdown = require('../common/countdown');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const Countdown = require("../common/countdown");
 
 const server = http2.createServer();
 const largeBuffer = Buffer.alloc(1e4);
 
 // Verify that a dependency cycle may exist, but that it doesn't crash anything
 
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
  stream.respond();
  setImmediate(() => {
   stream.end(largeBuffer);
  });
 }, 3));
-server.on('session', common.mustCall((session) => {
- session.on('priority', (id, parent, weight, exclusive) => {
+server.on("session", common.mustCall((session) => {
+ session.on("priority", (id, parent, weight, exclusive) => {
   assert.strictEqual(weight, 16);
   assert.strictEqual(exclusive, false);
   switch (id) {
@@ -33,7 +33,7 @@ server.on('session', common.mustCall((session) => {
     assert.strictEqual(parent, 3);
     break;
    default:
-    assert.fail('should not happen');
+    assert.fail("should not happen");
   }
  });
 }));
@@ -50,20 +50,20 @@ server.listen(0, common.mustCall(() => {
   const req = client.request();
   req.priority({ parent: 5 });
   req.resume();
-  req.on('close', () => countdown.dec());
+  req.on("close", () => countdown.dec());
  }
 
  {
   const req = client.request();
   req.priority({ parent: 1 });
   req.resume();
-  req.on('close', () => countdown.dec());
+  req.on("close", () => countdown.dec());
  }
 
  {
   const req = client.request();
   req.priority({ parent: 3 });
   req.resume();
-  req.on('close', () => countdown.dec());
+  req.on("close", () => countdown.dec());
  }
 }));

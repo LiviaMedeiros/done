@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
 function close() { this.close(); }
 
 {
  // Test listen()
- net.createServer().listen().on('listening', common.mustCall(close));
+ net.createServer().listen().on("listening", common.mustCall(close));
  // Test listen(cb)
  net.createServer().listen(common.mustCall(close));
  // Test listen(port)
- net.createServer().listen(0).on('listening', common.mustCall(close));
+ net.createServer().listen(0).on("listening", common.mustCall(close));
  // Test listen({port})
  net.createServer().listen({ port: 0 })
-    .on('listening', common.mustCall(close));
+    .on("listening", common.mustCall(close));
 }
 
 // Test listen(port, cb) and listen({ port }, cb) combinations
@@ -26,14 +26,14 @@ const listenOnPort = [
 {
  const assertPort = () => {
   return common.expectsError({
-   code: 'ERR_SOCKET_BAD_PORT',
-   name: 'RangeError',
+   code: "ERR_SOCKET_BAD_PORT",
+   name: "RangeError",
   });
  };
 
  for (const listen of listenOnPort) {
   // Arbitrary unused ports
-  listen('0', common.mustCall(close));
+  listen("0", common.mustCall(close));
   listen(0, common.mustCall(close));
   listen(undefined, common.mustCall(close));
   listen(null, common.mustCall(close));
@@ -58,19 +58,19 @@ const listenOnPort = [
    net.createServer().listen(options, common.mustNotCall());
   };
 
-  if (typeof options === 'object' &&
-      !(('port' in options) || ('path' in options))) {
+  if (typeof options === "object" &&
+      !(("port" in options) || ("path" in options))) {
    assert.throws(fn,
                  {
-                  code: 'ERR_INVALID_ARG_VALUE',
-                  name: 'TypeError',
+                  code: "ERR_INVALID_ARG_VALUE",
+                  name: "TypeError",
                   message: /^The argument 'options' must have the property "port" or "path"\. Received .+$/,
                  });
   } else {
    assert.throws(fn,
                  {
-                  code: 'ERR_INVALID_ARG_VALUE',
-                  name: 'TypeError',
+                  code: "ERR_INVALID_ARG_VALUE",
+                  name: "TypeError",
                   message: /^The argument 'options' is invalid\. Received .+$/,
                  });
   }
@@ -87,8 +87,8 @@ const listenOnPort = [
 
  // Neither port or path are specified in options
  shouldFailToListen({});
- shouldFailToListen({ host: 'localhost' });
- shouldFailToListen({ host: 'localhost:3000' });
+ shouldFailToListen({ host: "localhost" });
+ shouldFailToListen({ host: "localhost:3000" });
  shouldFailToListen({ host: { port: 3000 } });
  shouldFailToListen({ exclusive: true });
 }

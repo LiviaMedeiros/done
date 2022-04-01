@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 // Test unzipping a gzip file that contains multiple concatenated "members"
 
-const common = require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
-const fs = require('fs');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
+const fs = require("fs");
+const fixtures = require("../common/fixtures");
 
-const abc = 'abc';
-const def = 'def';
+const abc = "abc";
+const def = "def";
 
 const abcEncoded = zlib.gzipSync(abc);
 const defEncoded = zlib.gzipSync(def);
@@ -30,8 +30,8 @@ zlib.unzip(data, common.mustSucceed((result) => {
 
 // Multi-member support does not apply to zlib inflate/deflate.
 zlib.unzip(Buffer.concat([
- zlib.deflateSync('abc'),
- zlib.deflateSync('def'),
+ zlib.deflateSync("abc"),
+ zlib.deflateSync("def"),
 ]), common.mustSucceed((result) => {
  assert.strictEqual(result.toString(), abc);
 }));
@@ -39,19 +39,19 @@ zlib.unzip(Buffer.concat([
 // Files that have the "right" magic bytes for starting a new gzip member
 // in the middle of themselves, even if they are part of a single
 // regularly compressed member
-const pmmFileZlib = fixtures.path('pseudo-multimember-gzip.z');
-const pmmFileGz = fixtures.path('pseudo-multimember-gzip.gz');
+const pmmFileZlib = fixtures.path("pseudo-multimember-gzip.z");
+const pmmFileGz = fixtures.path("pseudo-multimember-gzip.gz");
 
 const pmmExpected = zlib.inflateSync(fs.readFileSync(pmmFileZlib));
 const pmmResultBuffers = [];
 
 fs.createReadStream(pmmFileGz)
   .pipe(zlib.createGunzip())
-  .on('error', (err) => {
+  .on("error", (err) => {
   	assert.ifError(err);
   })
-  .on('data', (data) => pmmResultBuffers.push(data))
-  .on('finish', common.mustCall(() => {
+  .on("data", (data) => pmmResultBuffers.push(data))
+  .on("finish", common.mustCall(() => {
   	// Result should match original random garbage
   	assert.deepStrictEqual(Buffer.concat(pmmResultBuffers), pmmExpected);
   }));
@@ -61,14 +61,14 @@ fs.createReadStream(pmmFileGz)
  const resultBuffers = [];
 
  const unzip = zlib.createGunzip()
-    .on('error', (err) => {
+    .on("error", (err) => {
     	assert.ifError(err);
     })
-    .on('data', (data) => resultBuffers.push(data))
-    .on('finish', common.mustCall(() => {
+    .on("data", (data) => resultBuffers.push(data))
+    .on("finish", common.mustCall(() => {
     	assert.strictEqual(
     		Buffer.concat(resultBuffers).toString(),
-    		'abcdef',
+    		"abcdef",
     		`result should match original input (offset = ${offset})`,
     	);
     }));

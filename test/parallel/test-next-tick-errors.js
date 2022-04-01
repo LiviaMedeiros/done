@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 const order = [];
 let exceptionHandled = false;
@@ -29,7 +29,7 @@ let exceptionHandled = false;
 // This nextTick function will throw an error.  It should only be called once.
 // When it throws an error, it should still get removed from the queue.
 process.nextTick(function() {
- order.push('A');
+ order.push("A");
  // cause an error
  what(); // eslint-disable-line no-undef
 });
@@ -38,37 +38,37 @@ process.nextTick(function() {
 // is removed.  It should be called if the error in the first one is
 // caught (which we do in this test).
 process.nextTick(function() {
- order.push('C');
+ order.push("C");
 });
 
 function testNextTickWith(val) {
  assert.throws(() => {
   process.nextTick(val);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
  });
 }
 
 testNextTickWith(false);
 testNextTickWith(true);
 testNextTickWith(1);
-testNextTickWith('str');
+testNextTickWith("str");
 testNextTickWith({});
 testNextTickWith([]);
 
-process.on('uncaughtException', function(err, errorOrigin) {
- assert.strictEqual(errorOrigin, 'uncaughtException');
+process.on("uncaughtException", function(err, errorOrigin) {
+ assert.strictEqual(errorOrigin, "uncaughtException");
 
  if (!exceptionHandled) {
   exceptionHandled = true;
-  order.push('B');
+  order.push("B");
  } else {
   // If we get here then the first process.nextTick got called twice
-  order.push('OOPS!');
+  order.push("OOPS!");
  }
 });
 
-process.on('exit', function() {
- assert.deepStrictEqual(order, ['A', 'B', 'C']);
+process.on("exit", function() {
+ assert.deepStrictEqual(order, ["A", "B", "C"]);
 });

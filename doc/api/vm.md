@@ -26,14 +26,14 @@ global variable. Any changes to global variables caused by the invoked
 code are reflected in the context object.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 const x = 1;
 
 const context = { x: 2 };
 vm.createContext(context); // Contextify the object.
 
-const code = 'x += 40; var y = 17;';
+const code = "x += 40; var y = 17;";
 // `x` and `y` are global variables in the context.
 // Initially, x has the value 2 because that is the value of context.x.
 vm.runInContext(code, context);
@@ -177,10 +177,10 @@ the value of another global variable, then execute the code multiple times.
 The globals are contained in the `context` object.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 const context = {
- animal: 'cat',
+ animal: "cat",
  count: 2,
 };
 
@@ -259,7 +259,7 @@ the code multiple times in different contexts. The globals are set on and
 contained within each individual `context`.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 const script = new vm.Script('globalVar = "set"');
 
@@ -304,11 +304,11 @@ The following example compiles code that increments a `global` variable then
 executes that code multiple times:
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 global.globalVar = 0;
 
-const script = new vm.Script('globalVar += 1', { filename: 'myfile.vm' });
+const script = new vm.Script("globalVar += 1", { filename: "myfile.vm" });
 
 for (let i = 0; i < 1000; ++i) {
  script.runInThisContext();
@@ -351,7 +351,7 @@ loader][]. There is also no way to interact with the Loader yet, though
 support is planned.
 
 ```mjs
-import vm from 'vm';
+import vm from "vm";
 
 const contextifiedObject = vm.createContext({
  secret: 42,
@@ -398,7 +398,7 @@ const bar = new vm.SourceTextModule(`
 // cache would probably be used to avoid duplicated modules.
 
 async function linker(specifier, referencingModule) {
- if (specifier === 'foo') {
+ if (specifier === "foo") {
   return new vm.SourceTextModule(`
       // The "secret" variable refers to the global variable we added to
       // "contextifiedObject" when creating the context.
@@ -422,7 +422,7 @@ await bar.evaluate();
 ```
 
 ```cjs
-const vm = require('vm');
+const vm = require("vm");
 
 const contextifiedObject = vm.createContext({
  secret: 42,
@@ -470,7 +470,7 @@ const contextifiedObject = vm.createContext({
  // cache would probably be used to avoid duplicated modules.
 
  async function linker(specifier, referencingModule) {
-  if (specifier === 'foo') {
+  if (specifier === "foo") {
    return new vm.SourceTextModule(`
         // The "secret" variable refers to the global variable we added to
         // "contextifiedObject" when creating the context.
@@ -556,7 +556,7 @@ The identifier of the current module, as set in the constructor.
 * `linker` {Function}
   * `specifier` {string} The specifier of the requested module:
     ```mjs
-    import foo from 'foo';
+    import foo from "foo";
     //              ^^^^^ the module specifier
     ```
 
@@ -712,12 +712,12 @@ allow the module to access information outside the specified `context`. Use
 `vm.runInContext()` to create objects in a specific context.
 
 ```mjs
-import vm from 'vm';
+import vm from "vm";
 
 const contextifiedObject = vm.createContext({ secret: 42 });
 
 const module = new vm.SourceTextModule(
- 'Object.getPrototypeOf(import.meta.prop).secret = secret;',
+ "Object.getPrototypeOf(import.meta.prop).secret = secret;",
  {
   initializeImportMeta(meta) {
    // Note: this object is created in the top context. As such,
@@ -740,11 +740,11 @@ await module.evaluate();
 ```
 
 ```cjs
-const vm = require('vm');
+const vm = require("vm");
 const contextifiedObject = vm.createContext({ secret: 42 });
 (async () => {
  const module = new vm.SourceTextModule(
-  'Object.getPrototypeOf(import.meta.prop).secret = secret;',
+  "Object.getPrototypeOf(import.meta.prop).secret = secret;",
   {
    initializeImportMeta(meta) {
     // Note: this object is created in the top context. As such,
@@ -782,13 +782,13 @@ of times before the module has been evaluated.
 
 ```js
 // Create an initial module
-const module = new vm.SourceTextModule('const a = 1;');
+const module = new vm.SourceTextModule("const a = 1;");
 
 // Create cached data from this module
 const cachedData = module.createCachedData();
 
 // Create a new module using the cached data. The code must be the same.
-const module2 = new vm.SourceTextModule('const a = 1;', { cachedData });
+const module2 = new vm.SourceTextModule("const a = 1;", { cachedData });
 ```
 
 ## Class: `vm.SyntheticModule`
@@ -812,12 +812,12 @@ provide a generic interface for exposing non-JavaScript sources to ECMAScript
 module graphs.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 const source = '{ "a": 1 }';
-const module = new vm.SyntheticModule(['default'], function() {
+const module = new vm.SyntheticModule(["default"], function() {
  const obj = JSON.parse(source);
- this.setExport('default', obj);
+ this.setExport("default", obj);
 });
 
 // Use `module` in linking...
@@ -863,10 +863,10 @@ it is called before the module is linked, an [`ERR_VM_MODULE_STATUS`][] error
 will be thrown.
 
 ```mjs
-import vm from 'vm';
+import vm from "vm";
 
-const m = new vm.SyntheticModule(['x'], () => {
- m.setExport('x', 1);
+const m = new vm.SyntheticModule(["x"], () => {
+ m.setExport("x", 1);
 });
 
 await m.link(() => {});
@@ -876,10 +876,10 @@ assert.strictEqual(m.namespace.x, 1);
 ```
 
 ```cjs
-const vm = require('vm');
+const vm = require("vm");
 (async () => {
- const m = new vm.SyntheticModule(['x'], () => {
-  m.setExport('x', 1);
+ const m = new vm.SyntheticModule(["x"], () => {
+  m.setExport("x", 1);
  });
  await m.link(() => {});
  await m.evaluate();
@@ -999,14 +999,14 @@ properties but also having the built-in objects and functions any standard
 will remain unchanged.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 global.globalVar = 3;
 
 const context = { globalVar: 1 };
 vm.createContext(context);
 
-vm.runInContext('globalVar *= 2;', context);
+vm.runInContext("globalVar *= 2;", context);
 
 console.log(context);
 // Prints: { globalVar: 2 }
@@ -1075,9 +1075,9 @@ the V8 engine, while the result of `v8.getHeapSpaceStatistics()` measure
 the memory occupied by each heap space in the current V8 instance.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 // Measure the memory used by the main context.
-vm.measureMemory({ mode: 'summary' })
+vm.measureMemory({ mode: "summary" })
   // This is the same as vm.measureMemory()
   .then((result) => {
   	// The current format is:
@@ -1090,7 +1090,7 @@ vm.measureMemory({ mode: 'summary' })
   });
 
 const context = vm.createContext({ a: 1 });
-vm.measureMemory({ mode: 'detailed', execution: 'eager' })
+vm.measureMemory({ mode: "detailed", execution: "eager" })
   .then((result) => {
   	// Reference the context here so that it won't be GC'ed
   	// until the measurement is complete.
@@ -1190,13 +1190,13 @@ The following example compiles and executes different scripts using a single
 [contextified][] object:
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 const contextObject = { globalVar: 1 };
 vm.createContext(contextObject);
 
 for (let i = 0; i < 10; ++i) {
- vm.runInContext('globalVar *= 2;', contextObject);
+ vm.runInContext("globalVar *= 2;", contextObject);
 }
 console.log(contextObject);
 // Prints: { globalVar: 1024 }
@@ -1302,10 +1302,10 @@ The following example compiles and executes code that increments a global
 variable and sets a new one. These globals are contained in the `contextObject`.
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 const contextObject = {
- animal: 'cat',
+ animal: "cat",
  count: 2,
 };
 
@@ -1388,8 +1388,8 @@ the JavaScript [`eval()`][] function to run the same code:
 <!-- eslint-disable prefer-const -->
 
 ```js
-const vm = require('vm');
-let localVar = 'initial value';
+const vm = require("vm");
+let localVar = "initial value";
 
 const vmResult = vm.runInThisContext('localVar = "vm";');
 console.log(`vmResult: '${vmResult}', localVar: '${localVar}'`);
@@ -1417,8 +1417,8 @@ the context must either call `require('http')` on its own, or have a reference
 to the `http` module passed to it. For instance:
 
 ```js
-'use strict';
-const vm = require('vm');
+"use strict";
+const vm = require("vm");
 
 const code = `
 ((require) => {
@@ -1469,36 +1469,36 @@ timeout of 5 milliseconds schedules an infinite loop to run after a promise
 resolves. The scheduled loop is never interrupted by the timeout:
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 function loop() {
- console.log('entering loop');
+ console.log("entering loop");
  while (1) console.log(Date.now());
 }
 
 vm.runInNewContext(
- 'Promise.resolve().then(() => loop());',
+ "Promise.resolve().then(() => loop());",
  { loop, console },
  { timeout: 5 },
 );
 // This is printed *before* 'entering loop' (!)
-console.log('done executing');
+console.log("done executing");
 ```
 
 This can be addressed by passing `microtaskMode: 'afterEvaluate'` to the code
 that creates the `Context`:
 
 ```js
-const vm = require('vm');
+const vm = require("vm");
 
 function loop() {
  while (1) console.log(Date.now());
 }
 
 vm.runInNewContext(
- 'Promise.resolve().then(() => loop());',
+ "Promise.resolve().then(() => loop());",
  { loop, console },
- { timeout: 5, microtaskMode: 'afterEvaluate' },
+ { timeout: 5, microtaskMode: "afterEvaluate" },
 );
 ```
 

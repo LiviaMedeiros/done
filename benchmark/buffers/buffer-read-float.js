@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- type: ['Double', 'Float'],
- endian: ['LE'],
- value: ['zero', 'big', 'small', 'inf', 'nan'],
+ type: ["Double", "Float"],
+ endian: ["LE"],
+ value: ["zero", "big", "small", "inf", "nan"],
  n: [1e6],
 });
 

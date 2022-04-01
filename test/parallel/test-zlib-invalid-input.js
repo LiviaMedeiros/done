@@ -19,18 +19,18 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Test uncompressing invalid input
 
-const common = require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
+const common = require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
 
 const nonStringInputs = [
  1,
  true,
  { a: 1 },
- ['a'],
+ ["a"],
 ];
 
 // zlib.Unzip classes need to get valid data, or else they'll throw.
@@ -46,15 +46,15 @@ nonStringInputs.forEach(common.mustCall((input) => {
  assert.throws(() => {
   zlib.gunzip(input);
  }, {
-  name: 'TypeError',
-  code: 'ERR_INVALID_ARG_TYPE',
+  name: "TypeError",
+  code: "ERR_INVALID_ARG_TYPE",
  });
 }, nonStringInputs.length));
 
 unzips.forEach(common.mustCall((uz, i) => {
- uz.on('error', common.mustCall());
- uz.on('end', common.mustNotCall);
+ uz.on("error", common.mustCall());
+ uz.on("end", common.mustNotCall);
 
  // This will trigger error event
- uz.write('this is not valid compressed data.');
+ uz.write("this is not valid compressed data.");
 }, unzips.length));

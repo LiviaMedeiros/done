@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -20,10 +20,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const dgram = require('dgram');
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const dgram = require("dgram");
 
 // Without an explicit bind, send() causes an implicit bind, which always
 // generate a unique per-socket ephemeral port. An explicit bind to a port
@@ -44,14 +44,14 @@ if (cluster.isPrimary) {
  const ports = {};
  const pids = [];
 
- const target = dgram.createSocket('udp4');
+ const target = dgram.createSocket("udp4");
 
  const done = common.mustCall(function() {
   cluster.disconnect();
   target.close();
  });
 
- target.on('message', function(buf, rinfo) {
+ target.on("message", function(buf, rinfo) {
   if (pids.includes(buf.toString()))
    return;
   pids.push(buf.toString());
@@ -69,12 +69,12 @@ if (cluster.isPrimary) {
   }
  });
 
- target.on('listening', function() {
+ target.on("listening", function() {
   cluster.fork({ PORT: target.address().port });
   cluster.fork({ PORT: target.address().port });
   if (!common.isWindows) {
-   cluster.fork({ BOUND: 'y', PORT: target.address().port });
-   cluster.fork({ BOUND: 'y', PORT: target.address().port });
+   cluster.fork({ BOUND: "y", PORT: target.address().port });
+   cluster.fork({ BOUND: "y", PORT: target.address().port });
   }
  });
 
@@ -83,13 +83,13 @@ if (cluster.isPrimary) {
  return;
 }
 
-const source = dgram.createSocket('udp4');
+const source = dgram.createSocket("udp4");
 
-source.on('close', function() {
+source.on("close", function() {
  clearInterval(interval);
 });
 
-if (process.env.BOUND === 'y') {
+if (process.env.BOUND === "y") {
  source.bind(0);
 } else {
  // Cluster doesn't know about exclusive sockets, so it won't close them. This
@@ -101,5 +101,5 @@ if (process.env.BOUND === 'y') {
 assert(process.env.PORT);
 const buf = Buffer.from(process.pid.toString());
 const interval = setInterval(() => {
- source.send(buf, process.env.PORT, '127.0.0.1');
+ source.send(buf, process.env.PORT, "127.0.0.1");
 }, 1).unref();

@@ -23,15 +23,15 @@
 // treated as a global without being declared with `var`/`let`/`const`.
 
 /* eslint-disable strict */
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
-const { builtinModules } = require('module');
+const assert = require("assert");
+const { builtinModules } = require("module");
 
 // Load all modules to actually cover most code parts.
 builtinModules.forEach((moduleName) => {
- if (!moduleName.includes('/')) {
+ if (!moduleName.includes("/")) {
   try {
    // This could throw for e.g., crypto if the binary is not compiled
    // accordingly.
@@ -44,39 +44,39 @@ builtinModules.forEach((moduleName) => {
 
 {
  const expected = [
-  'global',
-  'queueMicrotask',
-  'clearImmediate',
-  'clearInterval',
-  'clearTimeout',
-  'performance',
-  'setImmediate',
-  'setInterval',
-  'setTimeout',
-  'structuredClone',
-  'fetch',
+  "global",
+  "queueMicrotask",
+  "clearImmediate",
+  "clearInterval",
+  "clearTimeout",
+  "performance",
+  "setImmediate",
+  "setInterval",
+  "setTimeout",
+  "structuredClone",
+  "fetch",
  ];
  assert.deepStrictEqual(new Set(Object.keys(global)), new Set(expected));
 }
 
-common.allowGlobals('bar', 'foo');
+common.allowGlobals("bar", "foo");
 
-baseFoo = 'foo'; // eslint-disable-line no-undef
-global.baseBar = 'bar';
+baseFoo = "foo"; // eslint-disable-line no-undef
+global.baseBar = "bar";
 
-assert.strictEqual(global.baseFoo, 'foo',
+assert.strictEqual(global.baseFoo, "foo",
                    `x -> global.x failed: global.baseFoo = ${global.baseFoo}`);
 
 assert.strictEqual(baseBar, // eslint-disable-line no-undef
-                   'bar',
+                   "bar",
  // eslint-disable-next-line no-undef
                    `global.x -> x failed: baseBar = ${baseBar}`);
 
-const mod = require(fixtures.path('global', 'plain'));
+const mod = require(fixtures.path("global", "plain"));
 const fooBar = mod.fooBar;
 
-assert.strictEqual(fooBar.foo, 'foo');
+assert.strictEqual(fooBar.foo, "foo");
 
-assert.strictEqual(fooBar.bar, 'bar');
+assert.strictEqual(fooBar.bar, "bar");
 
-assert.strictEqual(Object.prototype.toString.call(global), '[object global]');
+assert.strictEqual(Object.prototype.toString.call(global), "[object global]");

@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const Transform = require('stream').Transform;
+const Transform = require("stream").Transform;
 
 const parser = new Transform({ readableObjectMode: true });
 
@@ -42,13 +42,13 @@ parser._transform = function(chunk, enc, callback) {
 
 let parsed;
 
-parser.on('data', function(obj) {
+parser.on("data", function(obj) {
  parsed = obj;
 });
 
 parser.end(Buffer.from([42]));
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(parsed.val, 42);
 });
 
@@ -70,12 +70,12 @@ serializer._transform = function(obj, _, callback) {
 
 let serialized;
 
-serializer.on('data', function(chunk) {
+serializer.on("data", function(chunk) {
  serialized = chunk;
 });
 
 serializer.write({ val: 42 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(serialized[0], 42);
 });

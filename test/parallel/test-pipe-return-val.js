@@ -19,12 +19,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // This test ensures SourceStream.pipe(DestStream) returns DestStream
 
-require('../common');
-const Stream = require('stream').Stream;
-const assert = require('assert');
+require("../common");
+const Stream = require("stream").Stream;
+const assert = require("assert");
 
 const sourceStream = new Stream();
 const destStream = new Stream();

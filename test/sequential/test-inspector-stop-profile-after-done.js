@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 common.skipIfInspectorDisabled();
-const assert = require('assert');
-const { NodeInstance } = require('../common/inspector-helper.js');
+const assert = require("assert");
+const { NodeInstance } = require("../common/inspector-helper.js");
 
 async function runTests() {
- const child = new NodeInstance(['--inspect-brk=0'],
+ const child = new NodeInstance(["--inspect-brk=0"],
                                 `let c = 0;
                                   const interval = setInterval(() => {
                                    console.log(new Object());
@@ -15,14 +15,14 @@ async function runTests() {
  const session = await child.connectInspectorSession();
 
  session.send([
-  { method: 'Profiler.setSamplingInterval',
+  { method: "Profiler.setSamplingInterval",
     params: { interval: common.platformTimeout(300) } },
-  { method: 'Profiler.enable' },
-  { method: 'Runtime.runIfWaitingForDebugger' },
-  { method: 'Profiler.start' }]);
+  { method: "Profiler.enable" },
+  { method: "Runtime.runIfWaitingForDebugger" },
+  { method: "Profiler.start" }]);
  while (await child.nextStderrString() !==
-         'Waiting for the debugger to disconnect...');
- await session.send({ method: 'Profiler.stop' });
+         "Waiting for the debugger to disconnect...");
+ await session.send({ method: "Profiler.stop" });
  session.disconnect();
  assert.strictEqual((await child.expectShutdown()).exitCode, 0);
 }

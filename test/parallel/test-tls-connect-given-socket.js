@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
+ common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
-const tls = require('tls');
-const net = require('net');
+const assert = require("assert");
+const tls = require("tls");
+const net = require("net");
 
 const options = {
- key: fixtures.readKey('rsa_private.pem'),
- cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey("rsa_private.pem"),
+ cert: fixtures.readKey("rsa_cert.crt"),
 };
 
 const server = tls.createServer(options, common.mustCall((socket) => {
- socket.end('Hello');
+ socket.end("Hello");
 }, 2)).listen(0, common.mustCall(() => {
  let waiting = 2;
  function establish(socket, calls) {
@@ -43,12 +43,12 @@ const server = tls.createServer(options, common.mustCall((socket) => {
    rejectUnauthorized: false,
    socket: socket,
   }, common.mustCall(() => {
-   let data = '';
-   client.on('data', common.mustCall((chunk) => {
+   let data = "";
+   client.on("data", common.mustCall((chunk) => {
     data += chunk.toString();
    }));
-   client.on('end', common.mustCall(() => {
-    assert.strictEqual(data, 'Hello');
+   client.on("end", common.mustCall(() => {
+    assert.strictEqual(data, "Hello");
     if (--waiting === 0)
      server.close();
    }));

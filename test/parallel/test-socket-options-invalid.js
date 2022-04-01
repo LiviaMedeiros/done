@@ -1,13 +1,13 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 {
  const invalidKeys = [
-  'objectMode',
-  'readableObjectMode',
-  'writableObjectMode',
+  "objectMode",
+  "readableObjectMode",
+  "writableObjectMode",
  ];
  invalidKeys.forEach((invalidKey) => {
   const option = {
@@ -19,8 +19,8 @@ const net = require('net');
    const socket = new net.Socket(option);
    socket.connect({ port: 8080 });
   }, {
-   code: 'ERR_INVALID_ARG_VALUE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_VALUE",
+   name: "TypeError",
    message: new RegExp(message),
   });
  });

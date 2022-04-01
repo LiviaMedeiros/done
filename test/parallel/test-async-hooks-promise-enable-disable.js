@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const EXPECTED_INITS = 2;
 let p_er = null;
 let p_inits = 0;
 
 // Not useful to place common.mustCall() around 'exit' event b/c it won't be
 // able to check it anyway.
-process.on('exit', (code) => {
+process.on("exit", (code) => {
  if (code !== 0)
   return;
  if (p_er !== null)
@@ -19,7 +19,7 @@ process.on('exit', (code) => {
 });
 
 const mustCallInit = common.mustCall(function init(id, type, tid, resource) {
- if (type !== 'PROMISE')
+ if (type !== "PROMISE")
   return;
  p_inits++;
 }, EXPECTED_INITS);

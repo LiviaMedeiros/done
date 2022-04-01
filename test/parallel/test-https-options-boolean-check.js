@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const https = require('https');
+const assert = require("assert");
+const https = require("https");
 
 function toArrayBuffer(buf) {
  const ab = new ArrayBuffer(buf.length);
@@ -21,12 +21,12 @@ function toDataView(buf) {
  return buf.map((b, i) => view[i] = b);
 }
 
-const keyBuff = fixtures.readKey('agent1-key.pem');
-const certBuff = fixtures.readKey('agent1-cert.pem');
-const keyBuff2 = fixtures.readKey('ec-key.pem');
-const certBuff2 = fixtures.readKey('ec-cert.pem');
-const caCert = fixtures.readKey('ca1-cert.pem');
-const caCert2 = fixtures.readKey('ca2-cert.pem');
+const keyBuff = fixtures.readKey("agent1-key.pem");
+const certBuff = fixtures.readKey("agent1-cert.pem");
+const keyBuff2 = fixtures.readKey("ec-key.pem");
+const certBuff2 = fixtures.readKey("ec-cert.pem");
+const caCert = fixtures.readKey("ca1-cert.pem");
+const caCert2 = fixtures.readKey("ca2-cert.pem");
 const keyStr = keyBuff.toString();
 const certStr = certBuff.toString();
 const keyStr2 = keyBuff2.toString();
@@ -86,10 +86,10 @@ const caArrDataView = toDataView(caCert);
  assert.throws(() => {
   https.createServer({ key, cert });
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message: 'The "options.key" property must be of type string or an ' +
-             'instance of Buffer, TypedArray, or DataView.' +
+             "instance of Buffer, TypedArray, or DataView." +
              common.invalidArgTypeHelper(val),
  });
 });
@@ -112,10 +112,10 @@ const caArrDataView = toDataView(caCert);
  assert.throws(() => {
   https.createServer({ key, cert });
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message: 'The "options.cert" property must be of type string or an ' +
-             'instance of Buffer, TypedArray, or DataView.' +
+             "instance of Buffer, TypedArray, or DataView." +
              common.invalidArgTypeHelper(val),
  });
 });
@@ -147,10 +147,10 @@ const caArrDataView = toDataView(caCert);
  assert.throws(() => {
   https.createServer({ key, cert, ca });
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
   message: 'The "options.ca" property must be of type string or an instance' +
-             ' of Buffer, TypedArray, or DataView.' +
+             " of Buffer, TypedArray, or DataView." +
              common.invalidArgTypeHelper(val),
  });
 });

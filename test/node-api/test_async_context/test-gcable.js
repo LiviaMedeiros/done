@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 // Flags: --gc-interval=100 --gc-global
 
-const common = require('../../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const { createAsyncResource } = require(`./build/${common.buildType}/binding`);
 
 // Test for https://github.com/nodejs/node/issues/27218:
@@ -17,7 +17,7 @@ const hook_result = {
 
 const test_hook = async_hooks.createHook({
  init: (id, type) => {
-  if (type === 'test_async') {
+  if (type === "test_async") {
    hook_result.id = id;
    hook_result.init_called = true;
   }

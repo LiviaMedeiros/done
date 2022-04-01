@@ -1,12 +1,12 @@
 // Flags: --expose-gc --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 const {
  PerformanceObserver,
  constants,
-} = require('perf_hooks');
+} = require("perf_hooks");
 
 const {
  NODE_PERFORMANCE_GC_MAJOR,
@@ -28,17 +28,17 @@ const kinds = [
  const obs = new PerformanceObserver(common.mustCallAtLeast((list) => {
   const entry = list.getEntries()[0];
   assert(entry);
-  assert.strictEqual(entry.name, 'gc');
-  assert.strictEqual(entry.entryType, 'gc');
+  assert.strictEqual(entry.name, "gc");
+  assert.strictEqual(entry.entryType, "gc");
   assert(kinds.includes(entry.kind));
   assert(kinds.includes(entry.detail.kind));
   assert.strictEqual(entry.flags, NODE_PERFORMANCE_GC_FLAGS_FORCED);
   assert.strictEqual(entry.detail.flags, NODE_PERFORMANCE_GC_FLAGS_FORCED);
-  assert.strictEqual(typeof entry.startTime, 'number');
-  assert.strictEqual(typeof entry.duration, 'number');
+  assert.strictEqual(typeof entry.startTime, "number");
+  assert.strictEqual(typeof entry.duration, "number");
   obs.disconnect();
  }));
- obs.observe({ entryTypes: ['gc'] });
+ obs.observe({ entryTypes: ["gc"] });
  global.gc();
  // Keep the event loop alive to witness the GC async callback happen.
  setImmediate(() => setImmediate(() => 0));
@@ -47,7 +47,7 @@ const kinds = [
 // GC should not keep the event loop alive
 {
  let didCall = false;
- process.on('beforeExit', () => {
+ process.on("beforeExit", () => {
   assert(!didCall);
   didCall = true;
   global.gc();

@@ -1,8 +1,8 @@
-'use strict';
-const fixtures = require('../../test/common/fixtures');
-const tls = require('tls');
+"use strict";
+const fixtures = require("../../test/common/fixtures");
+const tls = require("tls");
 
-const common = require('../common.js');
+const common = require("../common.js");
 const bench = common.createBenchmark(main, {
  concurrency: [1, 10],
  dur: [5],
@@ -18,10 +18,10 @@ function main(conf) {
  dur = conf.dur;
  concurrency = conf.concurrency;
  const options = {
-  key: fixtures.readKey('rsa_private.pem'),
-  cert: fixtures.readKey('rsa_cert.crt'),
-  ca: fixtures.readKey('rsa_ca.crt'),
-  ciphers: 'AES256-GCM-SHA384',
+  key: fixtures.readKey("rsa_private.pem"),
+  cert: fixtures.readKey("rsa_cert.crt"),
+  ca: fixtures.readKey("rsa_ca.crt"),
+  ciphers: "AES256-GCM-SHA384",
  };
 
  const server = tls.createServer(options, onConnection);
@@ -46,8 +46,8 @@ function makeConnection() {
  };
  const conn = tls.connect(options, () => {
   clientConn++;
-  conn.on('error', (er) => {
-   console.error('client error', er);
+  conn.on("error", (er) => {
+   console.error("client error", er);
    throw er;
   });
   conn.end();

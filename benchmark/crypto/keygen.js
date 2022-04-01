@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert');
+const common = require("../common.js");
+const assert = require("assert");
 const {
  generateKeyPair,
  generateKeyPairSync,
-} = require('crypto');
+} = require("crypto");
 
 const bench = common.createBenchmark(main, {
- method: ['rsaSync', 'rsaAsync', 'dsaSync', 'dsaAsync'],
+ method: ["rsaSync", "rsaAsync", "dsaSync", "dsaAsync"],
  n: [1e2],
 });
 
@@ -16,7 +16,7 @@ const methods = {
  rsaSync(n) {
   bench.start();
   for (let i = 0; i < n; ++i) {
-   generateKeyPairSync('rsa', {
+   generateKeyPairSync("rsa", {
     modulusLength: 1024,
     publicExponent: 0x10001,
    });
@@ -33,7 +33,7 @@ const methods = {
   }
   bench.start();
   for (let i = 0; i < n; ++i)
-   generateKeyPair('rsa', {
+   generateKeyPair("rsa", {
     modulusLength: 512,
     publicExponent: 0x10001,
    }, done);
@@ -42,7 +42,7 @@ const methods = {
  dsaSync(n) {
   bench.start();
   for (let i = 0; i < n; ++i) {
-   generateKeyPairSync('dsa', {
+   generateKeyPairSync("dsa", {
     modulusLength: 1024,
     divisorLength: 160,
    });
@@ -59,7 +59,7 @@ const methods = {
   }
   bench.start();
   for (let i = 0; i < n; ++i)
-   generateKeyPair('dsa', {
+   generateKeyPair("dsa", {
     modulusLength: 1024,
     divisorLength: 160,
    }, done);

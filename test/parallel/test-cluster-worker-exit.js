@@ -19,7 +19,7 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // test-cluster-worker-exit.js
 // verifies that, when a child process exits (by calling `process.exit(code)`)
 // - the primary receives the proper events in the proper order, no duplicates
@@ -27,37 +27,37 @@
 // - the worker.exitedAfterDisconnect flag, and worker.state are correct
 // - the worker process actually goes away
 
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
 
 const EXIT_CODE = 42;
 
 if (cluster.isWorker) {
- const http = require('http');
+ const http = require("http");
  const server = http.Server(() => { });
 
- server.once('listening', common.mustCall(() => {
+ server.once("listening", common.mustCall(() => {
   process.exit(EXIT_CODE);
  }));
- server.listen(0, '127.0.0.1');
+ server.listen(0, "127.0.0.1");
 
 } else if (cluster.isPrimary) {
 
  const expected_results = {
   cluster_emitDisconnect: [1, "the cluster did not emit 'disconnect'"],
   cluster_emitExit: [1, "the cluster did not emit 'exit'"],
-  cluster_exitCode: [EXIT_CODE, 'the cluster exited w/ incorrect exitCode'],
-  cluster_signalCode: [null, 'the cluster exited w/ incorrect signalCode'],
+  cluster_exitCode: [EXIT_CODE, "the cluster exited w/ incorrect exitCode"],
+  cluster_signalCode: [null, "the cluster exited w/ incorrect signalCode"],
   worker_emitDisconnect: [1, "the worker did not emit 'disconnect'"],
   worker_emitExit: [1, "the worker did not emit 'exit'"],
-  worker_state: ['disconnected', 'the worker state is incorrect'],
+  worker_state: ["disconnected", "the worker state is incorrect"],
   worker_exitedAfterDisconnect: [
-   false, 'the .exitedAfterDisconnect flag is incorrect',
+   false, "the .exitedAfterDisconnect flag is incorrect",
   ],
-  worker_died: [true, 'the worker is still running'],
-  worker_exitCode: [EXIT_CODE, 'the worker exited w/ incorrect exitCode'],
-  worker_signalCode: [null, 'the worker exited w/ incorrect signalCode'],
+  worker_died: [true, "the worker is still running"],
+  worker_exitCode: [EXIT_CODE, "the worker exited w/ incorrect exitCode"],
+  worker_signalCode: [null, "the worker exited w/ incorrect signalCode"],
  };
  const results = {
   cluster_emitDisconnect: 0,
@@ -71,17 +71,17 @@ if (cluster.isWorker) {
  const worker = cluster.fork();
 
  // Check cluster events
- cluster.on('disconnect', common.mustCall(() => {
+ cluster.on("disconnect", common.mustCall(() => {
   results.cluster_emitDisconnect += 1;
  }));
- cluster.on('exit', common.mustCall((worker) => {
+ cluster.on("exit", common.mustCall((worker) => {
   results.cluster_exitCode = worker.process.exitCode;
   results.cluster_signalCode = worker.process.signalCode;
   results.cluster_emitExit += 1;
  }));
 
  // Check worker events and properties
- worker.on('disconnect', common.mustCall(() => {
+ worker.on("disconnect", common.mustCall(() => {
   results.worker_emitDisconnect += 1;
   results.worker_exitedAfterDisconnect = worker.exitedAfterDisconnect;
   results.worker_state = worker.state;
@@ -91,7 +91,7 @@ if (cluster.isWorker) {
  }));
 
  // Check that the worker died
- worker.once('exit', common.mustCall((exitCode, signalCode) => {
+ worker.once("exit", common.mustCall((exitCode, signalCode) => {
   results.worker_exitCode = exitCode;
   results.worker_signalCode = signalCode;
   results.worker_emitExit += 1;
@@ -105,7 +105,7 @@ if (cluster.isWorker) {
   try {
    checkResults(expected_results, results);
   } catch (exc) {
-   if (exc.name !== 'AssertionError') {
+   if (exc.name !== "AssertionError") {
     console.trace(exc);
    }
 
@@ -125,6 +125,6 @@ function checkResults(expected_results, results) {
 
   assert.strictEqual(
    actual, expected && expected.length ? expected[0] : expected,
-   `${expected[1] || ''} [expected: ${expected[0]} / actual: ${actual}]`);
+   `${expected[1] || ""} [expected: ${expected[0]} / actual: ${actual}]`);
  }
 }

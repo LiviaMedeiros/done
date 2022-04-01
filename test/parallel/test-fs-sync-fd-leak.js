@@ -20,12 +20,12 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const { internalBinding } = require('internal/test/binding');
-const { UV_EBADF } = internalBinding('uv');
+"use strict";
+require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const { internalBinding } = require("internal/test/binding");
+const { UV_EBADF } = internalBinding("uv");
 
 // Ensure that (read|write|append)FileSync() closes the file descriptor
 fs.openSync = function() {
@@ -36,27 +36,27 @@ fs.closeSync = function(fd) {
  close_called++;
 };
 fs.readSync = function() {
- throw new Error('BAM');
+ throw new Error("BAM");
 };
 fs.writeSync = function() {
- throw new Error('BAM');
+ throw new Error("BAM");
 };
 
-internalBinding('fs').fstat = function(fd, bigint, _, ctx) {
+internalBinding("fs").fstat = function(fd, bigint, _, ctx) {
  ctx.errno = UV_EBADF;
- ctx.syscall = 'fstat';
+ ctx.syscall = "fstat";
 };
 
 let close_called = 0;
 ensureThrows(function() {
- fs.readFileSync('dummy');
-}, 'EBADF: bad file descriptor, fstat');
+ fs.readFileSync("dummy");
+}, "EBADF: bad file descriptor, fstat");
 ensureThrows(function() {
- fs.writeFileSync('dummy', 'xxx');
-}, 'BAM');
+ fs.writeFileSync("dummy", "xxx");
+}, "BAM");
 ensureThrows(function() {
- fs.appendFileSync('dummy', 'xxx');
-}, 'BAM');
+ fs.appendFileSync("dummy", "xxx");
+}, "BAM");
 
 function ensureThrows(cb, message) {
  let got_exception = false;

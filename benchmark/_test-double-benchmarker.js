@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
 const myModule = process.argv[2];
-if (!['http', 'https', 'http2'].includes(myModule)) {
+if (!["http", "https", "http2"].includes(myModule)) {
  throw new Error(`Invalid module for benchmark test double: ${myModule}`);
 }
 
 let options;
-if (myModule === 'https') {
+if (myModule === "https") {
  options = { rejectUnauthorized: false };
 }
 
@@ -20,8 +20,8 @@ let throughput = 0;
 
 function request(res, client) {
  res.resume();
- res.on('error', () => {});
- res.on('end', () => {
+ res.on("error", () => {});
+ res.on("end", () => {
   throughput++;
   const [sec, nanosec] = process.hrtime(start);
   const ms = sec * 1000 + nanosec / 1e6;
@@ -46,7 +46,7 @@ function run() {
   }
  } else { // HTTP/2
   const client = http.connect(url);
-  client.on('error', () => {});
+  client.on("error", () => {});
   request(client.request(), client);
  }
 }

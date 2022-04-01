@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const stream = require('stream');
+"use strict";
+require("../common");
+const assert = require("assert");
+const stream = require("stream");
 const Writable = stream.Writable;
 
 // Test the buffering behavior of Writable streams.
@@ -11,7 +11,7 @@ const Writable = stream.Writable;
 //
 // node version target: 0.12
 
-const expectedChunks = ['please', 'buffer', 'me', 'kindly'];
+const expectedChunks = ["please", "buffer", "me", "kindly"];
 const inputChunks = expectedChunks.slice(0);
 let seenChunks = [];
 let seenEnd = false;
@@ -20,13 +20,13 @@ const w = new Writable();
 // Let's arrange to store the chunks.
 w._write = function(chunk, encoding, cb) {
  // Default encoding given none was specified.
- assert.strictEqual(encoding, 'buffer');
+ assert.strictEqual(encoding, "buffer");
 
  seenChunks.push(chunk);
  cb();
 };
 // Let's record the stream end event.
-w.on('finish', () => {
+w.on("finish", () => {
  seenEnd = true;
 });
 
@@ -48,7 +48,7 @@ function writeChunks(remainingChunks, callback) {
 }
 
 // Do an initial write.
-w.write('stuff');
+w.write("stuff");
 // The write was immediate.
 assert.strictEqual(seenChunks.length, 1);
 // Reset the chunks seen so far.

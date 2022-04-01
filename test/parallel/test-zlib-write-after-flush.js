@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
 
 for (const [ createCompress, createDecompress ] of [
  [ zlib.createGzip, zlib.createGunzip ],
@@ -33,11 +33,11 @@ for (const [ createCompress, createDecompress ] of [
 
  gzip.pipe(gunz);
 
- let output = '';
- const input = 'A line of data\n';
- gunz.setEncoding('utf8');
- gunz.on('data', (c) => output += c);
- gunz.on('end', common.mustCall(() => {
+ let output = "";
+ const input = "A line of data\n";
+ gunz.setEncoding("utf8");
+ gunz.on("data", (c) => output += c);
+ gunz.on("end", common.mustCall(() => {
   assert.strictEqual(output, input);
  }));
 

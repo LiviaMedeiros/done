@@ -1,62 +1,62 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Writable,
  Readable,
  destroy,
-} = require('stream');
-const assert = require('assert');
-const http = require('http');
+} = require("stream");
+const assert = require("assert");
+const http = require("http");
 
 {
  const r = new Readable({ read() {} });
  destroy(r);
  assert.strictEqual(r.destroyed, true);
- r.on('error', common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
+ r.on("error", common.mustCall((err) => {
+  assert.strictEqual(err.name, "AbortError");
  }));
- r.on('close', common.mustCall());
+ r.on("close", common.mustCall());
 }
 
 {
  const r = new Readable({ read() {} });
- destroy(r, new Error('asd'));
+ destroy(r, new Error("asd"));
  assert.strictEqual(r.destroyed, true);
- r.on('error', common.mustCall((err) => {
-  assert.strictEqual(err.message, 'asd');
+ r.on("error", common.mustCall((err) => {
+  assert.strictEqual(err.message, "asd");
  }));
- r.on('close', common.mustCall());
+ r.on("close", common.mustCall());
 }
 
 {
  const w = new Writable({ write() {} });
  destroy(w);
  assert.strictEqual(w.destroyed, true);
- w.on('error', common.mustCall((err) => {
-  assert.strictEqual(err.name, 'AbortError');
+ w.on("error", common.mustCall((err) => {
+  assert.strictEqual(err.name, "AbortError");
  }));
- w.on('close', common.mustCall());
+ w.on("close", common.mustCall());
 }
 
 {
  const w = new Writable({ write() {} });
- destroy(w, new Error('asd'));
+ destroy(w, new Error("asd"));
  assert.strictEqual(w.destroyed, true);
- w.on('error', common.mustCall((err) => {
-  assert.strictEqual(err.message, 'asd');
+ w.on("error", common.mustCall((err) => {
+  assert.strictEqual(err.message, "asd");
  }));
- w.on('close', common.mustCall());
+ w.on("close", common.mustCall());
 }
 
 {
  const server = http.createServer((req, res) => {
   destroy(req);
-  req.on('error', common.mustCall((err) => {
-   assert.strictEqual(err.name, 'AbortError');
+  req.on("error", common.mustCall((err) => {
+   assert.strictEqual(err.name, "AbortError");
   }));
-  req.on('close', common.mustCall(() => {
-   res.end('hello');
+  req.on("close", common.mustCall(() => {
+   res.end("hello");
   }));
  });
 
@@ -65,14 +65,14 @@ const http = require('http');
    port: server.address().port,
   });
 
-  req.write('asd');
-  req.on('response', (res) => {
+  req.write("asd");
+  req.on("response", (res) => {
    const buf = [];
-   res.on('data', (data) => buf.push(data));
-   res.on('end', common.mustCall(() => {
+   res.on("data", (data) => buf.push(data));
+   res.on("end", common.mustCall(() => {
     assert.deepStrictEqual(
      Buffer.concat(buf),
-     Buffer.from('hello'),
+     Buffer.from("hello"),
     );
     server.close();
    }));
@@ -84,13 +84,13 @@ const http = require('http');
  const server = http.createServer((req, res) => {
   req
       .resume()
-      .on('end', () => {
+      .on("end", () => {
       	destroy(req);
       })
-      .on('error', common.mustNotCall());
+      .on("error", common.mustNotCall());
 
-  req.on('close', common.mustCall(() => {
-   res.end('hello');
+  req.on("close", common.mustCall(() => {
+   res.end("hello");
   }));
  });
 
@@ -99,14 +99,14 @@ const http = require('http');
    port: server.address().port,
   });
 
-  req.write('asd');
-  req.on('response', (res) => {
+  req.write("asd");
+  req.on("response", (res) => {
    const buf = [];
-   res.on('data', (data) => buf.push(data));
-   res.on('end', common.mustCall(() => {
+   res.on("data", (data) => buf.push(data));
+   res.on("end", common.mustCall(() => {
     assert.deepStrictEqual(
      Buffer.concat(buf),
-     Buffer.from('hello'),
+     Buffer.from("hello"),
     );
     server.close();
    }));

@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 
-const startCLI = require('../common/debugger');
+const startCLI = require("../common/debugger");
 
-const assert = require('assert');
+const assert = require("assert");
 
 // Launch CLI w/o args.
 {
@@ -13,7 +13,7 @@ const assert = require('assert');
  cli.quit()
     .then((code) => {
     	assert.strictEqual(code, 1);
-    	assert.match(cli.output, /^Usage:/, 'Prints usage info');
+    	assert.match(cli.output, /^Usage:/, "Prints usage info");
     });
 }
 
@@ -25,7 +25,7 @@ const assert = require('assert');
     	assert.match(
     		cli.output,
     		/failed to connect/,
-    		'Tells the user that the connection failed');
+    		"Tells the user that the connection failed");
     	assert.strictEqual(code, 1);
     });
 }

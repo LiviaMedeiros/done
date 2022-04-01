@@ -19,53 +19,53 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const { Readable, Writable } = require('stream');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { Readable, Writable } = require("stream");
 
-const EE = require('events').EventEmitter;
+const EE = require("events").EventEmitter;
 
 
 // A mock thing a bit like the net.Socket/tcp_wrap.handle interaction
 
 const stream = new Readable({
  highWaterMark: 16,
- encoding: 'utf8',
+ encoding: "utf8",
 });
 
 const source = new EE();
 
 stream._read = function() {
- console.error('stream._read');
+ console.error("stream._read");
  readStart();
 };
 
 let ended = false;
-stream.on('end', function() {
+stream.on("end", function() {
  ended = true;
 });
 
-source.on('data', function(chunk) {
+source.on("data", function(chunk) {
  const ret = stream.push(chunk);
- console.error('data', stream.readableLength);
+ console.error("data", stream.readableLength);
  if (!ret)
   readStop();
 });
 
-source.on('end', function() {
+source.on("end", function() {
  stream.push(null);
 });
 
 let reading = false;
 
 function readStart() {
- console.error('readStart');
+ console.error("readStart");
  reading = true;
 }
 
 function readStop() {
- console.error('readStop');
+ console.error("readStop");
  reading = false;
  process.nextTick(function() {
   const r = stream.read();
@@ -81,12 +81,12 @@ const writer = new Writable({
 const written = [];
 
 const expectWritten =
-  [ 'asdfgasdfgasdfgasdfg',
-  		'asdfgasdfgasdfgasdfg',
-  		'asdfgasdfgasdfgasdfg',
-  		'asdfgasdfgasdfgasdfg',
-  		'asdfgasdfgasdfgasdfg',
-  		'asdfgasdfgasdfgasdfg' ];
+  [ "asdfgasdfgasdfgasdfg",
+  		"asdfgasdfgasdfgasdfg",
+  		"asdfgasdfgasdfgasdfg",
+  		"asdfgasdfgasdfgasdfg",
+  		"asdfgasdfgasdfgasdfg",
+  		"asdfgasdfgasdfgasdfg" ];
 
 writer._write = function(chunk, encoding, cb) {
  console.error(`WRITE ${chunk}`);
@@ -94,25 +94,25 @@ writer._write = function(chunk, encoding, cb) {
  process.nextTick(cb);
 };
 
-writer.on('finish', finish);
+writer.on("finish", finish);
 
 
 // Now emit some chunks.
 
-const chunk = 'asdfg';
+const chunk = "asdfg";
 
 let set = 0;
 readStart();
 data();
 function data() {
  assert(reading);
- source.emit('data', chunk);
+ source.emit("data", chunk);
  assert(reading);
- source.emit('data', chunk);
+ source.emit("data", chunk);
  assert(reading);
- source.emit('data', chunk);
+ source.emit("data", chunk);
  assert(reading);
- source.emit('data', chunk);
+ source.emit("data", chunk);
  assert(!reading);
  if (set++ < 5)
   setTimeout(data, 10);
@@ -121,13 +121,13 @@ function data() {
 }
 
 function finish() {
- console.error('finish');
+ console.error("finish");
  assert.deepStrictEqual(written, expectWritten);
- console.log('ok');
+ console.log("ok");
 }
 
 function end() {
- source.emit('end');
+ source.emit("end");
  assert(!reading);
  writer.end(stream.read());
  setImmediate(function() {

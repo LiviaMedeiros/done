@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 const b = Buffer.allocUnsafe(1024);
 const c = Buffer.allocUnsafe(512);
@@ -23,7 +23,7 @@ let cntr = 0;
  // Current behavior is to coerce values to integers.
  b.fill(++cntr);
  c.fill(++cntr);
- const copied = b.copy(c, '0', '0', '512');
+ const copied = b.copy(c, "0", "0", "512");
  assert.strictEqual(copied, 512);
  for (let i = 0; i < c.length; i++) {
   assert.strictEqual(c[i], b[i]);
@@ -123,7 +123,7 @@ let cntr = 0;
 
 // Copy string longer than buffer length (failure will segfault)
 const bb = Buffer.allocUnsafe(10);
-bb.fill('hello crazy world');
+bb.fill("hello crazy world");
 
 
 // Try to copy from before the beginning of b. Should not throw.
@@ -133,8 +133,8 @@ b.copy(c, 0, 100, 10);
 assert.throws(
  () => Buffer.prototype.copy.call(0),
  {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
  },
 );
 
@@ -142,10 +142,10 @@ assert.throws(
 assert.throws(
  () => Buffer.allocUnsafe(5).copy(Buffer.allocUnsafe(5), -1, 0),
  {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "targetStart" is out of range. ' +
-             'It must be >= 0. Received -1',
+             "It must be >= 0. Received -1",
  },
 );
 
@@ -153,10 +153,10 @@ assert.throws(
 assert.throws(
  () => Buffer.allocUnsafe(5).copy(Buffer.allocUnsafe(5), 0, -1),
  {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "sourceStart" is out of range. ' +
-             'It must be >= 0. Received -1',
+             "It must be >= 0. Received -1",
  },
 );
 
@@ -174,10 +174,10 @@ assert.throws(
 assert.throws(
  () => b.copy(c, 0, 0, -1),
  {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "sourceEnd" is out of range. ' +
-             'It must be >= 0. Received -1',
+             "It must be >= 0. Received -1",
  },
 );
 
@@ -214,16 +214,16 @@ assert.strictEqual(b.copy(c, 512, 0, 10), 0);
 }
 
 // https://github.com/nodejs/node/issues/23668: Do not crash for invalid input.
-c.fill('c');
-b.copy(c, 'not a valid offset');
+c.fill("c");
+b.copy(c, "not a valid offset");
 // Make sure this acted like a regular copy with `0` offset.
 assert.deepStrictEqual(c, b.slice(0, c.length));
 
 {
- c.fill('C');
+ c.fill("C");
  assert.throws(() => {
-  b.copy(c, { [Symbol.toPrimitive]() { throw new Error('foo'); } });
+  b.copy(c, { [Symbol.toPrimitive]() { throw new Error("foo"); } });
  }, /foo/);
  // No copying took place:
- assert.deepStrictEqual(c.toString(), 'C'.repeat(c.length));
+ assert.deepStrictEqual(c.toString(), "C".repeat(c.length));
 }

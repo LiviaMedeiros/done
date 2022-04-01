@@ -1,15 +1,15 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { internalBinding } = require('internal/test/binding');
-const { ModuleWrap } = internalBinding('module_wrap');
-const { getPromiseDetails, isPromise } = internalBinding('util');
-const setTimeoutAsync = require('util').promisify(setTimeout);
+const { internalBinding } = require("internal/test/binding");
+const { ModuleWrap } = internalBinding("module_wrap");
+const { getPromiseDetails, isPromise } = internalBinding("util");
+const setTimeoutAsync = require("util").promisify(setTimeout);
 
-const foo = new ModuleWrap('foo', undefined, 'export * from "bar";', 0, 0);
-const bar = new ModuleWrap('bar', undefined, 'export const five = 5', 0, 0);
+const foo = new ModuleWrap("foo", undefined, 'export * from "bar";', 0, 0);
+const bar = new ModuleWrap("bar", undefined, "export const five = 5", 0, 0);
 
 (async () => {
  const promises = foo.link(() => setTimeoutAsync(1000).then(() => bar));

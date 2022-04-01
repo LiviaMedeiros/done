@@ -19,33 +19,33 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const net = require('net');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const net = require("net");
+const assert = require("assert");
 
 // Verify that invalid delays throw
 const s = new net.Socket();
 const nonNumericDelays = [
- '100', true, false, undefined, null, '', {}, () => {}, [],
+ "100", true, false, undefined, null, "", {}, () => {}, [],
 ];
 const badRangeDelays = [-0.001, -1, -Infinity, Infinity, NaN];
 const validDelays = [0, 0.001, 1, 1e6];
 const invalidCallbacks = [
- 1, '100', true, false, null, {}, [], Symbol('test'),
+ 1, "100", true, false, null, {}, [], Symbol("test"),
 ];
 
 
 for (let i = 0; i < nonNumericDelays.length; i++) {
  assert.throws(() => {
   s.setTimeout(nonNumericDelays[i], () => {});
- }, { code: 'ERR_INVALID_ARG_TYPE' }, nonNumericDelays[i]);
+ }, { code: "ERR_INVALID_ARG_TYPE" }, nonNumericDelays[i]);
 }
 
 for (let i = 0; i < badRangeDelays.length; i++) {
  assert.throws(() => {
   s.setTimeout(badRangeDelays[i], () => {});
- }, { code: 'ERR_OUT_OF_RANGE' }, badRangeDelays[i]);
+ }, { code: "ERR_OUT_OF_RANGE" }, badRangeDelays[i]);
 }
 
 for (let i = 0; i < validDelays.length; i++) {
@@ -57,8 +57,8 @@ for (let i = 0; i < invalidCallbacks.length; i++) {
   assert.throws(
    () => s.setTimeout(msec, invalidCallbacks[i]),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
    },
   ),
  );

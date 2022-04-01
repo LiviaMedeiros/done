@@ -3,23 +3,23 @@
  * https, or http2 modules are required.
  * @author Daniel Bevenius <daniel.bevenius@gmail.com>
  */
-'use strict';
+"use strict";
 
-const utils = require('./rules-utils.js');
+const utils = require("./rules-utils.js");
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-const msg = 'Please add a hasCrypto check to allow this test to be skipped ' +
+const msg = "Please add a hasCrypto check to allow this test to be skipped " +
             'when Node is built "--without-ssl".';
 
-const cryptoModules = ['crypto', 'http2'];
-const requireModules = cryptoModules.concat(['tls', 'https']);
-const bindingModules = cryptoModules.concat(['tls_wrap']);
+const cryptoModules = ["crypto", "http2"];
+const requireModules = cryptoModules.concat(["tls", "https"]);
+const bindingModules = cryptoModules.concat(["tls_wrap"]);
 
 module.exports = {
  meta: {
-  fixable: 'code',
+  fixable: "code",
  },
  create(context) {
   const missingCheckNodes = [];
@@ -48,7 +48,7 @@ module.exports = {
   }
 
   function isCryptoCheck(node) {
-   return utils.usesCommonProperty(node, ['hasCrypto', 'hasFipsCrypto']);
+   return utils.usesCommonProperty(node, ["hasCrypto", "hasFipsCrypto"]);
   }
 
   function checkCryptoCall(node) {
@@ -104,9 +104,9 @@ module.exports = {
       if (commonModuleNode) {
        return fixer.insertTextAfter(
         commonModuleNode,
-        '\nif (!common.hasCrypto) {' +
+        "\nif (!common.hasCrypto) {" +
                 ' common.skip("missing crypto");' +
-                '}',
+                "}",
        );
       }
      },
@@ -115,10 +115,10 @@ module.exports = {
   }
 
   return {
-   'CallExpression': (node) => testCryptoUsage(node),
-   'IfStatement:exit': (node) => testIfStatement(node),
-   'MemberExpression:exit': (node) => testMemberExpression(node),
-   'Program:exit': () => reportIfMissingCheck(),
+   "CallExpression": (node) => testCryptoUsage(node),
+   "IfStatement:exit": (node) => testIfStatement(node),
+   "MemberExpression:exit": (node) => testMemberExpression(node),
+   "Program:exit": () => reportIfMissingCheck(),
   };
  },
 };

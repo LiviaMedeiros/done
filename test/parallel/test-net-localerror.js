@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 const connect = (opts, code, type) => {
  assert.throws(
@@ -32,13 +32,13 @@ const connect = (opts, code, type) => {
 };
 
 connect({
- host: 'localhost',
+ host: "localhost",
  port: 0,
- localAddress: 'foobar',
-}, 'ERR_INVALID_IP_ADDRESS', TypeError);
+ localAddress: "foobar",
+}, "ERR_INVALID_IP_ADDRESS", TypeError);
 
 connect({
- host: 'localhost',
+ host: "localhost",
  port: 0,
- localPort: 'foobar',
-}, 'ERR_INVALID_ARG_TYPE', TypeError);
+ localPort: "foobar",
+}, "ERR_INVALID_ARG_TYPE", TypeError);

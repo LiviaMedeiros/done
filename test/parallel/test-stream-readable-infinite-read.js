@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { Readable } = require('stream');
+const common = require("../common");
+const assert = require("assert");
+const { Readable } = require("stream");
 
 const buf = Buffer.alloc(8192);
 
@@ -14,10 +14,10 @@ const readable = new Readable({
 
 let i = 0;
 
-readable.on('readable', common.mustCall(function() {
+readable.on("readable", common.mustCall(function() {
  if (i++ === 10) {
   // We will just terminate now.
-  process.removeAllListeners('readable');
+  process.removeAllListeners("readable");
   return;
  }
 

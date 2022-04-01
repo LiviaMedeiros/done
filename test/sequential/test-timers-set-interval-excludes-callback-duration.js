@@ -1,8 +1,8 @@
 // Flags: --expose-internals
-'use strict';
-require('../common');
-const assert = require('assert');
-const { sleep } = require('internal/util');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { sleep } = require("internal/util");
 
 let cntr = 0;
 let first;

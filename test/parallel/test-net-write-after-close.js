@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const net = require('net');
+const net = require("net");
 
 let serverSocket;
 
@@ -32,7 +32,7 @@ const server = net.createServer(common.mustCall(function(socket) {
 
  socket.resume();
 
- socket.on('error', common.mustNotCall());
+ socket.on("error", common.mustNotCall());
 }));
 
 server.listen(0, function() {
@@ -41,8 +41,8 @@ server.listen(0, function() {
   // of the duplex because allowHalfOpen defaults to false.
   // Then 'end' will be emitted when it receives a FIN packet from
   // the other side.
-  client.on('end', common.mustCall(() => {
-   serverSocket.write('test', common.mustCall((err) => {
+  client.on("end", common.mustCall(() => {
+   serverSocket.write("test", common.mustCall((err) => {
     assert(err);
     server.close();
    }));

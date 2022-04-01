@@ -1,13 +1,13 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 const {
  JSTransferable,
-} = require('internal/worker/js_transferable');
-const { E, F } = require('internal/test/transfer');
+} = require("internal/worker/js_transferable");
+const { E, F } = require("internal/test/transfer");
 
 // Tests that F is transferable even tho it does not directly,
 // observably extend the JSTransferable class.

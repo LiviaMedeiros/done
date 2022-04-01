@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
 // Confirm functionality of `util.isDeepStrictEqual()`.
 
-require('../common');
+require("../common");
 
-const assert = require('assert');
-const util = require('util');
+const assert = require("assert");
+const util = require("util");
 
 class MyDate extends Date {
  constructor(...args) {
   super(...args);
-  this[0] = '1';
+  this[0] = "1";
  }
 }
 
 class MyRegExp extends RegExp {
  constructor(...args) {
   super(...args);
-  this[0] = '1';
+  this[0] = "1";
  }
 }
 
@@ -38,9 +38,9 @@ class MyRegExp extends RegExp {
 }
 
 {
- const date = new Date('2016');
+ const date = new Date("2016");
 
- const date2 = new MyDate('2016');
+ const date2 = new MyDate("2016");
 
  // deepStrictEqual checks own properties
  assert.strictEqual(util.isDeepStrictEqual(date, date2), false);
@@ -48,8 +48,8 @@ class MyRegExp extends RegExp {
 }
 
 {
- const re1 = new RegExp('test');
- const re2 = new MyRegExp('test');
+ const re1 = new RegExp("test");
+ const re2 = new MyRegExp("test");
 
  // deepStrictEqual checks all properties
  assert.strictEqual(util.isDeepStrictEqual(re1, re2), false);
@@ -58,13 +58,13 @@ class MyRegExp extends RegExp {
 {
  // For these cases, deepStrictEqual should throw.
  const similar = new Set([
-  { 0: '1' },  // Object
+  { 0: "1" },  // Object
   { 0: 1 },  // Object
-  new String('1'),  // Object
-  ['1'],  // Array
+  new String("1"),  // Object
+  ["1"],  // Array
   [1],  // Array
-  new MyDate('2016'), // Date with this[0] = '1'
-  new MyRegExp('test'),  // RegExp with this[0] = '1'
+  new MyDate("2016"), // Date with this[0] = '1'
+  new MyRegExp("test"),  // RegExp with this[0] = '1'
   new Int8Array([1]), // Int8Array
   new Uint8Array([1]), // Uint8Array
   new Int16Array([1]), // Int16Array
@@ -100,7 +100,7 @@ utilIsDeepStrict(new Map(), new Map());
 utilIsDeepStrict(new Set([1, 2, 3]), new Set([1, 2, 3]));
 notUtilIsDeepStrict(new Set([1, 2, 3]), new Set([1, 2, 3, 4]));
 notUtilIsDeepStrict(new Set([1, 2, 3, 4]), new Set([1, 2, 3]));
-utilIsDeepStrict(new Set(['1', '2', '3']), new Set(['1', '2', '3']));
+utilIsDeepStrict(new Set(["1", "2", "3"]), new Set(["1", "2", "3"]));
 utilIsDeepStrict(new Set([[1, 2], [3, 4]]), new Set([[3, 4], [1, 2]]));
 
 {
@@ -127,15 +127,15 @@ notUtilIsDeepStrict(new Set([1]), [1]);
 notUtilIsDeepStrict(new Set(), []);
 notUtilIsDeepStrict(new Set(), {});
 
-notUtilIsDeepStrict(new Map([['a', 1]]), { a: 1 });
+notUtilIsDeepStrict(new Map([["a", 1]]), { a: 1 });
 notUtilIsDeepStrict(new Map(), []);
 notUtilIsDeepStrict(new Map(), {});
 
-notUtilIsDeepStrict(new Set(['1']), new Set([1]));
+notUtilIsDeepStrict(new Set(["1"]), new Set([1]));
 
-notUtilIsDeepStrict(new Map([['1', 'a']]), new Map([[1, 'a']]));
-notUtilIsDeepStrict(new Map([['a', '1']]), new Map([['a', 1]]));
-notUtilIsDeepStrict(new Map([['a', '1']]), new Map([['a', 2]]));
+notUtilIsDeepStrict(new Map([["1", "a"]]), new Map([[1, "a"]]));
+notUtilIsDeepStrict(new Map([["a", "1"]]), new Map([["a", 1]]));
+notUtilIsDeepStrict(new Map([["a", "1"]]), new Map([["a", 2]]));
 
 utilIsDeepStrict(new Set([{}]), new Set([{}]));
 
@@ -153,8 +153,8 @@ notUtilIsDeepStrict(
  new Map([[{ x: 1 }, 5], [{ x: 2 }, 5]]),
 );
 
-notUtilIsDeepStrict(new Set([3, '3']), new Set([3, 4]));
-notUtilIsDeepStrict(new Map([[3, 0], ['3', 0]]), new Map([[3, 0], [4, 0]]));
+notUtilIsDeepStrict(new Set([3, "3"]), new Set([3, 4]));
+notUtilIsDeepStrict(new Map([[3, 0], ["3", 0]]), new Map([[3, 0], [4, 0]]));
 
 notUtilIsDeepStrict(
  new Set([{ a: 1 }, { a: 1 }, { a: 2 }]),
@@ -163,34 +163,34 @@ notUtilIsDeepStrict(
 
 // Mixed primitive and object keys
 utilIsDeepStrict(
- new Map([[1, 'a'], [{}, 'a']]),
- new Map([[1, 'a'], [{}, 'a']]),
+ new Map([[1, "a"], [{}, "a"]]),
+ new Map([[1, "a"], [{}, "a"]]),
 );
 utilIsDeepStrict(
- new Set([1, 'a', [{}, 'a']]),
- new Set([1, 'a', [{}, 'a']]),
+ new Set([1, "a", [{}, "a"]]),
+ new Set([1, "a", [{}, "a"]]),
 );
 
 // This is an awful case, where a map contains multiple equivalent keys:
 notUtilIsDeepStrict(
- new Map([[1, 'a'], ['1', 'b']]),
- new Map([['1', 'a'], [true, 'b']]),
+ new Map([[1, "a"], ["1", "b"]]),
+ new Map([["1", "a"], [true, "b"]]),
 );
 notUtilIsDeepStrict(
- new Set(['a']),
- new Set(['b']),
+ new Set(["a"]),
+ new Set(["b"]),
 );
 utilIsDeepStrict(
- new Map([[{}, 'a'], [{}, 'b']]),
- new Map([[{}, 'b'], [{}, 'a']]),
+ new Map([[{}, "a"], [{}, "b"]]),
+ new Map([[{}, "b"], [{}, "a"]]),
 );
 notUtilIsDeepStrict(
- new Map([[true, 'a'], ['1', 'b'], [1, 'a']]),
- new Map([['1', 'a'], [1, 'b'], [true, 'a']]),
+ new Map([[true, "a"], ["1", "b"], [1, "a"]]),
+ new Map([["1", "a"], [1, "b"], [true, "a"]]),
 );
 notUtilIsDeepStrict(
- new Map([[true, 'a'], ['1', 'b'], [1, 'c']]),
- new Map([['1', 'a'], [1, 'b'], [true, 'a']]),
+ new Map([[true, "a"], ["1", "b"], [1, "c"]]),
+ new Map([["1", "a"], [1, "b"], [true, "a"]]),
 );
 
 // Similar object keys
@@ -214,11 +214,11 @@ notUtilIsDeepStrict(
 // Similar primitive key / values
 notUtilIsDeepStrict(
  new Set([1, true, false]),
- new Set(['1', 0, '0']),
+ new Set(["1", 0, "0"]),
 );
 notUtilIsDeepStrict(
  new Map([[1, 5], [true, 5], [false, 5]]),
- new Map([['1', 5], [0, 5], ['0', 5]]),
+ new Map([["1", 5], [0, 5], ["0", 5]]),
 );
 
 // Undefined value in Map
@@ -228,7 +228,7 @@ utilIsDeepStrict(
 );
 notUtilIsDeepStrict(
  new Map([[1, null]]),
- new Map([['1', undefined]]),
+ new Map([["1", undefined]]),
 );
 notUtilIsDeepStrict(
  new Map([[1, undefined]]),
@@ -299,12 +299,12 @@ notUtilIsDeepStrict(
  // eslint-disable-next-line func-style
  const returnArguments = function() { return arguments; };
 
- const someArgs = returnArguments('a');
- const sameArgs = returnArguments('a');
- const diffArgs = returnArguments('b');
+ const someArgs = returnArguments("a");
+ const sameArgs = returnArguments("a");
+ const diffArgs = returnArguments("b");
 
- notUtilIsDeepStrict(someArgs, ['a']);
- notUtilIsDeepStrict(someArgs, { '0': 'a' });
+ notUtilIsDeepStrict(someArgs, ["a"]);
+ notUtilIsDeepStrict(someArgs, { "0": "a" });
  notUtilIsDeepStrict(someArgs, diffArgs);
  utilIsDeepStrict(someArgs, sameArgs);
 }
@@ -345,10 +345,10 @@ notUtilIsDeepStrict(
  const m2 = new Map();
  const obj = { a: 5, b: 6 };
  m1.set(1, obj);
- m1.set(2, 'hi');
+ m1.set(2, "hi");
  m1.set(3, [1, 2, 3]);
 
- m2.set(2, 'hi'); // different order
+ m2.set(2, "hi"); // different order
  m2.set(1, obj);
  m2.set(3, [1, 2, 3]); // Deep equal, but not reference equal.
 
@@ -368,7 +368,7 @@ notUtilIsDeepStrict(
 
 {
  const map1 = new Map([[1, 1]]);
- const map2 = new Map([[1, '1']]);
+ const map2 = new Map([[1, "1"]]);
  assert.strictEqual(util.isDeepStrictEqual(map1, map2), false);
 }
 
@@ -416,9 +416,9 @@ notUtilIsDeepStrict([1, , , 3], [1, , , 3, , , ]);
 
 // Handle different error messages
 {
- const err1 = new Error('foo1');
- const err2 = new Error('foo2');
- const err3 = new TypeError('foo1');
+ const err1 = new Error("foo1");
+ const err2 = new Error("foo2");
+ const err3 = new TypeError("foo1");
  notUtilIsDeepStrict(err1, err2, assert.AssertionError);
  notUtilIsDeepStrict(err1, err3, assert.AssertionError);
  notUtilIsDeepStrict(err1, {}, assert.AssertionError);
@@ -434,7 +434,7 @@ assert.strictEqual(
 
 // Handle boxed primitives
 {
- const boxedString = new String('test');
+ const boxedString = new String("test");
  const boxedSymbol = Object(Symbol());
  notUtilIsDeepStrict(new Boolean(true), Object(false));
  notUtilIsDeepStrict(Object(true), new Number(1));
@@ -444,38 +444,38 @@ assert.strictEqual(
  utilIsDeepStrict(boxedSymbol, boxedSymbol);
  utilIsDeepStrict(Object(true), Object(true));
  utilIsDeepStrict(Object(2), Object(2));
- utilIsDeepStrict(boxedString, Object('test'));
+ utilIsDeepStrict(boxedString, Object("test"));
  boxedString.slow = true;
- notUtilIsDeepStrict(boxedString, Object('test'));
+ notUtilIsDeepStrict(boxedString, Object("test"));
  boxedSymbol.slow = true;
  notUtilIsDeepStrict(boxedSymbol, {});
  utilIsDeepStrict(Object(BigInt(1)), Object(BigInt(1)));
  notUtilIsDeepStrict(Object(BigInt(1)), Object(BigInt(2)));
 
  const booleanish = new Boolean(true);
- Object.defineProperty(booleanish, Symbol.toStringTag, { value: 'String' });
+ Object.defineProperty(booleanish, Symbol.toStringTag, { value: "String" });
  Object.setPrototypeOf(booleanish, String.prototype);
- notUtilIsDeepStrict(booleanish, new String('true'));
+ notUtilIsDeepStrict(booleanish, new String("true"));
 
  const numberish = new Number(42);
- Object.defineProperty(numberish, Symbol.toStringTag, { value: 'String' });
+ Object.defineProperty(numberish, Symbol.toStringTag, { value: "String" });
  Object.setPrototypeOf(numberish, String.prototype);
- notUtilIsDeepStrict(numberish, new String('42'));
+ notUtilIsDeepStrict(numberish, new String("42"));
 
- const stringish = new String('0');
- Object.defineProperty(stringish, Symbol.toStringTag, { value: 'Number' });
+ const stringish = new String("0");
+ Object.defineProperty(stringish, Symbol.toStringTag, { value: "Number" });
  Object.setPrototypeOf(stringish, Number.prototype);
  notUtilIsDeepStrict(stringish, new Number(0));
 
  const bigintish = new Object(BigInt(42));
- Object.defineProperty(bigintish, Symbol.toStringTag, { value: 'String' });
+ Object.defineProperty(bigintish, Symbol.toStringTag, { value: "String" });
  Object.setPrototypeOf(bigintish, String.prototype);
- notUtilIsDeepStrict(bigintish, new String('42'));
+ notUtilIsDeepStrict(bigintish, new String("42"));
 
- const symbolish = new Object(Symbol('fhqwhgads'));
- Object.defineProperty(symbolish, Symbol.toStringTag, { value: 'String' });
+ const symbolish = new Object(Symbol("fhqwhgads"));
+ Object.defineProperty(symbolish, Symbol.toStringTag, { value: "String" });
  Object.setPrototypeOf(symbolish, String.prototype);
- notUtilIsDeepStrict(symbolish, new String('fhqwhgads'));
+ notUtilIsDeepStrict(symbolish, new String("fhqwhgads"));
 }
 
 // Minus zero
@@ -504,8 +504,8 @@ utilIsDeepStrict(-0, -0);
  b[symbol1] = true;
  utilIsDeepStrict(a, b);
  // The same as TypedArrays is valid for boxed primitives
- const boxedStringA = new String('test');
- const boxedStringB = new String('test');
+ const boxedStringA = new String("test");
+ const boxedStringB = new String("test");
  boxedStringA[symbol1] = true;
  notUtilIsDeepStrict(boxedStringA, boxedStringB);
  boxedStringA[symbol1] = true;

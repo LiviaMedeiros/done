@@ -19,13 +19,13 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 
 let watchSeenOne = 0;
 let watchSeenTwo = 0;
@@ -34,18 +34,18 @@ let watchSeenFour = 0;
 
 const testDir = tmpdir.path;
 
-const filenameOne = 'watch.txt';
+const filenameOne = "watch.txt";
 const filepathOne = path.join(testDir, filenameOne);
 
-const filenameTwo = 'hasOwnProperty';
+const filenameTwo = "hasOwnProperty";
 const filepathTwo = filenameTwo;
 const filepathTwoAbs = path.join(testDir, filenameTwo);
 
-const filenameThree = 'charm'; // Because the third time is
+const filenameThree = "charm"; // Because the third time is
 
-const filenameFour = 'get';
+const filenameFour = "get";
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(watchSeenOne, 1);
  assert.strictEqual(watchSeenTwo, 2);
  assert.strictEqual(watchSeenThree, 1);
@@ -54,11 +54,11 @@ process.on('exit', function() {
 
 
 tmpdir.refresh();
-fs.writeFileSync(filepathOne, 'hello');
+fs.writeFileSync(filepathOne, "hello");
 
 assert.throws(
  () => { fs.watchFile(filepathOne); },
- { code: 'ERR_INVALID_ARG_TYPE' },
+ { code: "ERR_INVALID_ARG_TYPE" },
 );
 
 // Does not throw.
@@ -68,17 +68,17 @@ fs.watchFile(filepathOne, function() {
 });
 
 setTimeout(function() {
- fs.writeFileSync(filepathOne, 'world');
+ fs.writeFileSync(filepathOne, "world");
 }, 1000);
 
 
 process.chdir(testDir);
 
-fs.writeFileSync(filepathTwoAbs, 'howdy');
+fs.writeFileSync(filepathTwoAbs, "howdy");
 
 assert.throws(
  () => { fs.watchFile(filepathTwo); },
- { code: 'ERR_INVALID_ARG_TYPE' },
+ { code: "ERR_INVALID_ARG_TYPE" },
 );
 
 { // Does not throw.
@@ -96,7 +96,7 @@ assert.throws(
 }
 
 setTimeout(function() {
- fs.writeFileSync(filepathTwoAbs, 'pardner');
+ fs.writeFileSync(filepathTwoAbs, "pardner");
 }, 1000);
 
 { // Does not throw.
@@ -111,15 +111,15 @@ setTimeout(function() {
 }
 
 setTimeout(function() {
- fs.writeFileSync(filenameThree, 'pardner');
+ fs.writeFileSync(filenameThree, "pardner");
 }, 1000);
 
 setTimeout(function() {
- fs.writeFileSync(filenameFour, 'hey');
+ fs.writeFileSync(filenameFour, "hey");
 }, 200);
 
 setTimeout(function() {
- fs.writeFileSync(filenameFour, 'hey');
+ fs.writeFileSync(filenameFour, "hey");
 }, 500);
 
 { // Does not throw.

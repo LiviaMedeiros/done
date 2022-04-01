@@ -1,5 +1,5 @@
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
 // This test ensures Math functions don't fail with an "illegal instruction"
 // error on ARM devices (primarily on the Raspberry Pi 1)

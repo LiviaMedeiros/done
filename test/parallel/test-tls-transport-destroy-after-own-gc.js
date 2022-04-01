@@ -1,16 +1,16 @@
 // Flags: --expose-gc
-'use strict';
+"use strict";
 
 // Regression test for https://github.com/nodejs/node/issues/17475
 // Unfortunately, this tests only "works" reliably when checked with valgrind or
 // a similar tool.
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const { TLSSocket } = require('tls');
-const makeDuplexPair = require('../common/duplexpair');
+const { TLSSocket } = require("tls");
+const makeDuplexPair = require("../common/duplexpair");
 
 let { clientSide } = makeDuplexPair();
 

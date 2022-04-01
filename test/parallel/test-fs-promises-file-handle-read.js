@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 // The following tests validate base functionality for the fs.promises
 // FileHandle.read method.
 
-const fs = require('fs');
+const fs = require("fs");
 const { open } = fs.promises;
-const path = require('path');
-const fixtures = require('../common/fixtures');
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
+const path = require("path");
+const fixtures = require("../common/fixtures");
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
 const tmpDir = tmpdir.path;
 
 async function read(fileHandle, buffer, offset, length, position, options) {
@@ -21,16 +21,16 @@ async function read(fileHandle, buffer, offset, length, position, options) {
 
 async function validateRead(data, file, options) {
  const filePath = path.resolve(tmpDir, file);
- const buffer = Buffer.from(data, 'utf8');
+ const buffer = Buffer.from(data, "utf8");
 
- const fd = fs.openSync(filePath, 'w+');
- const fileHandle = await open(filePath, 'w+');
- const streamFileHandle = await open(filePath, 'w+');
+ const fd = fs.openSync(filePath, "w+");
+ const fileHandle = await open(filePath, "w+");
+ const streamFileHandle = await open(filePath, "w+");
 
  fs.writeSync(fd, buffer, 0, buffer.length);
  fs.closeSync(fd);
 
- fileHandle.on('close', common.mustCall());
+ fileHandle.on("close", common.mustCall());
  const readAsyncHandle =
     await read(fileHandle, Buffer.alloc(11), 0, 11, 0, options);
  assert.deepStrictEqual(data.length, readAsyncHandle.bytesRead);
@@ -52,8 +52,8 @@ async function validateLargeRead(options) {
  // Reading beyond file length (3 in this case) should return no data.
  // This is a test for a bug where reads > uint32 would return data
  // from the current position in the file.
- const filePath = fixtures.path('x.txt');
- const fileHandle = await open(filePath, 'r');
+ const filePath = fixtures.path("x.txt");
+ const fileHandle = await open(filePath, "r");
  const pos = 0xffffffff + 1; // max-uint32 + 1
  const readHandle =
     await read(fileHandle, Buffer.alloc(1), 0, 1, pos, options);
@@ -62,8 +62,8 @@ async function validateLargeRead(options) {
 }
 
 async function validateReadNoParams() {
- const filePath = fixtures.path('x.txt');
- const fileHandle = await open(filePath, 'r');
+ const filePath = fixtures.path("x.txt");
+ const fileHandle = await open(filePath, "r");
  // Should not throw
  await fileHandle.read();
 }
@@ -73,9 +73,9 @@ async function validateReadNoParams() {
 // are read from the correct position.
 async function validateReadWithPositionZero() {
  const opts = { useConf: true };
- const filePath = fixtures.path('x.txt');
- const fileHandle = await open(filePath, 'r');
- const expectedSequence = ['x', 'y', 'z'];
+ const filePath = fixtures.path("x.txt");
+ const fileHandle = await open(filePath, "r");
+ const expectedSequence = ["x", "y", "z"];
 
  for (let i = 0; i < expectedSequence.length * 2; i++) {
   const len = 1;
@@ -90,8 +90,8 @@ async function validateReadWithPositionZero() {
 async function validateReadLength(len) {
  const buf = Buffer.alloc(4);
  const opts = { useConf: true };
- const filePath = fixtures.path('x.txt');
- const fileHandle = await open(filePath, 'r');
+ const filePath = fixtures.path("x.txt");
+ const fileHandle = await open(filePath, "r");
  const { bytesRead } = await read(fileHandle, buf, 0, len, 0, opts);
  assert.strictEqual(bytesRead, len);
 }
@@ -99,10 +99,10 @@ async function validateReadLength(len) {
 
 (async function() {
  tmpdir.refresh();
- await validateRead('Hello world', 'read-file', { useConf: false });
- await validateRead('', 'read-empty-file', { useConf: false });
- await validateRead('Hello world', 'read-file-conf', { useConf: true });
- await validateRead('', 'read-empty-file-conf', { useConf: true });
+ await validateRead("Hello world", "read-file", { useConf: false });
+ await validateRead("", "read-empty-file", { useConf: false });
+ await validateRead("Hello world", "read-file-conf", { useConf: true });
+ await validateRead("", "read-empty-file-conf", { useConf: true });
  await validateLargeRead({ useConf: false });
  await validateLargeRead({ useConf: true });
  await validateReadNoParams();

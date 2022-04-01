@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const { isDefiningDeprecation } = require('./rules-utils.js');
+const fs = require("fs");
+const path = require("path");
+const { isDefiningDeprecation } = require("./rules-utils.js");
 
 const patternToMatch = /^DEP\d+$/;
 
-const mdFile = 'doc/api/deprecations.md';
-const doc = fs.readFileSync(path.resolve(__dirname, '../..', mdFile), 'utf8');
+const mdFile = "doc/api/deprecations.md";
+const doc = fs.readFileSync(path.resolve(__dirname, "../..", mdFile), "utf8");
 
 function isInDoc(code) {
  return doc.includes(`### ${code}:`);

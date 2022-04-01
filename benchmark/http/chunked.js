@@ -6,9 +6,9 @@
 // always as hot as it could be.
 //
 // Verify that our assumptions are valid.
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  n: [1, 4, 8, 16],
@@ -18,8 +18,8 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ len, n, c, duration }) {
- const http = require('http');
- const chunk = Buffer.alloc(len, '8');
+ const http = require("http");
+ const chunk = Buffer.alloc(len, "8");
 
  const server = http.createServer((req, res) => {
   function send(left) {

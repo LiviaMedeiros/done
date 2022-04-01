@@ -19,17 +19,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 // Flags: --max_old_space_size=32 --expose_gc
 
-const common = require('../common');
+const common = require("../common");
 
 if (process.config.variables.asan) {
- common.skip('ASAN messes with memory measurements');
+ common.skip("ASAN messes with memory measurements");
 }
 
-const assert = require('assert');
-const vm = require('vm');
+const assert = require("assert");
+const vm = require("vm");
 
 const baselineRss = process.memoryUsage.rss();
 
@@ -37,7 +37,7 @@ const start = Date.now();
 
 const interval = setInterval(function() {
  try {
-  vm.runInNewContext('throw 1;');
+  vm.runInNewContext("throw 1;");
  } catch {
   // Continue regardless of error.
  }

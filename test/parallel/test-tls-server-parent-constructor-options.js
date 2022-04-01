@@ -1,19 +1,19 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 // Test that `tls.Server` constructor options are passed to the parent
 // constructor.
 
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const tls = require('tls');
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const tls = require("tls");
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
- cert: fixtures.readKey('agent1-cert.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
+ cert: fixtures.readKey("agent1-cert.pem"),
 };
 
 {
@@ -33,7 +33,7 @@ const options = {
    socket.end();
   }));
 
-  socket.on('close', () => {
+  socket.on("close", () => {
    server.close();
   });
  }));
@@ -47,7 +47,7 @@ const options = {
  }, common.mustCall((socket) => {
   assert.strictEqual(socket.allowHalfOpen, true);
   assert.strictEqual(socket.isPaused(), true);
-  socket.on('end', socket.end);
+  socket.on("end", socket.end);
  }));
 
  assert.strictEqual(server.allowHalfOpen, true);
@@ -61,7 +61,7 @@ const options = {
    socket.end();
   }));
 
-  socket.on('close', () => {
+  socket.on("close", () => {
    server.close();
   });
  }));

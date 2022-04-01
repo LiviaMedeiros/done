@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.canCreateSymLink())
- common.skip('insufficient privileges');
+ common.skip("insufficient privileges");
 
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 // Test creating and reading symbolic link
-const linkData = fixtures.path('/cycles/root.js');
-const linkPath = path.join(tmpdir.path, 'symlink1.js');
+const linkData = fixtures.path("/cycles/root.js");
+const linkPath = path.join(tmpdir.path, "symlink1.js");
 
 let linkTime;
 let fileTime;
@@ -55,6 +55,6 @@ fs.readlink(linkPath, common.mustSucceed((destination) => {
  assert.strictEqual(destination, linkData);
 }));
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.notStrictEqual(linkTime, fileTime);
 });

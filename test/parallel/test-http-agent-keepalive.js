@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const Agent = require('_http_agent').Agent;
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const Agent = require("_http_agent").Agent;
 
 let name;
 
@@ -35,28 +35,28 @@ const agent = new Agent({
 });
 
 const server = http.createServer(common.mustCall((req, res) => {
- if (req.url === '/error') {
+ if (req.url === "/error") {
   res.destroy();
   return;
- } else if (req.url === '/remote_close') {
+ } else if (req.url === "/remote_close") {
   // Cache the socket, close it after a short delay
   const socket = res.connection;
   setImmediate(common.mustCall(() => socket.end()));
  }
- res.end('hello world');
+ res.end("hello world");
 }, 4));
 
 function get(path, callback) {
  return http.get({
-  host: 'localhost',
+  host: "localhost",
   port: server.address().port,
   agent: agent,
   path: path,
- }, callback).on('socket', common.mustCall(checkListeners));
+ }, callback).on("socket", common.mustCall(checkListeners));
 }
 
 function checkDataAndSockets(body) {
- assert.strictEqual(body.toString(), 'hello world');
+ assert.strictEqual(body.toString(), "hello world");
  assert.strictEqual(agent.sockets[name].length, 1);
  assert.strictEqual(agent.freeSockets[name], undefined);
  assert.strictEqual(agent.totalSocketCount, 1);
@@ -64,11 +64,11 @@ function checkDataAndSockets(body) {
 
 function second() {
  // Request second, use the same socket
- const req = get('/second', common.mustCall((res) => {
+ const req = get("/second", common.mustCall((res) => {
   assert.strictEqual(req.reusedSocket, true);
   assert.strictEqual(res.statusCode, 200);
-  res.on('data', checkDataAndSockets);
-  res.on('end', common.mustCall(() => {
+  res.on("data", checkDataAndSockets);
+  res.on("end", common.mustCall(() => {
    assert.strictEqual(agent.sockets[name].length, 1);
    assert.strictEqual(agent.freeSockets[name], undefined);
    process.nextTick(common.mustCall(() => {
@@ -83,11 +83,11 @@ function second() {
 
 function remoteClose() {
  // Mock remote server close the socket
- const req = get('/remote_close', common.mustCall((res) => {
+ const req = get("/remote_close", common.mustCall((res) => {
   assert.strictEqual(req.reusedSocket, true);
   assert.strictEqual(res.statusCode, 200);
-  res.on('data', checkDataAndSockets);
-  res.on('end', common.mustCall(() => {
+  res.on("data", checkDataAndSockets);
+  res.on("end", common.mustCall(() => {
    assert.strictEqual(agent.sockets[name].length, 1);
    assert.strictEqual(agent.freeSockets[name], undefined);
    process.nextTick(common.mustCall(() => {
@@ -108,10 +108,10 @@ function remoteClose() {
 
 function remoteError() {
  // Remote server will destroy the socket
- const req = get('/error', common.mustNotCall());
- req.on('error', common.mustCall((err) => {
+ const req = get("/error", common.mustNotCall());
+ req.on("error", common.mustCall((err) => {
   assert(err);
-  assert.strictEqual(err.message, 'socket hang up');
+  assert.strictEqual(err.message, "socket hang up");
   assert.strictEqual(agent.sockets[name].length, 1);
   assert.strictEqual(agent.freeSockets[name], undefined);
   assert.strictEqual(agent.totalSocketCount, 1);
@@ -128,11 +128,11 @@ function remoteError() {
 server.listen(0, common.mustCall(() => {
  name = `localhost:${server.address().port}:`;
  // Request first, and keep alive
- const req = get('/first', common.mustCall((res) => {
+ const req = get("/first", common.mustCall((res) => {
   assert.strictEqual(req.reusedSocket, false);
   assert.strictEqual(res.statusCode, 200);
-  res.on('data', checkDataAndSockets);
-  res.on('end', common.mustCall(() => {
+  res.on("data", checkDataAndSockets);
+  res.on("end", common.mustCall(() => {
    assert.strictEqual(agent.sockets[name].length, 1);
    assert.strictEqual(agent.freeSockets[name], undefined);
    process.nextTick(common.mustCall(() => {
@@ -149,19 +149,19 @@ server.listen(0, common.mustCall(() => {
 function checkListeners(socket) {
  const callback = common.mustCall(() => {
   if (!socket.destroyed) {
-   assert.strictEqual(socket.listenerCount('data'), 0);
-   assert.strictEqual(socket.listenerCount('drain'), 0);
+   assert.strictEqual(socket.listenerCount("data"), 0);
+   assert.strictEqual(socket.listenerCount("drain"), 0);
    // Sockets have freeSocketErrorListener.
-   assert.strictEqual(socket.listenerCount('error'), 1);
+   assert.strictEqual(socket.listenerCount("error"), 1);
    // Sockets have onReadableStreamEnd.
-   assert.strictEqual(socket.listenerCount('end'), 1);
+   assert.strictEqual(socket.listenerCount("end"), 1);
   }
 
-  socket.off('free', callback);
-  socket.off('close', callback);
+  socket.off("free", callback);
+  socket.off("close", callback);
  });
- assert.strictEqual(socket.listenerCount('error'), 1);
- assert.strictEqual(socket.listenerCount('end'), 2);
- socket.once('free', callback);
- socket.once('close', callback);
+ assert.strictEqual(socket.listenerCount("error"), 1);
+ assert.strictEqual(socket.listenerCount("end"), 2);
+ socket.once("free", callback);
+ socket.once("close", callback);
 }

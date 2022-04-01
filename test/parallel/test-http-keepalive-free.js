@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
-for (const method of ['abort', 'destroy']) {
+for (const method of ["abort", "destroy"]) {
  const server = http.createServer(common.mustCall((req, res) => {
   res.end(req.url);
  }));
@@ -17,12 +17,12 @@ for (const method of ['abort', 'destroy']) {
       	port: server.address().port,
       	agent,
       })
-      .on('socket', common.mustCall((socket) => {
-      	socket.on('free', common.mustCall());
+      .on("socket", common.mustCall((socket) => {
+      	socket.on("free", common.mustCall());
       }))
-      .on('response', common.mustCall((res) => {
+      .on("response", common.mustCall((res) => {
       	assert.strictEqual(req.destroyed, false);
-      	res.on('end', () => {
+      	res.on("end", () => {
       		assert.strictEqual(req.destroyed, true);
       		req[method]();
       		assert.strictEqual(req.socket.destroyed, false);

@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
 
 // Test that using FileHandle.close to close an already-closed fd fails
 // with EBADF.
@@ -11,7 +11,7 @@ const fs = require('fs');
  fs.closeSync(fh.fd);
 
  assert.rejects(() => fh.close(), {
-  code: 'EBADF',
-  syscall: 'close',
+  code: "EBADF",
+  syscall: "close",
  });
 })().then(common.mustCall());

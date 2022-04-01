@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
+const http = require("http");
 
 // Regression test for https://github.com/nodejs/node/issues/19859.
 // Checks that matching destroys are emitted when creating new/reusing old http
@@ -18,10 +18,10 @@ const destroyedIdsClientRequest = [];
 
 async_hooks.createHook({
  init: (asyncId, type) => {
-  if (type === 'HTTPINCOMINGMESSAGE') {
+  if (type === "HTTPINCOMINGMESSAGE") {
    createdIdsIncomingMessage.push(asyncId);
   }
-  if (type === 'HTTPCLIENTREQUEST') {
+  if (type === "HTTPCLIENTREQUEST") {
    createdIdsClientRequest.push(asyncId);
   }
  },
@@ -45,10 +45,10 @@ async_hooks.createHook({
 }).enable();
 
 const server = http.createServer((req, res) => {
- req.on('close', common.mustCall(() => {
-  req.on('readable', common.mustNotCall());
+ req.on("close", common.mustCall(() => {
+  req.on("readable", common.mustNotCall());
  }));
- res.end('Hello');
+ res.end("Hello");
 });
 
 let keepAliveAgent = new http.Agent({
@@ -81,7 +81,7 @@ function checkOnExit() {
                         createdIdsClientRequest.sort());
 }
 
-process.on('SIGTERM', () => {
+process.on("SIGTERM", () => {
  // Catching SIGTERM and calling `process.exit(1)`  so that the `exit` event
  // is triggered and the assertions are checked. This can be useful for
  // troubleshooting this test if it times out.
@@ -89,4 +89,4 @@ process.on('SIGTERM', () => {
 });
 
 // Ordinary exit.
-process.on('exit', checkOnExit);
+process.on("exit", checkOnExit);

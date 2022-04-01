@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const fs = require('fs');
+const assert = require("assert");
+const fs = require("fs");
 
-fs.stat('.', common.mustSucceed(function(stats) {
+fs.stat(".", common.mustSucceed(function(stats) {
  assert.ok(stats.mtime instanceof Date);
- assert.ok(Object.hasOwn(stats, 'blksize'));
- assert.ok(Object.hasOwn(stats, 'blocks'));
+ assert.ok(Object.hasOwn(stats, "blksize"));
+ assert.ok(Object.hasOwn(stats, "blocks"));
  // Confirm that we are not running in the context of the internal binding
  // layer.
  // Ref: https://github.com/nodejs/node/commit/463d6bac8b349acc462d345a6e298a76f7d06fb1
  assert.strictEqual(this, undefined);
 }));
 
-fs.lstat('.', common.mustSucceed(function(stats) {
+fs.lstat(".", common.mustSucceed(function(stats) {
  assert.ok(stats.mtime instanceof Date);
  // Confirm that we are not running in the context of the internal binding
  // layer.
@@ -44,7 +44,7 @@ fs.lstat('.', common.mustSucceed(function(stats) {
 }));
 
 // fstat
-fs.open('.', 'r', undefined, common.mustSucceed(function(fd) {
+fs.open(".", "r", undefined, common.mustSucceed(function(fd) {
  assert.ok(fd);
 
  fs.fstat(-0, common.mustSucceed());
@@ -65,7 +65,7 @@ fs.open('.', 'r', undefined, common.mustSucceed(function(fd) {
 }));
 
 // fstatSync
-fs.open('.', 'r', undefined, common.mustCall(function(err, fd) {
+fs.open(".", "r", undefined, common.mustCall(function(err, fd) {
  const stats = fs.fstatSync(fd);
  assert.ok(stats.mtime instanceof Date);
  fs.close(fd, common.mustSucceed());
@@ -83,10 +83,10 @@ fs.stat(__filename, common.mustSucceed((s) => {
  const jsonString = JSON.stringify(s);
  const parsed = JSON.parse(jsonString);
  [
-  'dev', 'mode', 'nlink', 'uid',
-  'gid', 'rdev', 'blksize', 'ino', 'size', 'blocks',
-  'atime', 'mtime', 'ctime', 'birthtime',
-  'atimeMs', 'mtimeMs', 'ctimeMs', 'birthtimeMs',
+  "dev", "mode", "nlink", "uid",
+  "gid", "rdev", "blksize", "ino", "size", "blocks",
+  "atime", "mtime", "ctime", "birthtime",
+  "atimeMs", "mtimeMs", "ctimeMs", "birthtimeMs",
  ].forEach(function(k) {
   assert.ok(k in s, `${k} should be in Stats`);
   assert.notStrictEqual(s[k], undefined, `${k} should not be undefined`);
@@ -95,25 +95,25 @@ fs.stat(__filename, common.mustSucceed((s) => {
   assert.notStrictEqual(parsed[k], null, `${k} should not be null`);
  });
  [
-  'dev', 'mode', 'nlink', 'uid', 'gid', 'rdev', 'blksize', 'ino', 'size',
-  'blocks', 'atimeMs', 'mtimeMs', 'ctimeMs', 'birthtimeMs',
+  "dev", "mode", "nlink", "uid", "gid", "rdev", "blksize", "ino", "size",
+  "blocks", "atimeMs", "mtimeMs", "ctimeMs", "birthtimeMs",
  ].forEach((k) => {
-  assert.strictEqual(typeof s[k], 'number', `${k} should be a number`);
-  assert.strictEqual(typeof parsed[k], 'number', `${k} should be a number`);
+  assert.strictEqual(typeof s[k], "number", `${k} should be a number`);
+  assert.strictEqual(typeof parsed[k], "number", `${k} should be a number`);
  });
- ['atime', 'mtime', 'ctime', 'birthtime'].forEach((k) => {
+ ["atime", "mtime", "ctime", "birthtime"].forEach((k) => {
   assert.ok(s[k] instanceof Date, `${k} should be a Date`);
-  assert.strictEqual(typeof parsed[k], 'string', `${k} should be a string`);
+  assert.strictEqual(typeof parsed[k], "string", `${k} should be a string`);
  });
 }));
 
-['', false, null, undefined, {}, []].forEach((input) => {
- ['fstat', 'fstatSync'].forEach((fnName) => {
+["", false, null, undefined, {}, []].forEach((input) => {
+ ["fstat", "fstatSync"].forEach((fnName) => {
   assert.throws(
    () => fs[fnName](input),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
    },
   );
  });
@@ -123,29 +123,29 @@ fs.stat(__filename, common.mustSucceed((s) => {
  assert.throws(
   () => fs.lstat(input, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
  assert.throws(
   () => fs.lstatSync(input),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
  assert.throws(
   () => fs.stat(input, common.mustNotCall()),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
  assert.throws(
   () => fs.statSync(input),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   },
  );
 });
@@ -153,7 +153,7 @@ fs.stat(__filename, common.mustSucceed((s) => {
 // Should not throw an error
 fs.stat(__filename, undefined, common.mustCall(() => {}));
 
-fs.open(__filename, 'r', undefined, common.mustCall((err, fd) => {
+fs.open(__filename, "r", undefined, common.mustCall((err, fd) => {
  // Should not throw an error
  fs.fstat(fd, undefined, common.mustCall(() => {}));
 }));

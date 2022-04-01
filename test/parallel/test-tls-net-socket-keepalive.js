@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
-const tls = require('tls');
-const net = require('net');
+const fixtures = require("../common/fixtures");
+const tls = require("tls");
+const net = require("net");
 
 // This test ensures that when tls sockets are created with `allowHalfOpen`,
 // they won't hang.
-const key = fixtures.readKey('agent1-key.pem');
-const cert = fixtures.readKey('agent1-cert.pem');
-const ca = fixtures.readKey('ca1-cert.pem');
+const key = fixtures.readKey("agent1-key.pem");
+const cert = fixtures.readKey("agent1-cert.pem");
+const ca = fixtures.readKey("ca1-cert.pem");
 const options = {
  key,
  cert,
@@ -20,11 +20,11 @@ const options = {
 };
 
 const server = tls.createServer(options, common.mustCall((conn) => {
- conn.write('hello', common.mustCall());
- conn.on('data', common.mustCall());
- conn.on('end', common.mustCall());
- conn.on('data', common.mustCall());
- conn.on('close', common.mustCall());
+ conn.write("hello", common.mustCall());
+ conn.on("data", common.mustCall());
+ conn.on("end", common.mustCall());
+ conn.on("data", common.mustCall());
+ conn.on("close", common.mustCall());
  conn.end();
 })).listen(0, common.mustCall(() => {
  const netSocket = new net.Socket({
@@ -45,13 +45,13 @@ const server = tls.createServer(options, common.mustCall((conn) => {
   address,
  });
 
- socket.on('secureConnect', common.mustCall());
- socket.on('end', common.mustCall());
- socket.on('data', common.mustCall());
- socket.on('close', common.mustCall(() => {
+ socket.on("secureConnect", common.mustCall());
+ socket.on("end", common.mustCall());
+ socket.on("data", common.mustCall());
+ socket.on("close", common.mustCall(() => {
   server.close();
  }));
 
- socket.write('hello');
+ socket.write("hello");
  socket.end();
 }));

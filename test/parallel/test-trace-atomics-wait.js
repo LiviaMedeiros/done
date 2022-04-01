@@ -1,13 +1,13 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const child_process = require('child_process');
-const { Worker } = require('worker_threads');
+"use strict";
+require("../common");
+const assert = require("assert");
+const child_process = require("child_process");
+const { Worker } = require("worker_threads");
 
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  const i32arr = new Int32Array(new SharedArrayBuffer(8));
- assert.strictEqual(Atomics.wait(i32arr, 0, 1), 'not-equal');
- assert.strictEqual(Atomics.wait(i32arr, 0, 0, 10), 'timed-out');
+ assert.strictEqual(Atomics.wait(i32arr, 0, 1), "not-equal");
+ assert.strictEqual(Atomics.wait(i32arr, 0, 0, 10), "timed-out");
 
  new Worker(`
   const i32arr = require('worker_threads').workerData;
@@ -25,22 +25,22 @@ if (process.argv[2] === 'child') {
 
 const proc = child_process.spawnSync(
  process.execPath,
- [ '--trace-atomics-wait', __filename, 'child' ],
- { encoding: 'utf8', stdio: [ 'inherit', 'inherit', 'pipe' ] });
+ [ "--trace-atomics-wait", __filename, "child" ],
+ { encoding: "utf8", stdio: [ "inherit", "inherit", "pipe" ] });
 
 if (proc.status !== 0) console.log(proc);
 assert.strictEqual(proc.status, 0);
 
 const SABAddress = proc.stderr.match(/Atomics\.wait\((?<SAB>.+) \+/).groups.SAB;
 const actualTimeline = proc.stderr
-  .replace(new RegExp(SABAddress, 'g'), '<address>')
-  .replace(new RegExp(`\\(node:${proc.pid}\\) `, 'g'), '')
-  .replace(/\binf(inity)?\b/gi, 'inf')
-  .replace(/\r/g, '')
+  .replace(new RegExp(SABAddress, "g"), "<address>")
+  .replace(new RegExp(`\\(node:${proc.pid}\\) `, "g"), "")
+  .replace(/\binf(inity)?\b/gi, "inf")
+  .replace(/\r/g, "")
   .trim();
-console.log('+++ normalized stdout +++');
+console.log("+++ normalized stdout +++");
 console.log(actualTimeline);
-console.log('--- normalized stdout ---');
+console.log("--- normalized stdout ---");
 
 const begin =
 `[Thread 0] Atomics.wait(<address> + 0, 1, inf) started

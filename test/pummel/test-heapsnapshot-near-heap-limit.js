@@ -1,27 +1,27 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-if (process.config.variables.arm_version === '7') {
- common.skip('Too slow for armv7 bots');
+if (process.config.variables.arm_version === "7") {
+ common.skip("Too slow for armv7 bots");
 }
 
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
-const { spawnSync } = require('child_process');
-const fixtures = require('../common/fixtures');
-const fs = require('fs');
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
+const { spawnSync } = require("child_process");
+const fixtures = require("../common/fixtures");
+const fs = require("fs");
 const env = {
  ...process.env,
- NODE_DEBUG_NATIVE: 'diagnostics',
+ NODE_DEBUG_NATIVE: "diagnostics",
 };
 
 {
  tmpdir.refresh();
  const child = spawnSync(process.execPath, [
-  '--heapsnapshot-near-heap-limit=-15',
-  '--max-old-space-size=50',
-  fixtures.path('workload', 'grow.js'),
+  "--heapsnapshot-near-heap-limit=-15",
+  "--max-old-space-size=50",
+  fixtures.path("workload", "grow.js"),
  ], {
   cwd: tmpdir.path,
   env,
@@ -30,13 +30,13 @@ const env = {
 }
 
 {
- console.log('\nTesting limit = 0');
+ console.log("\nTesting limit = 0");
  tmpdir.refresh();
  const child = spawnSync(process.execPath, [
-  '--trace-gc',
-  '--heapsnapshot-near-heap-limit=0',
-  '--max-old-space-size=50',
-  fixtures.path('workload', 'grow.js'),
+  "--trace-gc",
+  "--heapsnapshot-near-heap-limit=0",
+  "--max-old-space-size=50",
+  fixtures.path("workload", "grow.js"),
  ], {
   cwd: tmpdir.path,
   env,
@@ -44,20 +44,20 @@ const env = {
  console.log(child.stdout.toString());
  console.log(child.stderr.toString());
  assert(common.nodeProcessAborted(child.status, child.signal),
-        'process should have aborted, but did not');
+        "process should have aborted, but did not");
  const list = fs.readdirSync(tmpdir.path)
-    .filter((file) => file.endsWith('.heapsnapshot'));
+    .filter((file) => file.endsWith(".heapsnapshot"));
  assert.strictEqual(list.length, 0);
 }
 
 {
- console.log('\nTesting limit = 1');
+ console.log("\nTesting limit = 1");
  tmpdir.refresh();
  const child = spawnSync(process.execPath, [
-  '--trace-gc',
-  '--heapsnapshot-near-heap-limit=1',
-  '--max-old-space-size=50',
-  fixtures.path('workload', 'grow.js'),
+  "--trace-gc",
+  "--heapsnapshot-near-heap-limit=1",
+  "--max-old-space-size=50",
+  fixtures.path("workload", "grow.js"),
  ], {
   cwd: tmpdir.path,
   env,
@@ -66,9 +66,9 @@ const env = {
  const stderr = child.stderr.toString();
  console.log(stderr);
  assert(common.nodeProcessAborted(child.status, child.signal),
-        'process should have aborted, but did not');
+        "process should have aborted, but did not");
  const list = fs.readdirSync(tmpdir.path)
-    .filter((file) => file.endsWith('.heapsnapshot'));
+    .filter((file) => file.endsWith(".heapsnapshot"));
  const risky = [...stderr.matchAll(
   /Not generating snapshots because it's too risky/g)].length;
  assert(list.length + risky > 0 && list.length <= 3,
@@ -77,13 +77,13 @@ const env = {
 }
 
 {
- console.log('\nTesting limit = 3');
+ console.log("\nTesting limit = 3");
  tmpdir.refresh();
  const child = spawnSync(process.execPath, [
-  '--trace-gc',
-  '--heapsnapshot-near-heap-limit=3',
-  '--max-old-space-size=50',
-  fixtures.path('workload', 'grow.js'),
+  "--trace-gc",
+  "--heapsnapshot-near-heap-limit=3",
+  "--max-old-space-size=50",
+  fixtures.path("workload", "grow.js"),
  ], {
   cwd: tmpdir.path,
   env,
@@ -92,9 +92,9 @@ const env = {
  const stderr = child.stderr.toString();
  console.log(stderr);
  assert(common.nodeProcessAborted(child.status, child.signal),
-        'process should have aborted, but did not');
+        "process should have aborted, but did not");
  const list = fs.readdirSync(tmpdir.path)
-    .filter((file) => file.endsWith('.heapsnapshot'));
+    .filter((file) => file.endsWith(".heapsnapshot"));
  const risky = [...stderr.matchAll(
   /Not generating snapshots because it's too risky/g)].length;
  assert(list.length + risky > 0 && list.length <= 3,

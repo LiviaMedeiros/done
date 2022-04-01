@@ -1,35 +1,35 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fs = require('fs');
+const common = require("../common");
+const fs = require("fs");
 const fsPromises = fs.promises;
-const path = require('path');
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
+const path = require("path");
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
 const tmpDir = tmpdir.path;
-const { Readable } = require('stream');
+const { Readable } = require("stream");
 
 tmpdir.refresh();
 
-const dest = path.resolve(tmpDir, 'tmp.txt');
-const otherDest = path.resolve(tmpDir, 'tmp-2.txt');
-const buffer = Buffer.from('abc'.repeat(1000));
-const buffer2 = Buffer.from('xyz'.repeat(1000));
-const stream = Readable.from(['a', 'b', 'c']);
-const stream2 = Readable.from(['ümlaut', ' ', 'sechzig']);
+const dest = path.resolve(tmpDir, "tmp.txt");
+const otherDest = path.resolve(tmpDir, "tmp-2.txt");
+const buffer = Buffer.from("abc".repeat(1000));
+const buffer2 = Buffer.from("xyz".repeat(1000));
+const stream = Readable.from(["a", "b", "c"]);
+const stream2 = Readable.from(["ümlaut", " ", "sechzig"]);
 const iterable = {
- expected: 'abc',
+ expected: "abc",
  *[Symbol.iterator]() {
-  yield 'a';
-  yield 'b';
-  yield 'c';
+  yield "a";
+  yield "b";
+  yield "c";
  },
 };
 
 const veryLargeBuffer = {
- expected: 'dogs running'.repeat(512 * 1024),
+ expected: "dogs running".repeat(512 * 1024),
  *[Symbol.iterator]() {
-  yield Buffer.from('dogs running'.repeat(512 * 1024), 'utf8');
+  yield Buffer.from("dogs running".repeat(512 * 1024), "utf8");
  },
 };
 
@@ -41,19 +41,19 @@ function iterableWith(value) {
  };
 }
 const bufferIterable = {
- expected: 'abc',
+ expected: "abc",
  *[Symbol.iterator]() {
-  yield Buffer.from('a');
-  yield Buffer.from('b');
-  yield Buffer.from('c');
+  yield Buffer.from("a");
+  yield Buffer.from("b");
+  yield Buffer.from("c");
  },
 };
 const asyncIterable = {
- expected: 'abc',
+ expected: "abc",
  async* [Symbol.asyncIterator]() {
-  yield 'a';
-  yield 'b';
-  yield 'c';
+  yield "a";
+  yield "b";
+  yield "c";
  },
 };
 
@@ -65,8 +65,8 @@ async function doWrite() {
 
 async function doWriteStream() {
  await fsPromises.writeFile(dest, stream);
- const expected = 'abc';
- const data = fs.readFileSync(dest, 'utf-8');
+ const expected = "abc";
+ const data = fs.readFileSync(dest, "utf-8");
  assert.deepStrictEqual(data, expected);
 }
 
@@ -76,56 +76,56 @@ async function doWriteStreamWithCancel() {
  process.nextTick(() => controller.abort());
  await assert.rejects(
   fsPromises.writeFile(otherDest, stream, { signal }),
-  { name: 'AbortError' },
+  { name: "AbortError" },
  );
 }
 
 async function doWriteIterable() {
  await fsPromises.writeFile(dest, iterable);
- const data = fs.readFileSync(dest, 'utf-8');
+ const data = fs.readFileSync(dest, "utf-8");
  assert.deepStrictEqual(data, iterable.expected);
 }
 
 async function doWriteInvalidIterable() {
  await Promise.all(
-  [42, 42n, {}, Symbol('42'), true, undefined, null, NaN].map((value) =>
+  [42, 42n, {}, Symbol("42"), true, undefined, null, NaN].map((value) =>
    assert.rejects(fsPromises.writeFile(dest, iterableWith(value)), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    }),
   ),
  );
 }
 
 async function doWriteIterableWithEncoding() {
- await fsPromises.writeFile(dest, stream2, 'latin1');
- const expected = 'ümlaut sechzig';
- const data = fs.readFileSync(dest, 'latin1');
+ await fsPromises.writeFile(dest, stream2, "latin1");
+ const expected = "ümlaut sechzig";
+ const data = fs.readFileSync(dest, "latin1");
  assert.deepStrictEqual(data, expected);
 }
 
 async function doWriteBufferIterable() {
  await fsPromises.writeFile(dest, bufferIterable);
- const data = fs.readFileSync(dest, 'utf-8');
+ const data = fs.readFileSync(dest, "utf-8");
  assert.deepStrictEqual(data, bufferIterable.expected);
 }
 
 async function doWriteAsyncIterable() {
  await fsPromises.writeFile(dest, asyncIterable);
- const data = fs.readFileSync(dest, 'utf-8');
+ const data = fs.readFileSync(dest, "utf-8");
  assert.deepStrictEqual(data, asyncIterable.expected);
 }
 
 async function doWriteAsyncLargeIterable() {
  await fsPromises.writeFile(dest, veryLargeBuffer);
- const data = fs.readFileSync(dest, 'utf-8');
+ const data = fs.readFileSync(dest, "utf-8");
  assert.deepStrictEqual(data, veryLargeBuffer.expected);
 }
 
 async function doWriteInvalidValues() {
  await Promise.all(
-  [42, 42n, {}, Symbol('42'), true, undefined, null, NaN].map((value) =>
+  [42, 42n, {}, Symbol("42"), true, undefined, null, NaN].map((value) =>
    assert.rejects(fsPromises.writeFile(dest, value), {
-    code: 'ERR_INVALID_ARG_TYPE',
+    code: "ERR_INVALID_ARG_TYPE",
    }),
   ),
  );
@@ -137,7 +137,7 @@ async function doWriteWithCancel() {
  process.nextTick(() => controller.abort());
  await assert.rejects(
   fsPromises.writeFile(otherDest, buffer, { signal }),
-  { name: 'AbortError' },
+  { name: "AbortError" },
  );
 }
 
@@ -155,9 +155,9 @@ async function doRead() {
 }
 
 async function doReadWithEncoding() {
- const data = await fsPromises.readFile(dest, 'utf-8');
- const syncData = fs.readFileSync(dest, 'utf-8');
- assert.strictEqual(typeof data, 'string');
+ const data = await fsPromises.readFile(dest, "utf-8");
+ const syncData = fs.readFileSync(dest, "utf-8");
+ assert.strictEqual(typeof data, "string");
  assert.deepStrictEqual(data, syncData);
 }
 

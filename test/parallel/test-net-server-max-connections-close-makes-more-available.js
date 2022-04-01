@@ -1,8 +1,8 @@
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const net = require('net');
+const net = require("net");
 
 // Sets the server's maxConnections property to 1.
 // Open 2 connections (connection 0 and connection 1).
@@ -28,17 +28,17 @@ function createConnection(index) {
    sent.push(msg);
   });
 
-  connection.on('error', function(err) {
-   assert.strictEqual(err.code, 'ECONNRESET');
+  connection.on("error", function(err) {
+   assert.strictEqual(err.code, "ECONNRESET");
    resolve();
   });
 
-  connection.on('data', function(e) {
+  connection.on("data", function(e) {
    console.error(`connection ${index} received response`);
    resolve();
   });
 
-  connection.on('end', function() {
+  connection.on("end", function() {
    console.error(`ending ${index}`);
    resolve();
   });
@@ -50,7 +50,7 @@ function createConnection(index) {
 function closeConnection(index) {
  console.error(`closing connection ${index}`);
  return new Promise(function(resolve, reject) {
-  connections[index].on('end', function() {
+  connections[index].on("end", function() {
    resolve();
   });
   connections[index].end();
@@ -58,10 +58,10 @@ function closeConnection(index) {
 }
 
 const server = net.createServer(function(socket) {
- socket.on('data', function(data) {
+ socket.on("data", function(data) {
   console.error(`received message: ${data}`);
   received.push(String(data));
-  socket.write('acknowledged');
+  socket.write("acknowledged");
  });
 });
 
@@ -77,9 +77,9 @@ server.listen(0, function() {
     .then(closeConnection.bind(null, 2));
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  // Confirm that all connections tried to send data...
- assert.deepStrictEqual(sent, ['0', '1', '2', '3']);
+ assert.deepStrictEqual(sent, ["0", "1", "2", "3"]);
  // ...but that only connections 0 and 2 were successful.
- assert.deepStrictEqual(received, ['0', '2']);
+ assert.deepStrictEqual(received, ["0", "2"]);
 });

@@ -1,7 +1,7 @@
 // Flags: --expose-internals
-import { mustCall } from '../common/index.mjs';
-import esmLoaderModule from 'internal/modules/esm/loader';
-import assert from 'assert';
+import { mustCall } from "../common/index.mjs";
+import esmLoaderModule from "internal/modules/esm/loader";
+import assert from "assert";
 
 const { ESMLoader } = esmLoaderModule;
 
@@ -11,27 +11,27 @@ const { ESMLoader } = esmLoaderModule;
 {
  const esmLoader = new ESMLoader();
 
- const originalSpecifier = 'foo/bar';
+ const originalSpecifier = "foo/bar";
  const importAssertions = Object.assign(
   Object.create(null),
-  { type: 'json' },
+  { type: "json" },
  );
- const parentURL = 'file:///entrypoint.js';
- const resolvedURL = 'file:///foo/bar.js';
- const suggestedFormat = 'test';
+ const parentURL = "file:///entrypoint.js";
+ const resolvedURL = "file:///foo/bar.js";
+ const suggestedFormat = "test";
 
  function resolve(specifier, context, defaultResolve) {
   assert.strictEqual(specifier, originalSpecifier);
   // Ensure `context` has all and only the properties it's supposed to
   assert.deepStrictEqual(Object.keys(context), [
-   'conditions',
-   'importAssertions',
-   'parentURL',
+   "conditions",
+   "importAssertions",
+   "parentURL",
   ]);
   assert.ok(Array.isArray(context.conditions));
   assert.deepStrictEqual(context.importAssertions, importAssertions);
   assert.strictEqual(context.parentURL, parentURL);
-  assert.strictEqual(typeof defaultResolve, 'function');
+  assert.strictEqual(typeof defaultResolve, "function");
 
   return {
    format: suggestedFormat,
@@ -44,17 +44,17 @@ const { ESMLoader } = esmLoaderModule;
   assert.ok(new URL(resolvedURL));
   // Ensure `context` has all and only the properties it's supposed to
   assert.deepStrictEqual(Object.keys(context), [
-   'format',
-   'importAssertions',
+   "format",
+   "importAssertions",
   ]);
   assert.strictEqual(context.format, suggestedFormat);
   assert.deepStrictEqual(context.importAssertions, importAssertions);
-  assert.strictEqual(typeof defaultLoad, 'function');
+  assert.strictEqual(typeof defaultLoad, "function");
 
   // This doesn't matter (just to avoid errors)
   return {
-   format: 'module',
-   source: '',
+   format: "module",
+   source: "",
   };
  }
 

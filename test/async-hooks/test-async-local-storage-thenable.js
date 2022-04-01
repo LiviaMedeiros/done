@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
-const { AsyncLocalStorage } = require('async_hooks');
+const assert = require("assert");
+const { AsyncLocalStorage } = require("async_hooks");
 
 // This test verifies that async local storage works with thenables
 
 const store = new AsyncLocalStorage();
-const data = Symbol('verifier');
+const data = Symbol("verifier");
 
 const then = common.mustCall((cb) => {
  assert.strictEqual(store.getStore(), data);

@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
-const path = require('path');
-const { writeFile, readFile } = require('fs').promises;
-const tmpdir = require('../common/tmpdir');
+const assert = require("assert");
+const path = require("path");
+const { writeFile, readFile } = require("fs").promises;
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
-const fn = path.join(tmpdir.path, 'large-file');
+const fn = path.join(tmpdir.path, "large-file");
 
 // Creating large buffer with random content
 const largeBuffer = Buffer.from(
@@ -38,14 +38,14 @@ async function validateReadFileProc() {
  if (!common.isLinux)
   return;
 
- const hostname = await readFile('/proc/sys/kernel/hostname');
+ const hostname = await readFile("/proc/sys/kernel/hostname");
  assert.ok(hostname.length > 0);
 }
 
 function validateReadFileAbortLogicBefore() {
  const signal = AbortSignal.abort();
  assert.rejects(readFile(fn, { signal }), {
-  name: 'AbortError',
+  name: "AbortError",
  });
 }
 
@@ -54,7 +54,7 @@ function validateReadFileAbortLogicDuring() {
  const signal = controller.signal;
  process.nextTick(() => controller.abort());
  assert.rejects(readFile(fn, { signal }), {
-  name: 'AbortError',
+  name: "AbortError",
  });
 }
 
@@ -64,8 +64,8 @@ async function validateWrongSignalParam() {
 
  await assert.rejects(async () => {
   const callback = common.mustNotCall(() => {});
-  await readFile(fn, { signal: 'hello' }, callback);
- }, { code: 'ERR_INVALID_ARG_TYPE', name: 'TypeError' });
+  await readFile(fn, { signal: "hello" }, callback);
+ }, { code: "ERR_INVALID_ARG_TYPE", name: "TypeError" });
 
 }
 

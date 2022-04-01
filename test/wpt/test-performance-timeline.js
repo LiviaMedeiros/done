@@ -1,11 +1,11 @@
-'use strict';
-require('../common');
-const { WPTRunner } = require('../common/wpt');
+"use strict";
+require("../common");
+const { WPTRunner } = require("../common/wpt");
 
-const runner = new WPTRunner('performance-timeline');
+const runner = new WPTRunner("performance-timeline");
 
 // Needed to access to DOMException.
-runner.setFlags(['--expose-internals']);
+runner.setFlags(["--expose-internals"]);
 
 runner.setInitScript(`
   const {

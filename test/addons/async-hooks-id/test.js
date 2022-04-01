@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
+const common = require("../../common");
+const assert = require("assert");
 const binding = require(`./build/${common.buildType}/binding`);
-const async_hooks = require('async_hooks');
+const async_hooks = require("async_hooks");
 
 assert.strictEqual(
  binding.getExecutionAsyncId(),

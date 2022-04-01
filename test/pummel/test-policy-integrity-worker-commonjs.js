@@ -1,45 +1,45 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto) {
- common.skip('missing crypto');
+ common.skip("missing crypto");
 }
 
-if (process.config.variables.arm_version === '7') {
- common.skip('Too slow for armv7 bots');
+if (process.config.variables.arm_version === "7") {
+ common.skip("Too slow for armv7 bots");
 }
 
 common.requireNoPackageJSONAbove();
 
-const { debuglog } = require('util');
-const debug = debuglog('test');
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
-const { spawnSync, spawn } = require('child_process');
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
-const { pathToFileURL } = require('url');
+const { debuglog } = require("util");
+const debug = debuglog("test");
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
+const { spawnSync, spawn } = require("child_process");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const { pathToFileURL } = require("url");
 
-const cpus = require('os').cpus().length;
+const cpus = require("os").cpus().length;
 
 function hash(algo, body) {
  const values = [];
  {
   const h = crypto.createHash(algo);
   h.update(body);
-  values.push(`${algo}-${h.digest('base64')}`);
+  values.push(`${algo}-${h.digest("base64")}`);
  }
  {
   const h = crypto.createHash(algo);
-  h.update(body.replace('\n', '\r\n'));
-  values.push(`${algo}-${h.digest('base64')}`);
+  h.update(body.replace("\n", "\r\n"));
+  values.push(`${algo}-${h.digest("base64")}`);
  }
  return values;
 }
 
-const policyPath = './policy.json';
+const policyPath = "./policy.json";
 const parentBody = {
  commonjs: `
     if (!process.env.DEP_FILE) {
@@ -131,11 +131,11 @@ function drainQueue() {
    const filePath = path.join(configDirPath, resourcePath);
    if (integrities !== null) {
     manifest.resources[pathToFileURL(filePath).href] = {
-     integrity: integrities.join(' '),
+     integrity: integrities.join(" "),
      dependencies: true,
     };
    }
-   fs.writeFileSync(filePath, body, 'utf8');
+   fs.writeFileSync(filePath, body, "utf8");
   }
   const manifestBody = JSON.stringify(manifest);
   fs.writeFileSync(manifestPath, manifestBody);
@@ -145,12 +145,12 @@ function drainQueue() {
   const spawnArgs = [
    process.execPath,
    [
-    '--unhandled-rejections=strict',
-    '--experimental-policy',
+    "--unhandled-rejections=strict",
+    "--experimental-policy",
     tmpPolicyPath,
-    ...preloads.flatMap((m) => ['-r', m]),
+    ...preloads.flatMap((m) => ["-r", m]),
     entryPath,
-    '--',
+    "--",
     testId,
     configDirPath,
    ],
@@ -162,16 +162,16 @@ function drainQueue() {
      DEP_FILE: depPath,
     },
     cwd: configDirPath,
-    stdio: 'pipe',
+    stdio: "pipe",
    },
   ];
   spawned++;
   const stdout = [];
   const stderr = [];
   const child = spawn(...spawnArgs);
-  child.stdout.on('data', (d) => stdout.push(d));
-  child.stderr.on('data', (d) => stderr.push(d));
-  child.on('exit', (status, signal) => {
+  child.stdout.on("data", (d) => stdout.push(d));
+  child.stderr.on("data", (d) => stderr.push(d));
+  child.on("exit", (status, signal) => {
    spawned--;
    try {
     if (shouldSucceed) {
@@ -181,15 +181,15 @@ function drainQueue() {
     }
    } catch (e) {
     console.log(
-     'permutation',
+     "permutation",
      testId,
-     'failed',
+     "failed",
     );
     console.dir(
      { config, manifest },
      { depth: null },
     );
-    console.log('exit code:', status, 'signal:', signal);
+    console.log("exit code:", status, "signal:", signal);
     console.log(`stdout: ${Buffer.concat(stdout)}`);
     console.log(`stderr: ${Buffer.concat(stderr)}`);
     throw e;
@@ -203,15 +203,15 @@ function drainQueue() {
 {
  const { status } = spawnSync(
   process.execPath,
-  ['--experimental-policy', policyPath, '--experimental-policy', policyPath],
+  ["--experimental-policy", policyPath, "--experimental-policy", policyPath],
   {
-   stdio: 'pipe',
+   stdio: "pipe",
   },
  );
- assert.notStrictEqual(status, 0, 'Should not allow multiple policies');
+ assert.notStrictEqual(status, 0, "Should not allow multiple policies");
 }
 {
- const enoentFilepath = path.join(tmpdir.path, 'enoent');
+ const enoentFilepath = path.join(tmpdir.path, "enoent");
  try {
   fs.unlinkSync(enoentFilepath);
  } catch {
@@ -219,12 +219,12 @@ function drainQueue() {
  }
  const { status } = spawnSync(
   process.execPath,
-  ['--experimental-policy', enoentFilepath, '-e', ''],
+  ["--experimental-policy", enoentFilepath, "-e", ""],
   {
-   stdio: 'pipe',
+   stdio: "pipe",
   },
  );
- assert.notStrictEqual(status, 0, 'Should not allow missing policies');
+ assert.notStrictEqual(status, 0, "Should not allow missing policies");
 }
 
 /**
@@ -246,23 +246,23 @@ function permutations(configurations, path = {}) {
 }
 const tests = new Set();
 function fileExtensionFormat(extension) {
- if (extension === '.js') {
-  return 'commonjs';
- } else if (extension === '.mjs') {
-  return 'module';
- } else if (extension === '.cjs') {
-  return 'commonjs';
+ if (extension === ".js") {
+  return "commonjs";
+ } else if (extension === ".mjs") {
+  return "module";
+ } else if (extension === ".cjs") {
+  return "commonjs";
  }
- throw new Error('unknown format ' + extension);
+ throw new Error("unknown format " + extension);
 }
 for (const permutation of permutations({
- preloads: [[], ['parent'], ['dep']],
- onError: ['log', 'exit'],
- parentExtension: ['.js', '.mjs', '.cjs'],
- parentIntegrity: ['match', 'invalid', 'missing'],
- depExtension: ['.js', '.mjs', '.cjs'],
- depIntegrity: ['match', 'invalid', 'missing'],
- packageIntegrity: ['match', 'invalid', 'missing'],
+ preloads: [[], ["parent"], ["dep"]],
+ onError: ["log", "exit"],
+ parentExtension: [".js", ".mjs", ".cjs"],
+ parentIntegrity: ["match", "invalid", "missing"],
+ depExtension: [".js", ".mjs", ".cjs"],
+ depIntegrity: ["match", "invalid", "missing"],
+ packageIntegrity: ["match", "invalid", "missing"],
 })) {
  let shouldSucceed = true;
  const parentPath = `./parent${permutation.parentExtension}`;
@@ -270,81 +270,81 @@ for (const permutation of permutations({
  const depFormat = fileExtensionFormat(permutation.depExtension);
 
  // non-sensical attempt to require ESM
- if (depFormat === 'module' && parentFormat === 'commonjs') {
+ if (depFormat === "module" && parentFormat === "commonjs") {
   continue;
  }
  const depPath = `./dep${permutation.depExtension}`;
- const workerSpawnerPath = './worker-spawner.cjs';
+ const workerSpawnerPath = "./worker-spawner.cjs";
  const packageJSON = {
   main: workerSpawnerPath,
-  type: 'commonjs',
+  type: "commonjs",
  };
 
  const resources = {
   [depPath]: {
-   body: '',
-   integrities: hash('sha256', ''),
+   body: "",
+   integrities: hash("sha256", ""),
   },
  };
- if (permutation.depIntegrity === 'invalid') {
-  resources[depPath].body += '\n// INVALID INTEGRITY';
+ if (permutation.depIntegrity === "invalid") {
+  resources[depPath].body += "\n// INVALID INTEGRITY";
   shouldSucceed = false;
- } else if (permutation.depIntegrity === 'missing') {
+ } else if (permutation.depIntegrity === "missing") {
   resources[depPath].integrities = null;
   shouldSucceed = false;
- } else if (permutation.depIntegrity !== 'match') {
-  throw new Error('unreachable');
+ } else if (permutation.depIntegrity !== "match") {
+  throw new Error("unreachable");
  }
- if (parentFormat !== 'commonjs') {
-  permutation.preloads = permutation.preloads.filter((_) => _ !== 'parent');
+ if (parentFormat !== "commonjs") {
+  permutation.preloads = permutation.preloads.filter((_) => _ !== "parent");
  }
 
  resources[parentPath] = {
   body: parentBody[parentFormat],
-  integrities: hash('sha256', parentBody[parentFormat]),
+  integrities: hash("sha256", parentBody[parentFormat]),
  };
- if (permutation.parentIntegrity === 'invalid') {
-  resources[parentPath].body += '\n// INVALID INTEGRITY';
+ if (permutation.parentIntegrity === "invalid") {
+  resources[parentPath].body += "\n// INVALID INTEGRITY";
   shouldSucceed = false;
- } else if (permutation.parentIntegrity === 'missing') {
+ } else if (permutation.parentIntegrity === "missing") {
   resources[parentPath].integrities = null;
   shouldSucceed = false;
- } else if (permutation.parentIntegrity !== 'match') {
-  throw new Error('unreachable');
+ } else if (permutation.parentIntegrity !== "match") {
+  throw new Error("unreachable");
  }
 
  resources[workerSpawnerPath] = {
   body: workerSpawningBody,
-  integrities: hash('sha256', workerSpawningBody),
+  integrities: hash("sha256", workerSpawningBody),
  };
 
 
  let packageBody = JSON.stringify(packageJSON, null, 2);
- let packageIntegrities = hash('sha256', packageBody);
+ let packageIntegrities = hash("sha256", packageBody);
  if (
-  permutation.parentExtension !== '.js' ||
-    permutation.depExtension !== '.js'
+  permutation.parentExtension !== ".js" ||
+    permutation.depExtension !== ".js"
  ) {
   // NO PACKAGE LOOKUP
   continue;
  }
- if (permutation.packageIntegrity === 'invalid') {
-  packageJSON['//'] = 'INVALID INTEGRITY';
+ if (permutation.packageIntegrity === "invalid") {
+  packageJSON["//"] = "INVALID INTEGRITY";
   packageBody = JSON.stringify(packageJSON, null, 2);
   shouldSucceed = false;
- } else if (permutation.packageIntegrity === 'missing') {
+ } else if (permutation.packageIntegrity === "missing") {
   packageIntegrities = [];
   shouldSucceed = false;
- } else if (permutation.packageIntegrity !== 'match') {
-  throw new Error('unreachable');
+ } else if (permutation.packageIntegrity !== "match") {
+  throw new Error("unreachable");
  }
- resources['./package.json'] = {
+ resources["./package.json"] = {
   body: packageBody,
   integrities: packageIntegrities,
  };
 
 
- if (permutation.onError === 'log') {
+ if (permutation.onError === "log") {
   shouldSucceed = true;
  }
  tests.add(
@@ -355,9 +355,9 @@ for (const permutation of permutations({
    preloads: permutation.preloads
         .map((_) => {
         	return {
-        		'': '',
-        		'parent': parentFormat === 'commonjs' ? parentPath : '',
-        		'dep': depFormat === 'commonjs' ? depPath : '',
+        		"": "",
+        		"parent": parentFormat === "commonjs" ? parentPath : "",
+        		"dep": depFormat === "commonjs" ? depPath : "",
         	}[_];
         })
         .filter(Boolean),

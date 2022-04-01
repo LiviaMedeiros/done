@@ -1,9 +1,9 @@
-import '../common/index.mjs';
-import assert from 'assert';
+import "../common/index.mjs";
+import assert from "assert";
 
 assert.strictEqual(Object.getPrototypeOf(import.meta), null);
 
-const keys = ['url'];
+const keys = ["url"];
 assert.deepStrictEqual(Reflect.ownKeys(import.meta), keys);
 
 const descriptors = Object.getOwnPropertyDescriptors(import.meta);

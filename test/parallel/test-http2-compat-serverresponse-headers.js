@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
 
 // Http2ServerResponse should support checking and reading custom headers
 
 const server = h2.createServer();
 server.listen(0, common.mustCall(function() {
  const port = server.address().port;
- server.once('request', common.mustCall(function(request, response) {
-  const real = 'foo-bar';
-  const fake = 'bar-foo';
+ server.once("request", common.mustCall(function(request, response) {
+  const real = "foo-bar";
+  const fake = "bar-foo";
   const denormalised = ` ${real.toUpperCase()}\n\t`;
-  const expectedValue = 'abc123';
+  const expectedValue = "abc123";
 
   response.setHeader(real, expectedValue);
 
@@ -41,60 +41,60 @@ server.listen(0, common.mustCall(function() {
   response.removeHeader(denormalised);
   assert.strictEqual(response.hasHeader(denormalised), false);
 
-  ['hasHeader', 'getHeader', 'removeHeader'].forEach((fnName) => {
+  ["hasHeader", "getHeader", "removeHeader"].forEach((fnName) => {
    assert.throws(
     () => response[fnName](),
     {
-     code: 'ERR_INVALID_ARG_TYPE',
-     name: 'TypeError',
+     code: "ERR_INVALID_ARG_TYPE",
+     name: "TypeError",
      message: 'The "name" argument must be of type string. Received ' +
-                   'undefined',
+                   "undefined",
     },
    );
   });
 
   [
-   ':status',
-   ':method',
-   ':path',
-   ':authority',
-   ':scheme',
+   ":status",
+   ":method",
+   ":path",
+   ":authority",
+   ":scheme",
   ].forEach((header) => assert.throws(
-   () => response.setHeader(header, 'foobar'),
+   () => response.setHeader(header, "foobar"),
    {
-    code: 'ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED',
-    name: 'TypeError',
-    message: 'Cannot set HTTP/2 pseudo-headers',
+    code: "ERR_HTTP2_PSEUDOHEADER_NOT_ALLOWED",
+    name: "TypeError",
+    message: "Cannot set HTTP/2 pseudo-headers",
    }),
   );
   assert.throws(() => {
    response.setHeader(real, null);
   }, {
-   code: 'ERR_HTTP2_INVALID_HEADER_VALUE',
-   name: 'TypeError',
+   code: "ERR_HTTP2_INVALID_HEADER_VALUE",
+   name: "TypeError",
    message: 'Invalid value "null" for header "foo-bar"',
   });
   assert.throws(() => {
    response.setHeader(real, undefined);
   }, {
-   code: 'ERR_HTTP2_INVALID_HEADER_VALUE',
-   name: 'TypeError',
+   code: "ERR_HTTP2_INVALID_HEADER_VALUE",
+   name: "TypeError",
    message: 'Invalid value "undefined" for header "foo-bar"',
   });
   assert.throws(
    () => response.setHeader(), // Header name undefined
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
     message: 'The "name" argument must be of type string. Received ' +
-                 'undefined',
+                 "undefined",
    },
   );
   assert.throws(
-   () => response.setHeader(''),
+   () => response.setHeader(""),
    {
-    code: 'ERR_INVALID_HTTP_TOKEN',
-    name: 'TypeError',
+    code: "ERR_INVALID_HTTP_TOKEN",
+    name: "TypeError",
     message: 'Header name must be a valid HTTP token [""]',
    },
   );
@@ -116,26 +116,26 @@ server.listen(0, common.mustCall(function() {
 
   response.sendDate = true;
   assert.strictEqual(response.sendDate, true);
-  response.removeHeader('Date');
+  response.removeHeader("Date");
   assert.strictEqual(response.sendDate, false);
 
-  response.on('finish', common.mustCall(function() {
+  response.on("finish", common.mustCall(function() {
    assert.strictEqual(response.headersSent, true);
 
    assert.throws(
     () => response.setHeader(real, expectedValue),
     {
-     code: 'ERR_HTTP2_HEADERS_SENT',
-     name: 'Error',
-     message: 'Response has already been initiated.',
+     code: "ERR_HTTP2_HEADERS_SENT",
+     name: "Error",
+     message: "Response has already been initiated.",
     },
    );
    assert.throws(
     () => response.removeHeader(real, expectedValue),
     {
-     code: 'ERR_HTTP2_HEADERS_SENT',
-     name: 'Error',
-     message: 'Response has already been initiated.',
+     code: "ERR_HTTP2_HEADERS_SENT",
+     name: "Error",
+     message: "Response has already been initiated.",
     },
    );
 
@@ -143,17 +143,17 @@ server.listen(0, common.mustCall(function() {
     assert.throws(
      () => response.setHeader(real, expectedValue),
      {
-      code: 'ERR_HTTP2_HEADERS_SENT',
-      name: 'Error',
-      message: 'Response has already been initiated.',
+      code: "ERR_HTTP2_HEADERS_SENT",
+      name: "Error",
+      message: "Response has already been initiated.",
      },
     );
     assert.throws(
      () => response.removeHeader(real, expectedValue),
      {
-      code: 'ERR_HTTP2_HEADERS_SENT',
-      name: 'Error',
-      message: 'Response has already been initiated.',
+      code: "ERR_HTTP2_HEADERS_SENT",
+      name: "Error",
+      message: "Response has already been initiated.",
      },
     );
 
@@ -167,13 +167,13 @@ server.listen(0, common.mustCall(function() {
  const url = `http://localhost:${port}`;
  const client = h2.connect(url, common.mustCall(function() {
   const headers = {
-   ':path': '/',
-   ':method': 'GET',
-   ':scheme': 'http',
-   ':authority': `localhost:${port}`,
+   ":path": "/",
+   ":method": "GET",
+   ":scheme": "http",
+   ":authority": `localhost:${port}`,
   };
   const request = client.request(headers);
-  request.on('end', common.mustCall(function() {
+  request.on("end", common.mustCall(function() {
    client.close();
   }));
   request.end();

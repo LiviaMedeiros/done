@@ -1,9 +1,9 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const StreamWrap = require('internal/js_stream_socket');
-const Duplex = require('stream').Duplex;
+const StreamWrap = require("internal/js_stream_socket");
+const Duplex = require("stream").Duplex;
 
 {
  const stream = new Duplex({
@@ -11,17 +11,17 @@ const Duplex = require('stream').Duplex;
   write() {},
  });
 
- stream.setEncoding('ascii');
+ stream.setEncoding("ascii");
 
  const wrap = new StreamWrap(stream);
 
- wrap.on('error', common.expectsError({
-  name: 'Error',
-  code: 'ERR_STREAM_WRAP',
-  message: 'Stream has StringDecoder set or is in objectMode',
+ wrap.on("error", common.expectsError({
+  name: "Error",
+  code: "ERR_STREAM_WRAP",
+  message: "Stream has StringDecoder set or is in objectMode",
  }));
 
- stream.push('ohai');
+ stream.push("ohai");
 }
 
 {
@@ -33,11 +33,11 @@ const Duplex = require('stream').Duplex;
 
  const wrap = new StreamWrap(stream);
 
- wrap.on('error', common.expectsError({
-  name: 'Error',
-  code: 'ERR_STREAM_WRAP',
-  message: 'Stream has StringDecoder set or is in objectMode',
+ wrap.on("error", common.expectsError({
+  name: "Error",
+  code: "ERR_STREAM_WRAP",
+  message: "Stream has StringDecoder set or is in objectMode",
  }));
 
- stream.push(new Error('foo'));
+ stream.push(new Error("foo"));
 }

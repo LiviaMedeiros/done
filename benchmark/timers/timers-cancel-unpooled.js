@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common.js');
-const assert = require('assert');
+"use strict";
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
  n: [1e6],
- direction: ['start', 'end'],
+ direction: ["start", "end"],
 });
 
 function main({ n, direction }) {
@@ -15,7 +15,7 @@ function main({ n, direction }) {
  }
 
  bench.start();
- if (direction === 'start') {
+ if (direction === "start") {
   for (let j = 0; j < n; j++) {
    clearTimeout(timersList[j]);
   }

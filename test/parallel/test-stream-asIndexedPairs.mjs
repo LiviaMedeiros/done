@@ -1,6 +1,6 @@
-import '../common/index.mjs';
-import { Readable } from 'stream';
-import { deepStrictEqual, rejects, throws } from 'assert';
+import "../common/index.mjs";
+import { Readable } from "stream";
+import { deepStrictEqual, rejects, throws } from "assert";
 
 {
  // asIndexedPairs with a synchronous stream
@@ -38,7 +38,7 @@ import { deepStrictEqual, rejects, throws } from 'assert';
   const p = Readable.from([1, 2, 3]).asIndexedPairs({ signal }).toArray();
   ac.abort();
   await p;
- }, { name: 'AbortError' });
+ }, { name: "AbortError" });
 
  await rejects(async () => {
   const signal = AbortSignal.abort();

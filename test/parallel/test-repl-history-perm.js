@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
 // Verifies that the REPL history file is created with mode 0600
 
 // Flags: --expose-internals
 
-const common = require('../common');
+const common = require("../common");
 
 if (common.isWindows) {
- common.skip('Win32 uses ACLs for file permissions, ' +
-              'modes are always 0666 and says nothing about group/other ' +
-              'read access.');
+ common.skip("Win32 uses ACLs for file permissions, " +
+              "modes are always 0666 and says nothing about group/other " +
+              "read access.");
 }
 
-const assert = require('assert');
-const path = require('path');
-const fs = require('fs');
-const repl = require('internal/repl');
-const Duplex = require('stream').Duplex;
+const assert = require("assert");
+const path = require("path");
+const fs = require("fs");
+const repl = require("internal/repl");
+const Duplex = require("stream").Duplex;
 // Invoking the REPL should create a repl history file at the specified path
 // and mode 600.
 
@@ -31,9 +31,9 @@ stream._write = function(c, e, cb) {
 };
 stream.readable = stream.writable = true;
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
-const replHistoryPath = path.join(tmpdir.path, '.node_repl_history');
+const replHistoryPath = path.join(tmpdir.path, ".node_repl_history");
 
 const checkResults = common.mustSucceed((r) => {
  const stat = fs.statSync(replHistoryPath);
@@ -43,7 +43,7 @@ const checkResults = common.mustSucceed((r) => {
   `REPL history file should be mode 0600 but was 0${fileMode.toString(8)}`);
 
  // Close the REPL
- r.input.emit('keypress', '', { ctrl: true, name: 'd' });
+ r.input.emit("keypress", "", { ctrl: true, name: "d" });
  r.input.end();
 });
 

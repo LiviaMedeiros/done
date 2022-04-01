@@ -1,11 +1,11 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const dgram = require('dgram');
-const { internalBinding } = require('internal/test/binding');
-const { UV_UNKNOWN } = internalBinding('uv');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const dgram = require("dgram");
+const { internalBinding } = require("internal/test/binding");
+const { UV_UNKNOWN } = internalBinding("uv");
 
 if (cluster.isPrimary) {
  cluster.fork();
@@ -16,9 +16,9 @@ if (cluster.isPrimary) {
   callback(UV_UNKNOWN);
  };
 
- const socket = dgram.createSocket('udp4');
+ const socket = dgram.createSocket("udp4");
 
- socket.on('error', common.mustCall((err) => {
+ socket.on("error", common.mustCall((err) => {
   assert.match(err.toString(), /^Error: bind UNKNOWN 0\.0\.0\.0$/);
   process.nextTick(common.mustCall(() => {
    assert.strictEqual(socket._bindState, 0); // BIND_STATE_UNBOUND
@@ -27,5 +27,5 @@ if (cluster.isPrimary) {
   }));
  }));
 
- socket.bind(common.mustNotCall('Socket should not bind.'));
+ socket.bind(common.mustNotCall("Socket should not bind."));
 }

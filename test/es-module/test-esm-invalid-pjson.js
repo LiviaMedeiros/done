@@ -1,20 +1,20 @@
-'use strict';
+"use strict";
 
-const { mustCall, checkoutEOL } = require('../common');
-const fixtures = require('../common/fixtures');
-const { spawn } = require('child_process');
-const { strictEqual, ok } = require('assert');
+const { mustCall, checkoutEOL } = require("../common");
+const fixtures = require("../common/fixtures");
+const { spawn } = require("child_process");
+const { strictEqual, ok } = require("assert");
 
-const entry = fixtures.path('/es-modules/import-invalid-pjson.mjs');
-const invalidJson = fixtures.path('/node_modules/invalid-pjson/package.json');
+const entry = fixtures.path("/es-modules/import-invalid-pjson.mjs");
+const invalidJson = fixtures.path("/node_modules/invalid-pjson/package.json");
 
 const child = spawn(process.execPath, [entry]);
-child.stderr.setEncoding('utf8');
-let stderr = '';
-child.stderr.on('data', (data) => {
+child.stderr.setEncoding("utf8");
+let stderr = "";
+child.stderr.on("data", (data) => {
  stderr += data;
 });
-child.on('close', mustCall((code, signal) => {
+child.on("close", mustCall((code, signal) => {
  strictEqual(code, 1);
  strictEqual(signal, null);
  ok(

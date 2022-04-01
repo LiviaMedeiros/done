@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const Readable = require('stream').Readable;
+const common = require("../common");
+const Readable = require("stream").Readable;
 
 const bench = common.createBenchmark(main, {
  n: [200e1],
- type: ['string', 'buffer'],
+ type: ["string", "buffer"],
 });
 
 function main({ n, type }) {
  const s = new Readable();
- let data = 'a'.repeat(32);
- if (type === 'buffer')
+ let data = "a".repeat(32);
+ if (type === "buffer")
   data = Buffer.from(data);
  s._read = function() {};
 

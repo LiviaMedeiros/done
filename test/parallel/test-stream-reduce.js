@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Readable,
-} = require('stream');
-const assert = require('assert');
+} = require("stream");
+const assert = require("assert");
 
 function sum(p, c) {
  return p + c;
@@ -18,7 +18,7 @@ function sum(p, c) {
    [[1], sum, 0],
    [[1, 2, 3, 4, 5], sum, 0],
    [[...Array(100).keys()], sum, 0],
-   [['a', 'b', 'c'], sum, ''],
+   [["a", "b", "c"], sum, ""],
    [[1, 2], sum],
    [[1, 2, 3], (x, y) => y],
   ];
@@ -58,7 +58,7 @@ function sum(p, c) {
     }, 3)) // Two consumed and one buffered by `map` due to default concurrency
     .reduce(async (p, c) => {
     	if (p === 1) {
-    		throw new Error('boom');
+    		throw new Error("boom");
     	}
     	return c;
     }, 0)
@@ -76,7 +76,7 @@ function sum(p, c) {
    return Promise.resolve();
   }, 0, { signal: ac.signal });
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall());
  ac.abort();
 }
@@ -93,7 +93,7 @@ function sum(p, c) {
    return Promise.resolve();
   }, 0, { signal: AbortSignal.abort() });
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall(() => {
   assert.strictEqual(stream.destroyed, true);
  }));
@@ -104,14 +104,14 @@ function sum(p, c) {
  const stream = Readable.from([1, 2, 3]);
  assert.rejects(async () => {
   await stream.reduce(async (p, c, { signal }) => {
-   signal.addEventListener('abort', common.mustCall(), { once: true });
+   signal.addEventListener("abort", common.mustCall(), { once: true });
    if (c === 3) {
     await new Promise(() => {}); // Explicitly do not pass signal here
    }
    return Promise.resolve();
   }, 0, { signal: AbortSignal.abort() });
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall(() => {
   assert.strictEqual(stream.destroyed, true);
  }));
@@ -120,7 +120,7 @@ function sum(p, c) {
 {
  // Error cases
  assert.rejects(() => Readable.from([]).reduce(1), /TypeError/);
- assert.rejects(() => Readable.from([]).reduce('5'), /TypeError/);
+ assert.rejects(() => Readable.from([]).reduce("5"), /TypeError/);
  assert.rejects(() => Readable.from([]).reduce((x, y) => x + y, 0, 1), /ERR_INVALID_ARG_TYPE/);
  assert.rejects(() => Readable.from([]).reduce((x, y) => x + y, 0, { signal: true }), /ERR_INVALID_ARG_TYPE/);
 }

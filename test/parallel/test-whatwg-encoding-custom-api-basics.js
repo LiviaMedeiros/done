@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 // From: https://github.com/w3c/web-platform-tests/blob/master/encoding/api-basics.html
 // This is the part that can be run without ICU
 
-require('../common');
+require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 function testDecodeSample(encoding, string, bytes) {
  assert.strictEqual(
@@ -19,10 +19,10 @@ function testDecodeSample(encoding, string, bytes) {
 // `z` (ASCII U+007A), cent (Latin-1 U+00A2), CJK water (BMP U+6C34),
 // G-Clef (non-BMP U+1D11E), PUA (BMP U+F8FF), PUA (non-BMP U+10FFFD)
 // byte-swapped BOM (non-character U+FFFE)
-const sample = 'z\xA2\u6C34\uD834\uDD1E\uF8FF\uDBFF\uDFFD\uFFFE';
+const sample = "z\xA2\u6C34\uD834\uDD1E\uF8FF\uDBFF\uDFFD\uFFFE";
 
 {
- const encoding = 'utf-8';
+ const encoding = "utf-8";
  const string = sample;
  const bytes = [
   0x7A, 0xC2, 0xA2, 0xE6, 0xB0, 0xB4,
@@ -41,7 +41,7 @@ const sample = 'z\xA2\u6C34\uD834\uDD1E\uF8FF\uDBFF\uDFFD\uFFFE';
 }
 
 testDecodeSample(
- 'utf-16le',
+ "utf-16le",
  sample,
  [
   0x7A, 0x00, 0xA2, 0x00, 0x34, 0x6C,
@@ -51,7 +51,7 @@ testDecodeSample(
 );
 
 testDecodeSample(
- 'utf-16',
+ "utf-16",
  sample,
  [
   0x7A, 0x00, 0xA2, 0x00, 0x34, 0x6C,

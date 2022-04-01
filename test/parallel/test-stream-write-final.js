@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const stream = require('stream');
+const stream = require("stream");
 let shutdown = false;
 
 const w = new stream.Writable({
@@ -17,7 +17,7 @@ const w = new stream.Writable({
   process.nextTick(cb);
  },
 });
-w.on('finish', common.mustCall(function() {
+w.on("finish", common.mustCall(function() {
  assert(shutdown);
 }));
 w.write(Buffer.allocUnsafe(1));

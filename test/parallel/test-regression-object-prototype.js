@@ -20,9 +20,9 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /* eslint-disable node-core/require-common-first, node-core/required-modules */
-'use strict';
+"use strict";
 
 Object.prototype.xadsadsdasasdxx = function() {
 };
 
-console.log('puts after');
+console.log("puts after");

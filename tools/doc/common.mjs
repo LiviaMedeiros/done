@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import yaml from "js-yaml";
 
 export function isYAMLBlock(text) {
  return /^<!-- YAML/.test(text);
@@ -14,8 +14,8 @@ export function arrify(value) {
 
 export function extractAndParseYAML(text) {
  text = text.trim()
-             .replace(/^<!-- YAML/, '')
-             .replace(/-->$/, '');
+             .replace(/^<!-- YAML/, "")
+             .replace(/-->$/, "");
 
  // js-yaml.load() throws on error.
  const meta = yaml.load(text);

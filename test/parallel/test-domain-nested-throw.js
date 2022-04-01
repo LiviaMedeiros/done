@@ -19,25 +19,25 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const domain = require('domain');
+const domain = require("domain");
 
-if (process.argv[2] !== 'child') {
+if (process.argv[2] !== "child") {
  parent();
  return;
 }
 
 function parent() {
  const node = process.execPath;
- const spawn = require('child_process').spawn;
- const opt = { stdio: 'inherit' };
- const child = spawn(node, [__filename, 'child'], opt);
- child.on('exit', function(c) {
+ const spawn = require("child_process").spawn;
+ const opt = { stdio: "inherit" };
+ const child = spawn(node, [__filename, "child"], opt);
+ child.on("exit", function(c) {
   assert(!c);
-  console.log('ok');
+  console.log("ok");
  });
 }
 
@@ -49,20 +49,20 @@ let threw2 = false;
 
 function throw1() {
  threw1 = true;
- throw new Error('handled by domain1');
+ throw new Error("handled by domain1");
 }
 
 function throw2() {
  threw2 = true;
- throw new Error('handled by domain2');
+ throw new Error("handled by domain2");
 }
 
 function inner(throw1, throw2) {
  const domain1 = domain.createDomain();
 
- domain1.on('error', function(err) {
+ domain1.on("error", function(err) {
   if (gotDomain1Error) {
-   console.error('got domain 1 twice');
+   console.error("got domain 1 twice");
    process.exit(1);
   }
   gotDomain1Error = true;
@@ -77,9 +77,9 @@ function inner(throw1, throw2) {
 function outer() {
  const domain2 = domain.createDomain();
 
- domain2.on('error', function(err) {
+ domain2.on("error", function(err) {
   if (gotDomain2Error) {
-   console.error('got domain 2 twice');
+   console.error("got domain 2 twice");
    process.exit(1);
   }
   gotDomain2Error = true;
@@ -90,12 +90,12 @@ function outer() {
  });
 }
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert(gotDomain1Error);
  assert(gotDomain2Error);
  assert(threw1);
  assert(threw2);
- console.log('ok');
+ console.log("ok");
 });
 
 outer();

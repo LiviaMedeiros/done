@@ -19,28 +19,28 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fork = require('child_process').fork;
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fork = require("child_process").fork;
+const net = require("net");
 const count = 12;
 
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  const sockets = [];
 
- process.on('message', common.mustCall((m, socket) => {
+ process.on("message", common.mustCall((m, socket) => {
   function sendClosed(id) {
-   process.send({ id: id, status: 'closed' });
+   process.send({ id: id, status: "closed" });
   }
 
-  if (m.cmd === 'new') {
+  if (m.cmd === "new") {
    assert(socket);
-   assert(socket instanceof net.Socket, 'should be a net.Socket');
+   assert(socket instanceof net.Socket, "should be a net.Socket");
    sockets.push(socket);
   }
 
-  if (m.cmd === 'close') {
+  if (m.cmd === "close") {
    assert.strictEqual(socket, undefined);
    if (sockets[m.id].destroyed) {
     // Workaround for https://github.com/nodejs/node/issues/2610
@@ -48,18 +48,18 @@ if (process.argv[2] === 'child') {
     // End of workaround. When bug is fixed, this code can be used instead:
     // throw new Error('socket destroyed unexpectedly!');
    } else {
-    sockets[m.id].once('close', sendClosed.bind(null, m.id));
+    sockets[m.id].once("close", sendClosed.bind(null, m.id));
     sockets[m.id].destroy();
    }
   }
  }));
 
 } else {
- const child = fork(process.argv[1], ['child']);
+ const child = fork(process.argv[1], ["child"]);
 
- child.on('exit', common.mustCall((code, signal) => {
+ child.on("exit", common.mustCall((code, signal) => {
   if (!subprocessKilled) {
-   assert.fail('subprocess died unexpectedly! ' +
+   assert.fail("subprocess died unexpectedly! " +
                   `code: ${code} signal: ${signal}`);
   }
  }));
@@ -67,8 +67,8 @@ if (process.argv[2] === 'child') {
  const server = net.createServer();
  const sockets = [];
 
- server.on('connection', common.mustCall((socket) => {
-  child.send({ cmd: 'new' }, socket);
+ server.on("connection", common.mustCall((socket) => {
+  child.send({ cmd: "new" }, socket);
   sockets.push(socket);
 
   if (sockets.length === count) {
@@ -78,11 +78,11 @@ if (process.argv[2] === 'child') {
 
  const onClose = common.mustCall(count);
 
- server.on('listening', common.mustCall(() => {
+ server.on("listening", common.mustCall(() => {
   let j = count;
   while (j--) {
-   const client = net.connect(server.address().port, '127.0.0.1');
-   client.on('close', onClose);
+   const client = net.connect(server.address().port, "127.0.0.1");
+   client.on("close", onClose);
   }
  }));
 
@@ -95,17 +95,17 @@ if (process.argv[2] === 'child') {
    return;
   }
 
-  child.once('message', common.mustCall((m) => {
-   assert.strictEqual(m.status, 'closed');
+  child.once("message", common.mustCall((m) => {
+   assert.strictEqual(m.status, "closed");
    server.getConnections(common.mustSucceed((num) => {
     assert.strictEqual(num, count - (i + 1));
     closeSockets(i + 1);
    }));
   }));
-  child.send({ id: i, cmd: 'close' });
+  child.send({ id: i, cmd: "close" });
  }
 
- server.on('close', common.mustCall());
+ server.on("close", common.mustCall());
 
- server.listen(0, '127.0.0.1');
+ server.listen(0, "127.0.0.1");
 }

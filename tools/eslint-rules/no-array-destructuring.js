@@ -9,16 +9,16 @@
  *               actually want to iterate over a user-provided object.
  * @author aduh95 <duhamelantoine1995@gmail.com>
  */
-'use strict';
+"use strict";
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
 
 const USE_OBJ_DESTRUCTURING =
-  'Use object destructuring instead of array destructuring.';
+  "Use object destructuring instead of array destructuring.";
 const USE_ARRAY_METHODS =
-  'Use primordials.ArrayPrototypeSlice to avoid unsafe array iteration.';
+  "Use primordials.ArrayPrototypeSlice to avoid unsafe array iteration.";
 
 const findComma = (sourceCode, elements, i, start) => {
  if (i === 0)
@@ -38,21 +38,21 @@ const findComma = (sourceCode, elements, i, start) => {
  return token;
 };
 const createFix = (fixer, sourceCode, { range: [start, end], elements }) => [
- fixer.replaceTextRange([start, start + 1], '{'),
- fixer.replaceTextRange([end - 1, end], '}'),
+ fixer.replaceTextRange([start, start + 1], "{"),
+ fixer.replaceTextRange([end - 1, end], "}"),
  ...elements.map((node, i) =>
   (node === null ?
    fixer.remove(findComma(sourceCode, elements, i, start)) :
-   fixer.insertTextBefore(node, i + ':')),
+   fixer.insertTextBefore(node, i + ":")),
  ),
 ];
 const arrayPatternContainsRestOperator = ({ elements }) =>
- elements?.find((node) => node?.type === 'RestElement');
+ elements?.find((node) => node?.type === "RestElement");
 
 module.exports = {
  meta: {
-  type: 'suggestion',
-  fixable: 'code',
+  type: "suggestion",
+  fixable: "code",
   schema: [],
  },
  create(context) {
@@ -67,10 +67,10 @@ module.exports = {
      fix: hasRest ?
       undefined :
       (fixer) => [
-       ...(node.parent.type === 'AssignmentExpression' ?
+       ...(node.parent.type === "AssignmentExpression" ?
         [
-         fixer.insertTextBefore(node.parent, '('),
-         fixer.insertTextAfter(node.parent, ')'),
+         fixer.insertTextBefore(node.parent, "("),
+         fixer.insertTextAfter(node.parent, ")"),
         ] :
         []),
        ...createFix(fixer, sourceCode, node),

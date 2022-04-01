@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto) {
- common.skip('missing crypto');
+ common.skip("missing crypto");
 }
 
 // Issue #23116
@@ -15,16 +15,16 @@ if (!common.hasCrypto) {
 // Error [ERR_HTTP2_STREAM_ERROR]: Stream closed with error code
 // NGHTTP2_ENHANCE_YOUR_CALM
 
-const http2 = require('http2');
-const assert = require('assert');
+const http2 = require("http2");
+const assert = require("assert");
 
 const server = http2.createServer({ maxSessionMemory: 1 });
 
-server.on('session', function(session) {
- session.on('stream', function(stream) {
-  stream.on('end', common.mustCall(function() {
+server.on("session", function(session) {
+ session.on("stream", function(stream) {
+  stream.on("end", common.mustCall(function() {
    this.respond({
-    ':status': 200,
+    ":status": 200,
    }, {
     endStream: true,
    });
@@ -41,10 +41,10 @@ server.listen(0, function() {
    client.close();
    return server.close();
   }
-  const stream = client.request({ ':method': 'POST' });
-  stream.on('response', common.mustCall(function(headers) {
-   assert.strictEqual(headers[':status'], 200);
-   this.on('close', common.mustCall(() => next(i + 1)));
+  const stream = client.request({ ":method": "POST" });
+  stream.on("response", common.mustCall(function(headers) {
+   assert.strictEqual(headers[":status"], 200);
+   this.on("close", common.mustCall(() => next(i + 1)));
   }));
   stream.end();
  }

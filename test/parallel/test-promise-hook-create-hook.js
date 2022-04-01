@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { promiseHooks } = require('v8');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { promiseHooks } = require("v8");
 
-for (const hook of ['init', 'before', 'after', 'settled']) {
+for (const hook of ["init", "before", "after", "settled"]) {
  assert.throws(() => {
   promiseHooks.createHook({
    [hook]: async function() { },

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 // The async_hook that we enable would register the process.emitWarning()
 // call from loading the N-API addon as asynchronous activity because
@@ -13,7 +13,7 @@ process.emitWarning = () => {};
 const { runInCallbackScope } = require(`./build/${common.buildType}/binding`);
 
 const expectedResource = {};
-const expectedResourceType = 'test-resource';
+const expectedResourceType = "test-resource";
 let insideHook = false;
 let expectedId;
 async_hooks.createHook({

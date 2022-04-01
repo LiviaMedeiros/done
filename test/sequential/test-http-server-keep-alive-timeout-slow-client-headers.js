@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
 
 const server = http.createServer(common.mustCall((req, res) => {
  res.end();
@@ -21,36 +21,36 @@ server.listen(0, common.mustCall(() => {
   }));
  }));
 
- server.on('timeout', common.mustCall(() => {
+ server.on("timeout", common.mustCall(() => {
   socket.end();
   server.close();
  }));
 
  function request(callback) {
-  socket.setEncoding('utf8');
-  socket.on('data', onData);
-  let response = '';
+  socket.setEncoding("utf8");
+  socket.on("data", onData);
+  let response = "";
 
   // Simulate a client that sends headers slowly (with a period of inactivity
   // that is longer than the keep-alive timeout).
-  socket.write('GET / HTTP/1.1\r\n' +
+  socket.write("GET / HTTP/1.1\r\n" +
                  `Host: localhost:${port}\r\n`);
   setTimeout(() => {
-   socket.write('Connection: keep-alive\r\n' +
-                   '\r\n');
+   socket.write("Connection: keep-alive\r\n" +
+                   "\r\n");
   }, common.platformTimeout(300));
 
   function onData(chunk) {
    response += chunk;
-   if (chunk.includes('\r\n')) {
-    socket.removeListener('data', onData);
+   if (chunk.includes("\r\n")) {
+    socket.removeListener("data", onData);
     onHeaders();
    }
   }
 
   function onHeaders() {
-   assert.ok(response.includes('HTTP/1.1 200 OK\r\n'));
-   assert.ok(response.includes('Connection: keep-alive\r\n'));
+   assert.ok(response.includes("HTTP/1.1 200 OK\r\n"));
+   assert.ok(response.includes("Connection: keep-alive\r\n"));
    callback();
   }
  }

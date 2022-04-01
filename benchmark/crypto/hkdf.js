@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert');
+const common = require("../common.js");
+const assert = require("assert");
 const {
  hkdf,
  hkdfSync,
-} = require('crypto');
+} = require("crypto");
 
 const bench = common.createBenchmark(main, {
  sync: [0, 1],
  size: [10, 64, 1024],
- key: ['a', 'secret', 'this-is-a-much-longer-secret'],
- salt: ['', 'salt'],
- info: ['', 'info'],
- hash: ['sha256', 'sha512'],
+ key: ["a", "secret", "this-is-a-much-longer-secret"],
+ salt: ["", "salt"],
+ info: ["", "info"],
+ hash: ["sha256", "sha512"],
  n: [1e3],
 });
 

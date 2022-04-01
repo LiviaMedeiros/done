@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common.js');
-const assert = require('assert');
+"use strict";
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
  type: [
-  'Int8Array',
-  'Uint8Array',
-  'Float32Array',
-  'Float64Array',
-  'Uint8ClampedArray',
+  "Int8Array",
+  "Uint8Array",
+  "Float32Array",
+  "Float64Array",
+  "Uint8ClampedArray",
  ],
  n: [5e2],
  strict: [0, 1],
  method: [
-  'deepEqual',
-  'notDeepEqual',
+  "deepEqual",
+  "notDeepEqual",
  ],
  len: [1e2, 5e3],
 });
@@ -28,10 +28,10 @@ function main({ type, n, len, method, strict }) {
  expectedWrong[wrongIndex] = 123;
 
  if (strict) {
-  method = method.replace('eep', 'eepStrict');
+  method = method.replace("eep", "eepStrict");
  }
  const fn = assert[method];
- const value2 = method.includes('not') ? expectedWrong : expected;
+ const value2 = method.includes("not") ? expectedWrong : expected;
 
  bench.start();
  for (let i = 0; i < n; ++i) {

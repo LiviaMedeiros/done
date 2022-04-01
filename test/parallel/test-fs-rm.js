@@ -1,38 +1,38 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const tmpdir = require('../common/tmpdir');
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
-const { pathToFileURL } = require('url');
-const { execSync } = require('child_process');
+"use strict";
+const common = require("../common");
+const tmpdir = require("../common/tmpdir");
+const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
+const { pathToFileURL } = require("url");
+const { execSync } = require("child_process");
 
-const { validateRmOptionsSync } = require('internal/fs/utils');
+const { validateRmOptionsSync } = require("internal/fs/utils");
 
 tmpdir.refresh();
 
 let count = 0;
-const nextDirPath = (name = 'rm') =>
+const nextDirPath = (name = "rm") =>
  path.join(tmpdir.path, `${name}-${count++}`);
 
 const isGitPresent = (() => {
- try { execSync('git --version'); return true; } catch { return false; }
+ try { execSync("git --version"); return true; } catch { return false; }
 })();
 
 function gitInit(gitDirectory) {
  fs.mkdirSync(gitDirectory);
- execSync('git init', { cwd: gitDirectory });
+ execSync("git init", { cwd: gitDirectory });
 }
 
 function makeNonEmptyDirectory(depth, files, folders, dirname, createSymLinks) {
  fs.mkdirSync(dirname, { recursive: true });
- fs.writeFileSync(path.join(dirname, 'text.txt'), 'hello', 'utf8');
+ fs.writeFileSync(path.join(dirname, "text.txt"), "hello", "utf8");
 
- const options = { flag: 'wx' };
+ const options = { flag: "wx" };
 
  for (let f = files; f > 0; f--) {
-  fs.writeFileSync(path.join(dirname, `f-${depth}-${f}`), '', options);
+  fs.writeFileSync(path.join(dirname, `f-${depth}-${f}`), "", options);
  }
 
  if (createSymLinks) {
@@ -40,19 +40,19 @@ function makeNonEmptyDirectory(depth, files, folders, dirname, createSymLinks) {
   fs.symlinkSync(
    `f-${depth}-1`,
    path.join(dirname, `link-${depth}-good`),
-   'file',
+   "file",
   );
 
   // Invalid symlink
   fs.symlinkSync(
-   'does-not-exist',
+   "does-not-exist",
    path.join(dirname, `link-${depth}-bad`),
-   'file',
+   "file",
   );
  }
 
  // File with a name that looks like a glob
- fs.writeFileSync(path.join(dirname, '[a-z0-9].txt'), '', options);
+ fs.writeFileSync(path.join(dirname, "[a-z0-9].txt"), "", options);
 
  depth--;
  if (depth <= 0) {
@@ -77,18 +77,18 @@ function makeNonEmptyDirectory(depth, files, folders, dirname, createSymLinks) {
 function removeAsync(dir) {
  // Removal should fail without the recursive option.
  fs.rm(dir, common.mustCall((err) => {
-  assert.strictEqual(err.syscall, 'rm');
+  assert.strictEqual(err.syscall, "rm");
 
   // Removal should fail without the recursive option set to true.
   fs.rm(dir, { recursive: false }, common.mustCall((err) => {
-   assert.strictEqual(err.syscall, 'rm');
+   assert.strictEqual(err.syscall, "rm");
 
    // Recursive removal should succeed.
    fs.rm(dir, { recursive: true }, common.mustSucceed(() => {
 
     // Attempted removal should fail now because the directory is gone.
     fs.rm(dir, common.mustCall((err) => {
-     assert.strictEqual(err.syscall, 'stat');
+     assert.strictEqual(err.syscall, "stat");
     }));
    }));
   }));
@@ -119,16 +119,16 @@ function removeAsync(dir) {
 
  // Should fail if target does not exist
  fs.rm(
-  path.join(tmpdir.path, 'noexist.txt'),
+  path.join(tmpdir.path, "noexist.txt"),
   { recursive: true },
   common.mustCall((err) => {
-   assert.strictEqual(err.code, 'ENOENT');
+   assert.strictEqual(err.code, "ENOENT");
   }),
  );
 
  // Should delete a file
- const filePath = path.join(tmpdir.path, 'rm-async-file.txt');
- fs.writeFileSync(filePath, '');
+ const filePath = path.join(tmpdir.path, "rm-async-file.txt");
+ fs.writeFileSync(filePath, "");
  fs.rm(filePath, { recursive: true }, common.mustCall((err) => {
   try {
    assert.strictEqual(err, null);
@@ -157,23 +157,23 @@ if (isGitPresent) {
  // Removal should fail without the recursive option set to true.
  assert.throws(() => {
   fs.rmSync(dir);
- }, { syscall: 'rm' });
+ }, { syscall: "rm" });
  assert.throws(() => {
   fs.rmSync(dir, { recursive: false });
- }, { syscall: 'rm' });
+ }, { syscall: "rm" });
 
  // Should fail if target does not exist
  assert.throws(() => {
-  fs.rmSync(path.join(tmpdir.path, 'noexist.txt'), { recursive: true });
+  fs.rmSync(path.join(tmpdir.path, "noexist.txt"), { recursive: true });
  }, {
-  code: 'ENOENT',
-  name: 'Error',
+  code: "ENOENT",
+  name: "Error",
   message: /^ENOENT: no such file or directory, stat/,
  });
 
  // Should delete a file
- const filePath = path.join(tmpdir.path, 'rm-file.txt');
- fs.writeFileSync(filePath, '');
+ const filePath = path.join(tmpdir.path, "rm-file.txt");
+ fs.writeFileSync(filePath, "");
 
  try {
   fs.rmSync(filePath, { recursive: true });
@@ -182,8 +182,8 @@ if (isGitPresent) {
  }
 
  // Should accept URL
- const fileURL = pathToFileURL(path.join(tmpdir.path, 'rm-file.txt'));
- fs.writeFileSync(fileURL, '');
+ const fileURL = pathToFileURL(path.join(tmpdir.path, "rm-file.txt"));
+ fs.writeFileSync(fileURL, "");
 
  try {
   fs.rmSync(fileURL, { recursive: true });
@@ -195,7 +195,7 @@ if (isGitPresent) {
  fs.rmSync(dir, { recursive: true });
 
  // Attempted removal should fail now because the directory is gone.
- assert.throws(() => fs.rmSync(dir), { syscall: 'stat' });
+ assert.throws(() => fs.rmSync(dir), { syscall: "stat" });
 }
 
 // Removing a .git directory should not throw an EPERM.
@@ -213,33 +213,33 @@ if (isGitPresent) {
  makeNonEmptyDirectory(4, 10, 2, dir, true);
 
  // Removal should fail without the recursive option set to true.
- await assert.rejects(fs.promises.rm(dir), { syscall: 'rm' });
+ await assert.rejects(fs.promises.rm(dir), { syscall: "rm" });
  await assert.rejects(fs.promises.rm(dir, { recursive: false }), {
-  syscall: 'rm',
+  syscall: "rm",
  });
 
  // Recursive removal should succeed.
  await fs.promises.rm(dir, { recursive: true });
 
  // Attempted removal should fail now because the directory is gone.
- await assert.rejects(fs.promises.rm(dir), { syscall: 'stat' });
+ await assert.rejects(fs.promises.rm(dir), { syscall: "stat" });
 
  // Should fail if target does not exist
  await assert.rejects(fs.promises.rm(
-  path.join(tmpdir.path, 'noexist.txt'),
+  path.join(tmpdir.path, "noexist.txt"),
   { recursive: true },
  ), {
-  code: 'ENOENT',
-  name: 'Error',
+  code: "ENOENT",
+  name: "Error",
   message: /^ENOENT: no such file or directory, stat/,
  });
 
  // Should not fail if target does not exist and force option is true
- await fs.promises.rm(path.join(tmpdir.path, 'noexist.txt'), { force: true });
+ await fs.promises.rm(path.join(tmpdir.path, "noexist.txt"), { force: true });
 
  // Should delete file
- const filePath = path.join(tmpdir.path, 'rm-promises-file.txt');
- fs.writeFileSync(filePath, '');
+ const filePath = path.join(tmpdir.path, "rm-promises-file.txt");
+ fs.writeFileSync(filePath, "");
 
  try {
   await fs.promises.rm(filePath, { recursive: true });
@@ -248,8 +248,8 @@ if (isGitPresent) {
  }
 
  // Should accept URL
- const fileURL = pathToFileURL(path.join(tmpdir.path, 'rm-promises-file.txt'));
- fs.writeFileSync(fileURL, '');
+ const fileURL = pathToFileURL(path.join(tmpdir.path, "rm-promises-file.txt"));
+ fs.writeFileSync(fileURL, "");
 
  try {
   await fs.promises.rm(fileURL, { recursive: true });
@@ -273,8 +273,8 @@ if (isGitPresent) {
 {
  const dir = nextDirPath();
  makeNonEmptyDirectory(4, 10, 2, dir, true);
- const filePath = (path.join(tmpdir.path, 'rm-args-file.txt'));
- fs.writeFileSync(filePath, '');
+ const filePath = (path.join(tmpdir.path, "rm-args-file.txt"));
+ fs.writeFileSync(filePath, "");
 
  const defaults = {
   retryDelay: 100,
@@ -301,32 +301,32 @@ if (isGitPresent) {
   force: false,
  });
 
- [null, 'foo', 5, NaN].forEach((bad) => {
+ [null, "foo", 5, NaN].forEach((bad) => {
   assert.throws(() => {
    validateRmOptionsSync(filePath, bad);
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: /^The "options" argument must be of type object\./,
   });
  });
 
- [undefined, null, 'foo', Infinity, function() {}].forEach((bad) => {
+ [undefined, null, "foo", Infinity, function() {}].forEach((bad) => {
   assert.throws(() => {
    validateRmOptionsSync(filePath, { recursive: bad });
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: /^The "options\.recursive" property must be of type boolean\./,
   });
  });
 
- [undefined, null, 'foo', Infinity, function() {}].forEach((bad) => {
+ [undefined, null, "foo", Infinity, function() {}].forEach((bad) => {
   assert.throws(() => {
    validateRmOptionsSync(filePath, { force: bad });
   }, {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: /^The "options\.force" property must be of type boolean\./,
   });
  });
@@ -334,16 +334,16 @@ if (isGitPresent) {
  assert.throws(() => {
   validateRmOptionsSync(filePath, { retryDelay: -1 });
  }, {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: /^The value of "options\.retryDelay" is out of range\./,
  });
 
  assert.throws(() => {
   validateRmOptionsSync(filePath, { maxRetries: -1 });
  }, {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: /^The value of "options\.maxRetries" is out of range\./,
  });
 }
@@ -353,9 +353,9 @@ if (isGitPresent) {
  // This test should not be run as `root`
  if (!common.isIBMi && (common.isWindows || process.getuid() !== 0)) {
   function makeDirectoryReadOnly(dir, mode) {
-   let accessErrorCode = 'EACCES';
+   let accessErrorCode = "EACCES";
    if (common.isWindows) {
-    accessErrorCode = 'EPERM';
+    accessErrorCode = "EPERM";
     execSync(`icacls ${dir} /deny "everyone:(OI)(CI)(DE,DC)"`);
    } else {
     fs.chmodSync(dir, mode);
@@ -377,16 +377,16 @@ if (isGitPresent) {
    // Check that deleting a file that cannot be accessed using rmsync throws
    // https://github.com/nodejs/node/issues/38683
    const dirname = nextDirPath();
-   const filePath = path.join(dirname, 'text.txt');
+   const filePath = path.join(dirname, "text.txt");
    try {
     fs.mkdirSync(dirname, { recursive: true });
-    fs.writeFileSync(filePath, 'hello');
+    fs.writeFileSync(filePath, "hello");
     const code = makeDirectoryReadOnly(dirname, 0o444);
     assert.throws(() => {
      fs.rmSync(filePath, { force: true });
     }, {
      code,
-     name: 'Error',
+     name: "Error",
     });
    } finally {
     makeDirectoryWritable(dirname);
@@ -398,10 +398,10 @@ if (isGitPresent) {
    // https://github.com/nodejs/node/issues/34580
    const dirname = nextDirPath();
    fs.mkdirSync(dirname, { recursive: true });
-   const root = fs.mkdtempSync(path.join(dirname, 'fs-'));
-   const middle = path.join(root, 'middle');
+   const root = fs.mkdtempSync(path.join(dirname, "fs-"));
+   const middle = path.join(root, "middle");
    fs.mkdirSync(middle);
-   fs.mkdirSync(path.join(middle, 'leaf')); // Make `middle` non-empty
+   fs.mkdirSync(path.join(middle, "leaf")); // Make `middle` non-empty
    try {
     const code = makeDirectoryReadOnly(middle, 0o555);
     try {
@@ -409,7 +409,7 @@ if (isGitPresent) {
       fs.rmSync(root, { recursive: true });
      }, {
       code,
-      name: 'Error',
+      name: "Error",
      });
     } catch (err) {
      // Only fail the test if the folder was not deleted.

@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
-const util = require('util');
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
+const util = require("util");
 const print = process._rawDebug;
 
-if (typeof global.gc === 'function') {
+if (typeof global.gc === "function") {
  (function exity(cntr) {
-  process.once('beforeExit', () => {
+  process.once("beforeExit", () => {
    global.gc();
    if (cntr < 4) setImmediate(() => exity(cntr + 1));
   });
@@ -36,11 +36,11 @@ class ActivityCollector {
   this._logtype = logtype;
 
   // Register event handlers if provided
-  this.oninit = typeof oninit === 'function' ? oninit : noop;
-  this.onbefore = typeof onbefore === 'function' ? onbefore : noop;
-  this.onafter = typeof onafter === 'function' ? onafter : noop;
-  this.ondestroy = typeof ondestroy === 'function' ? ondestroy : noop;
-  this.onpromiseResolve = typeof onpromiseResolve === 'function' ?
+  this.oninit = typeof oninit === "function" ? oninit : noop;
+  this.onbefore = typeof onbefore === "function" ? onbefore : noop;
+  this.onafter = typeof onafter === "function" ? onafter : noop;
+  this.ondestroy = typeof ondestroy === "function" ? ondestroy : noop;
+  this.onpromiseResolve = typeof onpromiseResolve === "function" ?
    onpromiseResolve : noop;
 
   // Create the hook with which we'll collect activity data
@@ -119,13 +119,13 @@ class ActivityCollector {
    }
   }
   if (violations.length) {
-   console.error(violations.join('\n\n') + '\n');
+   console.error(violations.join("\n\n") + "\n");
    assert.fail(`${violations.length} failed sanity checks`);
   }
  }
 
  inspect(opts = {}) {
-  if (typeof opts === 'string') opts = { types: opts };
+  if (typeof opts === "string") opts = { types: opts };
   const { types = null, depth = 5, stage = null } = opts;
   const activities = types == null ?
    Array.from(this._activities.values()) :
@@ -158,7 +158,7 @@ class ActivityCollector {
    // events this makes sense for a few tests in which we enable some hooks
    // later
    if (this._allowNoInit) {
-    const stub = { uid, type: 'Unknown', handleIsObject: true, handle: {} };
+    const stub = { uid, type: "Unknown", handleIsObject: true, handle: {} };
     this._activities.set(uid, stub);
     return stub;
    } else if (!common.isMainThread) {
@@ -167,7 +167,7 @@ class ActivityCollector {
     return null;
    }
    const err = new Error(`Found a handle whose ${hook}` +
-                            ' hook was invoked but not its init hook');
+                            " hook was invoked but not its init hook");
    throw err;
   }
   return h;
@@ -183,37 +183,37 @@ class ActivityCollector {
    handleIsObject: handle instanceof Object,
    handle,
   };
-  this._stamp(activity, 'init');
+  this._stamp(activity, "init");
   this._activities.set(uid, activity);
-  this._maybeLog(uid, type, 'init');
+  this._maybeLog(uid, type, "init");
   this.oninit(uid, type, triggerAsyncId, handle);
  }
 
  _before(uid) {
-  const h = this._getActivity(uid, 'before');
-  this._stamp(h, 'before');
-  this._maybeLog(uid, h && h.type, 'before');
+  const h = this._getActivity(uid, "before");
+  this._stamp(h, "before");
+  this._maybeLog(uid, h && h.type, "before");
   this.onbefore(uid);
  }
 
  _after(uid) {
-  const h = this._getActivity(uid, 'after');
-  this._stamp(h, 'after');
-  this._maybeLog(uid, h && h.type, 'after');
+  const h = this._getActivity(uid, "after");
+  this._stamp(h, "after");
+  this._maybeLog(uid, h && h.type, "after");
   this.onafter(uid);
  }
 
  _destroy(uid) {
-  const h = this._getActivity(uid, 'destroy');
-  this._stamp(h, 'destroy');
-  this._maybeLog(uid, h && h.type, 'destroy');
+  const h = this._getActivity(uid, "destroy");
+  this._stamp(h, "destroy");
+  this._maybeLog(uid, h && h.type, "destroy");
   this.ondestroy(uid);
  }
 
  _promiseResolve(uid) {
-  const h = this._getActivity(uid, 'promiseResolve');
-  this._stamp(h, 'promiseResolve');
-  this._maybeLog(uid, h && h.type, 'promiseResolve');
+  const h = this._getActivity(uid, "promiseResolve");
+  this._stamp(h, "promiseResolve");
+  this._maybeLog(uid, h && h.type, "promiseResolve");
   this.onpromiseResolve(uid);
  }
 

@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
 // Refs: https://github.com/nodejs/node/issues/33940
 
-const common = require('../common');
-const tmpdir = require('../common/tmpdir');
-const fs = require('fs');
-const assert = require('assert');
-const path = require('path');
+const common = require("../common");
+const tmpdir = require("../common/tmpdir");
+const fs = require("fs");
+const assert = require("assert");
+const path = require("path");
 
 tmpdir.refresh();
 
-const file = path.join(tmpdir.path, '/read_stream_pos_test.txt');
+const file = path.join(tmpdir.path, "/read_stream_pos_test.txt");
 
-fs.writeFileSync(file, '');
+fs.writeFileSync(file, "");
 
 let counter = 0;
 
 const writeInterval = setInterval(() => {
  counter = counter + 1;
  const line = `hello at ${counter}\n`;
- fs.writeFileSync(file, line, { flag: 'a' });
+ fs.writeFileSync(file, line, { flag: "a" });
 }, 1);
 
 const hwm = 10;
@@ -35,14 +35,14 @@ const readInterval = setInterval(() => {
   highWaterMark: hwm,
   start: cur,
  });
- stream.on('data', common.mustCallAtLeast((chunk) => {
+ stream.on("data", common.mustCallAtLeast((chunk) => {
   cur += chunk.length;
   bufs.push(chunk);
   if (isLow) {
    const brokenLines = Buffer.concat(bufs).toString()
-        .split('\n')
+        .split("\n")
         .filter((line) => {
-        	const s = 'hello at'.slice(0, line.length);
+        	const s = "hello at".slice(0, line.length);
         	if (line && !line.startsWith(s)) {
         		return true;
         	}
@@ -56,7 +56,7 @@ const readInterval = setInterval(() => {
    isLow = true;
   }
  }));
- stream.on('end', () => {
+ stream.on("end", () => {
   stream = null;
   isLow = false;
   bufs = [];
@@ -73,7 +73,7 @@ const exitTest = () => {
  clearInterval(writeInterval);
  clearTimeout(endTimer);
  if (stream && !stream.destroyed) {
-  stream.on('close', () => {
+  stream.on("close", () => {
    process.exit();
   });
   stream.destroy();

@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
 
-const truthyValues = [true, 1, 'true', {}, []];
-const falseyValues = [false, 0, ''];
+const truthyValues = [true, 1, "true", {}, []];
+const falseyValues = [false, 0, ""];
 const genSetNoDelay = (desiredArg) => (enable) => {
  assert.strictEqual(enable, desiredArg);
 };

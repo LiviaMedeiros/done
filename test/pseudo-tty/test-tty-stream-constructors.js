@@ -1,7 +1,7 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const { ReadStream, WriteStream } = require('tty');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { ReadStream, WriteStream } = require("tty");
 
 {
  // Verify that tty.ReadStream can be constructed without new.

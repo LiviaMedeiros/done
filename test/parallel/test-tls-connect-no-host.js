@@ -1,15 +1,15 @@
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const tls = require('tls');
-const assert = require('assert');
+const tls = require("tls");
+const assert = require("assert");
 
-const cert = fixtures.readKey('rsa_cert.crt');
-const key = fixtures.readKey('rsa_private.pem');
+const cert = fixtures.readKey("rsa_cert.crt");
+const key = fixtures.readKey("rsa_private.pem");
 
 // https://github.com/nodejs/node/issues/1489
 // tls.connect(options) with no options.host should accept a cert with

@@ -19,52 +19,52 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 let bytesRead = 0;
 let bytesWritten = 0;
 let count = 0;
 
 const tcp = net.Server(function(s) {
- console.log('tcp server connection');
+ console.log("tcp server connection");
 
  // trigger old mode.
  s.resume();
 
- s.on('end', function() {
+ s.on("end", function() {
   bytesRead += s.bytesRead;
   console.log(`tcp socket disconnect #${count}`);
  });
 });
 
 tcp.listen(0, function doTest() {
- console.error('listening');
+ console.error("listening");
  const socket = net.createConnection(this.address().port);
 
- socket.on('connect', function() {
+ socket.on("connect", function() {
   count++;
-  console.error('CLIENT connect #%d', count);
+  console.error("CLIENT connect #%d", count);
 
-  socket.write('foo', function() {
-   console.error('CLIENT: write cb');
-   socket.end('bar');
+  socket.write("foo", function() {
+   console.error("CLIENT: write cb");
+   socket.end("bar");
   });
  });
 
- socket.on('finish', function() {
+ socket.on("finish", function() {
   bytesWritten += socket.bytesWritten;
-  console.error('CLIENT end event #%d', count);
+  console.error("CLIENT end event #%d", count);
  });
 
- socket.on('close', function() {
-  console.error('CLIENT close event #%d', count);
+ socket.on("close", function() {
+  console.error("CLIENT close event #%d", count);
   console.log(`Bytes read: ${bytesRead}`);
   console.log(`Bytes written: ${bytesWritten}`);
   if (count < 2) {
-   console.error('RECONNECTING');
+   console.error("RECONNECTING");
    socket.connect(tcp.address().port);
   } else {
    tcp.close();
@@ -72,7 +72,7 @@ tcp.listen(0, function doTest() {
  });
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(bytesRead, 12);
  assert.strictEqual(bytesWritten, 12);
 });

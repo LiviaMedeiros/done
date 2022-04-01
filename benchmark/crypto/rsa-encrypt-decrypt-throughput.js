@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 // Throughput benchmark in signing and verifying
-const common = require('../common.js');
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
-const fixtures_keydir = path.resolve(__dirname, '../../test/fixtures/keys/');
-const keylen_list = ['1024', '2048', '4096'];
+const common = require("../common.js");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const fixtures_keydir = path.resolve(__dirname, "../../test/fixtures/keys/");
+const keylen_list = ["1024", "2048", "4096"];
 const RSA_PublicPem = {};
 const RSA_PrivatePem = {};
 
@@ -23,7 +23,7 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ len, algo, keylen, n }) {
- const message = Buffer.alloc(len, 'b');
+ const message = Buffer.alloc(len, "b");
  bench.start();
  StreamWrite(algo, keylen, message, n, len);
 }

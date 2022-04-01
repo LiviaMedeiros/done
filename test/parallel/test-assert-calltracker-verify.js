@@ -1,12 +1,12 @@
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 // This test ensures that assert.CallTracker.verify() works as intended.
 
 const tracker = new assert.CallTracker();
 
-const msg = 'Function(s) were not called the expected number of times';
+const msg = "Function(s) were not called the expected number of times";
 
 function foo() {}
 

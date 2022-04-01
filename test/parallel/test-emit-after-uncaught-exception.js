@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 const id_obj = {};
 let collect = true;
@@ -12,8 +12,8 @@ const hook = async_hooks.createHook({
  after(id) { delete id_obj[id]; },
 }).enable();
 
-process.once('uncaughtException', common.mustCall((er) => {
- assert.strictEqual(er.message, 'bye');
+process.once("uncaughtException", common.mustCall((er) => {
+ assert.strictEqual(er.message, "bye");
  collect = false;
 }));
 
@@ -25,11 +25,11 @@ setImmediate(common.mustCall(() => {
 
  // Create a stack of async ids that will need to be emitted in the case of
  // an uncaught exception.
- const ar1 = new async_hooks.AsyncResource('Mine');
+ const ar1 = new async_hooks.AsyncResource("Mine");
  ar1.runInAsyncScope(() => {
-  const ar2 = new async_hooks.AsyncResource('Mine');
+  const ar2 = new async_hooks.AsyncResource("Mine");
   ar2.runInAsyncScope(() => {
-   throw new Error('bye');
+   throw new Error("bye");
   });
  });
 

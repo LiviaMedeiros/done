@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { AsyncResource, executionAsyncId } = require('async_hooks');
+const common = require("../common");
+const assert = require("assert");
+const { AsyncResource, executionAsyncId } = require("async_hooks");
 
 const fn = common.mustCall(AsyncResource.bind(() => {
  return executionAsyncId();
@@ -13,11 +13,11 @@ setImmediate(() => {
  assert.notStrictEqual(asyncId, fn());
 });
 
-const asyncResource = new AsyncResource('test');
+const asyncResource = new AsyncResource("test");
 
-[1, false, '', {}, []].forEach((i) => {
+[1, false, "", {}, []].forEach((i) => {
  assert.throws(() => asyncResource.bind(i), {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
  });
 });
 
@@ -51,6 +51,6 @@ const fn5 = asyncResource.bind(common.mustCall(function() {
 fn5();
 
 const fn6 = asyncResource.bind(common.mustCall(function() {
- assert.strictEqual(this, 'test');
+ assert.strictEqual(this, "test");
 }));
-fn6.call('test');
+fn6.call("test");

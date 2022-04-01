@@ -1,11 +1,11 @@
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
 // This test ensures that the escapeCodeTimeout option set correctly
 
-const assert = require('assert');
-const readline = require('readline');
-const EventEmitter = require('events').EventEmitter;
+const assert = require("assert");
+const readline = require("readline");
+const EventEmitter = require("events").EventEmitter;
 
 class FakeInput extends EventEmitter {
  resume() {}
@@ -29,7 +29,7 @@ class FakeInput extends EventEmitter {
  null,
  {},
  NaN,
- '50',
+ "50",
 ].forEach((invalidInput) => {
  assert.throws(() => {
   const fi = new FakeInput();
@@ -40,7 +40,7 @@ class FakeInput extends EventEmitter {
   });
   rli.close();
  }, {
-  name: 'TypeError',
-  code: 'ERR_INVALID_ARG_VALUE',
+  name: "TypeError",
+  code: "ERR_INVALID_ARG_VALUE",
  });
 });

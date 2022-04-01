@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const { Writable } = require('stream');
+"use strict";
+const common = require("../common");
+const { Writable } = require("stream");
 
 {
  // Sync + Sync
@@ -10,10 +10,10 @@ const { Writable } = require('stream');
    cb();
   }),
  });
- writable.write('hi');
- writable.on('error', common.expectsError({
-  code: 'ERR_MULTIPLE_CALLBACK',
-  name: 'Error',
+ writable.write("hi");
+ writable.on("error", common.expectsError({
+  code: "ERR_MULTIPLE_CALLBACK",
+  name: "Error",
  }));
 }
 
@@ -27,10 +27,10 @@ const { Writable } = require('stream');
    });
   }),
  });
- writable.write('hi');
- writable.on('error', common.expectsError({
-  code: 'ERR_MULTIPLE_CALLBACK',
-  name: 'Error',
+ writable.write("hi");
+ writable.on("error", common.expectsError({
+  code: "ERR_MULTIPLE_CALLBACK",
+  name: "Error",
  }));
 }
 
@@ -44,9 +44,9 @@ const { Writable } = require('stream');
    });
   }),
  });
- writable.write('hi');
- writable.on('error', common.expectsError({
-  code: 'ERR_MULTIPLE_CALLBACK',
-  name: 'Error',
+ writable.write("hi");
+ writable.on("error", common.expectsError({
+  code: "ERR_MULTIPLE_CALLBACK",
+  name: "Error",
  }));
 }

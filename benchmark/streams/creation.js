@@ -1,20 +1,20 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 const {
  Duplex,
  Readable,
  Transform,
  Writable,
-} = require('stream');
+} = require("stream");
 
 const bench = common.createBenchmark(main, {
  n: [50e6],
- kind: ['duplex', 'readable', 'transform', 'writable'],
+ kind: ["duplex", "readable", "transform", "writable"],
 });
 
 function main({ n, kind }) {
  switch (kind) {
-  case 'duplex':
+  case "duplex":
    new Duplex({});
    new Duplex();
 
@@ -23,7 +23,7 @@ function main({ n, kind }) {
     new Duplex();
    bench.end(n);
    break;
-  case 'readable':
+  case "readable":
    new Readable({});
    new Readable();
 
@@ -32,7 +32,7 @@ function main({ n, kind }) {
     new Readable();
    bench.end(n);
    break;
-  case 'writable':
+  case "writable":
    new Writable({});
    new Writable();
 
@@ -41,7 +41,7 @@ function main({ n, kind }) {
     new Writable();
    bench.end(n);
    break;
-  case 'transform':
+  case "transform":
    new Transform({});
    new Transform();
 
@@ -51,6 +51,6 @@ function main({ n, kind }) {
    bench.end(n);
    break;
   default:
-   throw new Error('Invalid kind');
+   throw new Error("Invalid kind");
  }
 }

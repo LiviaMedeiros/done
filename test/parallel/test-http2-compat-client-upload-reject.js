@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
 // Verifies that uploading data from a client works
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const fs = require('fs');
-const fixtures = require('../common/fixtures');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const fs = require("fs");
+const fixtures = require("../common/fixtures");
 
-const loc = fixtures.path('person-large.jpg');
+const loc = fixtures.path("person-large.jpg");
 
 assert(fs.existsSync(loc));
 
@@ -21,19 +21,19 @@ fs.readFile(loc, common.mustSucceed((data) => {
    res.end();
   });
  }));
- server.on('close', common.mustCall());
+ server.on("close", common.mustCall());
 
  server.listen(0, common.mustCall(() => {
   const client = http2.connect(`http://localhost:${server.address().port}`);
-  client.on('close', common.mustCall());
+  client.on("close", common.mustCall());
 
-  const req = client.request({ ':method': 'POST' });
-  req.on('response', common.mustCall((headers) => {
-   assert.strictEqual(headers[':status'], 400);
+  const req = client.request({ ":method": "POST" });
+  req.on("response", common.mustCall((headers) => {
+   assert.strictEqual(headers[":status"], 400);
   }));
 
   req.resume();
-  req.on('end', common.mustCall(() => {
+  req.on("end", common.mustCall(() => {
    server.close();
    client.close();
   }));

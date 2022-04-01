@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 // Flags: --expose-internals
-const common = require('../common');
-const assert = require('assert');
-const net = require('net');
-const { normalizedArgsSymbol } = require('internal/net');
+const common = require("../common");
+const assert = require("assert");
+const net = require("net");
+const { normalizedArgsSymbol } = require("internal/net");
 
 function validateNormalizedArgs(input, output) {
  const args = net._normalizeArgs(input);
@@ -23,7 +23,7 @@ validateNormalizedArgs([{ port: 1234 }, assert.fail], res);
 
 // Connecting to the server should fail with a standard array.
 {
- const server = net.createServer(common.mustNotCall('should not connect'));
+ const server = net.createServer(common.mustNotCall("should not connect"));
 
  server.listen(common.mustCall(() => {
   const port = server.address().port;
@@ -32,7 +32,7 @@ validateNormalizedArgs([{ port: 1234 }, assert.fail], res);
   assert.throws(() => {
    socket.connect([{ port }, assert.fail]);
   }, {
-   code: 'ERR_MISSING_ARGS',
+   code: "ERR_MISSING_ARGS",
   });
   server.close();
  }));

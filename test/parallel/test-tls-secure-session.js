@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const tls = require('tls');
+ common.skip("missing crypto");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const tls = require("tls");
 
 const options = {
- key: fixtures.readKey('agent1-key.pem'),
+ key: fixtures.readKey("agent1-key.pem"),
 
  // NOTE: Certificate Common Name is 'agent1'
- cert: fixtures.readKey('agent1-cert.pem'),
+ cert: fixtures.readKey("agent1-cert.pem"),
 
  // NOTE: TLS 1.3 creates new session ticket **after** handshake so
  // `getSession()` output will be different even if the session was reused
  // during the handshake.
- secureProtocol: 'TLSv1_2_method',
+ secureProtocol: "TLSv1_2_method",
 };
 
 const server = tls.createServer(options, common.mustCall((socket) => {
@@ -34,7 +34,7 @@ const server = tls.createServer(options, common.mustCall((socket) => {
   connected = true;
  }));
 
- client.on('session', common.mustCall((newSession) => {
+ client.on("session", common.mustCall((newSession) => {
   assert(connected);
   assert(!session);
 

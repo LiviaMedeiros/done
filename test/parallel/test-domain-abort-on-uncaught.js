@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
 // This test makes sure that when using --abort-on-uncaught-exception and
 // when throwing an error from within a domain that has an error handler
 // setup, the process _does not_ abort.
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
-const domain = require('domain');
-const child_process = require('child_process');
+const assert = require("assert");
+const domain = require("domain");
+const child_process = require("child_process");
 
 const tests = [
  function nextTick() {
   const d = domain.create();
 
-  d.once('error', common.mustCall());
+  d.once("error", common.mustCall());
 
   d.run(function() {
    process.nextTick(function() {
-    throw new Error('exceptional!');
+    throw new Error("exceptional!");
    });
   });
  },
@@ -26,11 +26,11 @@ const tests = [
  function timer() {
   const d = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
    setTimeout(function() {
-    throw new Error('exceptional!');
+    throw new Error("exceptional!");
    }, 33);
   });
  },
@@ -38,11 +38,11 @@ const tests = [
  function immediate() {
   const d = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
    setImmediate(function() {
-    throw new Error('boom!');
+    throw new Error("boom!");
    });
   });
  },
@@ -50,12 +50,12 @@ const tests = [
  function timerPlusNextTick() {
   const d = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
    setTimeout(function() {
     process.nextTick(function() {
-     throw new Error('exceptional!');
+     throw new Error("exceptional!");
     });
    }, 33);
   });
@@ -64,31 +64,31 @@ const tests = [
  function firstRun() {
   const d = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
-   throw new Error('exceptional!');
+   throw new Error("exceptional!");
   });
  },
 
  function fsAsync() {
   const d = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
-   const fs = require('fs');
-   fs.exists('/non/existing/file', function onExists(exists) {
-    throw new Error('boom!');
+   const fs = require("fs");
+   fs.exists("/non/existing/file", function onExists(exists) {
+    throw new Error("boom!");
    });
   });
  },
 
  function netServer() {
-  const net = require('net');
+  const net = require("net");
   const d = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
    const server = net.createServer(function(conn) {
@@ -96,10 +96,10 @@ const tests = [
    });
    server.listen(0, common.localhostIPv4, function() {
     const conn = net.connect(this.address().port, common.localhostIPv4);
-    conn.once('data', function() {
-     throw new Error('ok');
+    conn.once("data", function() {
+     throw new Error("ok");
     });
-    conn.end('ok');
+    conn.end("ok");
     server.close();
    });
   });
@@ -109,11 +109,11 @@ const tests = [
   const d = domain.create();
   const d2 = domain.create();
 
-  d.on('error', common.mustCall());
+  d.on("error", common.mustCall());
 
   d.run(function() {
    d2.run(function() {
-    throw new Error('boom!');
+    throw new Error("boom!");
    });
   });
  },
@@ -122,11 +122,11 @@ const tests = [
   const d = domain.create();
   const d2 = domain.create();
 
-  d2.on('error', common.mustCall());
+  d2.on("error", common.mustCall());
 
   d.run(function() {
    d2.run(function() {
-    throw new Error('boom!');
+    throw new Error("boom!");
    });
   });
  },
@@ -135,13 +135,13 @@ const tests = [
   const d = domain.create();
   const d2 = domain.create();
 
-  d2.on('error', common.mustCall());
+  d2.on("error", common.mustCall());
 
   d.run(function() {
    d2.run(function() {
     setTimeout(function() {
-     console.log('foo');
-     throw new Error('boom!');
+     console.log("foo");
+     throw new Error("boom!");
     }, 33);
    });
   });
@@ -151,12 +151,12 @@ const tests = [
   const d = domain.create();
   const d2 = domain.create();
 
-  d2.on('error', common.mustCall());
+  d2.on("error", common.mustCall());
 
   d.run(function() {
    d2.run(function() {
     setImmediate(function() {
-     throw new Error('boom!');
+     throw new Error("boom!");
     });
    });
   });
@@ -166,12 +166,12 @@ const tests = [
   const d = domain.create();
   const d2 = domain.create();
 
-  d2.on('error', common.mustCall());
+  d2.on("error", common.mustCall());
 
   d.run(function() {
    d2.run(function() {
     process.nextTick(function() {
-     throw new Error('boom!');
+     throw new Error("boom!");
     });
    });
   });
@@ -181,20 +181,20 @@ const tests = [
   const d = domain.create();
   const d2 = domain.create();
 
-  d2.on('error', common.mustCall());
+  d2.on("error", common.mustCall());
 
   d.run(function() {
    d2.run(function() {
-    const fs = require('fs');
-    fs.exists('/non/existing/file', function onExists(exists) {
-     throw new Error('boom!');
+    const fs = require("fs");
+    fs.exists("/non/existing/file", function onExists(exists) {
+     throw new Error("boom!");
     });
    });
   });
  },
 ];
 
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  const testIndex = +process.argv[3];
 
  tests[testIndex]();
@@ -202,11 +202,11 @@ if (process.argv[2] === 'child') {
 } else {
 
  tests.forEach(function(test, testIndex) {
-  let testCmd = '';
+  let testCmd = "";
   if (!common.isWindows) {
    // Do not create core files, as it can take a lot of disk space on
    // continuous testing and developers' machines
-   testCmd += 'ulimit -c 0 && ';
+   testCmd += "ulimit -c 0 && ";
   }
 
   testCmd += `"${process.argv[0]}" --abort-on-uncaught-exception ` +

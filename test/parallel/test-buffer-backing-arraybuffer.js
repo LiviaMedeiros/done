@@ -1,9 +1,9 @@
 // Flags: --expose-internals
-'use strict';
-require('../common');
-const assert = require('assert');
-const { internalBinding } = require('internal/test/binding');
-const { arrayBufferViewHasBuffer } = internalBinding('util');
+"use strict";
+require("../common");
+const assert = require("assert");
+const { internalBinding } = require("internal/test/binding");
+const { arrayBufferViewHasBuffer } = internalBinding("util");
 
 const tests = [
  { length: 0, expectOnHeap: true },

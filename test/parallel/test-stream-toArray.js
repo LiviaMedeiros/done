@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 const {
  Readable,
-} = require('stream');
-const assert = require('assert');
+} = require("stream");
+const assert = require("assert");
 
 {
  // Works on a synchronous stream
@@ -67,7 +67,7 @@ const assert = require('assert');
   });
   await stream.toArray({ signal: ac.signal });
  }, {
-  name: 'AbortError',
+  name: "AbortError",
  }).then(common.mustCall(() => {
   // Only stops toArray, does not destroy the stream
   assert(stream.destroyed, false);

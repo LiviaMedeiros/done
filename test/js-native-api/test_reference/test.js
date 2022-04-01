@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
-const { gcUntil, buildType } = require('../../common');
-const assert = require('assert');
+const { gcUntil, buildType } = require("../../common");
+const assert = require("assert");
 
 const test_reference = require(`./build/${buildType}/test_reference`);
 
@@ -15,17 +15,17 @@ assert.strictEqual(test_reference.finalizeCount, 0);
 // with an async delay and GC call between each.
 async function runTests() {
  (() => {
-  const symbol = test_reference.createSymbol('testSym');
+  const symbol = test_reference.createSymbol("testSym");
   test_reference.createReference(symbol, 0);
   assert.strictEqual(test_reference.referenceValue, symbol);
  })();
  test_reference.deleteReference();
 
  (() => {
-  const symbol = test_reference.createSymbolFor('testSymFor');
+  const symbol = test_reference.createSymbolFor("testSymFor");
   test_reference.createReference(symbol, 0);
   assert.strictEqual(test_reference.referenceValue, symbol);
-  assert.strictEqual(test_reference.referenceValue, Symbol.for('testSymFor'));
+  assert.strictEqual(test_reference.referenceValue, Symbol.for("testSymFor"));
  })();
  test_reference.deleteReference();
 
@@ -33,7 +33,7 @@ async function runTests() {
   const symbol = test_reference.createSymbolForEmptyString();
   test_reference.createReference(symbol, 0);
   assert.strictEqual(test_reference.referenceValue, symbol);
-  assert.strictEqual(test_reference.referenceValue, Symbol.for(''));
+  assert.strictEqual(test_reference.referenceValue, Symbol.for(""));
  })();
  test_reference.deleteReference();
 
@@ -43,19 +43,19 @@ async function runTests() {
  (() => {
   const value = test_reference.createExternal();
   assert.strictEqual(test_reference.finalizeCount, 0);
-  assert.strictEqual(typeof value, 'object');
+  assert.strictEqual(typeof value, "object");
   test_reference.checkExternal(value);
  })();
- await gcUntil('External value without a finalizer',
+ await gcUntil("External value without a finalizer",
                () => (test_reference.finalizeCount === 0));
 
  (() => {
   const value = test_reference.createExternalWithFinalize();
   assert.strictEqual(test_reference.finalizeCount, 0);
-  assert.strictEqual(typeof value, 'object');
+  assert.strictEqual(typeof value, "object");
   test_reference.checkExternal(value);
  })();
- await gcUntil('External value with a finalizer',
+ await gcUntil("External value with a finalizer",
                () => (test_reference.finalizeCount === 1));
 
  (() => {
@@ -65,7 +65,7 @@ async function runTests() {
   assert.strictEqual(test_reference.referenceValue, value);
  })();
  // Value should be GC'd because there is only a weak ref
- await gcUntil('Weak reference',
+ await gcUntil("Weak reference",
                () => (test_reference.referenceValue === undefined &&
                 test_reference.finalizeCount === 1));
  test_reference.deleteReference();
@@ -77,10 +77,10 @@ async function runTests() {
   assert.strictEqual(test_reference.referenceValue, value);
  })();
  // Value should NOT be GC'd because there is a strong ref
- await gcUntil('Strong reference',
+ await gcUntil("Strong reference",
                () => (test_reference.finalizeCount === 0));
  test_reference.deleteReference();
- await gcUntil('Strong reference (cont.d)',
+ await gcUntil("Strong reference (cont.d)",
                () => (test_reference.finalizeCount === 1));
 
  (() => {
@@ -89,27 +89,27 @@ async function runTests() {
   test_reference.createReference(value, 1);
  })();
  // Value should NOT be GC'd because there is a strong ref
- await gcUntil('Strong reference, increment then decrement to weak reference',
+ await gcUntil("Strong reference, increment then decrement to weak reference",
                () => (test_reference.finalizeCount === 0));
  assert.strictEqual(test_reference.incrementRefcount(), 2);
  // Value should NOT be GC'd because there is a strong ref
  await gcUntil(
-  'Strong reference, increment then decrement to weak reference (cont.d-1)',
+  "Strong reference, increment then decrement to weak reference (cont.d-1)",
   () => (test_reference.finalizeCount === 0));
  assert.strictEqual(test_reference.decrementRefcount(), 1);
  // Value should NOT be GC'd because there is a strong ref
  await gcUntil(
-  'Strong reference, increment then decrement to weak reference (cont.d-2)',
+  "Strong reference, increment then decrement to weak reference (cont.d-2)",
   () => (test_reference.finalizeCount === 0));
  assert.strictEqual(test_reference.decrementRefcount(), 0);
  // Value should be GC'd because the ref is now weak!
  await gcUntil(
-  'Strong reference, increment then decrement to weak reference (cont.d-3)',
+  "Strong reference, increment then decrement to weak reference (cont.d-3)",
   () => (test_reference.finalizeCount === 1));
  test_reference.deleteReference();
  // Value was already GC'd
  await gcUntil(
-  'Strong reference, increment then decrement to weak reference (cont.d-4)',
+  "Strong reference, increment then decrement to weak reference (cont.d-4)",
   () => (test_reference.finalizeCount === 1));
 }
 runTests();

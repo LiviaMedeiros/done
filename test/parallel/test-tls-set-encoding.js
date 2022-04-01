@@ -19,28 +19,28 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const options = {
- key: fixtures.readKey('agent2-key.pem'),
- cert: fixtures.readKey('agent2-cert.pem'),
+ key: fixtures.readKey("agent2-key.pem"),
+ cert: fixtures.readKey("agent2-cert.pem"),
 };
 
 // Contains a UTF8 only character
-const messageUtf8 = 'x√ab c';
+const messageUtf8 = "x√ab c";
 
 // The same string above represented with ASCII
-const messageAscii = 'xb\b\u001aab c';
+const messageAscii = "xb\b\u001aab c";
 
 const server = tls.Server(options, common.mustCall(function(socket) {
- console.log('server: on secureConnection', socket.getProtocol());
+ console.log("server: on secureConnection", socket.getProtocol());
  socket.end(messageUtf8);
 }));
 
@@ -51,27 +51,27 @@ server.listen(0, function() {
   rejectUnauthorized: false,
  });
 
- let buffer = '';
+ let buffer = "";
 
- client.setEncoding('ascii');
+ client.setEncoding("ascii");
 
- client.on('data', function(d) {
-  console.log('client: on data', d);
-  assert.ok(typeof d === 'string');
+ client.on("data", function(d) {
+  console.log("client: on data", d);
+  assert.ok(typeof d === "string");
   buffer += d;
  });
 
- client.on('secureConnect', common.mustCall(() => {
-  console.log('client: on secureConnect');
+ client.on("secureConnect", common.mustCall(() => {
+  console.log("client: on secureConnect");
  }));
 
- client.on('close', common.mustCall(function() {
-  console.log('client: on close');
+ client.on("close", common.mustCall(function() {
+  console.log("client: on close");
 
   // readyState is deprecated but we want to make
   // sure this isn't triggering an assert in lib/net.js
   // See https://github.com/nodejs/node-v0.x-archive/issues/1069.
-  assert.strictEqual(client.readyState, 'closed');
+  assert.strictEqual(client.readyState, "closed");
 
   // Confirming the buffer string is encoded in ASCII
   // and thus does NOT match the UTF8 string

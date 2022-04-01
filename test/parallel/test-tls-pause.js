@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 // This test ensures that the data received over tls-server after pause
 // is same as what it was sent
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
 const options = {
- key: fixtures.readKey('rsa_private.pem'),
- cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey("rsa_private.pem"),
+ cert: fixtures.readKey("rsa_cert.crt"),
 };
 
 const bufSize = 1024 * 1024;
@@ -42,8 +42,8 @@ let received = 0;
 
 const server = tls.Server(options, common.mustCall((socket) => {
  socket.pipe(socket);
- socket.on('data', (c) => {
-  console.error('data', c.length);
+ socket.on("data", (c) => {
+  console.error("data", c.length);
  });
 }));
 
@@ -53,15 +53,15 @@ server.listen(0, common.mustCall(() => {
   port: server.address().port,
   rejectUnauthorized: false,
  }, common.mustCall(() => {
-  console.error('connected');
+  console.error("connected");
   client.pause();
-  console.error('paused');
+  console.error("paused");
   const send = (() => {
-   console.error('sending');
+   console.error("sending");
    const ret = client.write(Buffer.allocUnsafe(bufSize));
    console.error(`write => ${ret}`);
    if (ret !== false) {
-    console.error('write again');
+    console.error("write again");
     sent += bufSize;
     assert.ok(sent < 100 * 1024 * 1024); // max 100MB
     return process.nextTick(send);
@@ -70,15 +70,15 @@ server.listen(0, common.mustCall(() => {
    console.error(`sent: ${sent}`);
    resumed = true;
    client.resume();
-   console.error('resumed', client);
+   console.error("resumed", client);
   })();
  }));
- client.on('data', (data) => {
-  console.error('data');
+ client.on("data", (data) => {
+  console.error("data");
   assert.ok(resumed);
   received += data.length;
-  console.error('received', received);
-  console.error('sent', sent);
+  console.error("received", received);
+  console.error("sent", sent);
   if (received >= sent) {
    console.error(`received: ${received}`);
    client.end();
@@ -87,6 +87,6 @@ server.listen(0, common.mustCall(() => {
  });
 }));
 
-process.on('exit', () => {
+process.on("exit", () => {
  assert.strictEqual(sent, received);
 });

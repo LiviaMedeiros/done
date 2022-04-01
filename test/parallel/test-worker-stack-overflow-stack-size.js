@@ -1,9 +1,9 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { once } = require('events');
-const v8 = require('v8');
-const { Worker } = require('worker_threads');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { once } = require("events");
+const v8 = require("v8");
+const { Worker } = require("worker_threads");
 
 // Verify that Workers don't care about --stack-size, as they have their own
 // fixed and known stack sizes.
@@ -22,12 +22,12 @@ async function runWorker(options = {}) {
   ...options,
  });
 
- const [ error ] = await once(worker, 'error');
+ const [ error ] = await once(worker, "error");
 
  if (!options.skipErrorCheck) {
   common.expectsError({
    constructor: RangeError,
-   message: 'Maximum call stack size exceeded',
+   message: "Maximum call stack size exceeded",
   })(error);
  }
 
@@ -36,9 +36,9 @@ async function runWorker(options = {}) {
 
 (async function() {
  {
-  v8.setFlagsFromString('--stack-size=500');
+  v8.setFlagsFromString("--stack-size=500");
   const w1stack = await runWorker();
-  v8.setFlagsFromString('--stack-size=1000');
+  v8.setFlagsFromString("--stack-size=1000");
   const w2stack = await runWorker();
   // Make sure the two stack sizes are within 10 % of each other, i.e. not
   // affected by the different `--stack-size` settings.

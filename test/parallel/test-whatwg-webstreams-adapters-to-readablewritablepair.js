@@ -1,17 +1,17 @@
 // Flags: --no-warnings --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 
 const {
  newReadableWritablePairFromDuplex,
-} = require('internal/webstreams/adapters');
+} = require("internal/webstreams/adapters");
 
 const {
  PassThrough,
-} = require('stream');
+} = require("stream");
 
 {
  // Destroying the duplex without an error should close
@@ -27,31 +27,31 @@ const {
  const writer = writable.getWriter();
 
  assert.rejects(reader.closed, {
-  code: 'ABORT_ERR',
+  code: "ABORT_ERR",
  });
 
  assert.rejects(writer.closed, {
-  code: 'ABORT_ERR',
+  code: "ABORT_ERR",
  });
 
  duplex.destroy();
 
- duplex.on('close', common.mustCall());
+ duplex.on("close", common.mustCall());
 }
 
 {
  // Destroying the duplex with an error should error
  // both the readable and writable
 
- const error = new Error('boom');
+ const error = new Error("boom");
  const duplex = new PassThrough();
  const {
   readable,
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('close', common.mustCall());
- duplex.on('error', common.mustCall((reason) => {
+ duplex.on("close", common.mustCall());
+ duplex.on("error", common.mustCall((reason) => {
   assert.strictEqual(reason, error);
  }));
 
@@ -65,15 +65,15 @@ const {
 }
 
 {
- const error = new Error('boom');
+ const error = new Error("boom");
  const duplex = new PassThrough();
  const {
   readable,
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('close', common.mustCall());
- duplex.on('error', common.mustCall((reason) => {
+ duplex.on("close", common.mustCall());
+ duplex.on("error", common.mustCall((reason) => {
   assert.strictEqual(reason, error);
  }));
 
@@ -93,8 +93,8 @@ const {
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('close', common.mustCall());
- duplex.on('error', common.mustNotCall());
+ duplex.on("close", common.mustCall());
+ duplex.on("error", common.mustNotCall());
 
  const reader = readable.getReader();
  const writer = writable.getWriter();
@@ -106,15 +106,15 @@ const {
 }
 
 {
- const error = new Error('boom');
+ const error = new Error("boom");
  const duplex = new PassThrough();
  const {
   readable,
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('close', common.mustCall());
- duplex.on('error', common.mustCall((reason) => {
+ duplex.on("close", common.mustCall());
+ duplex.on("error", common.mustCall((reason) => {
   assert.strictEqual(reason, error);
  }));
 
@@ -134,17 +134,17 @@ const {
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('close', common.mustCall());
+ duplex.on("close", common.mustCall());
 
- duplex.on('error', common.mustCall((error) => {
-  assert.strictEqual(error.code, 'ABORT_ERR');
+ duplex.on("error", common.mustCall((error) => {
+  assert.strictEqual(error.code, "ABORT_ERR");
  }));
 
  const reader = readable.getReader();
  const writer = writable.getWriter();
 
  assert.rejects(writer.closed, {
-  code: 'ABORT_ERR',
+  code: "ABORT_ERR",
  });
 
  reader.cancel();
@@ -157,15 +157,15 @@ const {
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('close', common.mustCall());
- duplex.on('error', common.mustNotCall());
+ duplex.on("close", common.mustCall());
+ duplex.on("error", common.mustNotCall());
 
  const reader = readable.getReader();
  const writer = writable.getWriter();
 
  reader.closed.then(common.mustCall());
  assert.rejects(writer.closed, {
-  code: 'ABORT_ERR',
+  code: "ABORT_ERR",
  });
 
  duplex.end();
@@ -178,10 +178,10 @@ const {
   writable,
  } = newReadableWritablePairFromDuplex(duplex);
 
- duplex.on('data', common.mustCall(2));
- duplex.on('close', common.mustCall());
- duplex.on('end', common.mustCall());
- duplex.on('finish', common.mustCall());
+ duplex.on("data", common.mustCall(2));
+ duplex.on("close", common.mustCall());
+ duplex.on("end", common.mustCall());
+ duplex.on("finish", common.mustCall());
 
  const writer = writable.getWriter();
  const reader = readable.getReader();
@@ -190,16 +190,16 @@ const {
  const dc = new TextDecoder();
 
  Promise.all([
-  writer.write(ec.encode('hello')),
+  writer.write(ec.encode("hello")),
   reader.read().then(common.mustCall(({ done, value }) => {
    assert(!done);
-   assert.strictEqual(dc.decode(value), 'hello');
+   assert.strictEqual(dc.decode(value), "hello");
   })),
   reader.read().then(common.mustCall(({ done, value }) => {
    assert(!done);
-   assert.strictEqual(dc.decode(value), 'there');
+   assert.strictEqual(dc.decode(value), "there");
   })),
-  writer.write(ec.encode('there')),
+  writer.write(ec.encode("there")),
   writer.close(),
   reader.read().then(common.mustCall(({ done, value }) => {
    assert(done);

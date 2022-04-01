@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const net = require('net');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const net = require("net");
 
 const server = http2.createServer();
-server.on('stream', common.mustCall((stream) => {
+server.on("stream", common.mustCall((stream) => {
  stream.respond();
- stream.end('ok');
+ stream.end("ok");
 }));
 
 server.listen(0, common.mustCall(() => {
@@ -18,7 +18,7 @@ server.listen(0, common.mustCall(() => {
  const socket = client.socket;
  const req = client.request();
  req.resume();
- req.on('close', common.mustCall(() => {
+ req.on("close", common.mustCall(() => {
   client.close();
   server.close();
 
@@ -28,18 +28,18 @@ server.listen(0, common.mustCall(() => {
    assert.throws(() => {
     socket.example; // eslint-disable-line no-unused-expressions
    }, {
-    code: 'ERR_HTTP2_SOCKET_UNBOUND',
+    code: "ERR_HTTP2_SOCKET_UNBOUND",
    });
    assert.throws(() => {
     socket.example = 1;
    }, {
-    code: 'ERR_HTTP2_SOCKET_UNBOUND',
+    code: "ERR_HTTP2_SOCKET_UNBOUND",
    });
    assert.throws(() => {
     // eslint-disable-next-line no-unused-expressions
     socket instanceof net.Socket;
    }, {
-    code: 'ERR_HTTP2_SOCKET_UNBOUND',
+    code: "ERR_HTTP2_SOCKET_UNBOUND",
    });
   }));
  }));

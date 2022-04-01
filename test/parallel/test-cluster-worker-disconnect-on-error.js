@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const http = require('http');
-const cluster = require('cluster');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const http = require("http");
+const cluster = require("cluster");
+const assert = require("assert");
 
 cluster.schedulingPolicy = cluster.SCHED_NONE;
 
@@ -17,15 +17,15 @@ if (cluster.isPrimary) {
  }));
 
  worker = cluster.fork();
- worker.on('exit', common.mustCall(() => {
+ worker.on("exit", common.mustCall(() => {
   server.close();
  }));
 } else {
- process.on('message', common.mustCall((msg) => {
+ process.on("message", common.mustCall((msg) => {
   assert(msg.port);
 
   server.listen(msg.port);
-  server.on('error', common.mustCall((e) => {
+  server.on("error", common.mustCall((e) => {
    cluster.worker.disconnect();
   }));
  }));

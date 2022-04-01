@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 // Flags: --experimental-vm-modules
 
-const common = require('../common');
-const { SyntheticModule, SourceTextModule } = require('vm');
-const assert = require('assert');
+const common = require("../common");
+const { SyntheticModule, SourceTextModule } = require("vm");
+const assert = require("assert");
 
 (async () => {
  {
-  const s = new SyntheticModule(['x'], () => {
-   s.setExport('x', 1);
+  const s = new SyntheticModule(["x"], () => {
+   s.setExport("x", 1);
   });
 
   const m = new SourceTextModule(`
@@ -22,7 +22,7 @@ const assert = require('assert');
   await m.evaluate();
 
   assert.strictEqual(m.namespace.getX(), 1);
-  s.setExport('x', 42);
+  s.setExport("x", 42);
   assert.strictEqual(m.namespace.getX(), 42);
  }
 
@@ -43,7 +43,7 @@ const assert = require('assert');
   assert.throws(() => {
    s.setExport(invalidName, undefined);
   }, {
-   name: 'TypeError',
+   name: "TypeError",
   });
  }
 
@@ -51,26 +51,26 @@ const assert = require('assert');
   const s = new SyntheticModule([], () => {});
   await s.link(() => {});
   assert.throws(() => {
-   s.setExport('does not exist');
+   s.setExport("does not exist");
   }, {
-   name: 'ReferenceError',
+   name: "ReferenceError",
   });
  }
 
  {
   const s = new SyntheticModule([], () => {});
   assert.throws(() => {
-   s.setExport('name', 'value');
+   s.setExport("name", "value");
   }, {
-   code: 'ERR_VM_MODULE_STATUS',
+   code: "ERR_VM_MODULE_STATUS",
   });
  }
 
  {
   assert.throws(() => {
-   SyntheticModule.prototype.setExport.call({}, 'foo');
+   SyntheticModule.prototype.setExport.call({}, "foo");
   }, {
-   code: 'ERR_VM_MODULE_NOT_MODULE',
+   code: "ERR_VM_MODULE_NOT_MODULE",
    message: /Provided module is not an instance of Module/,
   });
  }

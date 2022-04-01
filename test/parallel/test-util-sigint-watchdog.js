@@ -1,14 +1,14 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows) {
  // No way to send CTRL_C_EVENT to processes from JS right now.
- common.skip('platform not supported');
+ common.skip("platform not supported");
 }
 
-const assert = require('assert');
-const { internalBinding } = require('internal/test/binding');
-const binding = internalBinding('contextify');
+const assert = require("assert");
+const { internalBinding } = require("internal/test/binding");
+const binding = internalBinding("contextify");
 
 [(next) => {
  // Test with no signal observed.
@@ -20,7 +20,7 @@ const binding = internalBinding('contextify');
  (next) => {
   // Test with one call to the watchdog, one signal.
   binding.startSigintWatchdog();
-  process.kill(process.pid, 'SIGINT');
+  process.kill(process.pid, "SIGINT");
   waitForPendingSignal(common.mustCall(() => {
    const hadPendingSignals = binding.stopSigintWatchdog();
    assert.strictEqual(hadPendingSignals, true);
@@ -31,7 +31,7 @@ const binding = internalBinding('contextify');
   // Nested calls are okay.
   binding.startSigintWatchdog();
   binding.startSigintWatchdog();
-  process.kill(process.pid, 'SIGINT');
+  process.kill(process.pid, "SIGINT");
   waitForPendingSignal(common.mustCall(() => {
    const hadPendingSignals1 = binding.stopSigintWatchdog();
    const hadPendingSignals2 = binding.stopSigintWatchdog();
@@ -45,7 +45,7 @@ const binding = internalBinding('contextify');
   binding.startSigintWatchdog();
   binding.startSigintWatchdog();
   const hadPendingSignals1 = binding.stopSigintWatchdog();
-  process.kill(process.pid, 'SIGINT');
+  process.kill(process.pid, "SIGINT");
   waitForPendingSignal(common.mustCall(() => {
    const hadPendingSignals2 = binding.stopSigintWatchdog();
    assert.strictEqual(hadPendingSignals1, false);

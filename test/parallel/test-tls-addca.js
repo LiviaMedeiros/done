@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const fixtures = require('../common/fixtures');
+"use strict";
+const common = require("../common");
+const fixtures = require("../common/fixtures");
 
 // Adding a CA certificate to contextWithCert should not also add it to
 // contextWithoutCert. This is tested by trying to connect to a server that
@@ -8,7 +8,7 @@ const fixtures = require('../common/fixtures');
 
 const {
  assert, connect, keys, tls,
-} = require(fixtures.path('tls-connect'));
+} = require(fixtures.path("tls-connect"));
 
 const contextWithoutCert = tls.createSecureContext({});
 const contextWithCert = tls.createSecureContext({});
@@ -21,7 +21,7 @@ const serverOptions = {
 
 const clientOptions = {
  ca: [keys.agent1.ca],
- servername: 'agent1',
+ servername: "agent1",
  rejectUnauthorized: true,
 };
 
@@ -34,7 +34,7 @@ connect({
  server: serverOptions,
 }, common.mustCall((err, pair, cleanup) => {
  assert(err);
- assert.strictEqual(err.message, 'unable to verify the first certificate');
+ assert.strictEqual(err.message, "unable to verify the first certificate");
  cleanup();
 
  // This time it should connect because contextWithCert includes the needed CA

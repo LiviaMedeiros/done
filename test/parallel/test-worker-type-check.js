@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { Worker } = require('worker_threads');
+const common = require("../common");
+const assert = require("assert");
+const { Worker } = require("worker_threads");
 
 {
  [
@@ -10,7 +10,7 @@ const { Worker } = require('worker_threads');
   null,
   false,
   0,
-  Symbol('test'),
+  Symbol("test"),
   {},
   [],
   () => {},
@@ -18,10 +18,10 @@ const { Worker } = require('worker_threads');
   assert.throws(
    () => new Worker(val),
    {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
+    code: "ERR_INVALID_ARG_TYPE",
+    name: "TypeError",
     message: 'The "filename" argument must be of type string ' +
-                 'or an instance of URL.' +
+                 "or an instance of URL." +
                  common.invalidArgTypeHelper(val),
    },
   );

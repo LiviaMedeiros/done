@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const { inspect } = require('util');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const { inspect } = require("util");
 
 // Check if correct errors are emitted when wrong type of data is passed
 // to certain options of ClientHttp2Session request method
 
 const optionsToTest = {
- endStream: 'boolean',
- weight: 'number',
- parent: 'number',
- exclusive: 'boolean',
- silent: 'boolean',
+ endStream: "boolean",
+ weight: "number",
+ parent: "number",
+ exclusive: "boolean",
+ silent: "boolean",
 };
 
 const types = {
@@ -25,7 +25,7 @@ const types = {
  object: {},
  array: [],
  null: null,
- symbol: Symbol('test'),
+ symbol: Symbol("test"),
 };
 
 const server = http2.createServer(common.mustNotCall());
@@ -34,7 +34,7 @@ server.listen(0, common.mustCall(() => {
  const port = server.address().port;
  const client = http2.connect(`http://localhost:${port}`);
 
- client.on('connect', () => {
+ client.on("connect", () => {
   Object.keys(optionsToTest).forEach((option) => {
    Object.keys(types).forEach((type) => {
     if (type === optionsToTest[option])
@@ -42,13 +42,13 @@ server.listen(0, common.mustCall(() => {
 
     assert.throws(
      () => client.request({
-      ':method': 'CONNECT',
-      ':authority': `localhost:${port}`,
+      ":method": "CONNECT",
+      ":authority": `localhost:${port}`,
      }, {
       [option]: types[type],
      }), {
-      name: 'TypeError',
-      code: 'ERR_INVALID_ARG_VALUE',
+      name: "TypeError",
+      code: "ERR_INVALID_ARG_VALUE",
       message: `The property 'options.${option}' is invalid. ` +
                     `Received ${inspect(types[type])}`,
      });

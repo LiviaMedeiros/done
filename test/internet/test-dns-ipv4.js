@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
-const { addresses } = require('../common/internet');
-const assert = require('assert');
-const dns = require('dns');
-const net = require('net');
-const util = require('util');
+"use strict";
+const common = require("../common");
+const { addresses } = require("../common/internet");
+const assert = require("assert");
+const dns = require("dns");
+const net = require("net");
+const util = require("util");
 const isIPv4 = net.isIPv4;
 
 const dnsPromises = dns.promises;
@@ -34,7 +34,7 @@ function TEST(f) {
 }
 
 function checkWrap(req) {
- assert.ok(typeof req === 'object');
+ assert.ok(typeof req === "object");
 }
 
 TEST(async function test_resolve4(done) {
@@ -64,7 +64,7 @@ TEST(async function test_reverse_ipv4(done) {
 
   for (let i = 0; i < res.length; i++) {
    assert.ok(res[i]);
-   assert.ok(typeof res[i] === 'string');
+   assert.ok(typeof res[i] === "string");
   }
  }
 
@@ -156,13 +156,13 @@ TEST(async function test_lookup_ipv4_hint_addrconfig(done) {
 
 TEST(async function test_lookup_ip_ipv4(done) {
  function validateResult(res) {
-  assert.strictEqual(res.address, '127.0.0.1');
+  assert.strictEqual(res.address, "127.0.0.1");
   assert.strictEqual(res.family, 4);
  }
 
- validateResult(await dnsPromises.lookup('127.0.0.1'));
+ validateResult(await dnsPromises.lookup("127.0.0.1"));
 
- const req = dns.lookup('127.0.0.1',
+ const req = dns.lookup("127.0.0.1",
                         common.mustSucceed((ip, family) => {
                          validateResult({ address: ip, family });
                          done();
@@ -173,13 +173,13 @@ TEST(async function test_lookup_ip_ipv4(done) {
 
 TEST(async function test_lookup_localhost_ipv4(done) {
  function validateResult(res) {
-  assert.strictEqual(res.address, '127.0.0.1');
+  assert.strictEqual(res.address, "127.0.0.1");
   assert.strictEqual(res.family, 4);
  }
 
- validateResult(await dnsPromises.lookup('localhost', 4));
+ validateResult(await dnsPromises.lookup("localhost", 4));
 
- const req = dns.lookup('localhost', 4,
+ const req = dns.lookup("localhost", 4,
                         common.mustSucceed((ip, family) => {
                          validateResult({ address: ip, family });
                          done();
@@ -218,15 +218,15 @@ TEST(async function test_lookup_all_ipv4(done) {
 
 TEST(async function test_lookupservice_ip_ipv4(done) {
  function validateResult(res) {
-  assert.strictEqual(typeof res.hostname, 'string');
+  assert.strictEqual(typeof res.hostname, "string");
   assert(res.hostname);
-  assert(['http', 'www', '80'].includes(res.service));
+  assert(["http", "www", "80"].includes(res.service));
  }
 
- validateResult(await dnsPromises.lookupService('127.0.0.1', 80));
+ validateResult(await dnsPromises.lookupService("127.0.0.1", 80));
 
  const req = dns.lookupService(
-  '127.0.0.1', 80,
+  "127.0.0.1", 80,
   common.mustSucceed((hostname, service) => {
    validateResult({ hostname, service });
    done();
@@ -237,11 +237,11 @@ TEST(async function test_lookupservice_ip_ipv4(done) {
 });
 
 TEST(function test_lookupservice_ip_ipv4_promise(done) {
- util.promisify(dns.lookupService)('127.0.0.1', 80)
+ util.promisify(dns.lookupService)("127.0.0.1", 80)
     .then(common.mustCall(({ hostname, service }) => {
-    	assert.strictEqual(typeof hostname, 'string');
+    	assert.strictEqual(typeof hostname, "string");
     	assert(hostname.length > 0);
-    	assert(['http', 'www', '80'].includes(service));
+    	assert(["http", "www", "80"].includes(service));
     	done();
     }));
 });

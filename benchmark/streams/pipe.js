@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { Readable, Writable } = require('stream');
+const common = require("../common");
+const { Readable, Writable } = require("stream");
 
 const bench = common.createBenchmark(main, {
  n: [5e6],
@@ -20,5 +20,5 @@ function main({ n }) {
  bench.start();
 
  r.pipe(w);
- w.on('finish', () => bench.end(n));
+ w.on("finish", () => bench.end(n));
 }

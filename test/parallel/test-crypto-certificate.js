@@ -19,21 +19,21 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const crypto = require('crypto');
+const assert = require("assert");
+const crypto = require("crypto");
 const { Certificate } = crypto;
-const fixtures = require('../common/fixtures');
+const fixtures = require("../common/fixtures");
 
 // Test Certificates
-const spkacValid = fixtures.readKey('rsa_spkac.spkac');
-const spkacChallenge = 'this-is-a-challenge';
-const spkacFail = fixtures.readKey('rsa_spkac_invalid.spkac');
-const spkacPublicPem = fixtures.readKey('rsa_public.pem');
+const spkacValid = fixtures.readKey("rsa_spkac.spkac");
+const spkacChallenge = "this-is-a-challenge";
+const spkacFail = fixtures.readKey("rsa_spkac_invalid.spkac");
+const spkacPublicPem = fixtures.readKey("rsa_public.pem");
 
 function copyArrayBuffer(buf) {
  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
@@ -45,16 +45,16 @@ function checkMethods(certificate) {
  assert.strictEqual(certificate.verifySpkac(spkacFail), false);
 
  assert.strictEqual(
-  stripLineEndings(certificate.exportPublicKey(spkacValid).toString('utf8')),
-  stripLineEndings(spkacPublicPem.toString('utf8')),
+  stripLineEndings(certificate.exportPublicKey(spkacValid).toString("utf8")),
+  stripLineEndings(spkacPublicPem.toString("utf8")),
  );
- assert.strictEqual(certificate.exportPublicKey(spkacFail), '');
+ assert.strictEqual(certificate.exportPublicKey(spkacFail), "");
 
  assert.strictEqual(
-  certificate.exportChallenge(spkacValid).toString('utf8'),
+  certificate.exportChallenge(spkacValid).toString("utf8"),
   spkacChallenge,
  );
- assert.strictEqual(certificate.exportChallenge(spkacFail), '');
+ assert.strictEqual(certificate.exportChallenge(spkacFail), "");
 
  const ab = copyArrayBuffer(spkacValid);
  assert.strictEqual(certificate.verifySpkac(ab), true);
@@ -77,15 +77,15 @@ function checkMethods(certificate) {
  if (!skip) {
   assert.throws(
    () => Certificate.verifySpkac(buf), {
-    code: 'ERR_OUT_OF_RANGE',
+    code: "ERR_OUT_OF_RANGE",
    });
   assert.throws(
    () => Certificate.exportChallenge(buf), {
-    code: 'ERR_OUT_OF_RANGE',
+    code: "ERR_OUT_OF_RANGE",
    });
   assert.throws(
    () => Certificate.exportPublicKey(buf), {
-    code: 'ERR_OUT_OF_RANGE',
+    code: "ERR_OUT_OF_RANGE",
    });
  }
 }
@@ -101,7 +101,7 @@ function checkMethods(certificate) {
 }
 
 function stripLineEndings(obj) {
- return obj.replace(/\n/g, '');
+ return obj.replace(/\n/g, "");
 }
 
 // Direct call Certificate() should return instance
@@ -110,12 +110,12 @@ assert(Certificate() instanceof Certificate);
 [1, {}, [], Infinity, true, undefined, null].forEach((val) => {
  assert.throws(
   () => Certificate.verifySpkac(val),
-  { code: 'ERR_INVALID_ARG_TYPE' },
+  { code: "ERR_INVALID_ARG_TYPE" },
  );
 });
 
 [1, {}, [], Infinity, true, undefined, null].forEach((val) => {
- const errObj = { code: 'ERR_INVALID_ARG_TYPE' };
+ const errObj = { code: "ERR_INVALID_ARG_TYPE" };
  assert.throws(() => Certificate.exportPublicKey(val), errObj);
  assert.throws(() => Certificate.exportChallenge(val), errObj);
 });

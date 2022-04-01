@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const Countdown = require('../common/countdown');
+"use strict";
+const common = require("../common");
+const Countdown = require("../common/countdown");
 
 // Make sure that throwing in 'end' handler doesn't lock
 // up the socket forever.
@@ -29,12 +29,12 @@ const Countdown = require('../common/countdown');
 // This is NOT a good way to handle errors in general, but all
 // the same, we should not be so brittle and easily broken.
 
-const http = require('http');
+const http = require("http");
 const countdown = new Countdown(10, () => server.close());
 
 const server = http.createServer((req, res) => {
  countdown.dec();
- res.end('ok');
+ res.end("ok");
 });
 
 server.listen(0, common.mustCall(() => {
@@ -42,12 +42,12 @@ server.listen(0, common.mustCall(() => {
   const options = { port: server.address().port };
   const req = http.request(options, (res) => {
    res.resume();
-   res.on('end', common.mustCall(() => {
-    throw new Error('gleep glorp');
+   res.on("end", common.mustCall(() => {
+    throw new Error("gleep glorp");
    }));
   });
   req.end();
  }
 }));
 
-process.on('uncaughtException', common.mustCall(10));
+process.on("uncaughtException", common.mustCall(10));

@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 assert.throws(() => {
  new net.Socket({ fd: -1 });
-}, { code: 'ERR_OUT_OF_RANGE' });
+}, { code: "ERR_OUT_OF_RANGE" });
 
 assert.throws(() => {
- new net.Socket({ fd: 'foo' });
-}, { code: 'ERR_INVALID_ARG_TYPE' });
+ new net.Socket({ fd: "foo" });
+}, { code: "ERR_INVALID_ARG_TYPE" });
 
 function test(sock, readable, writable) {
  let socket;
@@ -49,11 +49,11 @@ if (cluster.isPrimary) {
  }));
 
  cluster.setupPrimary({
-  stdio: ['pipe', 'pipe', 'pipe', 'ipc', 'pipe', 'pipe', 'pipe'],
+  stdio: ["pipe", "pipe", "pipe", "ipc", "pipe", "pipe", "pipe"],
  });
 
  const worker = cluster.fork();
- worker.on('exit', common.mustCall((code, signal) => {
+ worker.on("exit", common.mustCall((code, signal) => {
   assert.strictEqual(code, 0);
   assert.strictEqual(signal, null);
  }));

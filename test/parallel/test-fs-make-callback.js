@@ -1,12 +1,12 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const callbackThrowValues = [null, true, false, 0, 1, 'foo', /foo/, [], {}];
+"use strict";
+require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const callbackThrowValues = [null, true, false, 0, 1, "foo", /foo/, [], {}];
 
-const { sep } = require('path');
+const { sep } = require("path");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 function testMakeCallback(cb) {
@@ -19,8 +19,8 @@ function testMakeCallback(cb) {
 function invalidCallbackThrowsTests() {
  callbackThrowValues.forEach((value) => {
   assert.throws(testMakeCallback(value), {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
   });
  });
 }

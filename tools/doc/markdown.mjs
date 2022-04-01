@@ -1,4 +1,4 @@
-import { visit } from 'unist-util-visit';
+import { visit } from "unist-util-visit";
 
 export const referenceToLocalMdFile = /^(?![+a-z]+:)([^#?]+)\.md(#.+)?$/i;
 
@@ -10,14 +10,14 @@ export function replaceLinks({ filename, linksMapper }) {
    if (node.url) {
     node.url = node.url.replace(
      referenceToLocalMdFile,
-     (_, filename, hash) => `${filename}.html${hash || ''}`,
+     (_, filename, hash) => `${filename}.html${hash || ""}`,
     );
    }
   });
-  visit(tree, 'definition', (node) => {
+  visit(tree, "definition", (node) => {
    const htmlUrl = fileHtmlUrls && fileHtmlUrls[node.identifier];
 
-   if (htmlUrl && typeof htmlUrl === 'string') {
+   if (htmlUrl && typeof htmlUrl === "string") {
     node.url = htmlUrl;
    }
   });

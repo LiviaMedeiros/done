@@ -1,18 +1,18 @@
-'use strict';
-require('../common');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const fs = require('fs');
+"use strict";
+require("../common");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const fs = require("fs");
 
 // This test ensures that appropriate TypeError is thrown by createReadStream
 // when an argument with invalid type is passed
 
-const example = fixtures.path('x.txt');
+const example = fixtures.path("x.txt");
 // Should not throw.
 fs.createReadStream(example, undefined);
 fs.createReadStream(example, null);
-fs.createReadStream(example, 'utf8');
-fs.createReadStream(example, { encoding: 'utf8' });
+fs.createReadStream(example, "utf8");
+fs.createReadStream(example, { encoding: "utf8" });
 
 const createReadStreamErr = (path, opt, error) => {
  assert.throws(() => {
@@ -21,13 +21,13 @@ const createReadStreamErr = (path, opt, error) => {
 };
 
 const typeError = {
- code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError',
+ code: "ERR_INVALID_ARG_TYPE",
+ name: "TypeError",
 };
 
 const rangeError = {
- code: 'ERR_OUT_OF_RANGE',
- name: 'RangeError',
+ code: "ERR_OUT_OF_RANGE",
+ name: "RangeError",
 };
 
 [123, 0, true, false].forEach((opts) =>
@@ -41,9 +41,9 @@ const rangeError = {
 
 // Case 1: Should throw TypeError if either start or end is not of type 'number'
 [
- { start: 'invalid' },
- { end: 'invalid' },
- { start: 'invalid', end: 'invalid' },
+ { start: "invalid" },
+ { end: "invalid" },
+ { start: "invalid", end: "invalid" },
 ].forEach((opts) => createReadStreamErr(example, opts, typeError));
 
 // Case 2: Should throw RangeError if either start or end is NaN

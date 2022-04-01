@@ -19,14 +19,14 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
 const zero = [];
-const one = [ Buffer.from('asdf') ];
+const one = [ Buffer.from("asdf") ];
 const long = [];
-for (let i = 0; i < 10; i++) long.push(Buffer.from('asdf'));
+for (let i = 0; i < 10; i++) long.push(Buffer.from("asdf"));
 
 const flatZero = Buffer.concat(zero);
 const flatOne = Buffer.concat(one);
@@ -34,9 +34,9 @@ const flatLong = Buffer.concat(long);
 const flatLongLen = Buffer.concat(long, 40);
 
 assert.strictEqual(flatZero.length, 0);
-assert.strictEqual(flatOne.toString(), 'asdf');
+assert.strictEqual(flatOne.toString(), "asdf");
 
-const check = 'asdf'.repeat(10);
+const check = "asdf".repeat(10);
 
 // A special case where concat used to return the first item,
 // if the length is one. This check is to make sure that we don't do that.
@@ -44,37 +44,37 @@ assert.notStrictEqual(flatOne, one[0]);
 assert.strictEqual(flatLong.toString(), check);
 assert.strictEqual(flatLongLen.toString(), check);
 
-[undefined, null, Buffer.from('hello')].forEach((value) => {
+[undefined, null, Buffer.from("hello")].forEach((value) => {
  assert.throws(() => {
   Buffer.concat(value);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: 'The "list" argument must be an instance of Array.' +
              `${common.invalidArgTypeHelper(value)}`,
  });
 });
 
-[[42], ['hello', Buffer.from('world')]].forEach((value) => {
+[[42], ["hello", Buffer.from("world")]].forEach((value) => {
  assert.throws(() => {
   Buffer.concat(value);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: 'The "list[0]" argument must be an instance of Buffer ' +
              `or Uint8Array.${common.invalidArgTypeHelper(value[0])}`,
  });
 });
 
 assert.throws(() => {
- Buffer.concat([Buffer.from('hello'), 3]);
+ Buffer.concat([Buffer.from("hello"), 3]);
 }, {
- code: 'ERR_INVALID_ARG_TYPE',
+ code: "ERR_INVALID_ARG_TYPE",
  message: 'The "list[1]" argument must be an instance of Buffer ' +
-           'or Uint8Array. Received type number (3)',
+           "or Uint8Array. Received type number (3)",
 });
 
 // eslint-disable-next-line node-core/crypto-check
 const random10 = common.hasCrypto ?
- require('crypto').randomBytes(10) :
+ require("crypto").randomBytes(10) :
  Buffer.alloc(10, 1);
 const empty = Buffer.alloc(0);
 
@@ -97,4 +97,4 @@ assert.deepStrictEqual(
 
 assert.deepStrictEqual(Buffer.concat([new Uint8Array([0x41, 0x42]),
                                       new Uint8Array([0x43, 0x44])]),
-                       Buffer.from('ABCD'));
+                       Buffer.from("ABCD"));

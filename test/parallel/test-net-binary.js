@@ -20,11 +20,11 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /* eslint-disable strict */
-require('../common');
-const assert = require('assert');
-const net = require('net');
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
-let binaryString = '';
+let binaryString = "";
 for (let i = 255; i >= 0; i--) {
  const s = `'\\${i.toString(8)}'`;
  const S = eval(s);
@@ -35,29 +35,29 @@ for (let i = 255; i >= 0; i--) {
 
 // safe constructor
 const echoServer = net.Server(function(connection) {
- connection.setEncoding('latin1');
- connection.on('data', function(chunk) {
-  connection.write(chunk, 'latin1');
+ connection.setEncoding("latin1");
+ connection.on("data", function(chunk) {
+  connection.write(chunk, "latin1");
  });
- connection.on('end', function() {
+ connection.on("end", function() {
   connection.end();
  });
 });
 echoServer.listen(0);
 
-let recv = '';
+let recv = "";
 
-echoServer.on('listening', function() {
+echoServer.on("listening", function() {
  let j = 0;
  const c = net.createConnection({
   port: this.address().port,
  });
 
- c.setEncoding('latin1');
- c.on('data', function(chunk) {
+ c.setEncoding("latin1");
+ c.on("data", function(chunk) {
   const n = j + chunk.length;
   while (j < n && j < 256) {
-   c.write(String.fromCharCode(j), 'latin1');
+   c.write(String.fromCharCode(j), "latin1");
    j++;
   }
   if (j === 256) {
@@ -66,23 +66,23 @@ echoServer.on('listening', function() {
   recv += chunk;
  });
 
- c.on('connect', function() {
-  c.write(binaryString, 'binary');
+ c.on("connect", function() {
+  c.write(binaryString, "binary");
  });
 
- c.on('close', function() {
+ c.on("close", function() {
   echoServer.close();
  });
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(recv.length, 2 * 256);
 
- const a = recv.split('');
+ const a = recv.split("");
 
- const first = a.slice(0, 256).reverse().join('');
+ const first = a.slice(0, 256).reverse().join("");
 
- const second = a.slice(256, 2 * 256).join('');
+ const second = a.slice(256, 2 * 256).join("");
 
  assert.strictEqual(first, second);
 });

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const async_hooks = require('async_hooks');
-const fs = require('fs');
+const common = require("../common");
+const async_hooks = require("async_hooks");
+const fs = require("fs");
 
 const nestedHook = async_hooks.createHook({
  init: common.mustNotCall(),

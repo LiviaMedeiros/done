@@ -1,12 +1,12 @@
 // Flags: --expose-gc
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 const {
  assertSummaryShape,
  expectExperimentalWarning,
-} = require('../common/measure-memory');
-const vm = require('vm');
+} = require("../common/measure-memory");
+const vm = require("vm");
 
 expectExperimentalWarning();
 
@@ -25,13 +25,13 @@ expectExperimentalWarning();
 }
 
 {
- vm.measureMemory({ mode: 'summary' })
+ vm.measureMemory({ mode: "summary" })
     .then(common.mustCall(assertSummaryShape));
  global.gc();
 }
 
 {
- vm.measureMemory({ mode: 'detailed' })
+ vm.measureMemory({ mode: "detailed" })
     .then(common.mustCall(assertSummaryShape));
  global.gc();
 }

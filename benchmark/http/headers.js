@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const http = require('http');
+const common = require("../common.js");
+const http = require("http");
 
 const bench = common.createBenchmark(main, {
  n: [10, 600],
@@ -11,8 +11,8 @@ const bench = common.createBenchmark(main, {
 
 function main({ len, n, duration }) {
  const headers = {
-  'Connection': 'keep-alive',
-  'Transfer-Encoding': 'chunked',
+  "Connection": "keep-alive",
+  "Transfer-Encoding": "chunked",
  };
 
  // TODO(BridgeAR): Change this benchmark to use grouped arguments when
@@ -29,7 +29,7 @@ function main({ len, n, duration }) {
  });
  server.listen(common.PORT, () => {
   bench.http({
-   path: '/',
+   path: "/",
    connections: 10,
    duration,
   }, () => {

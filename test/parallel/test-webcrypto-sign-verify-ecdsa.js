@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { subtle } = require('crypto').webcrypto;
+const assert = require("assert");
+const { subtle } = require("crypto").webcrypto;
 
-const vectors = require('../fixtures/crypto/ecdsa')();
+const vectors = require("../fixtures/crypto/ecdsa")();
 
 async function testVerify({ name,
                             hash,
@@ -25,36 +25,36 @@ async function testVerify({ name,
   rsaKeys,
  ] = await Promise.all([
   subtle.importKey(
-   'spki',
+   "spki",
    publicKeyBuffer,
    { name, namedCurve },
    false,
-   ['verify']),
+   ["verify"]),
   subtle.importKey(
-   'spki',
+   "spki",
    publicKeyBuffer,
    { name, namedCurve },
    false,
    [ /* No usages */ ]),
   subtle.importKey(
-   'pkcs8',
+   "pkcs8",
    privateKeyBuffer,
    { name, namedCurve },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
-   { name: 'HMAC', hash: 'SHA-256' },
+   { name: "HMAC", hash: "SHA-256" },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
    {
-    name: 'RSA-PSS',
+    name: "RSA-PSS",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
    false,
-   ['sign']),
+   ["sign"]),
  ]);
 
  assert(await subtle.verify({ name, hash }, publicKey, signature, plaintext));
@@ -114,7 +114,7 @@ async function testVerify({ name,
 
  // Test failure when wrong hash is used
  {
-  const otherhash = hash === 'SHA-1' ? 'SHA-256' : 'SHA-1';
+  const otherhash = hash === "SHA-1" ? "SHA-256" : "SHA-1";
   assert(!(await subtle.verify({
    name,
    hash: otherhash,
@@ -122,7 +122,7 @@ async function testVerify({ name,
  }
 
  await assert.rejects(
-  subtle.verify({ name, hash: 'sha256' }, publicKey, signature, copy), {
+  subtle.verify({ name, hash: "sha256" }, publicKey, signature, copy), {
    message: /Unrecognized name/,
   });
 }
@@ -142,36 +142,36 @@ async function testSign({ name,
   rsaKeys,
  ] = await Promise.all([
   subtle.importKey(
-   'spki',
+   "spki",
    publicKeyBuffer,
    { name, namedCurve },
    false,
-   ['verify']),
+   ["verify"]),
   subtle.importKey(
-   'pkcs8',
+   "pkcs8",
    privateKeyBuffer,
    { name, namedCurve },
    false,
    [ /* No usages */ ]),
   subtle.importKey(
-   'pkcs8',
+   "pkcs8",
    privateKeyBuffer,
    { name, namedCurve },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
-   { name: 'HMAC', hash: 'SHA-256' },
+   { name: "HMAC", hash: "SHA-256" },
    false,
-   ['sign']),
+   ["sign"]),
   subtle.generateKey(
    {
-    name: 'RSA-PSS',
+    name: "RSA-PSS",
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256',
+    hash: "SHA-256",
    },
    false,
-   ['sign']),
+   ["sign"]),
  ]);
 
  {

@@ -19,8 +19,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  size: [16, 512, 4096, 16386],
@@ -28,10 +28,10 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ n, size }) {
- const b0 = Buffer.alloc(size, 'a');
- const b1 = Buffer.alloc(size, 'a');
+ const b0 = Buffer.alloc(size, "a");
+ const b1 = Buffer.alloc(size, "a");
 
- b1[size - 1] = 'b'.charCodeAt(0);
+ b1[size - 1] = "b".charCodeAt(0);
 
  bench.start();
  for (let i = 0; i < n; i++) {

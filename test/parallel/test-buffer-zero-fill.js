@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 // Tests deprecated Buffer API on purpose
 const buf1 = Buffer(100);

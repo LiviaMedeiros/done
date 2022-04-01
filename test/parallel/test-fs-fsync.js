@@ -19,23 +19,23 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
-const tmpdir = require('../common/tmpdir');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
+const tmpdir = require("../common/tmpdir");
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const fileFixture = fixtures.path('a.js');
-const fileTemp = path.join(tmpdir.path, 'a.js');
+const fileFixture = fixtures.path("a.js");
+const fileTemp = path.join(tmpdir.path, "a.js");
 
 // Copy fixtures to temp.
 tmpdir.refresh();
 fs.copyFileSync(fileFixture, fileTemp);
 
-fs.open(fileTemp, 'a', 0o777, common.mustSucceed((fd) => {
+fs.open(fileTemp, "a", 0o777, common.mustSucceed((fd) => {
  fs.fdatasyncSync(fd);
 
  fs.fsyncSync(fd);
@@ -47,10 +47,10 @@ fs.open(fileTemp, 'a', 0o777, common.mustSucceed((fd) => {
  }));
 }));
 
-['', false, null, undefined, {}, []].forEach((input) => {
+["", false, null, undefined, {}, []].forEach((input) => {
  const errObj = {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
+  code: "ERR_INVALID_ARG_TYPE",
+  name: "TypeError",
  };
  assert.throws(() => fs.fdatasync(input), errObj);
  assert.throws(() => fs.fdatasyncSync(input), errObj);

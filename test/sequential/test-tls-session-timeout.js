@@ -19,16 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.opensslCli)
- common.skip('node compiled without OpenSSL CLI.');
+ common.skip("node compiled without OpenSSL CLI.");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 doTest();
@@ -42,23 +42,23 @@ doTest();
 //   that we used has expired by now.
 
 function doTest() {
- const assert = require('assert');
- const tls = require('tls');
- const fs = require('fs');
- const join = require('path').join;
- const fixtures = require('../common/fixtures');
- const spawn = require('child_process').spawn;
+ const assert = require("assert");
+ const tls = require("tls");
+ const fs = require("fs");
+ const join = require("path").join;
+ const fixtures = require("../common/fixtures");
+ const spawn = require("child_process").spawn;
 
  const SESSION_TIMEOUT = 1;
 
- const key = fixtures.readKey('rsa_private.pem');
- const cert = fixtures.readKey('rsa_cert.crt');
+ const key = fixtures.readKey("rsa_private.pem");
+ const cert = fixtures.readKey("rsa_cert.crt");
  const options = {
   key: key,
   cert: cert,
   ca: [cert],
   sessionTimeout: SESSION_TIMEOUT,
-  maxVersion: 'TLSv1.2',
+  maxVersion: "TLSv1.2",
  };
 
  // We need to store a sample session ticket in the fixtures directory because
@@ -68,7 +68,7 @@ function doTest() {
  // To avoid a source control diff, we copy the ticket to a temporary file.
 
  const sessionFileName = (function() {
-  const ticketFileName = 'tls-session-ticket.txt';
+  const ticketFileName = "tls-session-ticket.txt";
   const tmpPath = join(tmpdir.path, ticketFileName);
   fs.writeFileSync(tmpPath, fixtures.readSync(ticketFileName));
   return tmpPath;
@@ -78,20 +78,20 @@ function doTest() {
 
  function Client(cb) {
   const flags = [
-   's_client',
-   '-connect', `localhost:${common.PORT}`,
-   '-sess_in', sessionFileName,
-   '-sess_out', sessionFileName,
+   "s_client",
+   "-connect", `localhost:${common.PORT}`,
+   "-sess_in", sessionFileName,
+   "-sess_out", sessionFileName,
   ];
   const client = spawn(common.opensslCli, flags, {
-   stdio: ['ignore', 'pipe', 'ignore'],
+   stdio: ["ignore", "pipe", "ignore"],
   });
 
-  let clientOutput = '';
-  client.stdout.on('data', (data) => {
+  let clientOutput = "";
+  client.stdout.on("data", (data) => {
    clientOutput += data.toString();
   });
-  client.on('exit', (code) => {
+  client.on("exit", (code) => {
    let connectionType;
    const grepConnectionType = (line) => {
     const matches = line.match(/(New|Reused), /);
@@ -100,9 +100,9 @@ function doTest() {
      return true;
     }
    };
-   const lines = clientOutput.split('\n');
+   const lines = clientOutput.split("\n");
    if (!lines.some(grepConnectionType)) {
-    throw new Error('unexpected output from openssl client');
+    throw new Error("unexpected output from openssl client");
    }
    assert.strictEqual(code, 0);
    cb(connectionType);
@@ -110,8 +110,8 @@ function doTest() {
  }
 
  const server = tls.createServer(options, (cleartext) => {
-  cleartext.on('error', (er) => {
-   if (er.code !== 'ECONNRESET')
+  cleartext.on("error", (er) => {
+   if (er.code !== "ECONNRESET")
     throw er;
   });
   cleartext.end();
@@ -119,12 +119,12 @@ function doTest() {
 
  server.listen(common.PORT, () => {
   Client((connectionType) => {
-   assert.strictEqual(connectionType, 'New');
+   assert.strictEqual(connectionType, "New");
    Client((connectionType) => {
-    assert.strictEqual(connectionType, 'Reused');
+    assert.strictEqual(connectionType, "Reused");
     setTimeout(() => {
      Client((connectionType) => {
-      assert.strictEqual(connectionType, 'New');
+      assert.strictEqual(connectionType, "New");
       server.close();
      });
     }, (SESSION_TIMEOUT + 1) * 1000);

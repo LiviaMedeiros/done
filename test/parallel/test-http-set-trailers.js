@@ -19,29 +19,29 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
-const util = require('util');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
+const util = require("util");
 
 // First, we test an HTTP/1.0 request.
 function testHttp10(port, callback) {
  const c = net.createConnection(port);
 
- c.setEncoding('utf8');
+ c.setEncoding("utf8");
 
- c.on('connect', () => {
-  c.write('GET / HTTP/1.0\r\n\r\n');
+ c.on("connect", () => {
+  c.write("GET / HTTP/1.0\r\n\r\n");
  });
 
- let res_buffer = '';
- c.on('data', (chunk) => {
+ let res_buffer = "";
+ c.on("data", (chunk) => {
   res_buffer += chunk;
  });
 
- c.on('end', function() {
+ c.on("end", function() {
   c.end();
   assert.ok(
    !/x-foo/.test(res_buffer),
@@ -55,16 +55,16 @@ function testHttp10(port, callback) {
 function testHttp11(port, callback) {
  const c = net.createConnection(port);
 
- c.setEncoding('utf8');
+ c.setEncoding("utf8");
 
  let tid;
- c.on('connect', function() {
-  c.write('GET / HTTP/1.1\r\n\r\n');
-  tid = setTimeout(common.mustNotCall(), 2000, 'Couldn\'t find last chunk.');
+ c.on("connect", function() {
+  c.write("GET / HTTP/1.1\r\n\r\n");
+  tid = setTimeout(common.mustNotCall(), 2000, "Couldn't find last chunk.");
  });
 
- let res_buffer = '';
- c.on('data', function(chunk) {
+ let res_buffer = "";
+ c.on("data", function(chunk) {
   res_buffer += chunk;
   if (/0\r\n/.test(res_buffer)) { // got the end.
    clearTimeout(tid);
@@ -79,9 +79,9 @@ function testHttp11(port, callback) {
 
 // Now, see if the client sees the trailers.
 function testClientTrailers(port, callback) {
- http.get({ port, path: '/hello', headers: {} }, (res) => {
-  res.on('end', function() {
-   assert.ok('x-foo' in res.trailers,
+ http.get({ port, path: "/hello", headers: {} }, (res) => {
+  res.on("end", function() {
+   assert.ok("x-foo" in res.trailers,
              `${util.inspect(res.trailers)} misses the 'x-foo' property`);
    callback();
   });
@@ -90,9 +90,9 @@ function testClientTrailers(port, callback) {
 }
 
 const server = http.createServer((req, res) => {
- res.writeHead(200, [['content-type', 'text/plain']]);
- res.addTrailers({ 'x-foo': 'bar' });
- res.end('stuff\n');
+ res.writeHead(200, [["content-type", "text/plain"]]);
+ res.addTrailers({ "x-foo": "bar" });
+ res.end("stuff\n");
 });
 server.listen(0, () => {
  Promise.all([testHttp10, testHttp11, testClientTrailers]

@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../common');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const http = require("http");
 
 let onPause = null;
 
 const server = http.createServer((req, res) => {
- if (req.method === 'GET')
+ if (req.method === "GET")
   return res.end();
 
  res.writeHead(200);
  res.flushHeaders();
 
- req.on('close', common.mustCall(() => {
-  req.on('end', common.mustNotCall());
+ req.on("close", common.mustCall(() => {
+  req.on("end", common.mustNotCall());
  }));
 
- req.connection.on('pause', () => {
+ req.connection.on("pause", () => {
   res.end();
   onPause();
  });
@@ -29,25 +29,25 @@ const server = http.createServer((req, res) => {
 
  const post = http.request({
   agent,
-  method: 'POST',
+  method: "POST",
   port,
  }, common.mustCall((res) => {
   res.resume();
 
-  post.write(Buffer.alloc(16 * 1024).fill('X'));
+  post.write(Buffer.alloc(16 * 1024).fill("X"));
   onPause = () => {
-   post.end('something');
+   post.end("something");
   };
  }));
 
  // What happens here is that the server `end`s the response before we send
  // `something`, and the client thought that this is a green light for sending
  // next GET request
- post.write('initial');
+ post.write("initial");
 
  http.request({
   agent,
-  method: 'GET',
+  method: "GET",
   port,
  }, common.mustCall((res) => {
   server.close();

@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { Readable, Writable } = require('stream');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { Readable, Writable } = require("stream");
 
 class TestReadable extends Readable {
  constructor(opt) {
@@ -32,7 +32,7 @@ class TestReadable extends Readable {
 
  _read() {
   if (this._ended)
-   this.emit('error', new Error('_read called twice'));
+   this.emit("error", new Error("_read called twice"));
   this._ended = true;
   this.push(null);
  }
@@ -59,11 +59,11 @@ const piper = new TestReadable();
 piper.read();
 
 setTimeout(common.mustCall(function() {
- ender.on('end', common.mustCall());
+ ender.on("end", common.mustCall());
  const c = ender.read();
  assert.strictEqual(c, null);
 
  const w = new TestWritable();
- w.on('finish', common.mustCall());
+ w.on("finish", common.mustCall());
  piper.pipe(w);
 }), 1);

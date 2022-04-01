@@ -1,17 +1,17 @@
-'use strict';
-const common = require('../common');
-const { promises: dnsPromises } = require('dns');
-const assert = require('assert');
-const dgram = require('dgram');
+"use strict";
+const common = require("../common");
+const { promises: dnsPromises } = require("dns");
+const assert = require("assert");
+const dgram = require("dgram");
 
-const server = dgram.createSocket('udp4');
+const server = dgram.createSocket("udp4");
 const resolver = new dnsPromises.Resolver();
 
 const addMessageListener = () => {
- server.removeAllListeners('message');
+ server.removeAllListeners("message");
 
- server.once('message', () => {
-  server.once('message', common.mustNotCall);
+ server.once("message", () => {
+  server.once("message", common.mustNotCall);
 
   resolver.cancel();
  });
@@ -24,13 +24,13 @@ server.bind(0, common.mustCall(async () => {
 
  // Single promise
  {
-  const hostname = 'example0.org';
+  const hostname = "example0.org";
 
   await assert.rejects(
    resolver.resolve4(hostname),
    {
-    code: 'ECANCELLED',
-    syscall: 'queryA',
+    code: "ECANCELLED",
+    syscall: "queryA",
     hostname,
    },
   );
@@ -50,8 +50,8 @@ server.bind(0, common.mustCall(async () => {
     assert.rejects(
      resolver.resolve4(hostname),
      {
-      code: 'ECANCELLED',
-      syscall: 'queryA',
+      code: "ECANCELLED",
+      syscall: "queryA",
       hostname: hostname,
      },
     ),

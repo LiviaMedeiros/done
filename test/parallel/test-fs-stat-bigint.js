@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const fs = require('fs');
-const promiseFs = require('fs').promises;
-const path = require('path');
-const tmpdir = require('../common/tmpdir');
-const { isDate } = require('util').types;
-const { inspect } = require('util');
+const common = require("../common");
+const assert = require("assert");
+const fs = require("fs");
+const promiseFs = require("fs").promises;
+const path = require("path");
+const tmpdir = require("../common/tmpdir");
+const { isDate } = require("util").types;
+const { inspect } = require("util");
 
 tmpdir.refresh();
 
@@ -15,7 +15,7 @@ let testIndex = 0;
 
 function getFilename() {
  const filename = path.join(tmpdir.path, `test-file-${++testIndex}`);
- fs.writeFileSync(filename, 'test');
+ fs.writeFileSync(filename, "test");
  return filename;
 }
 
@@ -31,7 +31,7 @@ function verifyStats(bigintStats, numStats, allowableDelta) {
     time - time2 <= allowableDelta,
     `difference of ${key}.getTime() should <= ${allowableDelta}.\n` +
         `Number version ${time}, BigInt version ${time2}n`);
-  } else if (key === 'mode') {
+  } else if (key === "mode") {
    assert.strictEqual(bigintStats[key], BigInt(val));
    assert.strictEqual(
     bigintStats.isBlockDevice(),
@@ -61,8 +61,8 @@ function verifyStats(bigintStats, numStats, allowableDelta) {
     bigintStats.isSymbolicLink(),
     numStats.isSymbolicLink(),
    );
-  } else if (key.endsWith('Ms')) {
-   const nsKey = key.replace('Ms', 'Ns');
+  } else if (key.endsWith("Ms")) {
+   const nsKey = key.replace("Ms", "Ns");
    const msFromBigInt = bigintStats[key];
    const nsFromBigInt = bigintStats[nsKey];
    const msFromBigIntNs = Number(nsFromBigInt / (10n ** 6n));
@@ -117,36 +117,36 @@ if (!common.isWindows) {
 
 {
  const filename = getFilename();
- const fd = fs.openSync(filename, 'r');
+ const fd = fs.openSync(filename, "r");
  runSyncTest(fs.fstatSync, fd);
  fs.closeSync(fd);
 }
 
 {
  assert.throws(
-  () => fs.statSync('does_not_exist'),
-  { code: 'ENOENT' });
+  () => fs.statSync("does_not_exist"),
+  { code: "ENOENT" });
  assert.strictEqual(
-  fs.statSync('does_not_exist', { throwIfNoEntry: false }),
+  fs.statSync("does_not_exist", { throwIfNoEntry: false }),
   undefined);
 }
 
 {
  assert.throws(
-  () => fs.lstatSync('does_not_exist'),
-  { code: 'ENOENT' });
+  () => fs.lstatSync("does_not_exist"),
+  { code: "ENOENT" });
  assert.strictEqual(
-  fs.lstatSync('does_not_exist', { throwIfNoEntry: false }),
+  fs.lstatSync("does_not_exist", { throwIfNoEntry: false }),
   undefined);
 }
 
 {
  assert.throws(
   () => fs.fstatSync(9999),
-  { code: 'EBADF' });
+  { code: "EBADF" });
  assert.throws(
   () => fs.fstatSync(9999, { throwIfNoEntry: false }),
-  { code: 'EBADF' });
+  { code: "EBADF" });
 }
 
 const runCallbackTest = (func, arg, done) => {
@@ -177,7 +177,7 @@ if (!common.isWindows) {
 
 {
  const filename = getFilename();
- const fd = fs.openSync(filename, 'r');
+ const fd = fs.openSync(filename, "r");
  runCallbackTest(fs.fstat, fd, () => { fs.closeSync(fd); });
 }
 
@@ -204,7 +204,7 @@ if (!common.isWindows) {
 
 (async function() {
  const filename = getFilename();
- const handle = await promiseFs.open(filename, 'r');
+ const handle = await promiseFs.open(filename, "r");
  const startTime = process.hrtime.bigint();
  const bigintStats = await handle.stat({ bigint: true });
  const numStats = await handle.stat();

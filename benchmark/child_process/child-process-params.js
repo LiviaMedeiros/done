@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const cp = require('child_process');
+const common = require("../common.js");
+const cp = require("child_process");
 
-const command = 'echo';
-const args = ['hello'];
+const command = "echo";
+const args = ["hello"];
 const options = {};
 const cb = () => {};
 
 const configs = {
  n: [1e3],
  methodName: [
-  'exec', 'execSync',
-  'execFile', 'execFileSync',
-  'spawn', 'spawnSync',
+  "exec", "execSync",
+  "execFile", "execFileSync",
+  "spawn", "spawnSync",
  ],
  params: [1, 2, 3, 4],
 };
@@ -24,7 +24,7 @@ function main({ n, methodName, params }) {
  const method = cp[methodName];
 
  switch (methodName) {
-  case 'exec':
+  case "exec":
    switch (params) {
     case 1:
      bench.start();
@@ -43,7 +43,7 @@ function main({ n, methodName, params }) {
      break;
    }
    break;
-  case 'execSync':
+  case "execSync":
    switch (params) {
     case 1:
      bench.start();
@@ -57,7 +57,7 @@ function main({ n, methodName, params }) {
      break;
    }
    break;
-  case 'execFile':
+  case "execFile":
    switch (params) {
     case 1:
      bench.start();
@@ -81,8 +81,8 @@ function main({ n, methodName, params }) {
      break;
    }
    break;
-  case 'execFileSync':
-  case 'spawnSync':
+  case "execFileSync":
+  case "spawnSync":
    switch (params) {
     case 1:
      bench.start();
@@ -101,7 +101,7 @@ function main({ n, methodName, params }) {
      break;
    }
    break;
-  case 'spawn':
+  case "spawn":
    switch (params) {
     case 1:
      bench.start();

@@ -1,21 +1,21 @@
 // Flags: --expose-internals
 
 
-import '../common/index.mjs';
-import assert from 'assert';
-import { Readline } from 'readline/promises';
-import { Writable } from 'stream';
+import "../common/index.mjs";
+import assert from "assert";
+import { Readline } from "readline/promises";
+import { Writable } from "stream";
 
-import utils from 'internal/readline/utils';
+import utils from "internal/readline/utils";
 const { CSI } = utils;
 
 const INVALID_ARG = {
- name: 'TypeError',
- code: 'ERR_INVALID_ARG_TYPE',
+ name: "TypeError",
+ code: "ERR_INVALID_ARG_TYPE",
 };
 
 class TestWritable extends Writable {
- data = '';
+ data = "";
  _write(chunk, encoding, callback) {
   this.data += chunk.toString();
   callback();
@@ -27,7 +27,7 @@ class TestWritable extends Writable {
  0, 1, 1n, 1.1, NaN, Infinity,
  true, false,
  Symbol(),
- '', '1',
+ "", "1",
  [], {}, () => {},
 ].forEach((arg) =>
  assert.throws(() => new Readline(arg), INVALID_ARG),
@@ -41,23 +41,23 @@ class TestWritable extends Writable {
  assert.deepStrictEqual(writable.data, CSI.kClearScreenDown);
  await readline.clearScreenDown().commit();
 
- writable.data = '';
+ writable.data = "";
  await readline.clearScreenDown().rollback();
- assert.strictEqual(writable.data, '');
+ assert.strictEqual(writable.data, "");
 
- writable.data = '';
+ writable.data = "";
  await readline.clearLine(-1).commit();
  assert.deepStrictEqual(writable.data, CSI.kClearToLineBeginning);
 
- writable.data = '';
+ writable.data = "";
  await readline.clearLine(1).commit();
  assert.deepStrictEqual(writable.data, CSI.kClearToLineEnd);
 
- writable.data = '';
+ writable.data = "";
  await readline.clearLine(0).commit();
  assert.deepStrictEqual(writable.data, CSI.kClearLine);
 
- writable.data = '';
+ writable.data = "";
  await readline.clearLine(-1).commit();
  assert.deepStrictEqual(writable.data, CSI.kClearToLineBeginning);
 
@@ -66,20 +66,20 @@ class TestWritable extends Writable {
  // Nothing is written when moveCursor 0, 0
  for (const set of
   [
-   [0, 0, ''],
-   [1, 0, '\x1b[1C'],
-   [-1, 0, '\x1b[1D'],
-   [0, 1, '\x1b[1B'],
-   [0, -1, '\x1b[1A'],
-   [1, 1, '\x1b[1C\x1b[1B'],
-   [-1, 1, '\x1b[1D\x1b[1B'],
-   [-1, -1, '\x1b[1D\x1b[1A'],
-   [1, -1, '\x1b[1C\x1b[1A'],
+   [0, 0, ""],
+   [1, 0, "\x1b[1C"],
+   [-1, 0, "\x1b[1D"],
+   [0, 1, "\x1b[1B"],
+   [0, -1, "\x1b[1A"],
+   [1, 1, "\x1b[1C\x1b[1B"],
+   [-1, 1, "\x1b[1D\x1b[1B"],
+   [-1, -1, "\x1b[1D\x1b[1A"],
+   [1, -1, "\x1b[1C\x1b[1A"],
   ]) {
-  writable.data = '';
+  writable.data = "";
   await readline.moveCursor(set[0], set[1]).commit();
   assert.deepStrictEqual(writable.data, set[2]);
-  writable.data = '';
+  writable.data = "";
   await readline.moveCursor(set[0], set[1]).commit();
   assert.deepStrictEqual(writable.data, set[2]);
  }
@@ -87,68 +87,68 @@ class TestWritable extends Writable {
 
  await readline.moveCursor(1, 1, null).commit();
 
- writable.data = '';
+ writable.data = "";
  [
   undefined, null,
   true, false,
   Symbol(),
-  '', '1',
+  "", "1",
   [], {}, () => {},
  ].forEach((arg) =>
   assert.throws(() => readline.cursorTo(arg), INVALID_ARG),
  );
- assert.strictEqual(writable.data, '');
+ assert.strictEqual(writable.data, "");
 
- writable.data = '';
- assert.throws(() => readline.cursorTo('a', 'b'), INVALID_ARG);
- assert.strictEqual(writable.data, '');
+ writable.data = "";
+ assert.throws(() => readline.cursorTo("a", "b"), INVALID_ARG);
+ assert.strictEqual(writable.data, "");
 
- writable.data = '';
- assert.throws(() => readline.cursorTo('a', 1), INVALID_ARG);
- assert.strictEqual(writable.data, '');
+ writable.data = "";
+ assert.throws(() => readline.cursorTo("a", 1), INVALID_ARG);
+ assert.strictEqual(writable.data, "");
 
- writable.data = '';
- assert.throws(() => readline.cursorTo(1, 'a'), INVALID_ARG);
- assert.strictEqual(writable.data, '');
+ writable.data = "";
+ assert.throws(() => readline.cursorTo(1, "a"), INVALID_ARG);
+ assert.strictEqual(writable.data, "");
 
- writable.data = '';
+ writable.data = "";
  await readline.cursorTo(1).commit();
- assert.strictEqual(writable.data, '\x1b[2G');
+ assert.strictEqual(writable.data, "\x1b[2G");
 
- writable.data = '';
+ writable.data = "";
  await readline.cursorTo(1, 2).commit();
- assert.strictEqual(writable.data, '\x1b[3;2H');
+ assert.strictEqual(writable.data, "\x1b[3;2H");
 
- writable.data = '';
+ writable.data = "";
  await readline.cursorTo(1, 2).commit();
- assert.strictEqual(writable.data, '\x1b[3;2H');
+ assert.strictEqual(writable.data, "\x1b[3;2H");
 
- writable.data = '';
+ writable.data = "";
  await readline.cursorTo(1).cursorTo(1, 2).commit();
- assert.strictEqual(writable.data, '\x1b[2G\x1b[3;2H');
+ assert.strictEqual(writable.data, "\x1b[2G\x1b[3;2H");
 
- writable.data = '';
+ writable.data = "";
  await readline.cursorTo(1).commit();
- assert.strictEqual(writable.data, '\x1b[2G');
+ assert.strictEqual(writable.data, "\x1b[2G");
 
  // Verify that cursorTo() rejects if x or y is NaN.
  [1.1, NaN, Infinity].forEach((arg) => {
   assert.throws(() => readline.cursorTo(arg), {
-   code: 'ERR_OUT_OF_RANGE',
-   name: 'RangeError',
+   code: "ERR_OUT_OF_RANGE",
+   name: "RangeError",
   });
  });
 
  [1.1, NaN, Infinity].forEach((arg) => {
   assert.throws(() => readline.cursorTo(1, arg), {
-   code: 'ERR_OUT_OF_RANGE',
-   name: 'RangeError',
+   code: "ERR_OUT_OF_RANGE",
+   name: "RangeError",
   });
  });
 
  assert.throws(() => readline.cursorTo(NaN, NaN), {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
  });
 }
 

@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-require('../common');
-const common = require('../common');
-const dns = require('dns');
+require("../common");
+const common = require("../common");
+const dns = require("dns");
 const dnsPromises = dns.promises;
-const { addresses } = require('../common/internet');
-const assert = require('assert');
+const { addresses } = require("../common/internet");
+const assert = require("assert");
 
 assert.rejects(
  dnsPromises.lookup(addresses.NOT_FOUND, {
@@ -14,7 +14,7 @@ assert.rejects(
   all: false,
  }),
  {
-  code: 'ENOTFOUND',
+  code: "ENOTFOUND",
   message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
  },
 );
@@ -26,7 +26,7 @@ assert.rejects(
   all: true,
  }),
  {
-  code: 'ENOTFOUND',
+  code: "ENOTFOUND",
   message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
  },
 );
@@ -36,26 +36,26 @@ dns.lookup(addresses.NOT_FOUND, {
  family: 0,
  all: true,
 }, common.mustCall((error) => {
- assert.strictEqual(error.code, 'ENOTFOUND');
+ assert.strictEqual(error.code, "ENOTFOUND");
  assert.strictEqual(
   error.message,
   `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
  );
- assert.strictEqual(error.syscall, 'getaddrinfo');
+ assert.strictEqual(error.syscall, "getaddrinfo");
  assert.strictEqual(error.hostname, addresses.NOT_FOUND);
 }));
 
-common.expectWarning('DeprecationWarning',
-                     'Type coercion of dns.lookup options is deprecated',
-                     'DEP0153');
+common.expectWarning("DeprecationWarning",
+                     "Type coercion of dns.lookup options is deprecated",
+                     "DEP0153");
 
 assert.rejects(
  dnsPromises.lookup(addresses.NOT_FOUND, {
-  family: 'IPv4',
-  all: 'all',
+  family: "IPv4",
+  all: "all",
  }),
  {
-  code: 'ENOTFOUND',
+  code: "ENOTFOUND",
   message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
  },
 );

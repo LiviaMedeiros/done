@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const spawn = require('child_process').spawn;
+"use strict";
+const common = require("../common");
+const spawn = require("child_process").spawn;
 
-const BREAK_MESSAGE = new RegExp('(?:' + [
- 'assert', 'break', 'break on start', 'debugCommand',
- 'exception', 'other', 'promiseRejection',
-].join('|') + ') in', 'i');
+const BREAK_MESSAGE = new RegExp("(?:" + [
+ "assert", "break", "break on start", "debugCommand",
+ "exception", "other", "promiseRejection",
+].join("|") + ") in", "i");
 
 const TIMEOUT = common.platformTimeout(5000);
 
@@ -14,9 +14,9 @@ function isPreBreak(output) {
 }
 
 function startCLI(args, flags = [], spawnOpts = {}) {
- let stderrOutput = '';
+ let stderrOutput = "";
  const child =
-    spawn(process.execPath, [...flags, 'inspect', ...args], spawnOpts);
+    spawn(process.execPath, [...flags, "inspect", ...args], spawnOpts);
 
  const outputBuffer = [];
  function bufferOutput(chunk) {
@@ -27,15 +27,15 @@ function startCLI(args, flags = [], spawnOpts = {}) {
  }
 
  function getOutput() {
-  return outputBuffer.join('\n').replaceAll('\b', '');
+  return outputBuffer.join("\n").replaceAll("\b", "");
  }
 
- child.stdout.setEncoding('utf8');
- child.stdout.on('data', bufferOutput);
- child.stderr.setEncoding('utf8');
- child.stderr.on('data', bufferOutput);
+ child.stdout.setEncoding("utf8");
+ child.stdout.on("data", bufferOutput);
+ child.stderr.setEncoding("utf8");
+ child.stderr.on("data", bufferOutput);
 
- if (process.env.VERBOSE === '1') {
+ if (process.env.VERBOSE === "1") {
   child.stdout.pipe(process.stdout);
   child.stderr.pipe(process.stderr);
  }
@@ -65,7 +65,7 @@ function startCLI(args, flags = [], spawnOpts = {}) {
 
     function onChildClose(code, signal) {
      tearDown();
-     let message = 'Child exited';
+     let message = "Child exited";
      if (code) {
       message += `, code ${code}`;
      }
@@ -84,17 +84,17 @@ function startCLI(args, flags = [], spawnOpts = {}) {
      reject(new Error([
       `Timeout (${TIMEOUT}) while waiting for ${pattern}`,
       `found: ${this.output}`,
-     ].join('; ')));
+     ].join("; ")));
     }, TIMEOUT);
 
     function tearDown() {
      clearTimeout(timer);
-     child.stdout.removeListener('data', checkOutput);
-     child.removeListener('close', onChildClose);
+     child.stdout.removeListener("data", checkOutput);
+     child.removeListener("close", onChildClose);
     }
 
-    child.on('close', onChildClose);
-    child.stdout.on('data', checkOutput);
+    child.on("close", onChildClose);
+    child.stdout.on("data", checkOutput);
     checkOutput();
    });
   },
@@ -107,7 +107,7 @@ function startCLI(args, flags = [], spawnOpts = {}) {
    await this.waitFor(/break (?:on start )?in/i);
 
    if (isPreBreak(this.output)) {
-    await this.command('next', false);
+    await this.command("next", false);
     return this.waitFor(/break in/);
    }
   },
@@ -125,7 +125,7 @@ function startCLI(args, flags = [], spawnOpts = {}) {
   },
 
   ctrlC() {
-   return this.command('.interrupt');
+   return this.command(".interrupt");
   },
 
   get output() {
@@ -133,11 +133,11 @@ function startCLI(args, flags = [], spawnOpts = {}) {
   },
 
   get rawOutput() {
-   return outputBuffer.join('').toString();
+   return outputBuffer.join("").toString();
   },
 
   parseSourceLines() {
-   return getOutput().split('\n')
+   return getOutput().split("\n")
         .map((line) => line.match(/(?:\*|>)?\s*(\d+)/))
         .filter((match) => match !== null)
         .map((match) => +match[1]);
@@ -147,11 +147,11 @@ function startCLI(args, flags = [], spawnOpts = {}) {
    if (flush) {
     this.flushOutput();
    }
-   if (process.env.VERBOSE === '1') {
+   if (process.env.VERBOSE === "1") {
     process.stderr.write(`< ${input}\n`);
    }
    child.stdin.write(input);
-   child.stdin.write('\n');
+   child.stdin.write("\n");
   },
 
   command(input, flush = true) {
@@ -169,7 +169,7 @@ function startCLI(args, flags = [], spawnOpts = {}) {
   quit() {
    return new Promise((resolve) => {
     child.stdin.end();
-    child.on('close', resolve);
+    child.on("close", resolve);
    });
   },
  };

@@ -1,27 +1,27 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const http2 = require('http2');
+const assert = require("assert");
+const http2 = require("http2");
 const server = http2.createServer();
 const errRegEx = /Session closed with error code 7/;
 const destroyCode = http2.constants.NGHTTP2_REFUSED_STREAM;
 
-server.on('error', common.mustNotCall());
+server.on("error", common.mustNotCall());
 
-server.on('session', (session) => {
- session.on('close', common.mustCall());
- session.on('error', common.mustCall((err) => {
+server.on("session", (session) => {
+ session.on("close", common.mustCall());
+ session.on("error", common.mustCall((err) => {
   assert.match(err.message, errRegEx);
   assert.strictEqual(session.closed, false);
   assert.strictEqual(session.destroyed, true);
  }));
 
- session.on('stream', common.mustCall((stream) => {
-  stream.on('error', common.mustCall((err) => {
+ session.on("stream", common.mustCall((stream) => {
+  stream.on("error", common.mustCall((err) => {
    assert.match(err.message, errRegEx);
    assert.strictEqual(session.closed, false);
    assert.strictEqual(session.destroyed, true);
@@ -35,20 +35,20 @@ server.on('session', (session) => {
 server.listen(0, common.mustCall(() => {
  const session = http2.connect(`http://localhost:${server.address().port}`);
 
- session.on('error', common.mustCall((err) => {
+ session.on("error", common.mustCall((err) => {
   assert.match(err.message, errRegEx);
   assert.strictEqual(session.closed, false);
   assert.strictEqual(session.destroyed, true);
  }));
 
- const stream = session.request({ [http2.constants.HTTP2_HEADER_PATH]: '/' });
+ const stream = session.request({ [http2.constants.HTTP2_HEADER_PATH]: "/" });
 
- stream.on('error', common.mustCall((err) => {
+ stream.on("error", common.mustCall((err) => {
   assert.match(err.message, errRegEx);
   assert.strictEqual(stream.rstCode, destroyCode);
  }));
 
- stream.on('close', common.mustCall(() => {
+ stream.on("close", common.mustCall(() => {
   server.close();
  }));
 }));

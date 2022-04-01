@@ -1,14 +1,14 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const tls = require('tls');
-const fixtures = require('../common/fixtures');
+const assert = require("assert");
+const tls = require("tls");
+const fixtures = require("../common/fixtures");
 
-const key = fixtures.readKey('agent2-key.pem');
-const cert = fixtures.readKey('agent2-cert.pem');
+const key = fixtures.readKey("agent2-key.pem");
+const cert = fixtures.readKey("agent2-cert.pem");
 
 let nsuccess = 0;
 let nerror = 0;
@@ -22,14 +22,14 @@ function test(size, err, next) {
   key: key,
   cert: cert,
   dhparam: loadDHParam(size),
-  ciphers: 'DHE-RSA-AES128-GCM-SHA256',
+  ciphers: "DHE-RSA-AES128-GCM-SHA256",
  };
 
  const server = tls.createServer(options, function(conn) {
   conn.end();
  });
 
- server.on('close', function(isException) {
+ server.on("close", function(isException) {
   assert(!isException);
   if (next) next();
  });
@@ -47,9 +47,9 @@ function test(size, err, next) {
    server.close();
   });
   if (err) {
-   client.on('error', function(e) {
+   client.on("error", function(e) {
     nerror++;
-    assert.strictEqual(e.code, 'ERR_TLS_DH_PARAM_SIZE');
+    assert.strictEqual(e.code, "ERR_TLS_DH_PARAM_SIZE");
     server.close();
    });
   }
@@ -80,11 +80,11 @@ let errMessage = /minDHSize is not a positive number/;
 });
 
 errMessage = /minDHSize is not a number/;
-[true, false, null, undefined, {}, [], '', '1'].forEach((minDHSize) => {
+[true, false, null, undefined, {}, [], "", "1"].forEach((minDHSize) => {
  assert.throws(() => tls.connect({ minDHSize }), errMessage);
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(nsuccess, 1);
  assert.strictEqual(nerror, 1);
 });

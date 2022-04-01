@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  size: [16, 512, 4096, 16386],
@@ -8,12 +8,12 @@ const bench = common.createBenchmark(main, {
 });
 
 function main({ n, size, args }) {
- const b0 = Buffer.alloc(size, 'a');
- const b1 = Buffer.alloc(size, 'a');
+ const b0 = Buffer.alloc(size, "a");
+ const b1 = Buffer.alloc(size, "a");
  const b0Len = b0.length;
  const b1Len = b1.length;
 
- b1[size - 1] = 'b'.charCodeAt(0);
+ b1[size - 1] = "b".charCodeAt(0);
 
  switch (args) {
   case 2:

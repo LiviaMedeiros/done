@@ -1,33 +1,33 @@
 // Flags: --experimental-vm-modules --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const { types, inspect } = require('util');
-const vm = require('vm');
-const { internalBinding } = require('internal/test/binding');
-const { JSStream } = internalBinding('js_stream');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const { types, inspect } = require("util");
+const vm = require("vm");
+const { internalBinding } = require("internal/test/binding");
+const { JSStream } = internalBinding("js_stream");
 
 const external = (new JSStream())._externalStream;
 
 for (const [ value, _method ] of [
- [ external, 'isExternal' ],
+ [ external, "isExternal" ],
  [ new Date() ],
- [ (function() { return arguments; })(), 'isArgumentsObject' ],
- [ new Boolean(), 'isBooleanObject' ],
- [ new Number(), 'isNumberObject' ],
- [ new String(), 'isStringObject' ],
- [ Object(Symbol()), 'isSymbolObject' ],
- [ Object(BigInt(0)), 'isBigIntObject' ],
- [ new Error(), 'isNativeError' ],
+ [ (function() { return arguments; })(), "isArgumentsObject" ],
+ [ new Boolean(), "isBooleanObject" ],
+ [ new Number(), "isNumberObject" ],
+ [ new String(), "isStringObject" ],
+ [ Object(Symbol()), "isSymbolObject" ],
+ [ Object(BigInt(0)), "isBigIntObject" ],
+ [ new Error(), "isNativeError" ],
  [ new RegExp() ],
- [ async function() {}, 'isAsyncFunction' ],
- [ function*() {}, 'isGeneratorFunction' ],
- [ (function*() {})(), 'isGeneratorObject' ],
+ [ async function() {}, "isAsyncFunction" ],
+ [ function*() {}, "isGeneratorFunction" ],
+ [ (function*() {})(), "isGeneratorObject" ],
  [ Promise.resolve() ],
  [ new Map() ],
  [ new Set() ],
- [ (new Map())[Symbol.iterator](), 'isMapIterator' ],
- [ (new Set())[Symbol.iterator](), 'isSetIterator' ],
+ [ (new Map())[Symbol.iterator](), "isMapIterator" ],
+ [ (new Set())[Symbol.iterator](), "isSetIterator" ],
  [ new WeakMap() ],
  [ new WeakSet() ],
  [ new ArrayBuffer() ],
@@ -44,10 +44,10 @@ for (const [ value, _method ] of [
  [ new BigUint64Array() ],
  [ Object.defineProperty(new Uint8Array(),
                          Symbol.toStringTag,
-                         { value: 'foo' }) ],
+                         { value: "foo" }) ],
  [ new DataView(new ArrayBuffer()) ],
  [ new SharedArrayBuffer() ],
- [ new Proxy({}, {}), 'isProxy' ],
+ [ new Proxy({}, {}), "isProxy" ],
 ]) {
  const method = _method || `is${value.constructor.name}`;
  assert(method in types, `Missing ${method} for ${inspect(value)}`);
@@ -55,8 +55,8 @@ for (const [ value, _method ] of [
 
  for (const key of Object.keys(types)) {
   if ((types.isArrayBufferView(value) ||
-         types.isAnyArrayBuffer(value)) && key.includes('Array') ||
-         key === 'isBoxedPrimitive') {
+         types.isAnyArrayBuffer(value)) && key.includes("Array") ||
+         key === "isBoxedPrimitive") {
    continue;
   }
 
@@ -77,42 +77,42 @@ for (const [ value, _method ] of [
 ].forEach((entry) => assert(types.isBoxedPrimitive(entry)));
 
 {
- assert(!types.isUint8Array({ [Symbol.toStringTag]: 'Uint8Array' }));
- assert(types.isUint8Array(vm.runInNewContext('new Uint8Array')));
+ assert(!types.isUint8Array({ [Symbol.toStringTag]: "Uint8Array" }));
+ assert(types.isUint8Array(vm.runInNewContext("new Uint8Array")));
 
  assert(!types.isUint8ClampedArray({
-  [Symbol.toStringTag]: 'Uint8ClampedArray',
+  [Symbol.toStringTag]: "Uint8ClampedArray",
  }));
  assert(types.isUint8ClampedArray(
-  vm.runInNewContext('new Uint8ClampedArray'),
+  vm.runInNewContext("new Uint8ClampedArray"),
  ));
 
- assert(!types.isUint16Array({ [Symbol.toStringTag]: 'Uint16Array' }));
- assert(types.isUint16Array(vm.runInNewContext('new Uint16Array')));
+ assert(!types.isUint16Array({ [Symbol.toStringTag]: "Uint16Array" }));
+ assert(types.isUint16Array(vm.runInNewContext("new Uint16Array")));
 
- assert(!types.isUint32Array({ [Symbol.toStringTag]: 'Uint32Array' }));
- assert(types.isUint32Array(vm.runInNewContext('new Uint32Array')));
+ assert(!types.isUint32Array({ [Symbol.toStringTag]: "Uint32Array" }));
+ assert(types.isUint32Array(vm.runInNewContext("new Uint32Array")));
 
- assert(!types.isInt8Array({ [Symbol.toStringTag]: 'Int8Array' }));
- assert(types.isInt8Array(vm.runInNewContext('new Int8Array')));
+ assert(!types.isInt8Array({ [Symbol.toStringTag]: "Int8Array" }));
+ assert(types.isInt8Array(vm.runInNewContext("new Int8Array")));
 
- assert(!types.isInt16Array({ [Symbol.toStringTag]: 'Int16Array' }));
- assert(types.isInt16Array(vm.runInNewContext('new Int16Array')));
+ assert(!types.isInt16Array({ [Symbol.toStringTag]: "Int16Array" }));
+ assert(types.isInt16Array(vm.runInNewContext("new Int16Array")));
 
- assert(!types.isInt32Array({ [Symbol.toStringTag]: 'Int32Array' }));
- assert(types.isInt32Array(vm.runInNewContext('new Int32Array')));
+ assert(!types.isInt32Array({ [Symbol.toStringTag]: "Int32Array" }));
+ assert(types.isInt32Array(vm.runInNewContext("new Int32Array")));
 
- assert(!types.isFloat32Array({ [Symbol.toStringTag]: 'Float32Array' }));
- assert(types.isFloat32Array(vm.runInNewContext('new Float32Array')));
+ assert(!types.isFloat32Array({ [Symbol.toStringTag]: "Float32Array" }));
+ assert(types.isFloat32Array(vm.runInNewContext("new Float32Array")));
 
- assert(!types.isFloat64Array({ [Symbol.toStringTag]: 'Float64Array' }));
- assert(types.isFloat64Array(vm.runInNewContext('new Float64Array')));
+ assert(!types.isFloat64Array({ [Symbol.toStringTag]: "Float64Array" }));
+ assert(types.isFloat64Array(vm.runInNewContext("new Float64Array")));
 
- assert(!types.isBigInt64Array({ [Symbol.toStringTag]: 'BigInt64Array' }));
- assert(types.isBigInt64Array(vm.runInNewContext('new BigInt64Array')));
+ assert(!types.isBigInt64Array({ [Symbol.toStringTag]: "BigInt64Array" }));
+ assert(types.isBigInt64Array(vm.runInNewContext("new BigInt64Array")));
 
- assert(!types.isBigUint64Array({ [Symbol.toStringTag]: 'BigUint64Array' }));
- assert(types.isBigUint64Array(vm.runInNewContext('new BigUint64Array')));
+ assert(!types.isBigUint64Array({ [Symbol.toStringTag]: "BigUint64Array" }));
+ assert(types.isBigUint64Array(vm.runInNewContext("new BigUint64Array")));
 }
 
 {
@@ -270,13 +270,13 @@ for (const [ value, _method ] of [
     yup.push(value);
    }
   }
-  console.log('Testing', testedFunc);
+  console.log("Testing", testedFunc);
   assert.deepStrictEqual(yup, expected[testedFunc]);
  }
 }
 
 (async () => {
- const m = new vm.SourceTextModule('');
+ const m = new vm.SourceTextModule("");
  await m.link(() => 0);
  await m.evaluate();
  assert.ok(types.isModuleNamespaceObject(m.namespace));
@@ -285,8 +285,8 @@ for (const [ value, _method ] of [
 {
  // eslint-disable-next-line node-core/crypto-check
  if (common.hasCrypto) {
-  const crypto = require('crypto');
-  assert.ok(!types.isKeyObject(crypto.createHash('sha1')));
+  const crypto = require("crypto");
+  assert.ok(!types.isKeyObject(crypto.createHash("sha1")));
  }
  assert.ok(!types.isCryptoKey());
  assert.ok(!types.isKeyObject());

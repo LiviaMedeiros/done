@@ -5,7 +5,7 @@
  * @author Sarat Addepalli <sarat.addepalli@gmail.com>
  */
 
-'use strict';
+"use strict";
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -13,15 +13,15 @@
 
 const nonAsciiRegexPattern = /[^\r\n\x20-\x7e]/;
 const suggestions = {
- '’': '\'',
- '‛': '\'',
- '‘': '\'',
- '“': '"',
- '‟': '"',
- '”': '"',
- '«': '"',
- '»': '"',
- '—': '-',
+ "’": "'",
+ "‛": "'",
+ "‘": "'",
+ "“": '"',
+ "‟": '"',
+ "”": '"',
+ "«": '"',
+ "»": '"',
+ "—": "-",
 };
 
 module.exports = (context) => {

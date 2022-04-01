@@ -1,29 +1,29 @@
 // Flags: --expose-internals
 
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const h2 = require('http2');
-const net = require('net');
-const util = require('util');
+ common.skip("missing crypto");
+const assert = require("assert");
+const h2 = require("http2");
+const net = require("net");
+const util = require("util");
 
-const { kTimeout } = require('internal/timers');
+const { kTimeout } = require("internal/timers");
 
 // Tests behavior of the proxied socket on Http2Session
 
 const errMsg = {
- code: 'ERR_HTTP2_NO_SOCKET_MANIPULATION',
- name: 'Error',
- message: 'HTTP/2 sockets should not be directly manipulated ' +
-           '(e.g. read and written)',
+ code: "ERR_HTTP2_NO_SOCKET_MANIPULATION",
+ name: "Error",
+ message: "HTTP/2 sockets should not be directly manipulated " +
+           "(e.g. read and written)",
 };
 
 const server = h2.createServer();
 
-server.on('stream', common.mustCall(function(stream, headers) {
+server.on("stream", common.mustCall(function(stream, headers) {
  const socket = stream.session.socket;
  const session = stream.session;
 
@@ -31,26 +31,26 @@ server.on('stream', common.mustCall(function(stream, headers) {
 
  assert.strictEqual(socket.writable, true);
  assert.strictEqual(socket.readable, true);
- assert.strictEqual(typeof socket.address(), 'object');
+ assert.strictEqual(typeof socket.address(), "object");
 
  socket.setTimeout(987);
  assert.strictEqual(session[kTimeout]._idleTimeout, 987);
 
  // The indentation is corrected depending on the depth.
  let inspectedTimeout = util.inspect(session[kTimeout]);
- assert(inspectedTimeout.includes('  _idlePrev: [TimersList]'));
- assert(inspectedTimeout.includes('  _idleNext: [TimersList]'));
- assert(!inspectedTimeout.includes('   _idleNext: [TimersList]'));
+ assert(inspectedTimeout.includes("  _idlePrev: [TimersList]"));
+ assert(inspectedTimeout.includes("  _idleNext: [TimersList]"));
+ assert(!inspectedTimeout.includes("   _idleNext: [TimersList]"));
 
  inspectedTimeout = util.inspect([ session[kTimeout] ]);
- assert(inspectedTimeout.includes('    _idlePrev: [TimersList]'));
- assert(inspectedTimeout.includes('    _idleNext: [TimersList]'));
- assert(!inspectedTimeout.includes('     _idleNext: [TimersList]'));
+ assert(inspectedTimeout.includes("    _idlePrev: [TimersList]"));
+ assert(inspectedTimeout.includes("    _idleNext: [TimersList]"));
+ assert(!inspectedTimeout.includes("     _idleNext: [TimersList]"));
 
  const inspectedTimersList = util.inspect([[ session[kTimeout]._idlePrev ]]);
- assert(inspectedTimersList.includes('      _idlePrev: [Timeout]'));
- assert(inspectedTimersList.includes('      _idleNext: [Timeout]'));
- assert(!inspectedTimersList.includes('       _idleNext: [Timeout]'));
+ assert(inspectedTimersList.includes("      _idlePrev: [Timeout]"));
+ assert(inspectedTimersList.includes("      _idleNext: [Timeout]"));
+ assert(!inspectedTimersList.includes("       _idleNext: [Timeout]"));
 
  assert.throws(() => socket.destroy, errMsg);
  assert.throws(() => socket.emit, errMsg);
@@ -107,7 +107,7 @@ server.on('stream', common.mustCall(function(stream, headers) {
  socket.unref = fn;
  assert.strictEqual(session.unref, fn);
 
- stream.session.on('close', common.mustCall(() => {
+ stream.session.on("close", common.mustCall(() => {
   assert.strictEqual(session.socket, undefined);
  }));
 }));
@@ -117,7 +117,7 @@ server.listen(0, common.mustCall(function() {
  const url = `http://localhost:${port}`;
  const client = h2.connect(url, common.mustCall(() => {
   const request = client.request();
-  request.on('end', common.mustCall(() => {
+  request.on("end", common.mustCall(() => {
    client.close();
    server.close();
   }));

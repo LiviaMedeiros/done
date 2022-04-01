@@ -1,10 +1,10 @@
 // Test async-hooks fired on right
 // asyncIds & triggerAsyncId for async-await
-'use strict';
+"use strict";
 
-require('../common');
-const async_hooks = require('async_hooks');
-const assert = require('assert');
+require("../common");
+const async_hooks = require("async_hooks");
+const assert = require("assert");
 
 const asyncIds = [];
 async_hooks.createHook({

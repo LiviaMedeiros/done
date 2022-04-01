@@ -1,30 +1,30 @@
 /**
  * Utility functions common to ESLint rules.
  */
-'use strict';
+"use strict";
 
 function isRequireCall(node) {
- return node.callee.type === 'Identifier' && node.callee.name === 'require';
+ return node.callee.type === "Identifier" && node.callee.name === "require";
 }
 module.exports.isRequireCall = isRequireCall;
 
 module.exports.isString = function(node) {
- return node && node.type === 'Literal' && typeof node.value === 'string';
+ return node && node.type === "Literal" && typeof node.value === "string";
 };
 
 module.exports.isDefiningError = function(node) {
  return node.expression &&
-         node.expression.type === 'CallExpression' &&
+         node.expression.type === "CallExpression" &&
          node.expression.callee &&
-         node.expression.callee.name === 'E' &&
+         node.expression.callee.name === "E" &&
          node.expression.arguments.length !== 0;
 };
 
 module.exports.isDefiningDeprecation = function(node) {
  return node.expression &&
-         node.expression.type === 'CallExpression' &&
+         node.expression.type === "CallExpression" &&
          node.expression.callee &&
-         node.expression.callee.name.endsWith('deprecate') &&
+         node.expression.callee.name.endsWith("deprecate") &&
          node.expression.arguments.length !== 0;
 };
 
@@ -54,10 +54,10 @@ module.exports.isCommonModule = function(node) {
  */
 module.exports.isBinding = function(node, modules) {
  const isProcessBinding = node.callee.object &&
-                           node.callee.object.name === 'process' &&
-                           node.callee.property.name === 'binding';
+                           node.callee.object.name === "process" &&
+                           node.callee.property.name === "binding";
 
- return (isProcessBinding || node.callee.name === 'internalBinding') &&
+ return (isProcessBinding || node.callee.name === "internalBinding") &&
          modules.includes(node.arguments[0].value);
 };
 
@@ -82,8 +82,8 @@ module.exports.usesCommonProperty = function(node, properties) {
 module.exports.inSkipBlock = function(node) {
  let hasSkipBlock = false;
  if (node.test &&
-      node.test.type === 'UnaryExpression' &&
-      node.test.operator === '!') {
+      node.test.type === "UnaryExpression" &&
+      node.test.operator === "!") {
   const consequent = node.consequent;
   if (consequent.body) {
    consequent.body.some((expressionStatement) => {
@@ -102,7 +102,7 @@ module.exports.inSkipBlock = function(node) {
 function hasSkip(expression) {
  return expression &&
          expression.callee &&
-         (expression.callee.name === 'skip' ||
+         (expression.callee.name === "skip" ||
          expression.callee.property &&
-         expression.callee.property.name === 'skip');
+         expression.callee.property.name === "skip");
 }

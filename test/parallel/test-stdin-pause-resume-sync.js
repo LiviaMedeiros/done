@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-console.error('before opening stdin');
+"use strict";
+require("../common");
+console.error("before opening stdin");
 process.stdin.resume();
-console.error('stdin opened');
-console.error('pausing stdin');
+console.error("stdin opened");
+console.error("pausing stdin");
 process.stdin.pause();
-console.error('opening again');
+console.error("opening again");
 process.stdin.resume();
-console.error('pausing again');
+console.error("pausing again");
 process.stdin.pause();
-console.error('should exit now');
+console.error("should exit now");

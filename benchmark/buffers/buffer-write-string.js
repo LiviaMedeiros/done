@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 const bench = common.createBenchmark(main, {
  encoding: [
-  '', 'utf8', 'ascii', 'hex', 'utf16le', 'latin1',
+  "", "utf8", "ascii", "hex", "utf16le", "latin1",
  ],
- args: [ '', 'offset', 'offset+length' ],
+ args: [ "", "offset", "offset+length" ],
  len: [2048],
  n: [1e6],
 });
@@ -16,8 +16,8 @@ function main({ len, n, encoding, args }) {
  const buf = Buffer.allocUnsafe(len);
 
  switch (args) {
-  case 'offset':
-   string = 'a'.repeat(Math.floor(len / 2));
+  case "offset":
+   string = "a".repeat(Math.floor(len / 2));
    start = len - string.length;
    if (encoding) {
     bench.start();
@@ -33,8 +33,8 @@ function main({ len, n, encoding, args }) {
     bench.end(n);
    }
    break;
-  case 'offset+length':
-   string = 'a'.repeat(len);
+  case "offset+length":
+   string = "a".repeat(len);
    if (encoding) {
     bench.start();
     for (let i = 0; i < n; ++i) {
@@ -50,7 +50,7 @@ function main({ len, n, encoding, args }) {
    }
    break;
   default:
-   string = 'a'.repeat(len);
+   string = "a".repeat(len);
    if (encoding) {
     bench.start();
     for (let i = 0; i < n; ++i) {

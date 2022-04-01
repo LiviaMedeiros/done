@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 const {
  ok,
  strictEqual,
  throws,
-} = require('assert');
+} = require("assert");
 
 const {
  createHistogram,
  monitorEventLoopDelay,
-} = require('perf_hooks');
+} = require("perf_hooks");
 
-const { inspect } = require('util');
+const { inspect } = require("util");
 
 {
  const h = createHistogram();
@@ -35,13 +35,13 @@ const { inspect } = require('util');
  strictEqual(h.count, 1);
  strictEqual(h.countBigInt, 1n);
 
- [false, '', {}, undefined, null].forEach((i) => {
+ [false, "", {}, undefined, null].forEach((i) => {
   throws(() => h.record(i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
  });
  throws(() => h.record(0, Number.MAX_SAFE_INTEGER + 1), {
-  code: 'ERR_OUT_OF_RANGE',
+  code: "ERR_OUT_OF_RANGE",
  });
 
  strictEqual(h.min, 1);
@@ -82,7 +82,7 @@ const { inspect } = require('util');
  e.enable();
  const mc = new MessageChannel();
  mc.port1.onmessage = common.mustCall(({ data }) => {
-  strictEqual(typeof data.min, 'number');
+  strictEqual(typeof data.min, "number");
   ok(data.min > 0);
   ok(data.count > 0);
   strictEqual(data.disable, undefined);
@@ -94,39 +94,39 @@ const { inspect } = require('util');
 
 {
  const h = createHistogram();
- ok(inspect(h, { depth: null }).startsWith('Histogram'));
- strictEqual(inspect(h, { depth: -1 }), '[RecordableHistogram]');
+ ok(inspect(h, { depth: null }).startsWith("Histogram"));
+ strictEqual(inspect(h, { depth: -1 }), "[RecordableHistogram]");
 }
 
 {
  // Tests that RecordableHistogram is impossible to construct manually
  const h = createHistogram();
- throws(() => new h.constructor(), { code: 'ERR_ILLEGAL_CONSTRUCTOR' });
+ throws(() => new h.constructor(), { code: "ERR_ILLEGAL_CONSTRUCTOR" });
 }
 
 {
  [
-  'hello',
+  "hello",
   1,
   null,
  ].forEach((i) => {
-  throws(() => createHistogram(i), { code: 'ERR_INVALID_ARG_TYPE' });
+  throws(() => createHistogram(i), { code: "ERR_INVALID_ARG_TYPE" });
  });
 
  [
-  'hello',
+  "hello",
   false,
   null,
   {},
  ].forEach((i) => {
   throws(() => createHistogram({ lowest: i }), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
   throws(() => createHistogram({ highest: i }), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
   throws(() => createHistogram({ figures: i }), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
  });
 
@@ -147,13 +147,13 @@ const { inspect } = require('util');
  strictEqual(h2.count, 1);
 
  [
-  'hello',
+  "hello",
   1,
   false,
   {},
  ].forEach((i) => {
   throws(() => h1.add(i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+   code: "ERR_INVALID_ARG_TYPE",
   });
  });
 }

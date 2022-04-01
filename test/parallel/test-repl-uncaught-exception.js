@@ -1,19 +1,19 @@
-'use strict';
-require('../common');
-const ArrayStream = require('../common/arraystream');
-const assert = require('assert');
-const repl = require('repl');
+"use strict";
+require("../common");
+const ArrayStream = require("../common/arraystream");
+const assert = require("assert");
+const repl = require("repl");
 
 let count = 0;
 
 function run({ command, expected, useColors = false }) {
- let accum = '';
+ let accum = "";
 
  const output = new ArrayStream();
- output.write = (data) => accum += data.replace('\r', '');
+ output.write = (data) => accum += data.replace("\r", "");
 
  const r = repl.start({
-  prompt: '',
+  prompt: "",
   input: new ArrayStream(),
   output,
   terminal: false,
@@ -21,17 +21,17 @@ function run({ command, expected, useColors = false }) {
  });
 
  r.write(`${command}\n`);
- if (typeof expected === 'string') {
+ if (typeof expected === "string") {
   assert.strictEqual(accum, expected);
  } else {
   assert.match(accum, expected);
  }
 
  // Verify that the repl is still working as expected.
- accum = '';
- r.write('1 + 1\n');
+ accum = "";
+ r.write("1 + 1\n");
  // eslint-disable-next-line no-control-regex
- assert.strictEqual(accum.replace(/\u001b\[[0-9]+m/g, ''), '2\n');
+ assert.strictEqual(accum.replace(/\u001b\[[0-9]+m/g, ""), "2\n");
  r.close();
  count++;
 }
@@ -39,8 +39,8 @@ function run({ command, expected, useColors = false }) {
 const tests = [
  {
   useColors: true,
-  command: 'x',
-  expected: 'Uncaught ReferenceError: x is not defined\n',
+  command: "x",
+  expected: "Uncaught ReferenceError: x is not defined\n",
  },
  {
   useColors: true,
@@ -52,8 +52,8 @@ const tests = [
   expected: /^Uncaught:\nTypeError \[ERR_INVALID_REPL_INPUT]: Listeners for `/,
  },
  {
-  command: 'x;\n',
-  expected: 'Uncaught ReferenceError: x is not defined\n',
+  command: "x;\n",
+  expected: "Uncaught ReferenceError: x is not defined\n",
  },
  {
   command: 'process.on("uncaughtException", () => console.log("Foobar"));' +
@@ -67,10 +67,10 @@ const tests = [
  },
 ];
 
-process.on('exit', () => {
+process.on("exit", () => {
  // To actually verify that the test passed we have to make sure no
  // `uncaughtException` listeners exist anymore.
- process.removeAllListeners('uncaughtException');
+ process.removeAllListeners("uncaughtException");
  assert.strictEqual(count, tests.length);
 });
 

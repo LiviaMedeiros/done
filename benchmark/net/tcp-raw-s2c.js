@@ -1,20 +1,20 @@
 // In this benchmark, we connect a client to the server, and write
 // as many bytes as we can in the specified time (default = 10s)
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const util = require('util');
+const common = require("../common.js");
+const util = require("util");
 
 // If there are dur=N and len=N args, then
 // run the function with those settings.
 // If not, then queue up a bunch of child processes.
 const bench = common.createBenchmark(main, {
  len: [102400, 1024 * 1024 * 16],
- type: ['utf', 'asc', 'buf'],
+ type: ["utf", "asc", "buf"],
  dur: [5],
 }, {
  test: { len: 1024 },
- flags: [ '--expose-internals', '--no-warnings' ],
+ flags: [ "--expose-internals", "--no-warnings" ],
 });
 
 function main({ dur, len, type }) {
@@ -22,33 +22,33 @@ function main({ dur, len, type }) {
   TCP,
   TCPConnectWrap,
   constants: TCPConstants,
- } = common.binding('tcp_wrap');
- const { WriteWrap } = common.binding('stream_wrap');
+ } = common.binding("tcp_wrap");
+ const { WriteWrap } = common.binding("stream_wrap");
  const PORT = common.PORT;
 
  const serverHandle = new TCP(TCPConstants.SERVER);
- let err = serverHandle.bind('127.0.0.1', PORT);
+ let err = serverHandle.bind("127.0.0.1", PORT);
  if (err)
-  fail(err, 'bind');
+  fail(err, "bind");
 
  err = serverHandle.listen(511);
  if (err)
-  fail(err, 'listen');
+  fail(err, "listen");
 
  serverHandle.onconnection = function(err, clientHandle) {
   if (err)
-   fail(err, 'connect');
+   fail(err, "connect");
 
   let chunk;
   switch (type) {
-   case 'buf':
-    chunk = Buffer.alloc(len, 'x');
+   case "buf":
+    chunk = Buffer.alloc(len, "x");
     break;
-   case 'utf':
-    chunk = 'ü'.repeat(len / 2);
+   case "utf":
+    chunk = "ü".repeat(len / 2);
     break;
-   case 'asc':
-    chunk = 'x'.repeat(len);
+   case "asc":
+    chunk = "x".repeat(len);
     break;
    default:
     throw new Error(`invalid type: ${type}`);
@@ -65,19 +65,19 @@ function main({ dur, len, type }) {
    writeReq.oncomplete = afterWrite;
    let err;
    switch (type) {
-    case 'buf':
+    case "buf":
      err = clientHandle.writeBuffer(writeReq, chunk);
      break;
-    case 'utf':
+    case "utf":
      err = clientHandle.writeUtf8String(writeReq, chunk);
      break;
-    case 'asc':
+    case "asc":
      err = clientHandle.writeAsciiString(writeReq, chunk);
      break;
    }
 
    if (err) {
-    fail(err, 'write');
+    fail(err, "write");
    } else if (!writeReq.async) {
     process.nextTick(() => {
      afterWrite(0, clientHandle);
@@ -87,7 +87,7 @@ function main({ dur, len, type }) {
 
   function afterWrite(status, handle) {
    if (status)
-    fail(status, 'write');
+    fail(status, "write");
 
    while (clientHandle.writeQueueSize === 0)
     write();
@@ -103,10 +103,10 @@ function main({ dur, len, type }) {
  function client(dur) {
   const clientHandle = new TCP(TCPConstants.SOCKET);
   const connectReq = new TCPConnectWrap();
-  const err = clientHandle.connect(connectReq, '127.0.0.1', PORT);
+  const err = clientHandle.connect(connectReq, "127.0.0.1", PORT);
 
   if (err)
-   fail(err, 'connect');
+   fail(err, "connect");
 
   connectReq.oncomplete = function() {
    let bytes = 0;
@@ -114,7 +114,7 @@ function main({ dur, len, type }) {
     // We're not expecting to ever get an EOF from the client.
     // Just lots of data forever.
     if (!buffer)
-     fail('read');
+     fail("read");
 
     // Don't slice the buffer. The point of this is to isolate, not
     // simulate real traffic.

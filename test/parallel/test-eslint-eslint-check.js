@@ -1,24 +1,24 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if ((!common.hasCrypto) || (!common.hasIntl)) {
- common.skip('ESLint tests require crypto and Intl');
+ common.skip("ESLint tests require crypto and Intl");
 }
 
 common.skipIfEslintMissing();
 
-const RuleTester = require('../../tools/node_modules/eslint').RuleTester;
-const rule = require('../../tools/eslint-rules/eslint-check');
+const RuleTester = require("../../tools/node_modules/eslint").RuleTester;
+const rule = require("../../tools/eslint-rules/eslint-check");
 
-const message = 'Please add a skipIfEslintMissing() call to allow this ' +
-                'test to be skipped when Node.js is built ' +
-                'from a source tarball.';
+const message = "Please add a skipIfEslintMissing() call to allow this " +
+                "test to be skipped when Node.js is built " +
+                "from a source tarball.";
 
-new RuleTester().run('eslint-check', rule, {
+new RuleTester().run("eslint-check", rule, {
  valid: [
-  'foo;',
+  "foo;",
   'require("common")\n' +
-      'common.skipIfEslintMissing();\n' +
+      "common.skipIfEslintMissing();\n" +
       'require("../../tools/node_modules/eslint")',
  ],
  invalid: [
@@ -27,7 +27,7 @@ new RuleTester().run('eslint-check', rule, {
             'require("../../tools/node_modules/eslint").RuleTester',
    errors: [{ message }],
    output: 'require("common")\n' +
-              'common.skipIfEslintMissing();\n' +
+              "common.skipIfEslintMissing();\n" +
               'require("../../tools/node_modules/eslint").RuleTester',
   },
  ],

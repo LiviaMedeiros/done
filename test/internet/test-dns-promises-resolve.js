@@ -1,17 +1,17 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const dnsPromises = require('dns').promises;
+const dnsPromises = require("dns").promises;
 
 // Error when rrtype is invalid.
 {
- const rrtype = 'DUMMY';
+ const rrtype = "DUMMY";
  assert.throws(
-  () => dnsPromises.resolve('example.org', rrtype),
+  () => dnsPromises.resolve("example.org", rrtype),
   {
-   code: 'ERR_INVALID_ARG_VALUE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_VALUE",
+   name: "TypeError",
    message: `The argument 'rrtype' is invalid. Received '${rrtype}'`,
   },
  );
@@ -21,10 +21,10 @@ const dnsPromises = require('dns').promises;
 {
  const rrtype = 0;
  assert.throws(
-  () => dnsPromises.resolve('example.org', rrtype),
+  () => dnsPromises.resolve("example.org", rrtype),
   {
-   code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError',
+   code: "ERR_INVALID_ARG_TYPE",
+   name: "TypeError",
    message: 'The "rrtype" argument must be of type string. ' +
                `Received type ${typeof rrtype} (${rrtype})`,
   },
@@ -35,7 +35,7 @@ const dnsPromises = require('dns').promises;
 {
  (async function() {
   const rrtype = undefined;
-  const result = await dnsPromises.resolve('example.org', rrtype);
+  const result = await dnsPromises.resolve("example.org", rrtype);
   assert.ok(result !== undefined);
   assert.ok(result.length > 0);
  })().then(common.mustCall());

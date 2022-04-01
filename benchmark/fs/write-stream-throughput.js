@@ -1,18 +1,18 @@
 // Test the throughput of the fs.WriteStream class.
-'use strict';
+"use strict";
 
-const path = require('path');
-const common = require('../common.js');
-const fs = require('fs');
+const path = require("path");
+const common = require("../common.js");
+const fs = require("fs");
 
-const tmpdir = require('../../test/common/tmpdir');
+const tmpdir = require("../../test/common/tmpdir");
 tmpdir.refresh();
 const filename = path.resolve(tmpdir.path,
                               `.removeme-benchmark-garbage-${process.pid}`);
 
 const bench = common.createBenchmark(main, {
  dur: [5],
- encodingType: ['buf', 'asc', 'utf'],
+ encodingType: ["buf", "asc", "utf"],
  size: [2, 1024, 65535, 1024 * 1024],
 });
 
@@ -21,16 +21,16 @@ function main({ dur, encodingType, size }) {
 
  let chunk;
  switch (encodingType) {
-  case 'buf':
-   chunk = Buffer.alloc(size, 'b');
+  case "buf":
+   chunk = Buffer.alloc(size, "b");
    break;
-  case 'asc':
-   chunk = 'a'.repeat(size);
-   encoding = 'ascii';
+  case "asc":
+   chunk = "a".repeat(size);
+   encoding = "ascii";
    break;
-  case 'utf':
-   chunk = 'ü'.repeat(Math.ceil(size / 2));
-   encoding = 'utf8';
+  case "utf":
+   chunk = "ü".repeat(Math.ceil(size / 2));
+   encoding = "utf8";
    break;
   default:
    throw new Error(`invalid encodingType: ${encodingType}`);
@@ -46,10 +46,10 @@ function main({ dur, encodingType, size }) {
  let ended = false;
 
  const f = fs.createWriteStream(filename);
- f.on('drain', write);
- f.on('open', write);
- f.on('close', done);
- f.on('finish', () => {
+ f.on("drain", write);
+ f.on("open", write);
+ f.on("close", done);
+ f.on("finish", () => {
   ended = true;
   const written = fs.statSync(filename).size / 1024;
   try {
@@ -75,6 +75,6 @@ function main({ dur, encodingType, size }) {
 
  function done() {
   if (!ended)
-   f.emit('finish');
+   f.emit("finish");
  }
 }

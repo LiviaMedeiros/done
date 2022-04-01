@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fs = require('fs');
+const common = require("../common");
+const fs = require("fs");
 
 const bench = common.createBenchmark(main, {
  n: [1e6],
- statSyncType: ['fstatSync', 'lstatSync', 'statSync'],
+ statSyncType: ["fstatSync", "lstatSync", "statSync"],
 });
 
 
 function main({ n, statSyncType }) {
- const arg = (statSyncType === 'fstatSync' ?
-  fs.openSync(__filename, 'r') :
+ const arg = (statSyncType === "fstatSync" ?
+  fs.openSync(__filename, "r") :
   __dirname);
  const fn = fs[statSyncType];
 
@@ -21,6 +21,6 @@ function main({ n, statSyncType }) {
  }
  bench.end(n);
 
- if (statSyncType === 'fstatSync')
+ if (statSyncType === "fstatSync")
   fs.closeSync(arg);
 }

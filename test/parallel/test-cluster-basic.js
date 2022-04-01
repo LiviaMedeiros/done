@@ -19,15 +19,15 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-const assert = require('assert');
-const cluster = require('cluster');
+const assert = require("assert");
+const cluster = require("cluster");
 
-assert.strictEqual('NODE_UNIQUE_ID' in process.env, false,
+assert.strictEqual("NODE_UNIQUE_ID" in process.env, false,
                    `NODE_UNIQUE_ID (${process.env.NODE_UNIQUE_ID}) ` +
-                   'should be removed on startup');
+                   "should be removed on startup");
 
 function forEach(obj, fn) {
  Object.keys(obj).forEach((name, index) => {
@@ -37,7 +37,7 @@ function forEach(obj, fn) {
 
 
 if (cluster.isWorker) {
- require('http').Server(common.mustNotCall()).listen(0, '127.0.0.1');
+ require("http").Server(common.mustNotCall()).listen(0, "127.0.0.1");
 } else if (cluster.isPrimary) {
 
  const checks = {
@@ -97,18 +97,18 @@ if (cluster.isWorker) {
  });
 
  // Kill worker when listening
- cluster.on('listening', common.mustCall(() => {
+ cluster.on("listening", common.mustCall(() => {
   worker.kill();
  }));
 
  // Kill process when worker is killed
- cluster.on('exit', common.mustCall());
+ cluster.on("exit", common.mustCall());
 
  // Create worker
  const worker = cluster.fork();
  assert.strictEqual(worker.id, 1);
  assert(worker instanceof cluster.Worker,
-        'the worker is not a instance of the Worker constructor');
+        "the worker is not a instance of the Worker constructor");
 
  // Check event
  forEach(checks.worker.events, function(bool, name, index) {
@@ -120,18 +120,18 @@ if (cluster.isWorker) {
    checks.worker.equal[name] = (worker === this);
 
    switch (name) {
-    case 'exit':
+    case "exit":
      assert.strictEqual(arguments[0], worker.process.exitCode);
      assert.strictEqual(arguments[1], worker.process.signalCode);
      assert.strictEqual(arguments.length, 2);
      break;
 
-    case 'listening': {
+    case "listening": {
      assert.strictEqual(arguments.length, 1);
      assert.strictEqual(Object.keys(arguments[0]).length, 4);
-     assert.strictEqual(arguments[0].address, '127.0.0.1');
+     assert.strictEqual(arguments[0].address, "127.0.0.1");
      assert.strictEqual(arguments[0].addressType, 4);
-     assert(Object.hasOwn(arguments[0], 'fd'));
+     assert(Object.hasOwn(arguments[0], "fd"));
      assert.strictEqual(arguments[0].fd, undefined);
      const port = arguments[0].port;
      assert(Number.isInteger(port));
@@ -147,7 +147,7 @@ if (cluster.isWorker) {
  });
 
  // Check all values
- process.once('exit', () => {
+ process.once("exit", () => {
   // Check cluster events
   forEach(checks.cluster.events, (check, name) => {
    assert(check,

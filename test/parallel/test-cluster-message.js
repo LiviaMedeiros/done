@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 function forEach(obj, fn) {
  Object.keys(obj).forEach(function(name, index) {
@@ -35,27 +35,27 @@ if (cluster.isWorker) {
  // Create a tcp server. This will be used as cluster-shared-server and as an
  // alternative IPC channel.
  const server = net.Server();
- let socket, message;
+ let message, socket;
 
  function maybeReply() {
   if (!socket || !message) return;
 
   // Tell primary using TCP socket that a message is received.
   socket.write(JSON.stringify({
-   code: 'received message',
+   code: "received message",
    echo: message,
   }));
  }
 
- server.on('connection', function(socket_) {
+ server.on("connection", function(socket_) {
   socket = socket_;
   maybeReply();
 
   // Send a message back over the IPC channel.
-  process.send('message from worker');
+  process.send("message from worker");
  });
 
- process.on('message', function(message_) {
+ process.on("message", function(message_) {
   message = message_;
   maybeReply();
  });
@@ -65,16 +65,16 @@ if (cluster.isWorker) {
 
  const checks = {
   global: {
-   'receive': false,
-   'correct': false,
+   "receive": false,
+   "correct": false,
   },
   primary: {
-   'receive': false,
-   'correct': false,
+   "receive": false,
+   "correct": false,
   },
   worker: {
-   'receive': false,
-   'correct': false,
+   "receive": false,
+   "correct": false,
   },
  };
 
@@ -83,7 +83,7 @@ if (cluster.isWorker) {
  const check = (type, result) => {
   checks[type].receive = true;
   checks[type].correct = result;
-  console.error('check', checks);
+  console.error("check", checks);
 
   let missing = false;
   forEach(checks, function(type) {
@@ -91,7 +91,7 @@ if (cluster.isWorker) {
   });
 
   if (missing === false) {
-   console.error('end client');
+   console.error("end client");
    client.end();
   }
  };
@@ -100,44 +100,44 @@ if (cluster.isWorker) {
  const worker = cluster.fork();
 
  // When a IPC message is received from the worker
- worker.on('message', function(message) {
-  check('primary', message === 'message from worker');
+ worker.on("message", function(message) {
+  check("primary", message === "message from worker");
  });
- cluster.on('message', function(worker_, message) {
+ cluster.on("message", function(worker_, message) {
   assert.strictEqual(worker_, worker);
-  check('global', message === 'message from worker');
+  check("global", message === "message from worker");
  });
 
  // When a TCP server is listening in the worker connect to it
- worker.on('listening', function(address) {
+ worker.on("listening", function(address) {
 
   client = net.connect(address.port, function() {
    // Send message to worker.
-   worker.send('message from primary');
+   worker.send("message from primary");
   });
 
-  client.on('data', function(data) {
+  client.on("data", function(data) {
    // All data is JSON
    data = JSON.parse(data.toString());
 
-   if (data.code === 'received message') {
-    check('worker', data.echo === 'message from primary');
+   if (data.code === "received message") {
+    check("worker", data.echo === "message from primary");
    } else {
     throw new Error(`wrong TCP message received: ${data}`);
    }
   });
 
   // When the connection ends kill worker and shutdown process
-  client.on('end', function() {
+  client.on("end", function() {
    worker.kill();
   });
 
-  worker.on('exit', common.mustCall(function() {
+  worker.on("exit", common.mustCall(function() {
    process.exit(0);
   }));
  });
 
- process.once('exit', function() {
+ process.once("exit", function() {
   forEach(checks, function(check, type) {
    assert.ok(check.receive, `The ${type} did not receive any message`);
    assert.ok(check.correct, `The ${type} did not get the correct message`);

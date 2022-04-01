@@ -1,40 +1,40 @@
 // Flags: --expose-internals --no-warnings
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 const {
  ReadableStream,
  WritableStream,
  TransformStream,
-} = require('stream/web');
+} = require("stream/web");
 
 const {
  Worker,
-} = require('worker_threads');
+} = require("worker_threads");
 
 const {
  isReadableStream,
-} = require('internal/webstreams/readablestream');
+} = require("internal/webstreams/readablestream");
 
 const {
  isWritableStream,
-} = require('internal/webstreams/writablestream');
+} = require("internal/webstreams/writablestream");
 
 const {
  isTransformStream,
-} = require('internal/webstreams/transformstream');
+} = require("internal/webstreams/transformstream");
 
 const {
  makeTransferable,
  kClone,
  kTransfer,
  kDeserialize,
-} = require('internal/worker/js_transferable');
+} = require("internal/worker/js_transferable");
 
-const assert = require('assert');
+const assert = require("assert");
 
-const theData = 'hello';
+const theData = "hello";
 
 {
  const { port1, port2 } = new MessageChannel();
@@ -100,7 +100,7 @@ const theData = 'hello';
  });
 
  assert.throws(() => port2.postMessage(readable), {
-  code: 'ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST',
+  code: "ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST",
  });
 
  port2.postMessage(readable, [readable]);
@@ -151,7 +151,7 @@ const theData = 'hello';
  });
 
  assert.throws(() => port2.postMessage(writable), {
-  code: 'ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST',
+  code: "ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST",
  });
 
  port2.postMessage(writable, [writable]);
@@ -237,7 +237,7 @@ const theData = 'hello';
  });
 
  assert.throws(() => port2.postMessage(transform), {
-  code: 'ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST',
+  code: "ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST",
  });
 
  port2.postMessage(transform, [transform]);
@@ -271,7 +271,7 @@ const theData = 'hello';
   [kClone]() {
    return {
     data: {},
-    deserializeInfo: 'nothing that will work',
+    deserializeInfo: "nothing that will work",
    };
   },
   [kDeserialize]: common.mustNotCall(),
@@ -287,7 +287,7 @@ const theData = 'hello';
   abort: common.mustCall((error) => {
    process.nextTick(() => {
     assert.strictEqual(error.code, 25);
-    assert.strictEqual(error.name, 'DataCloneError');
+    assert.strictEqual(error.name, "DataCloneError");
    });
   }),
  };
@@ -298,7 +298,7 @@ const theData = 'hello';
   [kClone]() {
    return {
     data: {},
-    deserializeInfo: 'nothing that will work',
+    deserializeInfo: "nothing that will work",
    };
   },
   [kDeserialize]: common.mustNotCall(),
@@ -309,7 +309,7 @@ const theData = 'hello';
 
   assert.rejects(writer.closed, {
    code: 25,
-   name: 'DataCloneError',
+   name: "DataCloneError",
   });
 
   writer.write(notActuallyTransferable).then(common.mustCall());
@@ -321,7 +321,7 @@ const theData = 'hello';
 }
 
 {
- const error = new Error('boom');
+ const error = new Error("boom");
  const { port1, port2 } = new MessageChannel();
 
  const source = {
@@ -405,7 +405,7 @@ const theData = 'hello';
     parentPort.onmessageerror = () => assert.fail('should not be called');
   `, { eval: true });
 
- worker.on('error', common.mustNotCall());
+ worker.on("error", common.mustNotCall());
 
  const readable = new ReadableStream({
   start(controller) {

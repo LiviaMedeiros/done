@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 // Test should fail in Node.js 5.4.1 and pass in later versions.
 
-const assert = require('assert');
-const cluster = require('cluster');
+const assert = require("assert");
+const cluster = require("cluster");
 
 if (cluster.isPrimary) {
- cluster.on('exit', (worker, code) => {
+ cluster.on("exit", (worker, code) => {
   assert.strictEqual(code, 0, `worker exited with code: ${code}, expected 0`);
  });
 
@@ -20,9 +20,9 @@ let eventFired = false;
 cluster.worker.disconnect();
 
 process.nextTick(common.mustCall(() => {
- assert.ok(!eventFired, 'disconnect event should wait for ack');
+ assert.ok(!eventFired, "disconnect event should wait for ack");
 }));
 
-cluster.worker.on('disconnect', common.mustCall(() => {
+cluster.worker.on("disconnect", common.mustCall(() => {
  eventFired = true;
 }));

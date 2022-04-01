@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const { MessageChannel } = require('worker_threads');
+const common = require("../common.js");
+const { MessageChannel } = require("worker_threads");
 const bench = common.createBenchmark(main, {
- payload: ['string', 'object'],
- style: ['eventtarget', 'eventemitter'],
+ payload: ["string", "object"],
+ style: ["eventtarget", "eventemitter"],
  n: [1e6],
 });
 
@@ -13,14 +13,14 @@ function main(conf) {
  let payload;
 
  switch (conf.payload) {
-  case 'string':
-   payload = 'hello world!';
+  case "string":
+   payload = "hello world!";
    break;
-  case 'object':
-   payload = { action: 'pewpewpew', powerLevel: 9001 };
+  case "object":
+   payload = { action: "pewpewpew", powerLevel: 9001 };
    break;
   default:
-   throw new Error('Unsupported payload type');
+   throw new Error("Unsupported payload type");
  }
 
  const { port1, port2 } = new MessageChannel();
@@ -36,14 +36,14 @@ function main(conf) {
  }
 
  switch (conf.style) {
-  case 'eventtarget':
+  case "eventtarget":
    port2.onmessage = listener;
    break;
-  case 'eventemitter':
-   port2.on('message', listener);
+  case "eventemitter":
+   port2.on("message", listener);
    break;
   default:
-   throw new Error('Unsupported listener type');
+   throw new Error("Unsupported listener type");
  }
 
  bench.start();

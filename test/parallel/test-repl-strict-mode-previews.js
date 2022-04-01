@@ -1,19 +1,19 @@
 // Previews in strict mode should indicate ReferenceErrors.
 
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 
-if (process.argv[2] === 'child') {
- const stream = require('stream');
- const repl = require('repl');
+if (process.argv[2] === "child") {
+ const stream = require("stream");
+ const repl = require("repl");
  class ActionStream extends stream.Stream {
   readable = true;
   run(data) {
-   this.emit('data', `${data}`);
-   this.emit('keypress', '', { ctrl: true, name: 'd' });
+   this.emit("data", `${data}`);
+   this.emit("keypress", "", { ctrl: true, name: "d" });
   }
   resume() {}
   pause() {}
@@ -29,14 +29,14 @@ if (process.argv[2] === 'child') {
   }),
   useColors: false,
   terminal: true,
- }).inputStream.run('xyz');
+ }).inputStream.run("xyz");
 } else {
- const assert = require('assert');
- const { spawnSync } = require('child_process');
+ const assert = require("assert");
+ const { spawnSync } = require("child_process");
 
  const result = spawnSync(
   process.execPath,
-  ['--use-strict', `${__filename}`, 'child'],
+  ["--use-strict", `${__filename}`, "child"],
  );
 
  assert.match(

@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 common.skipIfInspectorDisabled();
 common.skipIfWorker();
 
-const assert = require('assert');
+const assert = require("assert");
 const kMinPort = 1024;
 const kMaxPort = 65535;
 
@@ -21,14 +21,14 @@ check(kMaxPort - 1, kMaxPort - 1);
 check(kMaxPort, kMaxPort);
 
 // Numeric strings coerce.
-check('0', 0);
+check("0", 0);
 check(`${kMinPort}`, kMinPort);
 check(`${kMinPort + 1}`, kMinPort + 1);
 check(`${kMaxPort - 1}`, kMaxPort - 1);
 check(`${kMaxPort}`, kMaxPort);
 
 // Most other values are coerced to 0.
-check('', 0);
+check("", 0);
 check(false, 0);
 check(NaN, 0);
 check(Infinity, 0);
@@ -49,8 +49,8 @@ assert.throws(() => {
  1,
  kMinPort - 1,
  kMaxPort + 1,
- '-1',
- '1',
+ "-1",
+ "1",
  `${kMinPort - 1}`,
  `${kMaxPort + 1}`,
 ].forEach((value) => {

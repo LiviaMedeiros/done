@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const stream = require('stream');
+const common = require("../common");
+const stream = require("stream");
 const {
  Readable,
  Writable,
@@ -10,10 +10,10 @@ const {
 const {
  finished,
  pipeline,
-} = require('stream/promises');
-const fs = require('fs');
-const assert = require('assert');
-const { promisify } = require('util');
+} = require("stream/promises");
+const fs = require("fs");
+const assert = require("assert");
+const { promisify } = require("util");
 
 assert.strictEqual(promises.pipeline, pipeline);
 assert.strictEqual(promises.finished, finished);
@@ -25,9 +25,9 @@ assert.strictEqual(finished, promisify(stream.finished));
  let finished = false;
  const processed = [];
  const expected = [
-  Buffer.from('a'),
-  Buffer.from('b'),
-  Buffer.from('c'),
+  Buffer.from("a"),
+  Buffer.from("b"),
+  Buffer.from("c"),
  ];
 
  const read = new Readable({
@@ -41,7 +41,7 @@ assert.strictEqual(finished, promisify(stream.finished));
   },
  });
 
- write.on('finish', () => {
+ write.on("finish", () => {
   finished = true;
  });
 
@@ -68,11 +68,11 @@ assert.strictEqual(finished, promisify(stream.finished));
   },
  });
 
- read.push('data');
+ read.push("data");
  setImmediate(() => read.destroy());
 
  pipeline(read, write).catch(common.mustCall((err) => {
-  assert.ok(err, 'should have an error');
+  assert.ok(err, "should have an error");
  }));
 }
 
@@ -83,7 +83,7 @@ assert.strictEqual(finished, promisify(stream.finished));
 
   let ended = false;
   rs.resume();
-  rs.on('end', () => {
+  rs.on("end", () => {
    ended = true;
   });
   await finished(rs);
@@ -95,9 +95,9 @@ assert.strictEqual(finished, promisify(stream.finished));
 
 // finished error
 {
- const rs = fs.createReadStream('file-does-not-exist');
+ const rs = fs.createReadStream("file-does-not-exist");
 
  assert.rejects(finished(rs), {
-  code: 'ENOENT',
+  code: "ENOENT",
  }).then(common.mustCall());
 }

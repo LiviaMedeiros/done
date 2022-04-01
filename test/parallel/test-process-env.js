@@ -19,44 +19,44 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 // Changes in environment should be visible to child processes
-if (process.argv[2] === 'you-are-the-child') {
- assert.strictEqual('NODE_PROCESS_ENV_DELETED' in process.env, false);
- assert.strictEqual(process.env.NODE_PROCESS_ENV, '42');
- assert.strictEqual(process.env.hasOwnProperty, 'asdf');
- const has = Object.hasOwn(process.env, 'hasOwnProperty');
+if (process.argv[2] === "you-are-the-child") {
+ assert.strictEqual("NODE_PROCESS_ENV_DELETED" in process.env, false);
+ assert.strictEqual(process.env.NODE_PROCESS_ENV, "42");
+ assert.strictEqual(process.env.hasOwnProperty, "asdf");
+ const has = Object.hasOwn(process.env, "hasOwnProperty");
  assert.strictEqual(has, true);
  process.exit(0);
 }
 
 {
- const spawn = require('child_process').spawn;
+ const spawn = require("child_process").spawn;
 
  assert.strictEqual(Object.prototype.hasOwnProperty,
                     process.env.hasOwnProperty);
- const has = Object.hasOwn(process.env, 'hasOwnProperty');
+ const has = Object.hasOwn(process.env, "hasOwnProperty");
  assert.strictEqual(has, false);
 
- process.env.hasOwnProperty = 'asdf';
+ process.env.hasOwnProperty = "asdf";
 
  process.env.NODE_PROCESS_ENV = 42;
- assert.strictEqual(process.env.NODE_PROCESS_ENV, '42');
+ assert.strictEqual(process.env.NODE_PROCESS_ENV, "42");
 
  process.env.NODE_PROCESS_ENV_DELETED = 42;
- assert.strictEqual('NODE_PROCESS_ENV_DELETED' in process.env, true);
+ assert.strictEqual("NODE_PROCESS_ENV_DELETED" in process.env, true);
 
  delete process.env.NODE_PROCESS_ENV_DELETED;
- assert.strictEqual('NODE_PROCESS_ENV_DELETED' in process.env, false);
+ assert.strictEqual("NODE_PROCESS_ENV_DELETED" in process.env, false);
 
- const child = spawn(process.argv[0], [process.argv[1], 'you-are-the-child']);
- child.stdout.on('data', function(data) { console.log(data.toString()); });
- child.stderr.on('data', function(data) { console.log(data.toString()); });
- child.on('exit', function(statusCode) {
+ const child = spawn(process.argv[0], [process.argv[1], "you-are-the-child"]);
+ child.stdout.on("data", function(data) { console.log(data.toString()); });
+ child.stderr.on("data", function(data) { console.log(data.toString()); });
+ child.on("exit", function(statusCode) {
   if (statusCode !== 0) {
    process.exit(statusCode);  // Failed assertion in child process
   }
@@ -87,14 +87,14 @@ assert(delete process.env.NON_EXISTING_VARIABLE);
 
 // Environment variables should be case-insensitive on Windows, and
 // case-sensitive on other platforms.
-process.env.TEST = 'test';
-assert.strictEqual(process.env.TEST, 'test');
+process.env.TEST = "test";
+assert.strictEqual(process.env.TEST, "test");
 
 // Check both mixed case and lower case, to avoid any regressions that might
 // simply convert input to lower case.
 if (common.isWindows) {
- assert.strictEqual(process.env.test, 'test');
- assert.strictEqual(process.env.teST, 'test');
+ assert.strictEqual(process.env.test, "test");
+ assert.strictEqual(process.env.teST, "test");
 } else {
  assert.strictEqual(process.env.test, undefined);
  assert.strictEqual(process.env.teST, undefined);
@@ -109,6 +109,6 @@ if (common.isWindows) {
 // an assertion failure.
 // https://github.com/nodejs/node/issues/32920
 {
- process.env[''] = '';
- assert.strictEqual(process.env[''], undefined);
+ process.env[""] = "";
+ assert.strictEqual(process.env[""], undefined);
 }

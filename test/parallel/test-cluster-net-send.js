@@ -19,34 +19,34 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const fork = require('child_process').fork;
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const fork = require("child_process").fork;
+const net = require("net");
 
-if (process.argv[2] !== 'child') {
+if (process.argv[2] !== "child") {
  console.error(`[${process.pid}] primary`);
 
- const worker = fork(__filename, ['child']);
+ const worker = fork(__filename, ["child"]);
  let called = false;
 
- worker.once('message', common.mustCall(function(msg, handle) {
-  assert.strictEqual(msg, 'handle');
+ worker.once("message", common.mustCall(function(msg, handle) {
+  assert.strictEqual(msg, "handle");
   assert.ok(handle);
-  worker.send('got');
+  worker.send("got");
 
-  handle.on('data', function(data) {
+  handle.on("data", function(data) {
    called = true;
-   assert.strictEqual(data.toString(), 'hello');
+   assert.strictEqual(data.toString(), "hello");
   });
 
-  handle.on('end', function() {
+  handle.on("end", function() {
    worker.kill();
   });
  }));
 
- process.once('exit', function() {
+ process.once("exit", function() {
   assert.ok(called);
  });
 } else {
@@ -56,22 +56,22 @@ if (process.argv[2] !== 'child') {
  let cbcalls = 0;
  function socketConnected() {
   if (++cbcalls === 2)
-   process.send('handle', socket);
+   process.send("handle", socket);
  }
 
  const server = net.createServer(function(c) {
-  process.once('message', common.mustCall(function(msg) {
-   assert.strictEqual(msg, 'got');
-   c.end('hello');
+  process.once("message", common.mustCall(function(msg) {
+   assert.strictEqual(msg, "got");
+   c.end("hello");
   }));
   socketConnected();
  });
 
  server.listen(0, function() {
-  socket = net.connect(server.address().port, '127.0.0.1', socketConnected);
+  socket = net.connect(server.address().port, "127.0.0.1", socketConnected);
  });
 
- process.on('disconnect', function() {
+ process.on("disconnect", function() {
   server.close();
  });
 }

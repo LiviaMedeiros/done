@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const repl = require('repl');
-const stream = require('stream');
+require("../common");
+const assert = require("assert");
+const repl = require("repl");
+const stream = require("stream");
 
 testSloppyMode();
 testStrictMode();
@@ -30,18 +30,18 @@ function testSloppyMode() {
           `);
 
  assertOutput(r.output, [
-  'undefined',
-  'undefined',
-  'undefined',
-  '10',
-  '10',
-  'Expression assignment to _ now disabled.',
-  '20',
-  '20',
-  '30',
-  '30',
-  '40',
-  '30',
+  "undefined",
+  "undefined",
+  "undefined",
+  "10",
+  "10",
+  "Expression assignment to _ now disabled.",
+  "20",
+  "20",
+  "30",
+  "30",
+  "40",
+  "30",
  ]);
 }
 
@@ -63,18 +63,18 @@ function testStrictMode() {
           `);
 
  assertOutput(r.output, [
-  'undefined',
-  'undefined',
-  'undefined',
-  'undefined',
-  '20',
-  '30',
-  '30',
-  'undefined',
-  '30',
-  'undefined',
-  'undefined',
-  '30',
+  "undefined",
+  "undefined",
+  "undefined",
+  "undefined",
+  "20",
+  "30",
+  "30",
+  "undefined",
+  "30",
+  "undefined",
+  "undefined",
+  "30",
  ]);
 }
 
@@ -96,18 +96,18 @@ function testMagicMode() {
           `);
 
  assertOutput(r.output, [
-  'undefined',
-  '10',
-  '10',
-  'undefined',
-  '20',
-  '30',
-  '30',
-  'undefined',
-  '30',
-  'undefined',
-  '50',
-  '30',
+  "undefined",
+  "10",
+  "10",
+  "undefined",
+  "20",
+  "30",
+  "30",
+  "undefined",
+  "30",
+  "undefined",
+  "50",
+  "30",
  ]);
 }
 
@@ -123,13 +123,13 @@ function testResetContext() {
           `);
 
  assertOutput(r.output, [
-  'Expression assignment to _ now disabled.',
-  '10',
-  '10',
-  'Clearing context...',
-  '10',
-  '20',
-  '20',
+  "Expression assignment to _ now disabled.",
+  "10",
+  "10",
+  "Clearing context...",
+  "10",
+  "20",
+  "20",
  ]);
 }
 
@@ -143,10 +143,10 @@ function testResetContextGlobal() {
           `);
 
  assertOutput(r.output, [
-  'Expression assignment to _ now disabled.',
-  '10',
-  '10',
-  '10',
+  "Expression assignment to _ now disabled.",
+  "10",
+  "10",
+  "10",
  ]);
 
  // Delete globals leaked by REPL when `useGlobal` is `true`
@@ -168,13 +168,13 @@ function testError() {
            `);
 
  setImmediate(() => {
-  const lines = r.output.accum.trim().split('\n');
+  const lines = r.output.accum.trim().split("\n");
   const expectedLines = [
-   'undefined',
+   "undefined",
 
    // The error, both from the original throw and the `_error` echo.
-   'Uncaught Error: foo',
-   '[Error: foo]',
+   "Uncaught Error: foo",
+   "[Error: foo]",
 
    // The sync error, with individual property echoes
    /^Uncaught Error: ENOENT: no such file or directory, scandir '.*nonexistent\?'/,
@@ -183,20 +183,20 @@ function testError() {
    "  syscall: 'scandir',",
    "  code: 'ENOENT',",
    "  path: '/nonexistent?'",
-   '}',
+   "}",
    "'ENOENT'",
    "'scandir'",
 
    // Dummy 'undefined' from the explicit silencer + one from the comment
-   'undefined',
-   'undefined',
+   "undefined",
+   "undefined",
 
    // The message from the original throw
-   'Uncaught Error: baz',
+   "Uncaught Error: baz",
   ];
   for (const line of lines) {
    const expected = expectedLines.shift();
-   if (typeof expected === 'string')
+   if (typeof expected === "string")
     assert.strictEqual(line, expected);
    else
     assert.match(line, expected);
@@ -204,7 +204,7 @@ function testError() {
   assert.strictEqual(expectedLines.length, 0);
 
   // Reset output, check that '_error' is the asynchronously caught error.
-  r.output.accum = '';
+  r.output.accum = "";
   r.write(`_error.message                 // show the message
              _error = 0;                    // disable auto-assignment
              throw new Error('quux');       // new error
@@ -213,10 +213,10 @@ function testError() {
 
   assertOutput(r.output, [
    "'baz'",
-   'Expression assignment to _error now disabled.',
-   '0',
-   'Uncaught Error: quux',
-   '0',
+   "Expression assignment to _error now disabled.",
+   "0",
+   "Uncaught Error: quux",
+   "0",
   ]);
  });
 }
@@ -224,9 +224,9 @@ function testError() {
 function initRepl(mode, useGlobal) {
  const inputStream = new stream.PassThrough();
  const outputStream = new stream.PassThrough();
- outputStream.accum = '';
+ outputStream.accum = "";
 
- outputStream.on('data', (data) => {
+ outputStream.on("data", (data) => {
   outputStream.accum += data;
  });
 
@@ -235,13 +235,13 @@ function initRepl(mode, useGlobal) {
   output: outputStream,
   useColors: false,
   terminal: false,
-  prompt: '',
+  prompt: "",
   replMode: mode,
   useGlobal: useGlobal,
  });
 }
 
 function assertOutput(output, expected) {
- const lines = output.accum.trim().split('\n');
+ const lines = output.accum.trim().split("\n");
  assert.deepStrictEqual(lines, expected);
 }

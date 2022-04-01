@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const http2 = require('http2');
-const net = require('net');
-const { Worker, parentPort } = require('worker_threads');
+const http2 = require("http2");
+const net = require("net");
+const { Worker, parentPort } = require("worker_threads");
 
 // Verify that creating a number of invalid HTTP/2 streams will eventually
 // result in the peer closing the session.
@@ -14,46 +14,46 @@ const { Worker, parentPort } = require('worker_threads');
 
 if (process.env.HAS_STARTED_WORKER) {
  const server = http2.createServer({ maxSessionInvalidFrames: 100 });
- server.on('stream', (stream) => {
+ server.on("stream", (stream) => {
   stream.respond({
-   'content-type': 'text/plain',
-   ':status': 200,
+   "content-type": "text/plain",
+   ":status": 200,
   });
-  stream.end('Hello, world!\n');
+  stream.end("Hello, world!\n");
  });
  server.listen(0, () => parentPort.postMessage(server.address().port));
  return;
 }
 
 process.env.HAS_STARTED_WORKER = 1;
-const worker = new Worker(__filename).on('message', common.mustCall((port) => {
+const worker = new Worker(__filename).on("message", common.mustCall((port) => {
  const h2header = Buffer.alloc(9);
  const conn = net.connect({ port, allowHalfOpen: true });
 
- conn.write('PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n');
+ conn.write("PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n");
 
  h2header[3] = 4;  // Send a settings frame.
  conn.write(Buffer.from(h2header));
 
  let inbuf = Buffer.alloc(0);
- let state = 'settingsHeader';
+ let state = "settingsHeader";
  let settingsFrameLength;
- conn.on('data', (chunk) => {
+ conn.on("data", (chunk) => {
   inbuf = Buffer.concat([inbuf, chunk]);
   switch (state) {
-   case 'settingsHeader':
+   case "settingsHeader":
     if (inbuf.length < 9) return;
     settingsFrameLength = inbuf.readIntBE(0, 3);
     inbuf = inbuf.slice(9);
-    state = 'readingSettings';
+    state = "readingSettings";
     // Fallthrough
-   case 'readingSettings':
+   case "readingSettings":
     if (inbuf.length < settingsFrameLength) return;
     inbuf = inbuf.slice(settingsFrameLength);
     h2header[3] = 4;  // Send a settings ACK.
     h2header[4] = 1;
     conn.write(Buffer.from(h2header));
-    state = 'ignoreInput';
+    state = "ignoreInput";
     writeRequests();
   }
  });
@@ -77,7 +77,7 @@ const worker = new Worker(__filename).on('message', common.mustCall((port) => {
    setImmediate(writeRequests);
  }
 
- conn.once('error', common.mustCall(() => {
+ conn.once("error", common.mustCall(() => {
   gotError = true;
   worker.terminate();
   conn.destroy();

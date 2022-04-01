@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const assert = require('assert');
+const common = require("../common.js");
+const assert = require("assert");
 
 const bench = common.createBenchmark(main, {
- method: ['swap', 'destructure'],
+ method: ["swap", "destructure"],
  n: [1e8],
 });
 
 function runSwapManual(n) {
- let x, y, r;
+ let r, x, y;
  bench.start();
  for (let i = 0; i < n; i++) {
   x = 1;
@@ -38,10 +38,10 @@ function runSwapDestructured(n) {
 
 function main({ n, method }) {
  switch (method) {
-  case 'swap':
+  case "swap":
    runSwapManual(n);
    break;
-  case 'destructure':
+  case "destructure":
    runSwapDestructured(n);
    break;
   default:

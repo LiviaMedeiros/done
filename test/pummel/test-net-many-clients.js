@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const net = require('net');
+"use strict";
+require("../common");
+const assert = require("assert");
+const net = require("net");
 
 // settings
 const bytes = 1024 * 40;
@@ -32,11 +32,11 @@ const connections_per_client = 3;
 // measured
 let total_connections = 0;
 
-const body = 'C'.repeat(bytes);
+const body = "C".repeat(bytes);
 
 const server = net.createServer(function(c) {
  total_connections++;
- console.log('connected', total_connections);
+ console.log("connected", total_connections);
  c.write(body);
  c.end();
 });
@@ -46,29 +46,29 @@ function runClient(port, callback) {
 
  client.connections = 0;
 
- client.setEncoding('utf8');
+ client.setEncoding("utf8");
 
- client.on('connect', function() {
-  console.log('c');
-  client.recved = '';
+ client.on("connect", function() {
+  console.log("c");
+  client.recved = "";
   client.connections += 1;
  });
 
- client.on('data', function(chunk) {
+ client.on("data", function(chunk) {
   this.recved += chunk;
  });
 
- client.on('end', function() {
+ client.on("end", function() {
   client.end();
  });
 
- client.on('error', function(e) {
-  console.log('\n\nERROOOOOr');
+ client.on("error", function(e) {
+  console.log("\n\nERROOOOOr");
   throw e;
  });
 
- client.on('close', function(had_error) {
-  console.log('.');
+ client.on("close", function(had_error) {
+  console.log(".");
   assert.strictEqual(had_error, false);
   assert.strictEqual(client.recved.length, bytes);
 
@@ -94,7 +94,7 @@ server.listen(0, function() {
  }
 });
 
-process.on('exit', function() {
+process.on("exit", function() {
  assert.strictEqual(total_connections, connections_per_client * concurrency);
- console.log('\nokay!');
+ console.log("\nokay!");
 });

@@ -19,10 +19,10 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const path = require('path');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const path = require("path");
 
 // Test thrown TypeErrors
 const typeErrorTests = [true, false, 7, null, {}, undefined, [], NaN];
@@ -32,7 +32,7 @@ function fail(fn) {
 
  assert.throws(() => {
   fn.apply(null, args);
- }, { code: 'ERR_INVALID_ARG_TYPE', name: 'TypeError' });
+ }, { code: "ERR_INVALID_ARG_TYPE", name: "TypeError" });
 }
 
 typeErrorTests.forEach((test) => {
@@ -41,8 +41,8 @@ typeErrorTests.forEach((test) => {
   fail(namespace.resolve, test);
   fail(namespace.normalize, test);
   fail(namespace.isAbsolute, test);
-  fail(namespace.relative, test, 'foo');
-  fail(namespace.relative, 'foo', test);
+  fail(namespace.relative, test, "foo");
+  fail(namespace.relative, "foo", test);
   fail(namespace.parse, test);
   fail(namespace.dirname, test);
   fail(namespace.basename, test);
@@ -50,22 +50,22 @@ typeErrorTests.forEach((test) => {
 
   // Undefined is a valid value as the second argument to basename
   if (test !== undefined) {
-   fail(namespace.basename, 'foo', test);
+   fail(namespace.basename, "foo", test);
   }
  });
 });
 
 // path.sep tests
 // windows
-assert.strictEqual(path.win32.sep, '\\');
+assert.strictEqual(path.win32.sep, "\\");
 // posix
-assert.strictEqual(path.posix.sep, '/');
+assert.strictEqual(path.posix.sep, "/");
 
 // path.delimiter tests
 // windows
-assert.strictEqual(path.win32.delimiter, ';');
+assert.strictEqual(path.win32.delimiter, ";");
 // posix
-assert.strictEqual(path.posix.delimiter, ':');
+assert.strictEqual(path.posix.delimiter, ":");
 
 if (common.isWindows)
  assert.strictEqual(path, path.win32);

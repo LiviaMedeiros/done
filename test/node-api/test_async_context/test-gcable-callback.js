@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 // Flags: --gc-interval=100 --gc-global
 
-const common = require('../../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 const {
  createAsyncResource,
  destroyAsyncResource,
@@ -21,7 +21,7 @@ const hook_result = {
 
 const test_hook = async_hooks.createHook({
  init: (id, type) => {
-  if (type === 'test_async') {
+  if (type === "test_async") {
    hook_result.id = id;
    hook_result.init_called = true;
   }
@@ -33,7 +33,7 @@ const test_hook = async_hooks.createHook({
 
 test_hook.enable();
 const asyncResource = createAsyncResource(
- { foo: 'bar' },
+ { foo: "bar" },
  /* destroy_on_finalizer */false,
 );
 
@@ -55,7 +55,7 @@ setImmediate(() => {
   // This is the worst path of `napi_async_context` related API of
   // recovering from the condition and not break the executionAsyncResource
   // shape, although the executionAsyncResource might not be correct.
-  assert.strictEqual(typeof executionAsyncResource, 'object');
+  assert.strictEqual(typeof executionAsyncResource, "object");
   assert.strictEqual(executionAsyncResource.foo, undefined);
   destroyAsyncResource(asyncResource);
   setImmediate(() => {

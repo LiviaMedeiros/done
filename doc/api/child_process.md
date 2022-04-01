@@ -11,18 +11,18 @@ a manner that is similar, but not identical, to popen(3). This capability
 is primarily provided by the [`child_process.spawn()`][] function:
 
 ```js
-const { spawn } = require('child_process');
-const ls = spawn('ls', ['-lh', '/usr']);
+const { spawn } = require("child_process");
+const ls = spawn("ls", ["-lh", "/usr"]);
 
-ls.stdout.on('data', (data) => {
+ls.stdout.on("data", (data) => {
  console.log(`stdout: ${data}`);
 });
 
-ls.stderr.on('data', (data) => {
+ls.stderr.on("data", (data) => {
  console.error(`stderr: ${data}`);
 });
 
-ls.on('close', (code) => {
+ls.on("close", (code) => {
  console.log(`child process exited with code ${code}`);
 });
 ```
@@ -110,26 +110,26 @@ spaces it needs to be quoted.
 
 ```js
 // On Windows Only...
-const { spawn } = require('child_process');
-const bat = spawn('cmd.exe', ['/c', 'my.bat']);
+const { spawn } = require("child_process");
+const bat = spawn("cmd.exe", ["/c", "my.bat"]);
 
-bat.stdout.on('data', (data) => {
+bat.stdout.on("data", (data) => {
  console.log(data.toString());
 });
 
-bat.stderr.on('data', (data) => {
+bat.stderr.on("data", (data) => {
  console.error(data.toString());
 });
 
-bat.on('exit', (code) => {
+bat.on("exit", (code) => {
  console.log(`Child exited with code ${code}`);
 });
 ```
 
 ```js
 // OR...
-const { exec, spawn } = require('child_process');
-exec('my.bat', (err, stdout, stderr) => {
+const { exec, spawn } = require("child_process");
+exec("my.bat", (err, stdout, stderr) => {
  if (err) {
   console.error(err);
   return;
@@ -138,7 +138,7 @@ exec('my.bat', (err, stdout, stderr) => {
 });
 
 // Script with spaces in the filename:
-const bat = spawn('"my script.cmd"', ['a', 'b'], { shell: true });
+const bat = spawn('"my script.cmd"', ["a", "b"], { shell: true });
 // or:
 exec('"my script.cmd" a b', (err, stdout, stderr) => {
  // ...
@@ -198,7 +198,7 @@ directly by the shell and special characters (vary based on
 need to be dealt with accordingly:
 
 ```js
-const { exec } = require('child_process');
+const { exec } = require("child_process");
 
 exec('"/path/to/test file/test.sh" arg1 arg2');
 // Double quotes are used so that the space in the path is not interpreted as
@@ -226,8 +226,8 @@ stderr output. If `encoding` is `'buffer'`, or an unrecognized character
 encoding, `Buffer` objects will be passed to the callback instead.
 
 ```js
-const { exec } = require('child_process');
-exec('cat *.js missing_file | wc -l', (error, stdout, stderr) => {
+const { exec } = require("child_process");
+exec("cat *.js missing_file | wc -l", (error, stdout, stderr) => {
  if (error) {
   console.error(`exec error: ${error}`);
   return;
@@ -252,13 +252,13 @@ rejected promise is returned, with the same `error` object given in the
 callback, but with two additional properties `stdout` and `stderr`.
 
 ```js
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
 async function lsExample() {
- const { stdout, stderr } = await exec('ls');
- console.log('stdout:', stdout);
- console.error('stderr:', stderr);
+ const { stdout, stderr } = await exec("ls");
+ console.log("stdout:", stdout);
+ console.error("stderr:", stderr);
 }
 lsExample();
 ```
@@ -268,10 +268,10 @@ If the `signal` option is enabled, calling `.abort()` on the corresponding
 the error passed to the callback will be an `AbortError`:
 
 ```js
-const { exec } = require('child_process');
+const { exec } = require("child_process");
 const controller = new AbortController();
 const { signal } = controller;
-const child = exec('grep ssh', { signal }, (error) => {
+const child = exec("grep ssh", { signal }, (error) => {
  console.log(error); // an AbortError
 });
 controller.abort();
@@ -338,8 +338,8 @@ not spawned, behaviors such as I/O redirection and file globbing are not
 supported.
 
 ```js
-const { execFile } = require('child_process');
-const child = execFile('node', ['--version'], (error, stdout, stderr) => {
+const { execFile } = require("child_process");
+const child = execFile("node", ["--version"], (error, stdout, stderr) => {
  if (error) {
   throw error;
  }
@@ -362,10 +362,10 @@ rejected promise is returned, with the same `error` object given in the
 callback, but with two additional properties `stdout` and `stderr`.
 
 ```js
-const util = require('util');
-const execFile = util.promisify(require('child_process').execFile);
+const util = require("util");
+const execFile = util.promisify(require("child_process").execFile);
 async function getVersion() {
- const { stdout } = await execFile('node', ['--version']);
+ const { stdout } = await execFile("node", ["--version"]);
  console.log(stdout);
 }
 getVersion();
@@ -380,10 +380,10 @@ If the `signal` option is enabled, calling `.abort()` on the corresponding
 the error passed to the callback will be an `AbortError`:
 
 ```js
-const { execFile } = require('child_process');
+const { execFile } = require("child_process");
 const controller = new AbortController();
 const { signal } = controller;
-const child = execFile('node', ['--version'], { signal }, (error) => {
+const child = execFile("node", ["--version"], { signal }, (error) => {
  console.log(error); // an AbortError
 });
 controller.abort();
@@ -501,16 +501,16 @@ If the `signal` option is enabled, calling `.abort()` on the corresponding
 the error passed to the callback will be an `AbortError`:
 
 ```js
-if (process.argv[2] === 'child') {
+if (process.argv[2] === "child") {
  setTimeout(() => {
   console.log(`Hello from ${process.argv[2]}!`);
  }, 1_000);
 } else {
- const { fork } = require('child_process');
+ const { fork } = require("child_process");
  const controller = new AbortController();
  const { signal } = controller;
- const child = fork(__filename, ['child'], { signal });
- child.on('error', (err) => {
+ const child = fork(__filename, ["child"], { signal });
+ child.on("error", (err) => {
   // This will be called with err being an AbortError if the controller aborts
  });
  controller.abort(); // Stops the child process
@@ -625,18 +625,18 @@ Example of running `ls -lh /usr`, capturing `stdout`, `stderr`, and the
 exit code:
 
 ```js
-const { spawn } = require('child_process');
-const ls = spawn('ls', ['-lh', '/usr']);
+const { spawn } = require("child_process");
+const ls = spawn("ls", ["-lh", "/usr"]);
 
-ls.stdout.on('data', (data) => {
+ls.stdout.on("data", (data) => {
  console.log(`stdout: ${data}`);
 });
 
-ls.stderr.on('data', (data) => {
+ls.stderr.on("data", (data) => {
  console.error(`stderr: ${data}`);
 });
 
-ls.on('close', (code) => {
+ls.on("close", (code) => {
  console.log(`child process exited with code ${code}`);
 });
 ```
@@ -644,34 +644,34 @@ ls.on('close', (code) => {
 Example: A very elaborate way to run `ps ax | grep ssh`
 
 ```js
-const { spawn } = require('child_process');
-const ps = spawn('ps', ['ax']);
-const grep = spawn('grep', ['ssh']);
+const { spawn } = require("child_process");
+const ps = spawn("ps", ["ax"]);
+const grep = spawn("grep", ["ssh"]);
 
-ps.stdout.on('data', (data) => {
+ps.stdout.on("data", (data) => {
  grep.stdin.write(data);
 });
 
-ps.stderr.on('data', (data) => {
+ps.stderr.on("data", (data) => {
  console.error(`ps stderr: ${data}`);
 });
 
-ps.on('close', (code) => {
+ps.on("close", (code) => {
  if (code !== 0) {
   console.log(`ps process exited with code ${code}`);
  }
  grep.stdin.end();
 });
 
-grep.stdout.on('data', (data) => {
+grep.stdout.on("data", (data) => {
  console.log(data.toString());
 });
 
-grep.stderr.on('data', (data) => {
+grep.stderr.on("data", (data) => {
  console.error(`grep stderr: ${data}`);
 });
 
-grep.on('close', (code) => {
+grep.on("close", (code) => {
  if (code !== 0) {
   console.log(`grep process exited with code ${code}`);
  }
@@ -681,11 +681,11 @@ grep.on('close', (code) => {
 Example of checking for failed `spawn`:
 
 ```js
-const { spawn } = require('child_process');
-const subprocess = spawn('bad_command');
+const { spawn } = require("child_process");
+const subprocess = spawn("bad_command");
 
-subprocess.on('error', (err) => {
- console.error('Failed to start subprocess.');
+subprocess.on("error", (err) => {
+ console.error("Failed to start subprocess.");
 });
 ```
 
@@ -702,11 +702,11 @@ If the `signal` option is enabled, calling `.abort()` on the corresponding
 the error passed to the callback will be an `AbortError`:
 
 ```js
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 const controller = new AbortController();
 const { signal } = controller;
-const grep = spawn('grep', ['ssh'], { signal });
-grep.on('error', (err) => {
+const grep = spawn("grep", ["ssh"], { signal });
+grep.on("error", (err) => {
  // This will be called with err being an AbortError if the controller aborts
 });
 controller.abort(); // Stops the child process
@@ -745,11 +745,11 @@ Example of a long-running process, by detaching and also ignoring its parent
 `stdio` file descriptors, in order to ignore the parent's termination:
 
 ```js
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
-const subprocess = spawn(process.argv[0], ['child_program.js'], {
+const subprocess = spawn(process.argv[0], ["child_program.js"], {
  detached: true,
- stdio: 'ignore',
+ stdio: "ignore",
 });
 
 subprocess.unref();
@@ -758,14 +758,14 @@ subprocess.unref();
 Alternatively one can redirect the child process' output into files:
 
 ```js
-const fs = require('fs');
-const { spawn } = require('child_process');
-const out = fs.openSync('./out.log', 'a');
-const err = fs.openSync('./out.log', 'a');
+const fs = require("fs");
+const { spawn } = require("child_process");
+const out = fs.openSync("./out.log", "a");
+const err = fs.openSync("./out.log", "a");
 
-const subprocess = spawn('prg', [], {
+const subprocess = spawn("prg", [], {
  detached: true,
- stdio: [ 'ignore', out, err ],
+ stdio: [ "ignore", out, err ],
 });
 
 subprocess.unref();
@@ -853,17 +853,17 @@ pipes between the parent and child. The value is one of the following:
    default is `'ignore'`.
 
 ```js
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
 // Child will use parent's stdios.
-spawn('prg', [], { stdio: 'inherit' });
+spawn("prg", [], { stdio: "inherit" });
 
 // Spawn child sharing only stderr.
-spawn('prg', [], { stdio: ['pipe', 'pipe', process.stderr] });
+spawn("prg", [], { stdio: ["pipe", "pipe", process.stderr] });
 
 // Open an extra fd=4, to interact with programs presenting a
 // startd-style interface.
-spawn('prg', [], { stdio: ['pipe', null, null, null, 'pipe'] });
+spawn("prg", [], { stdio: ["pipe", null, null, null, "pipe"] });
 ```
 
 _It is worth noting that when an IPC channel is established between the
@@ -1152,18 +1152,18 @@ streams. The `'close'` event will always emit after [`'exit'`][] was
 already emitted, or [`'error'`][] if the child failed to spawn.
 
 ```js
-const { spawn } = require('child_process');
-const ls = spawn('ls', ['-lh', '/usr']);
+const { spawn } = require("child_process");
+const ls = spawn("ls", ["-lh", "/usr"]);
 
-ls.stdout.on('data', (data) => {
+ls.stdout.on("data", (data) => {
  console.log(`stdout: ${data}`);
 });
 
-ls.on('close', (code) => {
+ls.on("close", (code) => {
  console.log(`child process close all stdio with code ${code}`);
 });
 
-ls.on('exit', (code) => {
+ls.on("exit", (code) => {
  console.log(`child process exited with code ${code}`);
 });
 ```
@@ -1348,16 +1348,16 @@ signal(7) for a list of available signals. This function returns `true` if
 kill(2) succeeds, and `false` otherwise.
 
 ```js
-const { spawn } = require('child_process');
-const grep = spawn('grep', ['ssh']);
+const { spawn } = require("child_process");
+const grep = spawn("grep", ["ssh"]);
 
-grep.on('close', (code, signal) => {
+grep.on("close", (code, signal) => {
  console.log(
   `child process terminated due to receipt of signal ${signal}`);
 });
 
 // Send SIGHUP to process.
-grep.kill('SIGHUP');
+grep.kill("SIGHUP");
 ```
 
 The [`ChildProcess`][] object may emit an [`'error'`][] event if the signal
@@ -1381,18 +1381,18 @@ when attempting to kill their parent. This is likely to happen when running a
 new process in a shell or with the use of the `shell` option of `ChildProcess`:
 
 ```js
-'use strict';
-const { spawn } = require('child_process');
+"use strict";
+const { spawn } = require("child_process");
 
 const subprocess = spawn(
- 'sh',
+ "sh",
  [
-  '-c',
+  "-c",
   `node -e "setInterval(() => {
       console.log(process.pid, 'is alive')
     }, 500);"`,
  ], {
-  stdio: ['inherit', 'inherit', 'inherit'],
+  stdio: ["inherit", "inherit", "inherit"],
  },
 );
 
@@ -1427,8 +1427,8 @@ fails to spawn due to errors, then the value is `undefined` and `error` is
 emitted.
 
 ```js
-const { spawn } = require('child_process');
-const grep = spawn('grep', ['ssh']);
+const { spawn } = require("child_process");
+const grep = spawn("grep", ["ssh"]);
 
 console.log(`Spawned child pid: ${grep.pid}`);
 grep.stdin.end();
@@ -1445,11 +1445,11 @@ restore the removed reference count for the child process, forcing the parent
 to wait for the child to exit before exiting itself.
 
 ```js
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
-const subprocess = spawn(process.argv[0], ['child_program.js'], {
+const subprocess = spawn(process.argv[0], ["child_program.js"], {
  detached: true,
- stdio: 'ignore',
+ stdio: "ignore",
 });
 
 subprocess.unref();
@@ -1495,26 +1495,26 @@ message might not be the same as what is originally sent.
 For example, in the parent script:
 
 ```js
-const cp = require('child_process');
+const cp = require("child_process");
 const n = cp.fork(`${__dirname}/sub.js`);
 
-n.on('message', (m) => {
- console.log('PARENT got message:', m);
+n.on("message", (m) => {
+ console.log("PARENT got message:", m);
 });
 
 // Causes the child to print: CHILD got message: { hello: 'world' }
-n.send({ hello: 'world' });
+n.send({ hello: "world" });
 ```
 
 And then the child script, `'sub.js'` might look like this:
 
 ```js
-process.on('message', (m) => {
- console.log('CHILD got message:', m);
+process.on("message", (m) => {
+ console.log("CHILD got message:", m);
 });
 
 // Causes the parent to print: PARENT got message: { foo: 'bar', baz: null }
-process.send({ foo: 'bar', baz: NaN });
+process.send({ foo: "bar", baz: NaN });
 ```
 
 Child Node.js processes will have a [`process.send()`][] method of their own
@@ -1553,25 +1553,25 @@ The `sendHandle` argument can be used, for instance, to pass the handle of
 a TCP server object to the child process as illustrated in the example below:
 
 ```js
-const subprocess = require('child_process').fork('subprocess.js');
+const subprocess = require("child_process").fork("subprocess.js");
 
 // Open up the server object and send the handle.
-const server = require('net').createServer();
-server.on('connection', (socket) => {
- socket.end('handled by parent');
+const server = require("net").createServer();
+server.on("connection", (socket) => {
+ socket.end("handled by parent");
 });
 server.listen(1337, () => {
- subprocess.send('server', server);
+ subprocess.send("server", server);
 });
 ```
 
 The child would then receive the server object as:
 
 ```js
-process.on('message', (m, server) => {
- if (m === 'server') {
-  server.on('connection', (socket) => {
-   socket.end('handled by child');
+process.on("message", (m, server) => {
+ if (m === "server") {
+  server.on("connection", (socket) => {
+   socket.end("handled by child");
   });
  }
 });
@@ -1593,22 +1593,22 @@ socket to the child process. The example below spawns two children that each
 handle connections with "normal" or "special" priority:
 
 ```js
-const { fork } = require('child_process');
-const normal = fork('subprocess.js', ['normal']);
-const special = fork('subprocess.js', ['special']);
+const { fork } = require("child_process");
+const normal = fork("subprocess.js", ["normal"]);
+const special = fork("subprocess.js", ["special"]);
 
 // Open up the server and send sockets to child. Use pauseOnConnect to prevent
 // the sockets from being read before they are sent to the child process.
-const server = require('net').createServer({ pauseOnConnect: true });
-server.on('connection', (socket) => {
+const server = require("net").createServer({ pauseOnConnect: true });
+server.on("connection", (socket) => {
 
  // If this is special priority...
- if (socket.remoteAddress === '74.125.127.100') {
-  special.send('socket', socket);
+ if (socket.remoteAddress === "74.125.127.100") {
+  special.send("socket", socket);
   return;
  }
  // This is normal priority.
- normal.send('socket', socket);
+ normal.send("socket", socket);
 });
 server.listen(1337);
 ```
@@ -1617,8 +1617,8 @@ The `subprocess.js` would receive the socket handle as the second argument
 passed to the event callback function:
 
 ```js
-process.on('message', (m, socket) => {
- if (m === 'socket') {
+process.on("message", (m, socket) => {
+ if (m === "socket") {
   if (socket) {
    // Check that the client socket exists.
    // It is possible for the socket to be closed between the time it is
@@ -1724,15 +1724,15 @@ pipe, so only the parent's `subprocess.stdio[1]` is a stream, all other values
 in the array are `null`.
 
 ```js
-const assert = require('assert');
-const fs = require('fs');
-const child_process = require('child_process');
+const assert = require("assert");
+const fs = require("fs");
+const child_process = require("child_process");
 
-const subprocess = child_process.spawn('ls', {
+const subprocess = child_process.spawn("ls", {
  stdio: [
   0, // Use parent's stdin for child.
-  'pipe', // Pipe child's stdout to parent.
-  fs.openSync('err.out', 'w'), // Direct child's stderr to a file.
+  "pipe", // Pipe child's stdout to parent.
+  fs.openSync("err.out", "w"), // Direct child's stderr to a file.
  ],
 });
 
@@ -1766,11 +1766,11 @@ then this will be `null`.
 refer to the same value.
 
 ```js
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
-const subprocess = spawn('ls');
+const subprocess = spawn("ls");
 
-subprocess.stdout.on('data', (data) => {
+subprocess.stdout.on("data", (data) => {
  console.log(`Received chunk ${data}`);
 });
 ```
@@ -1792,11 +1792,11 @@ independently of the child, unless there is an established IPC channel between
 the child and the parent.
 
 ```js
-const { spawn } = require('child_process');
+const { spawn } = require("child_process");
 
-const subprocess = spawn(process.argv[0], ['child_program.js'], {
+const subprocess = spawn(process.argv[0], ["child_program.js"], {
  detached: true,
- stdio: 'ignore',
+ stdio: "ignore",
 });
 
 subprocess.unref();

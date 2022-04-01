@@ -43,12 +43,12 @@ list like the following:
 <!-- eslint-disable semi -->
 
 ```js
-[ 'ConTent-Length', '123456',
-  'content-LENGTH', '123',
-  'content-type', 'text/plain',
-  'CONNECTION', 'keep-alive',
-  'Host', 'example.com',
-  'accepT', '*/*' ]
+[ "ConTent-Length", "123456",
+  "content-LENGTH", "123",
+  "content-type", "text/plain",
+  "CONNECTION", "keep-alive",
+  "Host", "example.com",
+  "accepT", "*/*" ]
 ```
 
 ## Class: `http.Agent`
@@ -89,8 +89,8 @@ like the following may be done:
 ```js
 http.get(options, (res) => {
  // Do stuff
-}).on('socket', (socket) => {
- socket.emit('agentRemove');
+}).on("socket", (socket) => {
+ socket.emit("agentRemove");
 });
 ```
 
@@ -103,9 +103,9 @@ for the client connection.
 
 ```js
 http.get({
- hostname: 'localhost',
+ hostname: "localhost",
  port: 80,
- path: '/',
+ path: "/",
  agent: false,  // Create a new agent just for this one request
 }, (res) => {
  // Do stuff with response
@@ -188,7 +188,7 @@ of these values set to their respective defaults.
 To configure any of them, a custom [`http.Agent`][] instance must be created.
 
 ```js
-const http = require('http');
+const http = require("http");
 const keepAliveAgent = new http.Agent({ keepAlive: true });
 options.agent = keepAliveAgent;
 http.request(options, onResponseCallback);
@@ -459,22 +459,22 @@ type other than {net.Socket}.
 A client and server pair demonstrating how to listen for the `'connect'` event:
 
 ```js
-const http = require('http');
-const net = require('net');
-const { URL } = require('url');
+const http = require("http");
+const net = require("net");
+const { URL } = require("url");
 
 // Create an HTTP tunneling proxy
 const proxy = http.createServer((req, res) => {
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.end('okay');
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.end("okay");
 });
-proxy.on('connect', (req, clientSocket, head) => {
+proxy.on("connect", (req, clientSocket, head) => {
  // Connect to an origin server
  const { port, hostname } = new URL(`http://${req.url}`);
  const serverSocket = net.connect(port || 80, hostname, () => {
-  clientSocket.write('HTTP/1.1 200 Connection Established\r\n' +
-                    'Proxy-agent: Node.js-Proxy\r\n' +
-                    '\r\n');
+  clientSocket.write("HTTP/1.1 200 Connection Established\r\n" +
+                    "Proxy-agent: Node.js-Proxy\r\n" +
+                    "\r\n");
   serverSocket.write(head);
   serverSocket.pipe(clientSocket);
   clientSocket.pipe(serverSocket);
@@ -482,31 +482,31 @@ proxy.on('connect', (req, clientSocket, head) => {
 });
 
 // Now that proxy is running
-proxy.listen(1337, '127.0.0.1', () => {
+proxy.listen(1337, "127.0.0.1", () => {
 
  // Make a request to a tunneling proxy
  const options = {
   port: 1337,
-  host: '127.0.0.1',
-  method: 'CONNECT',
-  path: 'www.google.com:80',
+  host: "127.0.0.1",
+  method: "CONNECT",
+  path: "www.google.com:80",
  };
 
  const req = http.request(options);
  req.end();
 
- req.on('connect', (res, socket, head) => {
-  console.log('got connected!');
+ req.on("connect", (res, socket, head) => {
+  console.log("got connected!");
 
   // Make a request over an HTTP tunnel
-  socket.write('GET / HTTP/1.1\r\n' +
-                 'Host: www.google.com:80\r\n' +
-                 'Connection: close\r\n' +
-                 '\r\n');
-  socket.on('data', (chunk) => {
+  socket.write("GET / HTTP/1.1\r\n" +
+                 "Host: www.google.com:80\r\n" +
+                 "Connection: close\r\n" +
+                 "\r\n");
+  socket.on("data", (chunk) => {
    console.log(chunk.toString());
   });
-  socket.on('end', () => {
+  socket.on("end", () => {
    proxy.close();
   });
  });
@@ -544,19 +544,19 @@ HTTP version, status code, status message, key-value headers object,
 and array with the raw header names followed by their respective values.
 
 ```js
-const http = require('http');
+const http = require("http");
 
 const options = {
- host: '127.0.0.1',
+ host: "127.0.0.1",
  port: 8080,
- path: '/length_request',
+ path: "/length_request",
 };
 
 // Make a request
 const req = http.request(options);
 req.end();
 
-req.on('information', (info) => {
+req.on("information", (info) => {
  console.log(`Got information prior to main response: ${info.statusCode}`);
 });
 ```
@@ -622,40 +622,40 @@ type other than {net.Socket}.
 A client server pair demonstrating how to listen for the `'upgrade'` event.
 
 ```js
-const http = require('http');
+const http = require("http");
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.end('okay');
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.end("okay");
 });
-server.on('upgrade', (req, socket, head) => {
- socket.write('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
-               'Upgrade: WebSocket\r\n' +
-               'Connection: Upgrade\r\n' +
-               '\r\n');
+server.on("upgrade", (req, socket, head) => {
+ socket.write("HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
+               "Upgrade: WebSocket\r\n" +
+               "Connection: Upgrade\r\n" +
+               "\r\n");
 
  socket.pipe(socket); // echo back
 });
 
 // Now that server is running
-server.listen(1337, '127.0.0.1', () => {
+server.listen(1337, "127.0.0.1", () => {
 
  // make a request
  const options = {
   port: 1337,
-  host: '127.0.0.1',
+  host: "127.0.0.1",
   headers: {
-   'Connection': 'Upgrade',
-   'Upgrade': 'websocket',
+   "Connection": "Upgrade",
+   "Upgrade": "websocket",
   },
  };
 
  const req = http.request(options);
  req.end();
 
- req.on('upgrade', (res, socket, upgradeHead) => {
-  console.log('got upgraded!');
+ req.on("upgrade", (res, socket, upgradeHead) => {
+  console.log("got upgraded!");
   socket.end();
   process.exit(0);
  });
@@ -815,14 +815,14 @@ The type of the return value depends on the arguments provided to
 [`request.setHeader()`][].
 
 ```js
-request.setHeader('content-type', 'text/html');
-request.setHeader('Content-Length', Buffer.byteLength(body));
-request.setHeader('Cookie', ['type=ninja', 'language=javascript']);
-const contentType = request.getHeader('Content-Type');
+request.setHeader("content-type", "text/html");
+request.setHeader("Content-Length", Buffer.byteLength(body));
+request.setHeader("Cookie", ["type=ninja", "language=javascript"]);
+const contentType = request.getHeader("Content-Type");
 // 'contentType' is 'text/html'
-const contentLength = request.getHeader('Content-Length');
+const contentLength = request.getHeader("Content-Length");
 // 'contentLength' is of type number
-const cookie = request.getHeader('Cookie');
+const cookie = request.getHeader("Cookie");
 // 'cookie' is of type string[]
 ```
 
@@ -840,8 +840,8 @@ Returns an array containing the unique names of the current outgoing raw
 headers. Header names are returned with their exact casing being set.
 
 ```js
-request.setHeader('Foo', 'bar');
-request.setHeader('Set-Cookie', ['foo=bar', 'bar=baz']);
+request.setHeader("Foo", "bar");
+request.setHeader("Set-Cookie", ["foo=bar", "bar=baz"]);
 
 const headerNames = request.getRawHeaderNames();
 // headerNames === ['Foo', 'Set-Cookie']
@@ -900,7 +900,7 @@ added: v1.6.0
 Removes a header that's already defined into headers object.
 
 ```js
-request.removeHeader('Content-Type');
+request.removeHeader("Content-Type");
 ```
 
 ### `request.reusedSocket`
@@ -918,20 +918,20 @@ might be reused. But if server closes connection at unfortunate time, client
 may run into a 'ECONNRESET' error.
 
 ```js
-const http = require('http');
+const http = require("http");
 
 // Server has a 5 seconds keep-alive timeout by default
 http
   .createServer((req, res) => {
-  	res.write('hello\n');
+  	res.write("hello\n");
   	res.end();
   })
   .listen(3000);
 
 setInterval(() => {
  // Adapting a keep-alive agent
- http.get('http://localhost:3000', { agent }, (res) => {
-  res.on('data', (data) => {
+ http.get("http://localhost:3000", { agent }, (res) => {
+  res.on("data", (data) => {
    // Do nothing
   });
  });
@@ -942,17 +942,17 @@ By marking a request whether it reused socket or not, we can do
 automatic error retry base on it.
 
 ```js
-const http = require('http');
+const http = require("http");
 const agent = new http.Agent({ keepAlive: true });
 
 function retriableRequest() {
  const req = http
-    .get('http://localhost:3000', { agent }, (res) => {
+    .get("http://localhost:3000", { agent }, (res) => {
     	// ...
     })
-    .on('error', (err) => {
+    .on("error", (err) => {
     	// Check if retry is needed
-    	if (req.reusedSocket && err.code === 'ECONNRESET') {
+    	if (req.reusedSocket && err.code === "ECONNRESET") {
     		retriableRequest();
     	}
     });
@@ -978,13 +978,13 @@ non-string values. However, the non-string values will be converted to strings
 for network transmission.
 
 ```js
-request.setHeader('Content-Type', 'application/json');
+request.setHeader("Content-Type", "application/json");
 ```
 
 or
 
 ```js
-request.setHeader('Cookie', ['type=ninja', 'language=javascript']);
+request.setHeader("Cookie", ["type=ninja", "language=javascript"]);
 ```
 
 ### `request.setNoDelay([noDelay])`
@@ -1041,13 +1041,13 @@ this property. In particular, the socket will not emit `'readable'` events
 because of how the protocol parser attaches to the socket.
 
 ```js
-const http = require('http');
+const http = require("http");
 const options = {
- host: 'www.google.com',
+ host: "www.google.com",
 };
 const req = http.get(options);
 req.end();
-req.once('response', (res) => {
+req.once("response", (res) => {
  const ip = req.socket.localAddress;
  const port = req.socket.localPort;
  console.log(`Your IP address is ${ip} and your source port is ${port}.`);
@@ -1198,13 +1198,13 @@ written data it is immediately destroyed.
 `socket` is the [`net.Socket`][] object that the error originated from.
 
 ```js
-const http = require('http');
+const http = require("http");
 
 const server = http.createServer((req, res) => {
  res.end();
 });
-server.on('clientError', (err, socket) => {
- socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+server.on("clientError", (err, socket) => {
+ socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
 });
 server.listen(8000);
 ```
@@ -1226,12 +1226,12 @@ trying to send data to the socket, it is better to check that it is still
 writable.
 
 ```js
-server.on('clientError', (err, socket) => {
- if (err.code === 'ECONNRESET' || !socket.writable) {
+server.on("clientError", (err, socket) => {
+ if (err.code === "ECONNRESET" || !socket.writable) {
   return;
  }
 
- socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+ socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
 });
 ```
 
@@ -1538,10 +1538,10 @@ HTTP requires the `Trailer` header to be sent in order to
 emit trailers, with a list of the header fields in its value. E.g.,
 
 ```js
-response.writeHead(200, { 'Content-Type': 'text/plain',
-                          'Trailer': 'Content-MD5' });
+response.writeHead(200, { "Content-Type": "text/plain",
+                          "Trailer": "Content-MD5" });
 response.write(fileData);
-response.addTrailers({ 'Content-MD5': '7895bf4b8828b55ceaf47747b4bca667' });
+response.addTrailers({ "Content-MD5": "7895bf4b8828b55ceaf47747b4bca667" });
 response.end();
 ```
 
@@ -1634,14 +1634,14 @@ The name is case-insensitive. The type of the return value depends
 on the arguments provided to [`response.setHeader()`][].
 
 ```js
-response.setHeader('Content-Type', 'text/html');
-response.setHeader('Content-Length', Buffer.byteLength(body));
-response.setHeader('Set-Cookie', ['type=ninja', 'language=javascript']);
-const contentType = response.getHeader('content-type');
+response.setHeader("Content-Type", "text/html");
+response.setHeader("Content-Length", Buffer.byteLength(body));
+response.setHeader("Set-Cookie", ["type=ninja", "language=javascript"]);
+const contentType = response.getHeader("content-type");
 // contentType is 'text/html'
-const contentLength = response.getHeader('Content-Length');
+const contentLength = response.getHeader("Content-Length");
 // contentLength is of type number
-const setCookie = response.getHeader('set-cookie');
+const setCookie = response.getHeader("set-cookie");
 // setCookie is of type string[]
 ```
 
@@ -1657,8 +1657,8 @@ Returns an array containing the unique names of the current outgoing headers.
 All header names are lowercase.
 
 ```js
-response.setHeader('Foo', 'bar');
-response.setHeader('Set-Cookie', ['foo=bar', 'bar=baz']);
+response.setHeader("Foo", "bar");
+response.setHeader("Set-Cookie", ["foo=bar", "bar=baz"]);
 
 const headerNames = response.getHeaderNames();
 // headerNames === ['foo', 'set-cookie']
@@ -1684,8 +1684,8 @@ prototypically inherit from the JavaScript `Object`. This means that typical
 are not defined and _will not work_.
 
 ```js
-response.setHeader('Foo', 'bar');
-response.setHeader('Set-Cookie', ['foo=bar', 'bar=baz']);
+response.setHeader("Foo", "bar");
+response.setHeader("Set-Cookie", ["foo=bar", "bar=baz"]);
 
 const headers = response.getHeaders();
 // headers === { foo: 'bar', 'set-cookie': ['foo=bar', 'bar=baz'] }
@@ -1704,7 +1704,7 @@ Returns `true` if the header identified by `name` is currently set in the
 outgoing headers. The header name matching is case-insensitive.
 
 ```js
-const hasContentType = response.hasHeader('content-type');
+const hasContentType = response.hasHeader("content-type");
 ```
 
 ### `response.headersSent`
@@ -1728,7 +1728,7 @@ added: v0.4.0
 Removes a header that's queued for implicit sending.
 
 ```js
-response.removeHeader('Content-Encoding');
+response.removeHeader("Content-Encoding");
 ```
 
 ### `response.req`
@@ -1776,13 +1776,13 @@ for network transmission. The same response object is returned to the caller,
 to enable call chaining.
 
 ```js
-response.setHeader('Content-Type', 'text/html');
+response.setHeader("Content-Type", "text/html");
 ```
 
 or
 
 ```js
-response.setHeader('Set-Cookie', ['type=ninja', 'language=javascript']);
+response.setHeader("Set-Cookie", ["type=ninja", "language=javascript"]);
 ```
 
 Attempting to set a header field name or value that contains invalid characters
@@ -1795,10 +1795,10 @@ to [`response.writeHead()`][] given precedence.
 ```js
 // Returns content-type = text/plain
 const server = http.createServer((req, res) => {
- res.setHeader('Content-Type', 'text/html');
- res.setHeader('X-Foo', 'bar');
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.end('ok');
+ res.setHeader("Content-Type", "text/html");
+ res.setHeader("X-Foo", "bar");
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.end("ok");
 });
 ```
 
@@ -1842,7 +1842,7 @@ because of how the protocol parser attaches to the socket. After
 `response.end()`, the property is nulled.
 
 ```js
-const http = require('http');
+const http = require("http");
 const server = http.createServer((req, res) => {
  const ip = res.socket.remoteAddress;
  const port = res.socket.remotePort;
@@ -1887,7 +1887,7 @@ the headers get flushed. If this is left as `undefined` then the standard
 message for the status code will be used.
 
 ```js
-response.statusMessage = 'Not found';
+response.statusMessage = "Not found";
 ```
 
 After response header was sent to the client, this property indicates the
@@ -2014,11 +2014,11 @@ format as `request.rawHeaders`.
 Returns a reference to the `ServerResponse`, so that calls can be chained.
 
 ```js
-const body = 'hello world';
+const body = "hello world";
 response
   .writeHead(200, {
-  	'Content-Length': Buffer.byteLength(body),
-  	'Content-Type': 'text/plain',
+  	"Content-Length": Buffer.byteLength(body),
+  	"Content-Type": "text/plain",
   })
   .end(body);
 ```
@@ -2043,10 +2043,10 @@ desired with potential future retrieval and modification, use
 ```js
 // Returns content-type = text/plain
 const server = http.createServer((req, res) => {
- res.setHeader('Content-Type', 'text/html');
- res.setHeader('X-Foo', 'bar');
- res.writeHead(200, { 'Content-Type': 'text/plain' });
- res.end('ok');
+ res.setHeader("Content-Type", "text/html");
+ res.setHeader("X-Foo", "bar");
+ res.writeHead(200, { "Content-Type": "text/plain" });
+ res.end("ok");
 });
 ```
 
@@ -2148,15 +2148,15 @@ server fully transmitted a message before a connection was terminated:
 
 ```js
 const req = http.request({
- host: '127.0.0.1',
+ host: "127.0.0.1",
  port: 8080,
- method: 'POST',
+ method: "POST",
 }, (res) => {
  res.resume();
- res.on('end', () => {
+ res.on("end", () => {
   if (!res.complete)
    console.error(
-    'The connection was terminated while the message was still being sent');
+    "The connection was terminated while the message was still being sent");
  });
 });
 ```
@@ -2463,10 +2463,10 @@ HTTP requires the  `Trailer` header to be sent to emit trailers,
 with a list of header fields in its value, e.g.
 
 ```js
-message.writeHead(200, { 'Content-Type': 'text/plain',
-                         'Trailer': 'Content-MD5' });
+message.writeHead(200, { "Content-Type": "text/plain",
+                         "Trailer": "Content-MD5" });
 message.write(fileData);
-message.addTrailers({ 'Content-MD5': '7895bf4b8828b55ceaf47747b4bca667' });
+message.addTrailers({ "Content-MD5": "7895bf4b8828b55ceaf47747b4bca667" });
 message.end();
 ```
 
@@ -2591,8 +2591,8 @@ typical Object methods such as `obj.toString()`, `obj.hasOwnProperty()`,
 and others are not defined and will not work.
 
 ```js
-outgoingMessage.setHeader('Foo', 'bar');
-outgoingMessage.setHeader('Set-Cookie', ['foo=bar', 'bar=baz']);
+outgoingMessage.setHeader("Foo", "bar");
+outgoingMessage.setHeader("Set-Cookie", ["foo=bar", "bar=baz"]);
 
 const headers = outgoingMessage.getHeaders();
 // headers === { foo: 'bar', 'set-cookie': ['foo=bar', 'bar=baz'] }
@@ -2611,7 +2611,7 @@ Returns `true` if the header identified by `name` is currently set in the
 outgoing headers. The header name is case-insensitive.
 
 ```js
-const hasContentType = outgoingMessage.hasHeader('content-type');
+const hasContentType = outgoingMessage.hasHeader("content-type");
 ```
 
 ### `outgoingMessage.headersSent`
@@ -2648,7 +2648,7 @@ added:  v0.4.0
 Removes a header that is queued for implicit sending.
 
 ```js
-outgoingMessage.removeHeader('Content-Encoding');
+outgoingMessage.removeHeader("Content-Encoding");
 ```
 
 ### `outgoingMessage.setHeader(name, value)`
@@ -2897,13 +2897,13 @@ The `requestListener` is a function which is automatically
 added to the [`'request'`][] event.
 
 ```cjs
-const http = require('http');
+const http = require("http");
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
- res.writeHead(200, { 'Content-Type': 'application/json' });
+ res.writeHead(200, { "Content-Type": "application/json" });
  res.end(JSON.stringify({
-  data: 'Hello World!',
+  data: "Hello World!",
  }));
 });
 
@@ -2911,16 +2911,16 @@ server.listen(8000);
 ```
 
 ```cjs
-const http = require('http');
+const http = require("http");
 
 // Create a local server to receive data from
 const server = http.createServer();
 
 // Listen to the request event
-server.on('request', (request, res) => {
- res.writeHead(200, { 'Content-Type': 'application/json' });
+server.on("request", (request, res) => {
+ res.writeHead(200, { "Content-Type": "application/json" });
  res.end(JSON.stringify({
-  data: 'Hello World!',
+  data: "Hello World!",
  }));
 });
 
@@ -2962,18 +2962,18 @@ The `callback` is invoked with a single argument that is an instance of
 JSON fetching example:
 
 ```js
-http.get('http://localhost:8000/', (res) => {
+http.get("http://localhost:8000/", (res) => {
  const { statusCode } = res;
- const contentType = res.headers['content-type'];
+ const contentType = res.headers["content-type"];
 
  let error;
  // Any 2xx status code signals a successful response but
  // here we're only checking for 200.
  if (statusCode !== 200) {
-  error = new Error('Request Failed.\n' +
+  error = new Error("Request Failed.\n" +
                       `Status Code: ${statusCode}`);
  } else if (!/^application\/json/.test(contentType)) {
-  error = new Error('Invalid content-type.\n' +
+  error = new Error("Invalid content-type.\n" +
                       `Expected application/json but received ${contentType}`);
  }
  if (error) {
@@ -2983,10 +2983,10 @@ http.get('http://localhost:8000/', (res) => {
   return;
  }
 
- res.setEncoding('utf8');
- let rawData = '';
- res.on('data', (chunk) => { rawData += chunk; });
- res.on('end', () => {
+ res.setEncoding("utf8");
+ let rawData = "";
+ res.on("data", (chunk) => { rawData += chunk; });
+ res.on("end", () => {
   try {
    const parsedData = JSON.parse(rawData);
    console.log(parsedData);
@@ -2994,15 +2994,15 @@ http.get('http://localhost:8000/', (res) => {
    console.error(e.message);
   }
  });
-}).on('error', (e) => {
+}).on("error", (e) => {
  console.error(`Got error: ${e.message}`);
 });
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
- res.writeHead(200, { 'Content-Type': 'application/json' });
+ res.writeHead(200, { "Content-Type": "application/json" });
  res.end(JSON.stringify({
-  data: 'Hello World!',
+  data: "Hello World!",
  }));
 });
 
@@ -3149,36 +3149,36 @@ class. The `ClientRequest` instance is a writable stream. If one needs to
 upload a file with a POST request, then write to the `ClientRequest` object.
 
 ```js
-const http = require('http');
+const http = require("http");
 
 const postData = JSON.stringify({
- 'msg': 'Hello World!',
+ "msg": "Hello World!",
 });
 
 const options = {
- hostname: 'www.google.com',
+ hostname: "www.google.com",
  port: 80,
- path: '/upload',
- method: 'POST',
+ path: "/upload",
+ method: "POST",
  headers: {
-  'Content-Type': 'application/json',
-  'Content-Length': Buffer.byteLength(postData),
+  "Content-Type": "application/json",
+  "Content-Length": Buffer.byteLength(postData),
  },
 };
 
 const req = http.request(options, (res) => {
  console.log(`STATUS: ${res.statusCode}`);
  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
- res.setEncoding('utf8');
- res.on('data', (chunk) => {
+ res.setEncoding("utf8");
+ res.on("data", (chunk) => {
   console.log(`BODY: ${chunk}`);
  });
- res.on('end', () => {
-  console.log('No more data in response.');
+ res.on("end", () => {
+  console.log("No more data in response.");
  });
 });
 
-req.on('error', (e) => {
+req.on("error", (e) => {
  console.error(`problem with request: ${e.message}`);
 });
 
@@ -3214,7 +3214,7 @@ There are a few special headers that should be noted.
 Example using a [`URL`][] as `options`:
 
 ```js
-const options = new URL('http://abc:xyz@example.com');
+const options = new URL("http://abc:xyz@example.com");
 
 const req = http.request(options, (res) => {
  // ...
@@ -3348,10 +3348,10 @@ Examples:
 Example:
 
 ```js
-const { validateHeaderName } = require('http');
+const { validateHeaderName } = require("http");
 
 try {
- validateHeaderName('');
+ validateHeaderName("");
 } catch (err) {
  err instanceof TypeError; // --> true
  err.code; // --> 'ERR_INVALID_HTTP_TOKEN'
@@ -3382,21 +3382,21 @@ or response. The HTTP module will automatically validate such headers.
 Examples:
 
 ```js
-const { validateHeaderValue } = require('http');
+const { validateHeaderValue } = require("http");
 
 try {
- validateHeaderValue('x-my-header', undefined);
+ validateHeaderValue("x-my-header", undefined);
 } catch (err) {
  err instanceof TypeError; // --> true
- err.code === 'ERR_HTTP_INVALID_HEADER_VALUE'; // --> true
+ err.code === "ERR_HTTP_INVALID_HEADER_VALUE"; // --> true
  err.message; // --> 'Invalid value "undefined" for header "x-my-header"'
 }
 
 try {
- validateHeaderValue('x-my-header', 'oʊmɪɡə');
+ validateHeaderValue("x-my-header", "oʊmɪɡə");
 } catch (err) {
  err instanceof TypeError; // --> true
- err.code === 'ERR_INVALID_CHAR'; // --> true
+ err.code === "ERR_INVALID_CHAR"; // --> true
  err.message; // --> 'Invalid character in header content ["x-my-header"]'
 }
 ```

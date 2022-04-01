@@ -1,17 +1,17 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
 // Test coverage for the updateOptionsBuffer method used internally
 // by the http2 implementation.
 
-const { updateOptionsBuffer } = require('internal/http2/util');
-const { internalBinding } = require('internal/test/binding');
-const { optionsBuffer } = internalBinding('http2');
-const { ok, strictEqual } = require('assert');
+const { updateOptionsBuffer } = require("internal/http2/util");
+const { internalBinding } = require("internal/test/binding");
+const { optionsBuffer } = internalBinding("http2");
+const { ok, strictEqual } = require("assert");
 
 const IDX_OPTIONS_MAX_DEFLATE_DYNAMIC_TABLE_SIZE = 0;
 const IDX_OPTIONS_MAX_RESERVED_REMOTE_STREAMS = 1;

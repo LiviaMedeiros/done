@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
-const net = require('net');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
+const net = require("net");
 
 if (cluster.isPrimary) {
  // Primary opens and binds the socket and shares it with the worker.
@@ -33,7 +33,7 @@ if (cluster.isPrimary) {
 
  server.listen(0, common.mustCall(() => {
   const worker = cluster.fork({ PORT: server.address().port });
-  worker.on('exit', common.mustCall((exitCode) => {
+  worker.on("exit", common.mustCall((exitCode) => {
    assert.strictEqual(exitCode, 0);
    server.close();
   }));
@@ -41,9 +41,9 @@ if (cluster.isPrimary) {
 } else {
  assert(process.env.PORT);
  const s = net.createServer(common.mustNotCall());
- s.listen(process.env.PORT, common.mustNotCall('listen should have failed'));
- s.on('error', common.mustCall((err) => {
-  assert.strictEqual(err.code, 'EADDRINUSE');
+ s.listen(process.env.PORT, common.mustNotCall("listen should have failed"));
+ s.on("error", common.mustCall((err) => {
+  assert.strictEqual(err.code, "EADDRINUSE");
   process.disconnect();
  }));
 }

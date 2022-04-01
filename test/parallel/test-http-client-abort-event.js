@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../common');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const http = require("http");
 const server = http.createServer(function(req, res) {
  res.end();
 });
@@ -10,7 +10,7 @@ server.listen(0, common.mustCall(function() {
   port: this.address().port,
  }, common.mustNotCall());
 
- req.on('abort', common.mustCall(function() {
+ req.on("abort", common.mustCall(function() {
   server.close();
  }));
 

@@ -1,5 +1,5 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // TODO(mhdawson) Currently the test-tick-processor functionality in V8
 // depends on addresses being smaller than a full 64 bits.  AIX supports
@@ -7,9 +7,9 @@ const common = require('../common');
 // addresses correctly and runs out of memory
 // Disabling until we get a fix upstreamed into V8
 if (common.isAIX)
- common.skip('AIX address range too big for scripts.');
+ common.skip("AIX address range too big for scripts.");
 
-const base = require('./tick-processor-base.js');
+const base = require("./tick-processor-base.js");
 
 // Unknown checked for to prevent flakiness, if pattern is not found,
 // then a large number of unknown ticks should be present

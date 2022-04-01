@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 const server = http.Server(common.mustCall((req, res) => {
  res.writeHead(200);
- res.end('Hello, World!');
+ res.end("Hello, World!");
 }));
 
 server.listen(0, common.mustCall(() => {
@@ -21,7 +21,7 @@ function makeRequest() {
  const req = http.get({
   port: server.address().port,
  });
- req.on('close', () => {
+ req.on("close", () => {
   assert.strictEqual(req.destroyed, true);
   server.close();
  });

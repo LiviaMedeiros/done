@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../common');
-const { addresses } = require('../common/internet');
-const assert = require('assert');
-const dns = require('dns');
-const domain = require('domain');
+"use strict";
+const common = require("../common");
+const { addresses } = require("../common/internet");
+const assert = require("assert");
+const dns = require("dns");
+const domain = require("domain");
 
 const methods = [
- 'resolve4',
- 'resolve6',
- 'resolveCname',
- 'resolveMx',
- 'resolveNs',
- 'resolveTxt',
- 'resolveSrv',
- 'resolvePtr',
- 'resolveNaptr',
- 'resolveSoa',
+ "resolve4",
+ "resolve6",
+ "resolveCname",
+ "resolveMx",
+ "resolveNs",
+ "resolveTxt",
+ "resolveSrv",
+ "resolvePtr",
+ "resolveNaptr",
+ "resolveSoa",
 ];
 
 methods.forEach(function(method) {

@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const { EventEmitterAsyncResource } = require('events');
+const common = require("../common");
+const { EventEmitterAsyncResource } = require("events");
 const {
  createHook,
  executionAsyncId,
-} = require('async_hooks');
+} = require("async_hooks");
 
 const {
  deepStrictEqual,
  strictEqual,
  throws,
-} = require('assert');
+} = require("assert");
 
 const {
  setImmediate: tick,
-} = require('timers/promises');
+} = require("timers/promises");
 
 function makeHook(trackedTypes) {
  const eventMap = new Map();
@@ -30,7 +30,7 @@ function makeHook(trackedTypes) {
    if (trackedTypes.includes(type)) {
     eventMap.set(asyncId, [
      {
-      name: 'init',
+      name: "init",
       type,
       triggerAsyncId,
       resource,
@@ -39,9 +39,9 @@ function makeHook(trackedTypes) {
    }
   },
 
-  before(asyncId) { log(asyncId, 'before'); },
-  after(asyncId) { log(asyncId, 'after'); },
-  destroy(asyncId) { log(asyncId, 'destroy'); },
+  before(asyncId) { log(asyncId, "before"); },
+  after(asyncId) { log(asyncId, "after"); },
+  destroy(asyncId) { log(asyncId, "destroy"); },
  }).enable();
 
  return {
@@ -57,15 +57,15 @@ function makeHook(trackedTypes) {
 
 // Tracks emit() calls correctly using async_hooks
 (async () => {
- const tracer = makeHook(['Foo']);
+ const tracer = makeHook(["Foo"]);
 
  class Foo extends EventEmitterAsyncResource {}
 
  const origExecutionAsyncId = executionAsyncId();
  const foo = new Foo();
 
- foo.on('someEvent', common.mustCall());
- foo.emit('someEvent');
+ foo.on("someEvent", common.mustCall());
+ foo.emit("someEvent");
 
  deepStrictEqual([foo.asyncId], [...tracer.ids()]);
  strictEqual(foo.triggerAsyncId, origExecutionAsyncId);
@@ -78,32 +78,32 @@ function makeHook(trackedTypes) {
  deepStrictEqual(tracer.done(), new Set([
   [
    {
-    name: 'init',
-    type: 'Foo',
+    name: "init",
+    type: "Foo",
     triggerAsyncId: origExecutionAsyncId,
     resource: foo.asyncResource,
    },
-   { name: 'before' },
-   { name: 'after' },
-   { name: 'destroy' },
+   { name: "before" },
+   { name: "after" },
+   { name: "destroy" },
   ],
  ]));
 })().then(common.mustCall());
 
 // Can explicitly specify name as positional arg
 (async () => {
- const tracer = makeHook(['ResourceName']);
+ const tracer = makeHook(["ResourceName"]);
 
  const origExecutionAsyncId = executionAsyncId();
  class Foo extends EventEmitterAsyncResource {}
 
- const foo = new Foo('ResourceName');
+ const foo = new Foo("ResourceName");
 
  deepStrictEqual(tracer.done(), new Set([
   [
    {
-    name: 'init',
-    type: 'ResourceName',
+    name: "init",
+    type: "ResourceName",
     triggerAsyncId: origExecutionAsyncId,
     resource: foo.asyncResource,
    },
@@ -113,18 +113,18 @@ function makeHook(trackedTypes) {
 
 // Can explicitly specify name as option
 (async () => {
- const tracer = makeHook(['ResourceName']);
+ const tracer = makeHook(["ResourceName"]);
 
  const origExecutionAsyncId = executionAsyncId();
  class Foo extends EventEmitterAsyncResource {}
 
- const foo = new Foo({ name: 'ResourceName' });
+ const foo = new Foo({ name: "ResourceName" });
 
  deepStrictEqual(tracer.done(), new Set([
   [
    {
-    name: 'init',
-    type: 'ResourceName',
+    name: "init",
+    type: "ResourceName",
     triggerAsyncId: origExecutionAsyncId,
     resource: foo.asyncResource,
    },
@@ -135,25 +135,25 @@ function makeHook(trackedTypes) {
 // Member methods ERR_INVALID_THIS
 throws(
  () => EventEmitterAsyncResource.prototype.emit(),
- { code: 'ERR_INVALID_THIS' },
+ { code: "ERR_INVALID_THIS" },
 );
 
 throws(
  () => EventEmitterAsyncResource.prototype.emitDestroy(),
- { code: 'ERR_INVALID_THIS' },
+ { code: "ERR_INVALID_THIS" },
 );
 
 throws(
- () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncId', {}),
- { code: 'ERR_INVALID_THIS' },
+ () => Reflect.get(EventEmitterAsyncResource.prototype, "asyncId", {}),
+ { code: "ERR_INVALID_THIS" },
 );
 
 throws(
- () => Reflect.get(EventEmitterAsyncResource.prototype, 'triggerAsyncId', {}),
- { code: 'ERR_INVALID_THIS' },
+ () => Reflect.get(EventEmitterAsyncResource.prototype, "triggerAsyncId", {}),
+ { code: "ERR_INVALID_THIS" },
 );
 
 throws(
- () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncResource', {}),
- { code: 'ERR_INVALID_THIS' },
+ () => Reflect.get(EventEmitterAsyncResource.prototype, "asyncResource", {}),
+ { code: "ERR_INVALID_THIS" },
 );

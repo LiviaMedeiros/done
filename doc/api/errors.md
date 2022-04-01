@@ -63,10 +63,10 @@ Errors that occur within _Asynchronous APIs_ may be reported in multiple ways:
   <!-- eslint-disable no-useless-return -->
 
   ```js
-  const fs = require('fs');
-  fs.readFile('a file that does not exist', (err, data) => {
+  const fs = require("fs");
+  fs.readFile("a file that does not exist", (err, data) => {
    if (err) {
-    console.error('There was an error reading the file!', err);
+    console.error("There was an error reading the file!", err);
     return;
    }
    // Otherwise handle the data
@@ -77,11 +77,11 @@ Errors that occur within _Asynchronous APIs_ may be reported in multiple ways:
   [`EventEmitter`][], errors can be routed to that object's `'error'` event.
 
   ```js
-  const net = require('net');
-  const connection = net.connect('localhost');
+  const net = require("net");
+  const connection = net.connect("localhost");
 
   // Adding an 'error' event handler to a stream:
-  connection.on('error', (err) => {
+  connection.on("error", (err) => {
    // If the connection is reset by the server, or if it can't
    // connect at all, or on any sort of error encountered by
    // the connection, the error will be sent here.
@@ -109,13 +109,13 @@ used appropriately or a handler has been registered for the
 [`'uncaughtException'`][] event.
 
 ```js
-const EventEmitter = require('events');
+const EventEmitter = require("events");
 const ee = new EventEmitter();
 
 setImmediate(() => {
  // This will crash the process because no 'error' event
  // handler has been added.
- ee.emit('error', new Error('This will crash'));
+ ee.emit("error", new Error("This will crash"));
 });
 ```
 
@@ -137,18 +137,18 @@ completes or an error is raised, the callback function is called with the
 the first argument will be passed as `null`.
 
 ```js
-const fs = require('fs');
+const fs = require("fs");
 
 function errorFirstCallback(err, data) {
  if (err) {
-  console.error('There was an error', err);
+  console.error("There was an error", err);
   return;
  }
  console.log(data);
 }
 
-fs.readFile('/some/file/that/does-not-exist', errorFirstCallback);
-fs.readFile('/some/file/that/does-exist', errorFirstCallback);
+fs.readFile("/some/file/that/does-not-exist", errorFirstCallback);
+fs.readFile("/some/file/that/does-exist", errorFirstCallback);
 ```
 
 The JavaScript `try…catch` mechanism **cannot** be used to intercept errors
@@ -157,10 +157,10 @@ use `throw` inside an error-first callback:
 
 ```js
 // THIS WILL NOT WORK:
-const fs = require('fs');
+const fs = require("fs");
 
 try {
- fs.readFile('/some/file/that/does-not-exist', (err, data) => {
+ fs.readFile("/some/file/that/does-not-exist", (err, data) => {
   // Mistaken assumption: throwing here...
   if (err) {
    throw err;
@@ -275,7 +275,7 @@ line of the stack trace (for example, when `error.stack` is read before this
 property is changed).
 
 ```js
-const err = new Error('The message');
+const err = new Error("The message");
 console.error(err.message);
 // Prints: The message
 ```
@@ -311,12 +311,12 @@ itself calls a JavaScript function, the frame representing the `cheetahify` call
 will not be present in the stack traces:
 
 ```js
-const cheetahify = require('./native-binding.node');
+const cheetahify = require("./native-binding.node");
 
 function makeFaster() {
  // `cheetahify()` *synchronously* calls speedy.
  cheetahify(function speedy() {
-  throw new Error('oh no!');
+  throw new Error("oh no!");
  });
 }
 
@@ -372,7 +372,7 @@ acceptable values for a function; whether that is a numeric range, or
 outside the set of options for a given function parameter.
 
 ```js
-require('net').connect(-1);
+require("net").connect(-1);
 // Throws "RangeError: "port" option should be >= 0 and < 65536: -1"
 ```
 
@@ -409,7 +409,7 @@ are almost always indicative of a broken program.
 
 ```js
 try {
- require('vm').runInThisContext('binary ! isNotOk');
+ require("vm").runInThisContext("binary ! isNotOk");
 } catch (err) {
  // 'err' will be a SyntaxError.
 }
@@ -570,7 +570,7 @@ Indicates that a provided argument is not an allowable type. For example,
 passing a function to a parameter which expects a string would be a `TypeError`.
 
 ```js
-require('url').parse(() => { });
+require("url").parse(() => { });
 // Throws TypeError, since it expected a string.
 ```
 
@@ -2009,10 +2009,10 @@ for more information.
 A Node.js API function was called with an incompatible `this` value.
 
 ```js
-const urlSearchParams = new URLSearchParams('foo=bar&baz=new');
+const urlSearchParams = new URLSearchParams("foo=bar&baz=new");
 
 const buf = Buffer.alloc(1);
-urlSearchParams.has.call(buf, 'foo');
+urlSearchParams.has.call(buf, "foo");
 // Throws a TypeError with code 'ERR_INVALID_THIS'
 ```
 
@@ -2516,10 +2516,10 @@ Prevents an abort if a string decoder was set on the Socket or if the decoder
 is in `objectMode`.
 
 ```js
-const Socket = require('net').Socket;
+const Socket = require("net").Socket;
 const instance = new Socket();
 
-instance.setEncoding('utf8');
+instance.setEncoding("utf8");
 ```
 
 <a id="ERR_STREAM_WRITE_AFTER_END"></a>

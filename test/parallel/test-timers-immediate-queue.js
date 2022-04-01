@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 // setImmediate should run clear its queued cbs once per event loop turn
 // but immediates queued while processing the current queue should happen
@@ -51,7 +51,7 @@ function run() {
 for (let i = 0; i < QUEUE; i++)
  setImmediate(run);
 
-process.on('exit', function() {
- console.log('hit', hit);
+process.on("exit", function() {
+ console.log("hit", hit);
  assert.strictEqual(hit, QUEUE);
 });

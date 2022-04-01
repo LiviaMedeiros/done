@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const v8 = require('v8');
+const common = require("../common.js");
+const v8 = require("v8");
 
 const bench = common.createBenchmark(main, {
  method: [
-  'getHeapStatistics',
-  'getHeapSpaceStatistics',
+  "getHeapStatistics",
+  "getHeapSpaceStatistics",
  ],
  n: [1e6],
 });

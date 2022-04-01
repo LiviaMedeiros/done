@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const fork = require('child_process').fork;
-const path = require('path');
-const CLI = require('./_cli.js');
+const fork = require("child_process").fork;
+const path = require("path");
+const CLI = require("./_cli.js");
 
 //
 // Parse arguments
@@ -13,7 +13,7 @@ const cli = new CLI(`usage: ./node scatter.js [options] [--] <filename>
 
   --runs 30              number of samples
   --set  variable=value  set benchmark variable (can be repeated)
-`, { arrayArgs: ['set'] });
+`, { arrayArgs: ["set"] });
 
 if (cli.items.length !== 1) {
  cli.abort(cli.usage);
@@ -28,7 +28,7 @@ const runs = cli.optional.runs ? parseInt(cli.optional.runs, 10) : 30;
 let printHeader = true;
 
 function csvEncodeValue(value) {
- if (typeof value === 'number') {
+ if (typeof value === "number") {
   return value.toString();
  }
  return `"${value.replace(/"/g, '""')}"`;
@@ -37,8 +37,8 @@ function csvEncodeValue(value) {
 (function recursive(i) {
  const child = fork(path.resolve(__dirname, filepath), cli.optional.set);
 
- child.on('message', (data) => {
-  if (data.type !== 'report') {
+ child.on("message", (data) => {
+  if (data.type !== "report") {
    return;
   }
 
@@ -46,7 +46,7 @@ function csvEncodeValue(value) {
   if (printHeader) {
    const confHeader = Object.keys(data.conf)
         .map(csvEncodeValue)
-        .join(', ');
+        .join(", ");
    console.log(`"filename", ${confHeader}, "rate", "time"`);
    printHeader = false;
   }
@@ -54,12 +54,12 @@ function csvEncodeValue(value) {
   // print data row
   const confData = Object.keys(data.conf)
       .map((key) => csvEncodeValue(data.conf[key]))
-      .join(', ');
+      .join(", ");
 
   console.log(`"${name}", ${confData}, ${data.rate}, ${data.time}`);
  });
 
- child.once('close', (code) => {
+ child.once("close", (code) => {
   if (code) {
    process.exit(code);
    return;

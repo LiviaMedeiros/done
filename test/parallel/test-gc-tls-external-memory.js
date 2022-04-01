@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
 // Tests that memoryUsage().external doesn't go negative
 // when a lot tls connections are opened and closed
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const makeDuplexPair = require('../common/duplexpair');
-const onGC = require('../common/ongc');
-const assert = require('assert');
-const tls = require('tls');
+const makeDuplexPair = require("../common/duplexpair");
+const onGC = require("../common/ongc");
+const assert = require("assert");
+const tls = require("tls");
 
 // Payload doesn't matter. We just need to have the tls
 // connection try and connect somewhere.
-const dummyPayload = Buffer.alloc(10000, 'yolo');
+const dummyPayload = Buffer.alloc(10000, "yolo");
 
 let runs = 0;
 
@@ -40,7 +40,7 @@ function connect() {
  const { clientSide, serverSide } = makeDuplexPair();
 
  const tlsSocket = tls.connect({ socket: clientSide });
- tlsSocket.on('error', common.mustCall(connect));
+ tlsSocket.on("error", common.mustCall(connect));
  onGC(tlsSocket, { ongc });
 
  // Use setImmediate so that we don't trigger the error within the same

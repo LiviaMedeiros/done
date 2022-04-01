@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  n: [1],
@@ -8,19 +8,19 @@ const bench = common.createBenchmark(main, {
  withSigintListener: [0, 1],
 });
 
-const vm = require('vm');
+const vm = require("vm");
 
 function main({ n, breakOnSigint, withSigintListener }) {
  const options = breakOnSigint ? { breakOnSigint: true } : {};
 
- process.removeAllListeners('SIGINT');
+ process.removeAllListeners("SIGINT");
  if (withSigintListener)
-  process.on('SIGINT', () => {});
+  process.on("SIGINT", () => {});
 
  const contextifiedSandbox = vm.createContext();
 
  bench.start();
  for (let i = 0; i < n; i++)
-  vm.runInContext('0', contextifiedSandbox, options);
+  vm.runInContext("0", contextifiedSandbox, options);
  bench.end(n);
 }

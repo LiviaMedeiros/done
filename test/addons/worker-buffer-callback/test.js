@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
-const { MessageChannel } = require('worker_threads');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
+const { MessageChannel } = require("worker_threads");
 const { buffer } = require(`./build/${common.buildType}/binding`);
 
 // Test that buffers allocated with a free callback through our APIs are not

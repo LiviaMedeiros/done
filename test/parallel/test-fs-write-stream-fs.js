@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common');
-const path = require('path');
-const fs = require('fs');
+"use strict";
+const common = require("../common");
+const path = require("path");
+const fs = require("fs");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 {
- const file = path.join(tmpdir.path, 'write-end-test0.txt');
+ const file = path.join(tmpdir.path, "write-end-test0.txt");
  const stream = fs.createWriteStream(file, {
   fs: {
    open: common.mustCall(fs.open),
@@ -15,13 +15,13 @@ tmpdir.refresh();
    close: common.mustCall(fs.close),
   },
  });
- stream.end('asd');
- stream.on('close', common.mustCall());
+ stream.end("asd");
+ stream.on("close", common.mustCall());
 }
 
 
 {
- const file = path.join(tmpdir.path, 'write-end-test1.txt');
+ const file = path.join(tmpdir.path, "write-end-test1.txt");
  const stream = fs.createWriteStream(file, {
   fs: {
    open: common.mustCall(fs.open),
@@ -30,9 +30,9 @@ tmpdir.refresh();
    close: common.mustCall(fs.close),
   },
  });
- stream.write('asd');
- stream.write('asd');
- stream.write('asd');
+ stream.write("asd");
+ stream.write("asd");
+ stream.write("asd");
  stream.end();
- stream.on('close', common.mustCall());
+ stream.on("close", common.mustCall());
 }

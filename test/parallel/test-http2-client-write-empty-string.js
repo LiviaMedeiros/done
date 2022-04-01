@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const http2 = require('http2');
+const assert = require("assert");
+const http2 = require("http2");
 
 for (const chunkSequence of [
- [ '' ],
- [ '', '' ],
+ [ "" ],
+ [ "", "" ],
 ]) {
  const server = http2.createServer();
- server.on('stream', common.mustCall((stream, headers, flags) => {
-  stream.respond({ 'content-type': 'text/html' });
+ server.on("stream", common.mustCall((stream, headers, flags) => {
+  stream.respond({ "content-type": "text/html" });
 
-  let data = '';
-  stream.on('data', common.mustNotCall((chunk) => {
+  let data = "";
+  stream.on("data", common.mustNotCall((chunk) => {
    data += chunk.toString();
   }));
-  stream.on('end', common.mustCall(() => {
+  stream.on("end", common.mustCall(() => {
    stream.end(`"${data}"`);
   }));
  }));
@@ -29,19 +29,19 @@ for (const chunkSequence of [
   const client = http2.connect(`http://localhost:${port}`);
 
   const req = client.request({
-   ':method': 'POST',
-   ':path': '/',
+   ":method": "POST",
+   ":path": "/",
   });
 
-  req.on('response', common.mustCall((headers) => {
-   assert.strictEqual(headers[':status'], 200);
-   assert.strictEqual(headers['content-type'], 'text/html');
+  req.on("response", common.mustCall((headers) => {
+   assert.strictEqual(headers[":status"], 200);
+   assert.strictEqual(headers["content-type"], "text/html");
   }));
 
-  let data = '';
-  req.setEncoding('utf8');
-  req.on('data', common.mustCallAtLeast((d) => data += d));
-  req.on('end', common.mustCall(() => {
+  let data = "";
+  req.setEncoding("utf8");
+  req.on("data", common.mustCallAtLeast((d) => data += d));
+  req.on("end", common.mustCall(() => {
    assert.strictEqual(data, '""');
    server.close();
    client.close();

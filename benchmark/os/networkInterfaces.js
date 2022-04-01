@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const networkInterfaces = require('os').networkInterfaces;
+const common = require("../common.js");
+const networkInterfaces = require("os").networkInterfaces;
 
 const bench = common.createBenchmark(main, {
  n: [1e4],

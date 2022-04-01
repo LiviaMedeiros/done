@@ -1,6 +1,6 @@
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
 // This test ensures that assert.CallTracker.calls() works as intended.
 
@@ -9,12 +9,12 @@ const tracker = new assert.CallTracker();
 function bar() {}
 
 const err = {
- code: 'ERR_INVALID_ARG_TYPE',
+ code: "ERR_INVALID_ARG_TYPE",
 };
 
 // Ensures calls() throws on invalid input types.
 assert.throws(() => {
- const callsbar = tracker.calls(bar, '1');
+ const callsbar = tracker.calls(bar, "1");
  callsbar();
 }, err,
 );
@@ -22,7 +22,7 @@ assert.throws(() => {
 assert.throws(() => {
  const callsbar = tracker.calls(bar, 0.1);
  callsbar();
-}, { code: 'ERR_OUT_OF_RANGE' },
+}, { code: "ERR_OUT_OF_RANGE" },
 );
 
 assert.throws(() => {
@@ -45,13 +45,13 @@ assert.throws(() => {
 
 // Expects an error as tracker.calls() cannot be called within a process exit
 // handler.
-process.on('exit', () => {
+process.on("exit", () => {
  assert.throws(() => tracker.calls(bar, 1), {
-  code: 'ERR_UNAVAILABLE_DURING_EXIT',
+  code: "ERR_UNAVAILABLE_DURING_EXIT",
  });
 });
 
-const msg = 'Expected to throw';
+const msg = "Expected to throw";
 
 function func() {
  throw new Error(msg);

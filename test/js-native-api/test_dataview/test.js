@@ -1,6 +1,6 @@
-'use strict';
-const common = require('../../common');
-const assert = require('assert');
+"use strict";
+const common = require("../../common");
+const assert = require("assert");
 
 // Testing api calls for arrays
 const test_dataview = require(`./build/${common.buildType}/test_dataview`);

@@ -1,10 +1,10 @@
-'use strict';
-require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
-const fixtures = require('../common/fixtures');
+"use strict";
+require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
+const fixtures = require("../common/fixtures");
 
-const file = fixtures.readSync('person.jpg');
+const file = fixtures.readSync("person.jpg");
 const chunkSize = 16;
 const opts = { level: 0 };
 const deflater = zlib.createDeflate(opts);
@@ -30,7 +30,7 @@ deflater.write(chunk, function() {
  });
 });
 
-process.once('exit', function() {
+process.once("exit", function() {
  assert.deepStrictEqual(actualNone, expectedNone);
  assert.deepStrictEqual(actualFull, expectedFull);
 });

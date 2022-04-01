@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const domain = require('domain');
+const common = require("../../common");
+const assert = require("assert");
+const domain = require("domain");
 const binding = require(`./build/${common.buildType}/binding`);
 
 function makeCallback(object, cb) {
@@ -10,7 +10,7 @@ function makeCallback(object, cb) {
 }
 
 let latestWarning = null;
-process.on('warning', (warning) => {
+process.on("warning", (warning) => {
  latestWarning = warning;
 });
 
@@ -35,8 +35,8 @@ makeCallback(new Resource(d), common.mustCall(() => {
    makeCallback(new Resource(d), common.mustCall(() => {
     assert.match(latestWarning.message,
                  /Triggered by calling someMethod on Resource\./);
-    assert.strictEqual(latestWarning.name, 'DeprecationWarning');
-    assert.strictEqual(latestWarning.code, 'DEP0097');
+    assert.strictEqual(latestWarning.name, "DeprecationWarning");
+    assert.strictEqual(latestWarning.code, "DEP0097");
    }));
   }));
  }));

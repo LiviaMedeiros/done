@@ -19,32 +19,32 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 if (common.isIBMi) {
- common.skip('IBMi does not support fs.watch()');
+ common.skip("IBMi does not support fs.watch()");
 }
 
-const path = require('path');
-const fs = require('fs');
-const assert = require('assert');
-const tmpdir = require('../common/tmpdir');
+const path = require("path");
+const fs = require("fs");
+const assert = require("assert");
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 const testDir = tmpdir.path;
-const testsubdir = path.join(testDir, 'testsubdir');
-const filepath = path.join(testsubdir, 'watch.txt');
+const testsubdir = path.join(testDir, "testsubdir");
+const filepath = path.join(testsubdir, "watch.txt");
 
 fs.mkdirSync(testsubdir, 0o700);
 
 const watcher = fs.watch(testDir, { persistent: true }, (event, filename) => {
  // This function may be called with the directory depending on timing but
  // must not be called with the file..
- assert.strictEqual(filename, 'testsubdir');
+ assert.strictEqual(filename, "testsubdir");
 });
 setTimeout(() => {
- fs.writeFileSync(filepath, 'test');
+ fs.writeFileSync(filepath, "test");
 }, 100);
 setTimeout(() => {
  watcher.close();

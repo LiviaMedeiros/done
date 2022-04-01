@@ -11,7 +11,7 @@ In most cases, it will not be necessary or possible to use this module directly.
 However, it can be accessed using:
 
 ```js
-const tty = require('tty');
+const tty = require("tty");
 ```
 
 When Node.js detects that it is being run with a text terminal ("TTY")
@@ -105,8 +105,8 @@ or `writeStream.rows` properties have changed. No arguments are passed to the
 listener callback when called.
 
 ```js
-process.stdout.on('resize', () => {
- console.log('screen size has changed!');
+process.stdout.on("resize", () => {
+ console.log("screen size has changed!");
  console.log(`${process.stdout.columns}x${process.stdout.rows}`);
 });
 ```
@@ -254,9 +254,9 @@ process.stdout.hasColors();
 // Returns true or false depending on if `stdout` supports at least 16 colors.
 process.stdout.hasColors(256);
 // Returns true or false depending on if `stdout` supports at least 256 colors.
-process.stdout.hasColors({ TMUX: '1' });
+process.stdout.hasColors({ TMUX: "1" });
 // Returns true.
-process.stdout.hasColors(2 ** 24, { TMUX: '1' });
+process.stdout.hasColors(2 ** 24, { TMUX: "1" });
 // Returns false (the environment setting pretends to support 2 ** 8 colors).
 ```
 

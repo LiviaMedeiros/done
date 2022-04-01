@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common.js');
-const url = require('url');
+"use strict";
+const common = require("../common.js");
+const url = require("url");
 
 const inputs = {
- normal: 'http://foo.com/bar',
- escaped: 'https://foo.bar/{}^`/abcd',
+ normal: "http://foo.com/bar",
+ escaped: "https://foo.bar/{}^`/abcd",
 };
 
 const bench = common.createBenchmark(main, {

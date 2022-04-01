@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
-const assert = require('assert');
-const { Worker, isMainThread } = require('worker_threads');
+const assert = require("assert");
+const { Worker, isMainThread } = require("worker_threads");
 
 if (isMainThread) {
  const w = new Worker(__filename, {
@@ -14,12 +14,12 @@ if (isMainThread) {
 
  const { stdin, stdout, stderr } = w;
 
- w.on('exit', common.mustCall((code) => {
+ w.on("exit", common.mustCall((code) => {
   assert.strictEqual(code, 0);
 
   // `postMessage` should not throw after termination
   // (this mimics the browser behavior).
-  w.postMessage('foobar');
+  w.postMessage("foobar");
   w.ref();
   w.unref();
 

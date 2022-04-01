@@ -1,15 +1,15 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const cluster = require('cluster');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const cluster = require("cluster");
 
 cluster.schedulingPolicy = cluster.SCHED_RR;
 
 if (cluster.isPrimary) {
  const worker1 = cluster.fork();
- worker1.on('listening', common.mustCall(() => {
+ worker1.on("listening", common.mustCall(() => {
   const worker2 = cluster.fork();
-  worker2.on('exit', (code, signal) => {
+  worker2.on("exit", (code, signal) => {
    assert.strictEqual(
     code,
     0,
@@ -24,7 +24,7 @@ if (cluster.isPrimary) {
   });
  }));
 
- worker1.on('exit', common.mustCall((code, signal) => {
+ worker1.on("exit", common.mustCall((code, signal) => {
   assert.strictEqual(
    code,
    0,
@@ -37,7 +37,7 @@ if (cluster.isPrimary) {
   );
  }));
 } else {
- const net = require('net');
+ const net = require("net");
  const server = net.createServer();
  server.listen(0, common.mustCall(() => {
   if (cluster.worker.id === 2) {

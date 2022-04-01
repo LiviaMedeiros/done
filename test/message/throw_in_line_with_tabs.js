@@ -20,15 +20,15 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-'use strict';
-require('../common');
+"use strict";
+require("../common");
 
-console.error('before');
+console.error("before");
 
 (function() {
  // These lines should contain tab!
  // eslint-disable-next-line no-throw-literal
- throw ({ foo: 'bar' });
+ throw ({ foo: "bar" });
 })();
 
-console.error('after');
+console.error("after");

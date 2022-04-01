@@ -66,8 +66,8 @@ For example, this is not a good idea:
 ```js
 // XXX WARNING! BAD IDEA!
 
-const d = require('domain').create();
-d.on('error', (er) => {
+const d = require("domain").create();
+d.on("error", (er) => {
  // The error won't crash the process, but what it does is worse!
  // Though we've prevented abrupt process restarting, we are leaking
  // a lot of resources if this ever happens.
@@ -75,7 +75,7 @@ d.on('error', (er) => {
  console.log(`error, but oh well ${er.message}`);
 });
 d.run(() => {
- require('http').createServer((req, res) => {
+ require("http").createServer((req, res) => {
   handleRequest(req, res);
  }).listen(PORT);
 });
@@ -88,7 +88,7 @@ appropriately, and handle errors with much greater safety.
 ```js
 // Much better!
 
-const cluster = require('cluster');
+const cluster = require("cluster");
 const PORT = +process.env.PORT || 1337;
 
 if (cluster.isPrimary) {
@@ -107,8 +107,8 @@ if (cluster.isPrimary) {
  cluster.fork();
  cluster.fork();
 
- cluster.on('disconnect', (worker) => {
-  console.error('disconnect!');
+ cluster.on("disconnect", (worker) => {
+  console.error("disconnect!");
   cluster.fork();
  });
 
@@ -117,14 +117,14 @@ if (cluster.isPrimary) {
  //
  // This is where we put our bugs!
 
- const domain = require('domain');
+ const domain = require("domain");
 
  // See the cluster documentation for more details about using
  // worker processes to serve requests. How it works, caveats, etc.
 
- const server = require('http').createServer((req, res) => {
+ const server = require("http").createServer((req, res) => {
   const d = domain.create();
-  d.on('error', (er) => {
+  d.on("error", (er) => {
    console.error(`error ${er.stack}`);
 
    // We're in dangerous territory!
@@ -150,8 +150,8 @@ if (cluster.isPrimary) {
 
     // Try to send an error to the request that triggered the problem
     res.statusCode = 500;
-    res.setHeader('content-type', 'text/plain');
-    res.end('Oops, there was a problem!\n');
+    res.setHeader("content-type", "text/plain");
+    res.end("Oops, there was a problem!\n");
    } catch (er2) {
     // Oh well, not much we can do at this point.
     console.error(`Error sending 500! ${er2.stack}`);
@@ -176,7 +176,7 @@ if (cluster.isPrimary) {
 // Put fancy application logic here.
 function handleRequest(req, res) {
  switch (req.url) {
-  case '/error':
+  case "/error":
    // We do some async stuff, and then...
    setTimeout(() => {
     // Whoops!
@@ -184,7 +184,7 @@ function handleRequest(req, res) {
    }, timeout);
    break;
   default:
-   res.end('ok');
+   res.end("ok");
  }
 }
 ```
@@ -246,8 +246,8 @@ That is possible via explicit binding.
 
 ```js
 // Create a top-level domain for the server
-const domain = require('domain');
-const http = require('http');
+const domain = require("domain");
+const http = require("http");
 const serverDomain = domain.create();
 
 serverDomain.run(() => {
@@ -259,13 +259,13 @@ serverDomain.run(() => {
   const reqd = domain.create();
   reqd.add(req);
   reqd.add(res);
-  reqd.on('error', (er) => {
-   console.error('Error', er, req.url);
+  reqd.on("error", (er) => {
+   console.error("Error", er, req.url);
    try {
     res.writeHead(500);
-    res.end('Error occurred, sorry.');
+    res.end("Error occurred, sorry.");
    } catch (er2) {
-    console.error('Error sending 500', er2, req.url);
+    console.error("Error sending 500", er2, req.url);
    }
   });
  }).listen(1337);
@@ -321,13 +321,13 @@ thrown will be routed to the domain's `'error'` event.
 const d = domain.create();
 
 function readSomeFile(filename, cb) {
- fs.readFile(filename, 'utf8', d.bind((er, data) => {
+ fs.readFile(filename, "utf8", d.bind((er, data) => {
   // If this throws, it will also be passed to the domain.
   return cb(er, data ? JSON.parse(data) : null);
  }));
 }
 
-d.on('error', (er) => {
+d.on("error", (er) => {
  // An error occurred somewhere. If we throw it now, it will crash the program
  // with the normal line number and stack message.
 });
@@ -377,7 +377,7 @@ with a single error handler in a single place.
 const d = domain.create();
 
 function readSomeFile(filename, cb) {
- fs.readFile(filename, 'utf8', d.intercept((data) => {
+ fs.readFile(filename, "utf8", d.intercept((data) => {
   // Note, the first argument is never passed to the
   // callback since it is assumed to be the 'Error' argument
   // and thus intercepted by the domain.
@@ -390,7 +390,7 @@ function readSomeFile(filename, cb) {
  }));
 }
 
-d.on('error', (er) => {
+d.on("error", (er) => {
  // An error occurred somewhere. If we throw it now, it will crash the program
  // with the normal line number and stack message.
 });
@@ -416,16 +416,16 @@ the function.
 This is the most basic way to use a domain.
 
 ```js
-const domain = require('domain');
-const fs = require('fs');
+const domain = require("domain");
+const fs = require("fs");
 const d = domain.create();
-d.on('error', (er) => {
- console.error('Caught error!', er);
+d.on("error", (er) => {
+ console.error("Caught error!", er);
 });
 d.run(() => {
  process.nextTick(() => {
   setTimeout(() => { // Simulating some various async stuff
-   fs.open('non-existent file', 'r', (er, fd) => {
+   fs.open("non-existent file", "r", (er, fd) => {
     if (er) throw er;
     // proceed...
    });

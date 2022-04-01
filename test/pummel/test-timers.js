@@ -19,9 +19,9 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
 const WINDOW = 200; // Why does this need to be so big?
 
@@ -73,40 +73,40 @@ const WINDOW = 200; // Why does this need to be so big?
 // Single param:
 {
  setTimeout(function(param) {
-  assert.strictEqual(param, 'test param');
- }, 1000, 'test param');
+  assert.strictEqual(param, "test param");
+ }, 1000, "test param");
 }
 
 {
  let interval_count = 0;
  setInterval(function(param) {
   ++interval_count;
-  assert.strictEqual(param, 'test param');
+  assert.strictEqual(param, "test param");
 
   if (interval_count === 3)
    clearInterval(this);
- }, 1000, 'test param');
+ }, 1000, "test param");
 }
 
 
 // Multiple param
 {
  setTimeout(function(param1, param2) {
-  assert.strictEqual(param1, 'param1');
-  assert.strictEqual(param2, 'param2');
- }, 1000, 'param1', 'param2');
+  assert.strictEqual(param1, "param1");
+  assert.strictEqual(param2, "param2");
+ }, 1000, "param1", "param2");
 }
 
 {
  let interval_count = 0;
  setInterval(function(param1, param2) {
   ++interval_count;
-  assert.strictEqual(param1, 'param1');
-  assert.strictEqual(param2, 'param2');
+  assert.strictEqual(param1, "param1");
+  assert.strictEqual(param2, "param2");
 
   if (interval_count === 3)
    clearInterval(this);
- }, 1000, 'param1', 'param2');
+ }, 1000, "param1", "param2");
 }
 
 // setInterval(cb, 0) should be called multiple times.

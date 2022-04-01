@@ -1,16 +1,16 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (common.isWindows)
- common.skip('Does not support wrapping sockets with fd on Windows');
+ common.skip("Does not support wrapping sockets with fd on Windows");
 
-const assert = require('assert');
-const net = require('net');
-const path = require('path');
-const { internalBinding } = require('internal/test/binding');
-const { Pipe, constants: PipeConstants } = internalBinding('pipe_wrap');
+const assert = require("assert");
+const net = require("net");
+const path = require("path");
+const { internalBinding } = require("internal/test/binding");
+const { Pipe, constants: PipeConstants } = internalBinding("pipe_wrap");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 function testClients(getSocketOpt, getConnectOpt, getConnectCb) {
@@ -19,13 +19,13 @@ function testClients(getSocketOpt, getConnectOpt, getConnectCb) {
  return [
   net.connect(cloneOptions(0), getConnectCb(0)),
   net.connect(cloneOptions(1))
-      .on('connect', getConnectCb(1)),
+      .on("connect", getConnectCb(1)),
   net.createConnection(cloneOptions(2), getConnectCb(2)),
   net.createConnection(cloneOptions(3))
-      .on('connect', getConnectCb(3)),
+      .on("connect", getConnectCb(3)),
   new net.Socket(getSocketOpt(4)).connect(getConnectOpt(4), getConnectCb(4)),
   new net.Socket(getSocketOpt(5)).connect(getConnectOpt(5))
-      .on('connect', getConnectCb(5)),
+      .on("connect", getConnectCb(5)),
  ];
 }
 
@@ -36,20 +36,20 @@ const forAllClients = (cb) => common.mustCall(cb, CLIENT_VARIANTS);
 {
  // Use relative path to avoid hitting 108-char length limit
  // for socket paths in libuv.
- const prefix = path.relative('.', `${common.PIPE}-net-connect-options-fd`);
+ const prefix = path.relative(".", `${common.PIPE}-net-connect-options-fd`);
  const serverPath = `${prefix}-server`;
  let counter = 0;
  let socketCounter = 0;
  const handleMap = new Map();
  const server = net.createServer()
-  .on('connection', forAllClients(function serverOnConnection(socket) {
+  .on("connection", forAllClients(function serverOnConnection(socket) {
   	let clientFd;
-  	socket.on('data', common.mustCall(function(data) {
+  	socket.on("data", common.mustCall(function(data) {
   		clientFd = data.toString();
   		console.error(`[Pipe]Received data from fd ${clientFd}`);
   		socket.end();
   	}));
-  	socket.on('end', common.mustCall(function() {
+  	socket.on("end", common.mustCall(function() {
   		counter++;
   		console.error(`[Pipe]Received end from fd ${clientFd}, total ${counter}`);
   		if (counter === CLIENT_VARIANTS) {
@@ -60,7 +60,7 @@ const forAllClients = (cb) => common.mustCall(cb, CLIENT_VARIANTS);
   		}
   	}, 1));
   }))
-  .on('close', function() {
+  .on("close", function() {
   	setTimeout(() => {
   		for (const pair of handleMap) {
   			console.error(`[Pipe]Clean up handle with fd ${pair[1].fd}`);
@@ -68,7 +68,7 @@ const forAllClients = (cb) => common.mustCall(cb, CLIENT_VARIANTS);
   		}
   	}, 10);
   })
-  .on('error', function(err) {
+  .on("error", function(err) {
   	console.error(err);
   	assert.fail(`[Pipe server]${err}`);
   })
@@ -92,7 +92,7 @@ const forAllClients = (cb) => common.mustCall(cb, CLIENT_VARIANTS);
   		assert.strictEqual(oldHandle.fd, this._handle.fd);
   		this.write(String(oldHandle.fd));
   		console.error(`[Pipe]Sending data through fd ${oldHandle.fd}`);
-  		this.on('error', function(err) {
+  		this.on("error", function(err) {
   			console.error(err);
   			assert.fail(`[Pipe Client]${err}`);
   		});

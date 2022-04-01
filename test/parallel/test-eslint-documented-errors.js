@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 if ((!common.hasCrypto) || (!common.hasIntl)) {
- common.skip('ESLint tests require crypto and Intl');
+ common.skip("ESLint tests require crypto and Intl");
 }
 common.skipIfEslintMissing();
 
-const RuleTester = require('../../tools/node_modules/eslint').RuleTester;
-const rule = require('../../tools/eslint-rules/documented-errors');
+const RuleTester = require("../../tools/node_modules/eslint").RuleTester;
+const rule = require("../../tools/eslint-rules/documented-errors");
 
-const invalidCode = 'UNDOCUMENTED ERROR CODE';
+const invalidCode = "UNDOCUMENTED ERROR CODE";
 
-new RuleTester().run('documented-errors', rule, {
+new RuleTester().run("documented-errors", rule, {
  valid: [
   `
       E('ERR_ASSERTION', 'foo');

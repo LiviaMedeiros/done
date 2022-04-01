@@ -1,9 +1,9 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
+require("../common");
 
-const assert = require('assert');
+const assert = require("assert");
 const {
  ArrayOfApply,
  ArrayPrototypePushApply,
@@ -12,7 +12,7 @@ const {
  MathMinApply,
  StringPrototypeConcatApply,
  TypedArrayOfApply,
-} = require('internal/test/binding').primordials;
+} = require("internal/test/binding").primordials;
 
 {
  const arr1 = [1, 2, 3];
@@ -63,12 +63,12 @@ const {
  let hint;
  const obj = { [Symbol.toPrimitive](h) {
   hint = h;
-  return '[object Object]';
+  return "[object Object]";
  } };
 
- const args = ['foo ', obj, ' bar'];
- const result = StringPrototypeConcatApply('', args);
+ const args = ["foo ", obj, " bar"];
+ const result = StringPrototypeConcatApply("", args);
 
- assert.strictEqual(hint, 'string');
- assert.strictEqual(result, 'foo [object Object] bar');
+ assert.strictEqual(hint, "string");
+ assert.strictEqual(result, "foo [object Object] bar");
 }

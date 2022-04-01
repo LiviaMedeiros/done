@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const common = require('../../common');
-const assert = require('assert');
-const domain = require('domain');
+const common = require("../../common");
+const assert = require("assert");
+const domain = require("domain");
 const binding = require(`./build/${common.buildType}/binding`);
 const makeCallback = binding.makeCallback;
 
@@ -12,7 +12,7 @@ const mustCallCheckDomains = common.mustCall(checkDomains);
 // Make sure that using MakeCallback allows the error to propagate.
 assert.throws(() => {
  makeCallback({}, () => {
-  throw new Error('hi from domain error');
+  throw new Error("hi from domain error");
  });
 }, /^Error: hi from domain error$/);
 
@@ -85,7 +85,7 @@ assert.throws(() => {
   } else if (arg === 3) {
    mustCallCheckDomains();
   } else {
-   throw new Error('UNREACHABLE');
+   throw new Error("UNREACHABLE");
   }
  }));
 }(1));
@@ -134,13 +134,13 @@ function checkDomains() {
   // Make sure nextTick, setImmediate and setTimeout can all recover properly
   // after a thrown makeCallback call.
   const d = domain.create();
-  d.on('error', common.mustCall((e) => {
+  d.on("error", common.mustCall((e) => {
    assert.strictEqual(e.message, `throw from domain ${id}`);
   }));
   makeCallback({ domain: d }, () => {
    throw new Error(`throw from domain ${id}`);
   });
-  throw new Error('UNREACHABLE');
+  throw new Error("UNREACHABLE");
  }
 
  process.nextTick(common.mustCall(testTimer), 3);

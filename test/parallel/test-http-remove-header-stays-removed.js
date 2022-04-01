@@ -19,42 +19,42 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
+"use strict";
+require("../common");
+const assert = require("assert");
 
-const http = require('http');
+const http = require("http");
 
 const server = http.createServer(function(request, response) {
  // Removed headers should stay removed, even if node automatically adds them
  // to the output:
- response.removeHeader('connection');
- response.removeHeader('transfer-encoding');
- response.removeHeader('content-length');
+ response.removeHeader("connection");
+ response.removeHeader("transfer-encoding");
+ response.removeHeader("content-length");
 
  // Make sure that removing and then setting still works:
- response.removeHeader('date');
- response.setHeader('date', 'coffee o clock');
+ response.removeHeader("date");
+ response.setHeader("date", "coffee o clock");
 
- response.end('beep boop\n');
+ response.end("beep boop\n");
 
  this.close();
 });
 
-let response = '';
+let response = "";
 
-process.on('exit', function() {
- assert.strictEqual(response, 'beep boop\n');
- console.log('ok');
+process.on("exit", function() {
+ assert.strictEqual(response, "beep boop\n");
+ console.log("ok");
 });
 
 server.listen(0, function() {
  http.get({ port: this.address().port }, function(res) {
   assert.strictEqual(res.statusCode, 200);
-  assert.deepStrictEqual(res.headers, { date: 'coffee o clock' });
+  assert.deepStrictEqual(res.headers, { date: "coffee o clock" });
 
-  res.setEncoding('ascii');
-  res.on('data', function(chunk) {
+  res.setEncoding("ascii");
+  res.on("data", function(chunk) {
    response += chunk;
   });
  });

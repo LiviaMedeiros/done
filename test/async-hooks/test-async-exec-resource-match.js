@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
-const { readFile } = require('fs');
+const common = require("../common");
+const assert = require("assert");
+const { readFile } = require("fs");
 const {
  createHook,
  executionAsyncResource,
  AsyncResource,
-} = require('async_hooks');
+} = require("async_hooks");
 
 // Ignore any asyncIds created before our hook is active.
 let firstSeenAsyncId = -1;
@@ -40,7 +40,7 @@ const beforeHook = common.mustCallAtLeast(
   const res = idResMap.get(asyncId);
   assert.ok(res !== undefined);
   const execRes = executionAsyncResource();
-  assert.ok(execRes === res, 'resource mismatch in before');
+  assert.ok(execRes === res, "resource mismatch in before");
  }, numExpectedCalls);
 
 const afterHook = common.mustCallAtLeast(
@@ -48,15 +48,15 @@ const afterHook = common.mustCallAtLeast(
   const res = idResMap.get(asyncId);
   assert.ok(res !== undefined);
   const execRes = executionAsyncResource();
-  assert.ok(execRes === res, 'resource mismatch in after');
+  assert.ok(execRes === res, "resource mismatch in after");
  }, numExpectedCalls);
 
-const res = new AsyncResource('TheResource');
+const res = new AsyncResource("TheResource");
 const initRes = idResMap.get(res.asyncId());
-assert.ok(initRes === res, 'resource mismatch in init');
+assert.ok(initRes === res, "resource mismatch in init");
 res.runInAsyncScope(common.mustCall(() => {
  const execRes = executionAsyncResource();
- assert.ok(execRes === res, 'resource mismatch in cb');
+ assert.ok(execRes === res, "resource mismatch in cb");
 }));
 
 readFile(__filename, common.mustCall());

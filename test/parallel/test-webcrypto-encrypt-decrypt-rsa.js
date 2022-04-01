@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const assert = require('assert');
-const { subtle } = require('crypto').webcrypto;
+const assert = require("assert");
+const { subtle } = require("crypto").webcrypto;
 
 const {
  passing,
-} = require('../fixtures/crypto/rsa')();
+} = require("../fixtures/crypto/rsa")();
 
 async function importVectorKey(
  publicKeyBuffer,
@@ -21,9 +21,9 @@ async function importVectorKey(
  privateUsages) {
  const [publicKey, privateKey] = await Promise.all([
   subtle.importKey(
-   'spki', publicKeyBuffer, { name, hash }, false, publicUsages),
+   "spki", publicKeyBuffer, { name, hash }, false, publicUsages),
   subtle.importKey(
-   'pkcs8', privateKeyBuffer, { name, hash }, false, privateUsages),
+   "pkcs8", privateKeyBuffer, { name, hash }, false, privateUsages),
  ]);
 
  return { publicKey, privateKey };
@@ -45,14 +45,14 @@ async function testDecryption({ ciphertext,
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['encrypt'],
-  ['decrypt']);
+  ["encrypt"],
+  ["decrypt"]);
 
- const encodedPlaintext = Buffer.from(plaintext).toString('hex');
+ const encodedPlaintext = Buffer.from(plaintext).toString("hex");
  const result = await subtle.decrypt(algorithm, privateKey, ciphertext);
 
  assert.strictEqual(
-  Buffer.from(result).toString('hex'),
+  Buffer.from(result).toString("hex"),
   encodedPlaintext);
 
  const ciphercopy = Buffer.from(ciphertext);
@@ -62,7 +62,7 @@ async function testDecryption({ ciphertext,
  ciphercopy[0] = 255 - ciphercopy[0];
 
  assert.strictEqual(
-  Buffer.from(result2).toString('hex'),
+  Buffer.from(result2).toString("hex"),
   encodedPlaintext);
 }
 
@@ -84,13 +84,13 @@ async function testEncryption(
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['encrypt'],
-  ['decrypt']);
+  ["encrypt"],
+  ["decrypt"]);
 
  if (modify)
   plaintext = Buffer.from(plaintext);  // make a copy
 
- const encodedPlaintext = Buffer.from(plaintext).toString('hex');
+ const encodedPlaintext = Buffer.from(plaintext).toString("hex");
 
  const result = await subtle.encrypt(algorithm, publicKey, plaintext);
  if (modify)
@@ -103,7 +103,7 @@ async function testEncryption(
  const out = await subtle.decrypt(algorithm, privateKey, result);
 
  assert.strictEqual(
-  Buffer.from(out).toString('hex'),
+  Buffer.from(out).toString("hex"),
   encodedPlaintext);
 }
 
@@ -119,8 +119,8 @@ async function testEncryptionLongPlaintext({ algorithm,
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['encrypt'],
-  ['decrypt']);
+  ["encrypt"],
+  ["decrypt"]);
  const newplaintext = new Uint8Array(plaintext.byteLength + 1);
  newplaintext.set(plaintext, 0);
  newplaintext[plaintext.byteLength] = 32;
@@ -143,8 +143,8 @@ async function testEncryptionWrongKey({ algorithm,
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['encrypt'],
-  ['decrypt']);
+  ["encrypt"],
+  ["decrypt"]);
  return assert.rejects(
   subtle.encrypt(algorithm, privateKey, plaintext), {
    message: /The requested operation is not valid/,
@@ -163,8 +163,8 @@ async function testEncryptionBadUsage({ algorithm,
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['wrapKey'],
-  ['decrypt']);
+  ["wrapKey"],
+  ["decrypt"]);
  return assert.rejects(
   subtle.encrypt(algorithm, publicKey, plaintext), {
    message: /The requested operation is not valid/,
@@ -186,8 +186,8 @@ async function testDecryptionWrongKey({ ciphertext,
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['encrypt'],
-  ['decrypt']);
+  ["encrypt"],
+  ["decrypt"]);
 
  return assert.rejects(
   subtle.decrypt(algorithm, publicKey, ciphertext), {
@@ -210,8 +210,8 @@ async function testDecryptionBadUsage({ ciphertext,
   privateKeyBuffer,
   algorithm.name,
   hash,
-  ['encrypt'],
-  ['unwrapKey']);
+  ["encrypt"],
+  ["unwrapKey"]);
 
  return assert.rejects(
   subtle.decrypt(algorithm, publicKey, ciphertext), {

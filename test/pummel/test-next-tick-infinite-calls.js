@@ -19,11 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
-if (process.config.variables.arm_version === '7') {
- common.skip('Too slow for armv7 bots');
+if (process.config.variables.arm_version === "7") {
+ common.skip("Too slow for armv7 bots");
 }
 
 let complete = 0;
@@ -37,5 +37,5 @@ let complete = 0;
 }());
 
 setImmediate(function() {
- console.log('ok');
+ console.log("ok");
 });

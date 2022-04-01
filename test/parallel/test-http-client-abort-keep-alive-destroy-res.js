@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const http = require('http');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const http = require("http");
 
 let socketsCreated = 0;
 
@@ -24,7 +24,7 @@ server.listen(0, common.mustCall(() => {
 
  const req = http.get({ agent, port }, common.mustCall((res) => {
   res.resume();
-  res.on('end', () => {
+  res.on("end", () => {
    res.destroy();
 
    http.get({ agent, port }, common.mustCall((res) => {

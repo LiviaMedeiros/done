@@ -1,9 +1,9 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const util = require('internal/util');
+require("../common");
+const assert = require("assert");
+const util = require("internal/util");
 
 const createClassWrapper = util.createClassWrapper;
 
@@ -17,7 +17,7 @@ class A {
 
 const B = createClassWrapper(A);
 
-assert.strictEqual(typeof B, 'function');
+assert.strictEqual(typeof B, "function");
 assert(B(1, 2, 3) instanceof B);
 assert(B(1, 2, 3) instanceof A);
 assert(new B(1, 2, 3) instanceof B);

@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 // Flags: --expose_gc
 
 // This test ensures that userland-only AsyncResources cause a destroy event to
 // be emitted when they get gced.
 
-const common = require('../common');
-const assert = require('assert');
-const async_hooks = require('async_hooks');
+const common = require("../common");
+const assert = require("assert");
+const async_hooks = require("async_hooks");
 
 const destroyedIds = new Set();
 async_hooks.createHook({
@@ -17,7 +17,7 @@ async_hooks.createHook({
 
 let asyncId = null;
 {
- const res = new async_hooks.AsyncResource('foobar');
+ const res = new async_hooks.AsyncResource("foobar");
  asyncId = res.asyncId();
 }
 

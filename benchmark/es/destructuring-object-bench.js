@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
- method: ['normal', 'destructureObject'],
+ method: ["normal", "destructureObject"],
  n: [1e8],
 });
 
@@ -33,10 +33,10 @@ function runDestructured(n) {
 
 function main({ n, method }) {
  switch (method) {
-  case 'normal':
+  case "normal":
    runNormal(n);
    break;
-  case 'destructureObject':
+  case "destructureObject":
    runDestructured(n);
    break;
   default:

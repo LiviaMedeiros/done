@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
+const common = require("../common.js");
 
 const bench = common.createBenchmark(main, {
  len: [64, 1024],
@@ -13,12 +13,12 @@ function main({ len, n }) {
  for (let i = 0; i < buf.length; i++)
   buf[i] = i & 0xff;
 
- const hex = buf.toString('hex');
+ const hex = buf.toString("hex");
 
  bench.start();
 
  for (let i = 0; i < n; i += 1)
-  Buffer.from(hex, 'hex');
+  Buffer.from(hex, "hex");
 
  bench.end(n);
 }

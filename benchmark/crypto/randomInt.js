@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const common = require('../common.js');
-const { randomInt } = require('crypto');
+const common = require("../common.js");
+const { randomInt } = require("crypto");
 
 const bench = common.createBenchmark(main, {
- mode: ['sync', 'async-sequential', 'async-parallel'],
+ mode: ["sync", "async-sequential", "async-parallel"],
  min: [-(2 ** 47) + 1, -10_000, -100],
  max: [100, 10_000, 2 ** 47],
  n: [1e3, 1e5],
 });
 
 function main({ mode, min, max, n }) {
- if (mode === 'sync') {
+ if (mode === "sync") {
   bench.start();
   for (let i = 0; i < n; i++)
    randomInt(min, max);
   bench.end(n);
- } else if (mode === 'async-sequential') {
+ } else if (mode === "async-sequential") {
   bench.start();
   (function next(i) {
    if (i === n)

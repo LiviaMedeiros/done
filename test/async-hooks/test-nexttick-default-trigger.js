@@ -1,13 +1,13 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // This tests ensures that the triggerId of the nextTick function sets the
 // triggerAsyncId correctly.
 
-const assert = require('assert');
-const async_hooks = require('async_hooks');
-const initHooks = require('./init-hooks');
-const { checkInvocations } = require('./hook-checks');
+const assert = require("assert");
+const async_hooks = require("async_hooks");
+const initHooks = require("./init-hooks");
+const { checkInvocations } = require("./hook-checks");
 
 const hooks = initHooks();
 hooks.enable();
@@ -18,11 +18,11 @@ process.nextTick(common.mustCall(() => {
  assert.strictEqual(async_hooks.triggerAsyncId(), rootAsyncId);
 }));
 
-process.on('exit', () => {
+process.on("exit", () => {
  hooks.sanityCheck();
 
- const as = hooks.activitiesOfTypes('TickObject');
+ const as = hooks.activitiesOfTypes("TickObject");
  checkInvocations(as[0], {
   init: 1, before: 1, after: 1, destroy: 1,
- }, 'when process exits');
+ }, "when process exits");
 });

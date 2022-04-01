@@ -3,19 +3,19 @@
  *               the inspector module is required.
  * @author Daniel Bevenius <daniel.bevenius@gmail.com>
  */
-'use strict';
+"use strict";
 
-const utils = require('./rules-utils.js');
+const utils = require("./rules-utils.js");
 
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
-const msg = 'Please add a skipIfInspectorDisabled() call to allow this ' +
-            'test to be skipped when Node is built \'--without-inspector\'.';
+const msg = "Please add a skipIfInspectorDisabled() call to allow this " +
+            "test to be skipped when Node is built '--without-inspector'.";
 
 module.exports = {
  meta: {
-  fixable: 'code',
+  fixable: "code",
  },
  create(context) {
   const missingCheckNodes = [];
@@ -23,7 +23,7 @@ module.exports = {
   let hasInspectorCheck = false;
 
   function testInspectorUsage(context, node) {
-   if (utils.isRequired(node, ['inspector'])) {
+   if (utils.isRequired(node, ["inspector"])) {
     missingCheckNodes.push(node);
    }
 
@@ -33,7 +33,7 @@ module.exports = {
   }
 
   function checkMemberExpression(context, node) {
-   if (utils.usesCommonProperty(node, ['skipIfInspectorDisabled'])) {
+   if (utils.usesCommonProperty(node, ["skipIfInspectorDisabled"])) {
     hasInspectorCheck = true;
    }
   }
@@ -48,7 +48,7 @@ module.exports = {
        if (commonModuleNode) {
         return fixer.insertTextAfter(
          commonModuleNode,
-         '\ncommon.skipIfInspectorDisabled();',
+         "\ncommon.skipIfInspectorDisabled();",
         );
        }
       },
@@ -58,9 +58,9 @@ module.exports = {
   }
 
   return {
-   'CallExpression': (node) => testInspectorUsage(context, node),
-   'MemberExpression': (node) => checkMemberExpression(context, node),
-   'Program:exit': () => reportIfMissing(context),
+   "CallExpression": (node) => testInspectorUsage(context, node),
+   "MemberExpression": (node) => checkMemberExpression(context, node),
+   "Program:exit": () => reportIfMissing(context),
   };
  },
 };

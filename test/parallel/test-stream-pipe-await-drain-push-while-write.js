@@ -1,7 +1,7 @@
-'use strict';
-const common = require('../common');
-const stream = require('stream');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const stream = require("stream");
+const assert = require("assert");
 
 const writable = new stream.Writable({
  write: common.mustCall(function(chunk, encoding, cb) {

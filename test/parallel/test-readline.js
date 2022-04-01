@@ -1,8 +1,8 @@
-'use strict';
-const common = require('../common');
-const { PassThrough } = require('stream');
-const readline = require('readline');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const { PassThrough } = require("stream");
+const readline = require("readline");
+const assert = require("assert");
 
 common.skipIfDumbTerminal();
 
@@ -13,11 +13,11 @@ common.skipIfDumbTerminal();
   input: input,
  });
 
- rl.on('line', common.mustCall((data) => {
-  assert.strictEqual(data, 'abc');
+ rl.on("line", common.mustCall((data) => {
+  assert.strictEqual(data, "abc");
  }));
 
- input.end('abc');
+ input.end("abc");
 }
 
 {
@@ -27,9 +27,9 @@ common.skipIfDumbTerminal();
   input: input,
  });
 
- rl.on('line', common.mustNotCall('must not be called before newline'));
+ rl.on("line", common.mustNotCall("must not be called before newline"));
 
- input.write('abc');
+ input.write("abc");
 }
 
 {
@@ -39,11 +39,11 @@ common.skipIfDumbTerminal();
   input: input,
  });
 
- rl.on('line', common.mustCall((data) => {
-  assert.strictEqual(data, 'abc');
+ rl.on("line", common.mustCall((data) => {
+  assert.strictEqual(data, "abc");
  }));
 
- input.write('abc\n');
+ input.write("abc\n");
 }
 
 {
@@ -53,25 +53,25 @@ common.skipIfDumbTerminal();
   input: input,
  });
 
- rl.write('foo');
+ rl.write("foo");
  assert.strictEqual(rl.cursor, 3);
 
  const key = {
   xterm: {
-   home: ['\x1b[H', { ctrl: true, name: 'a' }],
-   end: ['\x1b[F', { ctrl: true, name: 'e' }],
+   home: ["\x1b[H", { ctrl: true, name: "a" }],
+   end: ["\x1b[F", { ctrl: true, name: "e" }],
   },
   gnome: {
-   home: ['\x1bOH', { ctrl: true, name: 'a' }],
-   end: ['\x1bOF', { ctrl: true, name: 'e' }],
+   home: ["\x1bOH", { ctrl: true, name: "a" }],
+   end: ["\x1bOF", { ctrl: true, name: "e" }],
   },
   rxvt: {
-   home: ['\x1b[7', { ctrl: true, name: 'a' }],
-   end: ['\x1b[8', { ctrl: true, name: 'e' }],
+   home: ["\x1b[7", { ctrl: true, name: "a" }],
+   end: ["\x1b[8", { ctrl: true, name: "e" }],
   },
   putty: {
-   home: ['\x1b[1~', { ctrl: true, name: 'a' }],
-   end: ['\x1b[>~', { ctrl: true, name: 'e' }],
+   home: ["\x1b[1~", { ctrl: true, name: "a" }],
+   end: ["\x1b[>~", { ctrl: true, name: "e" }],
   },
  };
 
@@ -93,13 +93,13 @@ common.skipIfDumbTerminal();
 
  const key = {
   xterm: {
-   home: ['\x1b[H', { ctrl: true, name: 'a' }],
-   metab: ['\x1bb', { meta: true, name: 'b' }],
-   metaf: ['\x1bf', { meta: true, name: 'f' }],
+   home: ["\x1b[H", { ctrl: true, name: "a" }],
+   metab: ["\x1bb", { meta: true, name: "b" }],
+   metaf: ["\x1bf", { meta: true, name: "f" }],
   },
  };
 
- rl.write('foo bar.hop/zoo');
+ rl.write("foo bar.hop/zoo");
  rl.write.apply(rl, key.xterm.home);
  [
   { cursor: 4, key: key.xterm.metaf },
@@ -129,20 +129,20 @@ common.skipIfDumbTerminal();
 
  const key = {
   xterm: {
-   home: ['\x1b[H', { ctrl: true, name: 'a' }],
-   metad: ['\x1bd', { meta: true, name: 'd' }],
+   home: ["\x1b[H", { ctrl: true, name: "a" }],
+   metad: ["\x1bd", { meta: true, name: "d" }],
   },
  };
 
- rl.write('foo bar.hop/zoo');
+ rl.write("foo bar.hop/zoo");
  rl.write.apply(rl, key.xterm.home);
  [
-  'bar.hop/zoo',
-  '.hop/zoo',
-  'hop/zoo',
-  '/zoo',
-  'zoo',
-  '',
+  "bar.hop/zoo",
+  ".hop/zoo",
+  "hop/zoo",
+  "/zoo",
+  "zoo",
+  "",
  ].forEach(function(expectedLine) {
   rl.write.apply(rl, key.xterm.metad);
   assert.strictEqual(rl.cursor, 0);

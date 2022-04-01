@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
-const assert = require('assert');
-const dgram = require('dgram');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
+const dgram = require("dgram");
 const invalidTypes = [
- 'test',
- ['udp4'],
- new String('udp4'),
+ "test",
+ ["udp4"],
+ new String("udp4"),
  1,
  {},
  true,
@@ -14,10 +14,10 @@ const invalidTypes = [
  undefined,
 ];
 const validTypes = [
- 'udp4',
- 'udp6',
- { type: 'udp4' },
- { type: 'udp6' },
+ "udp4",
+ "udp6",
+ { type: "udp4" },
+ { type: "udp6" },
 ];
 const errMessage = /^Bad socket type specified\. Valid types are: udp4, udp6$/;
 
@@ -26,8 +26,8 @@ invalidTypes.forEach((invalidType) => {
  assert.throws(() => {
   dgram.createSocket(invalidType);
  }, {
-  code: 'ERR_SOCKET_BAD_TYPE',
-  name: 'TypeError',
+  code: "ERR_SOCKET_BAD_TYPE",
+  name: "TypeError",
   message: errMessage,
  });
 });
@@ -41,7 +41,7 @@ validTypes.forEach((validType) => {
 // Ensure buffer sizes can be set
 {
  const socket = dgram.createSocket({
-  type: 'udp4',
+  type: "udp4",
   recvBufferSize: 10000,
   sendBufferSize: 15000,
  });
@@ -50,11 +50,11 @@ validTypes.forEach((validType) => {
   // note: linux will double the buffer size
   assert.ok(socket.getRecvBufferSize() === 10000 ||
               socket.getRecvBufferSize() === 20000,
-            'SO_RCVBUF not 10000 or 20000, ' +
+            "SO_RCVBUF not 10000 or 20000, " +
                 `was ${socket.getRecvBufferSize()}`);
   assert.ok(socket.getSendBufferSize() === 15000 ||
               socket.getSendBufferSize() === 30000,
-            'SO_SNDBUF not 15000 or 30000, ' +
+            "SO_SNDBUF not 15000 or 30000, " +
                 `was ${socket.getRecvBufferSize()}`);
   socket.close();
  }));

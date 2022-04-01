@@ -1,21 +1,21 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // This test ensures that an out of memory error exits with code 134 on Windows
 
-if (!common.isWindows) return common.skip('Windows-only');
+if (!common.isWindows) return common.skip("Windows-only");
 
-const assert = require('assert');
-const { exec } = require('child_process');
+const assert = require("assert");
+const { exec } = require("child_process");
 
-if (process.argv[2] === 'heapBomb') {
+if (process.argv[2] === "heapBomb") {
  // Heap bomb, imitates a memory leak quickly
  const fn = (nM) => [...Array(nM)].map((i) => fn(nM * 2));
  fn(2);
 }
 
 // Run child in tmpdir to avoid report files in repo
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 // --max-old-space-size=3 is the min 'old space' in V8, explodes fast

@@ -1,10 +1,10 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 
 // Testing Readable Stream resumeScheduled state
 
-const assert = require('assert');
-const { Readable, Writable } = require('stream');
+const assert = require("assert");
+const { Readable, Writable } = require("stream");
 
 {
  // pipe() test case
@@ -33,7 +33,7 @@ const { Readable, Writable } = require('stream');
  r.push(Buffer.from([1, 2, 3]));
 
  // Adding 'data' listener should change the state value
- r.on('data', common.mustCall(() => {
+ r.on("data", common.mustCall(() => {
   assert.strictEqual(r._readableState.resumeScheduled, false);
  }));
  assert.strictEqual(r._readableState.resumeScheduled, true);
@@ -54,7 +54,7 @@ const { Readable, Writable } = require('stream');
  r.resume();
  assert.strictEqual(r._readableState.resumeScheduled, true);
 
- r.on('resume', common.mustCall(() => {
+ r.on("resume", common.mustCall(() => {
   // The state value should be `false` again
   assert.strictEqual(r._readableState.resumeScheduled, false);
  }));

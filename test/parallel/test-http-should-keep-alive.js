@@ -19,20 +19,20 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-require('../common');
-const assert = require('assert');
-const http = require('http');
-const net = require('net');
-const Countdown = require('../common/countdown');
+"use strict";
+require("../common");
+const assert = require("assert");
+const http = require("http");
+const net = require("net");
+const Countdown = require("../common/countdown");
 
 const SERVER_RESPONSES = [
- 'HTTP/1.0 200 ok\r\nContent-Length: 0\r\n\r\n',
- 'HTTP/1.0 200 ok\r\nContent-Length: 0\r\nConnection: keep-alive\r\n\r\n',
- 'HTTP/1.0 200 ok\r\nContent-Length: 0\r\nConnection: close\r\n\r\n',
- 'HTTP/1.1 200 ok\r\nContent-Length: 0\r\n\r\n',
- 'HTTP/1.1 200 ok\r\nContent-Length: 0\r\nConnection: keep-alive\r\n\r\n',
- 'HTTP/1.1 200 ok\r\nContent-Length: 0\r\nConnection: close\r\n\r\n',
+ "HTTP/1.0 200 ok\r\nContent-Length: 0\r\n\r\n",
+ "HTTP/1.0 200 ok\r\nContent-Length: 0\r\nConnection: keep-alive\r\n\r\n",
+ "HTTP/1.0 200 ok\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+ "HTTP/1.1 200 ok\r\nContent-Length: 0\r\n\r\n",
+ "HTTP/1.1 200 ok\r\nContent-Length: 0\r\nConnection: keep-alive\r\n\r\n",
+ "HTTP/1.1 200 ok\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
 ];
 const SHOULD_KEEP_ALIVE = [
  false, // HTTP/1.0, default
@@ -56,7 +56,7 @@ const server = net.createServer(function(socket) {
    assert.strictEqual(
     req.shouldKeepAlive, SHOULD_KEEP_ALIVE[getCountdownIndex()],
     `${SERVER_RESPONSES[getCountdownIndex()]} should ${
-     SHOULD_KEEP_ALIVE[getCountdownIndex()] ? '' : 'not '}Keep-Alive`);
+     SHOULD_KEEP_ALIVE[getCountdownIndex()] ? "" : "not "}Keep-Alive`);
    countdown.dec();
    if (countdown.remaining) {
     makeRequest();

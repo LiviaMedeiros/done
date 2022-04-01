@@ -1,12 +1,12 @@
 // Flags: --expose-internals
-'use strict';
-const common = require('../common');
-const assert = require('assert');
+"use strict";
+const common = require("../common");
+const assert = require("assert");
 
-const { internalBinding } = require('internal/test/binding');
-const StreamWrap = require('internal/js_stream_socket');
-const { Duplex } = require('stream');
-const { ShutdownWrap } = internalBinding('stream_wrap');
+const { internalBinding } = require("internal/test/binding");
+const StreamWrap = require("internal/js_stream_socket");
+const { Duplex } = require("stream");
+const { ShutdownWrap } = internalBinding("stream_wrap");
 
 function testShutdown(callback) {
  const stream = new Duplex({

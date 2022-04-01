@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const fs = require('fs');
-const assert = require('assert');
-const fixtures = require('../common/fixtures');
+const common = require("../common");
+const fs = require("fs");
+const assert = require("assert");
+const fixtures = require("../common/fixtures");
 
-const tmpdir = require('../common/tmpdir');
+const tmpdir = require("../common/tmpdir");
 tmpdir.refresh();
 
 {
@@ -23,26 +23,26 @@ tmpdir.refresh();
     if (this.autoClose) {
      this.destroy();
     }
-    this.emit('error', er);
+    this.emit("error", er);
     return;
    }
 
    this.fd = fd;
-   this.emit('open', fd);
-   this.emit('ready');
+   this.emit("open", fd);
+   this.emit("ready");
   });
  });
 
  let readyCalled = false;
  let ticked = false;
- const r = new ReadStream(fixtures.path('x.txt'))
-    .on('ready', common.mustCall(() => {
+ const r = new ReadStream(fixtures.path("x.txt"))
+    .on("ready", common.mustCall(() => {
     	readyCalled = true;
     	// Make sure 'ready' is emitted in same tick as 'open'.
     	assert.strictEqual(ticked, false);
     }))
-    .on('error', common.mustNotCall())
-    .on('open', common.mustCall((fd) => {
+    .on("error", common.mustNotCall())
+    .on("open", common.mustCall((fd) => {
     	process.nextTick(() => {
     		ticked = true;
     		r.destroy();
@@ -67,26 +67,26 @@ tmpdir.refresh();
     if (this.autoClose) {
      this.destroy();
     }
-    this.emit('error', er);
+    this.emit("error", er);
     return;
    }
 
    this.fd = fd;
-   this.emit('open', fd);
-   this.emit('ready');
+   this.emit("open", fd);
+   this.emit("ready");
   });
  });
 
  let readyCalled = false;
  let ticked = false;
  const w = new WriteStream(`${tmpdir.path}/dummy`)
-    .on('ready', common.mustCall(() => {
+    .on("ready", common.mustCall(() => {
     	readyCalled = true;
     	// Make sure 'ready' is emitted in same tick as 'open'.
     	assert.strictEqual(ticked, false);
     }))
-    .on('error', common.mustNotCall())
-    .on('open', common.mustCall((fd) => {
+    .on("error", common.mustNotCall())
+    .on("open", common.mustCall((fd) => {
     	process.nextTick(() => {
     		ticked = true;
     		w.destroy();

@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const { Duplex } = require('stream');
+require("../common");
+const assert = require("assert");
+const { Duplex } = require("stream");
 
 {
  const d = new Duplex({

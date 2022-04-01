@@ -1,124 +1,124 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
+const common = require("../common");
 
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const { kMaxLength } = require('buffer');
-const assert = require('assert');
+const { kMaxLength } = require("buffer");
+const assert = require("assert");
 const {
  createSecretKey,
  hkdf,
  hkdfSync,
  getHashes,
-} = require('crypto');
+} = require("crypto");
 
 {
  [1, {}, [], false, Infinity].forEach((i) => {
-  assert.throws(() => hkdf(i, 'a'), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdf(i, "a"), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "digest" argument must be of type string/,
   });
-  assert.throws(() => hkdfSync(i, 'a'), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdfSync(i, "a"), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "digest" argument must be of type string/,
   });
  });
 
  [1, {}, [], false, Infinity].forEach((i) => {
-  assert.throws(() => hkdf('sha256', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdf("sha256", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "ikm" argument must be /,
   });
-  assert.throws(() => hkdfSync('sha256', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdfSync("sha256", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "ikm" argument must be /,
   });
  });
 
  [1, {}, [], false, Infinity].forEach((i) => {
-  assert.throws(() => hkdf('sha256', 'secret', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdf("sha256", "secret", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "salt" argument must be /,
   });
-  assert.throws(() => hkdfSync('sha256', 'secret', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdfSync("sha256", "secret", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "salt" argument must be /,
   });
  });
 
  [1, {}, [], false, Infinity].forEach((i) => {
-  assert.throws(() => hkdf('sha256', 'secret', 'salt', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdf("sha256", "secret", "salt", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "info" argument must be /,
   });
-  assert.throws(() => hkdfSync('sha256', 'secret', 'salt', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdfSync("sha256", "secret", "salt", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "info" argument must be /,
   });
  });
 
- ['test', {}, [], false].forEach((i) => {
-  assert.throws(() => hkdf('sha256', 'secret', 'salt', 'info', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+ ["test", {}, [], false].forEach((i) => {
+  assert.throws(() => hkdf("sha256", "secret", "salt", "info", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "length" argument must be of type number/,
   });
-  assert.throws(() => hkdfSync('sha256', 'secret', 'salt', 'info', i), {
-   code: 'ERR_INVALID_ARG_TYPE',
+  assert.throws(() => hkdfSync("sha256", "secret", "salt", "info", i), {
+   code: "ERR_INVALID_ARG_TYPE",
    message: /^The "length" argument must be of type number/,
   });
  });
 
- assert.throws(() => hkdf('sha256', 'secret', 'salt', 'info', -1), {
-  code: 'ERR_OUT_OF_RANGE',
+ assert.throws(() => hkdf("sha256", "secret", "salt", "info", -1), {
+  code: "ERR_OUT_OF_RANGE",
  });
- assert.throws(() => hkdfSync('sha256', 'secret', 'salt', 'info', -1), {
-  code: 'ERR_OUT_OF_RANGE',
+ assert.throws(() => hkdfSync("sha256", "secret", "salt", "info", -1), {
+  code: "ERR_OUT_OF_RANGE",
  });
- assert.throws(() => hkdf('sha256', 'secret', 'salt', 'info',
+ assert.throws(() => hkdf("sha256", "secret", "salt", "info",
                           kMaxLength + 1), {
-  code: 'ERR_OUT_OF_RANGE',
+  code: "ERR_OUT_OF_RANGE",
  });
- assert.throws(() => hkdfSync('sha256', 'secret', 'salt', 'info',
+ assert.throws(() => hkdfSync("sha256", "secret", "salt", "info",
                               kMaxLength + 1), {
-  code: 'ERR_OUT_OF_RANGE',
+  code: "ERR_OUT_OF_RANGE",
  });
 
- assert.throws(() => hkdfSync('unknown', 'a', '', '', 10), {
-  code: 'ERR_CRYPTO_INVALID_DIGEST',
+ assert.throws(() => hkdfSync("unknown", "a", "", "", 10), {
+  code: "ERR_CRYPTO_INVALID_DIGEST",
  });
 
- assert.throws(() => hkdf('unknown', 'a', '', '', 10, common.mustNotCall()), {
-  code: 'ERR_CRYPTO_INVALID_DIGEST',
+ assert.throws(() => hkdf("unknown", "a", "", "", 10, common.mustNotCall()), {
+  code: "ERR_CRYPTO_INVALID_DIGEST",
  });
 
- assert.throws(() => hkdf('unknown', 'a', '', Buffer.alloc(1025), 10,
+ assert.throws(() => hkdf("unknown", "a", "", Buffer.alloc(1025), 10,
                           common.mustNotCall()), {
-  code: 'ERR_OUT_OF_RANGE',
+  code: "ERR_OUT_OF_RANGE",
  });
 
- assert.throws(() => hkdfSync('unknown', 'a', '', Buffer.alloc(1025), 10), {
-  code: 'ERR_OUT_OF_RANGE',
+ assert.throws(() => hkdfSync("unknown", "a", "", Buffer.alloc(1025), 10), {
+  code: "ERR_OUT_OF_RANGE",
  });
 
  assert.throws(
-  () => hkdf('sha512', 'a', '', '', 64 * 255 + 1, common.mustNotCall()), {
-   code: 'ERR_CRYPTO_INVALID_KEYLEN',
+  () => hkdf("sha512", "a", "", "", 64 * 255 + 1, common.mustNotCall()), {
+   code: "ERR_CRYPTO_INVALID_KEYLEN",
   });
 
  assert.throws(
-  () => hkdfSync('sha512', 'a', '', '', 64 * 255 + 1), {
-   code: 'ERR_CRYPTO_INVALID_KEYLEN',
+  () => hkdfSync("sha512", "a", "", "", 64 * 255 + 1), {
+   code: "ERR_CRYPTO_INVALID_KEYLEN",
   });
 }
 
 const algorithms = [
- ['sha256', 'secret', 'salt', 'info', 10],
- ['sha512', 'secret', 'salt', '', 15],
+ ["sha256", "secret", "salt", "info", 10],
+ ["sha512", "secret", "salt", "", 15],
 ];
 if (!common.hasOpenSSL3)
- algorithms.push(['whirlpool', 'secret', '', 'info', 20]);
+ algorithms.push(["whirlpool", "secret", "", "info", 20]);
 
 algorithms.forEach(([ hash, secret, salt, info, length ]) => {
  {
@@ -209,10 +209,10 @@ algorithms.forEach(([ hash, secret, salt, info, length ]) => {
 
 
 if (!common.hasOpenSSL3) {
- const kKnownUnsupported = ['shake128', 'shake256'];
+ const kKnownUnsupported = ["shake128", "shake256"];
  getHashes()
     .filter((hash) => !kKnownUnsupported.includes(hash))
     .forEach((hash) => {
-    	assert(hkdfSync(hash, 'key', 'salt', 'info', 5));
+    	assert(hkdfSync(hash, "key", "salt", "info", 5));
     });
 }

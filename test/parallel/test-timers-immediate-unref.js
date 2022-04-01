@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const common = require('../common');
-const assert = require('assert');
+const common = require("../common");
+const assert = require("assert");
 
 const immediate = setImmediate(() => {});
 assert.strictEqual(immediate.hasRef(), true);

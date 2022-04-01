@@ -1,27 +1,27 @@
-'use strict';
-const common = require('../common.js');
+"use strict";
+const common = require("../common.js");
 const bench = common.createBenchmark(main, {
  dur: [5],
- securing: ['SecurePair', 'TLSSocket', 'clear'],
+ securing: ["SecurePair", "TLSSocket", "clear"],
  size: [100, 1024, 1024 * 1024],
 }, {
- flags: ['--no-warnings'],
+ flags: ["--no-warnings"],
 });
 
-const fixtures = require('../../test/common/fixtures');
-const tls = require('tls');
-const net = require('net');
+const fixtures = require("../../test/common/fixtures");
+const tls = require("tls");
+const net = require("net");
 
 const REDIRECT_PORT = 28347;
 
 function main({ dur, size, securing }) {
- const chunk = Buffer.alloc(size, 'b');
+ const chunk = Buffer.alloc(size, "b");
 
  const options = {
-  key: fixtures.readKey('rsa_private.pem'),
-  cert: fixtures.readKey('rsa_cert.crt'),
-  ca: fixtures.readKey('rsa_ca.crt'),
-  ciphers: 'AES256-GCM-SHA384',
+  key: fixtures.readKey("rsa_private.pem"),
+  cert: fixtures.readKey("rsa_cert.crt"),
+  ca: fixtures.readKey("rsa_ca.crt"),
+  ciphers: "AES256-GCM-SHA384",
   isServer: true,
   requestCert: true,
   rejectUnauthorized: true,
@@ -39,7 +39,7 @@ function main({ dur, size, securing }) {
     isServer: false,
     rejectUnauthorized: false,
    };
-   const network = securing === 'clear' ? net : tls;
+   const network = securing === "clear" ? net : tls;
    const conn = network.connect(clientOptions, () => {
     setTimeout(() => {
      const mbits = (received * 8) / (1024 * 1024);
@@ -50,10 +50,10 @@ function main({ dur, size, securing }) {
      proxy.close();
     }, dur * 1000);
     bench.start();
-    conn.on('drain', write);
+    conn.on("drain", write);
     write();
    });
-   conn.on('error', (e) => {
+   conn.on("error", (e) => {
     throw new Error(`Client error: ${e}`);
    });
 
@@ -66,17 +66,17 @@ function main({ dur, size, securing }) {
  function onProxyConnection(conn) {
   const client = net.connect(REDIRECT_PORT, () => {
    switch (securing) {
-    case 'SecurePair':
+    case "SecurePair":
      securePair(conn, client);
      break;
-    case 'TLSSocket':
+    case "TLSSocket":
      secureTLSSocket(conn, client);
      break;
-    case 'clear':
+    case "clear":
      conn.pipe(client);
      break;
     default:
-     throw new Error('Invalid securing method');
+     throw new Error("Invalid securing method");
    }
   });
  }
@@ -86,7 +86,7 @@ function main({ dur, size, securing }) {
   const serverPair = tls.createSecurePair(serverCtx, true, true, false);
   conn.pipe(serverPair.encrypted);
   serverPair.encrypted.pipe(conn);
-  serverPair.on('error', (error) => {
+  serverPair.on("error", (error) => {
    throw new Error(`Pair error: ${error}`);
   });
   serverPair.cleartext.pipe(client);
@@ -94,7 +94,7 @@ function main({ dur, size, securing }) {
 
  function secureTLSSocket(conn, client) {
   const serverSocket = new tls.TLSSocket(conn, options);
-  serverSocket.on('error', (e) => {
+  serverSocket.on("error", (e) => {
    throw new Error(`Socket error: ${e}`);
   });
   serverSocket.pipe(client);
@@ -102,7 +102,7 @@ function main({ dur, size, securing }) {
 
  let received = 0;
  function onRedirectConnection(conn) {
-  conn.on('data', (chunk) => {
+  conn.on("data", (chunk) => {
    received += chunk.length;
   });
  }

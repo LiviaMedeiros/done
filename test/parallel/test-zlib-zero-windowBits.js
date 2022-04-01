@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const zlib = require('zlib');
+require("../common");
+const assert = require("assert");
+const zlib = require("zlib");
 
 
 // windowBits is a special case in zlib. On the compression side, 0 is invalid.
@@ -25,9 +25,9 @@ const zlib = require('zlib');
 
 {
  assert.throws(() => zlib.createGzip({ windowBits: 0 }), {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
+  code: "ERR_OUT_OF_RANGE",
+  name: "RangeError",
   message: 'The value of "options.windowBits" is out of range. ' +
-             'It must be >= 9 and <= 15. Received 0',
+             "It must be >= 9 and <= 15. Received 0",
  });
 }

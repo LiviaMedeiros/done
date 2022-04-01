@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 // Flags: --expose-gc
 
 // Note: This is a variant of test-net-write-fully-async-hex-string.js.
 // This always worked, but it seemed appropriate to add a test that checks the
 // behavior for Buffers, too.
-const common = require('../common');
-const net = require('net');
+const common = require("../common");
+const net = require("net");
 
 const data = Buffer.alloc(1000000);
 
@@ -27,7 +27,7 @@ const server = net.createServer(common.mustCall(function(conn) {
    // The buffer allocated above should still be alive.
   }
 
-  conn.on('drain', writeLoop);
+  conn.on("drain", writeLoop);
 
   writeLoop();
  }));

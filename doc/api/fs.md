@@ -14,21 +14,21 @@ way modeled on standard POSIX functions.
 To use the promise-based APIs:
 
 ```mjs
-import * as fs from 'fs/promises';
+import * as fs from "fs/promises";
 ```
 
 ```cjs
-const fs = require('fs/promises');
+const fs = require("fs/promises");
 ```
 
 To use the callback and sync APIs:
 
 ```mjs
-import * as fs from 'fs';
+import * as fs from "fs";
 ```
 
 ```cjs
-const fs = require('fs');
+const fs = require("fs");
 ```
 
 All file system operations have synchronous, callback, and promise-based
@@ -40,27 +40,27 @@ Promise-based operations return a promise that is fulfilled when the
 asynchronous operation is complete.
 
 ```mjs
-import { unlink } from 'fs/promises';
+import { unlink } from "fs/promises";
 
 try {
- await unlink('/tmp/hello');
- console.log('successfully deleted /tmp/hello');
+ await unlink("/tmp/hello");
+ console.log("successfully deleted /tmp/hello");
 } catch (error) {
- console.error('there was an error:', error.message);
+ console.error("there was an error:", error.message);
 }
 ```
 
 ```cjs
-const { unlink } = require('fs/promises');
+const { unlink } = require("fs/promises");
 
 (async function(path) {
  try {
   await unlink(path);
   console.log(`successfully deleted ${path}`);
  } catch (error) {
-  console.error('there was an error:', error.message);
+  console.error("there was an error:", error.message);
  }
-})('/tmp/hello');
+})("/tmp/hello");
 ```
 
 ## Callback example
@@ -72,20 +72,20 @@ reserved for an exception. If the operation is completed successfully, then
 the first argument is `null` or `undefined`.
 
 ```mjs
-import { unlink } from 'fs';
+import { unlink } from "fs";
 
-unlink('/tmp/hello', (err) => {
+unlink("/tmp/hello", (err) => {
  if (err) throw err;
- console.log('successfully deleted /tmp/hello');
+ console.log("successfully deleted /tmp/hello");
 });
 ```
 
 ```cjs
-const { unlink } = require('fs');
+const { unlink } = require("fs");
 
-unlink('/tmp/hello', (err) => {
+unlink("/tmp/hello", (err) => {
  if (err) throw err;
- console.log('successfully deleted /tmp/hello');
+ console.log("successfully deleted /tmp/hello");
 });
 ```
 
@@ -100,22 +100,22 @@ execution until the operation is complete. Exceptions are thrown immediately
 and can be handled using `try…catch`, or can be allowed to bubble up.
 
 ```mjs
-import { unlinkSync } from 'fs';
+import { unlinkSync } from "fs";
 
 try {
- unlinkSync('/tmp/hello');
- console.log('successfully deleted /tmp/hello');
+ unlinkSync("/tmp/hello");
+ console.log("successfully deleted /tmp/hello");
 } catch (err) {
  // handle the error
 }
 ```
 
 ```cjs
-const { unlinkSync } = require('fs');
+const { unlinkSync } = require("fs");
 
 try {
- unlinkSync('/tmp/hello');
- console.log('successfully deleted /tmp/hello');
+ unlinkSync("/tmp/hello");
+ console.log("successfully deleted /tmp/hello");
 } catch (err) {
  // handle the error
 }
@@ -227,11 +227,11 @@ Closes the file handle after waiting for any pending operation on the handle to
 complete.
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
 let filehandle;
 try {
- filehandle = await open('thefile.txt', 'r');
+ filehandle = await open("thefile.txt", "r");
 } finally {
  await filehandle?.close();
 }
@@ -272,9 +272,9 @@ By default, the stream will emit a `'close'` event after it has been
 destroyed.  Set the `emitClose` option to `false` to change this behavior.
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
-const fd = await open('/dev/input/event0');
+const fd = await open("/dev/input/event0");
 // Create a stream from some character device.
 const stream = fd.createReadStream();
 setTimeout(() => {
@@ -298,9 +298,9 @@ automatically.
 An example to read the last 10 bytes of a file which is 100 bytes long:
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
-const fd = await open('sample.txt');
+const fd = await open("sample.txt");
 fd.createReadStream({ start: 90, end: 99 });
 ```
 
@@ -425,9 +425,9 @@ after the `FileHandle` is closed or closing.
 ```mjs
 import {
  open,
-} from 'node:fs/promises';
+} from "node:fs/promises";
 
-const file = await open('./some/file/to/read');
+const file = await open("./some/file/to/read");
 
 for await (const chunk of file.readableWebStream())
  console.log(chunk);
@@ -438,10 +438,10 @@ await file.close();
 ```cjs
 const {
  open,
-} = require('fs/promises');
+} = require("fs/promises");
 
 (async () => {
- const file = await open('./some/file/to/read');
+ const file = await open("./some/file/to/read");
 
  for await (const chunk of file.readableWebStream())
   console.log(chunk);
@@ -542,11 +542,11 @@ retained in the file.
 The following example retains only the first four bytes of the file:
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
 let filehandle = null;
 try {
- filehandle = await open('temp.txt', 'r+');
+ filehandle = await open("temp.txt", "r+");
  await filehandle.truncate(4);
 } finally {
  await filehandle?.close();
@@ -750,14 +750,14 @@ with an {Error} object. The following example checks if the file
 `/etc/passwd` can be read and written by the current process.
 
 ```mjs
-import { access } from 'fs/promises';
-import { constants } from 'fs';
+import { access } from "fs/promises";
+import { constants } from "fs";
 
 try {
- await access('/etc/passwd', constants.R_OK | constants.W_OK);
- console.log('can access');
+ await access("/etc/passwd", constants.R_OK | constants.W_OK);
+ console.log("can access");
 } catch {
- console.error('cannot access');
+ console.error("cannot access");
 }
 ```
 
@@ -853,22 +853,22 @@ error occurs after the destination file has been opened for writing, an attempt
 will be made to remove the destination.
 
 ```mjs
-import { constants } from 'fs';
-import { copyFile } from 'fs/promises';
+import { constants } from "fs";
+import { copyFile } from "fs/promises";
 
 try {
- await copyFile('source.txt', 'destination.txt');
- console.log('source.txt was copied to destination.txt');
+ await copyFile("source.txt", "destination.txt");
+ console.log("source.txt was copied to destination.txt");
 } catch {
- console.log('The file could not be copied');
+ console.log("The file could not be copied");
 }
 
 // By using COPYFILE_EXCL, the operation will fail if destination.txt exists.
 try {
- await copyFile('source.txt', 'destination.txt', constants.COPYFILE_EXCL);
- console.log('source.txt was copied to destination.txt');
+ await copyFile("source.txt", "destination.txt", constants.COPYFILE_EXCL);
+ console.log("source.txt was copied to destination.txt");
 } catch {
- console.log('The file could not be copied');
+ console.log("The file could not be copied");
 }
 ```
 
@@ -1044,10 +1044,10 @@ The optional `options` argument can be a string specifying an encoding, or an
 object with an `encoding` property specifying the character encoding to use.
 
 ```mjs
-import { mkdtemp } from 'fs/promises';
+import { mkdtemp } from "fs/promises";
 
 try {
- await mkdtemp(path.join(os.tmpdir(), 'foo-'));
+ await mkdtemp(path.join(os.tmpdir(), "foo-"));
 } catch (err) {
  console.error(err);
 }
@@ -1117,10 +1117,10 @@ directory and subsequent read operations.
 Example using async iteration:
 
 ```mjs
-import { opendir } from 'fs/promises';
+import { opendir } from "fs/promises";
 
 try {
- const dir = await opendir('./');
+ const dir = await opendir("./");
  for await (const dirent of dir)
   console.log(dirent.name);
 } catch (err) {
@@ -1159,7 +1159,7 @@ If `options.withFileTypes` is set to `true`, the resolved array will contain
 {fs.Dirent} objects.
 
 ```mjs
-import { readdir } from 'fs/promises';
+import { readdir } from "fs/promises";
 
 try {
  const files = await readdir(path);
@@ -1206,7 +1206,7 @@ It is possible to abort an ongoing `readFile` using an {AbortSignal}. If a
 request is aborted the promise returned is rejected with an `AbortError`:
 
 ```mjs
-import { readFile } from 'fs/promises';
+import { readFile } from "fs/promises";
 
 try {
  const controller = new AbortController();
@@ -1481,7 +1481,7 @@ Returns an async iterator that watches for changes on `filename`, where `filenam
 is either a file or a directory.
 
 ```js
-const { watch } = require('fs/promises');
+const { watch } = require("fs/promises");
 
 const ac = new AbortController();
 const { signal } = ac;
@@ -1493,7 +1493,7 @@ setTimeout(() => ac.abort(), 10000);
   for await (const event of watcher)
    console.log(event);
  } catch (err) {
-  if (err.name === 'AbortError')
+  if (err.name === "AbortError")
    return;
   throw err;
  }
@@ -1567,14 +1567,14 @@ Cancelation is "best effort", and some amount of data is likely still
 to be written.
 
 ```mjs
-import { writeFile } from 'fs/promises';
-import { Buffer } from 'buffer';
+import { writeFile } from "fs/promises";
+import { Buffer } from "buffer";
 
 try {
  const controller = new AbortController();
  const { signal } = controller;
- const data = new Uint8Array(Buffer.from('Hello Node.js'));
- const promise = writeFile('message.txt', data, { signal });
+ const data = new Uint8Array(Buffer.from("Hello Node.js"));
+ const promise = writeFile("message.txt", data, { signal });
 
  // Abort the request before the promise settles.
  controller.abort();
@@ -1642,28 +1642,28 @@ argument will be an `Error` object. The following examples check if
 `package.json` exists, and if it is readable or writable.
 
 ```mjs
-import { access, constants } from 'fs';
+import { access, constants } from "fs";
 
-const file = 'package.json';
+const file = "package.json";
 
 // Check if the file exists in the current directory.
 access(file, constants.F_OK, (err) => {
- console.log(`${file} ${err ? 'does not exist' : 'exists'}`);
+ console.log(`${file} ${err ? "does not exist" : "exists"}`);
 });
 
 // Check if the file is readable.
 access(file, constants.R_OK, (err) => {
- console.log(`${file} ${err ? 'is not readable' : 'is readable'}`);
+ console.log(`${file} ${err ? "is not readable" : "is readable"}`);
 });
 
 // Check if the file is writable.
 access(file, constants.W_OK, (err) => {
- console.log(`${file} ${err ? 'is not writable' : 'is writable'}`);
+ console.log(`${file} ${err ? "is not writable" : "is writable"}`);
 });
 
 // Check if the file is readable and writable.
 access(file, constants.R_OK | constants.W_OK, (err) => {
- console.log(`${file} ${err ? 'is not' : 'is'} readable and writable`);
+ console.log(`${file} ${err ? "is not" : "is"} readable and writable`);
 });
 ```
 
@@ -1676,15 +1676,15 @@ file directly and handle the error raised if the file is not accessible.
 **write (NOT RECOMMENDED)**
 
 ```mjs
-import { access, open, close } from 'fs';
+import { access, close, open } from "fs";
 
-access('myfile', (err) => {
+access("myfile", (err) => {
  if (!err) {
-  console.error('myfile already exists');
+  console.error("myfile already exists");
   return;
  }
 
- open('myfile', 'wx', (err, fd) => {
+ open("myfile", "wx", (err, fd) => {
   if (err) throw err;
 
   try {
@@ -1701,12 +1701,12 @@ access('myfile', (err) => {
 **write (RECOMMENDED)**
 
 ```mjs
-import { open, close } from 'fs';
+import { close, open } from "fs";
 
-open('myfile', 'wx', (err, fd) => {
+open("myfile", "wx", (err, fd) => {
  if (err) {
-  if (err.code === 'EEXIST') {
-   console.error('myfile already exists');
+  if (err.code === "EEXIST") {
+   console.error("myfile already exists");
    return;
   }
 
@@ -1726,18 +1726,18 @@ open('myfile', 'wx', (err, fd) => {
 **read (NOT RECOMMENDED)**
 
 ```mjs
-import { access, open, close } from 'fs';
-access('myfile', (err) => {
+import { access, close, open } from "fs";
+access("myfile", (err) => {
  if (err) {
-  if (err.code === 'ENOENT') {
-   console.error('myfile does not exist');
+  if (err.code === "ENOENT") {
+   console.error("myfile does not exist");
    return;
   }
 
   throw err;
  }
 
- open('myfile', 'r', (err, fd) => {
+ open("myfile", "r", (err, fd) => {
   if (err) throw err;
 
   try {
@@ -1754,12 +1754,12 @@ access('myfile', (err) => {
 **read (RECOMMENDED)**
 
 ```mjs
-import { open, close } from 'fs';
+import { close, open } from "fs";
 
-open('myfile', 'r', (err, fd) => {
+open("myfile", "r", (err, fd) => {
  if (err) {
-  if (err.code === 'ENOENT') {
-   console.error('myfile does not exist');
+  if (err.code === "ENOENT") {
+   console.error("myfile does not exist");
    return;
   }
 
@@ -1831,9 +1831,9 @@ The `mode` option only affects the newly created file. See [`fs.open()`][]
 for more details.
 
 ```mjs
-import { appendFile } from 'fs';
+import { appendFile } from "fs";
 
-appendFile('message.txt', 'data to append', (err) => {
+appendFile("message.txt", "data to append", (err) => {
  if (err) throw err;
  console.log('The "data to append" was appended to file!');
 });
@@ -1842,9 +1842,9 @@ appendFile('message.txt', 'data to append', (err) => {
 If `options` is a string, then it specifies the encoding:
 
 ```mjs
-import { appendFile } from 'fs';
+import { appendFile } from "fs";
 
-appendFile('message.txt', 'data to append', 'utf8', callback);
+appendFile("message.txt", "data to append", "utf8", callback);
 ```
 
 The `path` may be specified as a numeric file descriptor that has been opened
@@ -1852,7 +1852,7 @@ for appending (using `fs.open()` or `fs.openSync()`). The file descriptor will
 not be closed automatically.
 
 ```mjs
-import { open, close, appendFile } from 'fs';
+import { appendFile, close, open } from "fs";
 
 function closeFd(fd) {
  close(fd, (err) => {
@@ -1860,11 +1860,11 @@ function closeFd(fd) {
  });
 }
 
-open('message.txt', 'a', (err, fd) => {
+open("message.txt", "a", (err, fd) => {
  if (err) throw err;
 
  try {
-  appendFile(fd, 'data to append', 'utf8', (err) => {
+  appendFile(fd, "data to append", "utf8", (err) => {
    closeFd(fd);
    if (err) throw err;
   });
@@ -1910,9 +1910,9 @@ possible exception are given to the completion callback.
 See the POSIX chmod(2) documentation for more detail.
 
 ```mjs
-import { chmod } from 'fs';
+import { chmod } from "fs";
 
-chmod('my_file.txt', 0o775, (err) => {
+chmod("my_file.txt", 0o775, (err) => {
  if (err) throw err;
  console.log('The permissions for file "my_file.txt" have been changed!');
 });
@@ -2082,18 +2082,18 @@ OR of two or more values (e.g.
   copy-on-write, then the operation will fail.
 
 ```mjs
-import { copyFile, constants } from 'fs';
+import { constants, copyFile } from "fs";
 
 function callback(err) {
  if (err) throw err;
- console.log('source.txt was copied to destination.txt');
+ console.log("source.txt was copied to destination.txt");
 }
 
 // destination.txt will be created or overwritten by default.
-copyFile('source.txt', 'destination.txt', callback);
+copyFile("source.txt", "destination.txt", callback);
 
 // By using COPYFILE_EXCL, the operation will fail if destination.txt exists.
-copyFile('source.txt', 'destination.txt', constants.COPYFILE_EXCL, callback);
+copyFile("source.txt", "destination.txt", constants.COPYFILE_EXCL, callback);
 ```
 
 ### `fs.cp(src, dest[, options], callback)`
@@ -2230,10 +2230,10 @@ an override for `read` is required. If no `fd` is provided, an override for
 also required.
 
 ```mjs
-import { createReadStream } from 'fs';
+import { createReadStream } from "fs";
 
 // Create a stream from some character device.
-const stream = createReadStream('/dev/input/event0');
+const stream = createReadStream("/dev/input/event0");
 setTimeout(() => {
  stream.close(); // This may not close the stream.
  // Artificially marking end-of-stream, as if the underlying resource had
@@ -2258,9 +2258,9 @@ file was created.
 An example to read the last 10 bytes of a file which is 100 bytes long:
 
 ```mjs
-import { createReadStream } from 'fs';
+import { createReadStream } from "fs";
 
-createReadStream('sample.txt', { start: 90, end: 99 });
+createReadStream("sample.txt", { start: 90, end: 99 });
 ```
 
 If `options` is a string, then it specifies the encoding.
@@ -2377,10 +2377,10 @@ Test whether or not the given path exists by checking with the file system.
 Then call the `callback` argument with either true or false:
 
 ```mjs
-import { exists } from 'fs';
+import { exists } from "fs";
 
-exists('/etc/passwd', (e) => {
- console.log(e ? 'it exists' : 'no passwd!');
+exists("/etc/passwd", (e) => {
+ console.log(e ? "it exists" : "no passwd!");
 });
 ```
 
@@ -2399,13 +2399,13 @@ file directly and handle the error raised if the file does not exist.
 **write (NOT RECOMMENDED)**
 
 ```mjs
-import { exists, open, close } from 'fs';
+import { close, exists, open } from "fs";
 
-exists('myfile', (e) => {
+exists("myfile", (e) => {
  if (e) {
-  console.error('myfile already exists');
+  console.error("myfile already exists");
  } else {
-  open('myfile', 'wx', (err, fd) => {
+  open("myfile", "wx", (err, fd) => {
    if (err) throw err;
 
    try {
@@ -2423,11 +2423,11 @@ exists('myfile', (e) => {
 **write (RECOMMENDED)**
 
 ```mjs
-import { open, close } from 'fs';
-open('myfile', 'wx', (err, fd) => {
+import { close, open } from "fs";
+open("myfile", "wx", (err, fd) => {
  if (err) {
-  if (err.code === 'EEXIST') {
-   console.error('myfile already exists');
+  if (err.code === "EEXIST") {
+   console.error("myfile already exists");
    return;
   }
 
@@ -2447,11 +2447,11 @@ open('myfile', 'wx', (err, fd) => {
 **read (NOT RECOMMENDED)**
 
 ```mjs
-import { open, close, exists } from 'fs';
+import { close, exists, open } from "fs";
 
-exists('myfile', (e) => {
+exists("myfile", (e) => {
  if (e) {
-  open('myfile', 'r', (err, fd) => {
+  open("myfile", "r", (err, fd) => {
    if (err) throw err;
 
    try {
@@ -2463,7 +2463,7 @@ exists('myfile', (e) => {
    }
   });
  } else {
-  console.error('myfile does not exist');
+  console.error("myfile does not exist");
  }
 });
 ```
@@ -2471,12 +2471,12 @@ exists('myfile', (e) => {
 **read (RECOMMENDED)**
 
 ```mjs
-import { open, close } from 'fs';
+import { close, open } from "fs";
 
-open('myfile', 'r', (err, fd) => {
+open("myfile", "r", (err, fd) => {
  if (err) {
-  if (err.code === 'ENOENT') {
-   console.error('myfile does not exist');
+  if (err.code === "ENOENT") {
+   console.error("myfile does not exist");
    return;
   }
 
@@ -2693,7 +2693,7 @@ For example, the following program retains only the first four bytes of the
 file:
 
 ```mjs
-import { open, close, ftruncate } from 'fs';
+import { close, ftruncate, open } from "fs";
 
 function closeFd(fd) {
  close(fd, (err) => {
@@ -2701,7 +2701,7 @@ function closeFd(fd) {
  });
 }
 
-open('temp.txt', 'r+', (err, fd) => {
+open("temp.txt", "r+", (err, fd) => {
  if (err) throw err;
 
  try {
@@ -2985,10 +2985,10 @@ property indicating whether parent directories should be created. Calling
 when `recursive` is false.
 
 ```mjs
-import { mkdir } from 'fs';
+import { mkdir } from "fs";
 
 // Creates /tmp/a/apple, regardless of whether `/tmp` and /tmp/a exist.
-mkdir('/tmp/a/apple', { recursive: true }, (err) => {
+mkdir("/tmp/a/apple", { recursive: true }, (err) => {
  if (err) throw err;
 });
 ```
@@ -2997,9 +2997,9 @@ On Windows, using `fs.mkdir()` on the root directory even with recursion will
 result in an error:
 
 ```mjs
-import { mkdir } from 'fs';
+import { mkdir } from "fs";
 
-mkdir('/', { recursive: true }, (err) => {
+mkdir("/", { recursive: true }, (err) => {
  // => [Error: EPERM: operation not permitted, mkdir 'C:\']
 });
 ```
@@ -3056,9 +3056,9 @@ The optional `options` argument can be a string specifying an encoding, or an
 object with an `encoding` property specifying the character encoding to use.
 
 ```mjs
-import { mkdtemp } from 'fs';
+import { mkdtemp } from "fs";
 
-mkdtemp(path.join(os.tmpdir(), 'foo-'), (err, directory) => {
+mkdtemp(path.join(os.tmpdir(), "foo-"), (err, directory) => {
  if (err) throw err;
  console.log(directory);
  // Prints: /tmp/foo-itXde2 or C:\Users\...\AppData\Local\Temp\foo-itXde2
@@ -3072,8 +3072,8 @@ must end with a trailing platform-specific path separator
 (`require('path').sep`).
 
 ```mjs
-import { tmpdir } from 'os';
-import { mkdtemp } from 'fs';
+import { tmpdir } from "os";
+import { mkdtemp } from "fs";
 
 // The parent directory for the new temporary directory
 const tmpDir = tmpdir();
@@ -3088,7 +3088,7 @@ mkdtemp(tmpDir, (err, directory) => {
 });
 
 // This method is *CORRECT*:
-import { sep } from 'path';
+import { sep } from "path";
 mkdtemp(`${tmpDir}${sep}`, (err, directory) => {
  if (err) throw err;
  console.log(directory);
@@ -3361,9 +3361,9 @@ changes:
 Asynchronously reads the entire contents of a file.
 
 ```mjs
-import { readFile } from 'fs';
+import { readFile } from "fs";
 
-readFile('/etc/passwd', (err, data) => {
+readFile("/etc/passwd", (err, data) => {
  if (err) throw err;
  console.log(data);
 });
@@ -3377,9 +3377,9 @@ If no encoding is specified, then the raw buffer is returned.
 If `options` is a string, then it specifies the encoding:
 
 ```mjs
-import { readFile } from 'fs';
+import { readFile } from "fs";
 
-readFile('/etc/passwd', 'utf8', callback);
+readFile("/etc/passwd", "utf8", callback);
 ```
 
 When the path is a directory, the behavior of `fs.readFile()` and
@@ -3388,15 +3388,15 @@ error will be returned. On FreeBSD, a representation of the directory's contents
 will be returned.
 
 ```mjs
-import { readFile } from 'fs';
+import { readFile } from "fs";
 
 // macOS, Linux, and Windows
-readFile('<directory>', (err, data) => {
+readFile("<directory>", (err, data) => {
  // => [Error: EISDIR: illegal operation on a directory, read <directory>]
 });
 
 //  FreeBSD
-readFile('<directory>', (err, data) => {
+readFile("<directory>", (err, data) => {
  // => null, <data>
 });
 ```
@@ -3405,7 +3405,7 @@ It is possible to abort an ongoing request using an `AbortSignal`. If a
 request is aborted the callback is called with an `AbortError`:
 
 ```mjs
-import { readFile } from 'fs';
+import { readFile } from "fs";
 
 const controller = new AbortController();
 const signal = controller.signal;
@@ -3670,11 +3670,11 @@ given to the completion callback.
 See also: rename(2).
 
 ```mjs
-import { rename } from 'fs';
+import { rename } from "fs";
 
-rename('oldFile.txt', 'newFile.txt', (err) => {
+rename("oldFile.txt", "newFile.txt", (err) => {
  if (err) throw err;
- console.log('Rename complete!');
+ console.log("Rename complete!");
 });
 ```
 
@@ -3851,9 +3851,9 @@ For example, given the following directory structure:
 The next program will check for the stats of the given paths:
 
 ```mjs
-import { stat } from 'fs';
+import { stat } from "fs";
 
-const pathsToCheck = ['./txtDir', './txtDir/file.txt'];
+const pathsToCheck = ["./txtDir", "./txtDir/file.txt"];
 
 for (let i = 0; i < pathsToCheck.length; i++) {
  stat(pathsToCheck[i], (err, stats) => {
@@ -3952,9 +3952,9 @@ require the destination path to be absolute. When using `'junction'`, the
 Relative targets are relative to the link’s parent directory.
 
 ```mjs
-import { symlink } from 'fs';
+import { symlink } from "fs";
 
-symlink('./mew', './mewtwo', callback);
+symlink("./mew", "./mewtwo", callback);
 ```
 
 The above example creates a symbolic link `mewtwo` which points to `mew` in the
@@ -4001,20 +4001,20 @@ given to the completion callback. A file descriptor can also be passed as the
 first argument. In this case, `fs.ftruncate()` is called.
 
 ```mjs
-import { truncate } from 'fs';
+import { truncate } from "fs";
 // Assuming that 'path/file.txt' is a regular file.
-truncate('path/file.txt', (err) => {
+truncate("path/file.txt", (err) => {
  if (err) throw err;
- console.log('path/file.txt was truncated');
+ console.log("path/file.txt was truncated");
 });
 ```
 
 ```cjs
-const { truncate } = require('fs');
+const { truncate } = require("fs");
 // Assuming that 'path/file.txt' is a regular file.
-truncate('path/file.txt', (err) => {
+truncate("path/file.txt", (err) => {
  if (err) throw err;
- console.log('path/file.txt was truncated');
+ console.log("path/file.txt was truncated");
 });
 ```
 
@@ -4055,11 +4055,11 @@ Asynchronously removes a file or symbolic link. No arguments other than a
 possible exception are given to the completion callback.
 
 ```mjs
-import { unlink } from 'fs';
+import { unlink } from "fs";
 // Assuming that 'path/file.txt' is a regular file.
-unlink('path/file.txt', (err) => {
+unlink("path/file.txt", (err) => {
  if (err) throw err;
- console.log('path/file.txt was deleted');
+ console.log("path/file.txt was deleted");
 });
 ```
 
@@ -4254,13 +4254,13 @@ guaranteed to be provided. Therefore, don't assume that `filename` argument is
 always provided in the callback, and have some fallback logic if it is `null`.
 
 ```mjs
-import { watch } from 'fs';
-watch('somedir', (eventType, filename) => {
+import { watch } from "fs";
+watch("somedir", (eventType, filename) => {
  console.log(`event type is: ${eventType}`);
  if (filename) {
   console.log(`filename provided: ${filename}`);
  } else {
-  console.log('filename not provided');
+  console.log("filename not provided");
  }
 });
 ```
@@ -4302,9 +4302,9 @@ The `listener` gets two arguments the current stat object and the previous
 stat object:
 
 ```mjs
-import { watchFile } from 'fs';
+import { watchFile } from "fs";
 
-watchFile('message.text', (curr, prev) => {
+watchFile("message.text", (curr, prev) => {
  console.log(`the current mtime is: ${curr.mtime}`);
  console.log(`the previous mtime was: ${prev.mtime}`);
 });
@@ -4546,22 +4546,22 @@ If `data` is a plain object, it must have an own (not inherited) `toString`
 function property.
 
 ```mjs
-import { writeFile } from 'fs';
-import { Buffer } from 'buffer';
+import { writeFile } from "fs";
+import { Buffer } from "buffer";
 
-const data = new Uint8Array(Buffer.from('Hello Node.js'));
-writeFile('message.txt', data, (err) => {
+const data = new Uint8Array(Buffer.from("Hello Node.js"));
+writeFile("message.txt", data, (err) => {
  if (err) throw err;
- console.log('The file has been saved!');
+ console.log("The file has been saved!");
 });
 ```
 
 If `options` is a string, then it specifies the encoding:
 
 ```mjs
-import { writeFile } from 'fs';
+import { writeFile } from "fs";
 
-writeFile('message.txt', 'Hello Node.js', 'utf8', callback);
+writeFile("message.txt", "Hello Node.js", "utf8", callback);
 ```
 
 It is unsafe to use `fs.writeFile()` multiple times on the same file without
@@ -4577,13 +4577,13 @@ Cancelation is "best effort", and some amount of data is likely still
 to be written.
 
 ```mjs
-import { writeFile } from 'fs';
-import { Buffer } from 'buffer';
+import { writeFile } from "fs";
+import { Buffer } from "buffer";
 
 const controller = new AbortController();
 const { signal } = controller;
-const data = new Uint8Array(Buffer.from('Hello Node.js'));
-writeFile('message.txt', data, { signal }, (err) => {
+const data = new Uint8Array(Buffer.from("Hello Node.js"));
+writeFile("message.txt", data, { signal }, (err) => {
  // When a request is aborted - the callback is called with an AbortError
 });
 // When the request should be aborted
@@ -4599,8 +4599,8 @@ When `file` is a file descriptor, the behavior is almost identical to directly
 calling `fs.write()` like:
 
 ```mjs
-import { write } from 'fs';
-import { Buffer } from 'buffer';
+import { write } from "fs";
+import { Buffer } from "buffer";
 
 write(fd, Buffer.from(data, options.encoding), callback);
 ```
@@ -4693,13 +4693,13 @@ If any of the accessibility checks fail, an `Error` will be thrown. Otherwise,
 the method will return `undefined`.
 
 ```mjs
-import { accessSync, constants } from 'fs';
+import { accessSync, constants } from "fs";
 
 try {
- accessSync('etc/passwd', constants.R_OK | constants.W_OK);
- console.log('can read/write');
+ accessSync("etc/passwd", constants.R_OK | constants.W_OK);
+ console.log("can read/write");
 } catch (err) {
- console.error('no access!');
+ console.error("no access!");
 }
 ```
 
@@ -4730,10 +4730,10 @@ The `mode` option only affects the newly created file. See [`fs.open()`][]
 for more details.
 
 ```mjs
-import { appendFileSync } from 'fs';
+import { appendFileSync } from "fs";
 
 try {
- appendFileSync('message.txt', 'data to append');
+ appendFileSync("message.txt", "data to append");
  console.log('The "data to append" was appended to file!');
 } catch (err) {
  /* Handle the error */
@@ -4743,9 +4743,9 @@ try {
 If `options` is a string, then it specifies the encoding:
 
 ```mjs
-import { appendFileSync } from 'fs';
+import { appendFileSync } from "fs";
 
-appendFileSync('message.txt', 'data to append', 'utf8');
+appendFileSync("message.txt", "data to append", "utf8");
 ```
 
 The `path` may be specified as a numeric file descriptor that has been opened
@@ -4753,13 +4753,13 @@ for appending (using `fs.open()` or `fs.openSync()`). The file descriptor will
 not be closed automatically.
 
 ```mjs
-import { openSync, closeSync, appendFileSync } from 'fs';
+import { appendFileSync, closeSync, openSync } from "fs";
 
 let fd;
 
 try {
- fd = openSync('message.txt', 'a');
- appendFileSync(fd, 'data to append', 'utf8');
+ fd = openSync("message.txt", "a");
+ appendFileSync(fd, "data to append", "utf8");
 } catch (err) {
  /* Handle the error */
 } finally {
@@ -4857,14 +4857,14 @@ OR of two or more values (e.g.
   copy-on-write, then the operation will fail.
 
 ```mjs
-import { copyFileSync, constants } from 'fs';
+import { constants, copyFileSync } from "fs";
 
 // destination.txt will be created or overwritten by default.
-copyFileSync('source.txt', 'destination.txt');
-console.log('source.txt was copied to destination.txt');
+copyFileSync("source.txt", "destination.txt");
+console.log("source.txt was copied to destination.txt");
 
 // By using COPYFILE_EXCL, the operation will fail if destination.txt exists.
-copyFileSync('source.txt', 'destination.txt', constants.COPYFILE_EXCL);
+copyFileSync("source.txt", "destination.txt", constants.COPYFILE_EXCL);
 ```
 
 ### `fs.cpSync(src, dest[, options])`
@@ -4928,10 +4928,10 @@ parameter to `fs.exists()` accepts parameters that are inconsistent with other
 Node.js callbacks. `fs.existsSync()` does not use a callback.
 
 ```mjs
-import { existsSync } from 'fs';
+import { existsSync } from "fs";
 
-if (existsSync('/etc/passwd'))
- console.log('The path exists.');
+if (existsSync("/etc/passwd"))
+ console.log("The path exists.");
 ```
 
 ### `fs.fchmodSync(fd, mode)`
@@ -5316,14 +5316,14 @@ Similar to [`fs.readFile()`][], when the path is a directory, the behavior of
 `fs.readFileSync()` is platform-specific.
 
 ```mjs
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 
 // macOS, Linux, and Windows
-readFileSync('<directory>');
+readFileSync("<directory>");
 // => [Error: EISDIR: illegal operation on a directory, read <directory>]
 
 //  FreeBSD
-readFileSync('<directory>'); // => <data>
+readFileSync("<directory>"); // => <data>
 ```
 
 ### `fs.readlinkSync(path[, options])`
@@ -5849,10 +5849,10 @@ Created by [`fs.opendir()`][], [`fs.opendirSync()`][], or
 [`fsPromises.opendir()`][].
 
 ```mjs
-import { opendir } from 'fs/promises';
+import { opendir } from "fs/promises";
 
 try {
- const dir = await opendir('./');
+ const dir = await opendir("./");
  for await (const dirent of dir)
   console.log(dirent.name);
 } catch (err) {
@@ -6126,9 +6126,9 @@ support. If `filename` is provided, it will be provided as a {Buffer} if
 `filename` will be a UTF-8 string.
 
 ```mjs
-import { watch } from 'fs';
+import { watch } from "fs";
 // Example when handled through fs.watch() listener
-watch('./tmp', { encoding: 'buffer' }, (eventType, filename) => {
+watch("./tmp", { encoding: "buffer" }, (eventType, filename) => {
  if (filename) {
   console.log(filename);
   // Prints: <Buffer ...>
@@ -6804,7 +6804,7 @@ To use more than one constant, use the bitwise OR `|` operator.
 Example:
 
 ```mjs
-import { open, constants } from 'fs';
+import { constants, open } from "fs";
 
 const {
  O_RDWR,
@@ -6812,7 +6812,7 @@ const {
  O_EXCL,
 } = constants;
 
-open('/path/to/my/file', O_RDWR | O_CREAT | O_EXCL, (err, fd) => {
+open("/path/to/my/file", O_RDWR | O_CREAT | O_EXCL, (err, fd) => {
  // ...
 });
 ```
@@ -7088,11 +7088,11 @@ For example, the following is prone to error because the `fs.stat()`
 operation might complete before the `fs.rename()` operation:
 
 ```js
-fs.rename('/tmp/hello', '/tmp/world', (err) => {
+fs.rename("/tmp/hello", "/tmp/world", (err) => {
  if (err) throw err;
- console.log('renamed complete');
+ console.log("renamed complete");
 });
-fs.stat('/tmp/world', (err, stats) => {
+fs.stat("/tmp/world", (err, stats) => {
  if (err) throw err;
  console.log(`stats: ${JSON.stringify(stats)}`);
 });
@@ -7102,22 +7102,22 @@ It is important to correctly order the operations by awaiting the results
 of one before invoking the other:
 
 ```mjs
-import { rename, stat } from 'fs/promises';
+import { rename, stat } from "fs/promises";
 
-const from = '/tmp/hello';
-const to = '/tmp/world';
+const from = "/tmp/hello";
+const to = "/tmp/world";
 
 try {
  await rename(from, to);
  const stats = await stat(to);
  console.log(`stats: ${JSON.stringify(stats)}`);
 } catch (error) {
- console.error('there was an error:', error.message);
+ console.error("there was an error:", error.message);
 }
 ```
 
 ```cjs
-const { rename, stat } = require('fs/promises');
+const { rename, stat } = require("fs/promises");
 
 (async function(from, to) {
  try {
@@ -7125,20 +7125,20 @@ const { rename, stat } = require('fs/promises');
   const stats = await stat(to);
   console.log(`stats: ${JSON.stringify(stats)}`);
  } catch (error) {
-  console.error('there was an error:', error.message);
+  console.error("there was an error:", error.message);
  }
-})('/tmp/hello', '/tmp/world');
+})("/tmp/hello", "/tmp/world");
 ```
 
 Or, when using the callback APIs, move the `fs.stat()` call into the callback
 of the `fs.rename()` operation:
 
 ```mjs
-import { rename, stat } from 'fs';
+import { rename, stat } from "fs";
 
-rename('/tmp/hello', '/tmp/world', (err) => {
+rename("/tmp/hello", "/tmp/world", (err) => {
  if (err) throw err;
- stat('/tmp/world', (err, stats) => {
+ stat("/tmp/world", (err, stats) => {
   if (err) throw err;
   console.log(`stats: ${JSON.stringify(stats)}`);
  });
@@ -7146,11 +7146,11 @@ rename('/tmp/hello', '/tmp/world', (err) => {
 ```
 
 ```cjs
-const { rename, stat } = require('fs/promises');
+const { rename, stat } = require("fs/promises");
 
-rename('/tmp/hello', '/tmp/world', (err) => {
+rename("/tmp/hello", "/tmp/world", (err) => {
  if (err) throw err;
- stat('/tmp/world', (err, stats) => {
+ stat("/tmp/world", (err, stats) => {
   if (err) throw err;
   console.log(`stats: ${JSON.stringify(stats)}`);
  });
@@ -7171,11 +7171,11 @@ to the current working directory as determined by calling `process.cwd()`.
 Example using an absolute path on POSIX:
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
 let fd;
 try {
- fd = await open('/open/some/file.txt', 'r');
+ fd = await open("/open/some/file.txt", "r");
  // Do something with the file
 } finally {
  await fd.close();
@@ -7185,11 +7185,11 @@ try {
 Example using a relative path on POSIX (relative to `process.cwd()`):
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
 let fd;
 try {
- fd = await open('file.txt', 'r');
+ fd = await open("file.txt", "r");
  // Do something with the file
 } finally {
  await fd.close();
@@ -7206,9 +7206,9 @@ For most `fs` module functions, the `path` or `filename` argument may be passed
 as a {URL} object using the `file:` protocol.
 
 ```mjs
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 
-readFileSync(new URL('file:///tmp/hello'));
+readFileSync(new URL("file:///tmp/hello"));
 ```
 
 `file:` URLs are always absolute paths.
@@ -7220,20 +7220,20 @@ On Windows, `file:` {URL}s with a host name convert to UNC paths, while `file:`
 with no host name and no drive letter will result in an error:
 
 ```mjs
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 // On Windows :
 
 // - WHATWG file URLs with hostname convert to UNC path
 // file://hostname/p/a/t/h/file => \\hostname\p\a\t\h\file
-readFileSync(new URL('file://hostname/p/a/t/h/file'));
+readFileSync(new URL("file://hostname/p/a/t/h/file"));
 
 // - WHATWG file URLs with drive letters convert to absolute path
 // file:///C:/tmp/hello => C:\tmp\hello
-readFileSync(new URL('file:///C:/tmp/hello'));
+readFileSync(new URL("file:///C:/tmp/hello"));
 
 // - WHATWG file URLs without hostname must have a drive letters
-readFileSync(new URL('file:///notdriveletter/p/a/t/h/file'));
-readFileSync(new URL('file:///c/p/a/t/h/file'));
+readFileSync(new URL("file:///notdriveletter/p/a/t/h/file"));
+readFileSync(new URL("file:///c/p/a/t/h/file"));
 // TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
 ```
 
@@ -7244,34 +7244,34 @@ On all other platforms, `file:` {URL}s with a host name are unsupported and
 will result in an error:
 
 ```mjs
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 // On other platforms:
 
 // - WHATWG file URLs with hostname are unsupported
 // file://hostname/p/a/t/h/file => throw!
-readFileSync(new URL('file://hostname/p/a/t/h/file'));
+readFileSync(new URL("file://hostname/p/a/t/h/file"));
 // TypeError [ERR_INVALID_FILE_URL_PATH]: must be absolute
 
 // - WHATWG file URLs convert to absolute path
 // file:///tmp/hello => /tmp/hello
-readFileSync(new URL('file:///tmp/hello'));
+readFileSync(new URL("file:///tmp/hello"));
 ```
 
 A `file:` {URL} having encoded slash characters will result in an error on all
 platforms:
 
 ```mjs
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 
 // On Windows
-readFileSync(new URL('file:///C:/p/a/t/h/%2F'));
-readFileSync(new URL('file:///C:/p/a/t/h/%2f'));
+readFileSync(new URL("file:///C:/p/a/t/h/%2F"));
+readFileSync(new URL("file:///C:/p/a/t/h/%2f"));
 /* TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must not include encoded
 \ or / characters */
 
 // On POSIX
-readFileSync(new URL('file:///p/a/t/h/%2F'));
-readFileSync(new URL('file:///p/a/t/h/%2f'));
+readFileSync(new URL("file:///p/a/t/h/%2F"));
+readFileSync(new URL("file:///p/a/t/h/%2f"));
 /* TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must not include encoded
 / characters */
 ```
@@ -7279,11 +7279,11 @@ readFileSync(new URL('file:///p/a/t/h/%2f'));
 On Windows, `file:` {URL}s having encoded backslash will result in an error:
 
 ```mjs
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 
 // On Windows
-readFileSync(new URL('file:///C:/path/%5C'));
-readFileSync(new URL('file:///C:/path/%5c'));
+readFileSync(new URL("file:///C:/path/%5C"));
+readFileSync(new URL("file:///C:/path/%5c"));
 /* TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must not include encoded
 \ or / characters */
 ```
@@ -7299,12 +7299,12 @@ be relative or absolute:
 Example using an absolute path on POSIX:
 
 ```mjs
-import { open } from 'fs/promises';
-import { Buffer } from 'buffer';
+import { open } from "fs/promises";
+import { Buffer } from "buffer";
 
 let fd;
 try {
- fd = await open(Buffer.from('/open/some/file.txt'), 'r');
+ fd = await open(Buffer.from("/open/some/file.txt"), "r");
  // Do something with the file
 } finally {
  await fd.close();
@@ -7340,7 +7340,7 @@ are completed. Failure to do so will result in a memory leak that will
 eventually cause an application to crash.
 
 ```mjs
-import { open, close, fstat } from 'fs';
+import { close, fstat, open } from "fs";
 
 function closeFd(fd) {
  close(fd, (err) => {
@@ -7348,7 +7348,7 @@ function closeFd(fd) {
  });
 }
 
-open('/open/some/file.txt', 'r', (err, fd) => {
+open("/open/some/file.txt", "r", (err, fd) => {
  if (err) throw err;
  try {
   fstat(fd, (err, stat) => {
@@ -7374,11 +7374,11 @@ that resources are not leaked. However, it is still required that they are
 closed when operations are completed:
 
 ```mjs
-import { open } from 'fs/promises';
+import { open } from "fs/promises";
 
 let file;
 try {
- file = await open('/open/some/file.txt', 'r');
+ file = await open("/open/some/file.txt", "r");
  const stat = await file.stat();
  // use stat
 } finally {
@@ -7465,12 +7465,12 @@ will be returned.
 
 ```js
 // macOS and Linux
-fs.open('<directory>', 'a+', (err, fd) => {
+fs.open("<directory>", "a+", (err, fd) => {
  // => [Error: EISDIR: illegal operation on a directory, open <directory>]
 });
 
 // Windows and FreeBSD
-fs.open('<directory>', 'a+', (err, fd) => {
+fs.open("<directory>", "a+", (err, fd) => {
  // => null, <fd>
 });
 ```

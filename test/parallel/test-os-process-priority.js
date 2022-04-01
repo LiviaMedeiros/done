@@ -1,11 +1,11 @@
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 // IBMi process priority is different.
 if (common.isIBMi)
- common.skip('IBMi has a different process priority');
+ common.skip("IBMi has a different process priority");
 
-const assert = require('assert');
-const os = require('os');
+const assert = require("assert");
+const os = require("os");
 const {
  PRIORITY_LOW,
  PRIORITY_BELOW_NORMAL,
@@ -16,17 +16,17 @@ const {
 } = os.constants.priority;
 
 // Validate priority constants.
-assert.strictEqual(typeof PRIORITY_LOW, 'number');
-assert.strictEqual(typeof PRIORITY_BELOW_NORMAL, 'number');
-assert.strictEqual(typeof PRIORITY_NORMAL, 'number');
-assert.strictEqual(typeof PRIORITY_ABOVE_NORMAL, 'number');
-assert.strictEqual(typeof PRIORITY_HIGH, 'number');
-assert.strictEqual(typeof PRIORITY_HIGHEST, 'number');
+assert.strictEqual(typeof PRIORITY_LOW, "number");
+assert.strictEqual(typeof PRIORITY_BELOW_NORMAL, "number");
+assert.strictEqual(typeof PRIORITY_NORMAL, "number");
+assert.strictEqual(typeof PRIORITY_ABOVE_NORMAL, "number");
+assert.strictEqual(typeof PRIORITY_HIGH, "number");
+assert.strictEqual(typeof PRIORITY_HIGHEST, "number");
 
 // Test pid type validation.
-[null, true, false, 'foo', {}, [], /x/].forEach((pid) => {
+[null, true, false, "foo", {}, [], /x/].forEach((pid) => {
  const errObj = {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: /The "pid" argument must be of type number\./,
  };
 
@@ -42,7 +42,7 @@ assert.strictEqual(typeof PRIORITY_HIGHEST, 'number');
 // Test pid range validation.
 [NaN, Infinity, -Infinity, 3.14, 2 ** 32].forEach((pid) => {
  const errObj = {
-  code: 'ERR_OUT_OF_RANGE',
+  code: "ERR_OUT_OF_RANGE",
   message: /The value of "pid" is out of range\./,
  };
 
@@ -56,11 +56,11 @@ assert.strictEqual(typeof PRIORITY_HIGHEST, 'number');
 });
 
 // Test priority type validation.
-[null, true, false, 'foo', {}, [], /x/].forEach((priority) => {
+[null, true, false, "foo", {}, [], /x/].forEach((priority) => {
  assert.throws(() => {
   os.setPriority(0, priority);
  }, {
-  code: 'ERR_INVALID_ARG_TYPE',
+  code: "ERR_INVALID_ARG_TYPE",
   message: /The "priority" argument must be of type number\./,
  });
 });
@@ -78,7 +78,7 @@ assert.strictEqual(typeof PRIORITY_HIGHEST, 'number');
  assert.throws(() => {
   os.setPriority(0, priority);
  }, {
-  code: 'ERR_OUT_OF_RANGE',
+  code: "ERR_OUT_OF_RANGE",
   message: /The value of "priority" is out of range\./,
  });
 });
@@ -92,7 +92,7 @@ for (let i = PRIORITY_HIGHEST; i <= PRIORITY_LOW; i++) {
   // The current user might not have sufficient permissions to set this
   // specific priority level. Skip this priority, but keep trying lower
   // priorities.
-  if (err.info.code === 'EACCES')
+  if (err.info.code === "EACCES")
    continue;
 
   assert(err);

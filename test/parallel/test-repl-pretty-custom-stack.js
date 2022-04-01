@@ -1,22 +1,22 @@
-'use strict';
-require('../common');
-const ArrayStream = require('../common/arraystream');
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const repl = require('repl');
+"use strict";
+require("../common");
+const ArrayStream = require("../common/arraystream");
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const repl = require("repl");
 
 const stackRegExp = /(REPL\d+):[0-9]+:[0-9]+/g;
 
 function run({ command, expected }) {
- let accum = '';
+ let accum = "";
 
  const inputStream = new ArrayStream();
  const outputStream = new ArrayStream();
 
- outputStream.write = (data) => accum += data.replace('\r', '');
+ outputStream.write = (data) => accum += data.replace("\r", "");
 
  const r = repl.start({
-  prompt: '',
+  prompt: "",
   input: inputStream,
   output: outputStream,
   terminal: false,
@@ -25,8 +25,8 @@ function run({ command, expected }) {
 
  r.write(`${command}\n`);
  assert.strictEqual(
-  accum.replace(stackRegExp, '$1:*:*'),
-  expected.replace(stackRegExp, '$1:*:*'),
+  accum.replace(stackRegExp, "$1:*:*"),
+  expected.replace(stackRegExp, "$1:*:*"),
  );
  r.close();
 }
@@ -36,10 +36,10 @@ Error.prepareStackTrace = (err, stack) => {
  if (err instanceof SyntaxError)
   return err.toString();
  stack.push(err);
- return stack.reverse().join('--->\n');
+ return stack.reverse().join("--->\n");
 };
 
-process.on('uncaughtException', (e) => {
+process.on("uncaughtException", (e) => {
  Error.prepareStackTrace = origPrepareStackTrace;
  throw e;
 });
@@ -47,27 +47,27 @@ process.on('uncaughtException', (e) => {
 const tests = [
  {
   // test .load for a file that throws
-  command: `.load ${fixtures.path('repl-pretty-stack.js')}`,
-  expected: 'Uncaught Error: Whoops!--->\nREPL1:*:*--->\nd (REPL1:*:*)' +
-              '--->\nc (REPL1:*:*)--->\nb (REPL1:*:*)--->\na (REPL1:*:*)\n',
+  command: `.load ${fixtures.path("repl-pretty-stack.js")}`,
+  expected: "Uncaught Error: Whoops!--->\nREPL1:*:*--->\nd (REPL1:*:*)" +
+              "--->\nc (REPL1:*:*)--->\nb (REPL1:*:*)--->\na (REPL1:*:*)\n",
  },
  {
-  command: 'let x y;',
-  expected: 'let x y;\n      ^\n\n' +
-              'Uncaught SyntaxError: Unexpected identifier\n',
+  command: "let x y;",
+  expected: "let x y;\n      ^\n\n" +
+              "Uncaught SyntaxError: Unexpected identifier\n",
  },
  {
-  command: 'throw new Error(\'Whoops!\')',
-  expected: 'Uncaught Error: Whoops!\n',
+  command: "throw new Error('Whoops!')",
+  expected: "Uncaught Error: Whoops!\n",
  },
  {
-  command: 'foo = bar;',
-  expected: 'Uncaught ReferenceError: bar is not defined\n',
+  command: "foo = bar;",
+  expected: "Uncaught ReferenceError: bar is not defined\n",
  },
  // test anonymous IIFE
  {
-  command: '(function() { throw new Error(\'Whoops!\'); })()',
-  expected: 'Uncaught Error: Whoops!--->\nREPL5:*:*\n',
+  command: "(function() { throw new Error('Whoops!'); })()",
+  expected: "Uncaught Error: Whoops!--->\nREPL5:*:*\n",
  },
 ];
 

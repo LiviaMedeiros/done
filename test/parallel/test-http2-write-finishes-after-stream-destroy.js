@@ -1,15 +1,15 @@
 // Flags: --expose-gc
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
-const assert = require('assert');
-const http2 = require('http2');
-const makeDuplexPair = require('../common/duplexpair');
+ common.skip("missing crypto");
+const assert = require("assert");
+const http2 = require("http2");
+const makeDuplexPair = require("../common/duplexpair");
 
 // Make sure the Http2Stream destructor works, since we don't clean the
 // stream up like we would otherwise do.
-process.on('exit', global.gc);
+process.on("exit", global.gc);
 
 {
  const { clientSide, serverSide } = makeDuplexPair();
@@ -17,11 +17,11 @@ process.on('exit', global.gc);
  let serverSideHttp2Stream;
  let serverSideHttp2StreamDestroyed = false;
  const server = http2.createServer();
- server.on('stream', common.mustCall((stream, headers) => {
+ server.on("stream", common.mustCall((stream, headers) => {
   serverSideHttp2Stream = stream;
   stream.respond({
-   'content-type': 'text/html',
-   ':status': 200,
+   "content-type": "text/html",
+   ":status": 200,
   });
 
   const originalWrite = serverSide._write;
@@ -41,19 +41,19 @@ process.on('exit', global.gc);
   stream.write(Buffer.alloc(40000));
  }));
 
- server.emit('connection', serverSide);
+ server.emit("connection", serverSide);
 
- const client = http2.connect('http://localhost:80', {
+ const client = http2.connect("http://localhost:80", {
   createConnection: common.mustCall(() => clientSide),
  });
 
- const req = client.request({ ':path': '/' });
+ const req = client.request({ ":path": "/" });
 
- req.on('response', common.mustCall((headers) => {
-  assert.strictEqual(headers[':status'], 200);
+ req.on("response", common.mustCall((headers) => {
+  assert.strictEqual(headers[":status"], 200);
  }));
 
- req.on('data', common.mustCallAtLeast(() => {
+ req.on("data", common.mustCallAtLeast(() => {
   if (!serverSideHttp2StreamDestroyed) {
    serverSideHttp2Stream.destroy();
    serverSideHttp2StreamDestroyed = true;

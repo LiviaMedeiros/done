@@ -1,9 +1,9 @@
 // Flags: --expose-internals
-'use strict';
+"use strict";
 
-require('../common');
-const assert = require('assert');
-const { sleep } = require('internal/util');
+require("../common");
+const assert = require("assert");
+const { sleep } = require("internal/util");
 
 // Make sure we test 0ms timers, since they would had always wanted to run on
 // the current tick, and greater than 0ms timers, for scenarios where the
@@ -34,7 +34,7 @@ scenarios.forEach(function(delay) {
   });
 
   // Ensure that the nested callback is indeed called prior to process exit.
-  process.on('exit', function onExit() {
+  process.on("exit", function onExit() {
    assert.ok(nestedCalled);
   });
  }, delay);

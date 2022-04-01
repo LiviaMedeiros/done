@@ -19,28 +19,28 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-const common = require('../common');
+"use strict";
+const common = require("../common");
 if (!common.hasCrypto)
- common.skip('missing crypto');
+ common.skip("missing crypto");
 
-const fixtures = require('../common/fixtures');
-const assert = require('assert');
-const tls = require('tls');
+const fixtures = require("../common/fixtures");
+const assert = require("assert");
+const tls = require("tls");
 
-const options = { key: fixtures.readKey('rsa_private.pem'),
-                  cert: fixtures.readKey('rsa_cert.crt'),
-                  ca: [ fixtures.readKey('rsa_ca.crt') ] };
+const options = { key: fixtures.readKey("rsa_private.pem"),
+                  cert: fixtures.readKey("rsa_cert.crt"),
+                  ca: [ fixtures.readKey("rsa_ca.crt") ] };
 
 const server = tls.createServer(options, onconnection);
 let gotChunk = false;
 let gotDrain = false;
 
 function onconnection(conn) {
- conn.on('data', function(c) {
+ conn.on("data", function(c) {
   if (!gotChunk) {
    gotChunk = true;
-   console.log('ok - got chunk');
+   console.log("ok - got chunk");
   }
 
   // Just some basic sanity checks.
@@ -53,16 +53,16 @@ function onconnection(conn) {
 }
 
 server.listen(0, function() {
- const chunk = Buffer.alloc(1024, 'x');
+ const chunk = Buffer.alloc(1024, "x");
  const opt = { port: this.address().port, rejectUnauthorized: false };
  const conn = tls.connect(opt, function() {
-  conn.on('drain', ondrain);
+  conn.on("drain", ondrain);
   write();
  });
  function ondrain() {
   if (!gotDrain) {
    gotDrain = true;
-   console.log('ok - got drain');
+   console.log("ok - got drain");
   }
   if (gotChunk)
    process.exit(0);

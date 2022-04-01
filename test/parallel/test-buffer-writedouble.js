@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 // Tests to verify doubles are correctly written
 
-require('../common');
-const assert = require('assert');
+require("../common");
+const assert = require("assert");
 
 const buffer = Buffer.allocUnsafe(16);
 
@@ -88,7 +88,7 @@ assert.ok(Number.isNaN(buffer.readDoubleLE(8)));
 {
  const small = Buffer.allocUnsafe(1);
 
- ['writeDoubleLE', 'writeDoubleBE'].forEach((fn) => {
+ ["writeDoubleLE", "writeDoubleBE"].forEach((fn) => {
 
   // Verify that default offset works fine.
   buffer[fn](23, undefined);
@@ -97,23 +97,23 @@ assert.ok(Number.isNaN(buffer.readDoubleLE(8)));
   assert.throws(
    () => small[fn](11.11, 0),
    {
-    code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-    name: 'RangeError',
-    message: 'Attempt to access memory outside buffer bounds',
+    code: "ERR_BUFFER_OUT_OF_BOUNDS",
+    name: "RangeError",
+    message: "Attempt to access memory outside buffer bounds",
    });
 
-  ['', '0', null, {}, [], () => {}, true, false].forEach((off) => {
+  ["", "0", null, {}, [], () => {}, true, false].forEach((off) => {
    assert.throws(
     () => small[fn](23, off),
-    { code: 'ERR_INVALID_ARG_TYPE' });
+    { code: "ERR_INVALID_ARG_TYPE" });
   });
 
   [Infinity, -1, 9].forEach((offset) => {
    assert.throws(
     () => buffer[fn](23, offset),
     {
-     code: 'ERR_OUT_OF_RANGE',
-     name: 'RangeError',
+     code: "ERR_OUT_OF_RANGE",
+     name: "RangeError",
      message: 'The value of "offset" is out of range. ' +
                      `It must be >= 0 and <= 8. Received ${offset}`,
     });
@@ -123,8 +123,8 @@ assert.ok(Number.isNaN(buffer.readDoubleLE(8)));
    assert.throws(
     () => buffer[fn](42, offset),
     {
-     code: 'ERR_OUT_OF_RANGE',
-     name: 'RangeError',
+     code: "ERR_OUT_OF_RANGE",
+     name: "RangeError",
      message: 'The value of "offset" is out of range. ' +
                    `It must be an integer. Received ${offset}`,
     });
