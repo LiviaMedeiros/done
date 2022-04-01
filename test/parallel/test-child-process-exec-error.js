@@ -25,19 +25,19 @@ const assert = require('assert');
 const child_process = require('child_process');
 
 function test(fn, code, expectPidType = 'number') {
-	const child = fn('does-not-exist', common.mustCall(function(err) {
-		assert.strictEqual(err.code, code);
-		assert(err.cmd.includes('does-not-exist'));
-	}));
+ const child = fn('does-not-exist', common.mustCall(function(err) {
+  assert.strictEqual(err.code, code);
+  assert(err.cmd.includes('does-not-exist'));
+ }));
 
-	assert.strictEqual(typeof child.pid, expectPidType);
+ assert.strictEqual(typeof child.pid, expectPidType);
 }
 
 // With `shell: true`, expect pid (of the shell)
 if (common.isWindows) {
-	test(child_process.exec, 1, 'number'); // Exit code of cmd.exe
+ test(child_process.exec, 1, 'number'); // Exit code of cmd.exe
 } else {
-	test(child_process.exec, 127, 'number'); // Exit code of /bin/sh
+ test(child_process.exec, 127, 'number'); // Exit code of /bin/sh
 }
 
 // With `shell: false`, expect no pid

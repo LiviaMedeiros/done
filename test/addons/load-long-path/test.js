@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../../common');
 if (common.isWindows && (process.env.PROCESSOR_ARCHITEW6432 !== undefined))
-	common.skip('doesn\'t work on WOW64');
+ common.skip('doesn\'t work on WOW64');
 
 const fs = require('fs');
 const path = require('path');
@@ -16,13 +16,13 @@ const tmpdir = require('../../common/tmpdir');
 let addonDestinationDir = path.resolve(tmpdir.path);
 
 for (let i = 0; i < 10; i++) {
-	addonDestinationDir = path.join(addonDestinationDir, 'x'.repeat(30));
+ addonDestinationDir = path.join(addonDestinationDir, 'x'.repeat(30));
 }
 
 const addonPath = path.join(__dirname,
-																												'build',
-																												common.buildType,
-																												'binding.node');
+                            'build',
+                            common.buildType,
+                            'binding.node');
 const addonDestinationPath = path.join(addonDestinationDir, 'binding.node');
 
 // Loading an addon keeps the file open until the process terminates. Load
@@ -31,11 +31,11 @@ const addonDestinationPath = path.join(addonDestinationDir, 'binding.node');
 
 // Child
 if (process.argv[2] === 'child') {
-	// Attempt to load at long path destination
-	const addon = require(addonDestinationPath);
-	assert.notStrictEqual(addon, null);
-	assert.strictEqual(addon.hello(), 'world');
-	return;
+ // Attempt to load at long path destination
+ const addon = require(addonDestinationPath);
+ assert.notStrictEqual(addon, null);
+ assert.strictEqual(addon.hello(), 'world');
+ return;
 }
 
 // Parent
@@ -49,5 +49,5 @@ fs.writeFileSync(addonDestinationPath, contents);
 // Run test
 const child = fork(__filename, ['child'], { stdio: 'inherit' });
 child.on('exit', common.mustCall((code) => {
-	assert.strictEqual(code, 0);
+ assert.strictEqual(code, 0);
 }));

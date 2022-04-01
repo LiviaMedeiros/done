@@ -11,16 +11,16 @@ const path = require('path');
 
 // clearBreakpoint
 {
-	const scriptFullPath = fixtures.path('debugger', 'break.js');
-	const script = path.relative(process.cwd(), scriptFullPath);
-	const cli = startCLI([script]);
+ const scriptFullPath = fixtures.path('debugger', 'break.js');
+ const script = path.relative(process.cwd(), scriptFullPath);
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	return cli.waitForInitialBreak()
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('sb("break.js", 3)'))
     .then(() => cli.command('sb("break.js", 9)'))

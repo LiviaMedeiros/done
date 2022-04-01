@@ -44,11 +44,11 @@ list like the following:
 
 ```js
 [ 'ConTent-Length', '123456',
-		'content-LENGTH', '123',
-		'content-type', 'text/plain',
-		'CONNECTION', 'keep-alive',
-		'Host', 'example.com',
-		'accepT', '*/*' ]
+  'content-LENGTH', '123',
+  'content-type', 'text/plain',
+  'CONNECTION', 'keep-alive',
+  'Host', 'example.com',
+  'accepT', '*/*' ]
 ```
 
 ## Class: `http.Agent`
@@ -88,9 +88,9 @@ like the following may be done:
 
 ```js
 http.get(options, (res) => {
-	// Do stuff
+ // Do stuff
 }).on('socket', (socket) => {
-	socket.emit('agentRemove');
+ socket.emit('agentRemove');
 });
 ```
 
@@ -103,12 +103,12 @@ for the client connection.
 
 ```js
 http.get({
-	hostname: 'localhost',
-	port: 80,
-	path: '/',
-	agent: false  // Create a new agent just for this one request
+ hostname: 'localhost',
+ port: 80,
+ path: '/',
+ agent: false  // Create a new agent just for this one request
 }, (res) => {
-	// Do stuff with response
+ // Do stuff with response
 });
 ```
 
@@ -465,51 +465,51 @@ const { URL } = require('url');
 
 // Create an HTTP tunneling proxy
 const proxy = http.createServer((req, res) => {
-	res.writeHead(200, { 'Content-Type': 'text/plain' });
-	res.end('okay');
+ res.writeHead(200, { 'Content-Type': 'text/plain' });
+ res.end('okay');
 });
 proxy.on('connect', (req, clientSocket, head) => {
-	// Connect to an origin server
-	const { port, hostname } = new URL(`http://${req.url}`);
-	const serverSocket = net.connect(port || 80, hostname, () => {
-		clientSocket.write('HTTP/1.1 200 Connection Established\r\n' +
+ // Connect to an origin server
+ const { port, hostname } = new URL(`http://${req.url}`);
+ const serverSocket = net.connect(port || 80, hostname, () => {
+  clientSocket.write('HTTP/1.1 200 Connection Established\r\n' +
                     'Proxy-agent: Node.js-Proxy\r\n' +
                     '\r\n');
-		serverSocket.write(head);
-		serverSocket.pipe(clientSocket);
-		clientSocket.pipe(serverSocket);
-	});
+  serverSocket.write(head);
+  serverSocket.pipe(clientSocket);
+  clientSocket.pipe(serverSocket);
+ });
 });
 
 // Now that proxy is running
 proxy.listen(1337, '127.0.0.1', () => {
 
-	// Make a request to a tunneling proxy
-	const options = {
-		port: 1337,
-		host: '127.0.0.1',
-		method: 'CONNECT',
-		path: 'www.google.com:80'
-	};
+ // Make a request to a tunneling proxy
+ const options = {
+  port: 1337,
+  host: '127.0.0.1',
+  method: 'CONNECT',
+  path: 'www.google.com:80'
+ };
 
-	const req = http.request(options);
-	req.end();
+ const req = http.request(options);
+ req.end();
 
-	req.on('connect', (res, socket, head) => {
-		console.log('got connected!');
+ req.on('connect', (res, socket, head) => {
+  console.log('got connected!');
 
-		// Make a request over an HTTP tunnel
-		socket.write('GET / HTTP/1.1\r\n' +
+  // Make a request over an HTTP tunnel
+  socket.write('GET / HTTP/1.1\r\n' +
                  'Host: www.google.com:80\r\n' +
                  'Connection: close\r\n' +
                  '\r\n');
-		socket.on('data', (chunk) => {
-			console.log(chunk.toString());
-		});
-		socket.on('end', () => {
-			proxy.close();
-		});
-	});
+  socket.on('data', (chunk) => {
+   console.log(chunk.toString());
+  });
+  socket.on('end', () => {
+   proxy.close();
+  });
+ });
 });
 ```
 
@@ -547,9 +547,9 @@ and array with the raw header names followed by their respective values.
 const http = require('http');
 
 const options = {
-	host: '127.0.0.1',
-	port: 8080,
-	path: '/length_request'
+ host: '127.0.0.1',
+ port: 8080,
+ path: '/length_request'
 };
 
 // Make a request
@@ -557,7 +557,7 @@ const req = http.request(options);
 req.end();
 
 req.on('information', (info) => {
-	console.log(`Got information prior to main response: ${info.statusCode}`);
+ console.log(`Got information prior to main response: ${info.statusCode}`);
 });
 ```
 
@@ -626,39 +626,39 @@ const http = require('http');
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
-	res.writeHead(200, { 'Content-Type': 'text/plain' });
-	res.end('okay');
+ res.writeHead(200, { 'Content-Type': 'text/plain' });
+ res.end('okay');
 });
 server.on('upgrade', (req, socket, head) => {
-	socket.write('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
+ socket.write('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
                'Upgrade: WebSocket\r\n' +
                'Connection: Upgrade\r\n' +
                '\r\n');
 
-	socket.pipe(socket); // echo back
+ socket.pipe(socket); // echo back
 });
 
 // Now that server is running
 server.listen(1337, '127.0.0.1', () => {
 
-	// make a request
-	const options = {
-		port: 1337,
-		host: '127.0.0.1',
-		headers: {
-			'Connection': 'Upgrade',
-			'Upgrade': 'websocket'
-		}
-	};
+ // make a request
+ const options = {
+  port: 1337,
+  host: '127.0.0.1',
+  headers: {
+   'Connection': 'Upgrade',
+   'Upgrade': 'websocket'
+  }
+ };
 
-	const req = http.request(options);
-	req.end();
+ const req = http.request(options);
+ req.end();
 
-	req.on('upgrade', (res, socket, upgradeHead) => {
-		console.log('got upgraded!');
-		socket.end();
-		process.exit(0);
-	});
+ req.on('upgrade', (res, socket, upgradeHead) => {
+  console.log('got upgraded!');
+  socket.end();
+  process.exit(0);
+ });
 });
 ```
 
@@ -929,12 +929,12 @@ http
   .listen(3000);
 
 setInterval(() => {
-	// Adapting a keep-alive agent
-	http.get('http://localhost:3000', { agent }, (res) => {
-		res.on('data', (data) => {
-			// Do nothing
-		});
-	});
+ // Adapting a keep-alive agent
+ http.get('http://localhost:3000', { agent }, (res) => {
+  res.on('data', (data) => {
+   // Do nothing
+  });
+ });
 }, 5000); // Sending request on 5s interval so it's easy to hit idle timeout
 ```
 
@@ -946,7 +946,7 @@ const http = require('http');
 const agent = new http.Agent({ keepAlive: true });
 
 function retriableRequest() {
-	const req = http
+ const req = http
     .get('http://localhost:3000', { agent }, (res) => {
     	// ...
     })
@@ -1043,15 +1043,15 @@ because of how the protocol parser attaches to the socket.
 ```js
 const http = require('http');
 const options = {
-	host: 'www.google.com',
+ host: 'www.google.com',
 };
 const req = http.get(options);
 req.end();
 req.once('response', (res) => {
-	const ip = req.socket.localAddress;
-	const port = req.socket.localPort;
-	console.log(`Your IP address is ${ip} and your source port is ${port}.`);
-	// Consume response object
+ const ip = req.socket.localAddress;
+ const port = req.socket.localPort;
+ console.log(`Your IP address is ${ip} and your source port is ${port}.`);
+ // Consume response object
 });
 ```
 
@@ -1201,10 +1201,10 @@ written data it is immediately destroyed.
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-	res.end();
+ res.end();
 });
 server.on('clientError', (err, socket) => {
-	socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+ socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 server.listen(8000);
 ```
@@ -1227,11 +1227,11 @@ writable.
 
 ```js
 server.on('clientError', (err, socket) => {
-	if (err.code === 'ECONNRESET' || !socket.writable) {
-		return;
-	}
+ if (err.code === 'ECONNRESET' || !socket.writable) {
+  return;
+ }
 
-	socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+ socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 ```
 
@@ -1539,7 +1539,7 @@ emit trailers, with a list of the header fields in its value. E.g.,
 
 ```js
 response.writeHead(200, { 'Content-Type': 'text/plain',
-																										'Trailer': 'Content-MD5' });
+                          'Trailer': 'Content-MD5' });
 response.write(fileData);
 response.addTrailers({ 'Content-MD5': '7895bf4b8828b55ceaf47747b4bca667' });
 response.end();
@@ -1795,10 +1795,10 @@ to [`response.writeHead()`][] given precedence.
 ```js
 // Returns content-type = text/plain
 const server = http.createServer((req, res) => {
-	res.setHeader('Content-Type', 'text/html');
-	res.setHeader('X-Foo', 'bar');
-	res.writeHead(200, { 'Content-Type': 'text/plain' });
-	res.end('ok');
+ res.setHeader('Content-Type', 'text/html');
+ res.setHeader('X-Foo', 'bar');
+ res.writeHead(200, { 'Content-Type': 'text/plain' });
+ res.end('ok');
 });
 ```
 
@@ -1844,9 +1844,9 @@ because of how the protocol parser attaches to the socket. After
 ```js
 const http = require('http');
 const server = http.createServer((req, res) => {
-	const ip = res.socket.remoteAddress;
-	const port = res.socket.remotePort;
-	res.end(`Your IP address is ${ip} and your source port is ${port}.`);
+ const ip = res.socket.remoteAddress;
+ const port = res.socket.remotePort;
+ res.end(`Your IP address is ${ip} and your source port is ${port}.`);
 }).listen(3000);
 ```
 
@@ -2043,10 +2043,10 @@ desired with potential future retrieval and modification, use
 ```js
 // Returns content-type = text/plain
 const server = http.createServer((req, res) => {
-	res.setHeader('Content-Type', 'text/html');
-	res.setHeader('X-Foo', 'bar');
-	res.writeHead(200, { 'Content-Type': 'text/plain' });
-	res.end('ok');
+ res.setHeader('Content-Type', 'text/html');
+ res.setHeader('X-Foo', 'bar');
+ res.writeHead(200, { 'Content-Type': 'text/plain' });
+ res.end('ok');
 });
 ```
 
@@ -2148,16 +2148,16 @@ server fully transmitted a message before a connection was terminated:
 
 ```js
 const req = http.request({
-	host: '127.0.0.1',
-	port: 8080,
-	method: 'POST'
+ host: '127.0.0.1',
+ port: 8080,
+ method: 'POST'
 }, (res) => {
-	res.resume();
-	res.on('end', () => {
-		if (!res.complete)
-			console.error(
-				'The connection was terminated while the message was still being sent');
-	});
+ res.resume();
+ res.on('end', () => {
+  if (!res.complete)
+   console.error(
+    'The connection was terminated while the message was still being sent');
+ });
 });
 ```
 
@@ -2464,7 +2464,7 @@ with a list of header fields in its value, e.g.
 
 ```js
 message.writeHead(200, { 'Content-Type': 'text/plain',
-																									'Trailer': 'Content-MD5' });
+                         'Trailer': 'Content-MD5' });
 message.write(fileData);
 message.addTrailers({ 'Content-MD5': '7895bf4b8828b55ceaf47747b4bca667' });
 message.end();
@@ -2901,10 +2901,10 @@ const http = require('http');
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
-	res.writeHead(200, { 'Content-Type': 'application/json' });
-	res.end(JSON.stringify({
-		data: 'Hello World!'
-	}));
+ res.writeHead(200, { 'Content-Type': 'application/json' });
+ res.end(JSON.stringify({
+  data: 'Hello World!'
+ }));
 });
 
 server.listen(8000);
@@ -2918,10 +2918,10 @@ const server = http.createServer();
 
 // Listen to the request event
 server.on('request', (request, res) => {
-	res.writeHead(200, { 'Content-Type': 'application/json' });
-	res.end(JSON.stringify({
-		data: 'Hello World!'
-	}));
+ res.writeHead(200, { 'Content-Type': 'application/json' });
+ res.end(JSON.stringify({
+  data: 'Hello World!'
+ }));
 });
 
 server.listen(8000);
@@ -2963,47 +2963,47 @@ JSON fetching example:
 
 ```js
 http.get('http://localhost:8000/', (res) => {
-	const { statusCode } = res;
-	const contentType = res.headers['content-type'];
+ const { statusCode } = res;
+ const contentType = res.headers['content-type'];
 
-	let error;
-	// Any 2xx status code signals a successful response but
-	// here we're only checking for 200.
-	if (statusCode !== 200) {
-		error = new Error('Request Failed.\n' +
+ let error;
+ // Any 2xx status code signals a successful response but
+ // here we're only checking for 200.
+ if (statusCode !== 200) {
+  error = new Error('Request Failed.\n' +
                       `Status Code: ${statusCode}`);
-	} else if (!/^application\/json/.test(contentType)) {
-		error = new Error('Invalid content-type.\n' +
+ } else if (!/^application\/json/.test(contentType)) {
+  error = new Error('Invalid content-type.\n' +
                       `Expected application/json but received ${contentType}`);
-	}
-	if (error) {
-		console.error(error.message);
-		// Consume response data to free up memory
-		res.resume();
-		return;
-	}
+ }
+ if (error) {
+  console.error(error.message);
+  // Consume response data to free up memory
+  res.resume();
+  return;
+ }
 
-	res.setEncoding('utf8');
-	let rawData = '';
-	res.on('data', (chunk) => { rawData += chunk; });
-	res.on('end', () => {
-		try {
-			const parsedData = JSON.parse(rawData);
-			console.log(parsedData);
-		} catch (e) {
-			console.error(e.message);
-		}
-	});
+ res.setEncoding('utf8');
+ let rawData = '';
+ res.on('data', (chunk) => { rawData += chunk; });
+ res.on('end', () => {
+  try {
+   const parsedData = JSON.parse(rawData);
+   console.log(parsedData);
+  } catch (e) {
+   console.error(e.message);
+  }
+ });
 }).on('error', (e) => {
-	console.error(`Got error: ${e.message}`);
+ console.error(`Got error: ${e.message}`);
 });
 
 // Create a local server to receive data from
 const server = http.createServer((req, res) => {
-	res.writeHead(200, { 'Content-Type': 'application/json' });
-	res.end(JSON.stringify({
-		data: 'Hello World!'
-	}));
+ res.writeHead(200, { 'Content-Type': 'application/json' });
+ res.end(JSON.stringify({
+  data: 'Hello World!'
+ }));
 });
 
 server.listen(8000);
@@ -3152,34 +3152,34 @@ upload a file with a POST request, then write to the `ClientRequest` object.
 const http = require('http');
 
 const postData = JSON.stringify({
-	'msg': 'Hello World!'
+ 'msg': 'Hello World!'
 });
 
 const options = {
-	hostname: 'www.google.com',
-	port: 80,
-	path: '/upload',
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/json',
-		'Content-Length': Buffer.byteLength(postData)
-	}
+ hostname: 'www.google.com',
+ port: 80,
+ path: '/upload',
+ method: 'POST',
+ headers: {
+  'Content-Type': 'application/json',
+  'Content-Length': Buffer.byteLength(postData)
+ }
 };
 
 const req = http.request(options, (res) => {
-	console.log(`STATUS: ${res.statusCode}`);
-	console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-	res.setEncoding('utf8');
-	res.on('data', (chunk) => {
-		console.log(`BODY: ${chunk}`);
-	});
-	res.on('end', () => {
-		console.log('No more data in response.');
-	});
+ console.log(`STATUS: ${res.statusCode}`);
+ console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+ res.setEncoding('utf8');
+ res.on('data', (chunk) => {
+  console.log(`BODY: ${chunk}`);
+ });
+ res.on('end', () => {
+  console.log('No more data in response.');
+ });
 });
 
 req.on('error', (e) => {
-	console.error(`problem with request: ${e.message}`);
+ console.error(`problem with request: ${e.message}`);
 });
 
 // Write data to request body
@@ -3217,7 +3217,7 @@ Example using a [`URL`][] as `options`:
 const options = new URL('http://abc:xyz@example.com');
 
 const req = http.request(options, (res) => {
-	// ...
+ // ...
 });
 ```
 
@@ -3351,11 +3351,11 @@ Example:
 const { validateHeaderName } = require('http');
 
 try {
-	validateHeaderName('');
+ validateHeaderName('');
 } catch (err) {
-	err instanceof TypeError; // --> true
-	err.code; // --> 'ERR_INVALID_HTTP_TOKEN'
-	err.message; // --> 'Header name must be a valid HTTP token [""]'
+ err instanceof TypeError; // --> true
+ err.code; // --> 'ERR_INVALID_HTTP_TOKEN'
+ err.message; // --> 'Header name must be a valid HTTP token [""]'
 }
 ```
 
@@ -3385,19 +3385,19 @@ Examples:
 const { validateHeaderValue } = require('http');
 
 try {
-	validateHeaderValue('x-my-header', undefined);
+ validateHeaderValue('x-my-header', undefined);
 } catch (err) {
-	err instanceof TypeError; // --> true
-	err.code === 'ERR_HTTP_INVALID_HEADER_VALUE'; // --> true
-	err.message; // --> 'Invalid value "undefined" for header "x-my-header"'
+ err instanceof TypeError; // --> true
+ err.code === 'ERR_HTTP_INVALID_HEADER_VALUE'; // --> true
+ err.message; // --> 'Invalid value "undefined" for header "x-my-header"'
 }
 
 try {
-	validateHeaderValue('x-my-header', 'oʊmɪɡə');
+ validateHeaderValue('x-my-header', 'oʊmɪɡə');
 } catch (err) {
-	err instanceof TypeError; // --> true
-	err.code === 'ERR_INVALID_CHAR'; // --> true
-	err.message; // --> 'Invalid character in header content ["x-my-header"]'
+ err instanceof TypeError; // --> true
+ err.code === 'ERR_INVALID_CHAR'; // --> true
+ err.message; // --> 'Invalid character in header content ["x-my-header"]'
 }
 ```
 

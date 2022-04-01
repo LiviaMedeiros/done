@@ -7,10 +7,10 @@ const binding = require(`./build/${common.buildType}/binding`);
 const makeCallback = binding.makeCallback;
 
 function myMultiArgFunc(arg1, arg2, arg3) {
-	assert.strictEqual(arg1, 1);
-	assert.strictEqual(arg2, 2);
-	assert.strictEqual(arg3, 3);
-	return 42;
+ assert.strictEqual(arg1, 1);
+ assert.strictEqual(arg2, 2);
+ assert.strictEqual(arg3, 3);
+ return 42;
 }
 
 /**
@@ -19,20 +19,20 @@ function myMultiArgFunc(arg1, arg2, arg3) {
  */
 const resource = {};
 assert.strictEqual(makeCallback(resource, process, common.mustCall(function() {
-	assert.strictEqual(arguments.length, 0);
-	assert.strictEqual(this, process);
-	return 42;
+ assert.strictEqual(arguments.length, 0);
+ assert.strictEqual(this, process);
+ return 42;
 })), 42);
 
 assert.strictEqual(makeCallback(resource, process, common.mustCall(function(x) {
-	assert.strictEqual(arguments.length, 1);
-	assert.strictEqual(this, process);
-	assert.strictEqual(x, 1337);
-	return 42;
+ assert.strictEqual(arguments.length, 1);
+ assert.strictEqual(this, process);
+ assert.strictEqual(x, 1337);
+ return 42;
 }), 1337), 42);
 
 assert.strictEqual(makeCallback(resource, this,
-																																common.mustCall(myMultiArgFunc), 1, 2, 3), 42);
+                                common.mustCall(myMultiArgFunc), 1, 2, 3), 42);
 
 // TODO(node-api): napi_make_callback needs to support
 // strings passed for the func argument
@@ -78,9 +78,9 @@ const forward = vm.runInNewContext(`
 
 // Runs in outer context.
 function endpoint($Object) {
-	if (Object === $Object)
-		throw new Error('bad');
-	return Object;
+ if (Object === $Object)
+  throw new Error('bad');
+ return Object;
 }
 
 assert.strictEqual(makeCallback(resource, process, forward, endpoint), Object);

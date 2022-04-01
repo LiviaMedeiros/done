@@ -10,15 +10,15 @@ const assert = require('assert');
 
 // Test for files that start with strict directive.
 {
-	const script = fixtures.path('debugger', 'use-strict.js');
-	const cli = startCLI([script]);
+ const script = fixtures.path('debugger', 'use-strict.js');
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	return cli.waitForInitialBreak()
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => {
     	const brk = cli.breakInfo;

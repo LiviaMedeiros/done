@@ -11,16 +11,16 @@ const path = require('path');
 
 // Run after quit.
 {
-	const scriptFullPath = fixtures.path('debugger', 'three-lines.js');
-	const script = path.relative(process.cwd(), scriptFullPath);
-	const cli = startCLI([script]);
+ const scriptFullPath = fixtures.path('debugger', 'three-lines.js');
+ const script = path.relative(process.cwd(), scriptFullPath);
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	return cli.waitForInitialBreak()
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('breakpoints'))
     .then(() => {

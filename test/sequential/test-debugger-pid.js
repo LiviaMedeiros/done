@@ -11,28 +11,28 @@ const { spawn } = require('child_process');
 
 
 function launchTarget(...args) {
-	const childProc = spawn(process.execPath, args);
-	return Promise.resolve(childProc);
+ const childProc = spawn(process.execPath, args);
+ return Promise.resolve(childProc);
 }
 
 {
-	const script = fixtures.path('debugger', 'alive.js');
-	let cli = null;
-	let target = null;
+ const script = fixtures.path('debugger', 'alive.js');
+ let cli = null;
+ let target = null;
 
-	function cleanup(error) {
-		if (cli) {
-			cli.quit();
-			cli = null;
-		}
-		if (target) {
-			target.kill();
-			target = null;
-		}
-		assert.ifError(error);
-	}
+ function cleanup(error) {
+  if (cli) {
+   cli.quit();
+   cli = null;
+  }
+  if (target) {
+   target.kill();
+   target = null;
+  }
+  assert.ifError(error);
+ }
 
-	return launchTarget(script)
+ return launchTarget(script)
     .then((childProc) => {
     	target = childProc;
     	cli = startCLI(['-p', `${target.pid}`]);

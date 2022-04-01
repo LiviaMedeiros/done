@@ -2,7 +2,7 @@
 'use strict';
 const common = require('../common');
 if (common.isWindows)
-	common.skip('Does not support binding fd on Windows');
+ common.skip('Does not support binding fd on Windows');
 
 const dgram = require('dgram');
 const assert = require('assert');
@@ -13,44 +13,44 @@ const TYPE = 'udp4';
 
 // Throw when the fd is occupied according to https://github.com/libuv/libuv/pull/1851.
 {
-	const socket = dgram.createSocket(TYPE);
+ const socket = dgram.createSocket(TYPE);
 
-	socket.bind(common.mustCall(() => {
-		const anotherSocket = dgram.createSocket(TYPE);
-		const { handle } = socket[kStateSymbol];
+ socket.bind(common.mustCall(() => {
+  const anotherSocket = dgram.createSocket(TYPE);
+  const { handle } = socket[kStateSymbol];
 
-		assert.throws(() => {
-			anotherSocket.bind({
-				fd: handle.fd,
-			});
-		}, {
-			code: 'EEXIST',
-			name: 'Error',
-			message: /^open EEXIST$/
-		});
+  assert.throws(() => {
+   anotherSocket.bind({
+    fd: handle.fd,
+   });
+  }, {
+   code: 'EEXIST',
+   name: 'Error',
+   message: /^open EEXIST$/
+  });
 
-		socket.close();
-	}));
+  socket.close();
+ }));
 }
 
 // Throw when the type of fd is not "UDP".
 {
-	const handle = new TCP(constants.SOCKET);
-	handle.listen();
+ const handle = new TCP(constants.SOCKET);
+ handle.listen();
 
-	const fd = handle.fd;
-	assert.notStrictEqual(fd, -1);
+ const fd = handle.fd;
+ assert.notStrictEqual(fd, -1);
 
-	const socket = new dgram.createSocket(TYPE);
-	assert.throws(() => {
-		socket.bind({
-			fd,
-		});
-	}, {
-		code: 'ERR_INVALID_FD_TYPE',
-		name: 'TypeError',
-		message: /^Unsupported fd type: TCP$/
-	});
+ const socket = new dgram.createSocket(TYPE);
+ assert.throws(() => {
+  socket.bind({
+   fd,
+  });
+ }, {
+  code: 'ERR_INVALID_FD_TYPE',
+  name: 'TypeError',
+  message: /^Unsupported fd type: TCP$/
+ });
 
-	handle.close();
+ handle.close();
 }

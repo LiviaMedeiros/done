@@ -9,43 +9,43 @@ const tmpdir = require('../common/tmpdir');
 
 // Basic usage tests.
 assert.throws(
-	() => {
-		fs.watchFile('./some-file');
-	},
-	{
-		code: 'ERR_INVALID_ARG_TYPE',
-		name: 'TypeError'
-	});
+ () => {
+  fs.watchFile('./some-file');
+ },
+ {
+  code: 'ERR_INVALID_ARG_TYPE',
+  name: 'TypeError'
+ });
 
 assert.throws(
-	() => {
-		fs.watchFile('./another-file', {}, 'bad listener');
-	},
-	{
-		code: 'ERR_INVALID_ARG_TYPE',
-		name: 'TypeError'
-	});
+ () => {
+  fs.watchFile('./another-file', {}, 'bad listener');
+ },
+ {
+  code: 'ERR_INVALID_ARG_TYPE',
+  name: 'TypeError'
+ });
 
 assert.throws(() => {
-	fs.watchFile(new Object(), common.mustNotCall());
+ fs.watchFile(new Object(), common.mustNotCall());
 }, { code: 'ERR_INVALID_ARG_TYPE', name: 'TypeError' });
 
 const enoentFile = path.join(tmpdir.path, 'non-existent-file');
 const expectedStatObject = new fs.Stats(
-	0,                                        // dev
-	0,                                        // mode
-	0,                                        // nlink
-	0,                                        // uid
-	0,                                        // gid
-	0,                                        // rdev
-	0,                                        // blksize
-	0,                                        // ino
-	0,                                        // size
-	0,                                        // blocks
-	Date.UTC(1970, 0, 1, 0, 0, 0),            // atime
-	Date.UTC(1970, 0, 1, 0, 0, 0),            // mtime
-	Date.UTC(1970, 0, 1, 0, 0, 0),            // ctime
-	Date.UTC(1970, 0, 1, 0, 0, 0)             // birthtime
+ 0,                                        // dev
+ 0,                                        // mode
+ 0,                                        // nlink
+ 0,                                        // uid
+ 0,                                        // gid
+ 0,                                        // rdev
+ 0,                                        // blksize
+ 0,                                        // ino
+ 0,                                        // size
+ 0,                                        // blocks
+ Date.UTC(1970, 0, 1, 0, 0, 0),            // atime
+ Date.UTC(1970, 0, 1, 0, 0, 0),            // mtime
+ Date.UTC(1970, 0, 1, 0, 0, 0),            // ctime
+ Date.UTC(1970, 0, 1, 0, 0, 0)             // birthtime
 );
 
 tmpdir.refresh();
@@ -85,21 +85,21 @@ watcher.on('stop', common.mustCall(function onStop() {}));
 // Watch events should callback with a filename on supported systems.
 // Omitting AIX. It works but not reliably.
 if (common.isLinux || common.isOSX || common.isWindows) {
-	const dir = path.join(tmpdir.path, 'watch');
+ const dir = path.join(tmpdir.path, 'watch');
 
-	fs.mkdir(dir, common.mustCall(function(err) {
-		if (err) assert.fail(err);
+ fs.mkdir(dir, common.mustCall(function(err) {
+  if (err) assert.fail(err);
 
-		fs.watch(dir, common.mustCall(function(eventType, filename) {
-			clearInterval(interval);
-			this._handle.close();
-			assert.strictEqual(filename, 'foo.txt');
-		}));
+  fs.watch(dir, common.mustCall(function(eventType, filename) {
+   clearInterval(interval);
+   this._handle.close();
+   assert.strictEqual(filename, 'foo.txt');
+  }));
 
-		const interval = setInterval(() => {
-			fs.writeFile(path.join(dir, 'foo.txt'), 'foo', common.mustCall((err) => {
-				if (err) assert.fail(err);
-			}));
-		}, 1);
-	}));
+  const interval = setInterval(() => {
+   fs.writeFile(path.join(dir, 'foo.txt'), 'foo', common.mustCall((err) => {
+    if (err) assert.fail(err);
+   }));
+  }, 1);
+ }));
 }

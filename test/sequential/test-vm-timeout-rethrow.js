@@ -26,19 +26,19 @@ const vm = require('vm');
 const spawn = require('child_process').spawn;
 
 if (process.argv[2] === 'child') {
-	const code = 'while(true);';
+ const code = 'while(true);';
 
-	const ctx = vm.createContext();
+ const ctx = vm.createContext();
 
-	vm.runInContext(code, ctx, { timeout: 1 });
+ vm.runInContext(code, ctx, { timeout: 1 });
 } else {
-	const proc = spawn(process.execPath, process.argv.slice(1).concat('child'));
-	let err = '';
-	proc.stderr.on('data', function(data) {
-		err += data;
-	});
+ const proc = spawn(process.execPath, process.argv.slice(1).concat('child'));
+ let err = '';
+ proc.stderr.on('data', function(data) {
+  err += data;
+ });
 
-	process.on('exit', function() {
-		assert.match(err, /Script execution timed out after 1ms/);
-	});
+ process.on('exit', function() {
+  assert.match(err, /Script execution timed out after 1ms/);
+ });
 }

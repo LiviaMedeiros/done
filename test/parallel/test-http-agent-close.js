@@ -6,7 +6,7 @@ const http = require('http');
 const agent = new http.Agent();
 const _err = new Error('kaboom');
 agent.createSocket = function(req, options, cb) {
-	cb(_err);
+ cb(_err);
 };
 
 const req = http

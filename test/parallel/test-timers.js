@@ -24,56 +24,56 @@ const common = require('../common');
 const assert = require('assert');
 
 const inputs = [
-	undefined,
-	null,
-	true,
-	false,
-	'',
-	[],
-	{},
-	NaN,
-	+Infinity,
-	-Infinity,
-	(1.0 / 0.0),      // sanity check
-	parseFloat('x'),  // NaN
-	-10,
-	-1,
-	-0.5,
-	-0.1,
-	-0.0,
-	0,
-	0.0,
-	0.1,
-	0.5,
-	1,
-	1.0,
-	2147483648,     // Browser behavior: timeouts > 2^31-1 run on next tick
-	12345678901234,  // ditto
+ undefined,
+ null,
+ true,
+ false,
+ '',
+ [],
+ {},
+ NaN,
+ +Infinity,
+ -Infinity,
+ (1.0 / 0.0),      // sanity check
+ parseFloat('x'),  // NaN
+ -10,
+ -1,
+ -0.5,
+ -0.1,
+ -0.0,
+ 0,
+ 0.0,
+ 0.1,
+ 0.5,
+ 1,
+ 1.0,
+ 2147483648,     // Browser behavior: timeouts > 2^31-1 run on next tick
+ 12345678901234,  // ditto
 ];
 
 const timeouts = [];
 const intervals = [];
 
 inputs.forEach((value, index) => {
-	setTimeout(() => {
-		timeouts[index] = true;
-	}, value);
+ setTimeout(() => {
+  timeouts[index] = true;
+ }, value);
 
-	const handle = setInterval(() => {
-		clearInterval(handle); // Disarm timer or we'll never finish
-		intervals[index] = true;
-	}, value);
+ const handle = setInterval(() => {
+  clearInterval(handle); // Disarm timer or we'll never finish
+  intervals[index] = true;
+ }, value);
 });
 
 // All values in inputs array coerce to 1 ms. Therefore, they should all run
 // before a timer set here for 2 ms.
 
 setTimeout(common.mustCall(() => {
-	// Assert that all other timers have run
-	inputs.forEach((value, index) => {
-		assert(timeouts[index]);
-		assert(intervals[index]);
-	});
+ // Assert that all other timers have run
+ inputs.forEach((value, index) => {
+  assert(timeouts[index]);
+  assert(intervals[index]);
+ });
 }), 2);
 
 // Test 10 ms timeout separately.

@@ -6,7 +6,7 @@ const assert = require('assert');
 const { Channel } = dc;
 
 const input = {
-	foo: 'bar'
+ foo: 'bar'
 };
 
 // Should not have named channel
@@ -20,8 +20,8 @@ assert.ok(channel instanceof Channel);
 assert.ok(!channel.hasSubscribers);
 
 const subscriber = common.mustCall((message, name) => {
-	assert.strictEqual(name, channel.name);
-	assert.deepStrictEqual(message, input);
+ assert.strictEqual(name, channel.name);
+ assert.deepStrictEqual(message, input);
 });
 
 // Now there's a subscriber, should publish
@@ -42,5 +42,5 @@ assert.ok(!channel.hasSubscribers);
 assert.ok(!channel.unsubscribe(subscriber));
 
 assert.throws(() => {
-	channel.subscribe(null);
+ channel.subscribe(null);
 }, { code: 'ERR_INVALID_ARG_TYPE' });

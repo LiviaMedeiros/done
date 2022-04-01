@@ -20,9 +20,9 @@ let done = 0;
 const arrayBuffers = new Set();
 
 function startRead() {
-	++started;
-	const chunks = [];
-	fs.createReadStream(filename)
+ ++started;
+ const chunks = [];
+ fs.createReadStream(filename)
     .on('data', (chunk) => {
     	chunks.push(chunk);
     	arrayBuffers.add(chunk.buffer);
@@ -44,4 +44,4 @@ function startRead() {
 // Don’t start the reads all at once – that way we would have to allocate
 // a large amount of memory upfront.
 for (let i = 0; i < 6; ++i)
-	startRead();
+ startRead();

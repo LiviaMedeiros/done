@@ -24,125 +24,125 @@ const kFakeResponseHeaders = Buffer.from('4803333032580770726976617465611d' +
                                          '6c652e636f6d', 'hex');
 
 function isUint32(val) {
-	return val >>> 0 === val;
+ return val >>> 0 === val;
 }
 
 function isUint24(val) {
-	return val >>> 0 === val && val <= 0xFFFFFF;
+ return val >>> 0 === val && val <= 0xFFFFFF;
 }
 
 function isUint8(val) {
-	return val >>> 0 === val && val <= 0xFF;
+ return val >>> 0 === val && val <= 0xFF;
 }
 
 function write32BE(array, pos, val) {
-	if (!isUint32(val))
-		throw new RangeError('val is not a 32-bit number');
-	array[pos++] = (val >> 24) & 0xff;
-	array[pos++] = (val >> 16) & 0xff;
-	array[pos++] = (val >> 8) & 0xff;
-	array[pos++] = val & 0xff;
+ if (!isUint32(val))
+  throw new RangeError('val is not a 32-bit number');
+ array[pos++] = (val >> 24) & 0xff;
+ array[pos++] = (val >> 16) & 0xff;
+ array[pos++] = (val >> 8) & 0xff;
+ array[pos++] = val & 0xff;
 }
 
 function write24BE(array, pos, val) {
-	if (!isUint24(val))
-		throw new RangeError('val is not a 24-bit number');
-	array[pos++] = (val >> 16) & 0xff;
-	array[pos++] = (val >> 8) & 0xff;
-	array[pos++] = val & 0xff;
+ if (!isUint24(val))
+  throw new RangeError('val is not a 24-bit number');
+ array[pos++] = (val >> 16) & 0xff;
+ array[pos++] = (val >> 8) & 0xff;
+ array[pos++] = val & 0xff;
 }
 
 function write8(array, pos, val) {
-	if (!isUint8(val))
-		throw new RangeError('val is not an 8-bit number');
-	array[pos] = val;
+ if (!isUint8(val))
+  throw new RangeError('val is not an 8-bit number');
+ array[pos] = val;
 }
 
 class Frame {
-	constructor(length, type, flags, id) {
-		this[kFrameData] = Buffer.alloc(9);
-		write24BE(this[kFrameData], 0, length);
-		write8(this[kFrameData], 3, type);
-		write8(this[kFrameData], 4, flags);
-		write32BE(this[kFrameData], 5, id);
-	}
+ constructor(length, type, flags, id) {
+  this[kFrameData] = Buffer.alloc(9);
+  write24BE(this[kFrameData], 0, length);
+  write8(this[kFrameData], 3, type);
+  write8(this[kFrameData], 4, flags);
+  write32BE(this[kFrameData], 5, id);
+ }
 
-	get data() {
-		return this[kFrameData];
-	}
+ get data() {
+  return this[kFrameData];
+ }
 }
 
 class SettingsFrame extends Frame {
-	constructor(ack = false) {
-		let flags = 0;
-		if (ack)
-			flags |= FLAG_ACK;
-		super(0, 4, flags, 0);
-	}
+ constructor(ack = false) {
+  let flags = 0;
+  if (ack)
+   flags |= FLAG_ACK;
+  super(0, 4, flags, 0);
+ }
 }
 
 class DataFrame extends Frame {
-	constructor(id, payload, padlen = 0, final = false) {
-		let len = payload.length;
-		let flags = 0;
-		if (final) flags |= FLAG_EOS;
-		const buffers = [payload];
-		if (padlen > 0) {
-			buffers.unshift(Buffer.from([padlen]));
-			buffers.push(PADDING.slice(0, padlen));
-			len += padlen + 1;
-			flags |= FLAG_PADDED;
-		}
-		super(len, 0, flags, id);
-		buffers.unshift(this[kFrameData]);
-		this[kFrameData] = Buffer.concat(buffers);
-	}
+ constructor(id, payload, padlen = 0, final = false) {
+  let len = payload.length;
+  let flags = 0;
+  if (final) flags |= FLAG_EOS;
+  const buffers = [payload];
+  if (padlen > 0) {
+   buffers.unshift(Buffer.from([padlen]));
+   buffers.push(PADDING.slice(0, padlen));
+   len += padlen + 1;
+   flags |= FLAG_PADDED;
+  }
+  super(len, 0, flags, id);
+  buffers.unshift(this[kFrameData]);
+  this[kFrameData] = Buffer.concat(buffers);
+ }
 }
 
 class HeadersFrame extends Frame {
-	constructor(id, payload, padlen = 0, final = false) {
-		let len = payload.length;
-		let flags = FLAG_EOH;
-		if (final) flags |= FLAG_EOS;
-		const buffers = [payload];
-		if (padlen > 0) {
-			buffers.unshift(Buffer.from([padlen]));
-			buffers.push(PADDING.slice(0, padlen));
-			len += padlen + 1;
-			flags |= FLAG_PADDED;
-		}
-		super(len, 1, flags, id);
-		buffers.unshift(this[kFrameData]);
-		this[kFrameData] = Buffer.concat(buffers);
-	}
+ constructor(id, payload, padlen = 0, final = false) {
+  let len = payload.length;
+  let flags = FLAG_EOH;
+  if (final) flags |= FLAG_EOS;
+  const buffers = [payload];
+  if (padlen > 0) {
+   buffers.unshift(Buffer.from([padlen]));
+   buffers.push(PADDING.slice(0, padlen));
+   len += padlen + 1;
+   flags |= FLAG_PADDED;
+  }
+  super(len, 1, flags, id);
+  buffers.unshift(this[kFrameData]);
+  this[kFrameData] = Buffer.concat(buffers);
+ }
 }
 
 class PingFrame extends Frame {
-	constructor(ack = false) {
-		const buffers = [Buffer.alloc(8)];
-		super(8, 6, ack ? 1 : 0, 0);
-		buffers.unshift(this[kFrameData]);
-		this[kFrameData] = Buffer.concat(buffers);
-	}
+ constructor(ack = false) {
+  const buffers = [Buffer.alloc(8)];
+  super(8, 6, ack ? 1 : 0, 0);
+  buffers.unshift(this[kFrameData]);
+  this[kFrameData] = Buffer.concat(buffers);
+ }
 }
 
 class AltSvcFrame extends Frame {
-	constructor(size) {
-		const buffers = [Buffer.alloc(size)];
-		super(size, 10, 0, 0);
-		buffers.unshift(this[kFrameData]);
-		this[kFrameData] = Buffer.concat(buffers);
-	}
+ constructor(size) {
+  const buffers = [Buffer.alloc(size)];
+  super(size, 10, 0, 0);
+  buffers.unshift(this[kFrameData]);
+  this[kFrameData] = Buffer.concat(buffers);
+ }
 }
 
 module.exports = {
-	Frame,
-	AltSvcFrame,
-	DataFrame,
-	HeadersFrame,
-	SettingsFrame,
-	PingFrame,
-	kFakeRequestHeaders,
-	kFakeResponseHeaders,
-	kClientMagic
+ Frame,
+ AltSvcFrame,
+ DataFrame,
+ HeadersFrame,
+ SettingsFrame,
+ PingFrame,
+ kFakeRequestHeaders,
+ kFakeResponseHeaders,
+ kClientMagic
 };

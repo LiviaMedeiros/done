@@ -38,15 +38,15 @@ const testMe = repl.start('', putIn);
 
 // Some errors might be passed to the domain.
 testMe._domain.on('error', function(reason) {
-	const err = new Error('Test failed');
-	err.reason = reason;
-	throw err;
+ const err = new Error('Test failed');
+ err.reason = reason;
+ throw err;
 });
 
 const testFile = [
-	'let inner = (function() {',
-	'  return {one:1};',
-	'})()',
+ 'let inner = (function() {',
+ '  return {one:1};',
+ '})()',
 ];
 const saveFileName = join(tmpdir.path, 'test.save.js');
 
@@ -58,11 +58,11 @@ putIn.run([`.save ${saveFileName}`]);
 
 // The file should have what I wrote.
 assert.strictEqual(fs.readFileSync(saveFileName, 'utf8'),
-																			testFile.join('\n'));
+                   testFile.join('\n'));
 
 // Make sure that the REPL data is "correct".
 testMe.complete('inner.o', common.mustSucceed((data) => {
-	assert.deepStrictEqual(data, works);
+ assert.deepStrictEqual(data, works);
 }));
 
 // Clear the REPL.
@@ -73,7 +73,7 @@ putIn.run([`.load ${saveFileName}`]);
 
 // Make sure that the REPL data is "correct".
 testMe.complete('inner.o', common.mustSucceed((data) => {
-	assert.deepStrictEqual(data, works);
+ assert.deepStrictEqual(data, works);
 }));
 
 // Clear the REPL.
@@ -83,18 +83,18 @@ let loadFile = join(tmpdir.path, 'file.does.not.exist');
 
 // Should not break.
 putIn.write = common.mustCall(function(data) {
-	// Make sure I get a failed to load message and not some crazy error.
-	assert.strictEqual(data, `Failed to load: ${loadFile}\n`);
-	// Eat me to avoid work.
-	putIn.write = () => {};
+ // Make sure I get a failed to load message and not some crazy error.
+ assert.strictEqual(data, `Failed to load: ${loadFile}\n`);
+ // Eat me to avoid work.
+ putIn.write = () => {};
 });
 putIn.run([`.load ${loadFile}`]);
 
 // Throw error on loading directory.
 loadFile = tmpdir.path;
 putIn.write = common.mustCall(function(data) {
-	assert.strictEqual(data, `Failed to load: ${loadFile} is not a valid file\n`);
-	putIn.write = () => {};
+ assert.strictEqual(data, `Failed to load: ${loadFile} is not a valid file\n`);
+ putIn.write = () => {};
 });
 putIn.run([`.load ${loadFile}`]);
 
@@ -107,31 +107,31 @@ const invalidFileName = join(tmpdir.path, '\0\0\0\0\0');
 
 // Should not break.
 putIn.write = common.mustCall(function(data) {
-	// Make sure I get a failed to save message and not some other error.
-	assert.strictEqual(data, `Failed to save: ${invalidFileName}\n`);
-	// Reset to no-op.
-	putIn.write = () => {};
+ // Make sure I get a failed to save message and not some other error.
+ assert.strictEqual(data, `Failed to save: ${invalidFileName}\n`);
+ // Reset to no-op.
+ putIn.write = () => {};
 });
 
 // Save it to a file.
 putIn.run([`.save ${invalidFileName}`]);
 
 {
-	// Save .editor mode code.
-	const cmds = [
-		'function testSave() {',
-		'return "saved";',
-		'}',
-	];
-	const putIn = new ArrayStream();
-	const replServer = repl.start({ terminal: true, stream: putIn });
+ // Save .editor mode code.
+ const cmds = [
+  'function testSave() {',
+  'return "saved";',
+  '}',
+ ];
+ const putIn = new ArrayStream();
+ const replServer = repl.start({ terminal: true, stream: putIn });
 
-	putIn.run(['.editor']);
-	putIn.run(cmds);
-	replServer.write('', { ctrl: true, name: 'd' });
+ putIn.run(['.editor']);
+ putIn.run(cmds);
+ replServer.write('', { ctrl: true, name: 'd' });
 
-	putIn.run([`.save ${saveFileName}`]);
-	replServer.close();
-	assert.strictEqual(fs.readFileSync(saveFileName, 'utf8'),
-																				`${cmds.join('\n')}\n`);
+ putIn.run([`.save ${saveFileName}`]);
+ replServer.close();
+ assert.strictEqual(fs.readFileSync(saveFileName, 'utf8'),
+                    `${cmds.join('\n')}\n`);
 }

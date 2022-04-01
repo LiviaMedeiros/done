@@ -18,38 +18,38 @@ const command = common.isWindows ? 'cd' : 'pwd';
 const options = { cwd: tmpdir.path };
 
 if (common.isWindows) {
-	// This test is not the case for Windows based systems
-	// unless the `shell` options equals to `true`
+ // This test is not the case for Windows based systems
+ // unless the `shell` options equals to `true`
 
-	options.shell = true;
+ options.shell = true;
 }
 
 const testCases = [
-	undefined,
-	null,
-	[],
+ undefined,
+ null,
+ [],
 ];
 
 const expectedResult = tmpdir.path.trim().toLowerCase();
 
 (async () => {
-	const results = await Promise.all(
-		testCases.map((testCase) => {
-			return new Promise((resolve) => {
-				const subprocess = spawn(command, testCase, options);
+ const results = await Promise.all(
+  testCases.map((testCase) => {
+   return new Promise((resolve) => {
+    const subprocess = spawn(command, testCase, options);
 
-				let accumulatedData = Buffer.alloc(0);
+    let accumulatedData = Buffer.alloc(0);
 
-				subprocess.stdout.on('data', common.mustCall((data) => {
-					accumulatedData = Buffer.concat([accumulatedData, data]);
-				}));
+    subprocess.stdout.on('data', common.mustCall((data) => {
+     accumulatedData = Buffer.concat([accumulatedData, data]);
+    }));
 
-				subprocess.stdout.on('end', () => {
-					resolve(accumulatedData.toString().trim().toLowerCase());
-				});
-			});
-		})
-	);
+    subprocess.stdout.on('end', () => {
+     resolve(accumulatedData.toString().trim().toLowerCase());
+    });
+   });
+  })
+ );
 
-	assert.deepStrictEqual([...new Set(results)], [expectedResult]);
+ assert.deepStrictEqual([...new Set(results)], [expectedResult]);
 })().then(common.mustCall());

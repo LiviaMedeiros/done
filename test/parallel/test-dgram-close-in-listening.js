@@ -10,7 +10,7 @@ const buf = Buffer.alloc(1024, 42);
 const socket = dgram.createSocket('udp4');
 
 socket.on('listening', function() {
-	socket.close();
+ socket.close();
 });
 
 // Get a random port for send

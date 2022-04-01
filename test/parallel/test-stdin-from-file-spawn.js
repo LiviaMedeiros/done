@@ -4,11 +4,11 @@ const process = require('process');
 
 let defaultShell;
 if (process.platform === 'linux' || process.platform === 'darwin') {
-	defaultShell = '/bin/sh';
+ defaultShell = '/bin/sh';
 } else if (process.platform === 'win32') {
-	defaultShell = 'cmd.exe';
+ defaultShell = 'cmd.exe';
 } else {
-	common.skip('This is test exists only on Linux/Win32/OSX');
+ common.skip('This is test exists only on Linux/Win32/OSX');
 }
 
 const { execSync } = require('child_process');

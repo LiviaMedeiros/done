@@ -12,28 +12,28 @@ const expectedType = 'test_emit_init_type';
 const expectedResource = { key: 'test_emit_init_resource' };
 
 const hooks1 = initHooks({
-	oninit: common.mustCall((id, type, triggerAsyncId, resource) => {
-		assert.strictEqual(id, expectedId);
-		assert.strictEqual(type, expectedType);
-		assert.strictEqual(triggerAsyncId, expectedTriggerId);
-		assert.strictEqual(resource.key, expectedResource.key);
-	})
+ oninit: common.mustCall((id, type, triggerAsyncId, resource) => {
+  assert.strictEqual(id, expectedId);
+  assert.strictEqual(type, expectedType);
+  assert.strictEqual(triggerAsyncId, expectedTriggerId);
+  assert.strictEqual(resource.key, expectedResource.key);
+ })
 });
 
 hooks1.enable();
 
 async_hooks.emitInit(expectedId, expectedType, expectedTriggerId,
-																					expectedResource);
+                     expectedResource);
 
 hooks1.disable();
 
 initHooks({
-	oninit: common.mustCall((id, type, triggerAsyncId, resource) => {
-		assert.strictEqual(id, expectedId);
-		assert.strictEqual(type, expectedType);
-		assert.notStrictEqual(triggerAsyncId, expectedTriggerId);
-		assert.strictEqual(resource.key, expectedResource.key);
-	})
+ oninit: common.mustCall((id, type, triggerAsyncId, resource) => {
+  assert.strictEqual(id, expectedId);
+  assert.strictEqual(type, expectedType);
+  assert.notStrictEqual(triggerAsyncId, expectedTriggerId);
+  assert.strictEqual(resource.key, expectedResource.key);
+ })
 }).enable();
 
 async_hooks.emitInit(expectedId, expectedType, null, expectedResource);

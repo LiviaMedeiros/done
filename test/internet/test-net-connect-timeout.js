@@ -41,10 +41,10 @@ const socket = net.createConnection(9999, '192.0.2.1');
 socket.setTimeout(T);
 
 socket.on('timeout', common.mustCall(function() {
-	console.error('timeout');
-	const now = new Date();
-	assert.ok(now - start < T + 500);
-	socket.destroy();
+ console.error('timeout');
+ const now = new Date();
+ assert.ok(now - start < T + 500);
+ socket.destroy();
 }));
 
 socket.on('connect', common.mustNotCall());

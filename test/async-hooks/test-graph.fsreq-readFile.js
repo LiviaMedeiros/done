@@ -15,12 +15,12 @@ function onread() {}
 process.on('exit', onexit);
 
 function onexit() {
-	hooks.disable();
-	verifyGraph(
-		hooks,
-		[ { type: 'FSREQCALLBACK', id: 'fsreq:1', triggerAsyncId: null },
-				{ type: 'FSREQCALLBACK', id: 'fsreq:2', triggerAsyncId: 'fsreq:1' },
-				{ type: 'FSREQCALLBACK', id: 'fsreq:3', triggerAsyncId: 'fsreq:2' },
-				{ type: 'FSREQCALLBACK', id: 'fsreq:4', triggerAsyncId: 'fsreq:3' } ]
-	);
+ hooks.disable();
+ verifyGraph(
+  hooks,
+  [ { type: 'FSREQCALLBACK', id: 'fsreq:1', triggerAsyncId: null },
+    { type: 'FSREQCALLBACK', id: 'fsreq:2', triggerAsyncId: 'fsreq:1' },
+    { type: 'FSREQCALLBACK', id: 'fsreq:3', triggerAsyncId: 'fsreq:2' },
+    { type: 'FSREQCALLBACK', id: 'fsreq:4', triggerAsyncId: 'fsreq:3' } ]
+ );
 }

@@ -7,10 +7,10 @@ const { Worker } = require('worker_threads');
 // still resolves the returned Promise.
 
 async function test() {
-	const worker = new Worker('setTimeout(() => {}, 1000000);', { eval: true });
-	await once(worker, 'online');
-	worker.unref();
-	await worker.terminate();
+ const worker = new Worker('setTimeout(() => {}, 1000000);', { eval: true });
+ await once(worker, 'online');
+ worker.unref();
+ await worker.terminate();
 }
 
 test().then(common.mustCall());

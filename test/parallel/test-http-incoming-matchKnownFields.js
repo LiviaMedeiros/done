@@ -4,14 +4,14 @@ const assert = require('assert');
 const IncomingMessage = require('http').IncomingMessage;
 
 function checkDest(field, result, value) {
-	const dest = {};
+ const dest = {};
 
-	const incomingMessage = new IncomingMessage(field);
-	// Dest is changed by IncomingMessage._addHeaderLine
-	if (value)
-		incomingMessage._addHeaderLine(field, 'test', dest);
-	incomingMessage._addHeaderLine(field, value, dest);
-	assert.deepStrictEqual(dest, result);
+ const incomingMessage = new IncomingMessage(field);
+ // Dest is changed by IncomingMessage._addHeaderLine
+ if (value)
+  incomingMessage._addHeaderLine(field, 'test', dest);
+ incomingMessage._addHeaderLine(field, value, dest);
+ assert.deepStrictEqual(dest, result);
 }
 
 checkDest('', { '': undefined });

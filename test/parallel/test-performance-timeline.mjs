@@ -39,12 +39,12 @@ performance.mark(undefined);
 assert.strictEqual(performance.getEntriesByName(undefined).length, 1);
 assert.strictEqual(performance.getEntriesByType(undefined).length, 0);
 assert.throws(() => performance.getEntriesByName(), {
-	name: 'TypeError',
-	message: 'The "name" argument must be specified',
-	code: 'ERR_MISSING_ARGS'
+ name: 'TypeError',
+ message: 'The "name" argument must be specified',
+ code: 'ERR_MISSING_ARGS'
 });
 assert.throws(() => performance.getEntriesByType(), {
-	name: 'TypeError',
-	message: 'The "type" argument must be specified',
-	code: 'ERR_MISSING_ARGS'
+ name: 'TypeError',
+ message: 'The "type" argument must be specified',
+ code: 'ERR_MISSING_ARGS'
 });

@@ -2,7 +2,7 @@
 const common = require('../../common');
 
 if (common.isWindows)
-	common.skip('dlopen global symbol loading is not supported on this os.');
+ common.skip('dlopen global symbol loading is not supported on this os.');
 
 const assert = require('assert');
 const path = require('path');
@@ -11,7 +11,7 @@ const os = require('os');
 const bindingPath = require.resolve(`./build/${common.buildType}/binding`);
 console.log('process.dlopen:', bindingPath);
 process.dlopen(module, bindingPath,
-															os.constants.dlopen.RTLD_NOW | os.constants.dlopen.RTLD_GLOBAL);
+               os.constants.dlopen.RTLD_NOW | os.constants.dlopen.RTLD_GLOBAL);
 console.log('module.exports.load:', `${path.dirname(bindingPath)}/ping.so`);
 module.exports.load(`${path.dirname(bindingPath)}/ping.so`);
 assert.strictEqual(module.exports.ping(), 'pong');

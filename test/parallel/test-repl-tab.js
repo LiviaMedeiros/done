@@ -7,12 +7,12 @@ const zlib = require('zlib');
 // Just use builtin stream inherited from Duplex
 const putIn = zlib.createGzip();
 const testMe = repl.start('', putIn, function(cmd, context, filename,
-																																														callback) {
-	callback(null, cmd);
+                                              callback) {
+ callback(null, cmd);
 });
 
 testMe._domain.on('error', common.mustNotCall());
 
 testMe.complete('', function(err, results) {
-	assert.strictEqual(err, null);
+ assert.strictEqual(err, null);
 });

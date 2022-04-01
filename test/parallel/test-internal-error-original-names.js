@@ -13,23 +13,23 @@ const errors = require('internal/errors');
 
 
 errors.E('TEST_ERROR_1', 'Error for testing purposes: %s',
-									Error);
+         Error);
 {
-	const err = new errors.codes.TEST_ERROR_1('test');
-	assert(err instanceof Error);
-	assert.strictEqual(err.name, 'Error');
+ const err = new errors.codes.TEST_ERROR_1('test');
+ assert(err instanceof Error);
+ assert.strictEqual(err.name, 'Error');
 }
 
 {
-	errors.useOriginalName = true;
-	const err = new errors.codes.TEST_ERROR_1('test');
-	assert(err instanceof Error);
-	assert.strictEqual(err.name, 'Error');
+ errors.useOriginalName = true;
+ const err = new errors.codes.TEST_ERROR_1('test');
+ assert(err instanceof Error);
+ assert.strictEqual(err.name, 'Error');
 }
 
 {
-	errors.useOriginalName = false;
-	const err = new errors.codes.TEST_ERROR_1('test');
-	assert(err instanceof Error);
-	assert.strictEqual(err.name, 'Error');
+ errors.useOriginalName = false;
+ const err = new errors.codes.TEST_ERROR_1('test');
+ assert(err instanceof Error);
+ assert.strictEqual(err.name, 'Error');
 }

@@ -12,7 +12,7 @@ assert.deepStrictEqual(asyncWrapProviders, { __proto__: null, ...providers });
 
 const providerKeys = Object.keys(asyncWrapProviders);
 assert.throws(() => {
-	asyncWrapProviders[providerKeys[0]] = 'another value';
+ asyncWrapProviders[providerKeys[0]] = 'another value';
 }, common.expectsError({
-	name: 'TypeError',
+ name: 'TypeError',
 }), 'should not allow modify asyncWrap providers');

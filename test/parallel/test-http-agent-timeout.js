@@ -5,17 +5,17 @@ const assert = require('assert');
 const http = require('http');
 
 {
-	// Ensure reuse of successful sockets.
+ // Ensure reuse of successful sockets.
 
-	const agent = new http.Agent({ keepAlive: true });
+ const agent = new http.Agent({ keepAlive: true });
 
-	const server = http.createServer((req, res) => {
-		res.end();
-	});
+ const server = http.createServer((req, res) => {
+  res.end();
+ });
 
-	server.listen(0, common.mustCall(() => {
-		let socket;
-		http.get({ port: server.address().port, agent })
+ server.listen(0, common.mustCall(() => {
+  let socket;
+  http.get({ port: server.address().port, agent })
       .on('response', common.mustCall((res) => {
       	socket = res.socket;
       	assert(socket);
@@ -30,20 +30,20 @@ const http = require('http');
             }));
       	}));
       }));
-	}));
+ }));
 }
 
 {
-	// Ensure that timed-out sockets are not reused.
+ // Ensure that timed-out sockets are not reused.
 
-	const agent = new http.Agent({ keepAlive: true, timeout: 50 });
+ const agent = new http.Agent({ keepAlive: true, timeout: 50 });
 
-	const server = http.createServer((req, res) => {
-		res.end();
-	});
+ const server = http.createServer((req, res) => {
+  res.end();
+ });
 
-	server.listen(0, common.mustCall(() => {
-		http.get({ port: server.address().port, agent })
+ server.listen(0, common.mustCall(() => {
+  http.get({ port: server.address().port, agent })
       .on('response', common.mustCall((res) => {
       	const socket = res.socket;
       	assert(socket);
@@ -60,21 +60,21 @@ const http = require('http');
       		}));
       	}));
       }));
-	}));
+ }));
 }
 
 {
-	// Ensure that destroyed sockets are not reused.
+ // Ensure that destroyed sockets are not reused.
 
-	const agent = new http.Agent({ keepAlive: true });
+ const agent = new http.Agent({ keepAlive: true });
 
-	const server = http.createServer((req, res) => {
-		res.end();
-	});
+ const server = http.createServer((req, res) => {
+  res.end();
+ });
 
-	server.listen(0, common.mustCall(() => {
-		let socket;
-		http.get({ port: server.address().port, agent })
+ server.listen(0, common.mustCall(() => {
+  let socket;
+  http.get({ port: server.address().port, agent })
       .on('response', common.mustCall((res) => {
       	socket = res.socket;
       	assert(socket);
@@ -90,34 +90,34 @@ const http = require('http');
             }));
       	}));
       }));
-	}));
+ }));
 }
 
 {
-	// Ensure custom keepSocketAlive timeout is respected
+ // Ensure custom keepSocketAlive timeout is respected
 
-	const CUSTOM_TIMEOUT = 60;
-	const AGENT_TIMEOUT = 50;
+ const CUSTOM_TIMEOUT = 60;
+ const AGENT_TIMEOUT = 50;
 
-	class CustomAgent extends http.Agent {
-		keepSocketAlive(socket) {
-			if (!super.keepSocketAlive(socket)) {
-				return false;
-			}
+ class CustomAgent extends http.Agent {
+  keepSocketAlive(socket) {
+   if (!super.keepSocketAlive(socket)) {
+    return false;
+   }
 
-			socket.setTimeout(CUSTOM_TIMEOUT);
-			return true;
-		}
-	}
+   socket.setTimeout(CUSTOM_TIMEOUT);
+   return true;
+  }
+ }
 
-	const agent = new CustomAgent({ keepAlive: true, timeout: AGENT_TIMEOUT });
+ const agent = new CustomAgent({ keepAlive: true, timeout: AGENT_TIMEOUT });
 
-	const server = http.createServer((req, res) => {
-		res.end();
-	});
+ const server = http.createServer((req, res) => {
+  res.end();
+ });
 
-	server.listen(0, common.mustCall(() => {
-		http.get({ port: server.address().port, agent })
+ server.listen(0, common.mustCall(() => {
+  http.get({ port: server.address().port, agent })
       .on('response', common.mustCall((res) => {
       	const socket = res.socket;
       	assert(socket);
@@ -130,5 +130,5 @@ const http = require('http');
       		}));
       	}));
       }));
-	}));
+ }));
 }

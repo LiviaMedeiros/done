@@ -5,19 +5,19 @@ const cluster = require('cluster');
 const tmpdir = require('../common/tmpdir');
 
 if (cluster.isPrimary) {
-	tmpdir.refresh();
+ tmpdir.refresh();
 
-	assert.strictEqual(cluster.settings.cwd, undefined);
-	cluster.fork().on('message', common.mustCall((msg) => {
-		assert.strictEqual(msg, process.cwd());
-	}));
+ assert.strictEqual(cluster.settings.cwd, undefined);
+ cluster.fork().on('message', common.mustCall((msg) => {
+  assert.strictEqual(msg, process.cwd());
+ }));
 
-	cluster.setupPrimary({ cwd: tmpdir.path });
-	assert.strictEqual(cluster.settings.cwd, tmpdir.path);
-	cluster.fork().on('message', common.mustCall((msg) => {
-		assert.strictEqual(msg, tmpdir.path);
-	}));
+ cluster.setupPrimary({ cwd: tmpdir.path });
+ assert.strictEqual(cluster.settings.cwd, tmpdir.path);
+ cluster.fork().on('message', common.mustCall((msg) => {
+  assert.strictEqual(msg, tmpdir.path);
+ }));
 } else {
-	process.send(process.cwd());
-	process.disconnect();
+ process.send(process.cwd());
+ process.disconnect();
 }

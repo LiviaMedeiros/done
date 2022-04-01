@@ -10,11 +10,11 @@ hooks.enable();
 
 setTimeout(common.mustCall(ontimeout), TIMEOUT);
 function ontimeout() {
-	setTimeout(onsecondTimeout, TIMEOUT + 1);
+ setTimeout(onsecondTimeout, TIMEOUT + 1);
 }
 
 function onsecondTimeout() {
-	setTimeout(onthirdTimeout, TIMEOUT + 2);
+ setTimeout(onthirdTimeout, TIMEOUT + 2);
 }
 
 function onthirdTimeout() {}
@@ -22,11 +22,11 @@ function onthirdTimeout() {}
 process.on('exit', onexit);
 
 function onexit() {
-	hooks.disable();
-	verifyGraph(
-		hooks,
-		[ { type: 'Timeout', id: 'timeout:1', triggerAsyncId: null },
-				{ type: 'Timeout', id: 'timeout:2', triggerAsyncId: 'timeout:1' },
-				{ type: 'Timeout', id: 'timeout:3', triggerAsyncId: 'timeout:2' }]
-	);
+ hooks.disable();
+ verifyGraph(
+  hooks,
+  [ { type: 'Timeout', id: 'timeout:1', triggerAsyncId: null },
+    { type: 'Timeout', id: 'timeout:2', triggerAsyncId: 'timeout:1' },
+    { type: 'Timeout', id: 'timeout:3', triggerAsyncId: 'timeout:2' }]
+ );
 }

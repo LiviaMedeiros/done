@@ -2658,13 +2658,13 @@ Please ensure that all `fs.FileHandle` objects are explicitly closed using
 ```js
 const fsPromises = require('fs').promises;
 async function openAndClose() {
-	let filehandle;
-	try {
-		filehandle = await fsPromises.open('thefile.txt', 'r');
-	} finally {
-		if (filehandle !== undefined)
-			await filehandle.close();
-	}
+ let filehandle;
+ try {
+  filehandle = await fsPromises.open('thefile.txt', 'r');
+ } finally {
+  if (filehandle !== undefined)
+   await filehandle.close();
+ }
 }
 ```
 
@@ -2784,7 +2784,7 @@ Instead, it is recommended to compare `require.main` and `module`:
 
 ```js
 if (require.main === module) {
-	// Code section that will run only if current file is the entry point.
+ // Code section that will run only if current file is the entry point.
 }
 ```
 
@@ -3038,10 +3038,10 @@ would cause an error since mixing promise and callback semantics is not valid.
 
 ```js
 const w = new Writable({
-	async final(callback) {
-		await someOp();
-		callback();
-	}
+ async final(callback) {
+  await someOp();
+  callback();
+ }
 });
 ```
 

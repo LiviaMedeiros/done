@@ -11,43 +11,43 @@ const tmpdir = require('../common/tmpdir');
 // This tests the emission of node.environment trace events
 
 const names = new Set([
-	'Environment',
-	'RunAndClearNativeImmediates',
-	'CheckImmediate',
-	'RunTimers',
-	'BeforeExit',
-	'RunCleanup',
-	'AtExit',
+ 'Environment',
+ 'RunAndClearNativeImmediates',
+ 'CheckImmediate',
+ 'RunTimers',
+ 'BeforeExit',
+ 'RunCleanup',
+ 'AtExit',
 ]);
 
 if (process.argv[2] === 'child') {
-	/* eslint-disable no-unused-expressions */
-	// This is just so that the child has something to do.
-	1 + 1;
-	// These ensure that the RunTimers, CheckImmediate, and
-	// RunAndClearNativeImmediates appear in the list.
-	setImmediate(() => { 1 + 1; });
-	setTimeout(() => { 1 + 1; }, 1);
-	/* eslint-enable no-unused-expressions */
+ /* eslint-disable no-unused-expressions */
+ // This is just so that the child has something to do.
+ 1 + 1;
+ // These ensure that the RunTimers, CheckImmediate, and
+ // RunAndClearNativeImmediates appear in the list.
+ setImmediate(() => { 1 + 1; });
+ setTimeout(() => { 1 + 1; }, 1);
+ /* eslint-enable no-unused-expressions */
 } else {
-	tmpdir.refresh();
+ tmpdir.refresh();
 
-	const proc = cp.fork(__filename,
-																						[ 'child' ], {
-																							cwd: tmpdir.path,
-																							execArgv: [
-																								'--trace-event-categories',
-																								'node.environment',
-																							]
-																						});
+ const proc = cp.fork(__filename,
+                      [ 'child' ], {
+                       cwd: tmpdir.path,
+                       execArgv: [
+                        '--trace-event-categories',
+                        'node.environment',
+                       ]
+                      });
 
-	proc.once('exit', common.mustCall(async () => {
-		const file = path.join(tmpdir.path, 'node_trace.1.log');
-		const checkSet = new Set();
+ proc.once('exit', common.mustCall(async () => {
+  const file = path.join(tmpdir.path, 'node_trace.1.log');
+  const checkSet = new Set();
 
-		assert(fs.existsSync(file));
-		const data = await fs.promises.readFile(file);
-		JSON.parse(data.toString()).traceEvents
+  assert(fs.existsSync(file));
+  const data = await fs.promises.readFile(file);
+  JSON.parse(data.toString()).traceEvents
       .filter((trace) => trace.cat !== '__metadata')
       .forEach((trace) => {
       	assert.strictEqual(trace.pid, proc.pid);
@@ -55,6 +55,6 @@ if (process.argv[2] === 'child') {
       	checkSet.add(trace.name);
       });
 
-		assert.deepStrictEqual(names, checkSet);
-	}));
+  assert.deepStrictEqual(names, checkSet);
+ }));
 }

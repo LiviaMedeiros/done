@@ -58,7 +58,7 @@ assert.strictEqual(path.win32.basename('a', 'a'), '');
 
 // On unix a backslash is just treated as any other character.
 assert.strictEqual(path.posix.basename('\\dir\\basename.ext'),
-																			'\\dir\\basename.ext');
+                   '\\dir\\basename.ext');
 assert.strictEqual(path.posix.basename('\\basename.ext'), '\\basename.ext');
 assert.strictEqual(path.posix.basename('basename.ext'), 'basename.ext');
 assert.strictEqual(path.posix.basename('basename.ext\\'), 'basename.ext\\');
@@ -69,4 +69,4 @@ assert.strictEqual(path.posix.basename('foo'), 'foo');
 // c.f. http://www.dwheeler.com/essays/fixing-unix-linux-filenames.html
 const controlCharFilename = `Icon${String.fromCharCode(13)}`;
 assert.strictEqual(path.posix.basename(`/a/b/${controlCharFilename}`),
-																			controlCharFilename);
+                   controlCharFilename);

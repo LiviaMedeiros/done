@@ -11,11 +11,11 @@ cp.stdout.setEncoding('utf8');
 
 let out = '';
 cp.stdout.on('data', (d) => {
-	out += d;
+ out += d;
 });
 
 cp.stdout.on('end', common.mustCall(() => {
-	assert.strictEqual(out, `Welcome to Node.js ${process.version}.\n` +
+ assert.strictEqual(out, `Welcome to Node.js ${process.version}.\n` +
                         'Type ".help" for more information.\n> ');
 }));
 

@@ -27,9 +27,9 @@ const assert = require('assert');
 const domain = require('domain');
 
 function names(array) {
-	return array.map(function(d) {
-		return d.name;
-	}).join(', ');
+ return array.map(function(d) {
+  return d.name;
+ }).join(', ');
 }
 
 const a = domain.create();
@@ -41,20 +41,20 @@ c.name = 'c';
 
 a.enter(); // push
 assert.deepStrictEqual(domain._stack, [a],
-																							`a not pushed: ${names(domain._stack)}`);
+                       `a not pushed: ${names(domain._stack)}`);
 
 b.enter(); // push
 assert.deepStrictEqual(domain._stack, [a, b],
-																							`b not pushed: ${names(domain._stack)}`);
+                       `b not pushed: ${names(domain._stack)}`);
 
 c.enter(); // push
 assert.deepStrictEqual(domain._stack, [a, b, c],
-																							`c not pushed: ${names(domain._stack)}`);
+                       `c not pushed: ${names(domain._stack)}`);
 
 b.exit(); // pop
 assert.deepStrictEqual(domain._stack, [a],
-																							`b and c not popped: ${names(domain._stack)}`);
+                       `b and c not popped: ${names(domain._stack)}`);
 
 b.enter(); // push
 assert.deepStrictEqual(domain._stack, [a, b],
-																							`b not pushed: ${names(domain._stack)}`);
+                       `b not pushed: ${names(domain._stack)}`);

@@ -10,11 +10,11 @@ const assert = require('assert');
 
 // Custom port.
 {
-	const script = fixtures.path('debugger', 'three-lines.js');
+ const script = fixtures.path('debugger', 'three-lines.js');
 
-	const cli = startCLI([`--port=${common.PORT}`, script]);
+ const cli = startCLI([`--port=${common.PORT}`, script]);
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => {
     	assert.match(cli.output, /debug>/, 'prints a prompt');

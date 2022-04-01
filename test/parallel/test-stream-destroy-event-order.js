@@ -5,20 +5,20 @@ const assert = require('assert');
 const { Readable } = require('stream');
 
 const rs = new Readable({
-	read() {}
+ read() {}
 });
 
 let closed = false;
 let errored = false;
 
 rs.on('close', common.mustCall(() => {
-	closed = true;
-	assert(errored);
+ closed = true;
+ assert(errored);
 }));
 
 rs.on('error', common.mustCall((err) => {
-	errored = true;
-	assert(!closed);
+ errored = true;
+ assert(!closed);
 }));
 
 rs.destroy(new Error('kaboom'));

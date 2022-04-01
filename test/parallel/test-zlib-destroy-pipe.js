@@ -10,10 +10,10 @@ const { Writable } = require('stream');
 const ts = zlib.createGzip();
 
 const ws = new Writable({
-	write: common.mustCall((chunk, enc, cb) => {
-		setImmediate(cb);
-		ts.destroy();
-	})
+ write: common.mustCall((chunk, enc, cb) => {
+  setImmediate(cb);
+  ts.destroy();
+ })
 });
 
 const buf = Buffer.allocUnsafe(1024 * 1024 * 20);

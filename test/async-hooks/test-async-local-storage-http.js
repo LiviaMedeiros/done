@@ -6,16 +6,16 @@ const http = require('http');
 
 const asyncLocalStorage = new AsyncLocalStorage();
 const server = http.createServer((req, res) => {
-	res.end('ok');
+ res.end('ok');
 });
 
 server.listen(0, () => {
-	asyncLocalStorage.run(new Map(), () => {
-		const store = asyncLocalStorage.getStore();
-		store.set('hello', 'world');
-		http.get({ host: 'localhost', port: server.address().port }, () => {
-			assert.strictEqual(asyncLocalStorage.getStore().get('hello'), 'world');
-			server.close();
-		});
-	});
+ asyncLocalStorage.run(new Map(), () => {
+  const store = asyncLocalStorage.getStore();
+  store.set('hello', 'world');
+  http.get({ host: 'localhost', port: server.address().port }, () => {
+   assert.strictEqual(asyncLocalStorage.getStore().get('hello'), 'world');
+   server.close();
+  });
+ });
 });

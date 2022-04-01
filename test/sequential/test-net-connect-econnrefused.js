@@ -33,33 +33,33 @@ let reqs = 0;
 
 let port;
 const server = net.createServer().listen(0, common.mustCall(() => {
-	port = server.address().port;
-	server.close(common.mustCall(pummel));
+ port = server.address().port;
+ server.close(common.mustCall(pummel));
 }));
 
 function pummel() {
-	let pending;
-	for (pending = 0; pending < ATTEMPTS_PER_ROUND; pending++) {
-		net.createConnection(port).on('error', function(err) {
-			console.log('pending', pending, 'rounds', rounds);
-			assert.strictEqual(err.code, 'ECONNREFUSED');
-			if (--pending > 0) return;
-			if (rounds === ROUNDS) return check();
-			rounds++;
-			pummel();
-		});
-		reqs++;
-	}
+ let pending;
+ for (pending = 0; pending < ATTEMPTS_PER_ROUND; pending++) {
+  net.createConnection(port).on('error', function(err) {
+   console.log('pending', pending, 'rounds', rounds);
+   assert.strictEqual(err.code, 'ECONNREFUSED');
+   if (--pending > 0) return;
+   if (rounds === ROUNDS) return check();
+   rounds++;
+   pummel();
+  });
+  reqs++;
+ }
 }
 
 function check() {
-	setTimeout(common.mustCall(function() {
-		assert.strictEqual(process.getActiveResourcesInfo().filter(
-			(type) => type === 'TCPWRAP').length, 0);
-	}), 0);
+ setTimeout(common.mustCall(function() {
+  assert.strictEqual(process.getActiveResourcesInfo().filter(
+   (type) => type === 'TCPWRAP').length, 0);
+ }), 0);
 }
 
 process.on('exit', function() {
-	assert.strictEqual(rounds, ROUNDS);
-	assert.strictEqual(reqs, ROUNDS * ATTEMPTS_PER_ROUND);
+ assert.strictEqual(rounds, ROUNDS);
+ assert.strictEqual(reqs, ROUNDS * ATTEMPTS_PER_ROUND);
 });

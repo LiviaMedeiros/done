@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if ((!common.hasCrypto) || (!common.hasIntl)) {
-	common.skip('ESLint tests require crypto and Intl');
+ common.skip('ESLint tests require crypto and Intl');
 }
 
 common.skipIfEslintMissing();
@@ -11,8 +11,8 @@ const RuleTester = require('../../tools/node_modules/eslint').RuleTester;
 const rule = require('../../tools/eslint-rules/prefer-primordials');
 
 new RuleTester({
-	parserOptions: { ecmaVersion: 6 },
-	env: { es6: true }
+ parserOptions: { ecmaVersion: 6 },
+ env: { es6: true }
 })
   .run('prefer-primordials', rule, {
   	valid: [

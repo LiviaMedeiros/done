@@ -23,7 +23,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-	common.skip('node compiled without OpenSSL.');
+ common.skip('node compiled without OpenSSL.');
 
 const assert = require('assert');
 const crypto = require('crypto');
@@ -98,12 +98,12 @@ dc8fe984ddaf532fc1531ce43155fa0ab32532bf1ece5356b8a3447b5267798a904f16f3f4e635\
 
 /* FIPS-friendly 2048 bit prime */
 const p = crypto.createDiffieHellman(
-	crypto.getDiffieHellman('modp14').getPrime());
+ crypto.getDiffieHellman('modp14').getPrime());
 
 p.setPublicKey(apub, 'hex');
 p.setPrivateKey(apriv, 'hex');
 
 assert.strictEqual(
-	p.computeSecret(bpub, 'hex', 'hex').toString('hex'),
-	secret
+ p.computeSecret(bpub, 'hex', 'hex').toString('hex'),
+ secret
 );

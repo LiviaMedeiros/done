@@ -25,15 +25,15 @@ main();
 
 // --eval CJS
 {
-	const child = spawnSync(process.execPath, [
-		'-e',
-		main,
-	], {
-		env: { ...process.env }
-	});
+ const child = spawnSync(process.execPath, [
+  '-e',
+  main,
+ ], {
+  env: { ...process.env }
+ });
 
-	if (child.status !== 0) {
-		console.error(child.stderr.toString());
-	}
-	console.error(child.stdout.toString());
+ if (child.status !== 0) {
+  console.error(child.stderr.toString());
+ }
+ console.error(child.stdout.toString());
 }

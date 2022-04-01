@@ -12,27 +12,27 @@ const leakWarning = /EventEmitter memory leak detected\. 2 hello listeners/;
 let writeTimes = 0;
 let warningTimes = 0;
 process.on('warning', () => {
-	// This will be called after the default internal
-	// process warning handler is called. The default
-	// process warning writes to the console, which will
-	// invoke the monkeypatched process.stderr.write
-	// below.
-	assert.strictEqual(writeTimes, 1);
-	EventEmitter.defaultMaxListeners = oldDefault;
-	warningTimes++;
+ // This will be called after the default internal
+ // process warning handler is called. The default
+ // process warning writes to the console, which will
+ // invoke the monkeypatched process.stderr.write
+ // below.
+ assert.strictEqual(writeTimes, 1);
+ EventEmitter.defaultMaxListeners = oldDefault;
+ warningTimes++;
 });
 
 process.on('exit', () => {
-	assert.strictEqual(warningTimes, 1);
+ assert.strictEqual(warningTimes, 1);
 });
 
 process.stderr.write = (data) => {
-	if (writeTimes === 0)
-		assert.match(data, leakWarning);
-	else
-		assert.fail('stderr.write should be called only once');
+ if (writeTimes === 0)
+  assert.match(data, leakWarning);
+ else
+  assert.fail('stderr.write should be called only once');
 
-	writeTimes++;
+ writeTimes++;
 };
 
 const oldDefault = EventEmitter.defaultMaxListeners;

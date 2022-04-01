@@ -44,53 +44,53 @@ assert.strictEqual(context.thing, 'lala');
 
 // Issue GH-227:
 assert.throws(() => {
-	vm.runInNewContext('', null, 'some.js');
+ vm.runInNewContext('', null, 'some.js');
 }, {
-	code: 'ERR_INVALID_ARG_TYPE',
-	name: 'TypeError'
+ code: 'ERR_INVALID_ARG_TYPE',
+ name: 'TypeError'
 });
 
 // Issue GH-1140:
 // Test runInContext signature
 let gh1140Exception;
 try {
-	vm.runInContext('throw new Error()', context, 'expected-filename.js');
+ vm.runInContext('throw new Error()', context, 'expected-filename.js');
 } catch (e) {
-	gh1140Exception = e;
-	assert.match(e.stack, /expected-filename/);
+ gh1140Exception = e;
+ assert.match(e.stack, /expected-filename/);
 }
 // This is outside of catch block to confirm catch block ran.
 assert.strictEqual(gh1140Exception.toString(), 'Error');
 
 const nonContextualObjectError = {
-	code: 'ERR_INVALID_ARG_TYPE',
-	name: 'TypeError',
-	message: /must be of type object/
+ code: 'ERR_INVALID_ARG_TYPE',
+ name: 'TypeError',
+ message: /must be of type object/
 };
 const contextifiedObjectError = {
-	code: 'ERR_INVALID_ARG_TYPE',
-	name: 'TypeError',
-	message: /The "contextifiedObject" argument must be an vm\.Context/
+ code: 'ERR_INVALID_ARG_TYPE',
+ name: 'TypeError',
+ message: /The "contextifiedObject" argument must be an vm\.Context/
 };
 
 [
-	[undefined, nonContextualObjectError],
-	[null, nonContextualObjectError],
-	[0, nonContextualObjectError],
-	[0.0, nonContextualObjectError],
-	['', nonContextualObjectError],
-	[{}, contextifiedObjectError],
-	[[], contextifiedObjectError],
+ [undefined, nonContextualObjectError],
+ [null, nonContextualObjectError],
+ [0, nonContextualObjectError],
+ [0.0, nonContextualObjectError],
+ ['', nonContextualObjectError],
+ [{}, contextifiedObjectError],
+ [[], contextifiedObjectError],
 ].forEach((e) => {
-	assert.throws(() => { script.runInContext(e[0]); }, e[1]);
-	assert.throws(() => { vm.runInContext('', e[0]); }, e[1]);
+ assert.throws(() => { script.runInContext(e[0]); }, e[1]);
+ assert.throws(() => { vm.runInContext('', e[0]); }, e[1]);
 });
 
 // Issue GH-693:
 // Test RegExp as argument to assert.throws
 script = vm.createScript('const assert = require(\'assert\'); assert.throws(' +
                          'function() { throw "hello world"; }, /hello/);',
-																									'some.js');
+                         'some.js');
 script.runInNewContext({ require });
 
 // Issue GH-7529
@@ -103,18 +103,18 @@ assert.strictEqual(script.runInContext(ctx), false);
 // Error on the first line of a module should have the correct line and column
 // number.
 {
-	let stack = null;
-	assert.throws(() => {
-		vm.runInContext(' throw new Error()', context, {
-			filename: 'expected-filename.js',
-			lineOffset: 32,
-			columnOffset: 123
-		});
-	}, (err) => {
-		stack = err.stack;
-		return /^ \^/m.test(stack) &&
+ let stack = null;
+ assert.throws(() => {
+  vm.runInContext(' throw new Error()', context, {
+   filename: 'expected-filename.js',
+   lineOffset: 32,
+   columnOffset: 123
+  });
+ }, (err) => {
+  stack = err.stack;
+  return /^ \^/m.test(stack) &&
            /expected-filename\.js:33:131/.test(stack);
-	}, `stack not formatted as expected: ${stack}`);
+ }, `stack not formatted as expected: ${stack}`);
 }
 
 // https://github.com/nodejs/node/issues/6158

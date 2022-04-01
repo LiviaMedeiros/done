@@ -9,7 +9,7 @@ const als = new AsyncLocalStorage();
 const done = common.mustCall();
 
 function run(count) {
-	if (count !== 0) return als.run({}, run, --count);
-	done();
+ if (count !== 0) return als.run({}, run, --count);
+ done();
 }
 run(1000);

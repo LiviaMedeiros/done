@@ -8,20 +8,20 @@ async function foo() {}
 const asyncLocalStorage = new AsyncLocalStorage();
 
 async function testOut() {
-	await foo();
-	assert.strictEqual(asyncLocalStorage.getStore(), undefined);
+ await foo();
+ assert.strictEqual(asyncLocalStorage.getStore(), undefined);
 }
 
 async function testAwait() {
-	await foo();
-	assert.notStrictEqual(asyncLocalStorage.getStore(), undefined);
-	assert.strictEqual(asyncLocalStorage.getStore().get('key'), 'value');
-	await asyncLocalStorage.exit(testOut);
+ await foo();
+ assert.notStrictEqual(asyncLocalStorage.getStore(), undefined);
+ assert.strictEqual(asyncLocalStorage.getStore().get('key'), 'value');
+ await asyncLocalStorage.exit(testOut);
 }
 
 asyncLocalStorage.run(new Map(), () => {
-	const store = asyncLocalStorage.getStore();
-	store.set('key', 'value');
-	testAwait(); // should not reject
+ const store = asyncLocalStorage.getStore();
+ store.set('key', 'value');
+ testAwait(); // should not reject
 });
 assert.strictEqual(asyncLocalStorage.getStore(), undefined);

@@ -7,24 +7,24 @@ const path = require('path');
 
 
 if (process.argv[2] === 'child') {
-	if (common.isWindows)
-		assert.strictEqual(process.env.USERPROFILE, undefined);
-	else
-		assert.strictEqual(process.env.HOME, undefined);
+ if (common.isWindows)
+  assert.strictEqual(process.env.USERPROFILE, undefined);
+ else
+  assert.strictEqual(process.env.HOME, undefined);
 
-	const home = os.homedir();
+ const home = os.homedir();
 
-	assert.strictEqual(typeof home, 'string');
-	assert(home.includes(path.sep));
+ assert.strictEqual(typeof home, 'string');
+ assert(home.includes(path.sep));
 } else {
-	if (common.isWindows)
-		delete process.env.USERPROFILE;
-	else
-		delete process.env.HOME;
+ if (common.isWindows)
+  delete process.env.USERPROFILE;
+ else
+  delete process.env.HOME;
 
-	const child = cp.spawnSync(process.execPath, [__filename, 'child'], {
-		env: process.env
-	});
+ const child = cp.spawnSync(process.execPath, [__filename, 'child'], {
+  env: process.env
+ });
 
-	assert.strictEqual(child.status, 0);
+ assert.strictEqual(child.status, 0);
 }

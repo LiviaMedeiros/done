@@ -27,77 +27,77 @@ const events = require('events');
 
 // default
 {
-	const e = new events.EventEmitter();
+ const e = new events.EventEmitter();
 
-	for (let i = 0; i < 10; i++) {
-		e.on('default', common.mustNotCall());
-	}
-	assert.ok(!Object.hasOwn(e._events.default, 'warned'));
-	e.on('default', common.mustNotCall());
-	assert.ok(e._events.default.warned);
+ for (let i = 0; i < 10; i++) {
+  e.on('default', common.mustNotCall());
+ }
+ assert.ok(!Object.hasOwn(e._events.default, 'warned'));
+ e.on('default', common.mustNotCall());
+ assert.ok(e._events.default.warned);
 
-	// symbol
-	const symbol = Symbol('symbol');
-	e.setMaxListeners(1);
-	e.on(symbol, common.mustNotCall());
-	assert.ok(!Object.hasOwn(e._events[symbol], 'warned'));
-	e.on(symbol, common.mustNotCall());
-	assert.ok(Object.hasOwn(e._events[symbol], 'warned'));
+ // symbol
+ const symbol = Symbol('symbol');
+ e.setMaxListeners(1);
+ e.on(symbol, common.mustNotCall());
+ assert.ok(!Object.hasOwn(e._events[symbol], 'warned'));
+ e.on(symbol, common.mustNotCall());
+ assert.ok(Object.hasOwn(e._events[symbol], 'warned'));
 
-	// specific
-	e.setMaxListeners(5);
-	for (let i = 0; i < 5; i++) {
-		e.on('specific', common.mustNotCall());
-	}
-	assert.ok(!Object.hasOwn(e._events.specific, 'warned'));
-	e.on('specific', common.mustNotCall());
-	assert.ok(e._events.specific.warned);
+ // specific
+ e.setMaxListeners(5);
+ for (let i = 0; i < 5; i++) {
+  e.on('specific', common.mustNotCall());
+ }
+ assert.ok(!Object.hasOwn(e._events.specific, 'warned'));
+ e.on('specific', common.mustNotCall());
+ assert.ok(e._events.specific.warned);
 
-	// only one
-	e.setMaxListeners(1);
-	e.on('only one', common.mustNotCall());
-	assert.ok(!Object.hasOwn(e._events['only one'], 'warned'));
-	e.on('only one', common.mustNotCall());
-	assert.ok(Object.hasOwn(e._events['only one'], 'warned'));
+ // only one
+ e.setMaxListeners(1);
+ e.on('only one', common.mustNotCall());
+ assert.ok(!Object.hasOwn(e._events['only one'], 'warned'));
+ e.on('only one', common.mustNotCall());
+ assert.ok(Object.hasOwn(e._events['only one'], 'warned'));
 
-	// unlimited
-	e.setMaxListeners(0);
-	for (let i = 0; i < 1000; i++) {
-		e.on('unlimited', common.mustNotCall());
-	}
-	assert.ok(!Object.hasOwn(e._events.unlimited, 'warned'));
+ // unlimited
+ e.setMaxListeners(0);
+ for (let i = 0; i < 1000; i++) {
+  e.on('unlimited', common.mustNotCall());
+ }
+ assert.ok(!Object.hasOwn(e._events.unlimited, 'warned'));
 }
 
 // process-wide
 {
-	events.EventEmitter.defaultMaxListeners = 42;
-	const e = new events.EventEmitter();
+ events.EventEmitter.defaultMaxListeners = 42;
+ const e = new events.EventEmitter();
 
-	for (let i = 0; i < 42; ++i) {
-		e.on('fortytwo', common.mustNotCall());
-	}
-	assert.ok(!Object.hasOwn(e._events.fortytwo, 'warned'));
-	e.on('fortytwo', common.mustNotCall());
-	assert.ok(Object.hasOwn(e._events.fortytwo, 'warned'));
-	delete e._events.fortytwo.warned;
+ for (let i = 0; i < 42; ++i) {
+  e.on('fortytwo', common.mustNotCall());
+ }
+ assert.ok(!Object.hasOwn(e._events.fortytwo, 'warned'));
+ e.on('fortytwo', common.mustNotCall());
+ assert.ok(Object.hasOwn(e._events.fortytwo, 'warned'));
+ delete e._events.fortytwo.warned;
 
-	events.EventEmitter.defaultMaxListeners = 44;
-	e.on('fortytwo', common.mustNotCall());
-	assert.ok(!Object.hasOwn(e._events.fortytwo, 'warned'));
-	e.on('fortytwo', common.mustNotCall());
-	assert.ok(Object.hasOwn(e._events.fortytwo, 'warned'));
+ events.EventEmitter.defaultMaxListeners = 44;
+ e.on('fortytwo', common.mustNotCall());
+ assert.ok(!Object.hasOwn(e._events.fortytwo, 'warned'));
+ e.on('fortytwo', common.mustNotCall());
+ assert.ok(Object.hasOwn(e._events.fortytwo, 'warned'));
 }
 
 // But _maxListeners still has precedence over defaultMaxListeners
 {
-	events.EventEmitter.defaultMaxListeners = 42;
-	const e = new events.EventEmitter();
-	e.setMaxListeners(1);
-	e.on('uno', common.mustNotCall());
-	assert.ok(!Object.hasOwn(e._events.uno, 'warned'));
-	e.on('uno', common.mustNotCall());
-	assert.ok(Object.hasOwn(e._events.uno, 'warned'));
+ events.EventEmitter.defaultMaxListeners = 42;
+ const e = new events.EventEmitter();
+ e.setMaxListeners(1);
+ e.on('uno', common.mustNotCall());
+ assert.ok(!Object.hasOwn(e._events.uno, 'warned'));
+ e.on('uno', common.mustNotCall());
+ assert.ok(Object.hasOwn(e._events.uno, 'warned'));
 
-	// chainable
-	assert.strictEqual(e, e.setMaxListeners(1));
+ // chainable
+ assert.strictEqual(e, e.setMaxListeners(1));
 }

@@ -8,21 +8,21 @@ validateSnapshotNodes('Node / ZlibStream', []);
 
 const gzip = zlib.createGzip();
 validateSnapshotNodes('Node / ZlibStream', [
-	{
-		children: [
-			{ node_name: 'Zlib', edge_name: 'wrapped' },
-			// No entry for memory because zlib memory is initialized lazily.
-		]
-	},
+ {
+  children: [
+   { node_name: 'Zlib', edge_name: 'wrapped' },
+   // No entry for memory because zlib memory is initialized lazily.
+  ]
+ },
 ]);
 
 gzip.write('hello world', common.mustCall(() => {
-	validateSnapshotNodes('Node / ZlibStream', [
-		{
-			children: [
-				{ node_name: 'Zlib', edge_name: 'wrapped' },
-				{ node_name: 'Node / zlib_memory', edge_name: 'zlib_memory' },
-			]
-		},
-	]);
+ validateSnapshotNodes('Node / ZlibStream', [
+  {
+   children: [
+    { node_name: 'Zlib', edge_name: 'wrapped' },
+    { node_name: 'Node / zlib_memory', edge_name: 'zlib_memory' },
+   ]
+  },
+ ]);
 }));

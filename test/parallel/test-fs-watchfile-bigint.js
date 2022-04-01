@@ -13,24 +13,24 @@ const tmpdir = require('../common/tmpdir');
 
 const enoentFile = path.join(tmpdir.path, 'non-existent-file');
 const expectedStatObject = new BigIntStats(
-	0n,                                        // dev
-	0n,                                        // mode
-	0n,                                        // nlink
-	0n,                                        // uid
-	0n,                                        // gid
-	0n,                                        // rdev
-	0n,                                        // blksize
-	0n,                                        // ino
-	0n,                                        // size
-	0n,                                        // blocks
-	0n,                                        // atimeMs
-	0n,                                        // mtimeMs
-	0n,                                        // ctimeMs
-	0n,                                        // birthtimeMs
-	0n,                                        // atimeNs
-	0n,                                        // mtimeNs
-	0n,                                        // ctimeNs
-	0n                                         // birthtimeNs
+ 0n,                                        // dev
+ 0n,                                        // mode
+ 0n,                                        // nlink
+ 0n,                                        // uid
+ 0n,                                        // gid
+ 0n,                                        // rdev
+ 0n,                                        // blksize
+ 0n,                                        // ino
+ 0n,                                        // size
+ 0n,                                        // blocks
+ 0n,                                        // atimeMs
+ 0n,                                        // mtimeMs
+ 0n,                                        // ctimeMs
+ 0n,                                        // birthtimeMs
+ 0n,                                        // atimeNs
+ 0n,                                        // mtimeNs
+ 0n,                                        // ctimeNs
+ 0n                                         // birthtimeNs
 );
 
 tmpdir.refresh();

@@ -4,9 +4,9 @@ require('../common');
 process.setSourceMapsEnabled(true);
 
 try {
-	require('../fixtures/source-map/enclosing-call-site-min.js');
+ require('../fixtures/source-map/enclosing-call-site-min.js');
 } catch (e) {
-	console.log(e);
+ console.log(e);
 }
 
 delete require.cache[require

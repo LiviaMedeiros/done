@@ -16,20 +16,20 @@ const child = child_process.exec(cmd);
 let output = '';
 
 child.stderr.on('data', function(c) {
-	output += c;
+ output += c;
 });
 
 
 child.on('close', common.mustCall(function(code) {
-	try {
-		output = JSON.parse(output);
-	} catch {
-		console.error(output);
-		process.exit(1);
-	}
+ try {
+  output = JSON.parse(output);
+ } catch {
+  console.error(output);
+  process.exit(1);
+ }
 
-	assert.strictEqual(output.code, 'EPIPE');
-	assert.strictEqual(getSystemErrorName(output.errno), 'EPIPE');
-	assert.strictEqual(output.syscall, 'write');
-	console.log('ok');
+ assert.strictEqual(output.code, 'EPIPE');
+ assert.strictEqual(getSystemErrorName(output.errno), 'EPIPE');
+ assert.strictEqual(output.syscall, 'write');
+ console.log('ok');
 }));

@@ -27,11 +27,11 @@ const cluster = require('cluster');
 let disconnected;
 
 process.on('exit', function() {
-	assert(disconnected);
+ assert(disconnected);
 });
 
 cluster.disconnect(function() {
-	disconnected = true;
+ disconnected = true;
 });
 
 // Assert that callback is not sometimes synchronous

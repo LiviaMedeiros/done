@@ -4,7 +4,7 @@
 
 const common = require('../common');
 if ((!common.hasCrypto) || (!common.hasIntl)) {
-	common.skip('ESLint tests require crypto and Intl');
+ common.skip('ESLint tests require crypto and Intl');
 }
 
 common.skipIfEslintMissing();

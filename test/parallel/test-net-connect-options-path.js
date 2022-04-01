@@ -12,10 +12,10 @@ const CLIENT_VARIANTS = 12;
 
 // Test connect(path)
 {
-	const prefix = `${common.PIPE}-net-connect-options-path`;
-	const serverPath = `${prefix}-server`;
-	let counter = 0;
-	const server = net.createServer()
+ const prefix = `${common.PIPE}-net-connect-options-path`;
+ const serverPath = `${prefix}-server`;
+ let counter = 0;
+ const server = net.createServer()
   .on('connection', common.mustCall(function(socket) {
   	socket.end('ok');
   }, CLIENT_VARIANTS))

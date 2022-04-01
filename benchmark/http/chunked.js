@@ -11,33 +11,33 @@
 const common = require('../common.js');
 
 const bench = common.createBenchmark(main, {
-	n: [1, 4, 8, 16],
-	len: [1, 64, 256],
-	c: [100],
-	duration: 5
+ n: [1, 4, 8, 16],
+ len: [1, 64, 256],
+ c: [100],
+ duration: 5
 });
 
 function main({ len, n, c, duration }) {
-	const http = require('http');
-	const chunk = Buffer.alloc(len, '8');
+ const http = require('http');
+ const chunk = Buffer.alloc(len, '8');
 
-	const server = http.createServer((req, res) => {
-		function send(left) {
-			if (left === 0) return res.end();
-			res.write(chunk);
-			setTimeout(() => {
-				send(left - 1);
-			}, 0);
-		}
-		send(n);
-	});
+ const server = http.createServer((req, res) => {
+  function send(left) {
+   if (left === 0) return res.end();
+   res.write(chunk);
+   setTimeout(() => {
+    send(left - 1);
+   }, 0);
+  }
+  send(n);
+ });
 
-	server.listen(common.PORT, () => {
-		bench.http({
-			connections: c,
-			duration
-		}, () => {
-			server.close();
-		});
-	});
+ server.listen(common.PORT, () => {
+  bench.http({
+   connections: c,
+   duration
+  }, () => {
+   server.close();
+  });
+ });
 }

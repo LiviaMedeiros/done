@@ -13,47 +13,47 @@ const { spawn } = require('child_process');
 const kDebuggerMsgReg = /Debugger listening on ws:\/\/\[?(.+?)\]?:(\d+)\//;
 
 function launchTarget(...args) {
-	const childProc = spawn(process.execPath, args);
-	return new Promise((resolve, reject) => {
-		const onExit = () => {
-			reject(new Error('Child process exits unexpectedly'));
-		};
-		childProc.on('exit', onExit);
-		childProc.stderr.setEncoding('utf8');
-		let data = '';
-		childProc.stderr.on('data', (chunk) => {
-			data += chunk;
-			const ret = kDebuggerMsgReg.exec(data);
-			childProc.removeListener('exit', onExit);
-			if (ret) {
-				resolve({
-					childProc,
-					host: ret[1],
-					port: ret[2],
-				});
-			}
-		});
-	});
+ const childProc = spawn(process.execPath, args);
+ return new Promise((resolve, reject) => {
+  const onExit = () => {
+   reject(new Error('Child process exits unexpectedly'));
+  };
+  childProc.on('exit', onExit);
+  childProc.stderr.setEncoding('utf8');
+  let data = '';
+  childProc.stderr.on('data', (chunk) => {
+   data += chunk;
+   const ret = kDebuggerMsgReg.exec(data);
+   childProc.removeListener('exit', onExit);
+   if (ret) {
+    resolve({
+     childProc,
+     host: ret[1],
+     port: ret[2],
+    });
+   }
+  });
+ });
 }
 
 {
-	const script = fixtures.path('debugger/alive.js');
-	let cli = null;
-	let target = null;
+ const script = fixtures.path('debugger/alive.js');
+ let cli = null;
+ let target = null;
 
-	function cleanup(error) {
-		if (cli) {
-			cli.quit();
-			cli = null;
-		}
-		if (target) {
-			target.kill();
-			target = null;
-		}
-		assert.ifError(error);
-	}
+ function cleanup(error) {
+  if (cli) {
+   cli.quit();
+   cli = null;
+  }
+  if (target) {
+   target.kill();
+   target = null;
+  }
+  assert.ifError(error);
+ }
 
-	return launchTarget('--inspect=0', script)
+ return launchTarget('--inspect=0', script)
     .then(({ childProc, host, port }) => {
     	target = childProc;
     	cli = startCLI([`${host || '127.0.0.1'}:${port}`]);

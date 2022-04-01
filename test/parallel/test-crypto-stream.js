@@ -22,45 +22,45 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const assert = require('assert');
 const stream = require('stream');
 const crypto = require('crypto');
 
 if (!common.hasFipsCrypto) {
-	// Small stream to buffer converter
-	class Stream2buffer extends stream.Writable {
-		constructor(callback) {
-			super();
+ // Small stream to buffer converter
+ class Stream2buffer extends stream.Writable {
+  constructor(callback) {
+   super();
 
-			this._buffers = [];
-			this.once('finish', function() {
-				callback(null, Buffer.concat(this._buffers));
-			});
-		}
+   this._buffers = [];
+   this.once('finish', function() {
+    callback(null, Buffer.concat(this._buffers));
+   });
+  }
 
-		_write(data, encoding, done) {
-			this._buffers.push(data);
-			return done(null);
-		}
-	}
+  _write(data, encoding, done) {
+   this._buffers.push(data);
+   return done(null);
+  }
+ }
 
-	// Create an md5 hash of "Hallo world"
-	const hasher1 = crypto.createHash('md5');
-	hasher1.pipe(new Stream2buffer(common.mustCall(function end(err, hash) {
-		assert.strictEqual(err, null);
-		assert.strictEqual(
-			hash.toString('hex'), '06460dadb35d3d503047ce750ceb2d07'
-		);
-	})));
-	hasher1.end('Hallo world');
+ // Create an md5 hash of "Hallo world"
+ const hasher1 = crypto.createHash('md5');
+ hasher1.pipe(new Stream2buffer(common.mustCall(function end(err, hash) {
+  assert.strictEqual(err, null);
+  assert.strictEqual(
+   hash.toString('hex'), '06460dadb35d3d503047ce750ceb2d07'
+  );
+ })));
+ hasher1.end('Hallo world');
 
-	// Simpler check for unpipe, setEncoding, pause and resume
-	crypto.createHash('md5').unpipe({});
-	crypto.createHash('md5').setEncoding('utf8');
-	crypto.createHash('md5').pause();
-	crypto.createHash('md5').resume();
+ // Simpler check for unpipe, setEncoding, pause and resume
+ crypto.createHash('md5').unpipe({});
+ crypto.createHash('md5').setEncoding('utf8');
+ crypto.createHash('md5').pause();
+ crypto.createHash('md5').resume();
 }
 
 // Decipher._flush() should emit an error event, not an exception.

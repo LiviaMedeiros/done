@@ -7,15 +7,15 @@ const test_fatal = require(`./build/${common.buildType}/test_fatal`);
 // Test in a child process because the test code will trigger a fatal error
 // that crashes the process.
 if (process.argv[2] === 'child') {
-	test_fatal.TestThread();
-	while (true) {
-		// Busy loop to allow the work thread to abort.
-	}
+ test_fatal.TestThread();
+ while (true) {
+  // Busy loop to allow the work thread to abort.
+ }
 }
 
 const p = child_process.spawnSync(
-	process.execPath, [ __filename, 'child' ]);
+ process.execPath, [ __filename, 'child' ]);
 assert.ifError(p.error);
 assert.ok(p.stderr.toString().includes(
-	'FATAL ERROR: work_thread foobar'));
+ 'FATAL ERROR: work_thread foobar'));
 assert.ok(p.status === 134 || p.signal === 'SIGABRT');

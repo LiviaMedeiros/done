@@ -8,6 +8,6 @@ const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
 server.listen(common.PIPE, common.mustCall(function() {
-	assert.strictEqual(server.address(), common.PIPE);
-	server.close();
+ assert.strictEqual(server.address(), common.PIPE);
+ server.close();
 }));

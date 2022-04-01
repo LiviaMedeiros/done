@@ -9,15 +9,15 @@ const assert = require('assert');
 
 // Debugger agent direct access.
 {
-	const cli = startCLI([fixtures.path('debugger/three-lines.js')]);
-	const scriptPattern = /^\* (\d+): \S+debugger(?:\/|\\)three-lines\.js/m;
+ const cli = startCLI([fixtures.path('debugger/three-lines.js')]);
+ const scriptPattern = /^\* (\d+): \S+debugger(?:\/|\\)three-lines\.js/m;
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	return cli.waitForInitialBreak()
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('scripts'))
     .then(() => {

@@ -1060,7 +1060,7 @@ const controller = new AbortController();
 const { signal } = controller;
 const grep = spawn('grep', ['ssh'], { signal });
 grep.on('error', (err) => {
-	// This will be called with err being an AbortError if the controller aborts
+ // This will be called with err being an AbortError if the controller aborts
 });
 controller.abort(); // stops the process
 ```
@@ -1073,10 +1073,10 @@ Calling `.abort()` on the corresponding `AbortController` will behave the same w
 const { Readable } = require('stream');
 const controller = new AbortController();
 const read = new Readable({
-	read(size) {
-		// ...
-	},
-	signal: controller.signal
+ read(size) {
+  // ...
+ },
+ signal: controller.signal
 });
 // Later, abort the operation closing the stream
 controller.abort();
@@ -1592,13 +1592,13 @@ const dc = require('diagnostics_channel');
 const channel = dc.channel('mysql.query');
 
 MySQL.prototype.query = function query(queryString, values, callback) {
-	// Broadcast query information whenever a query is made
-	channel.publish({
-		query: queryString,
-		host: this.hostname,
-	});
+ // Broadcast query information whenever a query is made
+ channel.publish({
+  query: queryString,
+  host: this.hostname,
+ });
 
-	this.doQuery(queryString, values, callback);
+ this.doQuery(queryString, values, callback);
 };
 ```
 
@@ -1609,7 +1609,7 @@ const dc = require('diagnostics_channel');
 const channel = dc.channel('mysql.query');
 
 channel.subscribe(({ query, host }) => {
-	console.log(`mysql query to ${host}: ${query}`);
+ console.log(`mysql query to ${host}: ${query}`);
 });
 ```
 

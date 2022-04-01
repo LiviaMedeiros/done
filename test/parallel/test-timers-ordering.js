@@ -33,19 +33,19 @@ let last_i = 0;
 let last_ts = 0;
 
 function f(i) {
-	if (i <= N) {
-		// check order
-		assert.strictEqual(i, last_i + 1, `order is broken: ${i} != ${last_i} + 1`);
-		last_i = i;
+ if (i <= N) {
+  // check order
+  assert.strictEqual(i, last_i + 1, `order is broken: ${i} != ${last_i} + 1`);
+  last_i = i;
 
-		// Check that this iteration is fired at least 1ms later than the previous
-		const now = getLibuvNow();
-		assert(now >= last_ts + 1,
-									`current ts ${now} < prev ts ${last_ts} + 1`);
-		last_ts = now;
+  // Check that this iteration is fired at least 1ms later than the previous
+  const now = getLibuvNow();
+  assert(now >= last_ts + 1,
+         `current ts ${now} < prev ts ${last_ts} + 1`);
+  last_ts = now;
 
-		// Schedule next iteration
-		setTimeout(f, 1, i + 1);
-	}
+  // Schedule next iteration
+  setTimeout(f, 1, i + 1);
+ }
 }
 setTimeout(f, 1, 1);

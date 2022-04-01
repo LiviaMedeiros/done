@@ -3,17 +3,17 @@
 require('../common');
 
 function AsmModule() {
-	'use asm';
+ 'use asm';
 
-	function add(a, b) {
-		a = a | 0;
-		b = b | 0;
+ function add(a, b) {
+  a = a | 0;
+  b = b | 0;
 
-		// Should be `return (a + b) | 0;`
-		return a + b;
-	}
+  // Should be `return (a + b) | 0;`
+  return a + b;
+ }
 
-	return { add: add };
+ return { add: add };
 }
 
 AsmModule();

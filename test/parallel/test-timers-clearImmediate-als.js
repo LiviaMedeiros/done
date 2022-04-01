@@ -8,21 +8,21 @@ const asyncLocalStorage = new AsyncLocalStorage();
 const N = 3;
 
 function next() {
-	const fn = common.mustCall(onImmediate);
-	asyncLocalStorage.run(new Map(), common.mustCall(() => {
-		const immediate = setImmediate(fn);
-		const store = asyncLocalStorage.getStore();
-		store.set('immediate', immediate);
-	}));
+ const fn = common.mustCall(onImmediate);
+ asyncLocalStorage.run(new Map(), common.mustCall(() => {
+  const immediate = setImmediate(fn);
+  const store = asyncLocalStorage.getStore();
+  store.set('immediate', immediate);
+ }));
 }
 
 function onImmediate() {
-	const store = asyncLocalStorage.getStore();
-	const immediate = store.get('immediate');
-	assert.strictEqual(immediate.constructor.name, 'Immediate');
-	clearImmediate(immediate);
+ const store = asyncLocalStorage.getStore();
+ const immediate = store.get('immediate');
+ assert.strictEqual(immediate.constructor.name, 'Immediate');
+ clearImmediate(immediate);
 }
 
 for (let i = 0; i < N; i++) {
-	next();
+ next();
 }

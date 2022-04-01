@@ -107,8 +107,8 @@ message string. A simple example is:
 ```js
 // Test ERR_TLS_CERT_ALTNAME_INVALID
 assert.strictEqual(
-	errors.message('ERR_TLS_CERT_ALTNAME_INVALID', ['altname']),
-	'Hostname/IP does not match certificate\'s altnames: altname');
+ errors.message('ERR_TLS_CERT_ALTNAME_INVALID', ['altname']),
+ 'Hostname/IP does not match certificate\'s altnames: altname');
 ```
 
 In addition, there should also be tests which validate the use of the
@@ -119,10 +119,10 @@ required when the message for an error changes.
 
 ```js
 assert.throws(() => {
-	socket.bind();
+ socket.bind();
 }, common.expectsError({
-	code: 'ERR_SOCKET_ALREADY_BOUND',
-	type: Error
+ code: 'ERR_SOCKET_ALREADY_BOUND',
+ type: Error
 }));
 ```
 

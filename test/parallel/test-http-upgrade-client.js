@@ -35,64 +35,64 @@ const expectedRecvData = 'nurtzo';
 
 // Create a TCP server
 const server = net.createServer(function(c) {
-	c.on('data', function(d) {
-		c.write('HTTP/1.1 101\r\n');
-		c.write('hello: world\r\n');
-		c.write('connection: upgrade\r\n');
-		c.write('upgrade: websocket\r\n');
-		c.write('\r\n');
-		c.write(expectedRecvData);
-	});
+ c.on('data', function(d) {
+  c.write('HTTP/1.1 101\r\n');
+  c.write('hello: world\r\n');
+  c.write('connection: upgrade\r\n');
+  c.write('upgrade: websocket\r\n');
+  c.write('\r\n');
+  c.write(expectedRecvData);
+ });
 
-	c.on('end', function() {
-		c.end();
-	});
+ c.on('end', function() {
+  c.end();
+ });
 });
 
 server.listen(0, common.mustCall(function() {
-	const port = this.address().port;
-	const headers = [
-		{
-			connection: 'upgrade',
-			upgrade: 'websocket'
-		},
-		[
-			['Host', 'echo.websocket.org'],
-			['Connection', 'Upgrade'],
-			['Upgrade', 'websocket'],
-			['Origin', 'http://www.websocket.org'],
-		],
-	];
-	const countdown = new Countdown(headers.length, () => server.close());
+ const port = this.address().port;
+ const headers = [
+  {
+   connection: 'upgrade',
+   upgrade: 'websocket'
+  },
+  [
+   ['Host', 'echo.websocket.org'],
+   ['Connection', 'Upgrade'],
+   ['Upgrade', 'websocket'],
+   ['Origin', 'http://www.websocket.org'],
+  ],
+ ];
+ const countdown = new Countdown(headers.length, () => server.close());
 
-	headers.forEach(function(h) {
-		const req = http.get({
-			port: port,
-			headers: h
-		});
-		let sawUpgrade = false;
-		req.on('upgrade', common.mustCall(function(res, socket, upgradeHead) {
-			sawUpgrade = true;
-			let recvData = upgradeHead;
-			socket.on('data', function(d) {
-				recvData += d;
-			});
+ headers.forEach(function(h) {
+  const req = http.get({
+   port: port,
+   headers: h
+  });
+  let sawUpgrade = false;
+  req.on('upgrade', common.mustCall(function(res, socket, upgradeHead) {
+   sawUpgrade = true;
+   let recvData = upgradeHead;
+   socket.on('data', function(d) {
+    recvData += d;
+   });
 
-			socket.on('close', common.mustCall(function() {
-				assert.strictEqual(recvData.toString(), expectedRecvData);
-			}));
+   socket.on('close', common.mustCall(function() {
+    assert.strictEqual(recvData.toString(), expectedRecvData);
+   }));
 
-			const expectedHeaders = {
-				hello: 'world',
-				connection: 'upgrade',
-				upgrade: 'websocket'
-			};
-			assert.deepStrictEqual(res.headers, expectedHeaders);
-			socket.end();
-			countdown.dec();
-		}));
-		req.on('close', common.mustCall(function() {
-			assert.strictEqual(sawUpgrade, true);
-		}));
-	});
+   const expectedHeaders = {
+    hello: 'world',
+    connection: 'upgrade',
+    upgrade: 'websocket'
+   };
+   assert.deepStrictEqual(res.headers, expectedHeaders);
+   socket.end();
+   countdown.dec();
+  }));
+  req.on('close', common.mustCall(function() {
+   assert.strictEqual(sawUpgrade, true);
+  }));
+ });
 }));

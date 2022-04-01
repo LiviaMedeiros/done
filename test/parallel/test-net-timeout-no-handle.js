@@ -8,7 +8,7 @@ const socket = new net.Socket();
 socket.setTimeout(common.platformTimeout(50));
 
 socket.on('timeout', common.mustCall(() => {
-	assert.strictEqual(socket._handle, null);
+ assert.strictEqual(socket._handle, null);
 }));
 
 socket.on('connect', common.mustNotCall());

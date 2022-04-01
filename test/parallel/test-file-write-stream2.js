@@ -40,25 +40,25 @@ let countDrains = 0;
 
 
 process.on('exit', function() {
-	removeTestFile();
-	if (cb_occurred !== cb_expected) {
-		console.log('  Test callback events missing or out of order:');
-		console.log(`    expected: ${cb_expected}`);
-		console.log(`    occurred: ${cb_occurred}`);
-		assert.strictEqual(
-			cb_occurred, cb_expected,
-			`events missing or out of order: "${cb_occurred}" !== "${cb_expected}"`);
-	} else {
-		console.log('ok');
-	}
+ removeTestFile();
+ if (cb_occurred !== cb_expected) {
+  console.log('  Test callback events missing or out of order:');
+  console.log(`    expected: ${cb_expected}`);
+  console.log(`    occurred: ${cb_occurred}`);
+  assert.strictEqual(
+   cb_occurred, cb_expected,
+   `events missing or out of order: "${cb_occurred}" !== "${cb_expected}"`);
+ } else {
+  console.log('ok');
+ }
 });
 
 function removeTestFile() {
-	try {
-		fs.unlinkSync(filepath);
-	} catch {
-		// Continue regardless of error.
-	}
+ try {
+  fs.unlinkSync(filepath);
+ } catch {
+  // Continue regardless of error.
+ }
 }
 
 
@@ -66,44 +66,44 @@ tmpdir.refresh();
 
 // Drain at 0, return false at 10.
 const file = fs.createWriteStream(filepath, {
-	highWaterMark: 11
+ highWaterMark: 11
 });
 
 file.on('open', function(fd) {
-	console.error('open');
-	cb_occurred += 'open ';
-	assert.strictEqual(typeof fd, 'number');
+ console.error('open');
+ cb_occurred += 'open ';
+ assert.strictEqual(typeof fd, 'number');
 });
 
 file.on('drain', function() {
-	console.error('drain');
-	cb_occurred += 'drain ';
-	++countDrains;
-	if (countDrains === 1) {
-		console.error('drain=1, write again');
-		assert.strictEqual(fs.readFileSync(filepath, 'utf8'), EXPECTED);
-		console.error(`ondrain write ret= ${file.write(EXPECTED)}`);
-		cb_occurred += 'write ';
-	} else if (countDrains === 2) {
-		console.error('second drain, end');
-		assert.strictEqual(fs.readFileSync(filepath, 'utf8'), EXPECTED + EXPECTED);
-		file.end();
-	}
+ console.error('drain');
+ cb_occurred += 'drain ';
+ ++countDrains;
+ if (countDrains === 1) {
+  console.error('drain=1, write again');
+  assert.strictEqual(fs.readFileSync(filepath, 'utf8'), EXPECTED);
+  console.error(`ondrain write ret= ${file.write(EXPECTED)}`);
+  cb_occurred += 'write ';
+ } else if (countDrains === 2) {
+  console.error('second drain, end');
+  assert.strictEqual(fs.readFileSync(filepath, 'utf8'), EXPECTED + EXPECTED);
+  file.end();
+ }
 });
 
 file.on('close', function() {
-	cb_occurred += 'close ';
-	assert.strictEqual(file.bytesWritten, EXPECTED.length * 2);
-	file.write('should not work anymore', (err) => {
-		assert.ok(err.message.includes('write after end'));
-	});
+ cb_occurred += 'close ';
+ assert.strictEqual(file.bytesWritten, EXPECTED.length * 2);
+ file.write('should not work anymore', (err) => {
+  assert.ok(err.message.includes('write after end'));
+ });
 });
 
 for (let i = 0; i < 11; i++) {
-	const ret = file.write(String(i));
-	console.error(`${i} ${ret}`);
+ const ret = file.write(String(i));
+ console.error(`${i} ${ret}`);
 
-	// Return false when i hits 10
-	assert.strictEqual(ret, i !== 10);
+ // Return false when i hits 10
+ assert.strictEqual(ret, i !== 10);
 }
 cb_occurred += 'write ';

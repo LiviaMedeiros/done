@@ -25,14 +25,14 @@ assert.strictEqual(x, 2);
 fs.writeFileSync(real, 'x++;');
 
 try {
-	fs.symlinkSync(real, link_absolute_path);
+ fs.symlinkSync(real, link_absolute_path);
 } catch (err) {
-	if (err.code !== 'EPERM') throw err;
-	common.skip('insufficient privileges for symlinks');
+ if (err.code !== 'EPERM') throw err;
+ common.skip('insufficient privileges for symlinks');
 }
 
 spawn(process.execPath,
-						['--preserve-symlinks', entry],
-						{ stdio: 'inherit' }).on('exit', (code) => {
-	assert.strictEqual(code, 0);
+      ['--preserve-symlinks', entry],
+      { stdio: 'inherit' }).on('exit', (code) => {
+ assert.strictEqual(code, 0);
 });

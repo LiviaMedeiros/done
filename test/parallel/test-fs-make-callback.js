@@ -10,19 +10,19 @@ const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
 function testMakeCallback(cb) {
-	return function() {
-		// fs.mkdtemp() calls makeCallback() on its third argument
-		fs.mkdtemp(`${tmpdir.path}${sep}`, {}, cb);
-	};
+ return function() {
+  // fs.mkdtemp() calls makeCallback() on its third argument
+  fs.mkdtemp(`${tmpdir.path}${sep}`, {}, cb);
+ };
 }
 
 function invalidCallbackThrowsTests() {
-	callbackThrowValues.forEach((value) => {
-		assert.throws(testMakeCallback(value), {
-			code: 'ERR_INVALID_ARG_TYPE',
-			name: 'TypeError'
-		});
-	});
+ callbackThrowValues.forEach((value) => {
+  assert.throws(testMakeCallback(value), {
+   code: 'ERR_INVALID_ARG_TYPE',
+   name: 'TypeError'
+  });
+ });
 }
 
 invalidCallbackThrowsTests();

@@ -16,16 +16,16 @@ const filename = path.join(tmpdir.path, 'node.heapsnapshot');
 
 // Heap profiler take snapshot.
 {
-	const opts = { cwd: tmpdir.path };
-	const cli = startCLI([fixtures.path('debugger/empty.js')], [], opts);
+ const opts = { cwd: tmpdir.path };
+ const cli = startCLI([fixtures.path('debugger/empty.js')], [], opts);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	// Check that the snapshot is valid JSON.
-	return cli.waitForInitialBreak()
+ // Check that the snapshot is valid JSON.
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('takeHeapSnapshot()'))
     .then(() => JSON.parse(readFileSync(filename, 'utf8')))

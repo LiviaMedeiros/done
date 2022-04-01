@@ -16,18 +16,18 @@ const fn = path.join(tmpdir.path, 'test.txt');
 writeFileSync(fn, 'Hello World');
 
 async function readFileTest() {
-	const handle = await open(fn, 'r');
+ const handle = await open(fn, 'r');
 
-	/* Read only five bytes, so that the position moves to five. */
-	const buf = Buffer.alloc(5);
-	const { bytesRead } = await handle.read(buf, 0, 5, null);
-	assert.strictEqual(bytesRead, 5);
-	assert.strictEqual(buf.toString(), 'Hello');
+ /* Read only five bytes, so that the position moves to five. */
+ const buf = Buffer.alloc(5);
+ const { bytesRead } = await handle.read(buf, 0, 5, null);
+ assert.strictEqual(bytesRead, 5);
+ assert.strictEqual(buf.toString(), 'Hello');
 
-	/* readFile() should read from position five, instead of zero. */
-	assert.strictEqual((await handle.readFile()).toString(), ' World');
+ /* readFile() should read from position five, instead of zero. */
+ assert.strictEqual((await handle.readFile()).toString(), ' World');
 
-	await handle.close();
+ await handle.close();
 }
 
 

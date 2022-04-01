@@ -15,9 +15,9 @@ process.env.NODE_PATH = fixtures.path('module-require', 'relative');
 m._initPaths();
 
 assert.throws(
-	() => require('.'),
-	{
-		message: /Cannot find module '\.'/,
-		code: 'MODULE_NOT_FOUND'
-	}
+ () => require('.'),
+ {
+  message: /Cannot find module '\.'/,
+  code: 'MODULE_NOT_FOUND'
+ }
 );

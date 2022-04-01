@@ -8,7 +8,7 @@ const { Worker } = require('worker_threads');
 // Refs: https://github.com/nodejs/node/issues/22736
 
 assert.throws(() => {
-	new Worker('./worker.js', {
-		workerData: { fn: () => {} }
-	});
+ new Worker('./worker.js', {
+  workerData: { fn: () => {} }
+ });
 }, /DataCloneError/);

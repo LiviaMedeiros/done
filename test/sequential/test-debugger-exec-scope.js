@@ -10,14 +10,14 @@ const assert = require('assert');
 
 // exec .scope
 {
-	const cli = startCLI([fixtures.path('debugger/backtrace.js')]);
+ const cli = startCLI([fixtures.path('debugger/backtrace.js')]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.stepCommand('c'))
     .then(() => cli.command('exec .scope'))

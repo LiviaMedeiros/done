@@ -10,21 +10,21 @@ let recovered = false;
 let rendered = false;
 
 function customEval(code, context, file, cb) {
-	evalCount++;
+ evalCount++;
 
-	return cb(evalCount === 1 ? new repl.Recoverable() : null, true);
+ return cb(evalCount === 1 ? new repl.Recoverable() : null, true);
 }
 
 const putIn = new ArrayStream();
 
 putIn.write = function(msg) {
-	if (msg === '... ') {
-		recovered = true;
-	}
+ if (msg === '... ') {
+  recovered = true;
+ }
 
-	if (msg === 'true\n') {
-		rendered = true;
-	}
+ if (msg === 'true\n') {
+  rendered = true;
+ }
 };
 
 repl.start('', putIn, customEval);
@@ -35,7 +35,7 @@ putIn.emit('data', '1\n');
 putIn.emit('data', '2\n');
 
 process.on('exit', function() {
-	assert(recovered, 'REPL never recovered');
-	assert(rendered, 'REPL never rendered the result');
-	assert.strictEqual(evalCount, 2);
+ assert(recovered, 'REPL never recovered');
+ assert(rendered, 'REPL never rendered the result');
+ assert.strictEqual(evalCount, 2);
 });

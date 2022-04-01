@@ -2,7 +2,7 @@
 'use strict';
 const common = require('../common');
 if (common.isWindows)
-	common.skip('Does not support wrapping sockets with fd on Windows');
+ common.skip('Does not support wrapping sockets with fd on Windows');
 
 const assert = require('assert');
 const net = require('net');
@@ -14,19 +14,19 @@ const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
 function testClients(getSocketOpt, getConnectOpt, getConnectCb) {
-	const cloneOptions = (index) =>
-		({ ...getSocketOpt(index), ...getConnectOpt(index) });
-	return [
-		net.connect(cloneOptions(0), getConnectCb(0)),
-		net.connect(cloneOptions(1))
+ const cloneOptions = (index) =>
+  ({ ...getSocketOpt(index), ...getConnectOpt(index) });
+ return [
+  net.connect(cloneOptions(0), getConnectCb(0)),
+  net.connect(cloneOptions(1))
       .on('connect', getConnectCb(1)),
-		net.createConnection(cloneOptions(2), getConnectCb(2)),
-		net.createConnection(cloneOptions(3))
+  net.createConnection(cloneOptions(2), getConnectCb(2)),
+  net.createConnection(cloneOptions(3))
       .on('connect', getConnectCb(3)),
-		new net.Socket(getSocketOpt(4)).connect(getConnectOpt(4), getConnectCb(4)),
-		new net.Socket(getSocketOpt(5)).connect(getConnectOpt(5))
+  new net.Socket(getSocketOpt(4)).connect(getConnectOpt(4), getConnectCb(4)),
+  new net.Socket(getSocketOpt(5)).connect(getConnectOpt(5))
       .on('connect', getConnectCb(5)),
-	];
+ ];
 }
 
 const CLIENT_VARIANTS = 6;  // Same length as array above
@@ -34,14 +34,14 @@ const forAllClients = (cb) => common.mustCall(cb, CLIENT_VARIANTS);
 
 // Test Pipe fd is wrapped correctly
 {
-	// Use relative path to avoid hitting 108-char length limit
-	// for socket paths in libuv.
-	const prefix = path.relative('.', `${common.PIPE}-net-connect-options-fd`);
-	const serverPath = `${prefix}-server`;
-	let counter = 0;
-	let socketCounter = 0;
-	const handleMap = new Map();
-	const server = net.createServer()
+ // Use relative path to avoid hitting 108-char length limit
+ // for socket paths in libuv.
+ const prefix = path.relative('.', `${common.PIPE}-net-connect-options-fd`);
+ const serverPath = `${prefix}-server`;
+ let counter = 0;
+ let socketCounter = 0;
+ const handleMap = new Map();
+ const server = net.createServer()
   .on('connection', forAllClients(function serverOnConnection(socket) {
   	let clientFd;
   	socket.on('data', common.mustCall(function(data) {

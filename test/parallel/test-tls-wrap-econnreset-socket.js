@@ -2,21 +2,21 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const assert = require('assert');
 const net = require('net');
 const tls = require('tls');
 
 const server = net.createServer((c) => {
-	c.end();
+ c.end();
 }).listen(common.mustCall(() => {
-	const port = server.address().port;
+ const port = server.address().port;
 
-	const socket = new net.Socket();
+ const socket = new net.Socket();
 
-	let errored = false;
-	tls.connect({ socket })
+ let errored = false;
+ tls.connect({ socket })
     .once('error', common.mustCall((e) => {
     	assert.strictEqual(e.code, 'ECONNRESET');
     	assert.strictEqual(e.path, undefined);
@@ -30,5 +30,5 @@ const server = net.createServer((c) => {
     	assert.strictEqual(errored, true);
     }));
 
-	socket.connect(port);
+ socket.connect(port);
 }));

@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 if (common.isWindows) {
-	common.skip('`make doc` does not run on Windows');
+ common.skip('`make doc` does not run on Windows');
 }
 
 // This tests that `make doc` generates the documentation properly.
@@ -18,19 +18,19 @@ const allDocs = fs.readdirSync(apiURL);
 assert.ok(allDocs.includes('index.html'));
 
 const actualDocs = allDocs.filter(
-	(name) => {
-		const extension = path.extname(name);
-		return extension === '.html' || extension === '.json';
-	}
+ (name) => {
+  const extension = path.extname(name);
+  return extension === '.html' || extension === '.json';
+ }
 );
 
 for (const name of actualDocs) {
-	if (name.startsWith('all.')) continue;
+ if (name.startsWith('all.')) continue;
 
-	assert.ok(
-		allMD.includes(name.replace(/\.\w+$/, '.md')),
-		`Unexpected output: out/doc/api/${name}, remove and rerun.`
-	);
+ assert.ok(
+  allMD.includes(name.replace(/\.\w+$/, '.md')),
+  `Unexpected output: out/doc/api/${name}, remove and rerun.`
+ );
 }
 
 const toc = fs.readFileSync(new URL('./index.html', apiURL), 'utf8');
@@ -48,18 +48,18 @@ const expectedDocs = linkedHtmls.concat(expectedJsons);
 
 // Test that all the relative links in the TOC match to the actual documents.
 for (const expectedDoc of expectedDocs) {
-	assert.ok(actualDocs.includes(expectedDoc), `${expectedDoc} does not exist`);
+ assert.ok(actualDocs.includes(expectedDoc), `${expectedDoc} does not exist`);
 }
 
 // Test that all the actual documents match to the relative links in the TOC
 // and that they are not empty files.
 for (const actualDoc of actualDocs) {
-	assert.ok(
-		expectedDocs.includes(actualDoc), `${actualDoc} does not match TOC`);
+ assert.ok(
+  expectedDocs.includes(actualDoc), `${actualDoc} does not match TOC`);
 
-	assert.notStrictEqual(
-		fs.statSync(new URL(`./${actualDoc}`, apiURL)).size,
-		0,
-		`${actualDoc} is empty`
-	);
+ assert.notStrictEqual(
+  fs.statSync(new URL(`./${actualDoc}`, apiURL)).size,
+  0,
+  `${actualDoc} is empty`
+ );
 }

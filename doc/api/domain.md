@@ -68,16 +68,16 @@ For example, this is not a good idea:
 
 const d = require('domain').create();
 d.on('error', (er) => {
-	// The error won't crash the process, but what it does is worse!
-	// Though we've prevented abrupt process restarting, we are leaking
-	// a lot of resources if this ever happens.
-	// This is no better than process.on('uncaughtException')!
-	console.log(`error, but oh well ${er.message}`);
+ // The error won't crash the process, but what it does is worse!
+ // Though we've prevented abrupt process restarting, we are leaking
+ // a lot of resources if this ever happens.
+ // This is no better than process.on('uncaughtException')!
+ console.log(`error, but oh well ${er.message}`);
 });
 d.run(() => {
-	require('http').createServer((req, res) => {
-		handleRequest(req, res);
-	}).listen(PORT);
+ require('http').createServer((req, res) => {
+  handleRequest(req, res);
+ }).listen(PORT);
 });
 ```
 
@@ -92,100 +92,100 @@ const cluster = require('cluster');
 const PORT = +process.env.PORT || 1337;
 
 if (cluster.isPrimary) {
-	// A more realistic scenario would have more than 2 workers,
-	// and perhaps not put the primary and worker in the same file.
-	//
-	// It is also possible to get a bit fancier about logging, and
-	// implement whatever custom logic is needed to prevent DoS
-	// attacks and other bad behavior.
-	//
-	// See the options in the cluster documentation.
-	//
-	// The important thing is that the primary does very little,
-	// increasing our resilience to unexpected errors.
+ // A more realistic scenario would have more than 2 workers,
+ // and perhaps not put the primary and worker in the same file.
+ //
+ // It is also possible to get a bit fancier about logging, and
+ // implement whatever custom logic is needed to prevent DoS
+ // attacks and other bad behavior.
+ //
+ // See the options in the cluster documentation.
+ //
+ // The important thing is that the primary does very little,
+ // increasing our resilience to unexpected errors.
 
-	cluster.fork();
-	cluster.fork();
+ cluster.fork();
+ cluster.fork();
 
-	cluster.on('disconnect', (worker) => {
-		console.error('disconnect!');
-		cluster.fork();
-	});
+ cluster.on('disconnect', (worker) => {
+  console.error('disconnect!');
+  cluster.fork();
+ });
 
 } else {
-	// the worker
-	//
-	// This is where we put our bugs!
+ // the worker
+ //
+ // This is where we put our bugs!
 
-	const domain = require('domain');
+ const domain = require('domain');
 
-	// See the cluster documentation for more details about using
-	// worker processes to serve requests. How it works, caveats, etc.
+ // See the cluster documentation for more details about using
+ // worker processes to serve requests. How it works, caveats, etc.
 
-	const server = require('http').createServer((req, res) => {
-		const d = domain.create();
-		d.on('error', (er) => {
-			console.error(`error ${er.stack}`);
+ const server = require('http').createServer((req, res) => {
+  const d = domain.create();
+  d.on('error', (er) => {
+   console.error(`error ${er.stack}`);
 
-			// We're in dangerous territory!
-			// By definition, something unexpected occurred,
-			// which we probably didn't want.
-			// Anything can happen now! Be very careful!
+   // We're in dangerous territory!
+   // By definition, something unexpected occurred,
+   // which we probably didn't want.
+   // Anything can happen now! Be very careful!
 
-			try {
-				// Make sure we close down within 30 seconds
-				const killtimer = setTimeout(() => {
-					process.exit(1);
-				}, 30000);
-				// But don't keep the process open just for that!
-				killtimer.unref();
+   try {
+    // Make sure we close down within 30 seconds
+    const killtimer = setTimeout(() => {
+     process.exit(1);
+    }, 30000);
+    // But don't keep the process open just for that!
+    killtimer.unref();
 
-				// Stop taking new requests.
-				server.close();
+    // Stop taking new requests.
+    server.close();
 
-				// Let the primary know we're dead. This will trigger a
-				// 'disconnect' in the cluster primary, and then it will fork
-				// a new worker.
-				cluster.worker.disconnect();
+    // Let the primary know we're dead. This will trigger a
+    // 'disconnect' in the cluster primary, and then it will fork
+    // a new worker.
+    cluster.worker.disconnect();
 
-				// Try to send an error to the request that triggered the problem
-				res.statusCode = 500;
-				res.setHeader('content-type', 'text/plain');
-				res.end('Oops, there was a problem!\n');
-			} catch (er2) {
-				// Oh well, not much we can do at this point.
-				console.error(`Error sending 500! ${er2.stack}`);
-			}
-		});
+    // Try to send an error to the request that triggered the problem
+    res.statusCode = 500;
+    res.setHeader('content-type', 'text/plain');
+    res.end('Oops, there was a problem!\n');
+   } catch (er2) {
+    // Oh well, not much we can do at this point.
+    console.error(`Error sending 500! ${er2.stack}`);
+   }
+  });
 
-		// Because req and res were created before this domain existed,
-		// we need to explicitly add them.
-		// See the explanation of implicit vs explicit binding below.
-		d.add(req);
-		d.add(res);
+  // Because req and res were created before this domain existed,
+  // we need to explicitly add them.
+  // See the explanation of implicit vs explicit binding below.
+  d.add(req);
+  d.add(res);
 
-		// Now run the handler function in the domain.
-		d.run(() => {
-			handleRequest(req, res);
-		});
-	});
-	server.listen(PORT);
+  // Now run the handler function in the domain.
+  d.run(() => {
+   handleRequest(req, res);
+  });
+ });
+ server.listen(PORT);
 }
 
 // This part is not important. Just an example routing thing.
 // Put fancy application logic here.
 function handleRequest(req, res) {
-	switch (req.url) {
-		case '/error':
-			// We do some async stuff, and then...
-			setTimeout(() => {
-				// Whoops!
-				flerb.bark();
-			}, timeout);
-			break;
-		default:
-			res.end('ok');
-	}
+ switch (req.url) {
+  case '/error':
+   // We do some async stuff, and then...
+   setTimeout(() => {
+    // Whoops!
+    flerb.bark();
+   }, timeout);
+   break;
+  default:
+   res.end('ok');
+ }
 }
 ```
 
@@ -251,24 +251,24 @@ const http = require('http');
 const serverDomain = domain.create();
 
 serverDomain.run(() => {
-	// Server is created in the scope of serverDomain
-	http.createServer((req, res) => {
-		// Req and res are also created in the scope of serverDomain
-		// however, we'd prefer to have a separate domain for each request.
-		// create it first thing, and add req and res to it.
-		const reqd = domain.create();
-		reqd.add(req);
-		reqd.add(res);
-		reqd.on('error', (er) => {
-			console.error('Error', er, req.url);
-			try {
-				res.writeHead(500);
-				res.end('Error occurred, sorry.');
-			} catch (er2) {
-				console.error('Error sending 500', er2, req.url);
-			}
-		});
-	}).listen(1337);
+ // Server is created in the scope of serverDomain
+ http.createServer((req, res) => {
+  // Req and res are also created in the scope of serverDomain
+  // however, we'd prefer to have a separate domain for each request.
+  // create it first thing, and add req and res to it.
+  const reqd = domain.create();
+  reqd.add(req);
+  reqd.add(res);
+  reqd.on('error', (er) => {
+   console.error('Error', er, req.url);
+   try {
+    res.writeHead(500);
+    res.end('Error occurred, sorry.');
+   } catch (er2) {
+    console.error('Error sending 500', er2, req.url);
+   }
+  });
+ }).listen(1337);
 });
 ```
 
@@ -321,15 +321,15 @@ thrown will be routed to the domain's `'error'` event.
 const d = domain.create();
 
 function readSomeFile(filename, cb) {
-	fs.readFile(filename, 'utf8', d.bind((er, data) => {
-		// If this throws, it will also be passed to the domain.
-		return cb(er, data ? JSON.parse(data) : null);
-	}));
+ fs.readFile(filename, 'utf8', d.bind((er, data) => {
+  // If this throws, it will also be passed to the domain.
+  return cb(er, data ? JSON.parse(data) : null);
+ }));
 }
 
 d.on('error', (er) => {
-	// An error occurred somewhere. If we throw it now, it will crash the program
-	// with the normal line number and stack message.
+ // An error occurred somewhere. If we throw it now, it will crash the program
+ // with the normal line number and stack message.
 });
 ```
 
@@ -377,22 +377,22 @@ with a single error handler in a single place.
 const d = domain.create();
 
 function readSomeFile(filename, cb) {
-	fs.readFile(filename, 'utf8', d.intercept((data) => {
-		// Note, the first argument is never passed to the
-		// callback since it is assumed to be the 'Error' argument
-		// and thus intercepted by the domain.
+ fs.readFile(filename, 'utf8', d.intercept((data) => {
+  // Note, the first argument is never passed to the
+  // callback since it is assumed to be the 'Error' argument
+  // and thus intercepted by the domain.
 
-		// If this throws, it will also be passed to the domain
-		// so the error-handling logic can be moved to the 'error'
-		// event on the domain instead of being repeated throughout
-		// the program.
-		return cb(null, JSON.parse(data));
-	}));
+  // If this throws, it will also be passed to the domain
+  // so the error-handling logic can be moved to the 'error'
+  // event on the domain instead of being repeated throughout
+  // the program.
+  return cb(null, JSON.parse(data));
+ }));
 }
 
 d.on('error', (er) => {
-	// An error occurred somewhere. If we throw it now, it will crash the program
-	// with the normal line number and stack message.
+ // An error occurred somewhere. If we throw it now, it will crash the program
+ // with the normal line number and stack message.
 });
 ```
 
@@ -420,17 +420,17 @@ const domain = require('domain');
 const fs = require('fs');
 const d = domain.create();
 d.on('error', (er) => {
-	console.error('Caught error!', er);
+ console.error('Caught error!', er);
 });
 d.run(() => {
-	process.nextTick(() => {
-		setTimeout(() => { // Simulating some various async stuff
-			fs.open('non-existent file', 'r', (er, fd) => {
-				if (er) throw er;
-				// proceed...
-			});
-		}, 100);
-	});
+ process.nextTick(() => {
+  setTimeout(() => { // Simulating some various async stuff
+   fs.open('non-existent file', 'r', (er, fd) => {
+    if (er) throw er;
+    // proceed...
+   });
+  }, 100);
+ });
 });
 ```
 
@@ -448,13 +448,13 @@ const d2 = domain.create();
 
 let p;
 d1.run(() => {
-	p = Promise.resolve(42);
+ p = Promise.resolve(42);
 });
 
 d2.run(() => {
-	p.then((v) => {
-		// running in d2
-	});
+ p.then((v) => {
+  // running in d2
+ });
 });
 ```
 
@@ -466,13 +466,13 @@ const d2 = domain.create();
 
 let p;
 d1.run(() => {
-	p = Promise.resolve(42);
+ p = Promise.resolve(42);
 });
 
 d2.run(() => {
-	p.then(p.domain.bind((v) => {
-		// running in d1
-	}));
+ p.then(p.domain.bind((v) => {
+  // running in d1
+ }));
 });
 ```
 

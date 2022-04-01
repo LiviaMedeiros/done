@@ -23,15 +23,15 @@ checkInvocations(udpwrap, { init: 1 }, 'after dgram.createSocket call');
 sock.close(common.mustCall(onsockClosed));
 
 function onsockClosed() {
-	checkInvocations(udpwrap, { init: 1 }, 'when socket is closed');
-	tick(2);
+ checkInvocations(udpwrap, { init: 1 }, 'when socket is closed');
+ tick(2);
 }
 
 process.on('exit', onexit);
 
 function onexit() {
-	hooks.disable();
-	hooks.sanityCheck('UDPWRAP');
-	checkInvocations(udpwrap, { init: 1, destroy: 1 },
-																		'when process exits');
+ hooks.disable();
+ hooks.sanityCheck('UDPWRAP');
+ checkInvocations(udpwrap, { init: 1, destroy: 1 },
+                  'when process exits');
 }

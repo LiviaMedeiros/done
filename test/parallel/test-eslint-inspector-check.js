@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if ((!common.hasCrypto) || (!common.hasIntl)) {
-	common.skip('ESLint tests require crypto and Intl');
+ common.skip('ESLint tests require crypto and Intl');
 }
 common.skipIfEslintMissing();
 
@@ -14,20 +14,20 @@ const message = 'Please add a skipIfInspectorDisabled() call to allow this ' +
                 '\'--without-inspector\'.';
 
 new RuleTester().run('inspector-check', rule, {
-	valid: [
-		'foo;',
-		'require("common")\n' +
+ valid: [
+  'foo;',
+  'require("common")\n' +
       'common.skipIfInspectorDisabled();\n' +
       'require("inspector")',
-	],
-	invalid: [
-		{
-			code: 'require("common")\n' +
+ ],
+ invalid: [
+  {
+   code: 'require("common")\n' +
             'require("inspector")',
-			errors: [{ message }],
-			output: 'require("common")\n' +
+   errors: [{ message }],
+   output: 'require("common")\n' +
               'common.skipIfInspectorDisabled();\n' +
               'require("inspector")'
-		},
-	]
+  },
+ ]
 });

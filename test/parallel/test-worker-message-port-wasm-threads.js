@@ -16,21 +16,21 @@ const { buffer } = instance.exports.memory;
 assert(buffer instanceof SharedArrayBuffer);
 
 {
-	const { port1, port2 } = new MessageChannel();
-	port1.postMessage(buffer);
-	port2.once('message', common.mustCall((buffer2) => {
-		// Make sure serialized + deserialized buffer refer to the same memory.
-		const expected = 'Hello, world!';
-		const bytes = Buffer.from(buffer).write(expected);
-		const deserialized = Buffer.from(buffer2).toString('utf8', 0, bytes);
-		assert.deepStrictEqual(deserialized, expected);
-	}));
+ const { port1, port2 } = new MessageChannel();
+ port1.postMessage(buffer);
+ port2.once('message', common.mustCall((buffer2) => {
+  // Make sure serialized + deserialized buffer refer to the same memory.
+  const expected = 'Hello, world!';
+  const bytes = Buffer.from(buffer).write(expected);
+  const deserialized = Buffer.from(buffer2).toString('utf8', 0, bytes);
+  assert.deepStrictEqual(deserialized, expected);
+ }));
 }
 
 {
-	// Make sure we can free WASM memory originating from a thread that already
-	// stopped when we exit.
-	const worker = new Worker(`
+ // Make sure we can free WASM memory originating from a thread that already
+ // stopped when we exit.
+ const worker = new Worker(`
   const { parentPort } = require('worker_threads');
 
   // Compile the same WASM module from its source bytes.
@@ -45,10 +45,10 @@ assert(buffer instanceof SharedArrayBuffer);
     parentPort.postMessage(instance.exports.memory);
   });
   `, { eval: true });
-	worker.on('message', common.mustCall(({ buffer }) => {
-		assert(buffer instanceof SharedArrayBuffer);
-		worker.buf = buffer; // Basically just keep the reference to buffer alive.
-	}, 2));
-	worker.once('exit', common.mustCall());
-	worker.postMessage({ wasmModule });
+ worker.on('message', common.mustCall(({ buffer }) => {
+  assert(buffer instanceof SharedArrayBuffer);
+  worker.buf = buffer; // Basically just keep the reference to buffer alive.
+ }, 2));
+ worker.once('exit', common.mustCall());
+ worker.postMessage({ wasmModule });
 }

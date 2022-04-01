@@ -11,16 +11,16 @@ const path = require('path');
 
 // Break on (uncaught) exceptions.
 {
-	const scriptFullPath = fixtures.path('debugger', 'exceptions.js');
-	const script = path.relative(process.cwd(), scriptFullPath);
-	const cli = startCLI([script]);
+ const scriptFullPath = fixtures.path('debugger', 'exceptions.js');
+ const script = path.relative(process.cwd(), scriptFullPath);
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => {
     	assert.deepStrictEqual(cli.breakInfo, { filename: script, line: 1 });

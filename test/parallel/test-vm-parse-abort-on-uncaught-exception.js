@@ -6,13 +6,13 @@ const vm = require('vm');
 // Regression test for https://github.com/nodejs/node/issues/13258
 
 try {
-	new vm.Script({ toString() { throw new Error('foo'); } }, {});
+ new vm.Script({ toString() { throw new Error('foo'); } }, {});
 } catch {
-	// Continue regardless of error.
+ // Continue regardless of error.
 }
 
 try {
-	new vm.Script('[', {});
+ new vm.Script('[', {});
 } catch {
-	// Continue regardless of error.
+ // Continue regardless of error.
 }

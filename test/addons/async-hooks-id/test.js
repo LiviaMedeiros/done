@@ -6,21 +6,21 @@ const binding = require(`./build/${common.buildType}/binding`);
 const async_hooks = require('async_hooks');
 
 assert.strictEqual(
-	binding.getExecutionAsyncId(),
-	async_hooks.executionAsyncId()
+ binding.getExecutionAsyncId(),
+ async_hooks.executionAsyncId()
 );
 assert.strictEqual(
-	binding.getTriggerAsyncId(),
-	async_hooks.triggerAsyncId()
+ binding.getTriggerAsyncId(),
+ async_hooks.triggerAsyncId()
 );
 
 process.nextTick(common.mustCall(() => {
-	assert.strictEqual(
-		binding.getExecutionAsyncId(),
-		async_hooks.executionAsyncId()
-	);
-	assert.strictEqual(
-		binding.getTriggerAsyncId(),
-		async_hooks.triggerAsyncId()
-	);
+ assert.strictEqual(
+  binding.getExecutionAsyncId(),
+  async_hooks.executionAsyncId()
+ );
+ assert.strictEqual(
+  binding.getTriggerAsyncId(),
+  async_hooks.triggerAsyncId()
+ );
 }));

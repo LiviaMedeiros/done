@@ -11,20 +11,20 @@ const path = require('path');
 
 // Using sb before loading file.
 {
-	const scriptFullPath = fixtures.path('debugger', 'cjs', 'index.js');
-	const script = path.relative(process.cwd(), scriptFullPath);
+ const scriptFullPath = fixtures.path('debugger', 'cjs', 'index.js');
+ const script = path.relative(process.cwd(), scriptFullPath);
 
-	const otherScriptFullPath = fixtures.path('debugger', 'cjs', 'other.js');
-	const otherScript = path.relative(process.cwd(), otherScriptFullPath);
+ const otherScriptFullPath = fixtures.path('debugger', 'cjs', 'other.js');
+ const otherScript = path.relative(process.cwd(), otherScriptFullPath);
 
-	const cli = startCLI([script]);
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('sb("other.js", 2)'))
     .then(() => {

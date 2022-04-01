@@ -9,18 +9,18 @@ cluster.schedulingPolicy = cluster.SCHED_RR;
 const server = http.createServer();
 
 if (cluster.isPrimary) {
-	server.listen({ port: 0 }, common.mustCall(() => {
-		const worker = cluster.fork({ PORT: server.address().port });
-		worker.on('exit', common.mustCall(() => {
-			server.close();
-		}));
-	}));
+ server.listen({ port: 0 }, common.mustCall(() => {
+  const worker = cluster.fork({ PORT: server.address().port });
+  worker.on('exit', common.mustCall(() => {
+   server.close();
+  }));
+ }));
 } else {
-	assert(process.env.PORT);
-	process.on('uncaughtException', common.mustCall((e) => {}));
-	server.listen(process.env.PORT);
-	server.on('error', common.mustCall((e) => {
-		cluster.worker.disconnect();
-		throw e;
-	}));
+ assert(process.env.PORT);
+ process.on('uncaughtException', common.mustCall((e) => {}));
+ server.listen(process.env.PORT);
+ server.on('error', common.mustCall((e) => {
+  cluster.worker.disconnect();
+  throw e;
+ }));
 }

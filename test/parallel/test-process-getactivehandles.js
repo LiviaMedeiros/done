@@ -9,39 +9,39 @@ const clients = [];
 let clients_counter = 0;
 
 const server = net.createServer(function listener(c) {
-	connections.push(c);
+ connections.push(c);
 }).listen(0, makeConnection);
 
 
 function makeConnection() {
-	if (clients_counter >= NUM) return;
-	net.connect(server.address().port, function connected() {
-		clientConnected(this);
-		makeConnection();
-	});
+ if (clients_counter >= NUM) return;
+ net.connect(server.address().port, function connected() {
+  clientConnected(this);
+  makeConnection();
+ });
 }
 
 
 function clientConnected(client) {
-	clients.push(client);
-	if (++clients_counter >= NUM)
-		checkAll();
+ clients.push(client);
+ if (++clients_counter >= NUM)
+  checkAll();
 }
 
 
 function checkAll() {
-	const handles = process._getActiveHandles();
+ const handles = process._getActiveHandles();
 
-	clients.forEach(function(item) {
-		assert.ok(handles.includes(item));
-		item.destroy();
-	});
+ clients.forEach(function(item) {
+  assert.ok(handles.includes(item));
+  item.destroy();
+ });
 
-	connections.forEach(function(item) {
-		assert.ok(handles.includes(item));
-		item.end();
-	});
+ connections.forEach(function(item) {
+  assert.ok(handles.includes(item));
+  item.end();
+ });
 
-	assert.ok(handles.includes(server));
-	server.close();
+ assert.ok(handles.includes(server));
+ server.close();
 }

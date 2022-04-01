@@ -32,39 +32,39 @@ repl.start('', putIn, null, true);
 test1();
 
 function test1() {
-	let gotWrite = false;
-	putIn.write = function(data) {
-		gotWrite = true;
-		if (data.length) {
+ let gotWrite = false;
+ putIn.write = function(data) {
+  gotWrite = true;
+  if (data.length) {
 
-			// Inspect output matches repl output
-			assert.strictEqual(data,
-																						`${util.inspect(require('fs'), null, 2, false)}\n`);
-			// Globally added lib matches required lib
-			assert.strictEqual(global.fs, require('fs'));
-			test2();
-		}
-	};
-	assert(!gotWrite);
-	putIn.run(['fs']);
-	assert(gotWrite);
+   // Inspect output matches repl output
+   assert.strictEqual(data,
+                      `${util.inspect(require('fs'), null, 2, false)}\n`);
+   // Globally added lib matches required lib
+   assert.strictEqual(global.fs, require('fs'));
+   test2();
+  }
+ };
+ assert(!gotWrite);
+ putIn.run(['fs']);
+ assert(gotWrite);
 }
 
 function test2() {
-	let gotWrite = false;
-	putIn.write = function(data) {
-		gotWrite = true;
-		if (data.length) {
-			// REPL response error message
-			assert.strictEqual(data, '{}\n');
-			// Original value wasn't overwritten
-			assert.strictEqual(val, global.url);
-		}
-	};
-	const val = {};
-	global.url = val;
-	common.allowGlobals(val);
-	assert(!gotWrite);
-	putIn.run(['url']);
-	assert(gotWrite);
+ let gotWrite = false;
+ putIn.write = function(data) {
+  gotWrite = true;
+  if (data.length) {
+   // REPL response error message
+   assert.strictEqual(data, '{}\n');
+   // Original value wasn't overwritten
+   assert.strictEqual(val, global.url);
+  }
+ };
+ const val = {};
+ global.url = val;
+ common.allowGlobals(val);
+ assert(!gotWrite);
+ putIn.run(['url']);
+ assert(gotWrite);
 }

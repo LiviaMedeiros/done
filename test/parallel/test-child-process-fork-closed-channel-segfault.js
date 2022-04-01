@@ -9,11 +9,11 @@ const cluster = require('cluster');
 const net = require('net');
 
 if (!cluster.isPrimary) {
-	// Exit on first received handle to leave the queue non-empty in primary
-	process.on('message', function() {
-		process.exit(1);
-	});
-	return;
+ // Exit on first received handle to leave the queue non-empty in primary
+ process.on('message', function() {
+  process.exit(1);
+ });
+ return;
 }
 
 const server = net

@@ -57,7 +57,7 @@ fs.appendFileSync(filename2, data);
 const fileData2 = fs.readFileSync(filename2);
 
 assert.strictEqual(Buffer.byteLength(data) + currentFileData.length,
-																			fileData2.length);
+                   fileData2.length);
 
 // Test that appendFileSync accepts buffers.
 const filename3 = join(tmpdir.path, 'append-sync3.txt');
@@ -74,25 +74,25 @@ const filename4 = join(tmpdir.path, 'append-sync4.txt');
 fs.writeFileSync(filename4, currentFileData, { mode: m });
 
 [
-	true, false, 0, 1, Infinity, () => {}, {}, [], undefined, null,
+ true, false, 0, 1, Infinity, () => {}, {}, [], undefined, null,
 ].forEach((value) => {
-	assert.throws(
-		() => fs.appendFileSync(filename4, value, { mode: m }),
-		{ message: /data/, code: 'ERR_INVALID_ARG_TYPE' }
-	);
+ assert.throws(
+  () => fs.appendFileSync(filename4, value, { mode: m }),
+  { message: /data/, code: 'ERR_INVALID_ARG_TYPE' }
+ );
 });
 fs.appendFileSync(filename4, `${num}`, { mode: m });
 
 // Windows permissions aren't Unix.
 if (!common.isWindows) {
-	const st = fs.statSync(filename4);
-	assert.strictEqual(st.mode & 0o700, m);
+ const st = fs.statSync(filename4);
+ assert.strictEqual(st.mode & 0o700, m);
 }
 
 const fileData4 = fs.readFileSync(filename4);
 
 assert.strictEqual(Buffer.byteLength(String(num)) + currentFileData.length,
-																			fileData4.length);
+                   fileData4.length);
 
 // Test that appendFile accepts file descriptors.
 const filename5 = join(tmpdir.path, 'append-sync5.txt');
@@ -105,4 +105,4 @@ fs.closeSync(filename5fd);
 const fileData5 = fs.readFileSync(filename5);
 
 assert.strictEqual(Buffer.byteLength(data) + currentFileData.length,
-																			fileData5.length);
+                   fileData5.length);

@@ -10,14 +10,14 @@ const assert = require('assert');
 
 {
 
-	const cli = startCLI([fixtures.path('debugger/alive.js')]);
+ const cli = startCLI([fixtures.path('debugger/alive.js')]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('exec [typeof heartbeat, typeof process.exit]'))
     .then(() => {

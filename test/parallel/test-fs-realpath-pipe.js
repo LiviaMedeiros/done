@@ -3,14 +3,14 @@
 const common = require('../common');
 
 if (common.isWindows || common.isAIX)
-	common.skip(`No /dev/stdin on ${process.platform}.`);
+ common.skip(`No /dev/stdin on ${process.platform}.`);
 
 const assert = require('assert');
 
 const { spawnSync } = require('child_process');
 
 for (const code of [
-	`require('fs').realpath('/dev/stdin', (err, resolvedPath) => {
+ `require('fs').realpath('/dev/stdin', (err, resolvedPath) => {
     if (err) {
       console.error(err);
       process.exit(1);
@@ -19,7 +19,7 @@ for (const code of [
       process.exit(2);
     }
   });`,
-	`try {
+ `try {
     if (require('fs').realpathSync('/dev/stdin')) {
       process.exit(2);
     }
@@ -28,12 +28,12 @@ for (const code of [
     process.exit(1);
   }`,
 ]) {
-	const child = spawnSync(process.execPath, ['-e', code], {
-		stdio: 'pipe'
-	});
-	if (child.status !== 2) {
-		console.log(code);
-		console.log(child.stderr.toString());
-	}
-	assert.strictEqual(child.status, 2);
+ const child = spawnSync(process.execPath, ['-e', code], {
+  stdio: 'pipe'
+ });
+ if (child.status !== 2) {
+  console.log(code);
+  console.log(child.stderr.toString());
+ }
+ assert.strictEqual(child.status, 2);
 }

@@ -12,24 +12,24 @@ const assert = require('assert');
 const cluster = require('cluster');
 
 function serialFork() {
-	return new Promise((res) => {
-		const worker = cluster.fork();
-		worker.on('exit', common.mustCall((code, signal) => {
-			// code 0 is normal
-			// code 12 can happen if inspector could not bind because of a port clash
-			if (code !== 0 && code !== 12)
-				assert.fail(`code: ${code}, signal: ${signal}`);
-			const port = worker.process.spawnargs
+ return new Promise((res) => {
+  const worker = cluster.fork();
+  worker.on('exit', common.mustCall((code, signal) => {
+   // code 0 is normal
+   // code 12 can happen if inspector could not bind because of a port clash
+   if (code !== 0 && code !== 12)
+    assert.fail(`code: ${code}, signal: ${signal}`);
+   const port = worker.process.spawnargs
         .map((a) => (/=(?:.*:)?(\d{2,5})$/.exec(a) || [])[1])
         .filter((p) => p)
         .pop();
-			res(Number(port));
-		}));
-	});
+   res(Number(port));
+  }));
+ });
 }
 
 if (cluster.isPrimary) {
-	Promise.all([serialFork(), serialFork(), serialFork()])
+ Promise.all([serialFork(), serialFork(), serialFork()])
     .then(common.mustCall((ports) => {
     	ports.splice(0, 0, process.debugPort);
     	// 4 = [primary, worker1, worker2, worker3].length()
@@ -46,5 +46,5 @@ if (cluster.isPrimary) {
     		process.exit(1);
     	});
 } else {
-	process.exit(0);
+ process.exit(0);
 }

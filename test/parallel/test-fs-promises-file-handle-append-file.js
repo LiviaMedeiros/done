@@ -15,28 +15,28 @@ const tmpDir = tmpdir.path;
 tmpdir.refresh();
 
 async function validateAppendBuffer() {
-	const filePath = path.resolve(tmpDir, 'tmp-append-file-buffer.txt');
-	const fileHandle = await open(filePath, 'a');
-	const buffer = Buffer.from('a&Dp'.repeat(100), 'utf8');
+ const filePath = path.resolve(tmpDir, 'tmp-append-file-buffer.txt');
+ const fileHandle = await open(filePath, 'a');
+ const buffer = Buffer.from('a&Dp'.repeat(100), 'utf8');
 
-	await fileHandle.appendFile(buffer);
-	const appendedFileData = fs.readFileSync(filePath);
-	assert.deepStrictEqual(appendedFileData, buffer);
+ await fileHandle.appendFile(buffer);
+ const appendedFileData = fs.readFileSync(filePath);
+ assert.deepStrictEqual(appendedFileData, buffer);
 
-	await fileHandle.close();
+ await fileHandle.close();
 }
 
 async function validateAppendString() {
-	const filePath = path.resolve(tmpDir, 'tmp-append-file-string.txt');
-	const fileHandle = await open(filePath, 'a');
-	const string = 'x~yz'.repeat(100);
+ const filePath = path.resolve(tmpDir, 'tmp-append-file-string.txt');
+ const fileHandle = await open(filePath, 'a');
+ const string = 'x~yz'.repeat(100);
 
-	await fileHandle.appendFile(string);
-	const stringAsBuffer = Buffer.from(string, 'utf8');
-	const appendedFileData = fs.readFileSync(filePath);
-	assert.deepStrictEqual(appendedFileData, stringAsBuffer);
+ await fileHandle.appendFile(string);
+ const stringAsBuffer = Buffer.from(string, 'utf8');
+ const appendedFileData = fs.readFileSync(filePath);
+ assert.deepStrictEqual(appendedFileData, stringAsBuffer);
 
-	await fileHandle.close();
+ await fileHandle.close();
 }
 
 validateAppendBuffer()

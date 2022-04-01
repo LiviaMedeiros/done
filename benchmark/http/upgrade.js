@@ -4,7 +4,7 @@ const common = require('../common.js');
 const net = require('net');
 
 const bench = common.createBenchmark(main, {
-	n: [5, 1000]
+ n: [5, 1000]
 });
 
 const reqData = 'GET / HTTP/1.1\r\n' +
@@ -19,7 +19,7 @@ const resData = 'HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
                 '\r\n\r\n';
 
 function main({ n }) {
-	const server = require('../fixtures/simple-http-server.js')
+ const server = require('../fixtures/simple-http-server.js')
     .listen(common.PORT)
     .on('listening', () => {
     	bench.start();
@@ -36,16 +36,16 @@ function main({ n }) {
 }
 
 function doBench(address, count, done) {
-	if (count === 0) {
-		done();
-		return;
-	}
+ if (count === 0) {
+  done();
+  return;
+ }
 
-	const conn = net.createConnection(address.port);
-	conn.write(reqData);
-	conn.resume();
+ const conn = net.createConnection(address.port);
+ conn.write(reqData);
+ conn.resume();
 
-	conn.on('end', () => {
-		doBench(address, count - 1, done);
-	});
+ conn.on('end', () => {
+  doBench(address, count - 1, done);
+ });
 }

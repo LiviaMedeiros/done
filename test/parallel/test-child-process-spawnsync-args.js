@@ -18,31 +18,31 @@ const options = { cwd: tmpdir.path };
 tmpdir.refresh();
 
 if (common.isWindows) {
-	// This test is not the case for Windows based systems
-	// unless the `shell` options equals to `true`
+ // This test is not the case for Windows based systems
+ // unless the `shell` options equals to `true`
 
-	options.shell = true;
+ options.shell = true;
 }
 
 const testCases = [
-	undefined,
-	null,
-	[],
+ undefined,
+ null,
+ [],
 ];
 
 const expectedResult = tmpdir.path.trim().toLowerCase();
 
 const results = testCases.map((testCase) => {
-	const { stdout, stderr, error } = spawnSync(
-		command,
-		testCase,
-		options
-	);
+ const { stdout, stderr, error } = spawnSync(
+  command,
+  testCase,
+  options
+ );
 
-	assert.ifError(error);
-	assert.deepStrictEqual(stderr, Buffer.alloc(0));
+ assert.ifError(error);
+ assert.deepStrictEqual(stderr, Buffer.alloc(0));
 
-	return stdout.toString().trim().toLowerCase();
+ return stdout.toString().trim().toLowerCase();
 });
 
 assert.deepStrictEqual([...new Set(results)], [expectedResult]);

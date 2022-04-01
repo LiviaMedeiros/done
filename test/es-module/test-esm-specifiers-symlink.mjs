@@ -22,19 +22,19 @@ const real = path.join(tmpDir, 'subfolder', 'index.mjs');
 const packageDir = path.join(tmpDir, 'subfolder', 'node_modules', 'package-a');
 const packageEntry = path.join(packageDir, 'index.mjs');
 try {
-	await fs.symlink(real, symlink);
+ await fs.symlink(real, symlink);
 } catch (err) {
-	if (err.code !== 'EPERM') throw err;
-	common.skip('insufficient privileges for symlinks');
+ if (err.code !== 'EPERM') throw err;
+ common.skip('insufficient privileges for symlinks');
 }
 await fs.mkdir(packageDir, { recursive: true });
 await Promise.all([
-	fs.writeFile(entry, 'import "./symlink.mjs";'),
-	fs.writeFile(real, 'export { a } from "package-a/index.mjs"'),
-	fs.writeFile(packageEntry, 'export const a = 1;'),
+ fs.writeFile(entry, 'import "./symlink.mjs";'),
+ fs.writeFile(real, 'export { a } from "package-a/index.mjs"'),
+ fs.writeFile(packageEntry, 'export const a = 1;'),
 ]);
 
 spawn(process.execPath, ['--experimental-specifier-resolution=node', entry],
-						{ stdio: 'inherit' }).on('exit', common.mustCall((code) => {
-	assert.strictEqual(code, 0);
+      { stdio: 'inherit' }).on('exit', common.mustCall((code) => {
+ assert.strictEqual(code, 0);
 }));

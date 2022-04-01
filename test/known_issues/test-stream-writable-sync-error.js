@@ -11,20 +11,20 @@ const common = require('../common');
 const { Writable } = require('stream');
 
 class MyStream extends Writable {
-	#cb = undefined;
+ #cb = undefined;
 
-	constructor() {
-		super({ autoDestroy: false });
-	}
+ constructor() {
+  super({ autoDestroy: false });
+ }
 
-	_write(_, __, cb) {
-		this.#cb = cb;
-	}
+ _write(_, __, cb) {
+  this.#cb = cb;
+ }
 
-	close() {
-		// Synchronously invoke the callback with an error.
-		this.#cb(new Error('foo'));
-	}
+ close() {
+  // Synchronously invoke the callback with an error.
+  this.#cb(new Error('foo'));
+ }
 }
 
 const stream = new MyStream();

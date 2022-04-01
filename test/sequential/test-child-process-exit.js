@@ -35,12 +35,12 @@ const maxGen = 5;
 
 
 if (gen === maxGen) {
-	console.error('hit maxGen, exiting', maxGen);
-	return;
+ console.error('hit maxGen, exiting', maxGen);
+ return;
 }
 
 const child = ch.spawn(process.execPath, [__filename, gen + 1], {
-	stdio: [ 'ignore', 'pipe', 'ignore' ]
+ stdio: [ 'ignore', 'pipe', 'ignore' ]
 });
 assert.ok(!child.stdin);
 assert.ok(child.stdout);
@@ -49,11 +49,11 @@ assert.ok(!child.stderr);
 console.error('gen=%d, pid=%d', gen, process.pid);
 
 child.on('exit', function(code) {
-	console.error('exit %d from gen %d', code, gen + 1);
+ console.error('exit %d from gen %d', code, gen + 1);
 });
 
 child.stdout.pipe(process.stdout);
 
 child.stdout.on('close', function() {
-	console.error('child.stdout close  gen=%d', gen);
+ console.error('child.stdout close  gen=%d', gen);
 });

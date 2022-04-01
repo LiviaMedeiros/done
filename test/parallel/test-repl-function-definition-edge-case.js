@@ -16,21 +16,21 @@ const got = r.output.accumulator.join('');
 assert.strictEqual(got, expected);
 
 function initRepl() {
-	const input = new stream();
-	input.write = input.pause = input.resume = () => {};
-	input.readable = true;
+ const input = new stream();
+ input.write = input.pause = input.resume = () => {};
+ input.readable = true;
 
-	const output = new stream();
-	output.writable = true;
-	output.accumulator = [];
+ const output = new stream();
+ output.writable = true;
+ output.accumulator = [];
 
-	output.write = (data) => output.accumulator.push(data);
+ output.write = (data) => output.accumulator.push(data);
 
-	return repl.start({
-		input,
-		output,
-		useColors: false,
-		terminal: false,
-		prompt: ''
-	});
+ return repl.start({
+  input,
+  output,
+  useColors: false,
+  terminal: false,
+  prompt: ''
+ });
 }

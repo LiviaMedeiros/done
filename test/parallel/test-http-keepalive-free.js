@@ -6,13 +6,13 @@ const assert = require('assert');
 const http = require('http');
 
 for (const method of ['abort', 'destroy']) {
-	const server = http.createServer(common.mustCall((req, res) => {
-		res.end(req.url);
-	}));
-	server.listen(0, common.mustCall(() => {
-		const agent = http.Agent({ keepAlive: true });
+ const server = http.createServer(common.mustCall((req, res) => {
+  res.end(req.url);
+ }));
+ server.listen(0, common.mustCall(() => {
+  const agent = http.Agent({ keepAlive: true });
 
-		const req = http
+  const req = http
       .request({
       	port: server.address().port,
       	agent
@@ -31,6 +31,6 @@ for (const method of ['abort', 'destroy']) {
       	}).resume();
       }))
       .end();
-		assert.strictEqual(req.destroyed, false);
-	}));
+  assert.strictEqual(req.destroyed, false);
+ }));
 }

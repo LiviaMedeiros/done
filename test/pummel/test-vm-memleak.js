@@ -25,7 +25,7 @@
 const common = require('../common');
 
 if (process.config.variables.asan) {
-	common.skip('ASAN messes with memory measurements');
+ common.skip('ASAN messes with memory measurements');
 }
 
 const assert = require('assert');
@@ -36,28 +36,28 @@ const baselineRss = process.memoryUsage.rss();
 const start = Date.now();
 
 const interval = setInterval(function() {
-	try {
-		vm.runInNewContext('throw 1;');
-	} catch {
-		// Continue regardless of error.
-	}
+ try {
+  vm.runInNewContext('throw 1;');
+ } catch {
+  // Continue regardless of error.
+ }
 
-	global.gc();
-	const rss = process.memoryUsage.rss();
-	assert.ok(rss < baselineRss + 32 * 1024 * 1024,
-											`memory usage: ${rss} baseline: ${baselineRss}`);
+ global.gc();
+ const rss = process.memoryUsage.rss();
+ assert.ok(rss < baselineRss + 32 * 1024 * 1024,
+           `memory usage: ${rss} baseline: ${baselineRss}`);
 
-	// Stop after 5 seconds.
-	if (Date.now() - start > 5 * 1000) {
-		clearInterval(interval);
+ // Stop after 5 seconds.
+ if (Date.now() - start > 5 * 1000) {
+  clearInterval(interval);
 
-		testContextLeak();
-	}
+  testContextLeak();
+ }
 }, 1);
 
 function testContextLeak() {
-	// TODO: This needs a comment explaining what it's doing. Will it crash the
-	// test if there is a memory leak? Or what?
-	for (let i = 0; i < 1000; i++)
-		vm.createContext({});
+ // TODO: This needs a comment explaining what it's doing. Will it crash the
+ // test if there is a memory leak? Or what?
+ for (let i = 0; i < 1000; i++)
+  vm.createContext({});
 }

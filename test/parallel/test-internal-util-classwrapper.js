@@ -8,11 +8,11 @@ const util = require('internal/util');
 const createClassWrapper = util.createClassWrapper;
 
 class A {
-	constructor(a, b, c) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-	}
+ constructor(a, b, c) {
+  this.a = a;
+  this.b = b;
+  this.c = c;
+ }
 }
 
 const B = createClassWrapper(A);

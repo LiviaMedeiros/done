@@ -7,6 +7,6 @@ assert.strictEqual(process.hasUncaughtExceptionCaptureCallback(), false);
 
 // This should make the process not crash even though the flag was passed.
 process.setUncaughtExceptionCaptureCallback(common.mustCall((err) => {
-	assert.strictEqual(err.message, 'foo');
+ assert.strictEqual(err.message, 'foo');
 }));
 throw new Error('foo');

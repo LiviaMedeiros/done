@@ -38,11 +38,11 @@ child.stderr.on('data', common.mustNotCall());
 
 child.stdout.setEncoding('utf8');
 child.stdout.on('data', (data) => {
-	count += data.length;
+ count += data.length;
 });
 
 child.on('close', common.mustCall((code, signal) => {
-	assert.strictEqual(code, 0);
-	assert.strictEqual(signal, null);
-	assert.strictEqual(n, count);
+ assert.strictEqual(code, 0);
+ assert.strictEqual(signal, null);
+ assert.strictEqual(n, count);
 }));

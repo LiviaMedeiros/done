@@ -24,9 +24,9 @@ const out = fs.createWriteStream(outputFile);
 
 inp.pipe(decompress).pipe(out);
 out.on('close', common.mustCall(() => {
-	const actual = fs.readFileSync(outputFile);
-	assert.strictEqual(actual.length, expect.length);
-	for (let i = 0, l = actual.length; i < l; i++) {
-		assert.strictEqual(actual[i], expect[i], `byte[${i}]`);
-	}
+ const actual = fs.readFileSync(outputFile);
+ assert.strictEqual(actual.length, expect.length);
+ for (let i = 0, l = actual.length; i < l; i++) {
+  assert.strictEqual(actual[i], expect[i], `byte[${i}]`);
+ }
 }));

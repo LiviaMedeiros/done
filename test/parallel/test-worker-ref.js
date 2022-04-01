@@ -13,17 +13,17 @@ parentPort.once('message', (msg) => {
 `, { eval: true });
 
 process.once('beforeExit', common.mustCall(() => {
-	console.log('beforeExit');
-	w.ref();
-	w.postMessage({ hello: 'world' });
+ console.log('beforeExit');
+ w.ref();
+ w.postMessage({ hello: 'world' });
 }));
 
 w.once('message', common.mustCall((msg) => {
-	console.log('message', msg);
+ console.log('message', msg);
 }));
 
 w.on('exit', common.mustCall(() => {
-	console.log('exit');
+ console.log('exit');
 }));
 
 w.unref();

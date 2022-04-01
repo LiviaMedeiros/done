@@ -8,7 +8,7 @@ require('../common');
 // then all is good.
 
 const {
-	PerformanceObserver,
+ PerformanceObserver,
 } = require('perf_hooks');
 
 // We don't actually care if the observer callback is called here.

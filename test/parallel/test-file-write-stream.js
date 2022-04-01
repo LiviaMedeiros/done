@@ -29,15 +29,15 @@ const tmpdir = require('../common/tmpdir');
 const fn = path.join(tmpdir.path, 'write.txt');
 tmpdir.refresh();
 const file = fs.createWriteStream(fn, {
-	highWaterMark: 10
+ highWaterMark: 10
 });
 
 const EXPECTED = '012345678910';
 
 const callbacks = {
-	open: -1,
-	drain: -2,
-	close: -1
+ open: -1,
+ drain: -2,
+ close: -1
 };
 
 file
@@ -73,12 +73,12 @@ file
   });
 
 for (let i = 0; i < 11; i++) {
-	file.write(`${i}`);
+ file.write(`${i}`);
 }
 
 process.on('exit', function() {
-	for (const k in callbacks) {
-		assert.strictEqual(callbacks[k], 0, `${k} count off by ${callbacks[k]}`);
-	}
-	console.log('ok');
+ for (const k in callbacks) {
+  assert.strictEqual(callbacks[k], 0, `${k} count off by ${callbacks[k]}`);
+ }
+ console.log('ok');
 });

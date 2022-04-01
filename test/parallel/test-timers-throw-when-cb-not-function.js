@@ -3,14 +3,14 @@ require('../common');
 const assert = require('assert');
 
 function doSetTimeout(callback, after) {
-	return function() {
-		setTimeout(callback, after);
-	};
+ return function() {
+  setTimeout(callback, after);
+ };
 }
 
 const errMessage = {
-	code: 'ERR_INVALID_ARG_TYPE',
-	name: 'TypeError'
+ code: 'ERR_INVALID_ARG_TYPE',
+ name: 'TypeError'
 };
 
 assert.throws(doSetTimeout('foo'), errMessage);
@@ -22,9 +22,9 @@ assert.throws(doSetTimeout(false, 0), errMessage);
 
 
 function doSetInterval(callback, after) {
-	return function() {
-		setInterval(callback, after);
-	};
+ return function() {
+  setInterval(callback, after);
+ };
 }
 
 assert.throws(doSetInterval('foo'), errMessage);
@@ -36,9 +36,9 @@ assert.throws(doSetInterval(false, 0), errMessage);
 
 
 function doSetImmediate(callback, after) {
-	return function() {
-		setImmediate(callback, after);
-	};
+ return function() {
+  setImmediate(callback, after);
+ };
 }
 
 assert.throws(doSetImmediate('foo'), errMessage);

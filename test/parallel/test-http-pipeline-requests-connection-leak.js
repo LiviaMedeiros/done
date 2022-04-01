@@ -14,8 +14,8 @@ const big = Buffer.alloc(16 * 1024, 'A');
 const COUNT = 1e4;
 
 const countdown = new Countdown(COUNT, () => {
-	server.close();
-	client.end();
+ server.close();
+ client.end();
 });
 
 let client;

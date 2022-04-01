@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-	common.skip('node compiled without crypto.');
+ common.skip('node compiled without crypto.');
 const fixtures = require('../common/fixtures');
 
 // This test ensures that TLS does not fail to read a self-signed certificate

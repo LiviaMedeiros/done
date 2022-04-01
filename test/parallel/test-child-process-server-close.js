@@ -11,30 +11,30 @@ const tmpdir = require('../common/tmpdir');
 // Node.js completes, blocking the tmpdir and preventing cleanup.
 
 if (process.argv[2] !== 'child') {
-	// Parent
-	tmpdir.refresh();
+ // Parent
+ tmpdir.refresh();
 
-	// Run test
-	const child = fork(__filename, ['child'], { stdio: 'inherit' });
-	child.on('exit', common.mustCall(function(code) {
-		assert.strictEqual(code, 0);
-	}));
+ // Run test
+ const child = fork(__filename, ['child'], { stdio: 'inherit' });
+ child.on('exit', common.mustCall(function(code) {
+  assert.strictEqual(code, 0);
+ }));
 
-	return;
+ return;
 }
 
 // Child
 const server = net.createServer((conn) => {
-	spawn(process.execPath, ['-v'], {
-		stdio: ['ignore', conn, 'ignore']
-	}).on('close', common.mustCall(() => {
-		conn.end();
-	}));
+ spawn(process.execPath, ['-v'], {
+  stdio: ['ignore', conn, 'ignore']
+ }).on('close', common.mustCall(() => {
+  conn.end();
+ }));
 }).listen(common.PIPE, () => {
-	const client = net.connect(common.PIPE, common.mustCall());
-	client.once('data', () => {
-		client.end(() => {
-			server.close();
-		});
-	});
+ const client = net.connect(common.PIPE, common.mustCall());
+ client.once('data', () => {
+  client.end(() => {
+   server.close();
+  });
+ });
 });

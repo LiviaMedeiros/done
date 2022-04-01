@@ -8,7 +8,7 @@ const assert = require('assert');
 // logged even though there is no unhandledRejection hook attached.
 
 new Promise(() => {
-	throw new Error('One');
+ throw new Error('One');
 });
 
 Promise.reject('test');

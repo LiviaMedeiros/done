@@ -46,19 +46,19 @@ fs.mkdirSync(path.join(moduleA, 'node_modules'));
 fs.mkdirSync(path.join(moduleB, 'node_modules'));
 
 try {
-	fs.symlinkSync(moduleA, moduleA_link);
-	fs.symlinkSync(moduleB, moduleB_link);
+ fs.symlinkSync(moduleA, moduleA_link);
+ fs.symlinkSync(moduleB, moduleB_link);
 } catch (err) {
-	if (err.code !== 'EPERM') throw err;
-	common.skip('insufficient privileges for symlinks');
+ if (err.code !== 'EPERM') throw err;
+ common.skip('insufficient privileges for symlinks');
 }
 
 fs.writeFileSync(path.join(tmpDir, 'index.js'),
-																	'module.exports = require(\'moduleA\');', 'utf8');
+                 'module.exports = require(\'moduleA\');', 'utf8');
 fs.writeFileSync(path.join(moduleA, 'index.js'),
-																	'module.exports = {b: require(\'moduleB\')};', 'utf8');
+                 'module.exports = {b: require(\'moduleB\')};', 'utf8');
 fs.writeFileSync(path.join(moduleB, 'index.js'),
-																	'module.exports = {a: require(\'moduleA\')};', 'utf8');
+                 'module.exports = {a: require(\'moduleA\')};', 'utf8');
 
 // Ensure that the symlinks are not followed forever...
 const obj = require(path.join(tmpDir, 'index'));

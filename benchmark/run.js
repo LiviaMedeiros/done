@@ -21,66 +21,66 @@ const cli = new CLI(`usage: ./node run.js [options] [--] <category> ...
 const benchmarks = cli.benchmarks();
 
 if (benchmarks.length === 0) {
-	console.error('No benchmarks found');
-	process.exitCode = 1;
-	return;
+ console.error('No benchmarks found');
+ process.exitCode = 1;
+ return;
 }
 
 const validFormats = ['csv', 'simple'];
 const format = cli.optional.format || 'simple';
 if (!validFormats.includes(format)) {
-	console.error('Invalid format detected');
-	process.exitCode = 1;
-	return;
+ console.error('Invalid format detected');
+ process.exitCode = 1;
+ return;
 }
 
 if (format === 'csv') {
-	console.log('"filename", "configuration", "rate", "time"');
+ console.log('"filename", "configuration", "rate", "time"');
 }
 
 (function recursive(i) {
-	const filename = benchmarks[i];
-	const child = fork(
-		path.resolve(__dirname, filename),
-		cli.test ? ['--test'] : cli.optional.set
-	);
+ const filename = benchmarks[i];
+ const child = fork(
+  path.resolve(__dirname, filename),
+  cli.test ? ['--test'] : cli.optional.set
+ );
 
-	if (format !== 'csv') {
-		console.log();
-		console.log(filename);
-	}
+ if (format !== 'csv') {
+  console.log();
+  console.log(filename);
+ }
 
-	child.on('message', (data) => {
-		if (data.type !== 'report') {
-			return;
-		}
-		// Construct configuration string, " A=a, B=b, ..."
-		let conf = '';
-		for (const key of Object.keys(data.conf)) {
-			if (conf !== '')
-				conf += ' ';
-			conf += `${key}=${JSON.stringify(data.conf[key])}`;
-		}
-		if (format === 'csv') {
-			// Escape quotes (") for correct csv formatting
-			conf = conf.replace(/"/g, '""');
-			console.log(`"${data.name}", "${conf}", ${data.rate}, ${data.time}`);
-		} else {
-			let rate = data.rate.toString().split('.');
-			rate[0] = rate[0].replace(/(\d)(?=(?:\d\d\d)+(?!\d))/g, '$1,');
-			rate = (rate[1] ? rate.join('.') : rate[0]);
-			console.log(`${data.name} ${conf}: ${rate}`);
-		}
-	});
+ child.on('message', (data) => {
+  if (data.type !== 'report') {
+   return;
+  }
+  // Construct configuration string, " A=a, B=b, ..."
+  let conf = '';
+  for (const key of Object.keys(data.conf)) {
+   if (conf !== '')
+    conf += ' ';
+   conf += `${key}=${JSON.stringify(data.conf[key])}`;
+  }
+  if (format === 'csv') {
+   // Escape quotes (") for correct csv formatting
+   conf = conf.replace(/"/g, '""');
+   console.log(`"${data.name}", "${conf}", ${data.rate}, ${data.time}`);
+  } else {
+   let rate = data.rate.toString().split('.');
+   rate[0] = rate[0].replace(/(\d)(?=(?:\d\d\d)+(?!\d))/g, '$1,');
+   rate = (rate[1] ? rate.join('.') : rate[0]);
+   console.log(`${data.name} ${conf}: ${rate}`);
+  }
+ });
 
-	child.once('close', (code) => {
-		if (code) {
-			process.exit(code);
-		}
+ child.once('close', (code) => {
+  if (code) {
+   process.exit(code);
+  }
 
-		// If there are more benchmarks execute the next
-		if (i + 1 < benchmarks.length) {
-			recursive(i + 1);
-		}
-	});
+  // If there are more benchmarks execute the next
+  if (i + 1 < benchmarks.length) {
+   recursive(i + 1);
+  }
+ });
 })(0);

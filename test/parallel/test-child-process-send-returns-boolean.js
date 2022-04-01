@@ -14,45 +14,45 @@ const fixtures = require('../common/fixtures');
 const subScript = fixtures.path('child-process-persistent.js');
 
 {
-	// Test `send` return value on `fork` that opens and IPC by default.
-	const n = fork(subScript);
-	// `subprocess.send` should always return `true` for the first send.
-	const rv = n.send({ h: 'w' }, assert.ifError);
-	assert.strictEqual(rv, true);
-	n.kill('SIGKILL');
+ // Test `send` return value on `fork` that opens and IPC by default.
+ const n = fork(subScript);
+ // `subprocess.send` should always return `true` for the first send.
+ const rv = n.send({ h: 'w' }, assert.ifError);
+ assert.strictEqual(rv, true);
+ n.kill('SIGKILL');
 }
 
 {
-	// Test `send` return value on `spawn` and saturate backlog with handles.
-	// Call `spawn` with options that open an IPC channel.
-	const spawnOptions = { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] };
-	const s = spawn(process.execPath, [subScript], spawnOptions);
+ // Test `send` return value on `spawn` and saturate backlog with handles.
+ // Call `spawn` with options that open an IPC channel.
+ const spawnOptions = { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] };
+ const s = spawn(process.execPath, [subScript], spawnOptions);
 
-	const server = net.createServer(common.mustNotCall()).listen(0, () => {
-		const handle = server._handle;
+ const server = net.createServer(common.mustNotCall()).listen(0, () => {
+  const handle = server._handle;
 
-		// Sending a handle and not giving the tickQueue time to acknowledge should
-		// create the internal backlog, but leave it empty.
-		const rv1 = s.send('one', handle, (err) => { if (err) assert.fail(err); });
-		assert.strictEqual(rv1, true);
-		// Since the first `send` included a handle (should be unacknowledged),
-		// we can safely queue up only one more message.
-		const rv2 = s.send('two', (err) => { if (err) assert.fail(err); });
-		assert.strictEqual(rv2, true);
-		// The backlog should now be indicate to backoff.
-		const rv3 = s.send('three', (err) => { if (err) assert.fail(err); });
-		assert.strictEqual(rv3, false);
-		const rv4 = s.send('four', (err) => {
-			if (err) assert.fail(err);
-			// `send` queue should have been drained.
-			const rv5 = s.send('5', handle, (err) => { if (err) assert.fail(err); });
-			assert.strictEqual(rv5, true);
+  // Sending a handle and not giving the tickQueue time to acknowledge should
+  // create the internal backlog, but leave it empty.
+  const rv1 = s.send('one', handle, (err) => { if (err) assert.fail(err); });
+  assert.strictEqual(rv1, true);
+  // Since the first `send` included a handle (should be unacknowledged),
+  // we can safely queue up only one more message.
+  const rv2 = s.send('two', (err) => { if (err) assert.fail(err); });
+  assert.strictEqual(rv2, true);
+  // The backlog should now be indicate to backoff.
+  const rv3 = s.send('three', (err) => { if (err) assert.fail(err); });
+  assert.strictEqual(rv3, false);
+  const rv4 = s.send('four', (err) => {
+   if (err) assert.fail(err);
+   // `send` queue should have been drained.
+   const rv5 = s.send('5', handle, (err) => { if (err) assert.fail(err); });
+   assert.strictEqual(rv5, true);
 
-			// End test and cleanup.
-			s.kill();
-			handle.close();
-			server.close();
-		});
-		assert.strictEqual(rv4, false);
-	});
+   // End test and cleanup.
+   s.kill();
+   handle.close();
+   server.close();
+  });
+  assert.strictEqual(rv4, false);
+ });
 }

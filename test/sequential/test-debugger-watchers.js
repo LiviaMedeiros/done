@@ -10,14 +10,14 @@ const assert = require('assert');
 
 // Stepping through breakpoints.
 {
-	const cli = startCLI([fixtures.path('debugger/break.js')]);
+ const cli = startCLI([fixtures.path('debugger/break.js')]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	return cli.waitForInitialBreak()
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('watch("x")'))
     .then(() => cli.command('watch("\\"Hello\\"")'))

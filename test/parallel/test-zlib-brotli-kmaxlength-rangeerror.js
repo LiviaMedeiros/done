@@ -19,10 +19,10 @@ const encoded = Buffer.from('G38A+CXCIrFAIAM=', 'base64');
 
 // Async
 zlib.brotliDecompress(encoded, function(err) {
-	assert.ok(err instanceof RangeError);
+ assert.ok(err instanceof RangeError);
 });
 
 // Sync
 assert.throws(function() {
-	zlib.brotliDecompressSync(encoded);
+ zlib.brotliDecompressSync(encoded);
 }, RangeError);

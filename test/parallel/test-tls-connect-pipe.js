@@ -23,25 +23,25 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const tls = require('tls');
 const fixtures = require('../common/fixtures');
 
 const options = {
-	key: fixtures.readKey('agent1-key.pem'),
-	cert: fixtures.readKey('agent1-cert.pem')
+ key: fixtures.readKey('agent1-key.pem'),
+ cert: fixtures.readKey('agent1-cert.pem')
 };
 
 const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
 const server = tls.Server(options, common.mustCall(function(socket) {
-	server.close();
+ server.close();
 }));
 server.listen(common.PIPE, common.mustCall(function() {
-	const options = { rejectUnauthorized: false };
-	const client = tls.connect(common.PIPE, options, common.mustCall(function() {
-		client.end();
-	}));
+ const options = { rejectUnauthorized: false };
+ const client = tls.connect(common.PIPE, options, common.mustCall(function() {
+  client.end();
+ }));
 }));

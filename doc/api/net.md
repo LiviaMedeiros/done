@@ -53,7 +53,7 @@ escaping such as:
 
 ```js
 net.createServer().listen(
-	path.join('\\\\?\\pipe', process.cwd(), 'myctl'));
+ path.join('\\\\?\\pipe', process.cwd(), 'myctl'));
 ```
 
 ## Class: `net.BlockList`
@@ -299,15 +299,15 @@ as a string.
 
 ```js
 const server = net.createServer((socket) => {
-	socket.end('goodbye\n');
+ socket.end('goodbye\n');
 }).on('error', (err) => {
-	// Handle errors here.
-	throw err;
+ // Handle errors here.
+ throw err;
 });
 
 // Grab an arbitrary unused port.
 server.listen(() => {
-	console.log('opened server on', server.address());
+ console.log('opened server on', server.address());
 });
 ```
 
@@ -381,13 +381,13 @@ after a certain amount of time:
 
 ```js
 server.on('error', (e) => {
-	if (e.code === 'EADDRINUSE') {
-		console.log('Address in use, retrying...');
-		setTimeout(() => {
-			server.close();
-			server.listen(PORT, HOST);
-		}, 1000);
-	}
+ if (e.code === 'EADDRINUSE') {
+  console.log('Address in use, retrying...');
+  setTimeout(() => {
+   server.close();
+   server.listen(PORT, HOST);
+  }, 1000);
+ }
 });
 ```
 
@@ -458,9 +458,9 @@ shown below.
 
 ```js
 server.listen({
-	host: 'localhost',
-	port: 80,
-	exclusive: true
+ host: 'localhost',
+ port: 80,
+ exclusive: true
 });
 ```
 
@@ -478,9 +478,9 @@ If the `signal` option is enabled, calling `.abort()` on the corresponding
 ```js
 const controller = new AbortController();
 server.listen({
-	host: 'localhost',
-	port: 80,
-	signal: controller.signal
+ host: 'localhost',
+ port: 80,
+ signal: controller.signal
 });
 // Later, when you want to close the server.
 controller.abort();
@@ -894,15 +894,15 @@ Following is an example of a client using the `onread` option:
 ```js
 const net = require('net');
 net.connect({
-	port: 80,
-	onread: {
-		// Reuses a 4KiB Buffer for every read from the socket.
-		buffer: Buffer.alloc(4 * 1024),
-		callback: function(nread, buf) {
-			// Received data is available in `buf` from 0 to `nread`.
-			console.log(buf.toString('utf8', 0, nread));
-		}
-	}
+ port: 80,
+ onread: {
+  // Reuses a 4KiB Buffer for every read from the socket.
+  buffer: Buffer.alloc(4 * 1024),
+  callback: function(nread, buf) {
+   // Received data is available in `buf` from 0 to `nread`.
+   console.log(buf.toString('utf8', 0, nread));
+  }
+ }
 });
 ```
 
@@ -1174,8 +1174,8 @@ event but the connection will not be severed. The user must manually call
 ```js
 socket.setTimeout(3000);
 socket.on('timeout', () => {
-	console.log('socket timeout');
-	socket.end();
+ console.log('socket timeout');
+ socket.end();
 });
 ```
 
@@ -1350,16 +1350,16 @@ in the [`net.createServer()`][] section:
 ```js
 const net = require('net');
 const client = net.createConnection({ port: 8124 }, () => {
-	// 'connect' listener.
-	console.log('connected to server!');
-	client.write('world!\r\n');
+ // 'connect' listener.
+ console.log('connected to server!');
+ client.write('world!\r\n');
 });
 client.on('data', (data) => {
-	console.log(data.toString());
-	client.end();
+ console.log(data.toString());
+ client.end();
 });
 client.on('end', () => {
-	console.log('disconnected from server');
+ console.log('disconnected from server');
 });
 ```
 
@@ -1466,19 +1466,19 @@ on port 8124:
 ```js
 const net = require('net');
 const server = net.createServer((c) => {
-	// 'connection' listener.
-	console.log('client connected');
-	c.on('end', () => {
-		console.log('client disconnected');
-	});
-	c.write('hello\r\n');
-	c.pipe(c);
+ // 'connection' listener.
+ console.log('client connected');
+ c.on('end', () => {
+  console.log('client disconnected');
+ });
+ c.write('hello\r\n');
+ c.pipe(c);
 });
 server.on('error', (err) => {
-	throw err;
+ throw err;
 });
 server.listen(8124, () => {
-	console.log('server bound');
+ console.log('server bound');
 });
 ```
 
@@ -1492,7 +1492,7 @@ To listen on the socket `/tmp/echo.sock`:
 
 ```js
 server.listen('/tmp/echo.sock', () => {
-	console.log('server bound');
+ console.log('server bound');
 });
 ```
 

@@ -6,9 +6,9 @@ const assert = require('assert');
 const { spawnSync } = require('child_process');
 
 if (!common.enoughTestMem)
-	common.skip('skipped due to memory requirements');
+ common.skip('skipped due to memory requirements');
 if (common.isAIX)
-	common.skip('does not work on AIX');
+ common.skip('does not work on AIX');
 
 tmpdir.refresh();
 
@@ -24,9 +24,9 @@ assert(logfile);
 // Any of the other flags there should work for this test too, if --preprocess
 // is ever removed.
 const { stdout } = spawnSync(
-	process.execPath,
-	[ '--prof-process', '--preprocess', logfile ],
-	{ cwd: tmpdir.path, encoding: 'utf8', maxBuffer: Infinity });
+ process.execPath,
+ [ '--prof-process', '--preprocess', logfile ],
+ { cwd: tmpdir.path, encoding: 'utf8', maxBuffer: Infinity });
 
 // Make sure that the result is valid JSON.
 JSON.parse(stdout);

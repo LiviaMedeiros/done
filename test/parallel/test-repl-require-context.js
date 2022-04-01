@@ -9,12 +9,12 @@ let output = '';
 
 child.stdout.setEncoding('utf8');
 child.stdout.on('data', (data) => {
-	output += data;
+ output += data;
 });
 
 child.on('exit', common.mustCall(() => {
-	const results = output.replace(/^> /mg, '').split('\n').slice(2);
-	assert.deepStrictEqual(results, ['undefined', 'true', 'true', '']);
+ const results = output.replace(/^> /mg, '').split('\n').slice(2);
+ assert.deepStrictEqual(results, ['undefined', 'true', 'true', '']);
 }));
 
 child.stdin.write('const isObject = (obj) => obj.constructor === Object;\n');

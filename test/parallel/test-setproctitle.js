@@ -4,12 +4,12 @@ const common = require('../common');
 
 // FIXME add sunos support
 if (common.isSunOS)
-	common.skip(`Unsupported platform [${process.platform}]`);
+ common.skip(`Unsupported platform [${process.platform}]`);
 // FIXME add IBMi support
 if (common.isIBMi)
-	common.skip('Unsupported platform IBMi');
+ common.skip('Unsupported platform IBMi');
 if (!common.isMainThread)
-	common.skip('Setting the process title from Workers is not supported');
+ common.skip('Setting the process title from Workers is not supported');
 
 const assert = require('assert');
 const exec = require('child_process').exec;
@@ -26,21 +26,21 @@ assert.strictEqual(process.title, title);
 
 // Test setting the title but do not try to run `ps` on Windows.
 if (common.isWindows)
-	common.skip('Windows does not have "ps" utility');
+ common.skip('Windows does not have "ps" utility');
 
 // To pass this test on alpine, since Busybox `ps` does not
 // support `-p` switch, use `ps -o` and `grep` instead.
 const cmd = common.isLinux ?
-	`ps -o pid,args | grep '${process.pid} ${title}' | grep -v grep` :
-	`ps -p ${process.pid} -o args=`;
+ `ps -o pid,args | grep '${process.pid} ${title}' | grep -v grep` :
+ `ps -p ${process.pid} -o args=`;
 
 exec(cmd, common.mustSucceed((stdout, stderr) => {
-	assert.strictEqual(stderr, '');
+ assert.strictEqual(stderr, '');
 
-	// Freebsd always add ' (procname)' to the process title
-	if (common.isFreeBSD || common.isOpenBSD)
-		title += ` (${path.basename(process.execPath)})`;
+ // Freebsd always add ' (procname)' to the process title
+ if (common.isFreeBSD || common.isOpenBSD)
+  title += ` (${path.basename(process.execPath)})`;
 
-	// Omitting trailing whitespace and \n
-	assert.strictEqual(stdout.replace(/\s+$/, '').endsWith(title), true);
+ // Omitting trailing whitespace and \n
+ assert.strictEqual(stdout.replace(/\s+$/, '').endsWith(title), true);
 }));

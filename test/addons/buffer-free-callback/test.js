@@ -5,15 +5,15 @@ const common = require('../../common');
 const binding = require(`./build/${common.buildType}/binding`);
 
 function check(size, alignment, offset) {
-	let buf = binding.alloc(size, alignment, offset);
-	let slice = buf.slice(size >>> 1);
+ let buf = binding.alloc(size, alignment, offset);
+ let slice = buf.slice(size >>> 1);
 
-	buf = null;
-	binding.check(slice);
-	slice = null;
-	global.gc();
-	global.gc();
-	global.gc();
+ buf = null;
+ binding.check(slice);
+ slice = null;
+ global.gc();
+ global.gc();
+ global.gc();
 }
 
 // NOTE: If adding more check() test cases,

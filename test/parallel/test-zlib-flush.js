@@ -18,19 +18,19 @@ let actualNone;
 let actualFull;
 
 deflater.write(chunk, function() {
-	deflater.flush(zlib.constants.Z_NO_FLUSH, function() {
-		actualNone = deflater.read();
-		deflater.flush(function() {
-			const bufs = [];
-			let buf;
-			while ((buf = deflater.read()) !== null)
-				bufs.push(buf);
-			actualFull = Buffer.concat(bufs);
-		});
-	});
+ deflater.flush(zlib.constants.Z_NO_FLUSH, function() {
+  actualNone = deflater.read();
+  deflater.flush(function() {
+   const bufs = [];
+   let buf;
+   while ((buf = deflater.read()) !== null)
+    bufs.push(buf);
+   actualFull = Buffer.concat(bufs);
+  });
+ });
 });
 
 process.once('exit', function() {
-	assert.deepStrictEqual(actualNone, expectedNone);
-	assert.deepStrictEqual(actualFull, expectedFull);
+ assert.deepStrictEqual(actualNone, expectedNone);
+ assert.deepStrictEqual(actualFull, expectedFull);
 });

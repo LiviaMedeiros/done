@@ -1629,20 +1629,20 @@ const { AsyncLocalStorage } = require('async_hooks');
 const asyncLocalStorage = new AsyncLocalStorage();
 
 function logWithId(msg) {
-	const id = asyncLocalStorage.getStore();
-	console.log(`${id !== undefined ? id : '-'}: `, msg);
+ const id = asyncLocalStorage.getStore();
+ console.log(`${id !== undefined ? id : '-'}: `, msg);
 }
 
 let idSeq = 0;
 http.createServer((req, res) => {
-	asyncLocalStorage.run(idSeq++, () => {
-		logWithId('start');
-		// Imagine any chain of async operations here.
-		setImmediate(() => {
-			logWithId('finish');
-			res.end();
-		});
-	});
+ asyncLocalStorage.run(idSeq++, () => {
+  logWithId('start');
+  // Imagine any chain of async operations here.
+  setImmediate(() => {
+   logWithId('finish');
+   res.end();
+  });
+ });
 }).listen(8080);
 ```
 
@@ -1726,7 +1726,7 @@ consuming the emitted error by installing a listener using the symbol
 const myEmitter = new MyEmitter();
 
 myEmitter.on(EventEmitter.errorMonitor, (err) => {
-	MyMonitoringTool.log(err);
+ MyMonitoringTool.log(err);
 });
 
 myEmitter.emit('error', new Error('whoops!'));
@@ -1743,7 +1743,7 @@ the default behavior that exits the process by installing an
 
 ```js
 process.on('uncaughtExceptionMonitor', (err, origin) => {
-	MyMonitoringTool.logSync(err, origin);
+ MyMonitoringTool.logSync(err, origin);
 });
 
 // Intentionally cause an exception, but do not catch it.
@@ -1780,9 +1780,9 @@ This is useful in case you want different grouping width than 2 spaces.
 ```js
 const { Console } = require('console');
 const customConsole = new Console({
-	stdout: process.stdout,
-	stderr: process.stderr,
-	groupIndentation: 10
+ stdout: process.stdout,
+ stderr: process.stderr,
+ groupIndentation: 10
 });
 
 customConsole.log('foo');
@@ -3022,20 +3022,20 @@ const { on, EventEmitter } = require('events');
 
 (async () => {
 
-	const ee = new EventEmitter();
+ const ee = new EventEmitter();
 
-	// Emit later on
-	process.nextTick(() => {
-		ee.emit('foo', 'bar');
-		ee.emit('foo', 42);
-	});
+ // Emit later on
+ process.nextTick(() => {
+  ee.emit('foo', 'bar');
+  ee.emit('foo', 42);
+ });
 
-	for await (const event of on(ee, 'foo')) {
-		// The execution of this inner block is synchronous and it
-		// processes one event at a time (even with await). Do not use
-		// if concurrent execution is required.
-		console.log(event); // prints ['bar'] [42]
-	}
+ for await (const event of on(ee, 'foo')) {
+  // The execution of this inner block is synchronous and it
+  // processes one event at a time (even with await). Do not use
+  // if concurrent execution is required.
+  console.log(event); // prints ['bar'] [42]
+ }
 
 })();
 ```
@@ -3052,7 +3052,7 @@ consuming the emitted error by installing a listener using the symbol
 const myEmitter = new MyEmitter();
 
 myEmitter.on(EventEmitter.errorMonitor, (err) => {
-	MyMonitoringTool.log(err);
+ MyMonitoringTool.log(err);
 });
 
 myEmitter.emit('error', new Error('whoops!'));
@@ -3070,7 +3070,7 @@ can lead to an unhandled rejection in case of a thrown exception:
 const ee = new EventEmitter();
 
 ee.on('something', async (value) => {
-	throw new Error('kaboom');
+ throw new Error('kaboom');
 });
 ```
 
@@ -3083,14 +3083,14 @@ is one, or to the `'error'` event handler if there is none.
 ```js
 const ee1 = new EventEmitter({ captureRejections: true });
 ee1.on('something', async (value) => {
-	throw new Error('kaboom');
+ throw new Error('kaboom');
 });
 
 ee1.on('error', console.log);
 
 const ee2 = new EventEmitter({ captureRejections: true });
 ee2.on('something', async (value) => {
-	throw new Error('kaboom');
+ throw new Error('kaboom');
 });
 
 ee2[Symbol.for('nodejs.rejection')] = console.log;
@@ -3103,7 +3103,7 @@ new instances of `EventEmitter`.
 EventEmitter.captureRejections = true;
 const ee1 = new EventEmitter();
 ee1.on('something', async (value) => {
-	throw new Error('kaboom');
+ throw new Error('kaboom');
 });
 
 ee1.on('error', console.log);

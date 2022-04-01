@@ -232,9 +232,9 @@ For example, on POSIX:
 // `${dir}${path.sep}${base}`
 // will be returned. `root` is ignored.
 path.format({
-	root: '/ignored',
-	dir: '/home/user/dir',
-	base: 'file.txt'
+ root: '/ignored',
+ dir: '/home/user/dir',
+ base: 'file.txt'
 });
 // Returns: '/home/user/dir/file.txt'
 
@@ -242,17 +242,17 @@ path.format({
 // If only `root` is provided or `dir` is equal to `root` then the
 // platform separator will not be included. `ext` will be ignored.
 path.format({
-	root: '/',
-	base: 'file.txt',
-	ext: 'ignored'
+ root: '/',
+ base: 'file.txt',
+ ext: 'ignored'
 });
 // Returns: '/file.txt'
 
 // `name` + `ext` will be used if `base` is not specified.
 path.format({
-	root: '/',
-	name: 'file',
-	ext: '.txt'
+ root: '/',
+ name: 'file',
+ ext: '.txt'
 });
 // Returns: '/file.txt'
 ```
@@ -261,8 +261,8 @@ On Windows:
 
 ```js
 path.format({
-	dir: 'C:\\path\\dir',
-	base: 'file.txt'
+ dir: 'C:\\path\\dir',
+ base: 'file.txt'
 });
 // Returns: 'C:\\path\\dir\\file.txt'
 ```

@@ -6,25 +6,25 @@ const assert = require('assert');
 
 // basic
 {
-	// Find it on Duplex.prototype
-	assert(Object.hasOwn(Duplex.prototype, 'writableFinished'));
+ // Find it on Duplex.prototype
+ assert(Object.hasOwn(Duplex.prototype, 'writableFinished'));
 }
 
 // event
 {
-	const duplex = new Duplex();
+ const duplex = new Duplex();
 
-	duplex._write = (chunk, encoding, cb) => {
-		// The state finished should start in false.
-		assert.strictEqual(duplex.writableFinished, false);
-		cb();
-	};
+ duplex._write = (chunk, encoding, cb) => {
+  // The state finished should start in false.
+  assert.strictEqual(duplex.writableFinished, false);
+  cb();
+ };
 
-	duplex.on('finish', common.mustCall(() => {
-		assert.strictEqual(duplex.writableFinished, true);
-	}));
+ duplex.on('finish', common.mustCall(() => {
+  assert.strictEqual(duplex.writableFinished, true);
+ }));
 
-	duplex.end('testing finished state', common.mustCall(() => {
-		assert.strictEqual(duplex.writableFinished, true);
-	}));
+ duplex.end('testing finished state', common.mustCall(() => {
+  assert.strictEqual(duplex.writableFinished, true);
+ }));
 }

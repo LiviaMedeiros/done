@@ -18,11 +18,11 @@ const w = new Worker(`
 `, { eval: true, workerData });
 
 w.on('error', common.mustCall((err) => {
-	assert.strictEqual(err.message, 'banana');
+ assert.strictEqual(err.message, 'banana');
 }));
 
 w.on('exit', common.mustCall((code) => {
-	assert.strictEqual(code, 1);
-	assert.strictEqual(workerData[0], 100);
-	assert.strictEqual(workerData[1], 200);
+ assert.strictEqual(code, 1);
+ assert.strictEqual(workerData[0], 100);
+ assert.strictEqual(workerData[1], 200);
 }));

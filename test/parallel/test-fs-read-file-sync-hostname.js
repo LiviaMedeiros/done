@@ -22,7 +22,7 @@
 'use strict';
 const common = require('../common');
 if (!common.isLinux)
-	common.skip('Test is linux specific.');
+ common.skip('Test is linux specific.');
 
 const assert = require('assert');
 const fs = require('fs');

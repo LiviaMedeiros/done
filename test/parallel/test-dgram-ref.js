@@ -28,8 +28,8 @@ dgram.createSocket('udp4');
 dgram.createSocket('udp6');
 
 {
-	// Test the case of ref()'ing a socket with no handle.
-	const s = dgram.createSocket('udp4');
+ // Test the case of ref()'ing a socket with no handle.
+ const s = dgram.createSocket('udp4');
 
-	s.close(common.mustCall(() => s.ref()));
+ s.close(common.mustCall(() => s.ref()));
 }

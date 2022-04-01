@@ -25,10 +25,10 @@ fs.unwatchFile(commonPath);
 process.on('exit', onexit);
 
 function onexit() {
-	hooks.disable();
-	verifyGraph(
-		hooks,
-		[ { type: 'STATWATCHER', id: 'statwatcher:1', triggerAsyncId: null },
-				{ type: 'STATWATCHER', id: 'statwatcher:2', triggerAsyncId: null } ]
-	);
+ hooks.disable();
+ verifyGraph(
+  hooks,
+  [ { type: 'STATWATCHER', id: 'statwatcher:1', triggerAsyncId: null },
+    { type: 'STATWATCHER', id: 'statwatcher:2', triggerAsyncId: null } ]
+ );
 }

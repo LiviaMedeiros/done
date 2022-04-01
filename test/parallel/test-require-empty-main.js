@@ -19,7 +19,7 @@ test();
 setImmediate(test);
 
 function test() {
-	assert.strictEqual(require.resolve(where), expected);
-	assert.strictEqual(require(where), 42);
-	assert.strictEqual(require.resolve(where), expected);
+ assert.strictEqual(require.resolve(where), expected);
+ assert.strictEqual(require(where), 42);
+ assert.strictEqual(require.resolve(where), expected);
 }

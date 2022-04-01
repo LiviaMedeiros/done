@@ -11,13 +11,13 @@ cp.stdout.setEncoding('utf8');
 
 let output = '';
 cp.stdout.on('data', function(b) {
-	output += b;
-	if (output.endsWith('> 42\n')) {
-		gotToEnd = true;
-		cp.kill();
-	}
+ output += b;
+ if (output.endsWith('> 42\n')) {
+  gotToEnd = true;
+  cp.kill();
+ }
 });
 
 process.on('exit', function() {
-	assert(gotToEnd);
+ assert(gotToEnd);
 });

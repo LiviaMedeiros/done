@@ -14,28 +14,28 @@ const http = require('http');
 const net = require('net');
 
 const requests = [
-	{ host: 'foo:1234', headers: { expectedhost: 'foo:1234:80' } },
-	{ host: '::1', headers: { expectedhost: '[::1]:80' } },
+ { host: 'foo:1234', headers: { expectedhost: 'foo:1234:80' } },
+ { host: '::1', headers: { expectedhost: '[::1]:80' } },
 ];
 
 function createLocalConnection(options) {
-	options.host = undefined;
-	options.port = this.port;
-	options.path = undefined;
-	return net.createConnection(options);
+ options.host = undefined;
+ options.port = this.port;
+ options.path = undefined;
+ return net.createConnection(options);
 }
 
 http.createServer(common.mustCall(function(req, res) {
-	this.requests = this.requests || 0;
-	assert.strictEqual(req.headers.host, req.headers.expectedhost);
-	res.end();
-	if (++this.requests === requests.length)
-		this.close();
+ this.requests = this.requests || 0;
+ assert.strictEqual(req.headers.host, req.headers.expectedhost);
+ res.end();
+ if (++this.requests === requests.length)
+  this.close();
 }, requests.length)).listen(0, function() {
-	const address = this.address();
-	for (let i = 0; i < requests.length; ++i) {
-		requests[i].createConnection =
+ const address = this.address();
+ for (let i = 0; i < requests.length; ++i) {
+  requests[i].createConnection =
       common.mustCall(createLocalConnection.bind(address));
-		http.get(requests[i]);
-	}
+  http.get(requests[i]);
+ }
 });

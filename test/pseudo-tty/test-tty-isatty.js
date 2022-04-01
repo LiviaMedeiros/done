@@ -15,4 +15,4 @@ strictEqual(isatty(1.1), false, '1.1 reported to be a tty, but it is not');
 strictEqual(isatty('1'), false, '\'1\' reported to be a tty, but it is not');
 strictEqual(isatty({}), false, '{} reported to be a tty, but it is not');
 strictEqual(isatty(() => {}), false,
-												'() => {} reported to be a tty, but it is not');
+            '() => {} reported to be a tty, but it is not');

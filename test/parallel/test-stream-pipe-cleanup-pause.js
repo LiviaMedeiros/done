@@ -14,23 +14,23 @@ const buffer = Buffer.allocUnsafe(560000);
 reader._read = () => {};
 
 writer1._write = common.mustCall(function(chunk, encoding, cb) {
-	this.emit('chunk-received');
-	cb();
+ this.emit('chunk-received');
+ cb();
 }, 1);
 writer1.once('chunk-received', function() {
-	reader.unpipe(writer1);
-	reader.pipe(writer2);
-	reader.push(buffer);
-	setImmediate(function() {
-		reader.push(buffer);
-		setImmediate(function() {
-			reader.push(buffer);
-		});
-	});
+ reader.unpipe(writer1);
+ reader.pipe(writer2);
+ reader.push(buffer);
+ setImmediate(function() {
+  reader.push(buffer);
+  setImmediate(function() {
+   reader.push(buffer);
+  });
+ });
 });
 
 writer2._write = common.mustCall(function(chunk, encoding, cb) {
-	cb();
+ cb();
 }, 3);
 
 reader.pipe(writer1);

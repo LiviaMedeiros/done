@@ -11,20 +11,20 @@ repl.start('> ');
 
 // Verify <ctrl> + D support.
 {
-	const stream = new ArrayStream();
-	const replServer = new repl.REPLServer({
-		prompt: '> ',
-		terminal: true,
-		input: stream,
-		output: process.stdout,
-		useColors: false
-	});
+ const stream = new ArrayStream();
+ const replServer = new repl.REPLServer({
+  prompt: '> ',
+  terminal: true,
+  input: stream,
+  output: process.stdout,
+  useColors: false
+ });
 
-	replServer.on('close', common.mustCall());
-	// Verify that <ctrl> + R or <ctrl> + C does not trigger the reverse search.
-	replServer.write(null, { ctrl: true, name: 'r' });
-	replServer.write(null, { ctrl: true, name: 's' });
-	replServer.write(null, { ctrl: true, name: 'd' });
+ replServer.on('close', common.mustCall());
+ // Verify that <ctrl> + R or <ctrl> + C does not trigger the reverse search.
+ replServer.write(null, { ctrl: true, name: 'r' });
+ replServer.write(null, { ctrl: true, name: 's' });
+ replServer.write(null, { ctrl: true, name: 'd' });
 }
 
 process.stdin.push('conso'); // No completion preview.

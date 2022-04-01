@@ -26,31 +26,31 @@ const assert = require('assert');
 // If child process output to console and exit
 // The console.log statements here are part of the test.
 if (process.argv[2] === 'child') {
-	console.log('hello');
-	for (let i = 0; i < 200; i++) {
-		console.log('filler');
-	}
-	console.log('goodbye');
-	process.exit(0);
+ console.log('hello');
+ for (let i = 0; i < 200; i++) {
+  console.log('filler');
+ }
+ console.log('goodbye');
+ process.exit(0);
 } else {
-	// parent process
-	const spawn = require('child_process').spawn;
+ // parent process
+ const spawn = require('child_process').spawn;
 
-	// spawn self as child
-	const child = spawn(process.argv[0], [process.argv[1], 'child']);
+ // spawn self as child
+ const child = spawn(process.argv[0], [process.argv[1], 'child']);
 
-	let stdout = '';
+ let stdout = '';
 
-	child.stderr.on('data', common.mustNotCall());
+ child.stderr.on('data', common.mustNotCall());
 
-	// Check if we receive both 'hello' at start and 'goodbye' at end
-	child.stdout.setEncoding('utf8');
-	child.stdout.on('data', common.mustCallAtLeast((data) => {
-		stdout += data;
-	}));
+ // Check if we receive both 'hello' at start and 'goodbye' at end
+ child.stdout.setEncoding('utf8');
+ child.stdout.on('data', common.mustCallAtLeast((data) => {
+  stdout += data;
+ }));
 
-	child.on('close', common.mustCall(() => {
-		assert.strictEqual(stdout.slice(0, 6), 'hello\n');
-		assert.strictEqual(stdout.slice(stdout.length - 8), 'goodbye\n');
-	}));
+ child.on('close', common.mustCall(() => {
+  assert.strictEqual(stdout.slice(0, 6), 'hello\n');
+  assert.strictEqual(stdout.slice(stdout.length - 8), 'goodbye\n');
+ }));
 }

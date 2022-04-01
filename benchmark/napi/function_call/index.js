@@ -13,39 +13,39 @@ const common = require('../../common.js');
 
 let binding;
 try {
-	binding = require(`./build/${common.buildType}/binding`);
+ binding = require(`./build/${common.buildType}/binding`);
 } catch {
-	console.error('misc/function_call.js Binding failed to load');
-	process.exit(0);
+ console.error('misc/function_call.js Binding failed to load');
+ process.exit(0);
 }
 const cxx = binding.hello;
 
 let napi_binding;
 try {
-	napi_binding = require(`./build/${common.buildType}/napi_binding`);
+ napi_binding = require(`./build/${common.buildType}/napi_binding`);
 } catch {
-	console.error('misc/function_call/index.js NAPI-Binding failed to load');
-	process.exit(0);
+ console.error('misc/function_call/index.js NAPI-Binding failed to load');
+ process.exit(0);
 }
 const napi = napi_binding.hello;
 
 let c = 0;
 function js() {
-	return c++;
+ return c++;
 }
 
 assert(js() === cxx());
 
 const bench = common.createBenchmark(main, {
-	type: ['js', 'cxx', 'napi'],
-	n: [1e6, 1e7, 5e7]
+ type: ['js', 'cxx', 'napi'],
+ n: [1e6, 1e7, 5e7]
 });
 
 function main({ n, type }) {
-	const fn = type === 'cxx' ? cxx : type === 'napi' ? napi : js;
-	bench.start();
-	for (let i = 0; i < n; i++) {
-		fn();
-	}
-	bench.end(n);
+ const fn = type === 'cxx' ? cxx : type === 'napi' ? napi : js;
+ bench.start();
+ for (let i = 0; i < n; i++) {
+  fn();
+ }
+ bench.end(n);
 }

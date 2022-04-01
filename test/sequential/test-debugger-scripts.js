@@ -10,15 +10,15 @@ const assert = require('assert');
 
 // List scripts.
 {
-	const script = fixtures.path('debugger', 'three-lines.js');
-	const cli = startCLI([script]);
+ const script = fixtures.path('debugger', 'three-lines.js');
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	return cli.waitForInitialBreak()
+ return cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('scripts'))
     .then(() => {

@@ -17,11 +17,11 @@ zipper.flush();
 
 let received = 0;
 unzipper.on('data', common.mustCall((d) => {
-	received += d.length;
+ received += d.length;
 }, 2));
 
 // Properly `.end()`ing the streams would interfere with checking that
 // `.flush()` works.
 process.on('exit', () => {
-	assert.strictEqual(received, 17000);
+ assert.strictEqual(received, 17000);
 });

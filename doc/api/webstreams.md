@@ -8,17 +8,17 @@ An implementation of the [WHATWG Streams Standard][].
 
 ```mjs
 import {
-	ReadableStream,
-	WritableStream,
-	TransformStream,
+ ReadableStream,
+ WritableStream,
+ TransformStream,
 } from 'node:stream/web';
 ```
 
 ```cjs
 const {
-	ReadableStream,
-	WritableStream,
-	TransformStream,
+ ReadableStream,
+ WritableStream,
+ TransformStream,
 } = require('stream/web');
 ```
 
@@ -43,55 +43,55 @@ is used to read the data from the stream.
 
 ```mjs
 import {
-	ReadableStream
+ ReadableStream
 } from 'node:stream/web';
 
 import {
-	setInterval as every
+ setInterval as every
 } from 'node:timers/promises';
 
 import {
-	performance
+ performance
 } from 'node:perf_hooks';
 
 const SECOND = 1000;
 
 const stream = new ReadableStream({
-	async start(controller) {
-		for await (const _ of every(SECOND))
-			controller.enqueue(performance.now());
-	}
+ async start(controller) {
+  for await (const _ of every(SECOND))
+   controller.enqueue(performance.now());
+ }
 });
 
 for await (const value of stream)
-	console.log(value);
+ console.log(value);
 ```
 
 ```cjs
 const {
-	ReadableStream
+ ReadableStream
 } = require('stream/web');
 
 const {
-	setInterval: every
+ setInterval: every
 } = require('timers/promises');
 
 const {
-	performance
+ performance
 } = require('perf_hooks');
 
 const SECOND = 1000;
 
 const stream = new ReadableStream({
-	async start(controller) {
-		for await (const _ of every(SECOND))
-			controller.enqueue(performance.now());
-	}
+ async start(controller) {
+  for await (const _ of every(SECOND))
+   controller.enqueue(performance.now());
+ }
 });
 
 (async () => {
-	for await (const value of stream)
-		console.log(value);
+ for await (const value of stream)
+  console.log(value);
 })();
 ```
 
@@ -229,51 +229,51 @@ is active.
 
 ```mjs
 import {
-	ReadableStream,
-	TransformStream,
+ ReadableStream,
+ TransformStream,
 } from 'node:stream/web';
 
 const stream = new ReadableStream({
-	start(controller) {
-		controller.enqueue('a');
-	},
+ start(controller) {
+  controller.enqueue('a');
+ },
 });
 
 const transform = new TransformStream({
-	transform(chunk, controller) {
-		controller.enqueue(chunk.toUpperCase());
-	}
+ transform(chunk, controller) {
+  controller.enqueue(chunk.toUpperCase());
+ }
 });
 
 const transformedStream = stream.pipeThrough(transform);
 
 for await (const chunk of transformedStream)
-	console.log(chunk);
+ console.log(chunk);
 ```
 
 ```cjs
 const {
-	ReadableStream,
-	TransformStream,
+ ReadableStream,
+ TransformStream,
 } = require('stream/web');
 
 const stream = new ReadableStream({
-	start(controller) {
-		controller.enqueue('a');
-	},
+ start(controller) {
+  controller.enqueue('a');
+ },
 });
 
 const transform = new TransformStream({
-	transform(chunk, controller) {
-		controller.enqueue(chunk.toUpperCase());
-	}
+ transform(chunk, controller) {
+  controller.enqueue(chunk.toUpperCase());
+ }
 });
 
 const transformedStream = stream.pipeThrough(transform);
 
 (async () => {
-	for await (const chunk of transformedStream)
-		console.log(chunk);
+ for await (const chunk of transformedStream)
+  console.log(chunk);
 })();
 ```
 
@@ -337,7 +337,7 @@ import { Buffer } from 'node:buffer';
 const stream = new ReadableStream(getSomeSource());
 
 for await (const chunk of stream.values({ preventCancel: true }))
-	console.log(Buffer.from(chunk).toString());
+ console.log(Buffer.from(chunk).toString());
 ```
 
 #### Async Iteration
@@ -351,7 +351,7 @@ import { Buffer } from 'buffer';
 const stream = new ReadableStream(getSomeSource());
 
 for await (const chunk of stream)
-	console.log(Buffer.from(chunk).toString());
+ console.log(Buffer.from(chunk).toString());
 ```
 
 The async iterator will consume the {ReadableStream} until it terminates.
@@ -375,9 +375,9 @@ const stream = new ReadableStream(getReadableSourceSomehow());
 const { port1, port2 } = new MessageChannel();
 
 port1.onmessage = ({ data }) => {
-	data.getReader().read().then((chunk) => {
-		console.log(chunk);
-	});
+ data.getReader().read().then((chunk) => {
+  console.log(chunk);
+ });
 };
 
 port2.postMessage(stream, [stream]);
@@ -467,56 +467,56 @@ data that avoids extraneous copying.
 
 ```mjs
 import {
-	open
+ open
 } from 'node:fs/promises';
 
 import {
-	ReadableStream
+ ReadableStream
 } from 'node:stream/web';
 
 import { Buffer } from 'node:buffer';
 
 class Source {
-	type = 'bytes';
-	autoAllocateChunkSize = 1024;
+ type = 'bytes';
+ autoAllocateChunkSize = 1024;
 
-	async start(controller) {
-		this.file = await open(new URL(import.meta.url));
-		this.controller = controller;
-	}
+ async start(controller) {
+  this.file = await open(new URL(import.meta.url));
+  this.controller = controller;
+ }
 
-	async pull(controller) {
-		const view = controller.byobRequest?.view;
-		const {
-			bytesRead,
-		} = await this.file.read({
-			buffer: view,
-			offset: view.byteOffset,
-			length: view.byteLength
-		});
+ async pull(controller) {
+  const view = controller.byobRequest?.view;
+  const {
+   bytesRead,
+  } = await this.file.read({
+   buffer: view,
+   offset: view.byteOffset,
+   length: view.byteLength
+  });
 
-		if (bytesRead === 0) {
-			await this.file.close();
-			this.controller.close();
-		}
-		controller.byobRequest.respond(bytesRead);
-	}
+  if (bytesRead === 0) {
+   await this.file.close();
+   this.controller.close();
+  }
+  controller.byobRequest.respond(bytesRead);
+ }
 }
 
 const stream = new ReadableStream(new Source());
 
 async function read(stream) {
-	const reader = stream.getReader({ mode: 'byob' });
+ const reader = stream.getReader({ mode: 'byob' });
 
-	const chunks = [];
-	let result;
-	do {
-		result = await reader.read(Buffer.alloc(100));
-		if (result.value !== undefined)
-			chunks.push(Buffer.from(result.value));
-	} while (!result.done);
+ const chunks = [];
+ let result;
+ do {
+  result = await reader.read(Buffer.alloc(100));
+  if (result.value !== undefined)
+   chunks.push(Buffer.from(result.value));
+ } while (!result.done);
 
-	return Buffer.concat(chunks);
+ return Buffer.concat(chunks);
 }
 
 const data = await read(stream);
@@ -753,13 +753,13 @@ The `WritableStream` is a destination to which stream data is sent.
 
 ```mjs
 import {
-	WritableStream
+ WritableStream
 } from 'node:stream/web';
 
 const stream = new WritableStream({
-	write(chunk) {
-		console.log(chunk);
-	}
+ write(chunk) {
+  console.log(chunk);
+ }
 });
 
 await stream.getWriter().write('Hello World');
@@ -853,7 +853,7 @@ const stream = new WritableStream(getWritableSinkSomehow());
 const { port1, port2 } = new MessageChannel();
 
 port1.onmessage = ({ data }) => {
-	data.getWriter().write('hello');
+ data.getWriter().write('hello');
 };
 
 port2.postMessage(stream, [stream]);
@@ -989,18 +989,18 @@ queue.
 
 ```mjs
 import {
-	TransformStream
+ TransformStream
 } from 'node:stream/web';
 
 const transform = new TransformStream({
-	transform(chunk, controller) {
-		controller.enqueue(chunk.toUpperCase());
-	}
+ transform(chunk, controller) {
+  controller.enqueue(chunk.toUpperCase());
+ }
 });
 
 await Promise.all([
-	transform.writable.getWriter().write('A'),
-	transform.readable.getReader().read(),
+ transform.writable.getWriter().write('A'),
+ transform.readable.getReader().read(),
 ]);
 ```
 
@@ -1071,8 +1071,8 @@ const stream = new TransformStream();
 const { port1, port2 } = new MessageChannel();
 
 port1.onmessage = ({ data }) => {
-	const { writable, readable } = data;
-	// ...
+ const { writable, readable } = data;
+ // ...
 };
 
 port2.postMessage(stream, [stream]);
@@ -1378,21 +1378,21 @@ They are accessed using:
 
 ```mjs
 import {
-	arrayBuffer,
-	blob,
-	buffer,
-	json,
-	text,
+ arrayBuffer,
+ blob,
+ buffer,
+ json,
+ text,
 } from 'node:stream/consumers';
 ```
 
 ```cjs
 const {
-	arrayBuffer,
-	blob,
-	buffer,
-	json,
-	text,
+ arrayBuffer,
+ blob,
+ buffer,
+ json,
+ text,
 } = require('stream/consumers');
 ```
 

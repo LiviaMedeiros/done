@@ -10,45 +10,45 @@ Object.setPrototypeOf(FakeBuffer.prototype, Buffer.prototype);
 const fb = new FakeBuffer();
 
 assert.throws(function() {
-	Buffer.from(fb);
+ Buffer.from(fb);
 }, TypeError);
 
 assert.throws(function() {
-	+Buffer.prototype; // eslint-disable-line no-unused-expressions
+ +Buffer.prototype; // eslint-disable-line no-unused-expressions
 }, TypeError);
 
 assert.throws(function() {
-	Buffer.compare(fb, Buffer.alloc(0));
+ Buffer.compare(fb, Buffer.alloc(0));
 }, TypeError);
 
 assert.throws(function() {
-	fb.write('foo');
+ fb.write('foo');
 }, TypeError);
 
 assert.throws(function() {
-	Buffer.concat([fb, fb]);
+ Buffer.concat([fb, fb]);
 }, TypeError);
 
 assert.throws(function() {
-	fb.toString();
+ fb.toString();
 }, TypeError);
 
 assert.throws(function() {
-	fb.equals(Buffer.alloc(0));
+ fb.equals(Buffer.alloc(0));
 }, TypeError);
 
 assert.throws(function() {
-	fb.indexOf(5);
+ fb.indexOf(5);
 }, TypeError);
 
 assert.throws(function() {
-	fb.readFloatLE(0);
+ fb.readFloatLE(0);
 }, TypeError);
 
 assert.throws(function() {
-	fb.writeFloatLE(0);
+ fb.writeFloatLE(0);
 }, TypeError);
 
 assert.throws(function() {
-	fb.fill(0);
+ fb.fill(0);
 }, TypeError);

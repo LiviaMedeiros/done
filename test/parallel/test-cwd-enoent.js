@@ -2,9 +2,9 @@
 const common = require('../common');
 // Fails with EINVAL on SmartOS, EBUSY on Windows, EBUSY on AIX.
 if (common.isSunOS || common.isWindows || common.isAIX)
-	common.skip('cannot rmdir current working directory');
+ common.skip('cannot rmdir current working directory');
 if (!common.isMainThread)
-	common.skip('process.chdir is not available in Workers');
+ common.skip('process.chdir is not available in Workers');
 
 const assert = require('assert');
 const fs = require('fs');
@@ -23,6 +23,6 @@ proc.stdout.pipe(process.stdout);
 proc.stderr.pipe(process.stderr);
 
 proc.once('exit', common.mustCall(function(exitCode, signalCode) {
-	assert.strictEqual(exitCode, 0);
-	assert.strictEqual(signalCode, null);
+ assert.strictEqual(exitCode, 0);
+ assert.strictEqual(signalCode, null);
 }));

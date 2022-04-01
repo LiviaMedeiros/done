@@ -6,14 +6,14 @@ const assert = require('assert');
 
 // Error.prepareStackTrace() can be overridden with source maps enabled.
 {
-	let prepareCalled = false;
-	Error.prepareStackTrace = (_error, trace) => {
-		prepareCalled = true;
-	};
-	try {
-		throw new Error('foo');
-	} catch (err) {
-		err.stack; // eslint-disable-line no-unused-expressions
-	}
-	assert(prepareCalled);
+ let prepareCalled = false;
+ Error.prepareStackTrace = (_error, trace) => {
+  prepareCalled = true;
+ };
+ try {
+  throw new Error('foo');
+ } catch (err) {
+  err.stack; // eslint-disable-line no-unused-expressions
+ }
+ assert(prepareCalled);
 }

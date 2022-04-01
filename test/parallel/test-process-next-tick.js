@@ -25,25 +25,25 @@ const assert = require('assert');
 const N = 2;
 
 function cb() {
-	throw new Error();
+ throw new Error();
 }
 
 for (let i = 0; i < N; ++i) {
-	process.nextTick(common.mustCall(cb));
+ process.nextTick(common.mustCall(cb));
 }
 
 process.on('uncaughtException', common.mustCall(N));
 
 process.on('exit', function() {
-	process.removeAllListeners('uncaughtException');
+ process.removeAllListeners('uncaughtException');
 });
 
 [null, 1, 'test', {}, [], Infinity, true].forEach((i) => {
-	assert.throws(
-		() => process.nextTick(i),
-		{
-			code: 'ERR_INVALID_ARG_TYPE',
-			name: 'TypeError',
-		}
-	);
+ assert.throws(
+  () => process.nextTick(i),
+  {
+   code: 'ERR_INVALID_ARG_TYPE',
+   name: 'TypeError',
+  }
+ );
 });

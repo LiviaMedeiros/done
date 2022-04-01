@@ -5,7 +5,7 @@ const http = require('http');
 const server = http.createServer((req, res) => res.flushHeaders());
 
 server.listen(common.mustCall(() => {
-	const req =
+ const req =
     http.get({ port: server.address().port }, common.mustCall((res) => {
     	res.on('timeout', common.mustCall(() => req.destroy()));
     	res.setTimeout(1);

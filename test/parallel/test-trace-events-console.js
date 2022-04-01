@@ -10,43 +10,43 @@ const tmpdir = require('../common/tmpdir');
 // emitted as expected.
 
 const names = [
-	'time::foo',
-	'count::bar',
+ 'time::foo',
+ 'count::bar',
 ];
 const expectedCounts = [ 1, 2, 0 ];
 const expectedTimeTypes = [ 'b', 'n', 'e' ];
 
 if (process.argv[2] === 'child') {
-	// The following console outputs exercise the test, causing node.console
-	// trace events to be emitted for the counter and time calls.
-	console.count('bar');
-	console.count('bar');
-	console.countReset('bar');
-	console.time('foo');
-	setImmediate(() => {
-		console.timeLog('foo');
-		setImmediate(() => {
-			console.timeEnd('foo');
-		});
-	});
+ // The following console outputs exercise the test, causing node.console
+ // trace events to be emitted for the counter and time calls.
+ console.count('bar');
+ console.count('bar');
+ console.countReset('bar');
+ console.time('foo');
+ setImmediate(() => {
+  console.timeLog('foo');
+  setImmediate(() => {
+   console.timeEnd('foo');
+  });
+ });
 } else {
-	tmpdir.refresh();
+ tmpdir.refresh();
 
-	const proc = cp.fork(__filename,
-																						[ 'child' ], {
-																							cwd: tmpdir.path,
-																							execArgv: [
-																								'--trace-event-categories',
-																								'node.console',
-																							]
-																						});
+ const proc = cp.fork(__filename,
+                      [ 'child' ], {
+                       cwd: tmpdir.path,
+                       execArgv: [
+                        '--trace-event-categories',
+                        'node.console',
+                       ]
+                      });
 
-	proc.once('exit', common.mustCall(async () => {
-		const file = path.join(tmpdir.path, 'node_trace.1.log');
+ proc.once('exit', common.mustCall(async () => {
+  const file = path.join(tmpdir.path, 'node_trace.1.log');
 
-		assert(fs.existsSync(file));
-		const data = await fs.promises.readFile(file, { encoding: 'utf8' });
-		JSON.parse(data).traceEvents
+  assert(fs.existsSync(file));
+  const data = await fs.promises.readFile(file, { encoding: 'utf8' });
+  JSON.parse(data).traceEvents
       .filter((trace) => trace.cat !== '__metadata')
       .forEach((trace) => {
       	assert.strictEqual(trace.pid, proc.pid);
@@ -56,7 +56,7 @@ if (process.argv[2] === 'child') {
       	else if (trace.name === 'time::foo')
       		assert.strictEqual(trace.ph, expectedTimeTypes.shift());
       });
-		assert.strictEqual(expectedCounts.length, 0);
-		assert.strictEqual(expectedTimeTypes.length, 0);
-	}));
+  assert.strictEqual(expectedCounts.length, 0);
+  assert.strictEqual(expectedTimeTypes.length, 0);
+ }));
 }

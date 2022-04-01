@@ -24,9 +24,9 @@ syncBuiltinESMExports();
 assert.deepStrictEqual([fs.readFile(), readFile()], [s, s]);
 
 Reflect.defineProperty(fs, 'readFile', {
-	value: fn,
-	configurable: true,
-	writable: true,
+ value: fn,
+ configurable: true,
+ writable: true,
 });
 syncBuiltinESMExports();
 
@@ -40,8 +40,8 @@ assert.deepStrictEqual([fs.readFile, readFile], [undefined, undefined]);
 let count = 0;
 
 Reflect.defineProperty(fs, 'readFile', {
-	get() { return count; },
-	configurable: true,
+ get() { return count; },
+ configurable: true,
 });
 syncBuiltinESMExports();
 
@@ -55,18 +55,18 @@ assert.deepStrictEqual([fs.readFile, readFile], [1, 1]);
 let otherValue;
 
 Reflect.defineProperty(fs, 'readFile', { // eslint-disable-line accessor-pairs
-	set(value) {
-		Reflect.deleteProperty(fs, 'readFile');
-		otherValue = value;
-	},
-	configurable: true,
+ set(value) {
+  Reflect.deleteProperty(fs, 'readFile');
+  otherValue = value;
+ },
+ configurable: true,
 });
 
 Reflect.defineProperty(fs, 'readFileSync', {
-	get() {
-		return otherValue;
-	},
-	configurable: true,
+ get() {
+  return otherValue;
+ },
+ configurable: true,
 });
 
 fs.readFile = 2;
@@ -83,17 +83,17 @@ const utilProto = util.__proto__; // eslint-disable-line no-proto
 count = 0;
 
 Reflect.defineProperty(Function.prototype, 'defaultMaxListeners', {
-	configurable: true,
-	enumerable: true,
-	get: function() { return ++count; },
-	set: function(v) {
-		Reflect.defineProperty(this, 'defaultMaxListeners', {
-			configurable: true,
-			enumerable: true,
-			writable: true,
-			value: v,
-		});
-	},
+ configurable: true,
+ enumerable: true,
+ get: function() { return ++count; },
+ set: function(v) {
+  Reflect.defineProperty(this, 'defaultMaxListeners', {
+   configurable: true,
+   enumerable: true,
+   writable: true,
+   value: v,
+  });
+ },
 });
 syncBuiltinESMExports();
 
@@ -103,7 +103,7 @@ assert.strictEqual(events.defaultMaxListeners, originDefaultMaxListeners);
 events.defaultMaxListeners += 1;
 
 assert.strictEqual(events.defaultMaxListeners,
-																			originDefaultMaxListeners + 1);
+                   originDefaultMaxListeners + 1);
 
 syncBuiltinESMExports();
 
@@ -120,15 +120,15 @@ assert.strictEqual(defaultMaxListeners, originDefaultMaxListeners + 1);
 count = 0;
 
 const p = {
-	get foo() { return ++count; },
-	set foo(v) {
-		Reflect.defineProperty(this, 'foo', {
-			configurable: true,
-			enumerable: true,
-			writable: true,
-			value: v,
-		});
-	},
+ get foo() { return ++count; },
+ set foo(v) {
+  Reflect.defineProperty(this, 'foo', {
+   configurable: true,
+   enumerable: true,
+   writable: true,
+   value: v,
+  });
+ },
 };
 
 util.__proto__ = p; // eslint-disable-line no-proto
@@ -156,6 +156,6 @@ Reflect.deleteProperty(Function.prototype, 'defaultMaxListeners');
 syncBuiltinESMExports();
 
 assert.throws(
-	() => Object.defineProperty(events, 'defaultMaxListeners', { value: 3 }),
-	/TypeError: Cannot redefine/
+ () => Object.defineProperty(events, 'defaultMaxListeners', { value: 3 }),
+ /TypeError: Cannot redefine/
 );

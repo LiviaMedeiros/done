@@ -9,10 +9,10 @@ const startCLI = require('../common/debugger');
 const assert = require('assert');
 
 {
-	const script = fixtures.path('debugger', 'three-lines.js');
-	const cli = startCLI([script]);
+ const script = fixtures.path('debugger', 'three-lines.js');
+ const cli = startCLI([script]);
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => {
     	assert.match(cli.output, /debug>/, 'prints a prompt');

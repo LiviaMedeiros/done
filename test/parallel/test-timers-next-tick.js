@@ -8,11 +8,11 @@ const { sleep } = require('internal/util');
 // individual Timeout, as well as each individual Immediate.
 
 setTimeout(common.mustCall(() => {
-	process.nextTick(() => {
-		// Confirm that clearing Timeouts from a next tick doesn't explode.
-		clearTimeout(t2);
-		clearTimeout(t3);
-	});
+ process.nextTick(() => {
+  // Confirm that clearing Timeouts from a next tick doesn't explode.
+  clearTimeout(t2);
+  clearTimeout(t3);
+ });
 }), 1);
 const t2 = setTimeout(common.mustNotCall(), 1);
 const t3 = setTimeout(common.mustNotCall(), 1);
@@ -21,11 +21,11 @@ setTimeout(common.mustCall(), 1);
 sleep(5);
 
 setImmediate(common.mustCall(() => {
-	process.nextTick(() => {
-		// Confirm that clearing Immediates from a next tick doesn't explode.
-		clearImmediate(i2);
-		clearImmediate(i3);
-	});
+ process.nextTick(() => {
+  // Confirm that clearing Immediates from a next tick doesn't explode.
+  clearImmediate(i2);
+  clearImmediate(i3);
+ });
 }));
 const i2 = setImmediate(common.mustNotCall());
 const i3 = setImmediate(common.mustNotCall());

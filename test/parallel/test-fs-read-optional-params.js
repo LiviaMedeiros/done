@@ -13,24 +13,24 @@ const bufferAsOption = Buffer.allocUnsafe(expected.length);
 
 // Test not passing in any options object
 fs.read(fd, common.mustCall((err, bytesRead, buffer) => {
-	assert.strictEqual(bytesRead, expected.length);
-	assert.deepStrictEqual(defaultBufferAsync.length, buffer.length);
+ assert.strictEqual(bytesRead, expected.length);
+ assert.deepStrictEqual(defaultBufferAsync.length, buffer.length);
 }));
 
 // Test passing in an empty options object
 fs.read(fd, { position: 0 }, common.mustCall((err, bytesRead, buffer) => {
-	assert.strictEqual(bytesRead, expected.length);
-	assert.deepStrictEqual(defaultBufferAsync.length, buffer.length);
+ assert.strictEqual(bytesRead, expected.length);
+ assert.deepStrictEqual(defaultBufferAsync.length, buffer.length);
 }));
 
 // Test passing in options
 fs.read(fd, {
-	buffer: bufferAsOption,
-	offset: 0,
-	length: bufferAsOption.length,
-	position: 0
+ buffer: bufferAsOption,
+ offset: 0,
+ length: bufferAsOption.length,
+ position: 0
 },
-								common.mustCall((err, bytesRead, buffer) => {
-									assert.strictEqual(bytesRead, expected.length);
-									assert.deepStrictEqual(bufferAsOption.length, buffer.length);
-								}));
+        common.mustCall((err, bytesRead, buffer) => {
+         assert.strictEqual(bytesRead, expected.length);
+         assert.deepStrictEqual(bufferAsOption.length, buffer.length);
+        }));

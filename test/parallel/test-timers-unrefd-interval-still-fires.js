@@ -11,12 +11,12 @@ const keepOpen =
   	TEST_DURATION);
 
 const timer = setInterval(common.mustCall(() => {
-	if (--N === 0) {
-		clearInterval(timer);
-		timer._onTimeout =
+ if (--N === 0) {
+  clearInterval(timer);
+  timer._onTimeout =
       common.mustNotCall('Unrefd interval fired after being cleared');
-		clearTimeout(keepOpen);
-	}
+  clearTimeout(keepOpen);
+ }
 }, N), 1);
 
 timer.unref();

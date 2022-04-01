@@ -18,20 +18,20 @@ socket.once('error', onEvent);
 //   if a callback that handles error is present
 // * error is emitted if a callback with no argument is passed
 socket.send(buffer, 0, buffer.length, 100,
-												'dne.example.com', mustCall(callbackOnly));
+            'dne.example.com', mustCall(callbackOnly));
 
 function callbackOnly(err) {
-	assert.ok(err);
-	socket.removeListener('error', onEvent);
-	socket.on('error', mustCall(onError));
-	socket.send(buffer, 0, buffer.length, 100, 'dne.invalid');
+ assert.ok(err);
+ socket.removeListener('error', onEvent);
+ socket.on('error', mustCall(onError));
+ socket.send(buffer, 0, buffer.length, 100, 'dne.invalid');
 }
 
 function onEvent(err) {
-	assert.fail(`Error should not be emitted if there is callback: ${err}`);
+ assert.fail(`Error should not be emitted if there is callback: ${err}`);
 }
 
 function onError(err) {
-	assert.ok(err);
-	socket.close();
+ assert.ok(err);
+ socket.close();
 }

@@ -7,7 +7,7 @@ const common = require('../common');
 // logged.
 
 new Promise(() => {
-	throw new Error('One');
+ throw new Error('One');
 });
 
 Promise.reject('test');

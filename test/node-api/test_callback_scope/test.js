@@ -7,11 +7,11 @@ const { runInCallbackScope } = require(`./build/${common.buildType}/binding`);
 assert.strictEqual(runInCallbackScope({}, 'test-resource', () => 42), 42);
 
 {
-	process.once('uncaughtException', common.mustCall((err) => {
-		assert.strictEqual(err.message, 'foo');
-	}));
+ process.once('uncaughtException', common.mustCall((err) => {
+  assert.strictEqual(err.message, 'foo');
+ }));
 
-	runInCallbackScope({}, 'test-resource', () => {
-		throw new Error('foo');
-	});
+ runInCallbackScope({}, 'test-resource', () => {
+  throw new Error('foo');
+ });
 }

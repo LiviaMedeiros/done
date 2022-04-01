@@ -38,10 +38,10 @@ tmpdir.refresh();
 fs.writeFileSync(fileName, buf);
 
 fs.readFile(fileName, common.mustSucceed((data) => {
-	assert.strictEqual(data.length, buf.length);
-	assert.strictEqual(buf[0], 42);
+ assert.strictEqual(data.length, buf.length);
+ assert.strictEqual(buf[0], 42);
 
-	// Unlink should not throw. This is part of the test. It used to throw on
-	// Windows due to a bug.
-	fs.unlinkSync(fileName);
+ // Unlink should not throw. This is part of the test. It used to throw on
+ // Windows due to a bug.
+ fs.unlinkSync(fileName);
 }));

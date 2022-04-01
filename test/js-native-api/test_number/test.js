@@ -6,7 +6,7 @@ const test_number = require(`./build/${common.buildType}/test_number`);
 
 // Testing api calls for number
 function testNumber(num) {
-	assert.strictEqual(num, test_number.Test(num));
+ assert.strictEqual(num, test_number.Test(num));
 }
 
 testNumber(0);
@@ -21,9 +21,9 @@ testNumber(-976675);
 
 /* eslint-disable no-loss-of-precision */
 testNumber(
-	98765432213456789876546896323445679887645323232436587988766545658);
+ 98765432213456789876546896323445679887645323232436587988766545658);
 testNumber(
-	-4350987086545760976737453646576078997096876957864353245245769809);
+ -4350987086545760976737453646576078997096876957864353245245769809);
 /* eslint-enable no-loss-of-precision */
 testNumber(Number.MIN_SAFE_INTEGER);
 testNumber(Number.MAX_SAFE_INTEGER);
@@ -38,7 +38,7 @@ testNumber(Number.NEGATIVE_INFINITY);
 testNumber(Number.NaN);
 
 function testUint32(input, expected = input) {
-	assert.strictEqual(expected, test_number.TestUint32Truncation(input));
+ assert.strictEqual(expected, test_number.TestUint32Truncation(input));
 }
 
 // Test zero
@@ -55,7 +55,7 @@ testUint32(-1, 0xffffffff);
 // Validate documented behavior when value is retrieved as 32-bit integer with
 // `napi_get_value_int32`
 function testInt32(input, expected = input) {
-	assert.strictEqual(expected, test_number.TestInt32Truncation(input));
+ assert.strictEqual(expected, test_number.TestInt32Truncation(input));
 }
 
 // Test zero
@@ -98,7 +98,7 @@ testInt32(Number.NaN, 0);
 // Validate documented behavior when value is retrieved as 64-bit integer with
 // `napi_get_value_int64`
 function testInt64(input, expected = input) {
-	assert.strictEqual(expected, test_number.TestInt64Truncation(input));
+ assert.strictEqual(expected, test_number.TestInt64Truncation(input));
 }
 
 // Both V8 and ChakraCore return a sentinel value of `0x8000000000000000` when

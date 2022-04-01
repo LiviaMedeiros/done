@@ -27,19 +27,19 @@ const vm = require('vm');
 let ctx = {};
 
 Object.defineProperty(ctx, 'getter', {
-	get: function() {
-		return 'ok';
-	}
+ get: function() {
+  return 'ok';
+ }
 });
 
 let val;
 Object.defineProperty(ctx, 'setter', {
-	set: function(_val) {
-		val = _val;
-	},
-	get: function() {
-		return `ok=${val}`;
-	}
+ set: function(_val) {
+  val = _val;
+ },
+ get: function() {
+  return `ok=${val}`;
+ }
 });
 
 ctx = vm.createContext(ctx);

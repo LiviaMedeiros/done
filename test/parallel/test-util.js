@@ -151,38 +151,38 @@ assert.strictEqual(util.isFunction('string'), false);
 assert.strictEqual(util.toUSVString('string\ud801'), 'string\ufffd');
 
 {
-	assert.strictEqual(util.types.isNativeError(new Error()), true);
-	assert.strictEqual(util.types.isNativeError(new TypeError()), true);
-	assert.strictEqual(util.types.isNativeError(new SyntaxError()), true);
-	assert.strictEqual(util.types.isNativeError(new (context('Error'))()), true);
-	assert.strictEqual(
-		util.types.isNativeError(new (context('TypeError'))()),
-		true
-	);
-	assert.strictEqual(
-		util.types.isNativeError(new (context('SyntaxError'))()),
-		true
-	);
-	assert.strictEqual(util.types.isNativeError({}), false);
-	assert.strictEqual(
-		util.types.isNativeError({ name: 'Error', message: '' }),
-		false
-	);
-	assert.strictEqual(util.types.isNativeError([]), false);
-	assert.strictEqual(
-		util.types.isNativeError(Object.create(Error.prototype)),
-		false
-	);
-	assert.strictEqual(
-		util.types.isNativeError(new errors.codes.ERR_IPC_CHANNEL_CLOSED()),
-		true
-	);
+ assert.strictEqual(util.types.isNativeError(new Error()), true);
+ assert.strictEqual(util.types.isNativeError(new TypeError()), true);
+ assert.strictEqual(util.types.isNativeError(new SyntaxError()), true);
+ assert.strictEqual(util.types.isNativeError(new (context('Error'))()), true);
+ assert.strictEqual(
+  util.types.isNativeError(new (context('TypeError'))()),
+  true
+ );
+ assert.strictEqual(
+  util.types.isNativeError(new (context('SyntaxError'))()),
+  true
+ );
+ assert.strictEqual(util.types.isNativeError({}), false);
+ assert.strictEqual(
+  util.types.isNativeError({ name: 'Error', message: '' }),
+  false
+ );
+ assert.strictEqual(util.types.isNativeError([]), false);
+ assert.strictEqual(
+  util.types.isNativeError(Object.create(Error.prototype)),
+  false
+ );
+ assert.strictEqual(
+  util.types.isNativeError(new errors.codes.ERR_IPC_CHANNEL_CLOSED()),
+  true
+ );
 }
 
 assert.throws(() => {
-	util.stripVTControlCharacters({});
+ util.stripVTControlCharacters({});
 }, {
-	code: 'ERR_INVALID_ARG_TYPE',
-	message: 'The "str" argument must be of type string.' +
+ code: 'ERR_INVALID_ARG_TYPE',
+ message: 'The "str" argument must be of type string.' +
            common.invalidArgTypeHelper({})
 });

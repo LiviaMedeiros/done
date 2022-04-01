@@ -13,15 +13,15 @@ const expectedFull = Buffer.from('iweA/9j/4AAQSkZJRgABAQEASA==', 'base64');
 let actualFull;
 
 deflater.write(chunk, function() {
-	deflater.flush(function() {
-		const bufs = [];
-		let buf;
-		while ((buf = deflater.read()) !== null)
-			bufs.push(buf);
-		actualFull = Buffer.concat(bufs);
-	});
+ deflater.flush(function() {
+  const bufs = [];
+  let buf;
+  while ((buf = deflater.read()) !== null)
+   bufs.push(buf);
+  actualFull = Buffer.concat(bufs);
+ });
 });
 
 process.once('exit', function() {
-	assert.deepStrictEqual(actualFull, expectedFull);
+ assert.deepStrictEqual(actualFull, expectedFull);
 });

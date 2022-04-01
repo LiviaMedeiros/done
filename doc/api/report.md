@@ -455,9 +455,9 @@ well as where it was handled.
 
 ```js
 try {
-	process.chdir('/non-existent-path');
+ process.chdir('/non-existent-path');
 } catch (err) {
-	process.report.writeReport(err);
+ process.report.writeReport(err);
 }
 // Any other code
 ```
@@ -467,9 +467,9 @@ error object must be the second parameter.
 
 ```js
 try {
-	process.chdir('/non-existent-path');
+ process.chdir('/non-existent-path');
 } catch (err) {
-	process.report.writeReport(filename, err);
+ process.report.writeReport(filename, err);
 }
 // Any other code
 ```

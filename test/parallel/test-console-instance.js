@@ -44,105 +44,105 @@ assert.ok(!({} instanceof Console));
 // Make sure that the Console constructor throws
 // when not given a writable stream instance.
 assert.throws(
-	() => { new Console(); },
-	{
-		code: 'ERR_CONSOLE_WRITABLE_STREAM',
-		name: 'TypeError',
-		message: /stdout/
-	}
+ () => { new Console(); },
+ {
+  code: 'ERR_CONSOLE_WRITABLE_STREAM',
+  name: 'TypeError',
+  message: /stdout/
+ }
 );
 
 // Console constructor should throw if stderr exists but is not writable.
 assert.throws(
-	() => {
-		out.write = () => {};
-		err.write = undefined;
-		new Console(out, err);
-	},
-	{
-		code: 'ERR_CONSOLE_WRITABLE_STREAM',
-		name: 'TypeError',
-		message: /stderr/
-	}
+ () => {
+  out.write = () => {};
+  err.write = undefined;
+  new Console(out, err);
+ },
+ {
+  code: 'ERR_CONSOLE_WRITABLE_STREAM',
+  name: 'TypeError',
+  message: /stderr/
+ }
 );
 
 out.write = err.write = (d) => {};
 
 {
-	const c = new Console(out, err);
-	assert.ok(c instanceof Console);
+ const c = new Console(out, err);
+ assert.ok(c instanceof Console);
 
-	out.write = err.write = common.mustCall((d) => {
-		assert.strictEqual(d, 'test\n');
-	}, 2);
+ out.write = err.write = common.mustCall((d) => {
+  assert.strictEqual(d, 'test\n');
+ }, 2);
 
-	c.log('test');
-	c.error('test');
+ c.log('test');
+ c.error('test');
 
-	out.write = common.mustCall((d) => {
-		assert.strictEqual(d, '{ foo: 1 }\n');
-	});
+ out.write = common.mustCall((d) => {
+  assert.strictEqual(d, '{ foo: 1 }\n');
+ });
 
-	c.dir({ foo: 1 });
+ c.dir({ foo: 1 });
 
-	// Ensure that the console functions are bound to the console instance.
-	let called = 0;
-	out.write = common.mustCall((d) => {
-		called++;
-		assert.strictEqual(d, `${called} ${called - 1} [ 1, 2, 3 ]\n`);
-	}, 3);
+ // Ensure that the console functions are bound to the console instance.
+ let called = 0;
+ out.write = common.mustCall((d) => {
+  called++;
+  assert.strictEqual(d, `${called} ${called - 1} [ 1, 2, 3 ]\n`);
+ }, 3);
 
-	[1, 2, 3].forEach(c.log);
+ [1, 2, 3].forEach(c.log);
 }
 
 // Test calling Console without the `new` keyword.
 {
-	const withoutNew = Console(out, err);
-	assert.ok(withoutNew instanceof Console);
+ const withoutNew = Console(out, err);
+ assert.ok(withoutNew instanceof Console);
 }
 
 // Test extending Console
 {
-	class MyConsole extends Console {
-		hello() {}
-		// See if the methods on Console.prototype are overridable.
-		log() { return 'overridden'; }
-	}
-	const myConsole = new MyConsole(process.stdout);
-	assert.strictEqual(typeof myConsole.hello, 'function');
-	assert.ok(myConsole instanceof Console);
-	assert.strictEqual(myConsole.log(), 'overridden');
+ class MyConsole extends Console {
+  hello() {}
+  // See if the methods on Console.prototype are overridable.
+  log() { return 'overridden'; }
+ }
+ const myConsole = new MyConsole(process.stdout);
+ assert.strictEqual(typeof myConsole.hello, 'function');
+ assert.ok(myConsole instanceof Console);
+ assert.strictEqual(myConsole.log(), 'overridden');
 
-	const log = myConsole.log;
-	assert.strictEqual(log(), 'overridden');
+ const log = myConsole.log;
+ assert.strictEqual(log(), 'overridden');
 }
 
 // Instance that does not ignore the stream errors.
 {
-	const c2 = new Console(out, err, false);
+ const c2 = new Console(out, err, false);
 
-	out.write = () => { throw new Error('out'); };
-	err.write = () => { throw new Error('err'); };
+ out.write = () => { throw new Error('out'); };
+ err.write = () => { throw new Error('err'); };
 
-	assert.throws(() => c2.log('foo'), /^Error: out$/);
-	assert.throws(() => c2.warn('foo'), /^Error: err$/);
-	assert.throws(() => c2.dir('foo'), /^Error: out$/);
+ assert.throws(() => c2.log('foo'), /^Error: out$/);
+ assert.throws(() => c2.warn('foo'), /^Error: err$/);
+ assert.throws(() => c2.dir('foo'), /^Error: out$/);
 }
 
 // Console constructor throws if inspectOptions is not an object.
 [null, true, false, 'foo', 5, Symbol()].forEach((inspectOptions) => {
-	assert.throws(
-		() => {
-			new Console({
-				stdout: out,
-				stderr: err,
-				inspectOptions
-			});
-		},
-		{
-			message: 'The "options.inspectOptions" property must be of type object.' +
+ assert.throws(
+  () => {
+   new Console({
+    stdout: out,
+    stderr: err,
+    inspectOptions
+   });
+  },
+  {
+   message: 'The "options.inspectOptions" property must be of type object.' +
                common.invalidArgTypeHelper(inspectOptions),
-			code: 'ERR_INVALID_ARG_TYPE'
-		}
-	);
+   code: 'ERR_INVALID_ARG_TYPE'
+  }
+ );
 });

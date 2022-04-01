@@ -173,13 +173,13 @@ To check for support for a non-English locale (i.e. `full-icu` or
 
 ```js
 const hasFullICU = (() => {
-	try {
-		const january = new Date(9e8);
-		const spanish = new Intl.DateTimeFormat('es', { month: 'long' });
-		return spanish.format(january) === 'enero';
-	} catch (err) {
-		return false;
-	}
+ try {
+  const january = new Date(9e8);
+  const spanish = new Intl.DateTimeFormat('es', { month: 'long' });
+  return spanish.format(january) === 'enero';
+ } catch (err) {
+  return false;
+ }
 })();
 ```
 

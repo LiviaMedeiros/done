@@ -68,7 +68,7 @@ The following example of an ES module exports a function:
 ```js
 // addTwo.mjs
 function addTwo(num) {
-	return num + 2;
+ return num + 2;
 }
 
 export { addTwo };
@@ -268,11 +268,11 @@ const e = new EventEmitter();
 ```js
 import { readFile } from 'fs';
 readFile('./foo.txt', (err, source) => {
-	if (err) {
-		console.error(err);
-	} else {
-		console.log(source);
-	}
+ if (err) {
+  console.error(err);
+ } else {
+  console.log(source);
+ }
 });
 ```
 
@@ -597,12 +597,12 @@ import { spawn } from 'child_process';
 import { execPath } from 'process';
 
 spawn(execPath, [
-	'--input-type=module',
-	'--eval',
-	// Never-resolving Promise:
-	'await new Promise(() => {})',
+ '--input-type=module',
+ '--eval',
+ // Never-resolving Promise:
+ 'await new Promise(() => {})',
 ]).once('exit', (code) => {
-	console.log(code); // Logs `13`
+ console.log(code); // Logs `13`
 });
 ```
 
@@ -656,10 +656,10 @@ configure({ worker_threads });
 // https://example.com/imagelib.mjs
 let worker_threads;
 export function configure(opts) {
-	worker_threads = opts.worker_threads;
+ worker_threads = opts.worker_threads;
 }
 export function resize(img, size) {
-	// Perform resizing in worker_thread to avoid main thread blocking
+ // Perform resizing in worker_thread to avoid main thread blocking
 }
 ```
 
@@ -748,26 +748,26 @@ Node.js module specifier resolution behavior_ when calling `defaultResolve`, the
  * @returns {Promise<{ url: string }>}
  */
 export async function resolve(specifier, context, defaultResolve) {
-	const { parentURL = null } = context;
-	if (Math.random() > 0.5) { // Some condition.
-		// For some or all specifiers, do some custom logic for resolving.
-		// Always return an object of the form {url: <string>}.
-		return {
-			url: parentURL ?
-				new URL(specifier, parentURL).href :
-				new URL(specifier).href,
-		};
-	}
-	if (Math.random() < 0.5) { // Another condition.
-		// When calling `defaultResolve`, the arguments can be modified. In this
-		// case it's adding another value for matching conditional exports.
-		return defaultResolve(specifier, {
-			...context,
-			conditions: [...context.conditions, 'another-condition'],
-		});
-	}
-	// Defer to Node.js for all other specifiers.
-	return defaultResolve(specifier, context, defaultResolve);
+ const { parentURL = null } = context;
+ if (Math.random() > 0.5) { // Some condition.
+  // For some or all specifiers, do some custom logic for resolving.
+  // Always return an object of the form {url: <string>}.
+  return {
+   url: parentURL ?
+    new URL(specifier, parentURL).href :
+    new URL(specifier).href,
+  };
+ }
+ if (Math.random() < 0.5) { // Another condition.
+  // When calling `defaultResolve`, the arguments can be modified. In this
+  // case it's adding another value for matching conditional exports.
+  return defaultResolve(specifier, {
+   ...context,
+   conditions: [...context.conditions, 'another-condition'],
+  });
+ }
+ // Defer to Node.js for all other specifiers.
+ return defaultResolve(specifier, context, defaultResolve);
 }
 ```
 
@@ -840,22 +840,22 @@ format to a supported one, for example `yaml` to `module`.
   }>}
  */
 export async function load(url, context, defaultLoad) {
-	const { format } = context;
-	if (Math.random() > 0.5) { // Some condition.
-		/*
+ const { format } = context;
+ if (Math.random() > 0.5) { // Some condition.
+  /*
       For some or all URLs, do some custom logic for retrieving the source.
       Always return an object of the form {
         format: <string>,
         source: <string|buffer>,
       }.
     */
-		return {
-			format,
-			source: '...',
-		};
-	}
-	// Defer to Node.js for all other URLs.
-	return defaultLoad(url, context, defaultLoad);
+  return {
+   format,
+   source: '...',
+  };
+ }
+ // Defer to Node.js for all other URLs.
+ return defaultLoad(url, context, defaultLoad);
 }
 ```
 
@@ -891,7 +891,7 @@ its own `require` using  `module.createRequire()`.
  * @returns {string} Code to run before application startup
  */
 export function globalPreload(utilities) {
-	return `\
+ return `\
 globalThis.someInjectedProperty = 42;
 console.log('I just set some globals!');
 
@@ -921,10 +921,10 @@ close normally.
  * @returns {string} Code to run before application startup
  */
 export function globalPreload({ port }) {
-	port.onmessage = (evt) => {
-		port.postMessage(evt.data);
-	};
-	return `\
+ port.onmessage = (evt) => {
+  port.postMessage(evt.data);
+ };
+ return `\
     port.postMessage('console.log("I went to the Loader and back");');
     port.onmessage = (evt) => {
       eval(evt.data);
@@ -952,45 +952,45 @@ and there is no security.
 import { get } from 'https';
 
 export function resolve(specifier, context, defaultResolve) {
-	const { parentURL = null } = context;
+ const { parentURL = null } = context;
 
-	// Normally Node.js would error on specifiers starting with 'https://', so
-	// this hook intercepts them and converts them into absolute URLs to be
-	// passed along to the later hooks below.
-	if (specifier.startsWith('https://')) {
-		return {
-			url: specifier
-		};
-	} else if (parentURL && parentURL.startsWith('https://')) {
-		return {
-			url: new URL(specifier, parentURL).href
-		};
-	}
+ // Normally Node.js would error on specifiers starting with 'https://', so
+ // this hook intercepts them and converts them into absolute URLs to be
+ // passed along to the later hooks below.
+ if (specifier.startsWith('https://')) {
+  return {
+   url: specifier
+  };
+ } else if (parentURL && parentURL.startsWith('https://')) {
+  return {
+   url: new URL(specifier, parentURL).href
+  };
+ }
 
-	// Let Node.js handle all other specifiers.
-	return defaultResolve(specifier, context, defaultResolve);
+ // Let Node.js handle all other specifiers.
+ return defaultResolve(specifier, context, defaultResolve);
 }
 
 export function load(url, context, defaultLoad) {
-	// For JavaScript to be loaded over the network, we need to fetch and
-	// return it.
-	if (url.startsWith('https://')) {
-		return new Promise((resolve, reject) => {
-			get(url, (res) => {
-				let data = '';
-				res.on('data', (chunk) => data += chunk);
-				res.on('end', () => resolve({
-					// This example assumes all network-provided JavaScript is ES module
-					// code.
-					format: 'module',
-					source: data,
-				}));
-			}).on('error', (err) => reject(err));
-		});
-	}
+ // For JavaScript to be loaded over the network, we need to fetch and
+ // return it.
+ if (url.startsWith('https://')) {
+  return new Promise((resolve, reject) => {
+   get(url, (res) => {
+    let data = '';
+    res.on('data', (chunk) => data += chunk);
+    res.on('end', () => resolve({
+     // This example assumes all network-provided JavaScript is ES module
+     // code.
+     format: 'module',
+     source: data,
+    }));
+   }).on('error', (err) => reject(err));
+  });
+ }
 
-	// Let Node.js handle all other URLs.
-	return defaultLoad(url, context, defaultLoad);
+ // Let Node.js handle all other URLs.
+ return defaultLoad(url, context, defaultLoad);
 }
 ```
 
@@ -1031,86 +1031,86 @@ const baseURL = pathToFileURL(`${cwd()}/`).href;
 const extensionsRegex = /\.coffee$|\.litcoffee$|\.coffee\.md$/;
 
 export async function resolve(specifier, context, defaultResolve) {
-	const { parentURL = baseURL } = context;
+ const { parentURL = baseURL } = context;
 
-	// Node.js normally errors on unknown file extensions, so return a URL for
-	// specifiers ending in the CoffeeScript file extensions.
-	if (extensionsRegex.test(specifier)) {
-		return {
-			url: new URL(specifier, parentURL).href
-		};
-	}
+ // Node.js normally errors on unknown file extensions, so return a URL for
+ // specifiers ending in the CoffeeScript file extensions.
+ if (extensionsRegex.test(specifier)) {
+  return {
+   url: new URL(specifier, parentURL).href
+  };
+ }
 
-	// Let Node.js handle all other specifiers.
-	return defaultResolve(specifier, context, defaultResolve);
+ // Let Node.js handle all other specifiers.
+ return defaultResolve(specifier, context, defaultResolve);
 }
 
 export async function load(url, context, defaultLoad) {
-	// Now that we patched resolve to let CoffeeScript URLs through, we need to
-	// tell Node.js what format such URLs should be interpreted as. Because
-	// CoffeeScript transpiles into JavaScript, it should be one of the two
-	// JavaScript formats: 'commonjs' or 'module'.
-	if (extensionsRegex.test(url)) {
-		// CoffeeScript files can be either CommonJS or ES modules, so we want any
-		// CoffeeScript file to be treated by Node.js the same as a .js file at the
-		// same location. To determine how Node.js would interpret an arbitrary .js
-		// file, search up the file system for the nearest parent package.json file
-		// and read its "type" field.
-		const format = await getPackageType(url);
-		// When a hook returns a format of 'commonjs', `source` is be ignored.
-		// To handle CommonJS files, a handler needs to be registered with
-		// `require.extensions` in order to process the files with the CommonJS
-		// loader. Avoiding the need for a separate CommonJS handler is a future
-		// enhancement planned for ES module loaders.
-		if (format === 'commonjs') {
-			return { format };
-		}
+ // Now that we patched resolve to let CoffeeScript URLs through, we need to
+ // tell Node.js what format such URLs should be interpreted as. Because
+ // CoffeeScript transpiles into JavaScript, it should be one of the two
+ // JavaScript formats: 'commonjs' or 'module'.
+ if (extensionsRegex.test(url)) {
+  // CoffeeScript files can be either CommonJS or ES modules, so we want any
+  // CoffeeScript file to be treated by Node.js the same as a .js file at the
+  // same location. To determine how Node.js would interpret an arbitrary .js
+  // file, search up the file system for the nearest parent package.json file
+  // and read its "type" field.
+  const format = await getPackageType(url);
+  // When a hook returns a format of 'commonjs', `source` is be ignored.
+  // To handle CommonJS files, a handler needs to be registered with
+  // `require.extensions` in order to process the files with the CommonJS
+  // loader. Avoiding the need for a separate CommonJS handler is a future
+  // enhancement planned for ES module loaders.
+  if (format === 'commonjs') {
+   return { format };
+  }
 
-		const { source: rawSource } = await defaultLoad(url, { format });
-		// This hook converts CoffeeScript source code into JavaScript source code
-		// for all imported CoffeeScript files.
-		const transformedSource = CoffeeScript.compile(rawSource.toString(), {
-			bare: true,
-			filename: url,
-		});
+  const { source: rawSource } = await defaultLoad(url, { format });
+  // This hook converts CoffeeScript source code into JavaScript source code
+  // for all imported CoffeeScript files.
+  const transformedSource = CoffeeScript.compile(rawSource.toString(), {
+   bare: true,
+   filename: url,
+  });
 
-		return {
-			format,
-			source: transformedSource,
-		};
-	}
+  return {
+   format,
+   source: transformedSource,
+  };
+ }
 
-	// Let Node.js handle all other URLs.
-	return defaultLoad(url, context, defaultLoad);
+ // Let Node.js handle all other URLs.
+ return defaultLoad(url, context, defaultLoad);
 }
 
 async function getPackageType(url) {
-	// `url` is only a file path during the first iteration when passed the
-	// resolved url from the load() hook
-	// an actual file path from load() will contain a file extension as it's
-	// required by the spec
-	// this simple truthy check for whether `url` contains a file extension will
-	// work for most projects but does not cover some edge-cases (such as
-	// extensionless files or a url ending in a trailing space)
-	const isFilePath = !!extname(url);
-	// If it is a file path, get the directory it's in
-	const dir = isFilePath ?
-		dirname(fileURLToPath(url)) :
-		url;
-	// Compose a file path to a package.json in the same directory,
-	// which may or may not exist
-	const packagePath = resolvePath(dir, 'package.json');
-	// Try to read the possibly nonexistent package.json
-	const type = await readFile(packagePath, { encoding: 'utf8' })
+ // `url` is only a file path during the first iteration when passed the
+ // resolved url from the load() hook
+ // an actual file path from load() will contain a file extension as it's
+ // required by the spec
+ // this simple truthy check for whether `url` contains a file extension will
+ // work for most projects but does not cover some edge-cases (such as
+ // extensionless files or a url ending in a trailing space)
+ const isFilePath = !!extname(url);
+ // If it is a file path, get the directory it's in
+ const dir = isFilePath ?
+  dirname(fileURLToPath(url)) :
+  url;
+ // Compose a file path to a package.json in the same directory,
+ // which may or may not exist
+ const packagePath = resolvePath(dir, 'package.json');
+ // Try to read the possibly nonexistent package.json
+ const type = await readFile(packagePath, { encoding: 'utf8' })
     .then((filestring) => JSON.parse(filestring).type)
     .catch((err) => {
     	if (err?.code !== 'ENOENT') console.error(err);
     });
-	// Ff package.json existed and contained a `type` field with a value, voila
-	if (type) return type;
-	// Otherwise, (if not at the root) continue checking the next directory up
-	// If at the root, stop and return false
-	return dir.length > 1 && getPackageType(resolvePath(dir, '..'));
+ // Ff package.json existed and contained a `type` field with a value, voila
+ if (type) return type;
+ // Otherwise, (if not at the root) continue checking the next directory up
+ // If at the root, stop and return false
+ return dir.length > 1 && getPackageType(resolvePath(dir, '..'));
 }
 ```
 

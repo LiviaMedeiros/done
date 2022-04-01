@@ -41,41 +41,41 @@ const TIMEOUT_DELAY = 1.1;
 let N = 50;
 
 const interval = setInterval(common.mustCall(() => {
-	if (--N === 0) {
-		clearInterval(interval);
-	}
+ if (--N === 0) {
+  clearInterval(interval);
+ }
 }, N), TIMEOUT_DELAY);
 
 // Test non-integer delay ordering
 {
-	const ordering = [];
+ const ordering = [];
 
-	setTimeout(common.mustCall(() => {
-		ordering.push(1);
-	}), 1);
+ setTimeout(common.mustCall(() => {
+  ordering.push(1);
+ }), 1);
 
-	setTimeout(common.mustCall(() => {
-		ordering.push(2);
-	}), 1.8);
+ setTimeout(common.mustCall(() => {
+  ordering.push(2);
+ }), 1.8);
 
-	setTimeout(common.mustCall(() => {
-		ordering.push(3);
-	}), 1.1);
+ setTimeout(common.mustCall(() => {
+  ordering.push(3);
+ }), 1.1);
 
-	setTimeout(common.mustCall(() => {
-		ordering.push(4);
-	}), 1);
+ setTimeout(common.mustCall(() => {
+  ordering.push(4);
+ }), 1);
 
-	setTimeout(common.mustCall(() => {
-		const expected = [1, 2, 3, 4];
+ setTimeout(common.mustCall(() => {
+  const expected = [1, 2, 3, 4];
 
-		assert.deepStrictEqual(
-			ordering,
-			expected,
-			`Non-integer delay ordering should be ${expected}, but got ${ordering}`
-		);
+  assert.deepStrictEqual(
+   ordering,
+   expected,
+   `Non-integer delay ordering should be ${expected}, but got ${ordering}`
+  );
 
-		// 2 should always be last of these delays due to ordering guarantees by
-		// the implementation.
-	}), 2);
+  // 2 should always be last of these delays due to ordering guarantees by
+  // the implementation.
+ }), 2);
 }

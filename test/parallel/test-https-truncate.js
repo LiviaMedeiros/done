@@ -23,7 +23,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const assert = require('assert');
 const fixtures = require('../common/fixtures');
@@ -38,35 +38,35 @@ const data = Buffer.alloc(1024 * 32 + 1);
 httpsTest();
 
 function httpsTest() {
-	const sopt = { key, cert };
+ const sopt = { key, cert };
 
-	const server = https.createServer(sopt, function(req, res) {
-		res.setHeader('content-length', data.length);
-		res.end(data);
-		server.close();
-	});
+ const server = https.createServer(sopt, function(req, res) {
+  res.setHeader('content-length', data.length);
+  res.end(data);
+  server.close();
+ });
 
-	server.listen(0, function() {
-		const opts = { port: this.address().port, rejectUnauthorized: false };
-		https.get(opts).on('response', function(res) {
-			test(res);
-		});
-	});
+ server.listen(0, function() {
+  const opts = { port: this.address().port, rejectUnauthorized: false };
+  https.get(opts).on('response', function(res) {
+   test(res);
+  });
+ });
 }
 
 
 const test = common.mustCall(function(res) {
-	res.on('end', common.mustCall(function() {
-		assert.strictEqual(res.readableLength, 0);
-		assert.strictEqual(bytes, data.length);
-	}));
+ res.on('end', common.mustCall(function() {
+  assert.strictEqual(res.readableLength, 0);
+  assert.strictEqual(bytes, data.length);
+ }));
 
-	// Pause and then resume on each chunk, to ensure that there will be
-	// a lone byte hanging out at the very end.
-	let bytes = 0;
-	res.on('data', function(chunk) {
-		bytes += chunk.length;
-		this.pause();
-		setTimeout(() => { this.resume(); }, 1);
-	});
+ // Pause and then resume on each chunk, to ensure that there will be
+ // a lone byte hanging out at the very end.
+ let bytes = 0;
+ res.on('data', function(chunk) {
+  bytes += chunk.length;
+  this.pause();
+  setTimeout(() => { this.resume(); }, 1);
+ });
 });

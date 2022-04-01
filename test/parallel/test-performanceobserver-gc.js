@@ -6,7 +6,7 @@ require('../common');
 // to gc performance does not crash.
 
 const {
-	PerformanceObserver,
+ PerformanceObserver,
 } = require('perf_hooks');
 
 // We don't actually care if the callback is ever invoked in this test

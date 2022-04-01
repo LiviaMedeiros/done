@@ -10,20 +10,20 @@ const cp = require('child_process');
 const path = require('path');
 
 function test(execArgv) {
-	const child = cp.spawn(process.execPath, execArgv);
+ const child = cp.spawn(process.execPath, execArgv);
 
-	child.stderr.once('data', common.mustCall(function() {
-		child.kill('SIGTERM');
-	}));
+ child.stderr.once('data', common.mustCall(function() {
+  child.kill('SIGTERM');
+ }));
 
-	child.on('exit', common.mustCall(function(code, signal) {
-		assert.strictEqual(signal, 'SIGTERM');
-	}));
+ child.on('exit', common.mustCall(function(code, signal) {
+  assert.strictEqual(signal, 'SIGTERM');
+ }));
 }
 
 test([
-	'--require',
-	path.join(__dirname, '../fixtures/test-resolution-inspect-brk-resolver.js'),
-	'--inspect-brk',
-	'../fixtures/test-resolution-inspect-resolver-main.ext',
+ '--require',
+ path.join(__dirname, '../fixtures/test-resolution-inspect-brk-resolver.js'),
+ '--inspect-brk',
+ '../fixtures/test-resolution-inspect-resolver-main.ext',
 ]);

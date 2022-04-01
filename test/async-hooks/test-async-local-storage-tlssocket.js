@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 // Regression tests for https://github.com/nodejs/node/issues/40693
 
@@ -12,9 +12,9 @@ const tls = require('tls');
 const { AsyncLocalStorage } = require('async_hooks');
 
 const options = {
-	cert: fixtures.readKey('rsa_cert.crt'),
-	key: fixtures.readKey('rsa_private.pem'),
-	rejectUnauthorized: false
+ cert: fixtures.readKey('rsa_cert.crt'),
+ key: fixtures.readKey('rsa_private.pem'),
+ rejectUnauthorized: false
 };
 
 tls

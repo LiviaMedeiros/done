@@ -35,14 +35,14 @@ let hasPaused = false;
 
 const origPause = rl.pause;
 rl.pause = function() {
-	hasPaused = true;
-	origPause.apply(this, arguments);
+ hasPaused = true;
+ origPause.apply(this, arguments);
 };
 
 const origSetRawMode = rl._setRawMode;
 rl._setRawMode = function(mode) {
-	assert.ok(hasPaused);
-	origSetRawMode.apply(this, arguments);
+ assert.ok(hasPaused);
+ origSetRawMode.apply(this, arguments);
 };
 
 rl.close();

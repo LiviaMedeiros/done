@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if ((!common.hasCrypto) || (!common.hasIntl)) {
-	common.skip('ESLint tests require crypto and Intl');
+ common.skip('ESLint tests require crypto and Intl');
 }
 
 common.skipIfEslintMissing();
@@ -16,8 +16,8 @@ const USE_ARRAY_METHODS =
   'Use primordials.ArrayPrototypeSlice to avoid unsafe array iteration.';
 
 new RuleTester({
-	parserOptions: { ecmaVersion: 2021 },
-	env: { es6: true }
+ parserOptions: { ecmaVersion: 2021 },
+ env: { es6: true }
 })
   .run('no-array-destructuring', rule, {
   	valid: [

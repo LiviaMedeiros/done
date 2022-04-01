@@ -31,25 +31,25 @@ const dns = require('dns');
 const dnsPromises = dns.promises;
 
 assert.throws(
-	() => dnsPromises.resolveNs([]), // bad name
-	{
-		code: 'ERR_INVALID_ARG_TYPE',
-		name: 'TypeError',
-		message: /^The "name" argument must be of type string/
-	}
+ () => dnsPromises.resolveNs([]), // bad name
+ {
+  code: 'ERR_INVALID_ARG_TYPE',
+  name: 'TypeError',
+  message: /^The "name" argument must be of type string/
+ }
 );
 assert.throws(
-	() => dns.resolveNs([]), // bad name
-	{
-		code: 'ERR_INVALID_ARG_TYPE',
-		name: 'TypeError',
-		message: /^The "name" argument must be of type string/
-	}
+ () => dns.resolveNs([]), // bad name
+ {
+  code: 'ERR_INVALID_ARG_TYPE',
+  name: 'TypeError',
+  message: /^The "name" argument must be of type string/
+ }
 );
 assert.throws(
-	() => dns.resolveNs(''), // bad callback
-	{
-		code: 'ERR_INVALID_ARG_TYPE',
-		name: 'TypeError'
-	}
+ () => dns.resolveNs(''), // bad callback
+ {
+  code: 'ERR_INVALID_ARG_TYPE',
+  name: 'TypeError'
+ }
 );

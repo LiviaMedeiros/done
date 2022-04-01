@@ -9,15 +9,15 @@ const startCLI = require('../common/debugger');
 
 // Test for "Breakpoint at specified location already exists" error.
 {
-	const script = fixtures.path('debugger', 'three-lines.js');
-	const cli = startCLI([script]);
+ const script = fixtures.path('debugger', 'three-lines.js');
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => cli.command('setBreakpoint(1)'))
     .then(() => cli.command('setBreakpoint(1)'))

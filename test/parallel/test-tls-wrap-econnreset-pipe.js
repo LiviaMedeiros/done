@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const assert = require('assert');
 const tls = require('tls');
@@ -15,24 +15,24 @@ const tmpdir = require('../common/tmpdir');
 // Node.js completes, blocking the tmpdir and preventing cleanup.
 
 if (process.argv[2] !== 'child') {
-	// Parent
-	tmpdir.refresh();
+ // Parent
+ tmpdir.refresh();
 
-	// Run test
-	const child = fork(__filename, ['child'], { stdio: 'inherit' });
-	child.on('exit', common.mustCall(function(code) {
-		assert.strictEqual(code, 0);
-	}));
+ // Run test
+ const child = fork(__filename, ['child'], { stdio: 'inherit' });
+ child.on('exit', common.mustCall(function(code) {
+  assert.strictEqual(code, 0);
+ }));
 
-	return;
+ return;
 }
 
 // Child
 const server = net.createServer((c) => {
-	c.end();
+ c.end();
 }).listen(common.PIPE, common.mustCall(() => {
-	let errored = false;
-	tls.connect({ path: common.PIPE })
+ let errored = false;
+ tls.connect({ path: common.PIPE })
     .once('error', common.mustCall((e) => {
     	assert.strictEqual(e.code, 'ECONNRESET');
     	assert.strictEqual(e.path, common.PIPE);

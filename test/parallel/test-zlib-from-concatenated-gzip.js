@@ -14,26 +14,26 @@ const abcEncoded = zlib.gzipSync(abc);
 const defEncoded = zlib.gzipSync(def);
 
 const data = Buffer.concat([
-	abcEncoded,
-	defEncoded,
+ abcEncoded,
+ defEncoded,
 ]);
 
 assert.strictEqual(zlib.gunzipSync(data).toString(), (abc + def));
 
 zlib.gunzip(data, common.mustSucceed((result) => {
-	assert.strictEqual(result.toString(), (abc + def));
+ assert.strictEqual(result.toString(), (abc + def));
 }));
 
 zlib.unzip(data, common.mustSucceed((result) => {
-	assert.strictEqual(result.toString(), (abc + def));
+ assert.strictEqual(result.toString(), (abc + def));
 }));
 
 // Multi-member support does not apply to zlib inflate/deflate.
 zlib.unzip(Buffer.concat([
-	zlib.deflateSync('abc'),
-	zlib.deflateSync('def'),
+ zlib.deflateSync('abc'),
+ zlib.deflateSync('def'),
 ]), common.mustSucceed((result) => {
-	assert.strictEqual(result.toString(), abc);
+ assert.strictEqual(result.toString(), abc);
 }));
 
 // Files that have the "right" magic bytes for starting a new gzip member
@@ -58,9 +58,9 @@ fs.createReadStream(pmmFileGz)
 
 // Test that the next gzip member can wrap around the input buffer boundary
 [0, 1, 2, 3, 4, defEncoded.length].forEach((offset) => {
-	const resultBuffers = [];
+ const resultBuffers = [];
 
-	const unzip = zlib.createGunzip()
+ const unzip = zlib.createGunzip()
     .on('error', (err) => {
     	assert.ifError(err);
     })
@@ -73,11 +73,11 @@ fs.createReadStream(pmmFileGz)
     	);
     }));
 
-	// First write: write "abc" + the first bytes of "def"
-	unzip.write(Buffer.concat([
-		abcEncoded, defEncoded.slice(0, offset),
-	]));
+ // First write: write "abc" + the first bytes of "def"
+ unzip.write(Buffer.concat([
+  abcEncoded, defEncoded.slice(0, offset),
+ ]));
 
-	// Write remaining bytes of "def"
-	unzip.end(defEncoded.slice(offset));
+ // Write remaining bytes of "def"
+ unzip.end(defEncoded.slice(offset));
 });

@@ -2,58 +2,58 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const assert = require('assert');
 const tls = require('tls');
 
 const CIPHERS = 'PSK+HIGH:TLS_AES_128_GCM_SHA256';
 const USERS = {
-	UserA: Buffer.allocUnsafe(128),
-	UserB: Buffer.from('82072606b502b0f4025e90eb75fe137d', 'hex'),
+ UserA: Buffer.allocUnsafe(128),
+ UserB: Buffer.from('82072606b502b0f4025e90eb75fe137d', 'hex'),
 };
 const TEST_DATA = 'x';
 
 const serverOptions = {
-	ciphers: CIPHERS,
-	pskCallback(socket, id) {
-		assert.ok(socket instanceof tls.TLSSocket);
-		assert.ok(typeof id === 'string');
-		return USERS[id];
-	},
+ ciphers: CIPHERS,
+ pskCallback(socket, id) {
+  assert.ok(socket instanceof tls.TLSSocket);
+  assert.ok(typeof id === 'string');
+  return USERS[id];
+ },
 };
 
 function test(secret, opts, error) {
-	const cb = !error ?
-		common.mustCall((c) => { c.pipe(c); }) :
-		common.mustNotCall();
-	const server = tls.createServer(serverOptions, cb);
-	server.listen(0, common.mustCall(() => {
-		const options = {
-			port: server.address().port,
-			ciphers: CIPHERS,
-			checkServerIdentity: () => {},
-			pskCallback: common.mustCall(() => secret),
-			...opts,
-		};
+ const cb = !error ?
+  common.mustCall((c) => { c.pipe(c); }) :
+  common.mustNotCall();
+ const server = tls.createServer(serverOptions, cb);
+ server.listen(0, common.mustCall(() => {
+  const options = {
+   port: server.address().port,
+   ciphers: CIPHERS,
+   checkServerIdentity: () => {},
+   pskCallback: common.mustCall(() => secret),
+   ...opts,
+  };
 
-		if (!error) {
-			const client = tls.connect(options, common.mustCall(() => {
-				client.end(TEST_DATA);
+  if (!error) {
+   const client = tls.connect(options, common.mustCall(() => {
+    client.end(TEST_DATA);
 
-				client.on('data', common.mustCall((data) => {
-					assert.strictEqual(data.toString(), TEST_DATA);
-				}));
-				client.on('close', common.mustCall(() => server.close()));
-			}));
-		} else {
-			const client = tls.connect(options, common.mustNotCall());
-			client.on('error', common.mustCall((err) => {
-				assert.strictEqual(err.message, error);
-				server.close();
-			}));
-		}
-	}));
+    client.on('data', common.mustCall((data) => {
+     assert.strictEqual(data.toString(), TEST_DATA);
+    }));
+    client.on('close', common.mustCall(() => server.close()));
+   }));
+  } else {
+   const client = tls.connect(options, common.mustNotCall());
+   client.on('error', common.mustCall((err) => {
+    assert.strictEqual(err.message, error);
+    server.close();
+   }));
+  }
+ }));
 }
 
 const DISCONNECT_MESSAGE =

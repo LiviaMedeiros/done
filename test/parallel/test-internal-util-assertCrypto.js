@@ -5,11 +5,11 @@ const assert = require('assert');
 const util = require('internal/util');
 
 if (!process.versions.openssl) {
-	const expectedError = common.expectsError({
-		code: 'ERR_NO_CRYPTO',
-		name: 'Error'
-	});
-	assert.throws(() => util.assertCrypto(), expectedError);
+ const expectedError = common.expectsError({
+  code: 'ERR_NO_CRYPTO',
+  name: 'Error'
+ });
+ assert.throws(() => util.assertCrypto(), expectedError);
 } else {
-	util.assertCrypto();
+ util.assertCrypto();
 }

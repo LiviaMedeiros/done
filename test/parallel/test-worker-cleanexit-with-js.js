@@ -14,8 +14,8 @@ const code = 'setInterval(() => {' +
       "require('vm').runInThisContext('x = \"foo\";');" +
       "eval('const y = \"vm\";');}, 10);";
 for (let i = 0; i < 9; i++) {
-	new Worker(code, { eval: true });
+ new Worker(code, { eval: true });
 }
 new Worker(code, { eval: true }).on('online', common.mustCall((msg) => {
-	process.exit(0);
+ process.exit(0);
 }));

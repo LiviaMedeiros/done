@@ -6,9 +6,9 @@ const vm = require('vm');
 const sandbox = {};
 
 Object.defineProperty(sandbox, 'prop', {
-	get() {
-		return 'foo';
-	}
+ get() {
+  return 'foo';
+ }
 });
 
 const descriptor = Object.getOwnPropertyDescriptor(sandbox, 'prop');
@@ -20,5 +20,5 @@ const result = vm.runInContext(code, context);
 
 assert.deepStrictEqual(Object.keys(result), Object.keys(descriptor));
 for (const prop of Object.keys(result)) {
-	assert.strictEqual(result[prop], descriptor[prop]);
+ assert.strictEqual(result[prop], descriptor[prop]);
 }

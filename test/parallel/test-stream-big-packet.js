@@ -27,19 +27,19 @@ const stream = require('stream');
 let passed = false;
 
 class TestStream extends stream.Transform {
-	_transform(chunk, encoding, done) {
-		if (!passed) {
-			// Char 'a' only exists in the last write
-			passed = chunk.toString().includes('a');
-		}
-		done();
-	}
+ _transform(chunk, encoding, done) {
+  if (!passed) {
+   // Char 'a' only exists in the last write
+   passed = chunk.toString().includes('a');
+  }
+  done();
+ }
 }
 
 const s1 = new stream.Transform({
-	transform(chunk, encoding, cb) {
-		process.nextTick(cb, null, chunk);
-	}
+ transform(chunk, encoding, cb) {
+  process.nextTick(cb, null, chunk);
+ }
 });
 const s2 = new stream.PassThrough();
 const s3 = new TestStream();
@@ -61,5 +61,5 @@ setImmediate(s1.write.bind(s1), 'later');
 
 // Assert after two IO loops when all operations have been done.
 process.on('exit', function() {
-	assert(passed, 'Large buffer is not handled properly by Writable Stream');
+ assert(passed, 'Large buffer is not handled properly by Writable Stream');
 });

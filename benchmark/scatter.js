@@ -16,7 +16,7 @@ const cli = new CLI(`usage: ./node scatter.js [options] [--] <filename>
 `, { arrayArgs: ['set'] });
 
 if (cli.items.length !== 1) {
-	cli.abort(cli.usage);
+ cli.abort(cli.usage);
 }
 
 // Create queue from the benchmarks list such both node versions are tested
@@ -28,46 +28,46 @@ const runs = cli.optional.runs ? parseInt(cli.optional.runs, 10) : 30;
 let printHeader = true;
 
 function csvEncodeValue(value) {
-	if (typeof value === 'number') {
-		return value.toString();
-	}
-	return `"${value.replace(/"/g, '""')}"`;
+ if (typeof value === 'number') {
+  return value.toString();
+ }
+ return `"${value.replace(/"/g, '""')}"`;
 }
 
 (function recursive(i) {
-	const child = fork(path.resolve(__dirname, filepath), cli.optional.set);
+ const child = fork(path.resolve(__dirname, filepath), cli.optional.set);
 
-	child.on('message', (data) => {
-		if (data.type !== 'report') {
-			return;
-		}
+ child.on('message', (data) => {
+  if (data.type !== 'report') {
+   return;
+  }
 
-		// print csv header
-		if (printHeader) {
-			const confHeader = Object.keys(data.conf)
+  // print csv header
+  if (printHeader) {
+   const confHeader = Object.keys(data.conf)
         .map(csvEncodeValue)
         .join(', ');
-			console.log(`"filename", ${confHeader}, "rate", "time"`);
-			printHeader = false;
-		}
+   console.log(`"filename", ${confHeader}, "rate", "time"`);
+   printHeader = false;
+  }
 
-		// print data row
-		const confData = Object.keys(data.conf)
+  // print data row
+  const confData = Object.keys(data.conf)
       .map((key) => csvEncodeValue(data.conf[key]))
       .join(', ');
 
-		console.log(`"${name}", ${confData}, ${data.rate}, ${data.time}`);
-	});
+  console.log(`"${name}", ${confData}, ${data.rate}, ${data.time}`);
+ });
 
-	child.once('close', (code) => {
-		if (code) {
-			process.exit(code);
-			return;
-		}
+ child.once('close', (code) => {
+  if (code) {
+   process.exit(code);
+   return;
+  }
 
-		// If there are more benchmarks execute the next
-		if (i + 1 < runs) {
-			recursive(i + 1);
-		}
-	});
+  // If there are more benchmarks execute the next
+  if (i + 1 < runs) {
+   recursive(i + 1);
+  }
+ });
 })(0);

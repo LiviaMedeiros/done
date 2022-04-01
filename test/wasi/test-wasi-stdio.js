@@ -23,12 +23,12 @@ const wasi = new WASI({ stdin, stdout, stderr, returnOnExit: true });
 const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
 
 (async () => {
-	const { instance } = await WebAssembly.instantiate(buffer, importObject);
+ const { instance } = await WebAssembly.instantiate(buffer, importObject);
 
-	strictEqual(wasi.start(instance), 0);
-	closeSync(stdin);
-	closeSync(stdout);
-	closeSync(stderr);
-	strictEqual(readFileSync(stdoutFile, 'utf8').trim(), 'x'.repeat(31));
-	strictEqual(readFileSync(stderrFile, 'utf8').trim(), '');
+ strictEqual(wasi.start(instance), 0);
+ closeSync(stdin);
+ closeSync(stdout);
+ closeSync(stderr);
+ strictEqual(readFileSync(stdoutFile, 'utf8').trim(), 'x'.repeat(31));
+ strictEqual(readFileSync(stderrFile, 'utf8').trim(), '');
 })().then(common.mustCall());

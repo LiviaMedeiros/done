@@ -2,23 +2,23 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const assert = require('assert');
 const net = require('net');
 const tls = require('tls');
 
 const server = net.createServer((c) => {
-	c.end();
+ c.end();
 }).listen(common.mustCall(() => {
-	const port = server.address().port;
+ const port = server.address().port;
 
-	let errored = false;
-	tls.connect({
-		port: port,
-		family: 4,
-		localAddress: common.localhostIPv4
-	}, common.localhostIPv4)
+ let errored = false;
+ tls.connect({
+  port: port,
+  family: 4,
+  localAddress: common.localhostIPv4
+ }, common.localhostIPv4)
     .once('error', common.mustCall((e) => {
     	assert.strictEqual(e.code, 'ECONNRESET');
     	assert.strictEqual(e.path, undefined);

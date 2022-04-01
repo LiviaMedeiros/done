@@ -7,10 +7,10 @@ const vm = require('vm');
 
 const x = {};
 Object.defineProperty(x, 'prop', {
-	configurable: false,
-	enumerable: false,
-	writable: false,
-	value: 'val'
+ configurable: false,
+ enumerable: false,
+ writable: false,
+ value: 'val'
 });
 const o = vm.createContext(x);
 

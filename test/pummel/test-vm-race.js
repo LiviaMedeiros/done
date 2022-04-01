@@ -9,10 +9,10 @@ const vm = require('vm');
 const sandbox = { timeout: 5 };
 const context = vm.createContext(sandbox);
 const script = new vm.Script(
-	'var d = Date.now() + timeout;while (d > Date.now());'
+ 'var d = Date.now() + timeout;while (d > Date.now());'
 );
 const immediate = setImmediate(function() {
-	throw new Error('Detected vm race condition!');
+ throw new Error('Detected vm race condition!');
 });
 
 // When this condition was first discovered this test would fail in 50ms
@@ -21,13 +21,13 @@ const immediate = setImmediate(function() {
 // consider increasing this timeout to hammer out races.
 const giveUp = Date.now() + 5000;
 do {
-	// The loop adjusts the timeout up or down trying to hit the race
-	try {
-		script.runInContext(context, { timeout: 5 });
-		++sandbox.timeout;
-	} catch {
-		--sandbox.timeout;
-	}
+ // The loop adjusts the timeout up or down trying to hit the race
+ try {
+  script.runInContext(context, { timeout: 5 });
+  ++sandbox.timeout;
+ } catch {
+  --sandbox.timeout;
+ }
 } while (Date.now() < giveUp);
 
 clearImmediate(immediate);

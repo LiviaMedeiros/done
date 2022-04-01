@@ -26,121 +26,121 @@ const cluster = require('cluster');
 const net = require('net');
 
 function forEach(obj, fn) {
-	Object.keys(obj).forEach(function(name, index) {
-		fn(obj[name], name);
-	});
+ Object.keys(obj).forEach(function(name, index) {
+  fn(obj[name], name);
+ });
 }
 
 if (cluster.isWorker) {
-	// Create a tcp server. This will be used as cluster-shared-server and as an
-	// alternative IPC channel.
-	const server = net.Server();
-	let socket, message;
+ // Create a tcp server. This will be used as cluster-shared-server and as an
+ // alternative IPC channel.
+ const server = net.Server();
+ let socket, message;
 
-	function maybeReply() {
-		if (!socket || !message) return;
+ function maybeReply() {
+  if (!socket || !message) return;
 
-		// Tell primary using TCP socket that a message is received.
-		socket.write(JSON.stringify({
-			code: 'received message',
-			echo: message
-		}));
-	}
+  // Tell primary using TCP socket that a message is received.
+  socket.write(JSON.stringify({
+   code: 'received message',
+   echo: message
+  }));
+ }
 
-	server.on('connection', function(socket_) {
-		socket = socket_;
-		maybeReply();
+ server.on('connection', function(socket_) {
+  socket = socket_;
+  maybeReply();
 
-		// Send a message back over the IPC channel.
-		process.send('message from worker');
-	});
+  // Send a message back over the IPC channel.
+  process.send('message from worker');
+ });
 
-	process.on('message', function(message_) {
-		message = message_;
-		maybeReply();
-	});
+ process.on('message', function(message_) {
+  message = message_;
+  maybeReply();
+ });
 
-	server.listen(0);
+ server.listen(0);
 } else if (cluster.isPrimary) {
 
-	const checks = {
-		global: {
-			'receive': false,
-			'correct': false
-		},
-		primary: {
-			'receive': false,
-			'correct': false
-		},
-		worker: {
-			'receive': false,
-			'correct': false
-		}
-	};
+ const checks = {
+  global: {
+   'receive': false,
+   'correct': false
+  },
+  primary: {
+   'receive': false,
+   'correct': false
+  },
+  worker: {
+   'receive': false,
+   'correct': false
+  }
+ };
 
 
-	let client;
-	const check = (type, result) => {
-		checks[type].receive = true;
-		checks[type].correct = result;
-		console.error('check', checks);
+ let client;
+ const check = (type, result) => {
+  checks[type].receive = true;
+  checks[type].correct = result;
+  console.error('check', checks);
 
-		let missing = false;
-		forEach(checks, function(type) {
-			if (type.receive === false) missing = true;
-		});
+  let missing = false;
+  forEach(checks, function(type) {
+   if (type.receive === false) missing = true;
+  });
 
-		if (missing === false) {
-			console.error('end client');
-			client.end();
-		}
-	};
+  if (missing === false) {
+   console.error('end client');
+   client.end();
+  }
+ };
 
-	// Spawn worker
-	const worker = cluster.fork();
+ // Spawn worker
+ const worker = cluster.fork();
 
-	// When a IPC message is received from the worker
-	worker.on('message', function(message) {
-		check('primary', message === 'message from worker');
-	});
-	cluster.on('message', function(worker_, message) {
-		assert.strictEqual(worker_, worker);
-		check('global', message === 'message from worker');
-	});
+ // When a IPC message is received from the worker
+ worker.on('message', function(message) {
+  check('primary', message === 'message from worker');
+ });
+ cluster.on('message', function(worker_, message) {
+  assert.strictEqual(worker_, worker);
+  check('global', message === 'message from worker');
+ });
 
-	// When a TCP server is listening in the worker connect to it
-	worker.on('listening', function(address) {
+ // When a TCP server is listening in the worker connect to it
+ worker.on('listening', function(address) {
 
-		client = net.connect(address.port, function() {
-			// Send message to worker.
-			worker.send('message from primary');
-		});
+  client = net.connect(address.port, function() {
+   // Send message to worker.
+   worker.send('message from primary');
+  });
 
-		client.on('data', function(data) {
-			// All data is JSON
-			data = JSON.parse(data.toString());
+  client.on('data', function(data) {
+   // All data is JSON
+   data = JSON.parse(data.toString());
 
-			if (data.code === 'received message') {
-				check('worker', data.echo === 'message from primary');
-			} else {
-				throw new Error(`wrong TCP message received: ${data}`);
-			}
-		});
+   if (data.code === 'received message') {
+    check('worker', data.echo === 'message from primary');
+   } else {
+    throw new Error(`wrong TCP message received: ${data}`);
+   }
+  });
 
-		// When the connection ends kill worker and shutdown process
-		client.on('end', function() {
-			worker.kill();
-		});
+  // When the connection ends kill worker and shutdown process
+  client.on('end', function() {
+   worker.kill();
+  });
 
-		worker.on('exit', common.mustCall(function() {
-			process.exit(0);
-		}));
-	});
+  worker.on('exit', common.mustCall(function() {
+   process.exit(0);
+  }));
+ });
 
-	process.once('exit', function() {
-		forEach(checks, function(check, type) {
-			assert.ok(check.receive, `The ${type} did not receive any message`);
-			assert.ok(check.correct, `The ${type} did not get the correct message`);
-		});
-	});
+ process.once('exit', function() {
+  forEach(checks, function(check, type) {
+   assert.ok(check.receive, `The ${type} did not receive any message`);
+   assert.ok(check.correct, `The ${type} did not get the correct message`);
+  });
+ });
 }

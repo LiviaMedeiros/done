@@ -11,25 +11,25 @@ const assert = require('assert');
 const http = require('http');
 
 class MyServerResponse extends http.ServerResponse {
-	status(code) {
-		return this.writeHead(code, { 'Content-Type': 'text/plain' });
-	}
+ status(code) {
+  return this.writeHead(code, { 'Content-Type': 'text/plain' });
+ }
 }
 
 const server = http.Server({
-	ServerResponse: MyServerResponse
+ ServerResponse: MyServerResponse
 }, common.mustCall(function(req, res) {
-	res.status(200);
-	res.end();
+ res.status(200);
+ res.end();
 }));
 server.listen();
 
 server.on('listening', function makeRequest() {
-	http.get({ port: this.address().port }, (res) => {
-		assert.strictEqual(res.statusCode, 200);
-		res.on('end', () => {
-			server.close();
-		});
-		res.resume();
-	});
+ http.get({ port: this.address().port }, (res) => {
+  assert.strictEqual(res.statusCode, 200);
+  res.on('end', () => {
+   server.close();
+  });
+  res.resume();
+ });
 });

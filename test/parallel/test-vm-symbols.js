@@ -8,11 +8,11 @@ const vm = require('vm');
 const symbol = Symbol();
 
 function Document() {
-	this[symbol] = 'foo';
+ this[symbol] = 'foo';
 }
 
 Document.prototype.getSymbolValue = function() {
-	return this[symbol];
+ return this[symbol];
 };
 
 const context = new Document();

@@ -25,30 +25,30 @@ const assert = require('assert');
 const http = require('http');
 
 const options = {
-	method: 'GET',
-	port: undefined,
-	host: '127.0.0.1',
-	path: '/'
+ method: 'GET',
+ port: undefined,
+ host: '127.0.0.1',
+ path: '/'
 };
 
 const server = http.createServer(function(req, res) {
-	// This space intentionally left blank
+ // This space intentionally left blank
 });
 
 server.listen(0, options.host, function() {
-	options.port = this.address().port;
-	const req = http.request(options, function(res) {
-		// This space intentionally left blank
-	});
-	req.on('close', function() {
-		assert.strictEqual(req.destroyed, true);
-		server.close();
-	});
-	function destroy() {
-		req.destroy();
-	}
-	const s = req.setTimeout(1, destroy);
-	assert.ok(s instanceof http.ClientRequest);
-	req.on('error', destroy);
-	req.end();
+ options.port = this.address().port;
+ const req = http.request(options, function(res) {
+  // This space intentionally left blank
+ });
+ req.on('close', function() {
+  assert.strictEqual(req.destroyed, true);
+  server.close();
+ });
+ function destroy() {
+  req.destroy();
+ }
+ const s = req.setTimeout(1, destroy);
+ assert.ok(s instanceof http.ClientRequest);
+ req.on('error', destroy);
+ req.end();
 });

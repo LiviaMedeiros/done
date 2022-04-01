@@ -13,17 +13,17 @@ const startCLI = require('../common/debugger');
 
 // Using `restart` should result in only one "Connect/For help" message.
 {
-	const script = fixtures.path('debugger', 'three-lines.js');
-	const cli = startCLI([script]);
+ const script = fixtures.path('debugger', 'three-lines.js');
+ const cli = startCLI([script]);
 
-	function onFatal(error) {
-		cli.quit();
-		throw error;
-	}
+ function onFatal(error) {
+  cli.quit();
+  throw error;
+ }
 
-	const listeningRegExp = /Debugger listening on/g;
+ const listeningRegExp = /Debugger listening on/g;
 
-	cli.waitForInitialBreak()
+ cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => {
     	assert.strictEqual(cli.output.match(listeningRegExp).length, 1);

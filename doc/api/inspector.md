@@ -132,7 +132,7 @@ execution is suspended (through breakpoints, for example):
 
 ```js
 session.on('Debugger.paused', ({ params }) => {
-	console.log(params.hitBreakpoints);
+ console.log(params.hitBreakpoints);
 });
 // [ '/the/file/that/has/the/breakpoint.js:11:0' ]
 ```
@@ -187,7 +187,7 @@ arguments: error and message-specific result.
 
 ```js
 session.post('Runtime.evaluate', { expression: '2 + 2' },
-													(error, { result }) => console.log(result));
+             (error, { result }) => console.log(result));
 // Output: { type: 'number', value: 4, description: '4' }
 ```
 
@@ -215,17 +215,17 @@ const session = new inspector.Session();
 session.connect();
 
 session.post('Profiler.enable', () => {
-	session.post('Profiler.start', () => {
-		// Invoke business logic under measurement here...
+ session.post('Profiler.start', () => {
+  // Invoke business logic under measurement here...
 
-		// some time later...
-		session.post('Profiler.stop', (err, { profile }) => {
-			// Write profile to disk, upload, etc.
-			if (!err) {
-				fs.writeFileSync('./profile.cpuprofile', JSON.stringify(profile));
-			}
-		});
-	});
+  // some time later...
+  session.post('Profiler.stop', (err, { profile }) => {
+   // Write profile to disk, upload, etc.
+   if (!err) {
+    fs.writeFileSync('./profile.cpuprofile', JSON.stringify(profile));
+   }
+  });
+ });
 });
 ```
 
@@ -243,13 +243,13 @@ const fd = fs.openSync('profile.heapsnapshot', 'w');
 session.connect();
 
 session.on('HeapProfiler.addHeapSnapshotChunk', (m) => {
-	fs.writeSync(fd, m.params.chunk);
+ fs.writeSync(fd, m.params.chunk);
 });
 
 session.post('HeapProfiler.takeHeapSnapshot', null, (err, r) => {
-	console.log('HeapProfiler.takeHeapSnapshot done:', err, r);
-	session.disconnect();
-	fs.closeSync(fd);
+ console.log('HeapProfiler.takeHeapSnapshot done:', err, r);
+ session.disconnect();
+ fs.closeSync(fd);
 });
 ```
 

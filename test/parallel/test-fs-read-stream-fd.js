@@ -38,9 +38,9 @@ const stream = fs.createReadStream(null, { fd: fd, encoding: 'utf8' });
 assert.strictEqual(stream.path, undefined);
 
 stream.on('data', common.mustCallAtLeast((data) => {
-	output += data;
+ output += data;
 }));
 
 process.on('exit', () => {
-	assert.strictEqual(output, input);
+ assert.strictEqual(output, input);
 });

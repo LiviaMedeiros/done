@@ -29,20 +29,20 @@ let callbacks_called = [];
 const e = new events.EventEmitter();
 
 function callback1() {
-	callbacks_called.push('callback1');
-	e.on('foo', callback2);
-	e.on('foo', callback3);
-	e.removeListener('foo', callback1);
+ callbacks_called.push('callback1');
+ e.on('foo', callback2);
+ e.on('foo', callback3);
+ e.removeListener('foo', callback1);
 }
 
 function callback2() {
-	callbacks_called.push('callback2');
-	e.removeListener('foo', callback2);
+ callbacks_called.push('callback2');
+ e.removeListener('foo', callback2);
 }
 
 function callback3() {
-	callbacks_called.push('callback3');
-	e.removeListener('foo', callback3);
+ callbacks_called.push('callback3');
+ e.removeListener('foo', callback3);
 }
 
 e.on('foo', callback1);
@@ -55,12 +55,12 @@ assert.deepStrictEqual(['callback1'], callbacks_called);
 e.emit('foo');
 assert.strictEqual(e.listeners('foo').length, 0);
 assert.deepStrictEqual(['callback1', 'callback2', 'callback3'],
-																							callbacks_called);
+                       callbacks_called);
 
 e.emit('foo');
 assert.strictEqual(e.listeners('foo').length, 0);
 assert.deepStrictEqual(['callback1', 'callback2', 'callback3'],
-																							callbacks_called);
+                       callbacks_called);
 
 e.on('foo', callback1);
 e.on('foo', callback2);

@@ -23,7 +23,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-	common.skip('missing crypto');
+ common.skip('missing crypto');
 
 const fixtures = require('../common/fixtures');
 
@@ -33,29 +33,29 @@ const tls = require('tls');
 // https://github.com/joyent/node/issues/1218
 // uncatchable exception on TLS connection error
 {
-	const cert = fixtures.readKey('rsa_cert.crt');
-	const key = fixtures.readKey('rsa_private.pem');
+ const cert = fixtures.readKey('rsa_cert.crt');
+ const key = fixtures.readKey('rsa_private.pem');
 
-	const options = { cert: cert, key: key, port: common.PORT };
-	const conn = tls.connect(options, common.mustNotCall());
+ const options = { cert: cert, key: key, port: common.PORT };
+ const conn = tls.connect(options, common.mustNotCall());
 
-	conn.on(
-		'error',
-		common.mustCall((e) => { assert.strictEqual(e.code, 'ECONNREFUSED'); })
-	);
+ conn.on(
+  'error',
+  common.mustCall((e) => { assert.strictEqual(e.code, 'ECONNREFUSED'); })
+ );
 }
 
 // SSL_accept/SSL_connect error handling
 {
-	const cert = fixtures.readKey('rsa_cert.crt');
-	const key = fixtures.readKey('rsa_private.pem');
+ const cert = fixtures.readKey('rsa_cert.crt');
+ const key = fixtures.readKey('rsa_private.pem');
 
-	assert.throws(() => {
-		tls.connect({
-			cert: cert,
-			key: key,
-			port: common.PORT,
-			ciphers: 'rick-128-roll'
-		}, common.mustNotCall());
-	}, /no cipher match/i);
+ assert.throws(() => {
+  tls.connect({
+   cert: cert,
+   key: key,
+   port: common.PORT,
+   ciphers: 'rick-128-roll'
+  }, common.mustNotCall());
+ }, /no cipher match/i);
 }

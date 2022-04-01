@@ -19,10 +19,10 @@ const encoded = Buffer.from('H4sIAAAAAAAAA0tMHFgAAIw2K/GAAAAA', 'base64');
 
 // Async
 zlib.gunzip(encoded, function(err) {
-	assert.ok(err instanceof RangeError);
+ assert.ok(err instanceof RangeError);
 });
 
 // Sync
 assert.throws(function() {
-	zlib.gunzipSync(encoded);
+ zlib.gunzipSync(encoded);
 }, RangeError);
