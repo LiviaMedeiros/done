@@ -27,13 +27,13 @@ const exec = require('child_process').exec;
 let pwdcommand, dir;
 
 if (common.isWindows) {
-    pwdcommand = 'echo %cd%';
-    dir = 'c:\\windows';
+	pwdcommand = 'echo %cd%';
+	dir = 'c:\\windows';
 } else {
-    pwdcommand = 'pwd';
-    dir = '/dev';
+	pwdcommand = 'pwd';
+	dir = '/dev';
 }
 
 exec(pwdcommand, { cwd: dir }, common.mustSucceed((stdout, stderr) => {
-    assert(stdout.startsWith(dir));
+	assert(stdout.startsWith(dir));
 }));

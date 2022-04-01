@@ -23,7 +23,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const assert = require('assert');
 const crypto = require('crypto');
@@ -37,10 +37,10 @@ const expect = '36a38a2a35e698974d4e5791a3f05b05' +
                '19659f25e92f8efc961ee3a7c815c758';
 
 s.pipe(h).on('data', common.mustCall(function(c) {
-    assert.strictEqual(c, expect);
-    // Calling digest() after piping into a stream with SHA3 should not cause
-    // a segmentation fault, see https://github.com/nodejs/node/issues/28245.
-    assert.strictEqual(h.digest('hex'), expect);
+	assert.strictEqual(c, expect);
+	// Calling digest() after piping into a stream with SHA3 should not cause
+	// a segmentation fault, see https://github.com/nodejs/node/issues/28245.
+	assert.strictEqual(h.digest('hex'), expect);
 })).setEncoding('hex');
 
 s.end('aoeu');

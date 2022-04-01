@@ -32,22 +32,22 @@ let resumeCalled = false;
 let pauseCalled = false;
 
 stream.setRawMode = function(mode) {
-    rawModeCalled = true;
-    assert.strictEqual(mode, expectedRawMode);
+	rawModeCalled = true;
+	assert.strictEqual(mode, expectedRawMode);
 };
 stream.resume = function() {
-    resumeCalled = true;
+	resumeCalled = true;
 };
 stream.pause = function() {
-    pauseCalled = true;
+	pauseCalled = true;
 };
 
 // When the "readline" starts in "terminal" mode,
 // then setRawMode(true) should be called
 const rli = readline.createInterface({
-    input: stream,
-    output: stream,
-    terminal: true
+	input: stream,
+	output: stream,
+	terminal: true
 });
 assert(rli.terminal);
 assert(rawModeCalled);

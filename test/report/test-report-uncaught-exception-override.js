@@ -17,10 +17,10 @@ process.setUncaughtExceptionCaptureCallback(common.mustCall());
 process.on('uncaughtException', common.mustNotCall());
 
 process.on('exit', (code) => {
-    assert.strictEqual(code, 0);
-    // Make sure no reports are generated.
-    const reports = helper.findReports(process.pid, tmpdir.path);
-    assert.strictEqual(reports.length, 0);
+	assert.strictEqual(code, 0);
+	// Make sure no reports are generated.
+	const reports = helper.findReports(process.pid, tmpdir.path);
+	assert.strictEqual(reports.length, 0);
 });
 
 throw error;

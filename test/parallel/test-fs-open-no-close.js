@@ -9,7 +9,7 @@ const assert = require('assert');
 const fs = require('fs');
 
 const debuglog = (arg) => {
-    console.log(new Date().toLocaleString(), arg);
+	console.log(new Date().toLocaleString(), arg);
 };
 
 const tmpdir = require('../common/tmpdir');
@@ -18,14 +18,14 @@ tmpdir.refresh();
 let openFd;
 
 fs.open(`${tmpdir.path}/dummy`, 'wx+', common.mustCall((err, fd) => {
-    debuglog('fs open() callback');
-    assert.ifError(err);
-    openFd = fd;
+	debuglog('fs open() callback');
+	assert.ifError(err);
+	openFd = fd;
 }));
 debuglog('waiting for callback');
 
 process.on('beforeExit', common.mustCall(() => {
-    if (openFd) {
-        fs.closeSync(openFd);
-    }
+	if (openFd) {
+		fs.closeSync(openFd);
+	}
 }));

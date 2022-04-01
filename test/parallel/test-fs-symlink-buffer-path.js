@@ -22,7 +22,7 @@
 'use strict';
 const common = require('../common');
 if (!common.canCreateSymLink())
-    common.skip('insufficient privileges');
+	common.skip('insufficient privileges');
 
 const fixtures = require('../common/fixtures');
 
@@ -44,17 +44,17 @@ let fileTime;
 fs.symlinkSync(Buffer.from(linkData), linkPath);
 
 fs.lstat(linkPath, common.mustSucceed((stats) => {
-    linkTime = stats.mtime.getTime();
+	linkTime = stats.mtime.getTime();
 }));
 
 fs.stat(linkPath, common.mustSucceed((stats) => {
-    fileTime = stats.mtime.getTime();
+	fileTime = stats.mtime.getTime();
 }));
 
 fs.readlink(linkPath, common.mustSucceed((destination) => {
-    assert.strictEqual(destination, linkData);
+	assert.strictEqual(destination, linkData);
 }));
 
 process.on('exit', () => {
-    assert.notStrictEqual(linkTime, fileTime);
+	assert.notStrictEqual(linkTime, fileTime);
 });

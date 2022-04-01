@@ -7,12 +7,12 @@ const subprocess = spawn('echo', ['ok']);
 
 let didSpawn = false;
 subprocess.on('spawn', function() {
-    didSpawn = true;
+	didSpawn = true;
 });
 function mustCallAfterSpawn() {
-    return common.mustCall(function() {
-        assert.ok(didSpawn);
-    });
+	return common.mustCall(function() {
+		assert.ok(didSpawn);
+	});
 }
 
 subprocess.on('error', common.mustNotCall());

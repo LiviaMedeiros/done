@@ -385,9 +385,9 @@ locates addon modules, it is essentially using a `try…catch` pattern similar t
 
 ```js
 try {
-    return require('./build/Release/addon.node');
+	return require('./build/Release/addon.node');
 } catch (err) {
-    return require('./build/Debug/addon.node');
+	return require('./build/Debug/addon.node');
 }
 ```
 
@@ -663,7 +663,7 @@ To test it, run the following JavaScript:
 const addon = require('./build/Release/addon');
 
 addon((msg) => {
-    console.log(msg);
+	console.log(msg);
 // Prints: 'hello world'
 });
 ```

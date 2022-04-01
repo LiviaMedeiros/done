@@ -22,9 +22,9 @@ const kField = Symbol('kField');
 console.log(kField === Symbol('kField')); // false
 
 class MyObject {
-    constructor() {
-        this[kField] = 'something';
-    }
+	constructor() {
+		this[kField] = 'something';
+	}
 }
 
 module.exports.MyObject = MyObject;
@@ -34,10 +34,10 @@ Symbols are not fully private, as the data could be accessed anyway:
 
 ```js
 for (const s of Object.getOwnPropertySymbols(obj)) {
-    const desc = s.toString().replace(/Symbol\((.*)\)$/, '$1');
-    if (desc === 'kField') {
-        console.log(obj[s]); // 'something'
-    }
+	const desc = s.toString().replace(/Symbol\((.*)\)$/, '$1');
+	if (desc === 'kField') {
+		console.log(obj[s]); // 'something'
+	}
 }
 ```
 

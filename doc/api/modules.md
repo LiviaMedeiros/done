@@ -51,13 +51,13 @@ The `square` module is defined in `square.js`:
 ```js
 // Assigning to exports will not modify module, must use module.exports
 module.exports = class Square {
-    constructor(width) {
-        this.width = width;
-    }
+	constructor(width) {
+		this.width = width;
+	}
 
-    area() {
-        return this.width ** 2;
-    }
+	area() {
+		return this.width ** 2;
+	}
 };
 ```
 
@@ -874,7 +874,7 @@ module.exports = new EventEmitter();
 // Do some work, and after some time emit
 // the 'ready' event from the module itself.
 setTimeout(() => {
-    module.exports.emit('ready');
+	module.exports.emit('ready');
 }, 1000);
 ```
 
@@ -883,7 +883,7 @@ Then in another file we could do:
 ```js
 const a = require('./a');
 a.on('ready', () => {
-    console.log('module "a" is ready');
+	console.log('module "a" is ready');
 });
 ```
 
@@ -894,7 +894,7 @@ done in any callbacks. This does not work:
 
 ```js
 setTimeout(() => {
-    module.exports = { a: 'hello' };
+	module.exports = { a: 'hello' };
 }, 0);
 ```
 
@@ -930,7 +930,7 @@ object, it is common to also reassign `exports`:
 
 ```js
 module.exports = exports = function Constructor() {
-    // ... etc.
+	// ... etc.
 };
 ```
 
@@ -939,18 +939,18 @@ To illustrate the behavior, imagine this hypothetical implementation of
 
 ```js
 function require(/* ... */) {
-    const module = { exports: {} };
-    ((module, exports) => {
-    // Module code here. In this example, define a function.
-        function someFunc() {}
-        exports = someFunc;
-        // At this point, exports is no longer a shortcut to module.exports, and
-        // this module will still export an empty default object.
-        module.exports = someFunc;
-    // At this point, the module will now export someFunc, instead of the
-    // default object.
-    })(module, module.exports);
-    return module.exports;
+	const module = { exports: {} };
+	((module, exports) => {
+		// Module code here. In this example, define a function.
+		function someFunc() {}
+		exports = someFunc;
+		// At this point, exports is no longer a shortcut to module.exports, and
+		// this module will still export an empty default object.
+		module.exports = someFunc;
+		// At this point, the module will now export someFunc, instead of the
+		// default object.
+	})(module, module.exports);
+	return module.exports;
 }
 ```
 

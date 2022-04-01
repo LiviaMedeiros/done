@@ -14,19 +14,19 @@ tmpdir.refresh();
 // v8.takeCoverage() should be a noop if NODE_V8_COVERAGE is not set.
 const intervals = 40;
 {
-    const output = spawnSync(process.execPath, [
-        '-r',
-        fixtures.path('v8-coverage', 'take-coverage'),
-        fixtures.path('v8-coverage', 'interval'),
-    ], {
-        env: {
-            ...process.env,
-            NODE_DEBUG_NATIVE: 'INSPECTOR_PROFILER',
-            TEST_INTERVALS: intervals
-        },
-    });
-    console.log(output.stderr.toString());
-    assert.strictEqual(output.status, 0);
-    const coverageFiles = fs.readdirSync(tmpdir.path);
-    assert.strictEqual(coverageFiles.length, 0);
+	const output = spawnSync(process.execPath, [
+		'-r',
+		fixtures.path('v8-coverage', 'take-coverage'),
+		fixtures.path('v8-coverage', 'interval'),
+	], {
+		env: {
+			...process.env,
+			NODE_DEBUG_NATIVE: 'INSPECTOR_PROFILER',
+			TEST_INTERVALS: intervals
+		},
+	});
+	console.log(output.stderr.toString());
+	assert.strictEqual(output.status, 0);
+	const coverageFiles = fs.readdirSync(tmpdir.path);
+	assert.strictEqual(coverageFiles.length, 0);
 }

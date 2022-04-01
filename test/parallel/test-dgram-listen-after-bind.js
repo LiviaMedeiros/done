@@ -31,15 +31,15 @@ socket.bind();
 
 let fired = false;
 const timer = setTimeout(() => {
-    socket.close();
+	socket.close();
 }, 100);
 
 socket.on('listening', common.mustCall(() => {
-    clearTimeout(timer);
-    fired = true;
-    socket.close();
+	clearTimeout(timer);
+	fired = true;
+	socket.close();
 }));
 
 socket.on('close', common.mustCall(() => {
-    assert(fired, 'listening should fire after bind');
+	assert(fired, 'listening should fire after bind');
 }));

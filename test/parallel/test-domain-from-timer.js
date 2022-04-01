@@ -28,12 +28,12 @@ const assert = require('assert');
 // Timeouts call the callback directly from cc, so need to make sure the
 // domain will be used regardless
 setTimeout(() => {
-    const domain = require('domain');
-    const d = domain.create();
-    d.run(() => {
-        process.nextTick(() => {
-            console.trace('in nexttick', process.domain === d);
-            assert.strictEqual(process.domain, d);
-        });
-    });
+	const domain = require('domain');
+	const d = domain.create();
+	d.run(() => {
+		process.nextTick(() => {
+			console.trace('in nexttick', process.domain === d);
+			assert.strictEqual(process.domain, d);
+		});
+	});
 }, 1);

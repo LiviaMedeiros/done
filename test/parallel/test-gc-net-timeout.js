@@ -7,20 +7,20 @@ require('../common');
 const onGC = require('../common/ongc');
 
 function serverHandler(sock) {
-    sock.setTimeout(120000);
-    sock.resume();
-    sock.on('close', function() {
-        clearTimeout(timer);
-    });
-    sock.on('end', function() {
-        clearTimeout(timer);
-    });
-    sock.on('error', function(err) {
-        assert.strictEqual(err.code, 'ECONNRESET');
-    });
-    const timer = setTimeout(function() {
-        sock.end('hello\n');
-    }, 100);
+	sock.setTimeout(120000);
+	sock.resume();
+	sock.on('close', function() {
+		clearTimeout(timer);
+	});
+	sock.on('end', function() {
+		clearTimeout(timer);
+	});
+	sock.on('error', function(err) {
+		assert.strictEqual(err.code, 'ECONNRESET');
+	});
+	const timer = setTimeout(function() {
+		sock.end('hello\n');
+	}, 100);
 }
 
 const net = require('net');
@@ -36,34 +36,34 @@ const server = net.createServer(serverHandler);
 server.listen(0, getall);
 
 function getall() {
-    if (count >= todo)
-        return;
+	if (count >= todo)
+		return;
 
-    const req = net.connect(server.address().port);
-    req.resume();
-    req.setTimeout(10, function() {
-        req.destroy();
-        done++;
-    });
+	const req = net.connect(server.address().port);
+	req.resume();
+	req.setTimeout(10, function() {
+		req.destroy();
+		done++;
+	});
 
-    count++;
-    onGC(req, { ongc });
+	count++;
+	onGC(req, { ongc });
 
-    setImmediate(getall);
+	setImmediate(getall);
 }
 
 for (let i = 0; i < 10; i++)
-    getall();
+	getall();
 
 function ongc() {
-    countGC++;
+	countGC++;
 }
 
 setInterval(status, 100).unref();
 
 function status() {
-    global.gc();
-    console.log('Done: %d/%d', done, todo);
-    console.log('Collected: %d/%d', countGC, count);
-    if (countGC === todo) server.close();
+	global.gc();
+	console.log('Done: %d/%d', done, todo);
+	console.log('Collected: %d/%d', countGC, count);
+	if (countGC === todo) server.close();
 }

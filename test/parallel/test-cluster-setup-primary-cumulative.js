@@ -31,10 +31,10 @@ assert.deepStrictEqual(cluster.settings, {});
 
 cluster.setupPrimary();
 assert.deepStrictEqual(cluster.settings, {
-    args: process.argv.slice(2),
-    exec: process.argv[1],
-    execArgv: process.execArgv,
-    silent: false,
+	args: process.argv.slice(2),
+	exec: process.argv[1],
+	execArgv: process.execArgv,
+	silent: false,
 });
 console.log('ok sets defaults');
 
@@ -54,9 +54,9 @@ console.log('ok preserves unchanged settings on repeated calls');
 
 cluster.setupPrimary();
 assert.deepStrictEqual(cluster.settings, {
-    args: ['foo', 'bar'],
-    exec: 'overridden',
-    execArgv: ['baz', 'bang'],
-    silent: false,
+	args: ['foo', 'bar'],
+	exec: 'overridden',
+	execArgv: ['baz', 'bang'],
+	silent: false,
 });
 console.log('ok preserves current settings');

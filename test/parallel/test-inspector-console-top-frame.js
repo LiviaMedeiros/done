@@ -13,13 +13,13 @@ const { Session } = require('inspector');
 const { basename } = require('path');
 
 function logMessage() {
-    console.log('Log a message');
+	console.log('Log a message');
 }
 
 const session = new Session();
 let topFrame;
 session.once('Runtime.consoleAPICalled', (notification) => {
-    topFrame = (notification.params.stackTrace.callFrames[0]);
+	topFrame = (notification.params.stackTrace.callFrames[0]);
 });
 session.connect();
 session.post('Runtime.enable');

@@ -3,7 +3,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const util = require('util');
 const { internalBinding } = require('internal/test/binding');

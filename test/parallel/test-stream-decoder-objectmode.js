@@ -5,9 +5,9 @@ const stream = require('stream');
 const assert = require('assert');
 
 const readable = new stream.Readable({
-    read: () => {},
-    encoding: 'utf16le',
-    objectMode: true
+	read: () => {},
+	encoding: 'utf16le',
+	objectMode: true
 });
 
 readable.push(Buffer.from('abc', 'utf16le'));

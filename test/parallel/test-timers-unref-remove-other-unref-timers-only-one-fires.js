@@ -17,17 +17,17 @@ const assert = require('assert');
 let nbTimersFired = 0;
 
 const foo = {
-    _onTimeout: function() {
-        ++nbTimersFired;
-        timers.unenroll(bar);
-    }
+	_onTimeout: function() {
+		++nbTimersFired;
+		timers.unenroll(bar);
+	}
 };
 
 const bar = {
-    _onTimeout: function() {
-        ++nbTimersFired;
-        timers.unenroll(foo);
-    }
+	_onTimeout: function() {
+		++nbTimersFired;
+		timers.unenroll(foo);
+	}
 };
 
 timers.enroll(bar, 1);
@@ -37,5 +37,5 @@ timers.enroll(foo, 1);
 timers._unrefActive(foo);
 
 setTimeout(function() {
-    assert.notStrictEqual(nbTimersFired, 2);
+	assert.notStrictEqual(nbTimersFired, 2);
 }, 20);

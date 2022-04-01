@@ -2,7 +2,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const crypto = require('crypto');
 
@@ -18,5 +18,5 @@ const sign = () => crypto.createSign('sha256');
 const verify = () => crypto.createVerify('sha256');
 
 for (const f of [cipher, decipher, hash, hmac, sign, verify])
-    for (const n of [15, 16])
-        f().update(zeros(n), 'hex');  // Should ignore inputEncoding.
+	for (const n of [15, 16])
+		f().update(zeros(n), 'hex');  // Should ignore inputEncoding.

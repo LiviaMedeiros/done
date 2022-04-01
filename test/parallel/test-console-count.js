@@ -58,8 +58,8 @@ process.stdout.write = stdoutWrite;
 // not check the message because it is different depending on the JavaScript
 // engine.
 assert.throws(
-    () => console.count(Symbol('test')),
-    TypeError);
+	() => console.count(Symbol('test')),
+	TypeError);
 assert.throws(
-    () => console.countReset(Symbol('test')),
-    TypeError);
+	() => console.countReset(Symbol('test')),
+	TypeError);

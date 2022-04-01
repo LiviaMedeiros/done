@@ -47,11 +47,11 @@ unless the intention is to schedule additional work.
 import process from 'process';
 
 process.on('beforeExit', (code) => {
-    console.log('Process beforeExit event with code: ', code);
+	console.log('Process beforeExit event with code: ', code);
 });
 
 process.on('exit', (code) => {
-    console.log('Process exit event with code: ', code);
+	console.log('Process exit event with code: ', code);
 });
 
 console.log('This message is displayed first.');
@@ -66,11 +66,11 @@ console.log('This message is displayed first.');
 const process = require('process');
 
 process.on('beforeExit', (code) => {
-    console.log('Process beforeExit event with code: ', code);
+	console.log('Process beforeExit event with code: ', code);
 });
 
 process.on('exit', (code) => {
-    console.log('Process exit event with code: ', code);
+	console.log('Process exit event with code: ', code);
 });
 
 console.log('This message is displayed first.');
@@ -116,7 +116,7 @@ by the [`process.exitCode`][] property, or the `exitCode` argument passed to the
 import process from 'process';
 
 process.on('exit', (code) => {
-    console.log(`About to exit with code: ${code}`);
+	console.log(`About to exit with code: ${code}`);
 });
 ```
 
@@ -124,7 +124,7 @@ process.on('exit', (code) => {
 const process = require('process');
 
 process.on('exit', (code) => {
-    console.log(`About to exit with code: ${code}`);
+	console.log(`About to exit with code: ${code}`);
 });
 ```
 
@@ -137,9 +137,9 @@ In the following example, for instance, the timeout will never occur:
 import process from 'process';
 
 process.on('exit', (code) => {
-    setTimeout(() => {
-        console.log('This will not run');
-    }, 0);
+	setTimeout(() => {
+		console.log('This will not run');
+	}, 0);
 });
 ```
 
@@ -147,9 +147,9 @@ process.on('exit', (code) => {
 const process = require('process');
 
 process.on('exit', (code) => {
-    setTimeout(() => {
-        console.log('This will not run');
-    }, 0);
+	setTimeout(() => {
+		console.log('This will not run');
+	}, 0);
 });
 ```
 
@@ -210,20 +210,20 @@ Because of the unreliability of the event in cases like the
 import process from 'process';
 
 process.on('multipleResolves', (type, promise, reason) => {
-    console.error(type, promise, reason);
-    setImmediate(() => process.exit(1));
+	console.error(type, promise, reason);
+	setImmediate(() => process.exit(1));
 });
 
 async function main() {
-    try {
-        return await new Promise((resolve, reject) => {
-            resolve('First call');
-            resolve('Swallowed resolve');
-            reject(new Error('Swallowed reject'));
-        });
-    } catch {
-        throw new Error('Failed');
-    }
+	try {
+		return await new Promise((resolve, reject) => {
+			resolve('First call');
+			resolve('Swallowed resolve');
+			reject(new Error('Swallowed reject'));
+		});
+	} catch {
+		throw new Error('Failed');
+	}
 }
 
 main().then(console.log);
@@ -239,20 +239,20 @@ main().then(console.log);
 const process = require('process');
 
 process.on('multipleResolves', (type, promise, reason) => {
-    console.error(type, promise, reason);
-    setImmediate(() => process.exit(1));
+	console.error(type, promise, reason);
+	setImmediate(() => process.exit(1));
 });
 
 async function main() {
-    try {
-        return await new Promise((resolve, reject) => {
-            resolve('First call');
-            resolve('Swallowed resolve');
-            reject(new Error('Swallowed reject'));
-        });
-    } catch {
-        throw new Error('Failed');
-    }
+	try {
+		return await new Promise((resolve, reject) => {
+			resolve('First call');
+			resolve('Swallowed resolve');
+			reject(new Error('Swallowed reject'));
+		});
+	} catch {
+		throw new Error('Failed');
+	}
 }
 
 main().then(console.log);
@@ -301,10 +301,10 @@ import process from 'process';
 
 const unhandledRejections = new Map();
 process.on('unhandledRejection', (reason, promise) => {
-    unhandledRejections.set(promise, reason);
+	unhandledRejections.set(promise, reason);
 });
 process.on('rejectionHandled', (promise) => {
-    unhandledRejections.delete(promise);
+	unhandledRejections.delete(promise);
 });
 ```
 
@@ -313,10 +313,10 @@ const process = require('process');
 
 const unhandledRejections = new Map();
 process.on('unhandledRejection', (reason, promise) => {
-    unhandledRejections.set(promise, reason);
+	unhandledRejections.set(promise, reason);
 });
 process.on('rejectionHandled', (promise) => {
-    unhandledRejections.delete(promise);
+	unhandledRejections.delete(promise);
 });
 ```
 
@@ -361,15 +361,15 @@ exit with 0.
 import process from 'process';
 
 process.on('uncaughtException', (err, origin) => {
-    fs.writeSync(
-        process.stderr.fd,
-        `Caught exception: ${err}\n` +
+	fs.writeSync(
+		process.stderr.fd,
+		`Caught exception: ${err}\n` +
     `Exception origin: ${origin}`
-    );
+	);
 });
 
 setTimeout(() => {
-    console.log('This will still run.');
+	console.log('This will still run.');
 }, 500);
 
 // Intentionally cause an exception, but don't catch it.
@@ -381,15 +381,15 @@ console.log('This will not run.');
 const process = require('process');
 
 process.on('uncaughtException', (err, origin) => {
-    fs.writeSync(
-        process.stderr.fd,
-        `Caught exception: ${err}\n` +
+	fs.writeSync(
+		process.stderr.fd,
+		`Caught exception: ${err}\n` +
     `Exception origin: ${origin}`
-    );
+	);
 });
 
 setTimeout(() => {
-    console.log('This will still run.');
+	console.log('This will still run.');
 }, 500);
 
 // Intentionally cause an exception, but don't catch it.
@@ -457,7 +457,7 @@ still crash if no `'uncaughtException'` listener is installed.
 import process from 'process';
 
 process.on('uncaughtExceptionMonitor', (err, origin) => {
-    MyMonitoringTool.logSync(err, origin);
+	MyMonitoringTool.logSync(err, origin);
 });
 
 // Intentionally cause an exception, but don't catch it.
@@ -469,7 +469,7 @@ nonexistentFunc();
 const process = require('process');
 
 process.on('uncaughtExceptionMonitor', (err, origin) => {
-    MyMonitoringTool.logSync(err, origin);
+	MyMonitoringTool.logSync(err, origin);
 });
 
 // Intentionally cause an exception, but don't catch it.
@@ -507,12 +507,12 @@ rejections have not yet been handled.
 import process from 'process';
 
 process.on('unhandledRejection', (reason, promise) => {
-    console.log('Unhandled Rejection at:', promise, 'reason:', reason);
-    // Application specific logging, throwing an error, or other logic here
+	console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+	// Application specific logging, throwing an error, or other logic here
 });
 
 somePromise.then((res) => {
-    return reportToUser(JSON.pasre(res)); // Note the typo (`pasre`)
+	return reportToUser(JSON.pasre(res)); // Note the typo (`pasre`)
 }); // No `.catch()` or `.then()`
 ```
 
@@ -520,12 +520,12 @@ somePromise.then((res) => {
 const process = require('process');
 
 process.on('unhandledRejection', (reason, promise) => {
-    console.log('Unhandled Rejection at:', promise, 'reason:', reason);
-    // Application specific logging, throwing an error, or other logic here
+	console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+	// Application specific logging, throwing an error, or other logic here
 });
 
 somePromise.then((res) => {
-    return reportToUser(JSON.pasre(res)); // Note the typo (`pasre`)
+	return reportToUser(JSON.pasre(res)); // Note the typo (`pasre`)
 }); // No `.catch()` or `.then()`
 ```
 
@@ -536,8 +536,8 @@ emitted:
 import process from 'process';
 
 function SomeResource() {
-    // Initially set the loaded status to a rejected promise
-    this.loaded = Promise.reject(new Error('Resource not yet loaded!'));
+	// Initially set the loaded status to a rejected promise
+	this.loaded = Promise.reject(new Error('Resource not yet loaded!'));
 }
 
 const resource = new SomeResource();
@@ -548,8 +548,8 @@ const resource = new SomeResource();
 const process = require('process');
 
 function SomeResource() {
-    // Initially set the loaded status to a rejected promise
-    this.loaded = Promise.reject(new Error('Resource not yet loaded!'));
+	// Initially set the loaded status to a rejected promise
+	this.loaded = Promise.reject(new Error('Resource not yet loaded!'));
 }
 
 const resource = new SomeResource();
@@ -587,9 +587,9 @@ lead to sub-optimal application performance, bugs, or security vulnerabilities.
 import process from 'process';
 
 process.on('warning', (warning) => {
-    console.warn(warning.name);    // Print the warning name
-    console.warn(warning.message); // Print the warning message
-    console.warn(warning.stack);   // Print the stack trace
+	console.warn(warning.name);    // Print the warning name
+	console.warn(warning.message); // Print the warning message
+	console.warn(warning.stack);   // Print the stack trace
 });
 ```
 
@@ -597,9 +597,9 @@ process.on('warning', (warning) => {
 const process = require('process');
 
 process.on('warning', (warning) => {
-    console.warn(warning.name);    // Print the warning name
-    console.warn(warning.message); // Print the warning message
-    console.warn(warning.stack);   // Print the stack trace
+	console.warn(warning.name);    // Print the warning name
+	console.warn(warning.message); // Print the warning message
+	console.warn(warning.stack);   // Print the stack trace
 });
 ```
 
@@ -711,12 +711,12 @@ import process from 'process';
 process.stdin.resume();
 
 process.on('SIGINT', () => {
-    console.log('Received SIGINT. Press Control-D to exit.');
+	console.log('Received SIGINT. Press Control-D to exit.');
 });
 
 // Using a single function to handle multiple signals
 function handle(signal) {
-    console.log(`Received ${signal}`);
+	console.log(`Received ${signal}`);
 }
 
 process.on('SIGINT', handle);
@@ -730,12 +730,12 @@ const process = require('process');
 process.stdin.resume();
 
 process.on('SIGINT', () => {
-    console.log('Received SIGINT. Press Control-D to exit.');
+	console.log('Received SIGINT. Press Control-D to exit.');
 });
 
 // Using a single function to handle multiple signals
 function handle(signal) {
-    console.log(`Received ${signal}`);
+	console.log(`Received ${signal}`);
 }
 
 process.on('SIGINT', handle);
@@ -834,10 +834,10 @@ dashes:
 import { allowedNodeEnvironmentFlags } from 'process';
 
 allowedNodeEnvironmentFlags.forEach((flag) => {
-    // -r
-    // --inspect-brk
-    // --abort_on_uncaught_exception
-    // ...
+	// -r
+	// --inspect-brk
+	// --abort_on_uncaught_exception
+	// ...
 });
 ```
 
@@ -845,10 +845,10 @@ allowedNodeEnvironmentFlags.forEach((flag) => {
 const { allowedNodeEnvironmentFlags } = require('process');
 
 allowedNodeEnvironmentFlags.forEach((flag) => {
-    // -r
-    // --inspect-brk
-    // --abort_on_uncaught_exception
-    // ...
+	// -r
+	// --inspect-brk
+	// --abort_on_uncaught_exception
+	// ...
 });
 ```
 
@@ -906,7 +906,7 @@ import { argv } from 'process';
 
 // print process.argv
 argv.forEach((val, index) => {
-    console.log(`${index}: ${val}`);
+	console.log(`${index}: ${val}`);
 });
 ```
 
@@ -915,7 +915,7 @@ const { argv } = require('process');
 
 // print process.argv
 argv.forEach((val, index) => {
-    console.log(`${index}: ${val}`);
+	console.log(`${index}: ${val}`);
 });
 ```
 
@@ -1014,10 +1014,10 @@ import { chdir, cwd } from 'process';
 
 console.log(`Starting directory: ${cwd()}`);
 try {
-    chdir('/tmp');
-    console.log(`New directory: ${cwd()}`);
+	chdir('/tmp');
+	console.log(`New directory: ${cwd()}`);
 } catch (err) {
-    console.error(`chdir: ${err}`);
+	console.error(`chdir: ${err}`);
 }
 ```
 
@@ -1026,10 +1026,10 @@ const { chdir, cwd } = require('process');
 
 console.log(`Starting directory: ${cwd()}`);
 try {
-    chdir('/tmp');
-    console.log(`New directory: ${cwd()}`);
+	chdir('/tmp');
+	console.log(`New directory: ${cwd()}`);
 } catch (err) {
-    console.error(`chdir: ${err}`);
+	console.error(`chdir: ${err}`);
 }
 ```
 
@@ -1258,7 +1258,7 @@ import { fileURLToPath } from 'url';
 
 const module = { exports: {} };
 dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)),
-       constants.dlopen.RTLD_NOW);
+							constants.dlopen.RTLD_NOW);
 module.exports.foo();
 ```
 
@@ -1297,8 +1297,8 @@ import { emitWarning } from 'process';
 
 // Emit a warning with a code and additional detail.
 emitWarning('Something happened!', {
-    code: 'MY_WARNING',
-    detail: 'This is some additional information'
+	code: 'MY_WARNING',
+	detail: 'This is some additional information'
 });
 // Emits:
 // (node:56338) [MY_WARNING] Warning: Something happened!
@@ -1310,8 +1310,8 @@ const { emitWarning } = require('process');
 
 // Emit a warning with a code and additional detail.
 emitWarning('Something happened!', {
-    code: 'MY_WARNING',
-    detail: 'This is some additional information'
+	code: 'MY_WARNING',
+	detail: 'This is some additional information'
 });
 // Emits:
 // (node:56338) [MY_WARNING] Warning: Something happened!
@@ -1326,11 +1326,11 @@ In this example, an `Error` object is generated internally by
 import process from 'process';
 
 process.on('warning', (warning) => {
-    console.warn(warning.name);    // 'Warning'
-    console.warn(warning.message); // 'Something happened!'
-    console.warn(warning.code);    // 'MY_WARNING'
-    console.warn(warning.stack);   // Stack trace
-    console.warn(warning.detail);  // 'This is some additional information'
+	console.warn(warning.name);    // 'Warning'
+	console.warn(warning.message); // 'Something happened!'
+	console.warn(warning.code);    // 'MY_WARNING'
+	console.warn(warning.stack);   // Stack trace
+	console.warn(warning.detail);  // 'This is some additional information'
 });
 ```
 
@@ -1338,11 +1338,11 @@ process.on('warning', (warning) => {
 const process = require('process');
 
 process.on('warning', (warning) => {
-    console.warn(warning.name);    // 'Warning'
-    console.warn(warning.message); // 'Something happened!'
-    console.warn(warning.code);    // 'MY_WARNING'
-    console.warn(warning.stack);   // Stack trace
-    console.warn(warning.detail);  // 'This is some additional information'
+	console.warn(warning.name);    // 'Warning'
+	console.warn(warning.message); // 'Something happened!'
+	console.warn(warning.code);    // 'MY_WARNING'
+	console.warn(warning.stack);   // Stack trace
+	console.warn(warning.detail);  // 'This is some additional information'
 });
 ```
 
@@ -1420,10 +1420,10 @@ handler.
 import process from 'process';
 
 process.on('warning', (warning) => {
-    console.warn(warning.name);
-    console.warn(warning.message);
-    console.warn(warning.code);
-    console.warn(warning.stack);
+	console.warn(warning.name);
+	console.warn(warning.message);
+	console.warn(warning.code);
+	console.warn(warning.stack);
 });
 ```
 
@@ -1431,10 +1431,10 @@ process.on('warning', (warning) => {
 const process = require('process');
 
 process.on('warning', (warning) => {
-    console.warn(warning.name);
-    console.warn(warning.message);
-    console.warn(warning.code);
-    console.warn(warning.stack);
+	console.warn(warning.name);
+	console.warn(warning.message);
+	console.warn(warning.code);
+	console.warn(warning.stack);
 });
 ```
 
@@ -1494,10 +1494,10 @@ flag as illustrated in the example below:
 import { emitWarning } from 'process';
 
 function emitMyWarning() {
-    if (!emitMyWarning.warned) {
-        emitMyWarning.warned = true;
-        emitWarning('Only warn once!');
-    }
+	if (!emitMyWarning.warned) {
+		emitMyWarning.warned = true;
+		emitWarning('Only warn once!');
+	}
 }
 emitMyWarning();
 // Emits: (node: 56339) Warning: Only warn once!
@@ -1509,10 +1509,10 @@ emitMyWarning();
 const { emitWarning } = require('process');
 
 function emitMyWarning() {
-    if (!emitMyWarning.warned) {
-        emitMyWarning.warned = true;
-        emitWarning('Only warn once!');
-    }
+	if (!emitMyWarning.warned) {
+		emitMyWarning.warned = true;
+		emitWarning('Only warn once!');
+	}
 }
 emitMyWarning();
 // Emits: (node: 56339) Warning: Only warn once!
@@ -1759,8 +1759,8 @@ import { exit } from 'process';
 
 // This is an example of what *not* to do:
 if (someConditionNotMet()) {
-    printUsageToStdout();
-    exit(1);
+	printUsageToStdout();
+	exit(1);
 }
 ```
 
@@ -1769,8 +1769,8 @@ const { exit } = require('process');
 
 // This is an example of what *not* to do:
 if (someConditionNotMet()) {
-    printUsageToStdout();
-    exit(1);
+	printUsageToStdout();
+	exit(1);
 }
 ```
 
@@ -1789,8 +1789,8 @@ import process from 'process';
 // How to properly set the exit code while letting
 // the process exit gracefully.
 if (someConditionNotMet()) {
-    printUsageToStdout();
-    process.exitCode = 1;
+	printUsageToStdout();
+	process.exitCode = 1;
 }
 ```
 
@@ -1800,8 +1800,8 @@ const process = require('process');
 // How to properly set the exit code while letting
 // the process exit gracefully.
 if (someConditionNotMet()) {
-    printUsageToStdout();
-    process.exitCode = 1;
+	printUsageToStdout();
+	process.exitCode = 1;
 }
 ```
 
@@ -1880,7 +1880,7 @@ of the Node.js process. (See getegid(2).)
 import process from 'process';
 
 if (process.getegid) {
-    console.log(`Current gid: ${process.getegid()}`);
+	console.log(`Current gid: ${process.getegid()}`);
 }
 ```
 
@@ -1888,7 +1888,7 @@ if (process.getegid) {
 const process = require('process');
 
 if (process.getegid) {
-    console.log(`Current gid: ${process.getegid()}`);
+	console.log(`Current gid: ${process.getegid()}`);
 }
 ```
 
@@ -1910,7 +1910,7 @@ the process. (See geteuid(2).)
 import process from 'process';
 
 if (process.geteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
+	console.log(`Current uid: ${process.geteuid()}`);
 }
 ```
 
@@ -1918,7 +1918,7 @@ if (process.geteuid) {
 const process = require('process');
 
 if (process.geteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
+	console.log(`Current uid: ${process.geteuid()}`);
 }
 ```
 
@@ -1940,7 +1940,7 @@ process. (See getgid(2).)
 import process from 'process';
 
 if (process.getgid) {
-    console.log(`Current gid: ${process.getgid()}`);
+	console.log(`Current gid: ${process.getgid()}`);
 }
 ```
 
@@ -1948,7 +1948,7 @@ if (process.getgid) {
 const process = require('process');
 
 if (process.getgid) {
-    console.log(`Current gid: ${process.getgid()}`);
+	console.log(`Current gid: ${process.getgid()}`);
 }
 ```
 
@@ -1971,7 +1971,7 @@ Node.js ensures it always is.
 import process from 'process';
 
 if (process.getgroups) {
-    console.log(process.getgroups()); // [ 16, 21, 297 ]
+	console.log(process.getgroups()); // [ 16, 21, 297 ]
 }
 ```
 
@@ -1979,7 +1979,7 @@ if (process.getgroups) {
 const process = require('process');
 
 if (process.getgroups) {
-    console.log(process.getgroups()); // [ 16, 21, 297 ]
+	console.log(process.getgroups()); // [ 16, 21, 297 ]
 }
 ```
 
@@ -2001,7 +2001,7 @@ The `process.getuid()` method returns the numeric user identity of the process.
 import process from 'process';
 
 if (process.getuid) {
-    console.log(`Current uid: ${process.getuid()}`);
+	console.log(`Current uid: ${process.getuid()}`);
 }
 ```
 
@@ -2009,7 +2009,7 @@ if (process.getuid) {
 const process = require('process');
 
 if (process.getuid) {
-    console.log(`Current uid: ${process.getuid()}`);
+	console.log(`Current uid: ${process.getuid()}`);
 }
 ```
 
@@ -2063,11 +2063,11 @@ const time = hrtime();
 // [ 1800216, 25 ]
 
 setTimeout(() => {
-    const diff = hrtime(time);
-    // [ 1, 552 ]
+	const diff = hrtime(time);
+	// [ 1, 552 ]
 
-    console.log(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
-    // Benchmark took 1000000552 nanoseconds
+	console.log(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
+	// Benchmark took 1000000552 nanoseconds
 }, 1000);
 ```
 
@@ -2079,11 +2079,11 @@ const time = hrtime();
 // [ 1800216, 25 ]
 
 setTimeout(() => {
-    const diff = hrtime(time);
-    // [ 1, 552 ]
+	const diff = hrtime(time);
+	// [ 1, 552 ]
 
-    console.log(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
-    // Benchmark took 1000000552 nanoseconds
+	console.log(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
+	// Benchmark took 1000000552 nanoseconds
 }, 1000);
 ```
 
@@ -2109,11 +2109,11 @@ const start = hrtime.bigint();
 // 191051479007711n
 
 setTimeout(() => {
-    const end = hrtime.bigint();
-    // 191052633396993n
+	const end = hrtime.bigint();
+	// 191052633396993n
 
-    console.log(`Benchmark took ${end - start} nanoseconds`);
-    // Benchmark took 1154389282 nanoseconds
+	console.log(`Benchmark took ${end - start} nanoseconds`);
+	// Benchmark took 1154389282 nanoseconds
 }, 1000);
 ```
 
@@ -2124,11 +2124,11 @@ const start = hrtime.bigint();
 // 191051479007711n
 
 setTimeout(() => {
-    const end = hrtime.bigint();
-    // 191052633396993n
+	const end = hrtime.bigint();
+	// 191052633396993n
 
-    console.log(`Benchmark took ${end - start} nanoseconds`);
-    // Benchmark took 1154389282 nanoseconds
+	console.log(`Benchmark took ${end - start} nanoseconds`);
+	// Benchmark took 1154389282 nanoseconds
 }, 1000);
 ```
 
@@ -2201,12 +2201,12 @@ other than kill the target process.
 import process, { kill } from 'process';
 
 process.on('SIGHUP', () => {
-    console.log('Got SIGHUP signal.');
+	console.log('Got SIGHUP signal.');
 });
 
 setTimeout(() => {
-    console.log('Exiting.');
-    process.exit(0);
+	console.log('Exiting.');
+	process.exit(0);
 }, 100);
 
 kill(process.pid, 'SIGHUP');
@@ -2216,12 +2216,12 @@ kill(process.pid, 'SIGHUP');
 const process = require('process');
 
 process.on('SIGHUP', () => {
-    console.log('Got SIGHUP signal.');
+	console.log('Got SIGHUP signal.');
 });
 
 setTimeout(() => {
-    console.log('Exiting.');
-    process.exit(0);
+	console.log('Exiting.');
+	process.exit(0);
 }, 100);
 
 process.kill(process.pid, 'SIGHUP');
@@ -2385,7 +2385,7 @@ import { nextTick } from 'process';
 
 console.log('start');
 nextTick(() => {
-    console.log('nextTick callback');
+	console.log('nextTick callback');
 });
 console.log('scheduled');
 // Output:
@@ -2399,7 +2399,7 @@ const { nextTick } = require('process');
 
 console.log('start');
 nextTick(() => {
-    console.log('nextTick callback');
+	console.log('nextTick callback');
 });
 console.log('scheduled');
 // Output:
@@ -2416,11 +2416,11 @@ I/O has occurred:
 import { nextTick } from 'process';
 
 function MyThing(options) {
-    this.setupOptions(options);
+	this.setupOptions(options);
 
-    nextTick(() => {
-        this.startDoingStuff();
-    });
+	nextTick(() => {
+		this.startDoingStuff();
+	});
 }
 
 const thing = new MyThing();
@@ -2433,11 +2433,11 @@ thing.getReadyForStuff();
 const { nextTick } = require('process');
 
 function MyThing(options) {
-    this.setupOptions(options);
+	this.setupOptions(options);
 
-    nextTick(() => {
-        this.startDoingStuff();
-    });
+	nextTick(() => {
+		this.startDoingStuff();
+	});
 }
 
 const thing = new MyThing();
@@ -2452,12 +2452,12 @@ asynchronous. Consider this example:
 ```js
 // WARNING!  DO NOT USE!  BAD UNSAFE HAZARD!
 function maybeSync(arg, cb) {
-    if (arg) {
-        cb();
-        return;
-    }
+	if (arg) {
+		cb();
+		return;
+	}
 
-    fs.stat('file', cb);
+	fs.stat('file', cb);
 }
 ```
 
@@ -2467,7 +2467,7 @@ This API is hazardous because in the following case:
 const maybeTrue = Math.random() > 0.5;
 
 maybeSync(maybeTrue, () => {
-    foo();
+	foo();
 });
 
 bar();
@@ -2481,12 +2481,12 @@ The following approach is much better:
 import { nextTick } from 'process';
 
 function definitelyAsync(arg, cb) {
-    if (arg) {
-        nextTick(cb);
-        return;
-    }
+	if (arg) {
+		nextTick(cb);
+		return;
+	}
 
-    fs.stat('file', cb);
+	fs.stat('file', cb);
 }
 ```
 
@@ -2494,12 +2494,12 @@ function definitelyAsync(arg, cb) {
 const { nextTick } = require('process');
 
 function definitelyAsync(arg, cb) {
-    if (arg) {
-        nextTick(cb);
-        return;
-    }
+	if (arg) {
+		nextTick(cb);
+		return;
+	}
 
-    fs.stat('file', cb);
+	fs.stat('file', cb);
 }
 ```
 
@@ -2544,7 +2544,7 @@ In simple scenarios, `queueMicrotask()` can be a drop-in replacement for
 ```js
 console.log('start');
 queueMicrotask(() => {
-    console.log('microtask callback');
+	console.log('microtask callback');
 });
 console.log('scheduled');
 // Output:
@@ -2560,7 +2560,7 @@ deferred function when it is called. Achieving the same result with
 
 ```js
 function deferred(a, b) {
-    console.log('microtask', a + b);
+	console.log('microtask', a + b);
 }
 
 console.log('start');
@@ -3181,13 +3181,13 @@ the associated a numeric ID.
 import process from 'process';
 
 if (process.getegid && process.setegid) {
-    console.log(`Current gid: ${process.getegid()}`);
-    try {
-        process.setegid(501);
-        console.log(`New gid: ${process.getegid()}`);
-    } catch (err) {
-        console.log(`Failed to set gid: ${err}`);
-    }
+	console.log(`Current gid: ${process.getegid()}`);
+	try {
+		process.setegid(501);
+		console.log(`New gid: ${process.getegid()}`);
+	} catch (err) {
+		console.log(`Failed to set gid: ${err}`);
+	}
 }
 ```
 
@@ -3195,13 +3195,13 @@ if (process.getegid && process.setegid) {
 const process = require('process');
 
 if (process.getegid && process.setegid) {
-    console.log(`Current gid: ${process.getegid()}`);
-    try {
-        process.setegid(501);
-        console.log(`New gid: ${process.getegid()}`);
-    } catch (err) {
-        console.log(`Failed to set gid: ${err}`);
-    }
+	console.log(`Current gid: ${process.getegid()}`);
+	try {
+		process.setegid(501);
+		console.log(`New gid: ${process.getegid()}`);
+	} catch (err) {
+		console.log(`Failed to set gid: ${err}`);
+	}
 }
 ```
 
@@ -3226,13 +3226,13 @@ associated numeric ID.
 import process from 'process';
 
 if (process.geteuid && process.seteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
-    try {
-        process.seteuid(501);
-        console.log(`New uid: ${process.geteuid()}`);
-    } catch (err) {
-        console.log(`Failed to set uid: ${err}`);
-    }
+	console.log(`Current uid: ${process.geteuid()}`);
+	try {
+		process.seteuid(501);
+		console.log(`New uid: ${process.geteuid()}`);
+	} catch (err) {
+		console.log(`Failed to set uid: ${err}`);
+	}
 }
 ```
 
@@ -3240,13 +3240,13 @@ if (process.geteuid && process.seteuid) {
 const process = require('process');
 
 if (process.geteuid && process.seteuid) {
-    console.log(`Current uid: ${process.geteuid()}`);
-    try {
-        process.seteuid(501);
-        console.log(`New uid: ${process.geteuid()}`);
-    } catch (err) {
-        console.log(`Failed to set uid: ${err}`);
-    }
+	console.log(`Current uid: ${process.geteuid()}`);
+	try {
+		process.seteuid(501);
+		console.log(`New uid: ${process.geteuid()}`);
+	} catch (err) {
+		console.log(`Failed to set uid: ${err}`);
+	}
 }
 ```
 
@@ -3271,13 +3271,13 @@ associated numeric ID.
 import process from 'process';
 
 if (process.getgid && process.setgid) {
-    console.log(`Current gid: ${process.getgid()}`);
-    try {
-        process.setgid(501);
-        console.log(`New gid: ${process.getgid()}`);
-    } catch (err) {
-        console.log(`Failed to set gid: ${err}`);
-    }
+	console.log(`Current gid: ${process.getgid()}`);
+	try {
+		process.setgid(501);
+		console.log(`New gid: ${process.getgid()}`);
+	} catch (err) {
+		console.log(`Failed to set gid: ${err}`);
+	}
 }
 ```
 
@@ -3285,13 +3285,13 @@ if (process.getgid && process.setgid) {
 const process = require('process');
 
 if (process.getgid && process.setgid) {
-    console.log(`Current gid: ${process.getgid()}`);
-    try {
-        process.setgid(501);
-        console.log(`New gid: ${process.getgid()}`);
-    } catch (err) {
-        console.log(`Failed to set gid: ${err}`);
-    }
+	console.log(`Current gid: ${process.getgid()}`);
+	try {
+		process.setgid(501);
+		console.log(`New gid: ${process.getgid()}`);
+	} catch (err) {
+		console.log(`Failed to set gid: ${err}`);
+	}
 }
 ```
 
@@ -3317,12 +3317,12 @@ The `groups` array can contain numeric group IDs, group names, or both.
 import process from 'process';
 
 if (process.getgroups && process.setgroups) {
-    try {
-        process.setgroups([501]);
-        console.log(process.getgroups()); // new groups
-    } catch (err) {
-        console.log(`Failed to set groups: ${err}`);
-    }
+	try {
+		process.setgroups([501]);
+		console.log(process.getgroups()); // new groups
+	} catch (err) {
+		console.log(`Failed to set groups: ${err}`);
+	}
 }
 ```
 
@@ -3330,12 +3330,12 @@ if (process.getgroups && process.setgroups) {
 const process = require('process');
 
 if (process.getgroups && process.setgroups) {
-    try {
-        process.setgroups([501]);
-        console.log(process.getgroups()); // new groups
-    } catch (err) {
-        console.log(`Failed to set groups: ${err}`);
-    }
+	try {
+		process.setgroups([501]);
+		console.log(process.getgroups()); // new groups
+	} catch (err) {
+		console.log(`Failed to set groups: ${err}`);
+	}
 }
 ```
 
@@ -3360,13 +3360,13 @@ numeric ID.
 import process from 'process';
 
 if (process.getuid && process.setuid) {
-    console.log(`Current uid: ${process.getuid()}`);
-    try {
-        process.setuid(501);
-        console.log(`New uid: ${process.getuid()}`);
-    } catch (err) {
-        console.log(`Failed to set uid: ${err}`);
-    }
+	console.log(`Current uid: ${process.getuid()}`);
+	try {
+		process.setuid(501);
+		console.log(`New uid: ${process.getuid()}`);
+	} catch (err) {
+		console.log(`Failed to set uid: ${err}`);
+	}
 }
 ```
 
@@ -3374,13 +3374,13 @@ if (process.getuid && process.setuid) {
 const process = require('process');
 
 if (process.getuid && process.setuid) {
-    console.log(`Current uid: ${process.getuid()}`);
-    try {
-        process.setuid(501);
-        console.log(`New uid: ${process.getuid()}`);
-    } catch (err) {
-        console.log(`Failed to set uid: ${err}`);
-    }
+	console.log(`Current uid: ${process.getuid()}`);
+	try {
+		process.setuid(501);
+		console.log(`New uid: ${process.getuid()}`);
+	} catch (err) {
+		console.log(`Failed to set uid: ${err}`);
+	}
 }
 ```
 
@@ -3672,7 +3672,7 @@ import { umask } from 'process';
 const newmask = 0o022;
 const oldmask = umask(newmask);
 console.log(
-    `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`
+	`Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`
 );
 ```
 
@@ -3682,7 +3682,7 @@ const { umask } = require('process');
 const newmask = 0o022;
 const oldmask = umask(newmask);
 console.log(
-    `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`
+	`Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`
 );
 ```
 

@@ -5,13 +5,13 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const assert = require('assert');
 const {
-    generateKeyPairSync,
-    publicEncrypt,
-    privateDecrypt,
+	generateKeyPairSync,
+	publicEncrypt,
+	privateDecrypt,
 } = require('crypto');
 
 const pair = generateKeyPairSync('rsa', { modulusLength: 512 });
@@ -22,20 +22,20 @@ const encrypted = publicEncrypt(pair.publicKey, expected);
 const pkey = pair.privateKey.export({ type: 'pkcs1', format: 'pem' });
 const pkeyEncrypted =
   pair.privateKey.export({
-      type: 'pkcs1',
-      format: 'pem',
-      cipher: 'aes128',
-      passphrase: 'secret',
+  	type: 'pkcs1',
+  	format: 'pem',
+  	cipher: 'aes128',
+  	passphrase: 'secret',
   });
 
 function decrypt(key) {
-    const decrypted = privateDecrypt(key, encrypted);
-    assert.deepStrictEqual(decrypted, expected);
+	const decrypted = privateDecrypt(key, encrypted);
+	assert.deepStrictEqual(decrypted, expected);
 }
 
 decrypt(pkey);
 assert.throws(() => decrypt(pkeyEncrypted), common.hasOpenSSL3 ?
-    { message: 'error:07880109:common libcrypto routines::interrupted or ' +
+	{ message: 'error:07880109:common libcrypto routines::interrupted or ' +
              'cancelled' } :
-    { code: 'ERR_MISSING_PASSPHRASE' });
+	{ code: 'ERR_MISSING_PASSPHRASE' });
 decrypt(pkey);  // Should not throw.

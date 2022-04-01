@@ -5,5 +5,5 @@ require('../common');
 const assert = require('assert');
 
 assert.throws(() => {
-    require('wasi');
+	require('wasi');
 }, /^Error: Cannot find module 'wasi'/);

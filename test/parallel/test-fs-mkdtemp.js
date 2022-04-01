@@ -15,13 +15,13 @@ assert(fs.existsSync(tmpFolder));
 
 const utf8 = fs.mkdtempSync(path.join(tmpdir.path, '\u0222abc.'));
 assert.strictEqual(Buffer.byteLength(path.basename(utf8)),
-                   Buffer.byteLength('\u0222abc.XXXXXX'));
+																			Buffer.byteLength('\u0222abc.XXXXXX'));
 assert(fs.existsSync(utf8));
 
 function handler(err, folder) {
-    assert.ifError(err);
-    assert(fs.existsSync(folder));
-    assert.strictEqual(this, undefined);
+	assert.ifError(err);
+	assert(fs.existsSync(folder));
+	assert.strictEqual(this, undefined);
 }
 
 fs.mkdtemp(path.join(tmpdir.path, 'bar.'), common.mustCall(handler));

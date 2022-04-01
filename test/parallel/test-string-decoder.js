@@ -47,9 +47,9 @@ test('utf-8', Buffer.from('𤭢', 'utf-8'), '𤭢');
 // U+0030 -> 30
 // U+3045 -> E3 81 85
 test(
-    'utf-8',
-    Buffer.from([0xCB, 0xA4, 0x64, 0xE1, 0x8B, 0xA4, 0x30, 0xE3, 0x81, 0x85]),
-    '\u02e4\u0064\u12e4\u0030\u3045'
+	'utf-8',
+	Buffer.from([0xCB, 0xA4, 0x64, 0xE1, 0x8B, 0xA4, 0x30, 0xE3, 0x81, 0x85]),
+	'\u02e4\u0064\u12e4\u0030\u3045'
 );
 
 // Some invalid input, known to have caused trouble with chunking
@@ -78,7 +78,7 @@ test('utf-8', Buffer.from('CCB8CDB9', 'hex'), '\u0338\u0379');
 // V8 has changed their invalid UTF-8 handling, see
 // https://chromium-review.googlesource.com/c/v8/v8/+/671020 for more info.
 test('utf-8', Buffer.from('EDA0B5EDB08D', 'hex'),
-     '\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd');
+					'\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd');
 
 // UCS-2
 test('ucs2', Buffer.from('ababc', 'ucs2'), 'ababc');
@@ -101,11 +101,11 @@ assert.strictEqual(decoder.end(), '\ufffd');
 const arrayBufferViewStr = 'String for ArrayBufferView tests\n';
 const inputBuffer = Buffer.from(arrayBufferViewStr.repeat(8), 'utf8');
 for (const expectView of common.getArrayBufferViews(inputBuffer)) {
-    assert.strictEqual(
-        decoder.write(expectView),
-        inputBuffer.toString('utf8')
-    );
-    assert.strictEqual(decoder.end(), '');
+	assert.strictEqual(
+		decoder.write(expectView),
+		inputBuffer.toString('utf8')
+	);
+	assert.strictEqual(decoder.end(), '');
 }
 
 decoder = new StringDecoder('utf8');
@@ -118,7 +118,7 @@ assert.strictEqual(decoder.end(), '');
 
 decoder = new StringDecoder('utf8');
 assert.strictEqual(decoder.write(Buffer.from('\ufffd\ufffd\ufffd')),
-                   '\ufffd\ufffd\ufffd');
+																			'\ufffd\ufffd\ufffd');
 assert.strictEqual(decoder.end(), '');
 
 decoder = new StringDecoder('utf8');
@@ -174,47 +174,47 @@ assert.strictEqual(decoder.write(Buffer.from('bde5', 'hex')), '\ufffd\ufffd');
 assert.strictEqual(decoder.end(), '\ufffd');
 
 assert.throws(
-    () => new StringDecoder(1),
-    {
-        code: 'ERR_UNKNOWN_ENCODING',
-        name: 'TypeError',
-        message: 'Unknown encoding: 1'
-    }
+	() => new StringDecoder(1),
+	{
+		code: 'ERR_UNKNOWN_ENCODING',
+		name: 'TypeError',
+		message: 'Unknown encoding: 1'
+	}
 );
 
 assert.throws(
-    () => new StringDecoder('test'),
-    {
-        code: 'ERR_UNKNOWN_ENCODING',
-        name: 'TypeError',
-        message: 'Unknown encoding: test'
-    }
+	() => new StringDecoder('test'),
+	{
+		code: 'ERR_UNKNOWN_ENCODING',
+		name: 'TypeError',
+		message: 'Unknown encoding: test'
+	}
 );
 
 assert.throws(
-    () => new StringDecoder('utf8').write(null),
-    {
-        code: 'ERR_INVALID_ARG_TYPE',
-        name: 'TypeError',
-        message: 'The "buf" argument must be an instance of Buffer, TypedArray,' +
+	() => new StringDecoder('utf8').write(null),
+	{
+		code: 'ERR_INVALID_ARG_TYPE',
+		name: 'TypeError',
+		message: 'The "buf" argument must be an instance of Buffer, TypedArray,' +
       ' or DataView. Received null'
-    }
+	}
 );
 
 if (common.enoughTestMem) {
-    assert.throws(
-        () => new StringDecoder().write(Buffer.alloc(0x1fffffe8 + 1).fill('a')),
-        {
-            code: 'ERR_STRING_TOO_LONG',
-        }
-    );
+	assert.throws(
+		() => new StringDecoder().write(Buffer.alloc(0x1fffffe8 + 1).fill('a')),
+		{
+			code: 'ERR_STRING_TOO_LONG',
+		}
+	);
 }
 
 assert.throws(
-    () => new StringDecoder('utf8').__proto__.write(Buffer.from('abc')), // eslint-disable-line no-proto
-    {
-        code: 'ERR_INVALID_THIS',
-    }
+	() => new StringDecoder('utf8').__proto__.write(Buffer.from('abc')), // eslint-disable-line no-proto
+	{
+		code: 'ERR_INVALID_THIS',
+	}
 );
 
 // Test verifies that StringDecoder will correctly decode the given input
@@ -223,39 +223,39 @@ assert.throws(
 // singleSequence allows for easy debugging of a specific sequence which is
 // useful in case of test failures.
 function test(encoding, input, expected, singleSequence) {
-    let sequences;
-    if (!singleSequence) {
-        sequences = writeSequences(input.length);
-    } else {
-        sequences = [singleSequence];
-    }
-    const hexNumberRE = /.{2}/g;
-    sequences.forEach((sequence) => {
-        const decoder = new StringDecoder(encoding);
-        let output = '';
-        sequence.forEach((write) => {
-            output += decoder.write(input.slice(write[0], write[1]));
-        });
-        output += decoder.end();
-        if (output !== expected) {
-            const message =
+	let sequences;
+	if (!singleSequence) {
+		sequences = writeSequences(input.length);
+	} else {
+		sequences = [singleSequence];
+	}
+	const hexNumberRE = /.{2}/g;
+	sequences.forEach((sequence) => {
+		const decoder = new StringDecoder(encoding);
+		let output = '';
+		sequence.forEach((write) => {
+			output += decoder.write(input.slice(write[0], write[1]));
+		});
+		output += decoder.end();
+		if (output !== expected) {
+			const message =
         `Expected "${unicodeEscape(expected)}", ` +
         `but got "${unicodeEscape(output)}"\n` +
         `input: ${input.toString('hex').match(hexNumberRE)}\n` +
         `Write sequence: ${JSON.stringify(sequence)}\n` +
         `Full Decoder State: ${inspect(decoder)}`;
-            assert.fail(message);
-        }
-    });
+			assert.fail(message);
+		}
+	});
 }
 
 // unicodeEscape prints the str contents as unicode escape codes.
 function unicodeEscape(str) {
-    let r = '';
-    for (let i = 0; i < str.length; i++) {
-        r += `\\u${str.charCodeAt(i).toString(16)}`;
-    }
-    return r;
+	let r = '';
+	for (let i = 0; i < str.length; i++) {
+		r += `\\u${str.charCodeAt(i).toString(16)}`;
+	}
+	return r;
 }
 
 // writeSequences returns an array of arrays that describes all possible ways a
@@ -269,17 +269,17 @@ function unicodeEscape(str) {
 //   [ [ 0, 1 ], [ 1, 2 ], [ 2, 3 ] ]
 // ]
 function writeSequences(length, start, sequence) {
-    if (start === undefined) {
-        start = 0;
-        sequence = [];
-    } else if (start === length) {
-        return [sequence];
-    }
-    let sequences = [];
-    for (let end = length; end > start; end--) {
-        const subSequence = sequence.concat([[start, end]]);
-        const subSequences = writeSequences(length, end, subSequence, sequences);
-        sequences = sequences.concat(subSequences);
-    }
-    return sequences;
+	if (start === undefined) {
+		start = 0;
+		sequence = [];
+	} else if (start === length) {
+		return [sequence];
+	}
+	let sequences = [];
+	for (let end = length; end > start; end--) {
+		const subSequence = sequence.concat([[start, end]]);
+		const subSequences = writeSequences(length, end, subSequence, sequences);
+		sequences = sequences.concat(subSequences);
+	}
+	return sequences;
 }

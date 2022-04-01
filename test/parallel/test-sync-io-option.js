@@ -10,30 +10,30 @@ const execFile = promisify(require('child_process').execFile);
 // happens before the first event loop turn is over.
 
 if (process.argv[2] === 'late-sync-io') {
-    setImmediate(() => {
-        require('fs').statSync(__filename);
-    });
-    return;
+	setImmediate(() => {
+		require('fs').statSync(__filename);
+	});
+	return;
 } else if (process.argv[2] === 'early-sync-io') {
-    require('fs').statSync(__filename);
-    return;
+	require('fs').statSync(__filename);
+	return;
 }
 
 (async function() {
-    for (const { execArgv, variant, warnings } of [
-        { execArgv: ['--trace-sync-io'], variant: 'late-sync-io', warnings: 1 },
-        { execArgv: [], variant: 'late-sync-io', warnings: 0 },
-        { execArgv: ['--trace-sync-io'], variant: 'early-sync-io', warnings: 0 },
-        { execArgv: [], variant: 'early-sync-io', warnings: 0 },
-    ]) {
-        const { stdout, stderr } =
+	for (const { execArgv, variant, warnings } of [
+		{ execArgv: ['--trace-sync-io'], variant: 'late-sync-io', warnings: 1 },
+		{ execArgv: [], variant: 'late-sync-io', warnings: 0 },
+		{ execArgv: ['--trace-sync-io'], variant: 'early-sync-io', warnings: 0 },
+		{ execArgv: [], variant: 'early-sync-io', warnings: 0 },
+	]) {
+		const { stdout, stderr } =
       await execFile(process.execPath, [...execArgv, __filename, variant]);
-        assert.strictEqual(stdout, '');
-        const actualWarnings =
+		assert.strictEqual(stdout, '');
+		const actualWarnings =
       stderr.match(/WARNING: Detected use of sync API[\s\S]*statSync/g);
-        if (warnings === 0)
-            assert.strictEqual(actualWarnings, null);
-        else
-            assert.strictEqual(actualWarnings.length, warnings);
-    }
+		if (warnings === 0)
+			assert.strictEqual(actualWarnings, null);
+		else
+			assert.strictEqual(actualWarnings.length, warnings);
+	}
 })().then(common.mustCall());

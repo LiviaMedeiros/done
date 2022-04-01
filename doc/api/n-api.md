@@ -3966,8 +3966,8 @@ reasons. Consider the following JavaScript:
 ```js
 const obj = {};
 Object.defineProperties(obj, {
-    'foo': { value: 123, writable: true, configurable: true, enumerable: true },
-    'bar': { value: 456, writable: true, configurable: true, enumerable: true }
+	'foo': { value: 123, writable: true, configurable: true, enumerable: true },
+	'bar': { value: 456, writable: true, configurable: true, enumerable: true }
 });
 ```
 
@@ -4583,7 +4583,7 @@ snippet:
 
 ```js
 function AddTwo(num) {
-    return num + 2;
+	return num + 2;
 }
 global.AddTwo = AddTwo;
 ```
@@ -4790,7 +4790,7 @@ consider the following snippet:
 
 ```js
 function MyObject(param) {
-    this.param = param;
+	this.param = param;
 }
 
 const arg = 'hello';
@@ -4882,7 +4882,7 @@ const queryHandle = myAddon.query(dbHandle, 'Gimme ALL the things!');
 // myAddon.queryHasRecords(dbHandle, queryHandle)
 //
 while (myAddon.queryHasRecords(queryHandle, dbHandle)) {
-    // retrieve records
+	// retrieve records
 }
 ```
 

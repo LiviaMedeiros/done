@@ -3,7 +3,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 common.requireNoPackageJSONAbove();
 
@@ -14,9 +14,9 @@ const fixtures = require('../common/fixtures.js');
 const policyFilepath = fixtures.path('policy-manifest', 'invalid.json');
 
 const result = spawnSync(process.execPath, [
-    '--experimental-policy',
-    policyFilepath,
-    './fhqwhgads.js',
+	'--experimental-policy',
+	policyFilepath,
+	'./fhqwhgads.js',
 ]);
 
 assert.notStrictEqual(result.status, 0);

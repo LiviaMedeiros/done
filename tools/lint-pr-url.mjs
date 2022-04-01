@@ -20,18 +20,18 @@ let currentLine;
 
 const diff = readline.createInterface({ input: process.stdin });
 for await (const line of diff) {
-    if (fileDelimiter.test(line)) {
-        currentFile = line.match(fileDelimiter)[1];
-        console.log(`Parsing changes in ${currentFile}.`);
-    } else if (changeDelimiter.test(line)) {
-        currentLine = Number(line.match(changeDelimiter)[1]);
-    } else if (!validatePrUrl(line.match(prUrlDefinition)?.[1])) {
-        console.warn(
-            `::warning file=${currentFile},line=${currentLine++},col=${line.length}` +
+	if (fileDelimiter.test(line)) {
+		currentFile = line.match(fileDelimiter)[1];
+		console.log(`Parsing changes in ${currentFile}.`);
+	} else if (changeDelimiter.test(line)) {
+		currentLine = Number(line.match(changeDelimiter)[1]);
+	} else if (!validatePrUrl(line.match(prUrlDefinition)?.[1])) {
+		console.warn(
+			`::warning file=${currentFile},line=${currentLine++},col=${line.length}` +
       '::pr-url doesn\'t match the URL of the current PR.'
-        );
-    } else if (line[0] !== '-') {
-    // Increment line counter if line is not being deleted.
-        currentLine++;
-    }
+		);
+	} else if (line[0] !== '-') {
+		// Increment line counter if line is not being deleted.
+		currentLine++;
+	}
 }

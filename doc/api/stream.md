@@ -137,32 +137,32 @@ that implements an HTTP server:
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-    // `req` is an http.IncomingMessage, which is a readable stream.
-    // `res` is an http.ServerResponse, which is a writable stream.
+	// `req` is an http.IncomingMessage, which is a readable stream.
+	// `res` is an http.ServerResponse, which is a writable stream.
 
-    let body = '';
-    // Get the data as utf8 strings.
-    // If an encoding is not set, Buffer objects will be received.
-    req.setEncoding('utf8');
+	let body = '';
+	// Get the data as utf8 strings.
+	// If an encoding is not set, Buffer objects will be received.
+	req.setEncoding('utf8');
 
-    // Readable streams emit 'data' events once a listener is added.
-    req.on('data', (chunk) => {
-        body += chunk;
-    });
+	// Readable streams emit 'data' events once a listener is added.
+	req.on('data', (chunk) => {
+		body += chunk;
+	});
 
-    // The 'end' event indicates that the entire body has been received.
-    req.on('end', () => {
-        try {
-            const data = JSON.parse(body);
-            // Write back something interesting to the user:
-            res.write(typeof data);
-            res.end();
-        } catch (er) {
-            // uh oh! bad json!
-            res.statusCode = 400;
-            return res.end(`error: ${er.message}`);
-        }
-    });
+	// The 'end' event indicates that the entire body has been received.
+	req.on('end', () => {
+		try {
+			const data = JSON.parse(body);
+			// Write back something interesting to the user:
+			res.write(typeof data);
+			res.end();
+		} catch (er) {
+			// uh oh! bad json!
+			res.statusCode = 400;
+			return res.end(`error: ${er.message}`);
+		}
+	});
 });
 
 server.listen(1337);
@@ -268,27 +268,27 @@ to the stream.
 // Write the data to the supplied writable stream one million times.
 // Be attentive to back-pressure.
 function writeOneMillionTimes(writer, data, encoding, callback) {
-    let i = 1000000;
-    write();
-    function write() {
-        let ok = true;
-        do {
-            i--;
-            if (i === 0) {
-                // Last time!
-                writer.write(data, encoding, callback);
-            } else {
-                // See if we should continue, or wait.
-                // Don't pass the callback, because we're not done yet.
-                ok = writer.write(data, encoding);
-            }
-        } while (i > 0 && ok);
-        if (i > 0) {
-            // Had to stop early!
-            // Write some more once it drains.
-            writer.once('drain', write);
-        }
-    }
+	let i = 1000000;
+	write();
+	function write() {
+		let ok = true;
+		do {
+			i--;
+			if (i === 0) {
+				// Last time!
+				writer.write(data, encoding, callback);
+			} else {
+				// See if we should continue, or wait.
+				// Don't pass the callback, because we're not done yet.
+				ok = writer.write(data, encoding);
+			}
+		} while (i > 0 && ok);
+		if (i > 0) {
+			// Had to stop early!
+			// Write some more once it drains.
+			writer.once('drain', write);
+		}
+	}
 }
 ```
 
@@ -322,10 +322,10 @@ has been called, and all data has been flushed to the underlying system.
 ```js
 const writer = getWritableStreamSomehow();
 for (let i = 0; i < 100; i++) {
-    writer.write(`hello, #${i}!\n`);
+	writer.write(`hello, #${i}!\n`);
 }
 writer.on('finish', () => {
-    console.log('All writes are now complete.');
+	console.log('All writes are now complete.');
 });
 writer.end('This is the end\n');
 ```
@@ -345,8 +345,8 @@ a readable stream, adding this writable to its set of destinations.
 const writer = getWritableStreamSomehow();
 const reader = getReadableStreamSomehow();
 writer.on('pipe', (src) => {
-    console.log('Something is piping into the writer.');
-    assert.equal(src, reader);
+	console.log('Something is piping into the writer.');
+	assert.equal(src, reader);
 });
 reader.pipe(writer);
 ```
@@ -371,8 +371,8 @@ This is also emitted in case this [`Writable`][] stream emits an error when a
 const writer = getWritableStreamSomehow();
 const reader = getReadableStreamSomehow();
 writer.on('unpipe', (src) => {
-    console.log('Something has stopped piping into the writer.');
-    assert.equal(src, reader);
+	console.log('Something has stopped piping into the writer.');
+	assert.equal(src, reader);
 });
 reader.pipe(writer);
 reader.unpipe(writer);
@@ -577,9 +577,9 @@ stream.write('some ');
 stream.cork();
 stream.write('data ');
 process.nextTick(() => {
-    stream.uncork();
-    // The data will not be flushed until uncork() is called a second time.
-    stream.uncork();
+	stream.uncork();
+	// The data will not be flushed until uncork() is called a second time.
+	stream.uncork();
 });
 ```
 
@@ -759,16 +759,16 @@ possible to respect backpressure and avoid memory issues using the
 
 ```js
 function write(data, cb) {
-    if (!stream.write(data)) {
-        stream.once('drain', cb);
-    } else {
-        process.nextTick(cb);
-    }
+	if (!stream.write(data)) {
+		stream.once('drain', cb);
+	} else {
+		process.nextTick(cb);
+	}
 }
 
 // Wait for cb to be called before doing any other write.
 write('hello', () => {
-    console.log('Write completed, do more writes now.');
+	console.log('Write completed, do more writes now.');
 });
 ```
 
@@ -958,7 +958,7 @@ encoding has been specified for the stream using the
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-    console.log(`Received ${chunk.length} bytes of data.`);
+	console.log(`Received ${chunk.length} bytes of data.`);
 });
 ```
 
@@ -979,10 +979,10 @@ consumed.
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-    console.log(`Received ${chunk.length} bytes of data.`);
+	console.log(`Received ${chunk.length} bytes of data.`);
 });
 readable.on('end', () => {
-    console.log('There will be no more data.');
+	console.log('There will be no more data.');
 });
 ```
 
@@ -1032,12 +1032,12 @@ available, [`stream.read()`][stream-read] will return that data.
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('readable', function() {
-    // There is some data to read now.
-    let data;
+	// There is some data to read now.
+	let data;
 
-    while ((data = this.read()) !== null) {
-        console.log(data);
-    }
+	while ((data = this.read()) !== null) {
+		console.log(data);
+	}
 });
 ```
 
@@ -1050,10 +1050,10 @@ in the following example, `foo.txt` is an empty file:
 const fs = require('fs');
 const rr = fs.createReadStream('foo.txt');
 rr.on('readable', () => {
-    console.log(`readable: ${rr.read()}`);
+	console.log(`readable: ${rr.read()}`);
 });
 rr.on('end', () => {
-    console.log('end');
+	console.log('end');
 });
 ```
 
@@ -1171,13 +1171,13 @@ becomes available will remain in the internal buffer.
 ```js
 const readable = getReadableStreamSomehow();
 readable.on('data', (chunk) => {
-    console.log(`Received ${chunk.length} bytes of data.`);
-    readable.pause();
-    console.log('There will be no additional data for 1 second.');
-    setTimeout(() => {
-        console.log('Now data will start flowing again.');
-        readable.resume();
-    }, 1000);
+	console.log(`Received ${chunk.length} bytes of data.`);
+	readable.pause();
+	console.log('There will be no additional data for 1 second.');
+	setTimeout(() => {
+		console.log('Now data will start flowing again.');
+		readable.resume();
+	}, 1000);
 });
 ```
 
@@ -1235,7 +1235,7 @@ option can be passed as `false`, causing the destination stream to remain open:
 ```js
 reader.pipe(writer, { end: false });
 reader.on('end', () => {
-    writer.end('Goodbye\n');
+	writer.end('Goodbye\n');
 });
 ```
 
@@ -1281,17 +1281,17 @@ const readable = getReadableStreamSomehow();
 
 // 'readable' may be triggered multiple times as data is buffered in
 readable.on('readable', () => {
-    let chunk;
-    console.log('Stream is readable (new data received in buffer)');
-    // Use a loop to make sure we read all currently available data
-    while (null !== (chunk = readable.read())) {
-        console.log(`Read ${chunk.length} bytes of data...`);
-    }
+	let chunk;
+	console.log('Stream is readable (new data received in buffer)');
+	// Use a loop to make sure we read all currently available data
+	while (null !== (chunk = readable.read())) {
+		console.log(`Read ${chunk.length} bytes of data...`);
+	}
 });
 
 // 'end' will be triggered once when there is no more data available
 readable.on('end', () => {
-    console.log('Reached end of stream.');
+	console.log('Reached end of stream.');
 });
 ```
 
@@ -1310,14 +1310,14 @@ to collect chunks across multiple `'readable'` events:
 const chunks = [];
 
 readable.on('readable', () => {
-    let chunk;
-    while (null !== (chunk = readable.read())) {
-        chunks.push(chunk);
-    }
+	let chunk;
+	while (null !== (chunk = readable.read())) {
+		chunks.push(chunk);
+	}
 });
 
 readable.on('end', () => {
-    const content = chunks.join('');
+	const content = chunks.join('');
 });
 ```
 
@@ -1466,7 +1466,7 @@ stream without actually processing any of that data:
 getReadableStreamSomehow()
   .resume()
   .on('end', () => {
-      console.log('Reached the end, but did not read anything.');
+  	console.log('Reached the end, but did not read anything.');
   });
 ```
 
@@ -1501,8 +1501,8 @@ pulled from the stream as `Buffer` objects.
 const readable = getReadableStreamSomehow();
 readable.setEncoding('utf8');
 readable.on('data', (chunk) => {
-    assert.equal(typeof chunk, 'string');
-    console.log('Got %d characters of string data:', chunk.length);
+	assert.equal(typeof chunk, 'string');
+	console.log('Got %d characters of string data:', chunk.length);
 });
 ```
 
@@ -1531,10 +1531,10 @@ const writable = fs.createWriteStream('file.txt');
 // but only for the first second.
 readable.pipe(writable);
 setTimeout(() => {
-    console.log('Stop writing to file.txt.');
-    readable.unpipe(writable);
-    console.log('Manually close the file stream.');
-    writable.end();
+	console.log('Stop writing to file.txt.');
+	readable.unpipe(writable);
+	console.log('Manually close the file stream.');
+	writable.end();
 }, 1000);
 ```
 
@@ -1578,33 +1578,33 @@ section for more information.
 // Call the callback with (error, header, stream).
 const { StringDecoder } = require('string_decoder');
 function parseHeader(stream, callback) {
-    stream.on('error', callback);
-    stream.on('readable', onReadable);
-    const decoder = new StringDecoder('utf8');
-    let header = '';
-    function onReadable() {
-        let chunk;
-        while (null !== (chunk = stream.read())) {
-            const str = decoder.write(chunk);
-            if (str.includes('\n\n')) {
-                // Found the header boundary.
-                const split = str.split(/\n\n/);
-                header += split.shift();
-                const remaining = split.join('\n\n');
-                const buf = Buffer.from(remaining, 'utf8');
-                stream.removeListener('error', callback);
-                // Remove the 'readable' listener before unshifting.
-                stream.removeListener('readable', onReadable);
-                if (buf.length)
-                    stream.unshift(buf);
-                // Now the body of the message can be read from the stream.
-                callback(null, header, stream);
-                return;
-            }
-            // Still reading the header.
-            header += str;
-        }
-    }
+	stream.on('error', callback);
+	stream.on('readable', onReadable);
+	const decoder = new StringDecoder('utf8');
+	let header = '';
+	function onReadable() {
+		let chunk;
+		while (null !== (chunk = stream.read())) {
+			const str = decoder.write(chunk);
+			if (str.includes('\n\n')) {
+				// Found the header boundary.
+				const split = str.split(/\n\n/);
+				header += split.shift();
+				const remaining = split.join('\n\n');
+				const buf = Buffer.from(remaining, 'utf8');
+				stream.removeListener('error', callback);
+				// Remove the 'readable' listener before unshifting.
+				stream.removeListener('readable', onReadable);
+				if (buf.length)
+					stream.unshift(buf);
+				// Now the body of the message can be read from the stream.
+				callback(null, header, stream);
+				return;
+			}
+			// Still reading the header.
+			header += str;
+		}
+	}
 }
 ```
 
@@ -1645,7 +1645,7 @@ const oreader = new OldReader();
 const myReader = new Readable().wrap(oreader);
 
 myReader.on('readable', () => {
-    myReader.read(); // etc.
+	myReader.read(); // etc.
 });
 ```
 
@@ -1665,12 +1665,12 @@ changes:
 const fs = require('fs');
 
 async function print(readable) {
-    readable.setEncoding('utf8');
-    let data = '';
-    for await (const chunk of readable) {
-        data += chunk;
-    }
-    console.log(data);
+	readable.setEncoding('utf8');
+	let data = '';
+	for await (const chunk of readable) {
+		data += chunk;
+	}
+	console.log(data);
 }
 
 print(fs.createReadStream('file')).catch(console.error);
@@ -1706,32 +1706,32 @@ emitted an error during iteration.
 const { Readable } = require('stream');
 
 async function printIterator(readable) {
-    for await (const chunk of readable.iterator({ destroyOnReturn: false })) {
-        console.log(chunk); // 1
-        break;
-    }
+	for await (const chunk of readable.iterator({ destroyOnReturn: false })) {
+		console.log(chunk); // 1
+		break;
+	}
 
-    console.log(readable.destroyed); // false
+	console.log(readable.destroyed); // false
 
-    for await (const chunk of readable.iterator({ destroyOnReturn: false })) {
-        console.log(chunk); // Will print 2 and then 3
-    }
+	for await (const chunk of readable.iterator({ destroyOnReturn: false })) {
+		console.log(chunk); // Will print 2 and then 3
+	}
 
-    console.log(readable.destroyed); // True, stream was totally consumed
+	console.log(readable.destroyed); // True, stream was totally consumed
 }
 
 async function printSymbolAsyncIterator(readable) {
-    for await (const chunk of readable) {
-        console.log(chunk); // 1
-        break;
-    }
+	for await (const chunk of readable) {
+		console.log(chunk); // 1
+		break;
+	}
 
-    console.log(readable.destroyed); // true
+	console.log(readable.destroyed); // true
 }
 
 async function showBoth() {
-    await printIterator(Readable.from([1, 2, 3]));
-    await printSymbolAsyncIterator(Readable.from([1, 2, 3]));
+	await printIterator(Readable.from([1, 2, 3]));
+	await printSymbolAsyncIterator(Readable.from([1, 2, 3]));
 }
 
 showBoth();
@@ -1770,17 +1770,17 @@ import { Resolver } from 'dns/promises';
 
 // With a synchronous mapper.
 for await (const chunk of Readable.from([1, 2, 3, 4]).map((x) => x * 2)) {
-    console.log(chunk); // 2, 4, 6, 8
+	console.log(chunk); // 2, 4, 6, 8
 }
 // With an asynchronous mapper, making at most 2 queries at a time.
 const resolver = new Resolver();
 const dnsResults = Readable.from([
-    'nodejs.org',
-    'openjsf.org',
-    'www.linuxfoundation.org',
+	'nodejs.org',
+	'openjsf.org',
+	'www.linuxfoundation.org',
 ]).map((domain) => resolver.resolve4(domain), { concurrency: 2 });
 for await (const result of dnsResults) {
-    console.log(result); // Logs the DNS result of resolver.resolve4.
+	console.log(result); // Logs the DNS result of resolver.resolve4.
 }
 ```
 
@@ -1817,21 +1817,21 @@ import { Resolver } from 'dns/promises';
 
 // With a synchronous predicate.
 for await (const chunk of Readable.from([1, 2, 3, 4]).filter((x) => x > 2)) {
-    console.log(chunk); // 3, 4
+	console.log(chunk); // 3, 4
 }
 // With an asynchronous predicate, making at most 2 queries at a time.
 const resolver = new Resolver();
 const dnsResults = Readable.from([
-    'nodejs.org',
-    'openjsf.org',
-    'www.linuxfoundation.org',
+	'nodejs.org',
+	'openjsf.org',
+	'www.linuxfoundation.org',
 ]).filter(async (domain) => {
-    const { address } = await resolver.resolve4(domain, { ttl: true });
-    return address.ttl > 60;
+	const { address } = await resolver.resolve4(domain, { ttl: true });
+	return address.ttl > 60;
 }, { concurrency: 2 });
 for await (const result of dnsResults) {
-    // Logs domains with more than 60 seconds on the resolved dns record.
-    console.log(result);
+	// Logs domains with more than 60 seconds on the resolved dns record.
+	console.log(result);
 }
 ```
 
@@ -1875,21 +1875,21 @@ import { Resolver } from 'dns/promises';
 
 // With a synchronous predicate.
 for await (const chunk of Readable.from([1, 2, 3, 4]).filter((x) => x > 2)) {
-    console.log(chunk); // 3, 4
+	console.log(chunk); // 3, 4
 }
 // With an asynchronous predicate, making at most 2 queries at a time.
 const resolver = new Resolver();
 const dnsResults = Readable.from([
-    'nodejs.org',
-    'openjsf.org',
-    'www.linuxfoundation.org',
+	'nodejs.org',
+	'openjsf.org',
+	'www.linuxfoundation.org',
 ]).map(async (domain) => {
-    const { address } = await resolver.resolve4(domain, { ttl: true });
-    return address;
+	const { address } = await resolver.resolve4(domain, { ttl: true });
+	return address;
 }, { concurrency: 2 });
 await dnsResults.forEach((result) => {
-    // Logs result, similar to `for await (const result of dnsResults)`
-    console.log(result);
+	// Logs result, similar to `for await (const result of dnsResults)`
+	console.log(result);
 });
 console.log('done'); // Stream has finished
 ```
@@ -1923,12 +1923,12 @@ await Readable.from([1, 2, 3, 4]).toArray(); // [1, 2, 3, 4]
 // Make dns queries concurrently using .map and collect
 // the results into an array using toArray
 const dnsResults = await Readable.from([
-    'nodejs.org',
-    'openjsf.org',
-    'www.linuxfoundation.org',
+	'nodejs.org',
+	'openjsf.org',
+	'www.linuxfoundation.org',
 ]).map(async (domain) => {
-    const { address } = await resolver.resolve4(domain, { ttl: true });
-    return address;
+	const { address } = await resolver.resolve4(domain, { ttl: true });
+	return address;
 }, { concurrency: 2 }).toArray();
 ```
 
@@ -1970,12 +1970,12 @@ await Readable.from([1, 2, 3, 4]).some((x) => x < 0); // false
 
 // With an asynchronous predicate, making at most 2 file checks at a time.
 const anyBigFile = await Readable.from([
-    'file1',
-    'file2',
-    'file3',
+	'file1',
+	'file2',
+	'file3',
 ]).some(async (fileName) => {
-    const stats = await stat(fileName);
-    return stat.size > 1024 * 1024;
+	const stats = await stat(fileName);
+	return stat.size > 1024 * 1024;
 }, { concurrency: 2 });
 console.log(anyBigFile); // `true` if any file in the list is bigger than 1MB
 console.log('done'); // Stream has finished
@@ -2020,12 +2020,12 @@ await Readable.from([1, 2, 3, 4]).find((x) => x > 10); // undefined
 
 // With an asynchronous predicate, making at most 2 file checks at a time.
 const foundBigFile = await Readable.from([
-    'file1',
-    'file2',
-    'file3',
+	'file1',
+	'file2',
+	'file3',
 ]).find(async (fileName) => {
-    const stats = await stat(fileName);
-    return stat.size > 1024 * 1024;
+	const stats = await stat(fileName);
+	return stat.size > 1024 * 1024;
 }, { concurrency: 2 });
 console.log(foundBigFile); // File name of large file, if any file in the list is bigger than 1MB
 console.log('done'); // Stream has finished
@@ -2068,12 +2068,12 @@ await Readable.from([1, 2, 3, 4]).every((x) => x > 0); // true
 
 // With an asynchronous predicate, making at most 2 file checks at a time.
 const allBigFiles = await Readable.from([
-    'file1',
-    'file2',
-    'file3',
+	'file1',
+	'file2',
+	'file3',
 ]).every(async (fileName) => {
-    const stats = await stat(fileName);
-    return stat.size > 1024 * 1024;
+	const stats = await stat(fileName);
+	return stat.size > 1024 * 1024;
 }, { concurrency: 2 });
 // `true` if all files in the list are bigger than 1MiB
 console.log(allBigFiles);
@@ -2114,18 +2114,18 @@ import { createReadStream } from 'fs';
 
 // With a synchronous mapper.
 for await (const chunk of Readable.from([1, 2, 3, 4]).flatMap((x) => [x, x])) {
-    console.log(chunk); // 1, 1, 2, 2, 3, 3, 4, 4
+	console.log(chunk); // 1, 1, 2, 2, 3, 3, 4, 4
 }
 // With an asynchronous mapper, combine the contents of 4 files
 const concatResult = Readable.from([
-    './1.mjs',
-    './2.mjs',
-    './3.mjs',
-    './4.mjs',
+	'./1.mjs',
+	'./2.mjs',
+	'./3.mjs',
+	'./4.mjs',
 ]).flatMap((fileName) => createReadStream(fileName));
 for await (const result of concatResult) {
-    // This will contain the contents (all chunks) of all 4 files
-    console.log(result);
+	// This will contain the contents (all chunks) of all 4 files
+	console.log(result);
 }
 ```
 
@@ -2235,7 +2235,7 @@ initial value. If the stream is empty, the promise is rejected with a
 import { Readable } from 'stream';
 
 const ten = await Readable.from([1, 2, 3, 4]).reduce((previous, data) => {
-    return previous + data;
+	return previous + data;
 });
 console.log(ten); // 10
 ```
@@ -2372,11 +2372,11 @@ const { finished } = require('stream');
 const rs = fs.createReadStream('archive.tar');
 
 finished(rs, (err) => {
-    if (err) {
-        console.error('Stream failed.', err);
-    } else {
-        console.log('Stream is done reading.');
-    }
+	if (err) {
+		console.error('Stream failed.', err);
+	} else {
+		console.log('Stream is done reading.');
+	}
 });
 
 rs.resume(); // Drain the stream.
@@ -2394,8 +2394,8 @@ const { finished } = require('stream/promises');
 const rs = fs.createReadStream('archive.tar');
 
 async function run() {
-    await finished(rs);
-    console.log('Stream is done reading.');
+	await finished(rs);
+	console.log('Stream is done reading.');
 }
 
 run().catch(console.error);
@@ -2411,8 +2411,8 @@ invoked in the callback:
 
 ```js
 const cleanup = finished(rs, (err) => {
-    cleanup();
-    // ...
+	cleanup();
+	// ...
 });
 ```
 
@@ -2467,16 +2467,16 @@ const zlib = require('zlib');
 // A pipeline to gzip a potentially huge tar file efficiently:
 
 pipeline(
-    fs.createReadStream('archive.tar'),
-    zlib.createGzip(),
-    fs.createWriteStream('archive.tar.gz'),
-    (err) => {
-        if (err) {
-            console.error('Pipeline failed.', err);
-        } else {
-            console.log('Pipeline succeeded.');
-        }
-    }
+	fs.createReadStream('archive.tar'),
+	zlib.createGzip(),
+	fs.createWriteStream('archive.tar.gz'),
+	(err) => {
+		if (err) {
+			console.error('Pipeline failed.', err);
+		} else {
+			console.log('Pipeline succeeded.');
+		}
+	}
 );
 ```
 
@@ -2490,12 +2490,12 @@ receive an options argument as the last parameter with a
 const { pipeline } = require('stream/promises');
 
 async function run() {
-    await pipeline(
-        fs.createReadStream('archive.tar'),
-        zlib.createGzip(),
-        fs.createWriteStream('archive.tar.gz')
-    );
-    console.log('Pipeline succeeded.');
+	await pipeline(
+		fs.createReadStream('archive.tar'),
+		zlib.createGzip(),
+		fs.createWriteStream('archive.tar.gz')
+	);
+	console.log('Pipeline succeeded.');
 }
 
 run().catch(console.error);
@@ -2508,16 +2508,16 @@ as the last argument:
 const { pipeline } = require('stream/promises');
 
 async function run() {
-    const ac = new AbortController();
-    const signal = ac.signal;
+	const ac = new AbortController();
+	const signal = ac.signal;
 
-    setTimeout(() => ac.abort(), 1);
-    await pipeline(
-        fs.createReadStream('archive.tar'),
-        zlib.createGzip(),
-        fs.createWriteStream('archive.tar.gz'),
-        { signal },
-    );
+	setTimeout(() => ac.abort(), 1);
+	await pipeline(
+		fs.createReadStream('archive.tar'),
+		zlib.createGzip(),
+		fs.createWriteStream('archive.tar.gz'),
+		{ signal },
+	);
 }
 
 run().catch(console.error); // AbortError
@@ -2530,17 +2530,17 @@ const { pipeline } = require('stream/promises');
 const fs = require('fs');
 
 async function run() {
-    await pipeline(
-        fs.createReadStream('lowercase.txt'),
-        async function* (source, { signal }) {
-            source.setEncoding('utf8');  // Work with strings rather than `Buffer`s.
-            for await (const chunk of source) {
-                yield await processChunk(chunk, { signal });
-            }
-        },
-        fs.createWriteStream('uppercase.txt')
-    );
-    console.log('Pipeline succeeded.');
+	await pipeline(
+		fs.createReadStream('lowercase.txt'),
+		async function* (source, { signal }) {
+			source.setEncoding('utf8');  // Work with strings rather than `Buffer`s.
+			for await (const chunk of source) {
+				yield await processChunk(chunk, { signal });
+			}
+		},
+		fs.createWriteStream('uppercase.txt')
+	);
+	console.log('Pipeline succeeded.');
 }
 
 run().catch(console.error);
@@ -2555,14 +2555,14 @@ const { pipeline } = require('stream/promises');
 const fs = require('fs');
 
 async function run() {
-    await pipeline(
-        async function* ({ signal }) {
-            await someLongRunningfn({ signal });
-            yield 'asd';
-        },
-        fs.createWriteStream('uppercase.txt')
-    );
-    console.log('Pipeline succeeded.');
+	await pipeline(
+		async function* ({ signal }) {
+			await someLongRunningfn({ signal });
+			yield 'asd';
+		},
+		fs.createWriteStream('uppercase.txt')
+	);
+	console.log('Pipeline succeeded.');
 }
 
 run().catch(console.error);
@@ -2590,14 +2590,14 @@ const http = require('http');
 const { pipeline } = require('stream');
 
 const server = http.createServer((req, res) => {
-    const fileStream = fs.createReadStream('./fileNotExist.txt');
-    pipeline(fileStream, res, (err) => {
-        if (err) {
-            console.log(err); // No such file
-            // this message can't be sent once `pipeline` already destroyed the socket
-            return res.end('error!!!');
-        }
-    });
+	const fileStream = fs.createReadStream('./fileNotExist.txt');
+	pipeline(fileStream, res, (err) => {
+		if (err) {
+			console.log(err); // No such file
+			// this message can't be sent once `pipeline` already destroyed the socket
+			return res.end('error!!!');
+		}
+	});
 });
 ```
 
@@ -2630,20 +2630,20 @@ If passed a `Function` it must be a factory method taking a `source`
 import { compose, Transform } from 'stream';
 
 const removeSpaces = new Transform({
-    transform(chunk, encoding, callback) {
-        callback(null, String(chunk).replace(' ', ''));
-    }
+	transform(chunk, encoding, callback) {
+		callback(null, String(chunk).replace(' ', ''));
+	}
 });
 
 async function* toUpper(source) {
-    for await (const chunk of source) {
-        yield String(chunk).toUpperCase();
-    }
+	for await (const chunk of source) {
+		yield String(chunk).toUpperCase();
+	}
 }
 
 let res = '';
 for await (const buf of compose(removeSpaces, toUpper).end('hello world')) {
-    res += buf;
+	res += buf;
 }
 
 console.log(res); // prints 'HELLOWORLD'
@@ -2666,24 +2666,24 @@ import { finished } from 'stream/promises';
 
 // Convert AsyncIterable into readable Duplex.
 const s1 = compose(async function*() {
-    yield 'Hello';
-    yield 'World';
+	yield 'Hello';
+	yield 'World';
 }());
 
 // Convert AsyncGenerator into transform Duplex.
 const s2 = compose(async function*(source) {
-    for await (const chunk of source) {
-        yield String(chunk).toUpperCase();
-    }
+	for await (const chunk of source) {
+		yield String(chunk).toUpperCase();
+	}
 });
 
 let res = '';
 
 // Convert AsyncFunction into writable Duplex.
 const s3 = compose(async function(source) {
-    for await (const chunk of source) {
-        res += chunk;
-    }
+	for await (const chunk of source) {
+		res += chunk;
+	}
 });
 
 await finished(compose(s1, s2, s3));
@@ -2713,14 +2713,14 @@ A utility method for creating readable streams out of iterators.
 const { Readable } = require('stream');
 
 async function * generate() {
-    yield 'hello';
-    yield 'streams';
+	yield 'hello';
+	yield 'streams';
 }
 
 const readable = Readable.from(generate());
 
 readable.on('data', (chunk) => {
-    console.log(chunk);
+	console.log(chunk);
 });
 ```
 
@@ -2908,8 +2908,8 @@ const fs = require('fs');
 
 const controller = new AbortController();
 const read = addAbortSignal(
-    controller.signal,
-    fs.createReadStream(('object.json'))
+	controller.signal,
+	fs.createReadStream(('object.json'))
 );
 // Later, abort the operation closing the stream
 controller.abort();
@@ -2921,21 +2921,21 @@ Or using an `AbortSignal` with a readable stream as an async iterable:
 const controller = new AbortController();
 setTimeout(() => controller.abort(), 10_000); // set a timeout
 const stream = addAbortSignal(
-    controller.signal,
-    fs.createReadStream(('object.json'))
+	controller.signal,
+	fs.createReadStream(('object.json'))
 );
 (async () => {
-    try {
-        for await (const chunk of stream) {
-            await process(chunk);
-        }
-    } catch (e) {
-        if (e.name === 'AbortError') {
-            // The operation was cancelled
-        } else {
-            throw e;
-        }
-    }
+	try {
+		for await (const chunk of stream) {
+			await process(chunk);
+		}
+	} catch (e) {
+		if (e.name === 'AbortError') {
+			// The operation was cancelled
+		} else {
+			throw e;
+		}
+	}
 })();
 ```
 
@@ -2957,10 +2957,10 @@ parent class constructor:
 const { Writable } = require('stream');
 
 class MyWritable extends Writable {
-    constructor({ highWaterMark, ...options }) {
-        super({ highWaterMark });
-    // ...
-    }
+	constructor({ highWaterMark, ...options }) {
+		super({ highWaterMark });
+		// ...
+	}
 }
 ```
 
@@ -3008,15 +3008,15 @@ objects and passing appropriate methods as constructor options.
 const { Writable } = require('stream');
 
 const myWritable = new Writable({
-    construct(callback) {
-    // Initialize state and load resources...
-    },
-    write(chunk, encoding, callback) {
-    // ...
-    },
-    destroy() {
-    // Free resources...
-    }
+	construct(callback) {
+		// Initialize state and load resources...
+	},
+	write(chunk, encoding, callback) {
+		// ...
+	},
+	destroy() {
+		// Free resources...
+	}
 });
 ```
 
@@ -3090,11 +3090,11 @@ changes:
 const { Writable } = require('stream');
 
 class MyWritable extends Writable {
-    constructor(options) {
-    // Calls the stream.Writable() constructor.
-        super(options);
-    // ...
-    }
+	constructor(options) {
+		// Calls the stream.Writable() constructor.
+		super(options);
+		// ...
+	}
 }
 ```
 
@@ -3105,9 +3105,9 @@ const { Writable } = require('stream');
 const util = require('util');
 
 function MyWritable(options) {
-    if (!(this instanceof MyWritable))
-        return new MyWritable(options);
-    Writable.call(this, options);
+	if (!(this instanceof MyWritable))
+		return new MyWritable(options);
+	Writable.call(this, options);
 }
 util.inherits(MyWritable, Writable);
 ```
@@ -3118,12 +3118,12 @@ Or, using the simplified constructor approach:
 const { Writable } = require('stream');
 
 const myWritable = new Writable({
-    write(chunk, encoding, callback) {
-    // ...
-    },
-    writev(chunks, callback) {
-    // ...
-    }
+	write(chunk, encoding, callback) {
+		// ...
+	},
+	writev(chunks, callback) {
+		// ...
+	}
 });
 ```
 
@@ -3136,13 +3136,13 @@ const { Writable } = require('stream');
 
 const controller = new AbortController();
 const myWritable = new Writable({
-    write(chunk, encoding, callback) {
-    // ...
-    },
-    writev(chunks, callback) {
-    // ...
-    },
-    signal: controller.signal
+	write(chunk, encoding, callback) {
+		// ...
+	},
+	writev(chunks, callback) {
+		// ...
+	},
+	signal: controller.signal
 });
 // Later, abort the operation closing the stream
 controller.abort();
@@ -3171,31 +3171,31 @@ const { Writable } = require('stream');
 const fs = require('fs');
 
 class WriteStream extends Writable {
-    constructor(filename) {
-        super();
-        this.filename = filename;
-        this.fd = null;
-    }
-    _construct(callback) {
-        fs.open(this.filename, (err, fd) => {
-            if (err) {
-                callback(err);
-            } else {
-                this.fd = fd;
-                callback();
-            }
-        });
-    }
-    _write(chunk, encoding, callback) {
-        fs.write(this.fd, chunk, callback);
-    }
-    _destroy(err, callback) {
-        if (this.fd) {
-            fs.close(this.fd, (er) => callback(er || err));
-        } else {
-            callback(err);
-        }
-    }
+	constructor(filename) {
+		super();
+		this.filename = filename;
+		this.fd = null;
+	}
+	_construct(callback) {
+		fs.open(this.filename, (err, fd) => {
+			if (err) {
+				callback(err);
+			} else {
+				this.fd = fd;
+				callback();
+			}
+		});
+	}
+	_write(chunk, encoding, callback) {
+		fs.write(this.fd, chunk, callback);
+	}
+	_destroy(err, callback) {
+		if (this.fd) {
+			fs.close(this.fd, (er) => callback(er || err));
+		} else {
+			callback(err);
+		}
+	}
 }
 ```
 
@@ -3327,13 +3327,13 @@ error, the `Readable` stream will be unpiped.
 const { Writable } = require('stream');
 
 const myWritable = new Writable({
-    write(chunk, encoding, callback) {
-        if (chunk.toString().indexOf('a') >= 0) {
-            callback(new Error('chunk is invalid'));
-        } else {
-            callback();
-        }
-    }
+	write(chunk, encoding, callback) {
+		if (chunk.toString().indexOf('a') >= 0) {
+			callback(new Error('chunk is invalid'));
+		} else {
+			callback();
+		}
+	}
 });
 ```
 
@@ -3348,13 +3348,13 @@ required elements of a custom [`Writable`][] stream instance:
 const { Writable } = require('stream');
 
 class MyWritable extends Writable {
-    _write(chunk, encoding, callback) {
-        if (chunk.toString().indexOf('a') >= 0) {
-            callback(new Error('chunk is invalid'));
-        } else {
-            callback();
-        }
-    }
+	_write(chunk, encoding, callback) {
+		if (chunk.toString().indexOf('a') >= 0) {
+			callback(new Error('chunk is invalid'));
+		} else {
+			callback();
+		}
+	}
 }
 ```
 
@@ -3370,22 +3370,22 @@ const { Writable } = require('stream');
 const { StringDecoder } = require('string_decoder');
 
 class StringWritable extends Writable {
-    constructor(options) {
-        super(options);
-        this._decoder = new StringDecoder(options && options.defaultEncoding);
-        this.data = '';
-    }
-    _write(chunk, encoding, callback) {
-        if (encoding === 'buffer') {
-            chunk = this._decoder.write(chunk);
-        }
-        this.data += chunk;
-        callback();
-    }
-    _final(callback) {
-        this.data += this._decoder.end();
-        callback();
-    }
+	constructor(options) {
+		super(options);
+		this._decoder = new StringDecoder(options && options.defaultEncoding);
+		this.data = '';
+	}
+	_write(chunk, encoding, callback) {
+		if (encoding === 'buffer') {
+			chunk = this._decoder.write(chunk);
+		}
+		this.data += chunk;
+		callback();
+	}
+	_final(callback) {
+		this.data += this._decoder.end();
+		callback();
+	}
 }
 
 const euro = [[0xE2, 0x82], [0xAC]].map(Buffer.from);
@@ -3450,11 +3450,11 @@ changes:
 const { Readable } = require('stream');
 
 class MyReadable extends Readable {
-    constructor(options) {
-    // Calls the stream.Readable(options) constructor.
-        super(options);
-    // ...
-    }
+	constructor(options) {
+		// Calls the stream.Readable(options) constructor.
+		super(options);
+		// ...
+	}
 }
 ```
 
@@ -3465,9 +3465,9 @@ const { Readable } = require('stream');
 const util = require('util');
 
 function MyReadable(options) {
-    if (!(this instanceof MyReadable))
-        return new MyReadable(options);
-    Readable.call(this, options);
+	if (!(this instanceof MyReadable))
+		return new MyReadable(options);
+	Readable.call(this, options);
 }
 util.inherits(MyReadable, Readable);
 ```
@@ -3478,9 +3478,9 @@ Or, using the simplified constructor approach:
 const { Readable } = require('stream');
 
 const myReadable = new Readable({
-    read(size) {
-    // ...
-    }
+	read(size) {
+		// ...
+	}
 });
 ```
 
@@ -3492,10 +3492,10 @@ on the readable created.
 const { Readable } = require('stream');
 const controller = new AbortController();
 const read = new Readable({
-    read(size) {
-    // ...
-    },
-    signal: controller.signal
+	read(size) {
+		// ...
+	},
+	signal: controller.signal
 });
 // Later, abort the operation closing the stream
 controller.abort();
@@ -3524,38 +3524,38 @@ const { Readable } = require('stream');
 const fs = require('fs');
 
 class ReadStream extends Readable {
-    constructor(filename) {
-        super();
-        this.filename = filename;
-        this.fd = null;
-    }
-    _construct(callback) {
-        fs.open(this.filename, (err, fd) => {
-            if (err) {
-                callback(err);
-            } else {
-                this.fd = fd;
-                callback();
-            }
-        });
-    }
-    _read(n) {
-        const buf = Buffer.alloc(n);
-        fs.read(this.fd, buf, 0, n, null, (err, bytesRead) => {
-            if (err) {
-                this.destroy(err);
-            } else {
-                this.push(bytesRead > 0 ? buf.slice(0, bytesRead) : null);
-            }
-        });
-    }
-    _destroy(err, callback) {
-        if (this.fd) {
-            fs.close(this.fd, (er) => callback(er || err));
-        } else {
-            callback(err);
-        }
-    }
+	constructor(filename) {
+		super();
+		this.filename = filename;
+		this.fd = null;
+	}
+	_construct(callback) {
+		fs.open(this.filename, (err, fd) => {
+			if (err) {
+				callback(err);
+			} else {
+				this.fd = fd;
+				callback();
+			}
+		});
+	}
+	_read(n) {
+		const buf = Buffer.alloc(n);
+		fs.read(this.fd, buf, 0, n, null, (err, bytesRead) => {
+			if (err) {
+				this.destroy(err);
+			} else {
+				this.push(bytesRead > 0 ? buf.slice(0, bytesRead) : null);
+			}
+		});
+	}
+	_destroy(err, callback) {
+		if (this.fd) {
+			fs.close(this.fd, (er) => callback(er || err));
+		} else {
+			callback(err);
+		}
+	}
 }
 ```
 
@@ -3653,28 +3653,28 @@ by the custom `Readable` instance:
 // an `onend` member that gets called when the data is over.
 
 class SourceWrapper extends Readable {
-    constructor(options) {
-        super(options);
+	constructor(options) {
+		super(options);
 
-        this._source = getLowLevelSourceObject();
+		this._source = getLowLevelSourceObject();
 
-        // Every time there's data, push it into the internal buffer.
-        this._source.ondata = (chunk) => {
-            // If push() returns false, then stop reading from source.
-            if (!this.push(chunk))
-                this._source.readStop();
-        };
+		// Every time there's data, push it into the internal buffer.
+		this._source.ondata = (chunk) => {
+			// If push() returns false, then stop reading from source.
+			if (!this.push(chunk))
+				this._source.readStop();
+		};
 
-        // When the source ends, push the EOF-signaling `null` chunk.
-        this._source.onend = () => {
-            this.push(null);
-        };
-    }
-    // _read() will be called when the stream wants to pull more data in.
-    // The advisory size argument is ignored in this case.
-    _read(size) {
-        this._source.readStart();
-    }
+		// When the source ends, push the EOF-signaling `null` chunk.
+		this._source.onend = () => {
+			this.push(null);
+		};
+	}
+	// _read() will be called when the stream wants to pull more data in.
+	// The advisory size argument is ignored in this case.
+	_read(size) {
+		this._source.readStart();
+	}
 }
 ```
 
@@ -3696,14 +3696,14 @@ Throwing an `Error` from within [`readable._read()`][] or manually emitting an
 const { Readable } = require('stream');
 
 const myReadable = new Readable({
-    read(size) {
-        const err = checkSomeErrorCondition();
-        if (err) {
-            this.destroy(err);
-        } else {
-            // Do some work.
-        }
-    }
+	read(size) {
+		const err = checkSomeErrorCondition();
+		if (err) {
+			this.destroy(err);
+		} else {
+			// Do some work.
+		}
+	}
 });
 ```
 
@@ -3718,22 +3718,22 @@ from 1 to 1,000,000 in ascending order, and then ends.
 const { Readable } = require('stream');
 
 class Counter extends Readable {
-    constructor(opt) {
-        super(opt);
-        this._max = 1000000;
-        this._index = 1;
-    }
+	constructor(opt) {
+		super(opt);
+		this._max = 1000000;
+		this._index = 1;
+	}
 
-    _read() {
-        const i = this._index++;
-        if (i > this._max)
-            this.push(null);
-        else {
-            const str = String(i);
-            const buf = Buffer.from(str, 'ascii');
-            this.push(buf);
-        }
-    }
+	_read() {
+		const i = this._index++;
+		if (i > this._max)
+			this.push(null);
+		else {
+			const str = String(i);
+			const buf = Buffer.from(str, 'ascii');
+			this.push(buf);
+		}
+	}
 }
 ```
 
@@ -3789,10 +3789,10 @@ changes:
 const { Duplex } = require('stream');
 
 class MyDuplex extends Duplex {
-    constructor(options) {
-        super(options);
-    // ...
-    }
+	constructor(options) {
+		super(options);
+		// ...
+	}
 }
 ```
 
@@ -3803,9 +3803,9 @@ const { Duplex } = require('stream');
 const util = require('util');
 
 function MyDuplex(options) {
-    if (!(this instanceof MyDuplex))
-        return new MyDuplex(options);
-    Duplex.call(this, options);
+	if (!(this instanceof MyDuplex))
+		return new MyDuplex(options);
+	Duplex.call(this, options);
 }
 util.inherits(MyDuplex, Duplex);
 ```
@@ -3816,12 +3816,12 @@ Or, using the simplified constructor approach:
 const { Duplex } = require('stream');
 
 const myDuplex = new Duplex({
-    read(size) {
-    // ...
-    },
-    write(chunk, encoding, callback) {
-    // ...
-    }
+	read(size) {
+		// ...
+	},
+	write(chunk, encoding, callback) {
+		// ...
+	}
 });
 ```
 
@@ -3832,37 +3832,37 @@ const { Transform, pipeline } = require('stream');
 const fs = require('fs');
 
 pipeline(
-    fs.createReadStream('object.json')
+	fs.createReadStream('object.json')
     .setEncoding('utf8'),
-    new Transform({
-        decodeStrings: false, // Accept string input rather than Buffers
-        construct(callback) {
-            this.data = '';
-            callback();
-        },
-        transform(chunk, encoding, callback) {
-            this.data += chunk;
-            callback();
-        },
-        flush(callback) {
-            try {
-                // Make sure is valid json.
-                JSON.parse(this.data);
-                this.push(this.data);
-                callback();
-            } catch (err) {
-                callback(err);
-            }
-        }
-    }),
-    fs.createWriteStream('valid-object.json'),
-    (err) => {
-        if (err) {
-            console.error('failed', err);
-        } else {
-            console.log('completed');
-        }
-    }
+	new Transform({
+		decodeStrings: false, // Accept string input rather than Buffers
+		construct(callback) {
+			this.data = '';
+			callback();
+		},
+		transform(chunk, encoding, callback) {
+			this.data += chunk;
+			callback();
+		},
+		flush(callback) {
+			try {
+				// Make sure is valid json.
+				JSON.parse(this.data);
+				this.push(this.data);
+				callback();
+			} catch (err) {
+				callback(err);
+			}
+		}
+	}),
+	fs.createWriteStream('valid-object.json'),
+	(err) => {
+		if (err) {
+			console.error('failed', err);
+		} else {
+			console.log('completed');
+		}
+	}
 );
 ```
 
@@ -3881,24 +3881,24 @@ const { Duplex } = require('stream');
 const kSource = Symbol('source');
 
 class MyDuplex extends Duplex {
-    constructor(source, options) {
-        super(options);
-        this[kSource] = source;
-    }
+	constructor(source, options) {
+		super(options);
+		this[kSource] = source;
+	}
 
-    _write(chunk, encoding, callback) {
-    // The underlying source only deals with strings.
-        if (Buffer.isBuffer(chunk))
-            chunk = chunk.toString();
-        this[kSource].writeSomeData(chunk);
-        callback();
-    }
+	_write(chunk, encoding, callback) {
+		// The underlying source only deals with strings.
+		if (Buffer.isBuffer(chunk))
+			chunk = chunk.toString();
+		this[kSource].writeSomeData(chunk);
+		callback();
+	}
 
-    _read(size) {
-        this[kSource].fetchSomeData(size, (data, encoding) => {
-            this.push(Buffer.from(data, encoding));
-        });
-    }
+	_read(size) {
+		this[kSource].fetchSomeData(size, (data, encoding) => {
+			this.push(Buffer.from(data, encoding));
+		});
+	}
 }
 ```
 
@@ -3922,18 +3922,18 @@ const { Transform } = require('stream');
 
 // All Transform streams are also Duplex Streams.
 const myTransform = new Transform({
-    writableObjectMode: true,
+	writableObjectMode: true,
 
-    transform(chunk, encoding, callback) {
-    // Coerce the chunk to a number if necessary.
-        chunk |= 0;
+	transform(chunk, encoding, callback) {
+		// Coerce the chunk to a number if necessary.
+		chunk |= 0;
 
-        // Transform the chunk into something else.
-        const data = chunk.toString(16);
+		// Transform the chunk into something else.
+		const data = chunk.toString(16);
 
-        // Push the data onto the readable queue.
-        callback(null, '0'.repeat(data.length % 2) + data);
-    }
+		// Push the data onto the readable queue.
+		callback(null, '0'.repeat(data.length % 2) + data);
+	}
 });
 
 myTransform.setEncoding('ascii');
@@ -3986,10 +3986,10 @@ output on the `Readable` side is not consumed.
 const { Transform } = require('stream');
 
 class MyTransform extends Transform {
-    constructor(options) {
-        super(options);
-    // ...
-    }
+	constructor(options) {
+		super(options);
+		// ...
+	}
 }
 ```
 
@@ -4000,9 +4000,9 @@ const { Transform } = require('stream');
 const util = require('util');
 
 function MyTransform(options) {
-    if (!(this instanceof MyTransform))
-        return new MyTransform(options);
-    Transform.call(this, options);
+	if (!(this instanceof MyTransform))
+		return new MyTransform(options);
+	Transform.call(this, options);
 }
 util.inherits(MyTransform, Transform);
 ```
@@ -4013,9 +4013,9 @@ Or, using the simplified constructor approach:
 const { Transform } = require('stream');
 
 const myTransform = new Transform({
-    transform(chunk, encoding, callback) {
-    // ...
-    }
+	transform(chunk, encoding, callback) {
+		// ...
+	}
 });
 ```
 
@@ -4098,12 +4098,12 @@ argument is passed to the `callback`, it will be forwarded on to the
 
 ```js
 transform.prototype._transform = function(data, encoding, callback) {
-    this.push(data);
-    callback();
+	this.push(data);
+	callback();
 };
 
 transform.prototype._transform = function(data, encoding, callback) {
-    callback(null, data);
+	callback(null, data);
 };
 ```
 
@@ -4139,9 +4139,9 @@ and async iterators are provided below.
 
 ```js
 (async function() {
-    for await (const chunk of readable) {
-        console.log(chunk);
-    }
+	for await (const chunk of readable) {
+		console.log(chunk);
+	}
 })();
 ```
 
@@ -4160,19 +4160,19 @@ const ac = new AbortController();
 const signal = ac.signal;
 
 async function * generate() {
-    yield 'a';
-    await someLongRunningFn({ signal });
-    yield 'b';
-    yield 'c';
+	yield 'a';
+	await someLongRunningFn({ signal });
+	yield 'b';
+	yield 'c';
 }
 
 const readable = Readable.from(generate());
 readable.on('close', () => {
-    ac.abort();
+	ac.abort();
 });
 
 readable.on('data', (chunk) => {
-    console.log(chunk);
+	console.log(chunk);
 });
 ```
 
@@ -4196,23 +4196,23 @@ const iterator = createIterator({ signal });
 
 // Callback Pattern
 pipeline(iterator, writable, (err, value) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log(value, 'value returned');
-    }
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(value, 'value returned');
+	}
 }).on('close', () => {
-    ac.abort();
+	ac.abort();
 });
 
 // Promise Pattern
 pipelinePromise(iterator, writable)
   .then((value) => {
-      console.log(value, 'value returned');
+  	console.log(value, 'value returned');
   })
   .catch((err) => {
-      console.error(err);
-      ac.abort();
+  	console.error(err);
+  	ac.abort();
   });
 ```
 
@@ -4254,11 +4254,11 @@ For example, consider the following code:
 // WARNING!  BROKEN!
 net.createServer((socket) => {
 
-    // We add an 'end' listener, but never consume the data.
-    socket.on('end', () => {
-    // It will never get here.
-        socket.end('The message was received but was not processed.\n');
-    });
+	// We add an 'end' listener, but never consume the data.
+	socket.on('end', () => {
+		// It will never get here.
+		socket.end('The message was received but was not processed.\n');
+	});
 
 }).listen(1337);
 ```
@@ -4272,12 +4272,12 @@ The workaround in this situation is to call the
 ```js
 // Workaround.
 net.createServer((socket) => {
-    socket.on('end', () => {
-        socket.end('The message was received but was not processed.\n');
-    });
+	socket.on('end', () => {
+		socket.end('The message was received but was not processed.\n');
+	});
 
-    // Start the flow of data, discarding it.
-    socket.resume();
+	// Start the flow of data, discarding it.
+	socket.resume();
 }).listen(1337);
 ```
 

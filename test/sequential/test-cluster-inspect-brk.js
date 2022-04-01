@@ -10,28 +10,28 @@ const cluster = require('cluster');
 const debuggerPort = common.PORT;
 
 if (cluster.isPrimary) {
-    function test(execArgv) {
+	function test(execArgv) {
 
-        cluster.setupPrimary({
-            execArgv: execArgv,
-            stdio: ['pipe', 'pipe', 'pipe', 'ipc', 'pipe']
-        });
+		cluster.setupPrimary({
+			execArgv: execArgv,
+			stdio: ['pipe', 'pipe', 'pipe', 'ipc', 'pipe']
+		});
 
-        const worker = cluster.fork();
+		const worker = cluster.fork();
 
-        // Debugger listening on port [port].
-        worker.process.stderr.once('data', common.mustCall(function() {
-            worker.process.kill('SIGTERM');
-        }));
+		// Debugger listening on port [port].
+		worker.process.stderr.once('data', common.mustCall(function() {
+			worker.process.kill('SIGTERM');
+		}));
 
-        worker.process.on('exit', common.mustCall(function(code, signal) {
-            assert.strictEqual(signal, 'SIGTERM');
-        }));
-    }
+		worker.process.on('exit', common.mustCall(function(code, signal) {
+			assert.strictEqual(signal, 'SIGTERM');
+		}));
+	}
 
-    test(['--inspect-brk']);
-    test([`--inspect-brk=${debuggerPort}`]);
+	test(['--inspect-brk']);
+	test([`--inspect-brk=${debuggerPort}`]);
 } else {
-    // Cluster worker is at a breakpoint, should not reach here.
-    assert.fail('Test failed: cluster worker should be at a breakpoint.');
+	// Cluster worker is at a breakpoint, should not reach here.
+	assert.fail('Test failed: cluster worker should be at a breakpoint.');
 }

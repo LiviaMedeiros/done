@@ -2,10 +2,10 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 if (!common.enoughTestMem)
-    common.skip('Insufficient memory for HTTP/2 benchmark test');
+	common.skip('Insufficient memory for HTTP/2 benchmark test');
 
 // Because the http benchmarks use hardcoded ports, this should be in sequential
 // rather than parallel to make sure it does not conflict with tests that choose

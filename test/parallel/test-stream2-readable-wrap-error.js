@@ -6,32 +6,32 @@ const { Readable } = require('stream');
 const EE = require('events').EventEmitter;
 
 class LegacyStream extends EE {
-    pause() {}
-    resume() {}
+	pause() {}
+	resume() {}
 }
 
 {
-    const err = new Error();
-    const oldStream = new LegacyStream();
-    const r = new Readable({ autoDestroy: true })
+	const err = new Error();
+	const oldStream = new LegacyStream();
+	const r = new Readable({ autoDestroy: true })
     .wrap(oldStream)
     .on('error', common.mustCall(() => {
-        assert.strictEqual(r._readableState.errorEmitted, true);
-        assert.strictEqual(r._readableState.errored, err);
-        assert.strictEqual(r.destroyed, true);
+    	assert.strictEqual(r._readableState.errorEmitted, true);
+    	assert.strictEqual(r._readableState.errored, err);
+    	assert.strictEqual(r.destroyed, true);
     }));
-    oldStream.emit('error', err);
+	oldStream.emit('error', err);
 }
 
 {
-    const err = new Error();
-    const oldStream = new LegacyStream();
-    const r = new Readable({ autoDestroy: false })
+	const err = new Error();
+	const oldStream = new LegacyStream();
+	const r = new Readable({ autoDestroy: false })
     .wrap(oldStream)
     .on('error', common.mustCall(() => {
-        assert.strictEqual(r._readableState.errorEmitted, true);
-        assert.strictEqual(r._readableState.errored, err);
-        assert.strictEqual(r.destroyed, false);
+    	assert.strictEqual(r._readableState.errorEmitted, true);
+    	assert.strictEqual(r._readableState.errored, err);
+    	assert.strictEqual(r.destroyed, false);
     }));
-    oldStream.emit('error', err);
+	oldStream.emit('error', err);
 }

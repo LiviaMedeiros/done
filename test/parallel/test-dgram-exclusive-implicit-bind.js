@@ -40,66 +40,66 @@ const dgram = require('dgram');
 // to error with ENOTSUP.
 
 if (cluster.isPrimary) {
-    let messages = 0;
-    const ports = {};
-    const pids = [];
+	let messages = 0;
+	const ports = {};
+	const pids = [];
 
-    const target = dgram.createSocket('udp4');
+	const target = dgram.createSocket('udp4');
 
-    const done = common.mustCall(function() {
-        cluster.disconnect();
-        target.close();
-    });
+	const done = common.mustCall(function() {
+		cluster.disconnect();
+		target.close();
+	});
 
-    target.on('message', function(buf, rinfo) {
-        if (pids.includes(buf.toString()))
-            return;
-        pids.push(buf.toString());
-        messages++;
-        ports[rinfo.port] = true;
+	target.on('message', function(buf, rinfo) {
+		if (pids.includes(buf.toString()))
+			return;
+		pids.push(buf.toString());
+		messages++;
+		ports[rinfo.port] = true;
 
-        if (common.isWindows && messages === 2) {
-            assert.strictEqual(Object.keys(ports).length, 2);
-            done();
-        }
+		if (common.isWindows && messages === 2) {
+			assert.strictEqual(Object.keys(ports).length, 2);
+			done();
+		}
 
-        if (!common.isWindows && messages === 4) {
-            assert.strictEqual(Object.keys(ports).length, 3);
-            done();
-        }
-    });
+		if (!common.isWindows && messages === 4) {
+			assert.strictEqual(Object.keys(ports).length, 3);
+			done();
+		}
+	});
 
-    target.on('listening', function() {
-        cluster.fork({ PORT: target.address().port });
-        cluster.fork({ PORT: target.address().port });
-        if (!common.isWindows) {
-            cluster.fork({ BOUND: 'y', PORT: target.address().port });
-            cluster.fork({ BOUND: 'y', PORT: target.address().port });
-        }
-    });
+	target.on('listening', function() {
+		cluster.fork({ PORT: target.address().port });
+		cluster.fork({ PORT: target.address().port });
+		if (!common.isWindows) {
+			cluster.fork({ BOUND: 'y', PORT: target.address().port });
+			cluster.fork({ BOUND: 'y', PORT: target.address().port });
+		}
+	});
 
-    target.bind({ port: 0, exclusive: true });
+	target.bind({ port: 0, exclusive: true });
 
-    return;
+	return;
 }
 
 const source = dgram.createSocket('udp4');
 
 source.on('close', function() {
-    clearInterval(interval);
+	clearInterval(interval);
 });
 
 if (process.env.BOUND === 'y') {
-    source.bind(0);
+	source.bind(0);
 } else {
-    // Cluster doesn't know about exclusive sockets, so it won't close them. This
-    // is expected, its the same situation for timers, outgoing tcp connections,
-    // etc, which also keep workers alive after disconnect was requested.
-    source.unref();
+	// Cluster doesn't know about exclusive sockets, so it won't close them. This
+	// is expected, its the same situation for timers, outgoing tcp connections,
+	// etc, which also keep workers alive after disconnect was requested.
+	source.unref();
 }
 
 assert(process.env.PORT);
 const buf = Buffer.from(process.pid.toString());
 const interval = setInterval(() => {
-    source.send(buf, process.env.PORT, '127.0.0.1');
+	source.send(buf, process.env.PORT, '127.0.0.1');
 }, 1).unref();

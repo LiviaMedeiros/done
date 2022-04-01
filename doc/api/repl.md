@@ -130,9 +130,9 @@ const msg = 'message';
 
 const r = repl.start('> ');
 Object.defineProperty(r.context, 'm', {
-    configurable: false,
-    enumerable: true,
-    value: msg
+	configurable: false,
+	enumerable: true,
+	value: msg
 });
 ```
 
@@ -290,7 +290,7 @@ const { Translator } = require('translator');
 const myTranslator = new Translator('en', 'fr');
 
 function myEval(cmd, context, filename, callback) {
-    callback(null, myTranslator.translate(cmd));
+	callback(null, myTranslator.translate(cmd));
 }
 
 repl.start({ prompt: '> ', eval: myEval });
@@ -304,22 +304,22 @@ can return an instance of `repl.Recoverable` to the provided callback function:
 
 ```js
 function myEval(cmd, context, filename, callback) {
-    let result;
-    try {
-        result = vm.runInThisContext(cmd);
-    } catch (e) {
-        if (isRecoverableError(e)) {
-            return callback(new repl.Recoverable(e));
-        }
-    }
-    callback(null, result);
+	let result;
+	try {
+		result = vm.runInThisContext(cmd);
+	} catch (e) {
+		if (isRecoverableError(e)) {
+			return callback(new repl.Recoverable(e));
+		}
+	}
+	callback(null, result);
 }
 
 function isRecoverableError(error) {
-    if (error.name === 'SyntaxError') {
-        return /^(Unexpected end of input|Unexpected token)/.test(error.message);
-    }
-    return false;
+	if (error.name === 'SyntaxError') {
+		return /^(Unexpected end of input|Unexpected token)/.test(error.message);
+	}
+	return false;
 }
 ```
 
@@ -360,11 +360,11 @@ const repl = require('repl');
 const r = repl.start({ prompt: '> ', eval: myEval, writer: myWriter });
 
 function myEval(cmd, context, filename, callback) {
-    callback(null, cmd);
+	callback(null, cmd);
 }
 
 function myWriter(output) {
-    return output.toUpperCase();
+	return output.toUpperCase();
 }
 ```
 
@@ -404,8 +404,8 @@ callback is invoked without any arguments.
 
 ```js
 replServer.on('exit', () => {
-    console.log('Received "exit" event from repl!');
-    process.exit();
+	console.log('Received "exit" event from repl!');
+	process.exit();
 });
 ```
 
@@ -428,7 +428,7 @@ state:
 const repl = require('repl');
 
 function initializeContext(context) {
-    context.m = 'test';
+	context.m = 'test';
 }
 
 const r = repl.start({ prompt: '> ' });
@@ -480,16 +480,16 @@ const repl = require('repl');
 
 const replServer = repl.start({ prompt: '> ' });
 replServer.defineCommand('sayhello', {
-    help: 'Say hello',
-    action(name) {
-        this.clearBufferedCommand();
-        console.log(`Hello, ${name}!`);
-        this.displayPrompt();
-    }
+	help: 'Say hello',
+	action(name) {
+		this.clearBufferedCommand();
+		console.log(`Hello, ${name}!`);
+		this.displayPrompt();
+	}
 });
 replServer.defineCommand('saybye', function saybye() {
-    console.log('Goodbye!');
-    this.close();
+	console.log('Goodbye!');
+	this.close();
 });
 ```
 
@@ -731,31 +731,31 @@ const repl = require('repl');
 let connections = 0;
 
 repl.start({
-    prompt: 'Node.js via stdin> ',
-    input: process.stdin,
-    output: process.stdout
+	prompt: 'Node.js via stdin> ',
+	input: process.stdin,
+	output: process.stdout
 });
 
 net.createServer((socket) => {
-    connections += 1;
-    repl.start({
-        prompt: 'Node.js via Unix socket> ',
-        input: socket,
-        output: socket
-    }).on('exit', () => {
-        socket.end();
-    });
+	connections += 1;
+	repl.start({
+		prompt: 'Node.js via Unix socket> ',
+		input: socket,
+		output: socket
+	}).on('exit', () => {
+		socket.end();
+	});
 }).listen('/tmp/node-repl-sock');
 
 net.createServer((socket) => {
-    connections += 1;
-    repl.start({
-        prompt: 'Node.js via TCP socket> ',
-        input: socket,
-        output: socket
-    }).on('exit', () => {
-        socket.end();
-    });
+	connections += 1;
+	repl.start({
+		prompt: 'Node.js via TCP socket> ',
+		input: socket,
+		output: socket
+	}).on('exit', () => {
+		socket.end();
+	});
 }).listen(5001);
 ```
 

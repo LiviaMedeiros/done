@@ -14,8 +14,8 @@ const { internalBinding } = require('internal/test/binding');
 const TTY = internalBinding('tty_wrap').TTY;
 
 {
-    const ttyIsEnumerable = Object.prototype.propertyIsEnumerable.bind(TTY);
-    assert.strictEqual(ttyIsEnumerable('bytesRead'), false);
-    assert.strictEqual(ttyIsEnumerable('fd'), false);
-    assert.strictEqual(ttyIsEnumerable('_externalStream'), false);
+	const ttyIsEnumerable = Object.prototype.propertyIsEnumerable.bind(TTY);
+	assert.strictEqual(ttyIsEnumerable('bytesRead'), false);
+	assert.strictEqual(ttyIsEnumerable('fd'), false);
+	assert.strictEqual(ttyIsEnumerable('_externalStream'), false);
 }

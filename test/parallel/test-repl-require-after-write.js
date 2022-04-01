@@ -22,10 +22,10 @@ child.stderr.on('data', common.mustNotCall());
 
 child.stdout.setEncoding('utf8');
 child.stdout.on('data', (c) => {
-    out += c;
+	out += c;
 });
 child.stdout.on('end', common.mustCall(() => {
-    assert.ok(out.endsWith('> 1\n> '));
+	assert.ok(out.endsWith('> 1\n> '));
 }));
 
 child.stdin.end(input);

@@ -25,32 +25,32 @@ const assert = require('assert');
 const util = require('util');
 
 const {
-    hijackStdout,
-    hijackStderr,
-    restoreStdout,
-    restoreStderr
+	hijackStdout,
+	hijackStderr,
+	restoreStdout,
+	restoreStderr
 } = require('../common/hijackstdio');
 
 assert.ok(process.stdout.writable);
 assert.ok(process.stderr.writable);
 // Support legacy API
 if (common.isMainThread) {
-    assert.strictEqual(typeof process.stdout.fd, 'number');
-    assert.strictEqual(typeof process.stderr.fd, 'number');
+	assert.strictEqual(typeof process.stdout.fd, 'number');
+	assert.strictEqual(typeof process.stderr.fd, 'number');
 }
 
 common.expectWarning(
-    'Warning',
-    [
-        ['Count for \'noLabel\' does not exist'],
-        ['No such label \'noLabel\' for console.timeLog()'],
-        ['No such label \'noLabel\' for console.timeEnd()'],
-        ['Count for \'default\' does not exist'],
-        ['No such label \'default\' for console.timeLog()'],
-        ['No such label \'default\' for console.timeEnd()'],
-        ['Label \'default\' already exists for console.time()'],
-        ['Label \'test\' already exists for console.time()'],
-    ]
+	'Warning',
+	[
+		['Count for \'noLabel\' does not exist'],
+		['No such label \'noLabel\' for console.timeLog()'],
+		['No such label \'noLabel\' for console.timeEnd()'],
+		['Count for \'default\' does not exist'],
+		['No such label \'default\' for console.timeLog()'],
+		['No such label \'default\' for console.timeEnd()'],
+		['Label \'default\' already exists for console.time()'],
+		['Label \'test\' already exists for console.time()'],
+	]
 );
 
 console.countReset('noLabel');
@@ -74,9 +74,9 @@ console.timeEnd();
 // Check that the `Error` is a `TypeError` but do not check the message as it
 // will be different in different JavaScript engines.
 assert.throws(() => console.time(Symbol('test')),
-              TypeError);
+														TypeError);
 assert.throws(() => console.timeEnd(Symbol('test')),
-              TypeError);
+														TypeError);
 
 
 // An Object with a custom inspect function.
@@ -86,11 +86,11 @@ const strings = [];
 const errStrings = [];
 process.stdout.isTTY = false;
 hijackStdout(function(data) {
-    strings.push(data);
+	strings.push(data);
 });
 process.stderr.isTTY = false;
 hijackStderr(function(data) {
-    errStrings.push(data);
+	errStrings.push(data);
 });
 
 // Test console.log() goes to stdout
@@ -137,9 +137,9 @@ console.dir({ foo: { bar: { baz: true } } }, { depth: 1 });
 // Test console.dirxml()
 console.dirxml(custom_inspect, custom_inspect);
 console.dirxml(
-    { foo: { bar: { baz: true } } },
-    { foo: { bar: { quux: false } } },
-    { foo: { bar: { quux: true } } }
+	{ foo: { bar: { baz: true } } },
+	{ foo: { bar: { quux: false } } },
+	{ foo: { bar: { quux: true } } }
 );
 
 // Test console.trace()
@@ -178,9 +178,9 @@ console.timeEnd(NaN);
 console.time('test');
 const time = console._times.get('test');
 setTimeout(() => {
-    console.time('test');
-    assert.deepStrictEqual(console._times.get('test'), time);
-    console.timeEnd('test');
+	console.time('test');
+	assert.deepStrictEqual(console._times.get('test'), time);
+	console.timeEnd('test');
 }, 1);
 
 console.time('log1');
@@ -191,7 +191,7 @@ console.timeEnd('log1');
 
 console.assert(false, '%s should', 'console.assert', 'not throw');
 assert.strictEqual(errStrings[errStrings.length - 1],
-                   'Assertion failed: console.assert should not throw\n');
+																			'Assertion failed: console.assert should not throw\n');
 
 console.assert(false);
 assert.strictEqual(errStrings[errStrings.length - 1], 'Assertion failed\n');
@@ -216,28 +216,28 @@ console.timeEnd('label3');
 assert.strictEqual(console._times.size, timesMapSize);
 
 const expectedStrings = [
-    'foo', 'foo bar', 'foo bar hop', "{ slashes: '\\\\\\\\' }", 'inspect',
+	'foo', 'foo bar', 'foo bar hop', "{ slashes: '\\\\\\\\' }", 'inspect',
 ];
 
 for (const expected of expectedStrings) {
-    assert.strictEqual(strings.shift(), `${expected}\n`);
-    assert.strictEqual(errStrings.shift(), `${expected}\n`);
+	assert.strictEqual(strings.shift(), `${expected}\n`);
+	assert.strictEqual(errStrings.shift(), `${expected}\n`);
 }
 
 for (const expected of expectedStrings) {
-    assert.strictEqual(strings.shift(), `${expected}\n`);
-    assert.strictEqual(errStrings.shift(), `${expected}\n`);
+	assert.strictEqual(strings.shift(), `${expected}\n`);
+	assert.strictEqual(errStrings.shift(), `${expected}\n`);
 }
 
 for (const expected of expectedStrings) {
-    assert.strictEqual(strings.shift(), `${expected}\n`);
+	assert.strictEqual(strings.shift(), `${expected}\n`);
 }
 
 assert.strictEqual(strings.shift(),
-                   "{\n  foo: 'bar',\n  [Symbol(nodejs.util.inspect.custom)]:" +
+																			"{\n  foo: 'bar',\n  [Symbol(nodejs.util.inspect.custom)]:" +
                     ' [Function: [nodejs.util.inspect.custom]]\n}\n');
 assert.strictEqual(strings.shift(),
-                   "{\n  foo: 'bar',\n  [Symbol(nodejs.util.inspect.custom)]:" +
+																			"{\n  foo: 'bar',\n  [Symbol(nodejs.util.inspect.custom)]:" +
                     ' [Function: [nodejs.util.inspect.custom]]\n}\n');
 assert.ok(strings.shift().includes('foo: [Object]'));
 assert.strictEqual(strings.shift().includes('baz'), false);
@@ -254,9 +254,9 @@ assert.match(strings.shift().trim(), /^hasOwnProperty: \d+(\.\d{1,3})?(ms|s)$/);
 // Verify that console.time() coerces label values to strings as expected
 assert.match(strings.shift().trim(), /^: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(),
-             /^\[object Object\]: \d+(\.\d{1,3})?(ms|s)$/);
+													/^\[object Object\]: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(),
-             /^\[object Object\]: \d+(\.\d{1,3})?(ms|s)$/);
+													/^\[object Object\]: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(), /^null: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(), /^default: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(), /^default: \d+(\.\d{1,3})?(ms|s)$/);
@@ -265,22 +265,22 @@ assert.match(strings.shift().trim(), /^NaN: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(), /^log1: \d+(\.\d{1,3})?(ms|s)$/);
 assert.match(strings.shift().trim(), /^log1: \d+(\.\d{1,3})?(ms|s) test$/);
 assert.match(strings.shift().trim(),
-             /^log1: \d+(\.\d{1,3})?(ms|s) {} \[ 1, 2, 3 ]$/);
+													/^log1: \d+(\.\d{1,3})?(ms|s) {} \[ 1, 2, 3 ]$/);
 assert.match(strings.shift().trim(), /^log1: \d+(\.\d{1,3})?(ms|s)$/);
 
 // Make sure that we checked all strings
 assert.strictEqual(strings.length, 0);
 
 assert.strictEqual(errStrings.shift().split('\n').shift(),
-                   'Trace: This is a {"formatted":"trace"} 10 foo');
+																			'Trace: This is a {"formatted":"trace"} 10 foo');
 
 // Hijack stderr to catch `process.emitWarning` which is using
 // `process.nextTick`
 hijackStderr(common.mustCall(function(data) {
-    restoreStderr();
+	restoreStderr();
 
-    // stderr.write will catch sync error, so use `process.nextTick` here
-    process.nextTick(function() {
-        assert.strictEqual(data.includes('noLabel'), true);
-    });
+	// stderr.write will catch sync error, so use `process.nextTick` here
+	process.nextTick(function() {
+		assert.strictEqual(data.includes('noLabel'), true);
+	});
 }));

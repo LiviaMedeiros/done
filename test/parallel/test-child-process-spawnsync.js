@@ -43,25 +43,25 @@ assert.strictEqual(ret_err.path, 'command_does_not_exist');
 assert.deepStrictEqual(ret_err.spawnargs, ['bar']);
 
 {
-    // Test the cwd option
-    const cwd = tmpdir.path;
-    const response = spawnSync(...common.pwdCommand, { cwd });
+	// Test the cwd option
+	const cwd = tmpdir.path;
+	const response = spawnSync(...common.pwdCommand, { cwd });
 
-    assert.strictEqual(response.stdout.toString().trim(), cwd);
+	assert.strictEqual(response.stdout.toString().trim(), cwd);
 }
 
 
 {
-    // Assert Buffer is the default encoding
-    const retDefault = spawnSync(...common.pwdCommand);
-    const retBuffer = spawnSync(...common.pwdCommand, { encoding: 'buffer' });
-    assert.deepStrictEqual(retDefault.output, retBuffer.output);
+	// Assert Buffer is the default encoding
+	const retDefault = spawnSync(...common.pwdCommand);
+	const retBuffer = spawnSync(...common.pwdCommand, { encoding: 'buffer' });
+	assert.deepStrictEqual(retDefault.output, retBuffer.output);
 
-    const retUTF8 = spawnSync(...common.pwdCommand, { encoding: 'utf8' });
-    const stringifiedDefault = [
-        null,
-        retDefault.stdout.toString(),
-        retDefault.stderr.toString(),
-    ];
-    assert.deepStrictEqual(retUTF8.output, stringifiedDefault);
+	const retUTF8 = spawnSync(...common.pwdCommand, { encoding: 'utf8' });
+	const stringifiedDefault = [
+		null,
+		retDefault.stdout.toString(),
+		retDefault.stderr.toString(),
+	];
+	assert.deepStrictEqual(retUTF8.output, stringifiedDefault);
 }

@@ -7,11 +7,11 @@ const input = new PassThrough();
 const output = new PassThrough();
 
 const r = repl.start({
-    input, output,
-    eval: common.mustCall((code, context, filename, cb) => {
-        r.setPrompt('prompt! ');
-        cb(new Error('err'));
-    })
+	input, output,
+	eval: common.mustCall((code, context, filename, cb) => {
+		r.setPrompt('prompt! ');
+		cb(new Error('err'));
+	})
 });
 
 input.end('foo\n');

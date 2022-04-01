@@ -8,54 +8,54 @@ const { addresses } = require('../common/internet');
 const assert = require('assert');
 
 assert.rejects(
-    dnsPromises.lookup(addresses.NOT_FOUND, {
-        hints: 0,
-        family: 0,
-        all: false
-    }),
-    {
-        code: 'ENOTFOUND',
-        message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
-    }
+	dnsPromises.lookup(addresses.NOT_FOUND, {
+		hints: 0,
+		family: 0,
+		all: false
+	}),
+	{
+		code: 'ENOTFOUND',
+		message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
+	}
 );
 
 assert.rejects(
-    dnsPromises.lookup(addresses.NOT_FOUND, {
-        hints: 0,
-        family: 0,
-        all: true
-    }),
-    {
-        code: 'ENOTFOUND',
-        message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
-    }
+	dnsPromises.lookup(addresses.NOT_FOUND, {
+		hints: 0,
+		family: 0,
+		all: true
+	}),
+	{
+		code: 'ENOTFOUND',
+		message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
+	}
 );
 
 dns.lookup(addresses.NOT_FOUND, {
-    hints: 0,
-    family: 0,
-    all: true
+	hints: 0,
+	family: 0,
+	all: true
 }, common.mustCall((error) => {
-    assert.strictEqual(error.code, 'ENOTFOUND');
-    assert.strictEqual(
-        error.message,
-        `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
-    );
-    assert.strictEqual(error.syscall, 'getaddrinfo');
-    assert.strictEqual(error.hostname, addresses.NOT_FOUND);
+	assert.strictEqual(error.code, 'ENOTFOUND');
+	assert.strictEqual(
+		error.message,
+		`getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
+	);
+	assert.strictEqual(error.syscall, 'getaddrinfo');
+	assert.strictEqual(error.hostname, addresses.NOT_FOUND);
 }));
 
 common.expectWarning('DeprecationWarning',
-                     'Type coercion of dns.lookup options is deprecated',
-                     'DEP0153');
+																					'Type coercion of dns.lookup options is deprecated',
+																					'DEP0153');
 
 assert.rejects(
-    dnsPromises.lookup(addresses.NOT_FOUND, {
-        family: 'IPv4',
-        all: 'all'
-    }),
-    {
-        code: 'ENOTFOUND',
-        message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
-    }
+	dnsPromises.lookup(addresses.NOT_FOUND, {
+		family: 'IPv4',
+		all: 'all'
+	}),
+	{
+		code: 'ENOTFOUND',
+		message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
+	}
 );

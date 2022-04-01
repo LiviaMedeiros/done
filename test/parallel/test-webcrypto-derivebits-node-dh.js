@@ -3,13 +3,13 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const assert = require('assert');
 const { subtle } = require('crypto').webcrypto;
 
 const kTestData = {
-    pkcs8: '308203260201003082019706092a864886f70d010301308201880282018100ff' +
+	pkcs8: '308203260201003082019706092a864886f70d010301308201880282018100ff' +
          'ffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc7402' +
          '0bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374f' +
          'e1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee' +
@@ -35,7 +35,7 @@ const kTestData = {
          'ed742ee97429e34de06c41c25563025285d5f8a43acdc57cf12779222ae125d5' +
          '438857d6bf6341815b9aebf6878fd23944cfd240e74caea13419163fde5ec1ec' +
          'fe2fb2e740b9301a9c04',
-    spki: '308203253082019706092a864886f70d010301308201880282018100fffffffff' +
+	spki: '308203253082019706092a864886f70d010301308201880282018100fffffffff' +
         'fffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b' +
         '139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d5' +
         '1c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a89' +
@@ -60,7 +60,7 @@ const kTestData = {
         '532e54e1bc9d933bd4db8dbfd43cf7839a9f64c135d2188896294d54cb7812e6e' +
         '9586a03e91893edf7240011e8cda8f59a4dde0ce6d3c40d85847a3985fa25967f' +
         'a2c9598b269ac28da067704f15eb5bb4d8afdea8c67f56f9b604e172bc',
-    result: '42e77c77568f4387858771b006bebf213a2894efed8efdcfe23640bbd6df765' +
+	result: '42e77c77568f4387858771b006bebf213a2894efed8efdcfe23640bbd6df765' +
           '1b2afa9f5acfba5b1d3db5401fd3427cd9226f6c2fdbd2b8fd7948e12cc7e016' +
           'eb2ed0e0fb02ce434c68c5d511ded05c1150718cf4c8b9db0adcc639a8b52b74' +
           'c2c90e2df5f6f55462d38e2d2769b4bd23bf0db8b4a82253addc1d5d6d19289d' +
@@ -75,145 +75,145 @@ const kTestData = {
 };
 
 async function prepareKeys() {
-    const [
-        privateKey,
-        publicKey,
-    ] = await Promise.all([
-        subtle.importKey(
-            'pkcs8',
-            Buffer.from(kTestData.pkcs8, 'hex'),
-            { name: 'NODE-DH' },
-            true,
-            ['deriveKey', 'deriveBits']),
-        subtle.importKey(
-            'spki',
-            Buffer.from(kTestData.spki, 'hex'),
-            { name: 'NODE-DH' },
-            true, []),
-    ]);
-    return {
-        privateKey,
-        publicKey,
-        result: kTestData.result,
-    };
+	const [
+		privateKey,
+		publicKey,
+	] = await Promise.all([
+		subtle.importKey(
+			'pkcs8',
+			Buffer.from(kTestData.pkcs8, 'hex'),
+			{ name: 'NODE-DH' },
+			true,
+			['deriveKey', 'deriveBits']),
+		subtle.importKey(
+			'spki',
+			Buffer.from(kTestData.spki, 'hex'),
+			{ name: 'NODE-DH' },
+			true, []),
+	]);
+	return {
+		privateKey,
+		publicKey,
+		result: kTestData.result,
+	};
 }
 
 (async function() {
-    const {
-        publicKey,
-        privateKey,
-        result
-    } = await prepareKeys();
+	const {
+		publicKey,
+		privateKey,
+		result
+	} = await prepareKeys();
 
-    {
-    // Good parameters
-        const bits = await subtle.deriveBits({
-            name: 'NODE-DH',
-            public: publicKey
-        }, privateKey, null);
+	{
+		// Good parameters
+		const bits = await subtle.deriveBits({
+			name: 'NODE-DH',
+			public: publicKey
+		}, privateKey, null);
 
-        assert(bits instanceof ArrayBuffer);
-        assert.strictEqual(Buffer.from(bits).toString('hex'), result);
-    }
+		assert(bits instanceof ArrayBuffer);
+		assert.strictEqual(Buffer.from(bits).toString('hex'), result);
+	}
 
-    {
-    // Case insensitivity
-        const bits = await subtle.deriveBits({
-            name: 'node-dH',
-            public: publicKey
-        }, privateKey, null);
+	{
+		// Case insensitivity
+		const bits = await subtle.deriveBits({
+			name: 'node-dH',
+			public: publicKey
+		}, privateKey, null);
 
-        assert.strictEqual(Buffer.from(bits).toString('hex'), result);
-    }
+		assert.strictEqual(Buffer.from(bits).toString('hex'), result);
+	}
 
-    {
-    // Short Result
-        const bits = await subtle.deriveBits({
-            name: 'NODE-DH',
-            public: publicKey
-        }, privateKey, 16);
+	{
+		// Short Result
+		const bits = await subtle.deriveBits({
+			name: 'NODE-DH',
+			public: publicKey
+		}, privateKey, 16);
 
-        assert.strictEqual(
-            Buffer.from(bits).toString('hex'),
-            result.slice(0, 4));
-    }
+		assert.strictEqual(
+			Buffer.from(bits).toString('hex'),
+			result.slice(0, 4));
+	}
 
-    {
-    // Too long result
-        await assert.rejects(subtle.deriveBits({
-            name: 'NODE-DH',
-            public: publicKey
-        }, privateKey, result.length * 16), {
-            message: /derived bit length is too small/
-        });
-    }
+	{
+		// Too long result
+		await assert.rejects(subtle.deriveBits({
+			name: 'NODE-DH',
+			public: publicKey
+		}, privateKey, result.length * 16), {
+			message: /derived bit length is too small/
+		});
+	}
 
-    {
-    // Non-multiple of 8
-        const bits = await subtle.deriveBits({
-            name: 'NODE-DH',
-            public: publicKey
-        }, privateKey, 15);
+	{
+		// Non-multiple of 8
+		const bits = await subtle.deriveBits({
+			name: 'NODE-DH',
+			public: publicKey
+		}, privateKey, 15);
 
-        assert.strictEqual(
-            Buffer.from(bits).toString('hex'),
-            result.slice(0, 2));
-    }
+		assert.strictEqual(
+			Buffer.from(bits).toString('hex'),
+			result.slice(0, 2));
+	}
 
-    // Error tests
-    {
-    // Missing public property
-        await assert.rejects(
-            subtle.deriveBits(
-                { name: 'NODE-DH' },
-                privateKey,
-                null),
-            { code: 'ERR_INVALID_ARG_TYPE' });
-    }
+	// Error tests
+	{
+		// Missing public property
+		await assert.rejects(
+			subtle.deriveBits(
+				{ name: 'NODE-DH' },
+				privateKey,
+				null),
+			{ code: 'ERR_INVALID_ARG_TYPE' });
+	}
 
-    {
-    // The public property is not a CryptoKey
-        await assert.rejects(
-            subtle.deriveBits(
-                {
-                    name: 'NODE-DH',
-                    public: { message: 'Not a CryptoKey' }
-                },
-                privateKey,
-                null),
-            { code: 'ERR_INVALID_ARG_TYPE' });
-    }
+	{
+		// The public property is not a CryptoKey
+		await assert.rejects(
+			subtle.deriveBits(
+				{
+					name: 'NODE-DH',
+					public: { message: 'Not a CryptoKey' }
+				},
+				privateKey,
+				null),
+			{ code: 'ERR_INVALID_ARG_TYPE' });
+	}
 
-    {
-    // Incorrect public key algorithm
-        const { publicKey } = await subtle.generateKey(
-            {
-                name: 'ECDSA',
-                namedCurve: 'P-521'
-            }, false, ['verify']);
+	{
+		// Incorrect public key algorithm
+		const { publicKey } = await subtle.generateKey(
+			{
+				name: 'ECDSA',
+				namedCurve: 'P-521'
+			}, false, ['verify']);
 
-        await assert.rejects(subtle.deriveBits({
-            name: 'NODE-DH',
-            public: publicKey
-        }, privateKey, null), {
-            message: /Keys must be DH keys/
-        });
-    }
+		await assert.rejects(subtle.deriveBits({
+			name: 'NODE-DH',
+			public: publicKey
+		}, privateKey, null), {
+			message: /Keys must be DH keys/
+		});
+	}
 
-    {
-    // Private key does not have correct usages
-        const privateKey = await subtle.importKey(
-            'pkcs8',
-            Buffer.from(kTestData.pkcs8, 'hex'),
-            {
-                name: 'NODE-DH',
-            }, false, ['deriveKey']);
+	{
+		// Private key does not have correct usages
+		const privateKey = await subtle.importKey(
+			'pkcs8',
+			Buffer.from(kTestData.pkcs8, 'hex'),
+			{
+				name: 'NODE-DH',
+			}, false, ['deriveKey']);
 
-        await assert.rejects(subtle.deriveBits({
-            name: 'NODE-DH',
-            public: publicKey,
-        }, privateKey, null), {
-            message: /baseKey does not have deriveBits usage/
-        });
-    }
+		await assert.rejects(subtle.deriveBits({
+			name: 'NODE-DH',
+			public: publicKey,
+		}, privateKey, null), {
+			message: /baseKey does not have deriveBits usage/
+		});
+	}
 })().then(common.mustCall());

@@ -28,10 +28,10 @@ Object.setPrototypeOf(MyEE.prototype, EventEmitter.prototype);
 Object.setPrototypeOf(MyEE, EventEmitter);
 
 function MyEE(cb) {
-    this.once(1, cb);
-    this.emit(1);
-    this.removeAllListeners();
-    EventEmitter.call(this);
+	this.once(1, cb);
+	this.emit(1);
+	this.removeAllListeners();
+	EventEmitter.call(this);
 }
 
 const myee = new MyEE(common.mustCall());
@@ -39,22 +39,22 @@ const myee = new MyEE(common.mustCall());
 Object.setPrototypeOf(ErrorEE.prototype, EventEmitter.prototype);
 Object.setPrototypeOf(ErrorEE, EventEmitter);
 function ErrorEE() {
-    this.emit('error', new Error('blerg'));
+	this.emit('error', new Error('blerg'));
 }
 
 assert.throws(function() {
-    new ErrorEE();
+	new ErrorEE();
 }, /blerg/);
 
 process.on('exit', function() {
-    assert(!(myee._events instanceof Object));
-    assert.deepStrictEqual(Object.keys(myee._events), []);
-    console.log('ok');
+	assert(!(myee._events instanceof Object));
+	assert.deepStrictEqual(Object.keys(myee._events), []);
+	console.log('ok');
 });
 
 
 function MyEE2() {
-    EventEmitter.call(this);
+	EventEmitter.call(this);
 }
 
 MyEE2.prototype = new EventEmitter();

@@ -62,49 +62,49 @@ assert.strictEqual(util.format('%d', -Infinity), '-Infinity');
 assert.strictEqual(util.format('%d %d', 42, 43), '42 43');
 assert.strictEqual(util.format('%d %d', 42), '42 %d');
 assert.strictEqual(
-    util.format('%d', 1180591620717411303424),
-    '1.1805916207174113e+21'
+	util.format('%d', 1180591620717411303424),
+	'1.1805916207174113e+21'
 );
 assert.strictEqual(
-    util.format('%d', 1180591620717411303424n),
-    '1180591620717411303424n'
+	util.format('%d', 1180591620717411303424n),
+	'1180591620717411303424n'
 );
 assert.strictEqual(
-    util.format('%d %d', 1180591620717411303424n, 12345678901234567890123n),
-    '1180591620717411303424n 12345678901234567890123n'
+	util.format('%d %d', 1180591620717411303424n, 12345678901234567890123n),
+	'1180591620717411303424n 12345678901234567890123n'
 );
 
 {
-    const { numericSeparator } = util.inspect.defaultOptions;
-    util.inspect.defaultOptions.numericSeparator = true;
+	const { numericSeparator } = util.inspect.defaultOptions;
+	util.inspect.defaultOptions.numericSeparator = true;
 
-    assert.strictEqual(
-        util.format('%d', 1180591620717411303424),
-        '1.1805916207174113e+21'
-    );
+	assert.strictEqual(
+		util.format('%d', 1180591620717411303424),
+		'1.1805916207174113e+21'
+	);
 
-    assert.strictEqual(
-        util.format(
-            // eslint-disable-next-line no-loss-of-precision
-            '%d %s %i', 118059162071741130342, 118059162071741130342, 123_123_123),
-        '118_059_162_071_741_140_000 118_059_162_071_741_140_000 123_123_123'
-    );
+	assert.strictEqual(
+		util.format(
+			// eslint-disable-next-line no-loss-of-precision
+			'%d %s %i', 118059162071741130342, 118059162071741130342, 123_123_123),
+		'118_059_162_071_741_140_000 118_059_162_071_741_140_000 123_123_123'
+	);
 
-    assert.strictEqual(
-        util.format(
-            '%d %s',
-            1_180_591_620_717_411_303_424n,
-            12_345_678_901_234_567_890_123n
-        ),
-        '1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n'
-    );
+	assert.strictEqual(
+		util.format(
+			'%d %s',
+			1_180_591_620_717_411_303_424n,
+			12_345_678_901_234_567_890_123n
+		),
+		'1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n'
+	);
 
-    assert.strictEqual(
-        util.format('%i', 1_180_591_620_717_411_303_424n),
-        '1_180_591_620_717_411_303_424n'
-    );
+	assert.strictEqual(
+		util.format('%i', 1_180_591_620_717_411_303_424n),
+		'1_180_591_620_717_411_303_424n'
+	);
 
-    util.inspect.defaultOptions.numericSeparator = numericSeparator;
+	util.inspect.defaultOptions.numericSeparator = numericSeparator;
 }
 // Integer format specifier
 assert.strictEqual(util.format('%i'), '%i');
@@ -121,33 +121,33 @@ assert.strictEqual(util.format('%i', Symbol()), 'NaN');
 assert.strictEqual(util.format('%i %i', 42, 43), '42 43');
 assert.strictEqual(util.format('%i %i', 42), '42 %i');
 assert.strictEqual(
-    util.format('%i', 1180591620717411303424),
-    '1'
+	util.format('%i', 1180591620717411303424),
+	'1'
 );
 assert.strictEqual(
-    util.format('%i', 1180591620717411303424n),
-    '1180591620717411303424n'
+	util.format('%i', 1180591620717411303424n),
+	'1180591620717411303424n'
 );
 assert.strictEqual(
-    util.format('%i %i', 1180591620717411303424n, 12345678901234567890123n),
-    '1180591620717411303424n 12345678901234567890123n'
-);
-
-assert.strictEqual(
-    util.format('%d %i', 1180591620717411303424n, 12345678901234567890123n),
-    '1180591620717411303424n 12345678901234567890123n'
+	util.format('%i %i', 1180591620717411303424n, 12345678901234567890123n),
+	'1180591620717411303424n 12345678901234567890123n'
 );
 
 assert.strictEqual(
-    util.format('%i %d', 1180591620717411303424n, 12345678901234567890123n),
-    '1180591620717411303424n 12345678901234567890123n'
+	util.format('%d %i', 1180591620717411303424n, 12345678901234567890123n),
+	'1180591620717411303424n 12345678901234567890123n'
 );
 
 assert.strictEqual(
-    util.formatWithOptions(
-        { numericSeparator: true },
-        '%i %d', 1180591620717411303424n, 12345678901234567890123n),
-    '1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n'
+	util.format('%i %d', 1180591620717411303424n, 12345678901234567890123n),
+	'1180591620717411303424n 12345678901234567890123n'
+);
+
+assert.strictEqual(
+	util.formatWithOptions(
+		{ numericSeparator: true },
+		'%i %d', 1180591620717411303424n, 12345678901234567890123n),
+	'1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n'
 );
 
 // Float format specifier
@@ -191,82 +191,82 @@ assert.strictEqual(util.format('%s', -Infinity), '-Infinity');
 
 // String format specifier including `toString` properties on the prototype.
 {
-    class Foo { toString() { return 'Bar'; } }
-    assert.strictEqual(util.format('%s', new Foo()), 'Bar');
-    assert.strictEqual(
-        util.format('%s', Object.setPrototypeOf(new Foo(), null)),
-        '[Foo: null prototype] {}'
-    );
-    global.Foo = Foo;
-    assert.strictEqual(util.format('%s', new Foo()), 'Bar');
-    delete global.Foo;
-    class Bar { abc = true; }
-    assert.strictEqual(util.format('%s', new Bar()), 'Bar { abc: true }');
-    class Foobar extends Array { aaa = true; }
-    assert.strictEqual(
-        util.format('%s', new Foobar(5)),
-        'Foobar(5) [ <5 empty items>, aaa: true ]'
-    );
+	class Foo { toString() { return 'Bar'; } }
+	assert.strictEqual(util.format('%s', new Foo()), 'Bar');
+	assert.strictEqual(
+		util.format('%s', Object.setPrototypeOf(new Foo(), null)),
+		'[Foo: null prototype] {}'
+	);
+	global.Foo = Foo;
+	assert.strictEqual(util.format('%s', new Foo()), 'Bar');
+	delete global.Foo;
+	class Bar { abc = true; }
+	assert.strictEqual(util.format('%s', new Bar()), 'Bar { abc: true }');
+	class Foobar extends Array { aaa = true; }
+	assert.strictEqual(
+		util.format('%s', new Foobar(5)),
+		'Foobar(5) [ <5 empty items>, aaa: true ]'
+	);
 
-    // Subclassing:
-    class B extends Foo {}
+	// Subclassing:
+	class B extends Foo {}
 
-    function C() {}
-    C.prototype.toString = function() {
-        return 'Custom';
-    };
+	function C() {}
+	C.prototype.toString = function() {
+		return 'Custom';
+	};
 
-    function D() {
-        C.call(this);
-    }
-    D.prototype = Object.create(C.prototype);
+	function D() {
+		C.call(this);
+	}
+	D.prototype = Object.create(C.prototype);
 
-    assert.strictEqual(
-        util.format('%s', new B()),
-        'Bar'
-    );
-    assert.strictEqual(
-        util.format('%s', new C()),
-        'Custom'
-    );
-    assert.strictEqual(
-        util.format('%s', new D()),
-        'Custom'
-    );
+	assert.strictEqual(
+		util.format('%s', new B()),
+		'Bar'
+	);
+	assert.strictEqual(
+		util.format('%s', new C()),
+		'Custom'
+	);
+	assert.strictEqual(
+		util.format('%s', new D()),
+		'Custom'
+	);
 
-    D.prototype.constructor = D;
-    assert.strictEqual(
-        util.format('%s', new D()),
-        'Custom'
-    );
+	D.prototype.constructor = D;
+	assert.strictEqual(
+		util.format('%s', new D()),
+		'Custom'
+	);
 
-    D.prototype.constructor = null;
-    assert.strictEqual(
-        util.format('%s', new D()),
-        'Custom'
-    );
+	D.prototype.constructor = null;
+	assert.strictEqual(
+		util.format('%s', new D()),
+		'Custom'
+	);
 
-    D.prototype.constructor = { name: 'Foobar' };
-    assert.strictEqual(
-        util.format('%s', new D()),
-        'Custom'
-    );
+	D.prototype.constructor = { name: 'Foobar' };
+	assert.strictEqual(
+		util.format('%s', new D()),
+		'Custom'
+	);
 
-    Object.defineProperty(D.prototype, 'constructor', {
-        get() {
-            throw new Error();
-        },
-        configurable: true
-    });
-    assert.strictEqual(
-        util.format('%s', new D()),
-        'Custom'
-    );
+	Object.defineProperty(D.prototype, 'constructor', {
+		get() {
+			throw new Error();
+		},
+		configurable: true
+	});
+	assert.strictEqual(
+		util.format('%s', new D()),
+		'Custom'
+	);
 
-    assert.strictEqual(
-        util.format('%s', Object.create(null)),
-        '[Object: null prototype] {}'
-    );
+	assert.strictEqual(
+		util.format('%s', Object.create(null)),
+		'[Object: null prototype] {}'
+	);
 }
 
 // JSON format specifier
@@ -278,28 +278,28 @@ assert.strictEqual(util.format('%j %j', 42), '42 %j');
 
 // Object format specifier
 const obj = {
-    foo: 'bar',
-    foobar: 1,
-    func: function() {}
+	foo: 'bar',
+	foobar: 1,
+	func: function() {}
 };
 const nestedObj = {
-    foo: 'bar',
-    foobar: {
-        foo: 'bar',
-        func: function() {}
-    }
+	foo: 'bar',
+	foobar: {
+		foo: 'bar',
+		func: function() {}
+	}
 };
 const nestedObj2 = {
-    foo: 'bar',
-    foobar: 1,
-    func: [{ a: function() {} }]
+	foo: 'bar',
+	foobar: 1,
+	func: [{ a: function() {} }]
 };
 assert.strictEqual(util.format('%o'), '%o');
 assert.strictEqual(util.format('%o', 42), '42');
 assert.strictEqual(util.format('%o', 'foo'), '\'foo\'');
 assert.strictEqual(
-    util.format('%o', obj),
-    '{\n' +
+	util.format('%o', obj),
+	'{\n' +
   '  foo: \'bar\',\n' +
   '  foobar: 1,\n' +
   '  func: <ref *1> [Function: func] {\n' +
@@ -309,8 +309,8 @@ assert.strictEqual(
   '  }\n' +
   '}');
 assert.strictEqual(
-    util.format('%o', nestedObj2),
-    '{\n' +
+	util.format('%o', nestedObj2),
+	'{\n' +
   '  foo: \'bar\',\n' +
   '  foobar: 1,\n' +
   '  func: [\n' +
@@ -325,8 +325,8 @@ assert.strictEqual(
   '  ]\n' +
   '}');
 assert.strictEqual(
-    util.format('%o', nestedObj),
-    '{\n' +
+	util.format('%o', nestedObj),
+	'{\n' +
   '  foo: \'bar\',\n' +
   '  foobar: {\n' +
   '    foo: \'bar\',\n' +
@@ -338,8 +338,8 @@ assert.strictEqual(
   '  }\n' +
   '}');
 assert.strictEqual(
-    util.format('%o %o', obj, obj),
-    '{\n' +
+	util.format('%o %o', obj, obj),
+	'{\n' +
   '  foo: \'bar\',\n' +
   '  foobar: 1,\n' +
   '  func: <ref *1> [Function: func] {\n' +
@@ -357,8 +357,8 @@ assert.strictEqual(
   '  }\n' +
   '}');
 assert.strictEqual(
-    util.format('%o %o', obj),
-    '{\n' +
+	util.format('%o %o', obj),
+	'{\n' +
   '  foo: \'bar\',\n' +
   '  foobar: 1,\n' +
   '  func: <ref *1> [Function: func] {\n' +
@@ -372,18 +372,18 @@ assert.strictEqual(util.format('%O'), '%O');
 assert.strictEqual(util.format('%O', 42), '42');
 assert.strictEqual(util.format('%O', 'foo'), '\'foo\'');
 assert.strictEqual(
-    util.format('%O', obj),
-    '{ foo: \'bar\', foobar: 1, func: [Function: func] }');
+	util.format('%O', obj),
+	'{ foo: \'bar\', foobar: 1, func: [Function: func] }');
 assert.strictEqual(
-    util.format('%O', nestedObj),
-    '{ foo: \'bar\', foobar: { foo: \'bar\', func: [Function: func] } }');
+	util.format('%O', nestedObj),
+	'{ foo: \'bar\', foobar: { foo: \'bar\', func: [Function: func] } }');
 assert.strictEqual(
-    util.format('%O %O', obj, obj),
-    '{ foo: \'bar\', foobar: 1, func: [Function: func] } ' +
+	util.format('%O %O', obj, obj),
+	'{ foo: \'bar\', foobar: 1, func: [Function: func] } ' +
   '{ foo: \'bar\', foobar: 1, func: [Function: func] }');
 assert.strictEqual(
-    util.format('%O %O', obj),
-    '{ foo: \'bar\', foobar: 1, func: [Function: func] } %O');
+	util.format('%O %O', obj),
+	'{ foo: \'bar\', foobar: 1, func: [Function: func] } %O');
 
 // Various format specifiers
 assert.strictEqual(util.format('%%s%s', 'foo'), '%sfoo');
@@ -417,7 +417,7 @@ assert.strictEqual(util.format('o: %O, a: %O'), 'o: %O, a: %O');
 // Invalid format specifiers
 assert.strictEqual(util.format('a% b', 'x'), 'a% b x');
 assert.strictEqual(util.format('percent: %d%, fraction: %d', 10, 0.1),
-                   'percent: 10%, fraction: 0.1');
+																			'percent: 10%, fraction: 0.1');
 assert.strictEqual(util.format('abc%', 1), 'abc% 1');
 
 // Additional arguments after format specifiers
@@ -431,48 +431,48 @@ assert.strictEqual(util.format('%cab', 'color: blue'), 'ab');
 assert.strictEqual(util.format('%cab', 'color: blue', 'c'), 'ab c');
 
 {
-    const o = {};
-    o.o = o;
-    assert.strictEqual(util.format('%j', o), '[Circular]');
+	const o = {};
+	o.o = o;
+	assert.strictEqual(util.format('%j', o), '[Circular]');
 }
 
 {
-    const o = {
-        toJSON() {
-            throw new Error('Not a circular object but still not serializable');
-        }
-    };
-    assert.throws(() => util.format('%j', o),
-                  /^Error: Not a circular object but still not serializable$/);
+	const o = {
+		toJSON() {
+			throw new Error('Not a circular object but still not serializable');
+		}
+	};
+	assert.throws(() => util.format('%j', o),
+															/^Error: Not a circular object but still not serializable$/);
 }
 
 // Errors
 const err = new Error('foo');
 assert.strictEqual(util.format(err), err.stack);
 class CustomError extends Error {
-    constructor(msg) {
-        super();
-        Object.defineProperty(this, 'message',
-                              { value: msg, enumerable: false });
-        Object.defineProperty(this, 'name',
-                              { value: 'CustomError', enumerable: false });
-        Error.captureStackTrace(this, CustomError);
-    }
+	constructor(msg) {
+		super();
+		Object.defineProperty(this, 'message',
+																								{ value: msg, enumerable: false });
+		Object.defineProperty(this, 'name',
+																								{ value: 'CustomError', enumerable: false });
+		Error.captureStackTrace(this, CustomError);
+	}
 }
 const customError = new CustomError('bar');
 assert.strictEqual(util.format(customError), customError.stack);
 // Doesn't capture stack trace
 function BadCustomError(msg) {
-    Error.call(this);
-    Object.defineProperty(this, 'message',
-                          { value: msg, enumerable: false });
-    Object.defineProperty(this, 'name',
-                          { value: 'BadCustomError', enumerable: false });
+	Error.call(this);
+	Object.defineProperty(this, 'message',
+																							{ value: msg, enumerable: false });
+	Object.defineProperty(this, 'name',
+																							{ value: 'BadCustomError', enumerable: false });
 }
 Object.setPrototypeOf(BadCustomError.prototype, Error.prototype);
 Object.setPrototypeOf(BadCustomError, Error);
 assert.strictEqual(util.format(new BadCustomError('foo')),
-                   '[BadCustomError: foo]');
+																			'[BadCustomError: foo]');
 
 // The format of arguments should not depend on type of the first argument
 assert.strictEqual(util.format('1', '1'), '1 1');
@@ -490,11 +490,11 @@ assert.strictEqual(util.format(5n, 5n), '5n 5n');
 
 // Check `formatWithOptions`.
 assert.strictEqual(
-    util.formatWithOptions(
-        { colors: true },
-        true, undefined, Symbol(), 1, 5n, null, 'foobar'
-    ),
-    '\u001b[33mtrue\u001b[39m ' +
+	util.formatWithOptions(
+		{ colors: true },
+		true, undefined, Symbol(), 1, 5n, null, 'foobar'
+	),
+	'\u001b[33mtrue\u001b[39m ' +
     '\u001b[90mundefined\u001b[39m ' +
     '\u001b[32mSymbol()\u001b[39m ' +
     '\u001b[33m1\u001b[39m ' +
@@ -504,31 +504,31 @@ assert.strictEqual(
 );
 
 assert.strictEqual(
-    util.format(new SharedArrayBuffer(4)),
-    'SharedArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }'
+	util.format(new SharedArrayBuffer(4)),
+	'SharedArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }'
 );
 
 assert.strictEqual(
-    util.formatWithOptions(
-        { colors: true, compact: 3 },
-        '%s', [ 1, { a: true }]
-    ),
-    '[ 1, [Object] ]'
+	util.formatWithOptions(
+		{ colors: true, compact: 3 },
+		'%s', [ 1, { a: true }]
+	),
+	'[ 1, [Object] ]'
 );
 
 [
-    undefined,
-    null,
-    false,
-    5n,
-    5,
-    'test',
-    Symbol(),
+	undefined,
+	null,
+	false,
+	5n,
+	5,
+	'test',
+	Symbol(),
 ].forEach((invalidOptions) => {
-    assert.throws(() => {
-        util.formatWithOptions(invalidOptions, { a: true });
-    }, {
-        code: 'ERR_INVALID_ARG_TYPE',
-        message: /"inspectOptions".+object/
-    });
+	assert.throws(() => {
+		util.formatWithOptions(invalidOptions, { a: true });
+	}, {
+		code: 'ERR_INVALID_ARG_TYPE',
+		message: /"inspectOptions".+object/
+	});
 });

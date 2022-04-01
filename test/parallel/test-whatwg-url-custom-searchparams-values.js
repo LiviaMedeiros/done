@@ -11,33 +11,33 @@ const values = params.values();
 assert.strictEqual(typeof values[Symbol.iterator], 'function');
 assert.strictEqual(values[Symbol.iterator](), values);
 assert.deepStrictEqual(values.next(), {
-    value: 'b',
-    done: false
+	value: 'b',
+	done: false
 });
 assert.deepStrictEqual(values.next(), {
-    value: 'd',
-    done: false
+	value: 'd',
+	done: false
 });
 assert.deepStrictEqual(values.next(), {
-    value: undefined,
-    done: true
+	value: undefined,
+	done: true
 });
 assert.deepStrictEqual(values.next(), {
-    value: undefined,
-    done: true
+	value: undefined,
+	done: true
 });
 
 assert.throws(() => {
-    values.next.call(undefined);
+	values.next.call(undefined);
 }, {
-    code: 'ERR_INVALID_THIS',
-    name: 'TypeError',
-    message: 'Value of "this" must be of type URLSearchParamsIterator'
+	code: 'ERR_INVALID_THIS',
+	name: 'TypeError',
+	message: 'Value of "this" must be of type URLSearchParamsIterator'
 });
 assert.throws(() => {
-    params.values.call(undefined);
+	params.values.call(undefined);
 }, {
-    code: 'ERR_INVALID_THIS',
-    name: 'TypeError',
-    message: 'Value of "this" must be of type URLSearchParams'
+	code: 'ERR_INVALID_THIS',
+	name: 'TypeError',
+	message: 'Value of "this" must be of type URLSearchParams'
 });

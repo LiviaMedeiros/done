@@ -8,19 +8,19 @@ const assert = require('assert');
 
 const asyncIds = [];
 async_hooks.createHook({
-    init: (asyncId, type, triggerAsyncId) => {
-        asyncIds.push([triggerAsyncId, asyncId]);
-    }
+	init: (asyncId, type, triggerAsyncId) => {
+		asyncIds.push([triggerAsyncId, asyncId]);
+	}
 }).enable();
 
 async function main() {
-    await null;
+	await null;
 }
 
 main().then(() => {
-    // Verify the relationships between async ids
-    // 1 => 2, 2 => 3 etc
-    assert.strictEqual(asyncIds[0][1], asyncIds[1][0]);
-    assert.strictEqual(asyncIds[0][1], asyncIds[3][0]);
-    assert.strictEqual(asyncIds[1][1], asyncIds[2][0]);
+	// Verify the relationships between async ids
+	// 1 => 2, 2 => 3 etc
+	assert.strictEqual(asyncIds[0][1], asyncIds[1][0]);
+	assert.strictEqual(asyncIds[0][1], asyncIds[3][0]);
+	assert.strictEqual(asyncIds[1][1], asyncIds[2][0]);
 });

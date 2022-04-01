@@ -30,15 +30,15 @@ const fixtures = require('../common/fixtures');
 const fn = fixtures.path('empty.txt');
 
 fs.readFile(fn, common.mustCall((err, data) => {
-    assert.ok(data);
+	assert.ok(data);
 }));
 
 fs.readFile(fn, 'utf8', common.mustCall((err, data) => {
-    assert.strictEqual(data, '');
+	assert.strictEqual(data, '');
 }));
 
 fs.readFile(fn, { encoding: 'utf8' }, common.mustCall((err, data) => {
-    assert.strictEqual(data, '');
+	assert.strictEqual(data, '');
 }));
 
 assert.ok(fs.readFileSync(fn));

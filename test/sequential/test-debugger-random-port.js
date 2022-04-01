@@ -10,21 +10,21 @@ const assert = require('assert');
 
 // Random port.
 {
-    const script = fixtures.path('debugger', 'three-lines.js');
+	const script = fixtures.path('debugger', 'three-lines.js');
 
-    const cli = startCLI(['--port=0', script]);
+	const cli = startCLI(['--port=0', script]);
 
-    cli.waitForInitialBreak()
+	cli.waitForInitialBreak()
     .then(() => cli.waitForPrompt())
     .then(() => {
-        assert.match(cli.output, /debug>/, 'prints a prompt');
-        assert.match(
-            cli.output,
-            /< Debugger listening on /,
-            'forwards child output');
+    	assert.match(cli.output, /debug>/, 'prints a prompt');
+    	assert.match(
+    		cli.output,
+    		/< Debugger listening on /,
+    		'forwards child output');
     })
     .then(() => cli.quit())
     .then((code) => {
-        assert.strictEqual(code, 0);
+    	assert.strictEqual(code, 0);
     });
 }

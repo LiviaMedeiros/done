@@ -5,7 +5,7 @@ const fixtures = require('../common/fixtures');
 // Test the honorCipherOrder property
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const assert = require('assert');
 const mustCall = common.mustCall;
@@ -18,54 +18,54 @@ const SSL_Method = 'TLSv1_2_method';
 const localhost = '127.0.0.1';
 
 function test(honorCipherOrder, clientCipher, expectedCipher, defaultCiphers) {
-    const soptions = {
-        secureProtocol: SSL_Method,
-        key: fixtures.readKey('agent2-key.pem'),
-        cert: fixtures.readKey('agent2-cert.pem'),
-        ciphers: 'AES256-SHA256:AES128-GCM-SHA256:AES128-SHA256:' +
+	const soptions = {
+		secureProtocol: SSL_Method,
+		key: fixtures.readKey('agent2-key.pem'),
+		cert: fixtures.readKey('agent2-cert.pem'),
+		ciphers: 'AES256-SHA256:AES128-GCM-SHA256:AES128-SHA256:' +
              'ECDHE-RSA-AES128-GCM-SHA256',
-        honorCipherOrder: honorCipherOrder,
-    };
+		honorCipherOrder: honorCipherOrder,
+	};
 
-    const server = tls.createServer(soptions, mustCall(function(clearTextStream) {
-    // End socket to send CLOSE_NOTIFY and TCP FIN packet, otherwise
-    // it may hang for ~30 seconds in FIN_WAIT_1 state (at least on OSX).
-        clearTextStream.end();
-    }));
-    server.listen(0, localhost, mustCall(function() {
-        const coptions = {
-            rejectUnauthorized: false,
-            secureProtocol: SSL_Method
-        };
-        if (clientCipher) {
-            coptions.ciphers = clientCipher;
-        }
-        const port = this.address().port;
-        const savedDefaults = tls.DEFAULT_CIPHERS;
-        tls.DEFAULT_CIPHERS = defaultCiphers || savedDefaults;
-        const client = tls.connect(port, localhost, coptions, mustCall(function() {
-            const cipher = client.getCipher();
-            client.end();
-            server.close();
-            const msg = util.format(
-                'honorCipherOrder=%j, clientCipher=%j, expect=%j, got=%j',
-                honorCipherOrder, clientCipher, expectedCipher, cipher.name);
-            assert.strictEqual(cipher.name, expectedCipher, msg);
-        }));
-        tls.DEFAULT_CIPHERS = savedDefaults;
-    }));
+	const server = tls.createServer(soptions, mustCall(function(clearTextStream) {
+		// End socket to send CLOSE_NOTIFY and TCP FIN packet, otherwise
+		// it may hang for ~30 seconds in FIN_WAIT_1 state (at least on OSX).
+		clearTextStream.end();
+	}));
+	server.listen(0, localhost, mustCall(function() {
+		const coptions = {
+			rejectUnauthorized: false,
+			secureProtocol: SSL_Method
+		};
+		if (clientCipher) {
+			coptions.ciphers = clientCipher;
+		}
+		const port = this.address().port;
+		const savedDefaults = tls.DEFAULT_CIPHERS;
+		tls.DEFAULT_CIPHERS = defaultCiphers || savedDefaults;
+		const client = tls.connect(port, localhost, coptions, mustCall(function() {
+			const cipher = client.getCipher();
+			client.end();
+			server.close();
+			const msg = util.format(
+				'honorCipherOrder=%j, clientCipher=%j, expect=%j, got=%j',
+				honorCipherOrder, clientCipher, expectedCipher, cipher.name);
+			assert.strictEqual(cipher.name, expectedCipher, msg);
+		}));
+		tls.DEFAULT_CIPHERS = savedDefaults;
+	}));
 }
 
 // Client explicitly has the preference of cipher suites, not the default.
 test(false, 'AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256',
-     'AES128-GCM-SHA256');
+					'AES128-GCM-SHA256');
 
 // Server has the preference of cipher suites, and AES256-SHA256 is
 // the server's top choice.
 test(true, 'AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256',
-     'AES256-SHA256');
+					'AES256-SHA256');
 test(undefined, 'AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256',
-     'AES256-SHA256');
+					'AES256-SHA256');
 
 // Server has the preference of cipher suites. AES128-GCM-SHA256 is given
 // higher priority over AES128-SHA256 among client cipher suites.

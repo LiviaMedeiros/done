@@ -57,14 +57,14 @@ assert.strictEqual(util.inspect(s), expected);
 b.inspect = undefined;
 b.prop = new Uint8Array(0);
 assert.strictEqual(
-    util.inspect(b),
-    '<Buffer 31 32, inspect: undefined, prop: Uint8Array(0) []>'
+	util.inspect(b),
+	'<Buffer 31 32, inspect: undefined, prop: Uint8Array(0) []>'
 );
 
 b = Buffer.alloc(0);
 b.prop = 123;
 
 assert.strictEqual(
-    util.inspect(b),
-    '<Buffer prop: 123>'
+	util.inspect(b),
+	'<Buffer prop: 123>'
 );

@@ -21,12 +21,12 @@ assert.deepStrictEqual(globalThis.preloadOrder, ['--require', 'loader']);
 allowGlobals(preloadOrder);
 
 if (isMainThread) {
-    const worker = new Worker(fileURLToPath(import.meta.url));
-    const promise = new Promise((resolve, reject) => {
-        worker.on('message', resolve);
-        worker.on('error', reject);
-    });
-    promise.then(mustCall());
+	const worker = new Worker(fileURLToPath(import.meta.url));
+	const promise = new Promise((resolve, reject) => {
+		worker.on('message', resolve);
+		worker.on('error', reject);
+	});
+	promise.then(mustCall());
 } else {
-    parentPort.postMessage('worker done');
+	parentPort.postMessage('worker done');
 }

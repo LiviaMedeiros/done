@@ -18,16 +18,16 @@ setInterval(post, 0);
 `, { eval: true });
 
 function allocBuffers() {
-    Buffer.allocUnsafe(32 * 1024 * 1024);
+	Buffer.allocUnsafe(32 * 1024 * 1024);
 }
 
 const interval = setInterval(allocBuffers, 0);
 
 let messages = 0;
 w.on('message', (sum) => {
-    assert.strictEqual(sum, 0);
-    if (messages++ === 100) {
-        clearInterval(interval);
-        w.terminate();
-    }
+	assert.strictEqual(sum, 0);
+	if (messages++ === 100) {
+		clearInterval(interval);
+		w.terminate();
+	}
 });

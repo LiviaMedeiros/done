@@ -9,7 +9,7 @@ const w = new Worker(`
 require('worker_threads').parentPort.postMessage({});
 `, { eval: true });
 w.on('message', common.mustCall(() => {
-    w.unref();
+	w.unref();
 }));
 
 // Wait a bit so that the 'message' event is emitted while the Worker exits.

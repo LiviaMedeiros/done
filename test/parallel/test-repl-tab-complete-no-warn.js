@@ -17,5 +17,5 @@ process.on('warning', common.mustNotCall());
 
 putIn.run(['async function test() {']);
 for (let i = 0; i < DEFAULT_MAX_LISTENERS; i++) {
-    testMe.complete('await Promise.resolve()', () => {});
+	testMe.complete('await Promise.resolve()', () => {});
 }

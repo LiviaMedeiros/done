@@ -7,7 +7,7 @@ const assert = require('assert');
 // intended to be run directly.
 
 module.exports.test = function test(bindingDir) {
-    const mod = require(path.join(bindingDir, 'binding.node'));
-    assert.notStrictEqual(mod, null);
-    assert.strictEqual(mod.hello(), 'world');
+	const mod = require(path.join(bindingDir, 'binding.node'));
+	assert.notStrictEqual(mod, null);
+	assert.strictEqual(mod.hello(), 'world');
 };

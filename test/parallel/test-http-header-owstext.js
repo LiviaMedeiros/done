@@ -10,36 +10,36 @@ const http = require('http');
 const net = require('net');
 
 function check(hdr, snd, rcv) {
-    const server = http.createServer(common.mustCall((req, res) => {
-        assert.strictEqual(req.headers[hdr], rcv);
-        req.pipe(res);
-    }));
+	const server = http.createServer(common.mustCall((req, res) => {
+		assert.strictEqual(req.headers[hdr], rcv);
+		req.pipe(res);
+	}));
 
-    server.listen(0, common.mustCall(function() {
-        const client = net.connect(this.address().port, start);
-        function start() {
-            client.write('GET / HTTP/1.1\r\n' + hdr + ':', drain);
-        }
+	server.listen(0, common.mustCall(function() {
+		const client = net.connect(this.address().port, start);
+		function start() {
+			client.write('GET / HTTP/1.1\r\n' + hdr + ':', drain);
+		}
 
-        function drain() {
-            if (snd.length === 0) {
-                return client.write('\r\nConnection: close\r\n\r\n');
-            }
-            client.write(snd.shift(), drain);
-        }
+		function drain() {
+			if (snd.length === 0) {
+				return client.write('\r\nConnection: close\r\n\r\n');
+			}
+			client.write(snd.shift(), drain);
+		}
 
-        const bufs = [];
-        client.on('data', function(chunk) {
-            bufs.push(chunk);
-        });
-        client.on('end', common.mustCall(function() {
-            const head = Buffer.concat(bufs)
+		const bufs = [];
+		client.on('data', function(chunk) {
+			bufs.push(chunk);
+		});
+		client.on('end', common.mustCall(function() {
+			const head = Buffer.concat(bufs)
         .toString('latin1')
         .split('\r\n')[0];
-            assert.strictEqual(head, 'HTTP/1.1 200 OK');
-            server.close();
-        }));
-    }));
+			assert.strictEqual(head, 'HTTP/1.1 200 OK');
+			server.close();
+		}));
+	}));
 }
 
 check('host', [' \t foo.com\t'], 'foo.com');

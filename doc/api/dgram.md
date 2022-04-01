@@ -16,17 +16,17 @@ import dgram from 'dgram';
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-    console.log(`server error:\n${err.stack}`);
-    server.close();
+	console.log(`server error:\n${err.stack}`);
+	server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-    console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 
 server.on('listening', () => {
-    const address = server.address();
-    console.log(`server listening ${address.address}:${address.port}`);
+	const address = server.address();
+	console.log(`server listening ${address.address}:${address.port}`);
 });
 
 server.bind(41234);
@@ -38,17 +38,17 @@ const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-    console.log(`server error:\n${err.stack}`);
-    server.close();
+	console.log(`server error:\n${err.stack}`);
+	server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-    console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 
 server.on('listening', () => {
-    const address = server.address();
-    console.log(`server listening ${address.address}:${address.port}`);
+	const address = server.address();
+	console.log(`server listening ${address.address}:${address.port}`);
 });
 
 server.bind(41234);
@@ -158,13 +158,13 @@ import cluster from 'cluster';
 import dgram from 'dgram';
 
 if (cluster.isPrimary) {
-    cluster.fork(); // Works ok.
-    cluster.fork(); // Fails with EADDRINUSE.
+	cluster.fork(); // Works ok.
+	cluster.fork(); // Fails with EADDRINUSE.
 } else {
-    const s = dgram.createSocket('udp4');
-    s.bind(1234, () => {
-        s.addMembership('224.0.0.114');
-    });
+	const s = dgram.createSocket('udp4');
+	s.bind(1234, () => {
+		s.addMembership('224.0.0.114');
+	});
 }
 ```
 
@@ -173,13 +173,13 @@ const cluster = require('cluster');
 const dgram = require('dgram');
 
 if (cluster.isPrimary) {
-    cluster.fork(); // Works ok.
-    cluster.fork(); // Fails with EADDRINUSE.
+	cluster.fork(); // Works ok.
+	cluster.fork(); // Fails with EADDRINUSE.
 } else {
-    const s = dgram.createSocket('udp4');
-    s.bind(1234, () => {
-        s.addMembership('224.0.0.114');
-    });
+	const s = dgram.createSocket('udp4');
+	s.bind(1234, () => {
+		s.addMembership('224.0.0.114');
+	});
 }
 ```
 
@@ -261,17 +261,17 @@ import dgram from 'dgram';
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-    console.log(`server error:\n${err.stack}`);
-    server.close();
+	console.log(`server error:\n${err.stack}`);
+	server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-    console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 
 server.on('listening', () => {
-    const address = server.address();
-    console.log(`server listening ${address.address}:${address.port}`);
+	const address = server.address();
+	console.log(`server listening ${address.address}:${address.port}`);
 });
 
 server.bind(41234);
@@ -283,17 +283,17 @@ const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
 
 server.on('error', (err) => {
-    console.log(`server error:\n${err.stack}`);
-    server.close();
+	console.log(`server error:\n${err.stack}`);
+	server.close();
 });
 
 server.on('message', (msg, rinfo) => {
-    console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 
 server.on('listening', () => {
-    const address = server.address();
-    console.log(`server listening ${address.address}:${address.port}`);
+	const address = server.address();
+	console.log(`server listening ${address.address}:${address.port}`);
 });
 
 server.bind(41234);
@@ -348,9 +348,9 @@ An example socket listening on an exclusive port is shown below.
 
 ```js
 socket.bind({
-    address: 'localhost',
-    port: 8000,
-    exclusive: true
+	address: 'localhost',
+	port: 8000,
+	exclusive: true
 });
 ```
 
@@ -575,7 +575,7 @@ import { Buffer } from 'buffer';
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.send(message, 41234, 'localhost', (err) => {
-    client.close();
+	client.close();
 });
 ```
 
@@ -586,7 +586,7 @@ const { Buffer } = require('buffer');
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.send(message, 41234, 'localhost', (err) => {
-    client.close();
+	client.close();
 });
 ```
 
@@ -601,7 +601,7 @@ const buf1 = Buffer.from('Some ');
 const buf2 = Buffer.from('bytes');
 const client = dgram.createSocket('udp4');
 client.send([buf1, buf2], 41234, (err) => {
-    client.close();
+	client.close();
 });
 ```
 
@@ -613,7 +613,7 @@ const buf1 = Buffer.from('Some ');
 const buf2 = Buffer.from('bytes');
 const client = dgram.createSocket('udp4');
 client.send([buf1, buf2], 41234, (err) => {
-    client.close();
+	client.close();
 });
 ```
 
@@ -632,9 +632,9 @@ import { Buffer } from 'buffer';
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.connect(41234, 'localhost', (err) => {
-    client.send(message, (err) => {
-        client.close();
-    });
+	client.send(message, (err) => {
+		client.close();
+	});
 });
 ```
 
@@ -645,9 +645,9 @@ const { Buffer } = require('buffer');
 const message = Buffer.from('Some bytes');
 const client = dgram.createSocket('udp4');
 client.connect(41234, 'localhost', (err) => {
-    client.send(message, (err) => {
-        client.close();
-    });
+	client.send(message, (err) => {
+		client.close();
+	});
 });
 ```
 
@@ -728,7 +728,7 @@ On most systems, where scope format uses the interface name:
 const socket = dgram.createSocket('udp6');
 
 socket.bind(1234, () => {
-    socket.setMulticastInterface('::%eth1');
+	socket.setMulticastInterface('::%eth1');
 });
 ```
 
@@ -738,7 +738,7 @@ On Windows, where scope format uses an interface number:
 const socket = dgram.createSocket('udp6');
 
 socket.bind(1234, () => {
-    socket.setMulticastInterface('::%2');
+	socket.setMulticastInterface('::%2');
 });
 ```
 
@@ -750,7 +750,7 @@ All systems use an IP of the host on the desired physical interface:
 const socket = dgram.createSocket('udp4');
 
 socket.bind(1234, () => {
-    socket.setMulticastInterface('10.0.0.2');
+	socket.setMulticastInterface('10.0.0.2');
 });
 ```
 
@@ -922,7 +922,7 @@ const controller = new AbortController();
 const { signal } = controller;
 const server = dgram.createSocket({ type: 'udp4', signal });
 server.on('message', (msg, rinfo) => {
-    console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+	console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 // Later, when you want to close the server.
 controller.abort();

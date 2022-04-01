@@ -18,19 +18,19 @@ const chkBefore = common.mustCall((id) => assert.strictEqual(id, expectedId));
 const chkAfter = common.mustCall((id) => assert.strictEqual(id, expectedId));
 
 const checkOnce = (fn) => {
-    let called = false;
-    return (...args) => {
-        if (called) return;
+	let called = false;
+	return (...args) => {
+		if (called) return;
 
-        called = true;
-        fn(...args);
-    };
+		called = true;
+		fn(...args);
+	};
 };
 
 initHooks({
-    onbefore: checkOnce(chkBefore),
-    onafter: checkOnce(chkAfter),
-    allowNoInit: true
+	onbefore: checkOnce(chkBefore),
+	onafter: checkOnce(chkAfter),
+	allowNoInit: true
 }).enable();
 
 async_hooks.emitInit(expectedId, expectedType, expectedTriggerId);

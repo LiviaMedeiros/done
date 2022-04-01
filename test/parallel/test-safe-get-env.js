@@ -12,8 +12,8 @@ const { safeGetenv } = internalBinding('credentials');
 // are no longer available - but that might be tricky to set up reliably.
 
 for (const oneEnv in process.env) {
-    assert.strictEqual(
-        safeGetenv(oneEnv),
-        process.env[oneEnv]
-    );
+	assert.strictEqual(
+		safeGetenv(oneEnv),
+		process.env[oneEnv]
+	);
 }

@@ -30,11 +30,11 @@ const outputStream = new ArrayStream();
 outputStream.write = (data) => accum += data.replace('\r', '');
 
 const r = repl.start({
-    prompt: '',
-    input: inputStream,
-    output: outputStream,
-    terminal: true,
-    useColors: false
+	prompt: '',
+	input: inputStream,
+	output: outputStream,
+	terminal: true,
+	useColors: false
 });
 
 r.write(`${command}\n`);

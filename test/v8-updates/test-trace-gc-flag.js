@@ -10,25 +10,25 @@ const { spawnSync } = require('child_process');
 const fixtures = require('../common/fixtures');
 
 {
-    const childProcess = spawnSync(process.execPath, [
-        '--trace-gc',
-        '--expose-gc',
-        fixtures.path('gc.js'),
-    ]);
-    const output = childProcess.stdout.toString().trim();
-    const lines = splitByLine(output);
+	const childProcess = spawnSync(process.execPath, [
+		'--trace-gc',
+		'--expose-gc',
+		fixtures.path('gc.js'),
+	]);
+	const output = childProcess.stdout.toString().trim();
+	const lines = splitByLine(output);
 
-    const scavengeRegex = /\bScavenge\b/;
-    const expectedOutput = [
-        scavengeRegex,
-        scavengeRegex,
-        scavengeRegex,
-        scavengeRegex,
-        /\bMark-sweep\b/,
-    ];
-    lines.forEach((line, index) => {
-        assert.match(line, expectedOutput[index]);
-    });
+	const scavengeRegex = /\bScavenge\b/;
+	const expectedOutput = [
+		scavengeRegex,
+		scavengeRegex,
+		scavengeRegex,
+		scavengeRegex,
+		/\bMark-sweep\b/,
+	];
+	lines.forEach((line, index) => {
+		assert.match(line, expectedOutput[index]);
+	});
 }
 
 /**
@@ -36,5 +36,5 @@ const fixtures = require('../common/fixtures');
  */
 
 function splitByLine(str) {
-    return str.split(/\n/);
+	return str.split(/\n/);
 }

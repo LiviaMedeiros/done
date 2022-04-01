@@ -5,18 +5,18 @@ const stream = require('stream');
 const assert = require('assert');
 
 function testWriteType(val, objectMode, code) {
-    const writable = new stream.Writable({
-        objectMode,
-        write: () => {}
-    });
-    writable.on('error', common.mustNotCall());
-    if (code) {
-        assert.throws(() => {
-            writable.write(val);
-        }, { code });
-    } else {
-        writable.write(val);
-    }
+	const writable = new stream.Writable({
+		objectMode,
+		write: () => {}
+	});
+	writable.on('error', common.mustNotCall());
+	if (code) {
+		assert.throws(() => {
+			writable.write(val);
+		}, { code });
+	} else {
+		writable.write(val);
+	}
 }
 
 testWriteType([], false, 'ERR_INVALID_ARG_TYPE');

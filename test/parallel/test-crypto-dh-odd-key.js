@@ -22,22 +22,22 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const assert = require('assert');
 const crypto = require('crypto');
 
 function test() {
-    const odd = Buffer.alloc(39, 'A');
+	const odd = Buffer.alloc(39, 'A');
 
-    const c = crypto.createDiffieHellman(common.hasOpenSSL3 ? 1024 : 32);
-    c.setPrivateKey(odd);
-    c.generateKeys();
+	const c = crypto.createDiffieHellman(common.hasOpenSSL3 ? 1024 : 32);
+	c.setPrivateKey(odd);
+	c.generateKeys();
 }
 
 // FIPS requires a length of at least 1024
 if (!common.hasFipsCrypto) {
-    test();
+	test();
 } else {
-    assert.throws(function() { test(); }, /key size too small/);
+	assert.throws(function() { test(); }, /key size too small/);
 }

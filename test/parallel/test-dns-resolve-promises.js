@@ -11,10 +11,10 @@ const dnsPromises = require('dns').promises;
 cares.ChannelWrap.prototype.queryA = () => UV_EPERM;
 
 assert.rejects(
-    dnsPromises.resolve('example.org'),
-    {
-        code: 'EPERM',
-        syscall: 'queryA',
-        hostname: 'example.org'
-    }
+	dnsPromises.resolve('example.org'),
+	{
+		code: 'EPERM',
+		syscall: 'queryA',
+		hostname: 'example.org'
+	}
 );

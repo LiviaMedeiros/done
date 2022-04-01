@@ -4,10 +4,10 @@
 const common = require('../common');
 
 if (common.isSunOS)
-    common.skip(`Unsupported platform [${process.platform}]`);
+	common.skip(`Unsupported platform [${process.platform}]`);
 
 if (common.isIBMi)
-    common.skip('Unsupported platform IBMi');
+	common.skip('Unsupported platform IBMi');
 
 const assert = require('assert');
 

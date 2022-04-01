@@ -10,7 +10,7 @@ const agent = require('http').globalAgent;
 
 // Small stub just so we can call addRequest directly
 const req = {
-    getHeader: () => {}
+	getHeader: () => {}
 };
 
 agent.maxSockets = 0;
@@ -20,18 +20,18 @@ agent.maxSockets = 0;
 agent.addRequest(req, 'localhost', 8080, '127.0.0.1');
 assert.strictEqual(Object.keys(agent.requests).length, 1);
 assert.strictEqual(
-    Object.keys(agent.requests)[0],
-    'localhost:8080:127.0.0.1');
+	Object.keys(agent.requests)[0],
+	'localhost:8080:127.0.0.1');
 
 // `path` is *not* used when naming requests / sockets.
 // Port 8080 is hardcoded since this does not create a network connection
 agent.addRequest(req, {
-    host: 'localhost',
-    port: 8080,
-    localAddress: '127.0.0.1',
-    path: '/foo'
+	host: 'localhost',
+	port: 8080,
+	localAddress: '127.0.0.1',
+	path: '/foo'
 });
 assert.strictEqual(Object.keys(agent.requests).length, 1);
 assert.strictEqual(
-    Object.keys(agent.requests)[0],
-    'localhost:8080:127.0.0.1');
+	Object.keys(agent.requests)[0],
+	'localhost:8080:127.0.0.1');

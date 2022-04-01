@@ -46,20 +46,20 @@ assert.strictEqual(ctx2[1], undefined);
 
 // https://github.com/nodejs/node/issues/33806
 {
-    const ctx = vm.createContext();
+	const ctx = vm.createContext();
 
-    Object.defineProperty(ctx, 'prop', {
-        get() {
-            return undefined;
-        },
-        set(val) {
-            throw new Error('test error');
-        },
-    });
+	Object.defineProperty(ctx, 'prop', {
+		get() {
+			return undefined;
+		},
+		set(val) {
+			throw new Error('test error');
+		},
+	});
 
-    assert.throws(() => {
-        vm.runInContext('prop = 42', ctx);
-    }, {
-        message: 'test error',
-    });
+	assert.throws(() => {
+		vm.runInContext('prop = 42', ctx);
+	}, {
+		message: 'test error',
+	});
 }

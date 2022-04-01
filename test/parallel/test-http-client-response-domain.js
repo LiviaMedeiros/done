@@ -32,33 +32,33 @@ tmpdir.refresh();
 
 // First fire up a simple HTTP server
 const server = http.createServer(function(req, res) {
-    res.writeHead(200);
-    res.end();
-    server.close();
+	res.writeHead(200);
+	res.end();
+	server.close();
 });
 server.listen(common.PIPE, function() {
-    // create a domain
-    d = domain.create();
-    d.run(common.mustCall(test));
+	// create a domain
+	d = domain.create();
+	d.run(common.mustCall(test));
 });
 
 function test() {
 
-    d.on('error', common.mustCall((err) => {
-        assert.strictEqual(err.message, 'should be caught by domain');
-    }));
+	d.on('error', common.mustCall((err) => {
+		assert.strictEqual(err.message, 'should be caught by domain');
+	}));
 
-    const req = http.get({
-        socketPath: common.PIPE,
-        headers: { 'Content-Length': '1' },
-        method: 'POST',
-        path: '/'
-    });
-    req.on('response', function(res) {
-        res.on('end', function() {
-            res.emit('error', new Error('should be caught by domain'));
-        });
-        res.resume();
-    });
-    req.end();
+	const req = http.get({
+		socketPath: common.PIPE,
+		headers: { 'Content-Length': '1' },
+		method: 'POST',
+		path: '/'
+	});
+	req.on('response', function(res) {
+		res.on('end', function() {
+			res.emit('error', new Error('should be caught by domain'));
+		});
+		res.resume();
+	});
+	req.end();
 }

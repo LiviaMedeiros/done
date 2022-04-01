@@ -31,44 +31,44 @@ let regularExit = 0;
 const stream = new ArrayStream();
 
 function testTerminalMode() {
-    const r1 = repl.start({
-        input: stream,
-        output: stream,
-        terminal: true
-    });
+	const r1 = repl.start({
+		input: stream,
+		output: stream,
+		terminal: true
+	});
 
-    process.nextTick(function() {
-    // Manually fire a ^D keypress
-        stream.emit('data', '\u0004');
-    });
+	process.nextTick(function() {
+		// Manually fire a ^D keypress
+		stream.emit('data', '\u0004');
+	});
 
-    r1.on('exit', function() {
-    // Should be fired from the simulated ^D keypress
-        terminalExit++;
-        testRegularMode();
-    });
+	r1.on('exit', function() {
+		// Should be fired from the simulated ^D keypress
+		terminalExit++;
+		testRegularMode();
+	});
 }
 
 function testRegularMode() {
-    const r2 = repl.start({
-        input: stream,
-        output: stream,
-        terminal: false
-    });
+	const r2 = repl.start({
+		input: stream,
+		output: stream,
+		terminal: false
+	});
 
-    process.nextTick(function() {
-        stream.emit('end');
-    });
+	process.nextTick(function() {
+		stream.emit('end');
+	});
 
-    r2.on('exit', function() {
-    // Should be fired from the simulated 'end' event
-        regularExit++;
-    });
+	r2.on('exit', function() {
+		// Should be fired from the simulated 'end' event
+		regularExit++;
+	});
 }
 
 process.on('exit', function() {
-    assert.strictEqual(terminalExit, 1);
-    assert.strictEqual(regularExit, 1);
+	assert.strictEqual(terminalExit, 1);
+	assert.strictEqual(regularExit, 1);
 });
 
 

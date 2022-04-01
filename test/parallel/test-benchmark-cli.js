@@ -11,14 +11,14 @@ const CLI = require('../../benchmark/_cli.js');
 const originalArgv = process.argv;
 
 function testFilterPattern(filters, excludes, filename, expectedResult) {
-    process.argv = process.argv.concat(...filters.map((p) => ['--filter', p]));
-    process.argv = process.argv.concat(...excludes.map((p) => ['--exclude', p]));
-    process.argv = process.argv.concat(['bench']);
+	process.argv = process.argv.concat(...filters.map((p) => ['--filter', p]));
+	process.argv = process.argv.concat(...excludes.map((p) => ['--exclude', p]));
+	process.argv = process.argv.concat(['bench']);
 
-    const cli = new CLI('', { 'arrayArgs': ['filter', 'exclude'] });
-    assert.deepStrictEqual(cli.shouldSkip(filename), expectedResult);
+	const cli = new CLI('', { 'arrayArgs': ['filter', 'exclude'] });
+	assert.deepStrictEqual(cli.shouldSkip(filename), expectedResult);
 
-    process.argv = originalArgv;
+	process.argv = originalArgv;
 }
 
 

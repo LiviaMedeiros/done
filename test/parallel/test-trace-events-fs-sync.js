@@ -12,8 +12,8 @@ let gid = 1;
 let uid = 1;
 
 if (!common.isWindows) {
-    gid = process.getgid();
-    uid = process.getuid();
+	gid = process.getgid();
+	uid = process.getuid();
 }
 
 tests['fs.sync.access'] = 'fs.writeFileSync("fs.txt", "123", "utf8");' +
@@ -103,11 +103,11 @@ tests['fs.sync.write'] = 'fs.writeFileSync("fs.txt", "123", "utf8");' +
 // On windows, we need permissions to test symlink and readlink.
 // We'll only try to run these tests if we have enough privileges.
 if (common.canCreateSymLink()) {
-    tests['fs.sync.symlink'] = 'fs.writeFileSync("fs.txt", "123", "utf8");' +
+	tests['fs.sync.symlink'] = 'fs.writeFileSync("fs.txt", "123", "utf8");' +
                              'fs.symlinkSync("fs.txt", "linkx");' +
                              'fs.unlinkSync("linkx");' +
                              'fs.unlinkSync("fs.txt")';
-    tests['fs.sync.readlink'] = 'fs.writeFileSync("fs.txt", "123", "utf8");' +
+	tests['fs.sync.readlink'] = 'fs.writeFileSync("fs.txt", "123", "utf8");' +
                               'fs.symlinkSync("fs.txt", "linkx");' +
                               'fs.readlinkSync("linkx");' +
                               'fs.unlinkSync("linkx");' +
@@ -119,34 +119,34 @@ tmpdir.refresh();
 const traceFile = path.join(tmpdir.path, 'node_trace.1.log');
 
 for (const tr in tests) {
-    const proc = cp.spawnSync(process.execPath,
-                              [ '--trace-events-enabled',
-                                '--trace-event-categories', 'node.fs.sync',
-                                '-e', tests[tr] ],
-                              { cwd: tmpdir.path, encoding: 'utf8' });
+	const proc = cp.spawnSync(process.execPath,
+																											[ '--trace-events-enabled',
+																													'--trace-event-categories', 'node.fs.sync',
+																													'-e', tests[tr] ],
+																											{ cwd: tmpdir.path, encoding: 'utf8' });
 
-    // Make sure the operation is successful.
-    // Don't use assert with a custom message here. Otherwise the
-    // inspection in the message is done eagerly and wastes a lot of CPU
-    // time.
-    if (proc.status !== 0) {
-        throw new Error(`${tr}:\n${util.inspect(proc)}`);
-    }
+	// Make sure the operation is successful.
+	// Don't use assert with a custom message here. Otherwise the
+	// inspection in the message is done eagerly and wastes a lot of CPU
+	// time.
+	if (proc.status !== 0) {
+		throw new Error(`${tr}:\n${util.inspect(proc)}`);
+	}
 
-    // Confirm that trace log file is created.
-    assert(fs.existsSync(traceFile));
-    const data = fs.readFileSync(traceFile);
-    const traces = JSON.parse(data.toString()).traceEvents;
-    assert(traces.length > 0);
+	// Confirm that trace log file is created.
+	assert(fs.existsSync(traceFile));
+	const data = fs.readFileSync(traceFile);
+	const traces = JSON.parse(data.toString()).traceEvents;
+	assert(traces.length > 0);
 
-    // C++ fs sync trace events should be generated.
-    assert(traces.some((trace) => {
-        if (trace.pid !== proc.pid)
-            return false;
-        if (trace.cat !== 'node,node.fs,node.fs.sync')
-            return false;
-        if (trace.name !== tr)
-            return false;
-        return true;
-    }));
+	// C++ fs sync trace events should be generated.
+	assert(traces.some((trace) => {
+		if (trace.pid !== proc.pid)
+			return false;
+		if (trace.cat !== 'node,node.fs,node.fs.sync')
+			return false;
+		if (trace.name !== tr)
+			return false;
+		return true;
+	}));
 }

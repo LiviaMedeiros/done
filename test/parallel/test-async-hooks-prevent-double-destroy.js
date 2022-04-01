@@ -8,17 +8,17 @@ const common = require('../common');
 const async_hooks = require('async_hooks');
 
 const hook = async_hooks.createHook({
-    destroy: common.mustCallAtLeast(2) // 1 immediate + manual destroy
+	destroy: common.mustCallAtLeast(2) // 1 immediate + manual destroy
 }).enable();
 
 {
-    const res = new async_hooks.AsyncResource('foobar');
-    res.emitDestroy();
+	const res = new async_hooks.AsyncResource('foobar');
+	res.emitDestroy();
 }
 
 setImmediate(() => {
-    global.gc();
-    setImmediate(() => {
-        hook.disable();
-    });
+	global.gc();
+	setImmediate(() => {
+		hook.disable();
+	});
 });

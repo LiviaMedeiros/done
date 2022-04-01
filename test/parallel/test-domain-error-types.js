@@ -11,16 +11,16 @@ const domain = require('domain');
 // https://github.com/nodejs/node/issues/28275 is fixed in debug mode.
 
 for (const something of [
-    42, null, undefined, false, () => {}, 'string', Symbol('foo'),
+	42, null, undefined, false, () => {}, 'string', Symbol('foo'),
 ]) {
-    const d = new domain.Domain();
-    d.run(common.mustCall(() => {
-        process.nextTick(common.mustCall(() => {
-            throw something;
-        }));
-    }));
+	const d = new domain.Domain();
+	d.run(common.mustCall(() => {
+		process.nextTick(common.mustCall(() => {
+			throw something;
+		}));
+	}));
 
-    d.on('error', common.mustCall((err) => {
-        assert.strictEqual(something, err);
-    }));
+	d.on('error', common.mustCall((err) => {
+		assert.strictEqual(something, err);
+	}));
 }

@@ -39,7 +39,7 @@ The API is based on the Web API [`AbortController`][].
 const ac = new AbortController();
 
 ac.signal.addEventListener('abort', () => console.log('Aborted!'),
-                           { once: true });
+																											{ once: true });
 
 ac.abort();
 
@@ -141,7 +141,7 @@ ac.signal.onabort = () => console.log('aborted!');
 
 // Or the EventTarget API...
 ac.signal.addEventListener('abort', (event) => {
-    console.log(event.type);  // Prints 'abort'
+	console.log(event.type);  // Prints 'abort'
 }, { once: true });
 
 ac.abort();
@@ -502,17 +502,17 @@ within each turn of the Node.js event loop.
 // before any other promise jobs.
 
 DataHandler.prototype.load = async function load(key) {
-    const hit = this._cache.get(key);
-    if (hit !== undefined) {
-        queueMicrotask(() => {
-            this.emit('load', hit);
-        });
-        return;
-    }
+	const hit = this._cache.get(key);
+	if (hit !== undefined) {
+		queueMicrotask(() => {
+			this.emit('load', hit);
+		});
+		return;
+	}
 
-    const data = await fetchData(key);
-    this._cache.set(key, data);
-    this.emit('load', data);
+	const data = await fetchData(key);
+	this._cache.set(key, data);
+	this.emit('load', data);
 };
 ```
 

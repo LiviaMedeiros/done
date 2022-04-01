@@ -20,5 +20,5 @@ const worker = new Worker(`
 `, { eval: true });
 
 worker.on('error', common.mustCall((e) => {
-    assert.strictEqual(e.code, 'ERR_WORKER_UNSERIALIZABLE_ERROR');
+	assert.strictEqual(e.code, 'ERR_WORKER_UNSERIALIZABLE_ERROR');
 }));

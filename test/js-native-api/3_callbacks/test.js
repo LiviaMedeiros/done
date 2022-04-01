@@ -4,13 +4,13 @@ const assert = require('assert');
 const addon = require(`./build/${common.buildType}/3_callbacks`);
 
 addon.RunCallback(function(msg) {
-    assert.strictEqual(msg, 'hello world');
+	assert.strictEqual(msg, 'hello world');
 });
 
 function testRecv(desiredRecv) {
-    addon.RunCallbackWithRecv(function() {
-        assert.strictEqual(this, desiredRecv);
-    }, desiredRecv);
+	addon.RunCallbackWithRecv(function() {
+		assert.strictEqual(this, desiredRecv);
+	}, desiredRecv);
 }
 
 testRecv(undefined);

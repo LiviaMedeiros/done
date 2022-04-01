@@ -10,9 +10,9 @@ const SlowBuffer = require('buffer').SlowBuffer;
 
 const len = 1422561062959;
 const message = {
-    code: 'ERR_INVALID_ARG_VALUE',
-    name: 'RangeError',
-    message: /^The argument 'size' is invalid\. Received [^"]*$/
+	code: 'ERR_INVALID_ARG_VALUE',
+	name: 'RangeError',
+	message: /^The argument 'size' is invalid\. Received [^"]*$/
 };
 assert.throws(() => Buffer(len).toString('utf8'), message);
 assert.throws(() => SlowBuffer(len).toString('utf8'), message);

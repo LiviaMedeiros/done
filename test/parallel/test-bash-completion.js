@@ -6,7 +6,7 @@ const { debuglog, inspect } = require('util');
 const debug = debuglog('test');
 
 const p = child_process.spawnSync(
-    process.execPath, [ '--completion-bash' ]);
+	process.execPath, [ '--completion-bash' ]);
 assert.ifError(p.error);
 
 const output = p.stdout.toString().trim().replace(/\r/g, '');
@@ -28,8 +28,8 @@ complete -o filenames -o nospace -o bashdefault -F _node_complete node node_g`
   .replace(/\r/g, '');
 
 assert.ok(
-    output.includes(prefix),
-    `Expect\n\n ${inspect(output)}\n\nto include\n\n${inspect(prefix)}`);
+	output.includes(prefix),
+	`Expect\n\n ${inspect(output)}\n\nto include\n\n${inspect(prefix)}`);
 assert.ok(
-    output.includes(suffix),
-    `Expect\n\n ${inspect(output)}\n\nto include\n\n${inspect(suffix)}`);
+	output.includes(suffix),
+	`Expect\n\n ${inspect(output)}\n\nto include\n\n${inspect(suffix)}`);

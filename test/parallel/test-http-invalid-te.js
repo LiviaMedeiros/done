@@ -27,14 +27,14 @@ I AM A SMUGGLED REQUEST!!!
 const server = http.createServer(common.mustNotCall());
 
 server.on('clientError', common.mustCall((err) => {
-    assert.strictEqual(err.code, 'HPE_UNEXPECTED_CONTENT_LENGTH');
-    server.close();
+	assert.strictEqual(err.code, 'HPE_UNEXPECTED_CONTENT_LENGTH');
+	server.close();
 }));
 
 server.listen(0, common.mustCall(() => {
-    const client = net.connect(
-        server.address().port,
-        common.mustCall(() => {
-            client.end(REQUEST_BB.replace(/\n/g, '\r\n'));
-        }));
+	const client = net.connect(
+		server.address().port,
+		common.mustCall(() => {
+			client.end(REQUEST_BB.replace(/\n/g, '\r\n'));
+		}));
 }));

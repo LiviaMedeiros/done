@@ -12,14 +12,14 @@ const realPath = path.resolve(__dirname, '../fixtures/es-modules/symlink.mjs');
 const symlinkPath = path.resolve(tmpdir.path, 'symlink.mjs');
 
 try {
-    fs.symlinkSync(realPath, symlinkPath);
+	fs.symlinkSync(realPath, symlinkPath);
 } catch (err) {
-    if (err.code !== 'EPERM') throw err;
-    common.skip('insufficient privileges for symlinks');
+	if (err.code !== 'EPERM') throw err;
+	common.skip('insufficient privileges for symlinks');
 }
 
 spawn(process.execPath,
-      ['--preserve-symlinks', symlinkPath],
-      { stdio: 'inherit' }).on('exit', (code) => {
-    assert.strictEqual(code, 0);
+						['--preserve-symlinks', symlinkPath],
+						{ stdio: 'inherit' }).on('exit', (code) => {
+	assert.strictEqual(code, 0);
 });

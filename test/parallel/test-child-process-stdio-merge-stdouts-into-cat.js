@@ -18,13 +18,13 @@ p3.stdout.setEncoding('utf8');
 // Do so sequentially in order to avoid race conditions.
 p1.stdin.end('hello\n');
 p3.stdout.once('data', common.mustCall((chunk) => {
-    assert.strictEqual(chunk, 'hello\n');
-    p2.stdin.end('world\n');
-    p3.stdout.once('data', common.mustCall((chunk) => {
-        assert.strictEqual(chunk, 'world\n');
-        p3.stdin.end('foobar\n');
-        p3.stdout.once('data', common.mustCall((chunk) => {
-            assert.strictEqual(chunk, 'foobar\n');
-        }));
-    }));
+	assert.strictEqual(chunk, 'hello\n');
+	p2.stdin.end('world\n');
+	p3.stdout.once('data', common.mustCall((chunk) => {
+		assert.strictEqual(chunk, 'world\n');
+		p3.stdin.end('foobar\n');
+		p3.stdout.once('data', common.mustCall((chunk) => {
+			assert.strictEqual(chunk, 'foobar\n');
+		}));
+	}));
 }));

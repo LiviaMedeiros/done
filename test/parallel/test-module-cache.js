@@ -8,8 +8,8 @@ tmpdir.refresh();
 
 const filePath = path.join(tmpdir.path, 'test-module-cache.json');
 assert.throws(
-    () => require(filePath),
-    { code: 'MODULE_NOT_FOUND' }
+	() => require(filePath),
+	{ code: 'MODULE_NOT_FOUND' }
 );
 
 fs.writeFileSync(filePath, '[]');

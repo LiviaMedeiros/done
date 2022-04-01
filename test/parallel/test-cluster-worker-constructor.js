@@ -35,9 +35,9 @@ assert.strictEqual(worker.id, 0);
 assert.strictEqual(worker.process, undefined);
 
 worker = new cluster.Worker({
-    id: 3,
-    state: 'online',
-    process: process
+	id: 3,
+	state: 'online',
+	process: process
 });
 assert.strictEqual(worker.exitedAfterDisconnect, undefined);
 assert.strictEqual(worker.state, 'online');

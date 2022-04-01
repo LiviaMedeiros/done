@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 const fixtures = require('../common/fixtures');
 
 const assert = require('assert');
@@ -14,42 +14,42 @@ const cert = fixtures.readKey('agent2-cert.pem');
 //   'ECDH' with 'TLS_AES_128_GCM_SHA256',
 
 function loadDHParam(n) {
-    return fixtures.readKey(`dh${n}.pem`);
+	return fixtures.readKey(`dh${n}.pem`);
 }
 
 function test(size, type, name, cipher) {
-    assert(cipher);
+	assert(cipher);
 
-    const options = {
-        key: key,
-        cert: cert,
-        ciphers: cipher
-    };
+	const options = {
+		key: key,
+		cert: cert,
+		ciphers: cipher
+	};
 
-    if (name) options.ecdhCurve = name;
+	if (name) options.ecdhCurve = name;
 
-    if (type === 'DH') options.dhparam = loadDHParam(size);
+	if (type === 'DH') options.dhparam = loadDHParam(size);
 
-    const server = tls.createServer(options, common.mustCall((conn) => {
-        assert.strictEqual(conn.getEphemeralKeyInfo(), null);
-        conn.end();
-    }));
+	const server = tls.createServer(options, common.mustCall((conn) => {
+		assert.strictEqual(conn.getEphemeralKeyInfo(), null);
+		conn.end();
+	}));
 
-    server.on('close', common.mustSucceed());
+	server.on('close', common.mustSucceed());
 
-    server.listen(0, common.mustCall(() => {
-        const client = tls.connect({
-            port: server.address().port,
-            rejectUnauthorized: false
-        }, common.mustCall(function() {
-            const ekeyinfo = client.getEphemeralKeyInfo();
-            assert.strictEqual(ekeyinfo.type, type);
-            assert.strictEqual(ekeyinfo.size, size);
-            assert.strictEqual(ekeyinfo.name, name);
-            server.close();
-        }));
-        client.on('secureConnect', common.mustCall());
-    }));
+	server.listen(0, common.mustCall(() => {
+		const client = tls.connect({
+			port: server.address().port,
+			rejectUnauthorized: false
+		}, common.mustCall(function() {
+			const ekeyinfo = client.getEphemeralKeyInfo();
+			assert.strictEqual(ekeyinfo.type, type);
+			assert.strictEqual(ekeyinfo.size, size);
+			assert.strictEqual(ekeyinfo.name, name);
+			server.close();
+		}));
+		client.on('secureConnect', common.mustCall());
+	}));
 }
 
 test(undefined, undefined, undefined, 'AES128-SHA256');

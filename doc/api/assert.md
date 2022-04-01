@@ -170,23 +170,23 @@ import assert from 'assert';
 
 // Generate an AssertionError to compare the error message later:
 const { message } = new assert.AssertionError({
-    actual: 1,
-    expected: 2,
-    operator: 'strictEqual'
+	actual: 1,
+	expected: 2,
+	operator: 'strictEqual'
 });
 
 // Verify error output:
 try {
-    assert.strictEqual(1, 2);
+	assert.strictEqual(1, 2);
 } catch (err) {
-    assert(err instanceof assert.AssertionError);
-    assert.strictEqual(err.message, message);
-    assert.strictEqual(err.name, 'AssertionError');
-    assert.strictEqual(err.actual, 1);
-    assert.strictEqual(err.expected, 2);
-    assert.strictEqual(err.code, 'ERR_ASSERTION');
-    assert.strictEqual(err.operator, 'strictEqual');
-    assert.strictEqual(err.generatedMessage, true);
+	assert(err instanceof assert.AssertionError);
+	assert.strictEqual(err.message, message);
+	assert.strictEqual(err.name, 'AssertionError');
+	assert.strictEqual(err.actual, 1);
+	assert.strictEqual(err.expected, 2);
+	assert.strictEqual(err.code, 'ERR_ASSERTION');
+	assert.strictEqual(err.operator, 'strictEqual');
+	assert.strictEqual(err.generatedMessage, true);
 }
 ```
 
@@ -195,23 +195,23 @@ const assert = require('assert');
 
 // Generate an AssertionError to compare the error message later:
 const { message } = new assert.AssertionError({
-    actual: 1,
-    expected: 2,
-    operator: 'strictEqual'
+	actual: 1,
+	expected: 2,
+	operator: 'strictEqual'
 });
 
 // Verify error output:
 try {
-    assert.strictEqual(1, 2);
+	assert.strictEqual(1, 2);
 } catch (err) {
-    assert(err instanceof assert.AssertionError);
-    assert.strictEqual(err.message, message);
-    assert.strictEqual(err.name, 'AssertionError');
-    assert.strictEqual(err.actual, 1);
-    assert.strictEqual(err.expected, 2);
-    assert.strictEqual(err.code, 'ERR_ASSERTION');
-    assert.strictEqual(err.operator, 'strictEqual');
-    assert.strictEqual(err.generatedMessage, true);
+	assert(err instanceof assert.AssertionError);
+	assert.strictEqual(err.message, message);
+	assert.strictEqual(err.name, 'AssertionError');
+	assert.strictEqual(err.actual, 1);
+	assert.strictEqual(err.expected, 2);
+	assert.strictEqual(err.code, 'ERR_ASSERTION');
+	assert.strictEqual(err.operator, 'strictEqual');
+	assert.strictEqual(err.generatedMessage, true);
 }
 ```
 
@@ -256,7 +256,7 @@ callsfunc();
 // Calls tracker.verify() and verifies if all tracker.calls() functions have
 // been called exact times.
 process.on('exit', () => {
-    tracker.verify();
+	tracker.verify();
 });
 ```
 
@@ -275,7 +275,7 @@ callsfunc();
 // Calls tracker.verify() and verifies if all tracker.calls() functions have
 // been called exact times.
 process.on('exit', () => {
-    tracker.verify();
+	tracker.verify();
 });
 ```
 
@@ -567,19 +567,19 @@ are evaluated also:
 import assert from 'assert';
 
 const obj1 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj2 = {
-    a: {
-        b: 2
-    }
+	a: {
+		b: 2
+	}
 };
 const obj3 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj4 = Object.create(obj1);
 
@@ -602,19 +602,19 @@ assert.deepEqual(obj1, obj4);
 const assert = require('assert');
 
 const obj1 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj2 = {
-    a: {
-        b: 2
-    }
+	a: {
+		b: 2
+	}
 };
 const obj3 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj4 = Object.create(obj1);
 
@@ -980,10 +980,10 @@ Besides the async nature to await the completion behaves identically to
 import assert from 'assert/strict';
 
 await assert.doesNotReject(
-    async () => {
-        throw new TypeError('Wrong value');
-    },
-    SyntaxError
+	async () => {
+		throw new TypeError('Wrong value');
+	},
+	SyntaxError
 );
 ```
 
@@ -991,12 +991,12 @@ await assert.doesNotReject(
 const assert = require('assert/strict');
 
 (async () => {
-    await assert.doesNotReject(
-        async () => {
-            throw new TypeError('Wrong value');
-        },
-        SyntaxError
-    );
+	await assert.doesNotReject(
+		async () => {
+			throw new TypeError('Wrong value');
+		},
+		SyntaxError
+	);
 })();
 ```
 
@@ -1005,7 +1005,7 @@ import assert from 'assert/strict';
 
 assert.doesNotReject(Promise.reject(new TypeError('Wrong value')))
   .then(() => {
-      // ...
+  	// ...
   });
 ```
 
@@ -1014,7 +1014,7 @@ const assert = require('assert/strict');
 
 assert.doesNotReject(Promise.reject(new TypeError('Wrong value')))
   .then(() => {
-      // ...
+  	// ...
   });
 ```
 
@@ -1062,10 +1062,10 @@ matching error type in the assertion:
 import assert from 'assert/strict';
 
 assert.doesNotThrow(
-    () => {
-        throw new TypeError('Wrong value');
-    },
-    SyntaxError
+	() => {
+		throw new TypeError('Wrong value');
+	},
+	SyntaxError
 );
 ```
 
@@ -1073,10 +1073,10 @@ assert.doesNotThrow(
 const assert = require('assert/strict');
 
 assert.doesNotThrow(
-    () => {
-        throw new TypeError('Wrong value');
-    },
-    SyntaxError
+	() => {
+		throw new TypeError('Wrong value');
+	},
+	SyntaxError
 );
 ```
 
@@ -1087,10 +1087,10 @@ However, the following will result in an [`AssertionError`][] with the message
 import assert from 'assert/strict';
 
 assert.doesNotThrow(
-    () => {
-        throw new TypeError('Wrong value');
-    },
-    TypeError
+	() => {
+		throw new TypeError('Wrong value');
+	},
+	TypeError
 );
 ```
 
@@ -1098,10 +1098,10 @@ assert.doesNotThrow(
 const assert = require('assert/strict');
 
 assert.doesNotThrow(
-    () => {
-        throw new TypeError('Wrong value');
-    },
-    TypeError
+	() => {
+		throw new TypeError('Wrong value');
+	},
+	TypeError
 );
 ```
 
@@ -1113,11 +1113,11 @@ message:
 import assert from 'assert/strict';
 
 assert.doesNotThrow(
-    () => {
-        throw new TypeError('Wrong value');
-    },
-    /Wrong value/,
-    'Whoops'
+	() => {
+		throw new TypeError('Wrong value');
+	},
+	/Wrong value/,
+	'Whoops'
 );
 // Throws: AssertionError: Got unwanted exception: Whoops
 ```
@@ -1126,11 +1126,11 @@ assert.doesNotThrow(
 const assert = require('assert/strict');
 
 assert.doesNotThrow(
-    () => {
-        throw new TypeError('Wrong value');
-    },
-    /Wrong value/,
-    'Whoops'
+	() => {
+		throw new TypeError('Wrong value');
+	},
+	/Wrong value/,
+	'Whoops'
 );
 // Throws: AssertionError: Got unwanted exception: Whoops
 ```
@@ -1323,7 +1323,7 @@ Example use of `stackStartFn` for truncating the exception's stacktrace:
 import assert from 'assert/strict';
 
 function suppressFrame() {
-    assert.fail('a', 'b', undefined, '!==', suppressFrame);
+	assert.fail('a', 'b', undefined, '!==', suppressFrame);
 }
 suppressFrame();
 // AssertionError [ERR_ASSERTION]: 'a' !== 'b'
@@ -1336,7 +1336,7 @@ suppressFrame();
 const assert = require('assert/strict');
 
 function suppressFrame() {
-    assert.fail('a', 'b', undefined, '!==', suppressFrame);
+	assert.fail('a', 'b', undefined, '!==', suppressFrame);
 }
 suppressFrame();
 // AssertionError [ERR_ASSERTION]: 'a' !== 'b'
@@ -1382,11 +1382,11 @@ assert.ifError(new Error());
 // Create some random error frames.
 let err;
 (function errorFrame() {
-    err = new Error('test error');
+	err = new Error('test error');
 })();
 
 (function ifErrorFrame() {
-    assert.ifError(err);
+	assert.ifError(err);
 })();
 // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: test error
 //     at ifErrorFrame
@@ -1408,11 +1408,11 @@ assert.ifError(new Error());
 // Create some random error frames.
 let err;
 (function errorFrame() {
-    err = new Error('test error');
+	err = new Error('test error');
 })();
 
 (function ifErrorFrame() {
-    assert.ifError(err);
+	assert.ifError(err);
 })();
 // AssertionError [ERR_ASSERTION]: ifError got unwanted exception: test error
 //     at ifErrorFrame
@@ -1526,19 +1526,19 @@ Tests for any deep inequality. Opposite of [`assert.deepEqual()`][].
 import assert from 'assert';
 
 const obj1 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj2 = {
-    a: {
-        b: 2
-    }
+	a: {
+		b: 2
+	}
 };
 const obj3 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj4 = Object.create(obj1);
 
@@ -1559,19 +1559,19 @@ assert.notDeepEqual(obj1, obj4);
 const assert = require('assert');
 
 const obj1 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj2 = {
-    a: {
-        b: 2
-    }
+	a: {
+		b: 2
+	}
 };
 const obj3 = {
-    a: {
-        b: 1
-    }
+	a: {
+		b: 1
+	}
 };
 const obj4 = Object.create(obj1);
 
@@ -1924,13 +1924,13 @@ if the `asyncFn` fails to reject.
 import assert from 'assert/strict';
 
 await assert.rejects(
-    async () => {
-        throw new TypeError('Wrong value');
-    },
-    {
-        name: 'TypeError',
-        message: 'Wrong value'
-    }
+	async () => {
+		throw new TypeError('Wrong value');
+	},
+	{
+		name: 'TypeError',
+		message: 'Wrong value'
+	}
 );
 ```
 
@@ -1938,15 +1938,15 @@ await assert.rejects(
 const assert = require('assert/strict');
 
 (async () => {
-    await assert.rejects(
-        async () => {
-            throw new TypeError('Wrong value');
-        },
-        {
-            name: 'TypeError',
-            message: 'Wrong value'
-        }
-    );
+	await assert.rejects(
+		async () => {
+			throw new TypeError('Wrong value');
+		},
+		{
+			name: 'TypeError',
+			message: 'Wrong value'
+		}
+	);
 })();
 ```
 
@@ -1954,14 +1954,14 @@ const assert = require('assert/strict');
 import assert from 'assert/strict';
 
 await assert.rejects(
-    async () => {
-        throw new TypeError('Wrong value');
-    },
-    (err) => {
-        assert.strictEqual(err.name, 'TypeError');
-        assert.strictEqual(err.message, 'Wrong value');
-        return true;
-    }
+	async () => {
+		throw new TypeError('Wrong value');
+	},
+	(err) => {
+		assert.strictEqual(err.name, 'TypeError');
+		assert.strictEqual(err.message, 'Wrong value');
+		return true;
+	}
 );
 ```
 
@@ -1969,16 +1969,16 @@ await assert.rejects(
 const assert = require('assert/strict');
 
 (async () => {
-    await assert.rejects(
-        async () => {
-            throw new TypeError('Wrong value');
-        },
-        (err) => {
-            assert.strictEqual(err.name, 'TypeError');
-            assert.strictEqual(err.message, 'Wrong value');
-            return true;
-        }
-    );
+	await assert.rejects(
+		async () => {
+			throw new TypeError('Wrong value');
+		},
+		(err) => {
+			assert.strictEqual(err.name, 'TypeError');
+			assert.strictEqual(err.message, 'Wrong value');
+			return true;
+		}
+	);
 })();
 ```
 
@@ -1986,10 +1986,10 @@ const assert = require('assert/strict');
 import assert from 'assert/strict';
 
 assert.rejects(
-    Promise.reject(new Error('Wrong value')),
-    Error
+	Promise.reject(new Error('Wrong value')),
+	Error
 ).then(() => {
-    // ...
+	// ...
 });
 ```
 
@@ -1997,10 +1997,10 @@ assert.rejects(
 const assert = require('assert/strict');
 
 assert.rejects(
-    Promise.reject(new Error('Wrong value')),
-    Error
+	Promise.reject(new Error('Wrong value')),
+	Error
 ).then(() => {
-    // ...
+	// ...
 });
 ```
 
@@ -2132,65 +2132,65 @@ const err = new TypeError('Wrong value');
 err.code = 404;
 err.foo = 'bar';
 err.info = {
-    nested: true,
-    baz: 'text'
+	nested: true,
+	baz: 'text'
 };
 err.reg = /abc/i;
 
 assert.throws(
-    () => {
-        throw err;
-    },
-    {
-        name: 'TypeError',
-        message: 'Wrong value',
-        info: {
-            nested: true,
-            baz: 'text'
-        }
-    // Only properties on the validation object will be tested for.
-    // Using nested objects requires all properties to be present. Otherwise
-    // the validation is going to fail.
-    }
+	() => {
+		throw err;
+	},
+	{
+		name: 'TypeError',
+		message: 'Wrong value',
+		info: {
+			nested: true,
+			baz: 'text'
+		}
+		// Only properties on the validation object will be tested for.
+		// Using nested objects requires all properties to be present. Otherwise
+		// the validation is going to fail.
+	}
 );
 
 // Using regular expressions to validate error properties:
 throws(
-    () => {
-        throw err;
-    },
-    {
-    // The `name` and `message` properties are strings and using regular
-    // expressions on those will match against the string. If they fail, an
-    // error is thrown.
-        name: /^TypeError$/,
-        message: /Wrong/,
-        foo: 'bar',
-        info: {
-            nested: true,
-            // It is not possible to use regular expressions for nested properties!
-            baz: 'text'
-        },
-        // The `reg` property contains a regular expression and only if the
-        // validation object contains an identical regular expression, it is going
-        // to pass.
-        reg: /abc/i
-    }
+	() => {
+		throw err;
+	},
+	{
+		// The `name` and `message` properties are strings and using regular
+		// expressions on those will match against the string. If they fail, an
+		// error is thrown.
+		name: /^TypeError$/,
+		message: /Wrong/,
+		foo: 'bar',
+		info: {
+			nested: true,
+			// It is not possible to use regular expressions for nested properties!
+			baz: 'text'
+		},
+		// The `reg` property contains a regular expression and only if the
+		// validation object contains an identical regular expression, it is going
+		// to pass.
+		reg: /abc/i
+	}
 );
 
 // Fails due to the different `message` and `name` properties:
 throws(
-    () => {
-        const otherErr = new Error('Not found');
-        // Copy all enumerable properties from `err` to `otherErr`.
-        for (const [key, value] of Object.entries(err)) {
-            otherErr[key] = value;
-        }
-        throw otherErr;
-    },
-    // The error's `message` and `name` properties will also be checked when using
-    // an error as validation object.
-    err
+	() => {
+		const otherErr = new Error('Not found');
+		// Copy all enumerable properties from `err` to `otherErr`.
+		for (const [key, value] of Object.entries(err)) {
+			otherErr[key] = value;
+		}
+		throw otherErr;
+	},
+	// The error's `message` and `name` properties will also be checked when using
+	// an error as validation object.
+	err
 );
 ```
 
@@ -2201,65 +2201,65 @@ const err = new TypeError('Wrong value');
 err.code = 404;
 err.foo = 'bar';
 err.info = {
-    nested: true,
-    baz: 'text'
+	nested: true,
+	baz: 'text'
 };
 err.reg = /abc/i;
 
 assert.throws(
-    () => {
-        throw err;
-    },
-    {
-        name: 'TypeError',
-        message: 'Wrong value',
-        info: {
-            nested: true,
-            baz: 'text'
-        }
-    // Only properties on the validation object will be tested for.
-    // Using nested objects requires all properties to be present. Otherwise
-    // the validation is going to fail.
-    }
+	() => {
+		throw err;
+	},
+	{
+		name: 'TypeError',
+		message: 'Wrong value',
+		info: {
+			nested: true,
+			baz: 'text'
+		}
+		// Only properties on the validation object will be tested for.
+		// Using nested objects requires all properties to be present. Otherwise
+		// the validation is going to fail.
+	}
 );
 
 // Using regular expressions to validate error properties:
 throws(
-    () => {
-        throw err;
-    },
-    {
-    // The `name` and `message` properties are strings and using regular
-    // expressions on those will match against the string. If they fail, an
-    // error is thrown.
-        name: /^TypeError$/,
-        message: /Wrong/,
-        foo: 'bar',
-        info: {
-            nested: true,
-            // It is not possible to use regular expressions for nested properties!
-            baz: 'text'
-        },
-        // The `reg` property contains a regular expression and only if the
-        // validation object contains an identical regular expression, it is going
-        // to pass.
-        reg: /abc/i
-    }
+	() => {
+		throw err;
+	},
+	{
+		// The `name` and `message` properties are strings and using regular
+		// expressions on those will match against the string. If they fail, an
+		// error is thrown.
+		name: /^TypeError$/,
+		message: /Wrong/,
+		foo: 'bar',
+		info: {
+			nested: true,
+			// It is not possible to use regular expressions for nested properties!
+			baz: 'text'
+		},
+		// The `reg` property contains a regular expression and only if the
+		// validation object contains an identical regular expression, it is going
+		// to pass.
+		reg: /abc/i
+	}
 );
 
 // Fails due to the different `message` and `name` properties:
 throws(
-    () => {
-        const otherErr = new Error('Not found');
-        // Copy all enumerable properties from `err` to `otherErr`.
-        for (const [key, value] of Object.entries(err)) {
-            otherErr[key] = value;
-        }
-        throw otherErr;
-    },
-    // The error's `message` and `name` properties will also be checked when using
-    // an error as validation object.
-    err
+	() => {
+		const otherErr = new Error('Not found');
+		// Copy all enumerable properties from `err` to `otherErr`.
+		for (const [key, value] of Object.entries(err)) {
+			otherErr[key] = value;
+		}
+		throw otherErr;
+	},
+	// The error's `message` and `name` properties will also be checked when using
+	// an error as validation object.
+	err
 );
 ```
 
@@ -2269,10 +2269,10 @@ Validate instanceof using constructor:
 import assert from 'assert/strict';
 
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    Error
+	() => {
+		throw new Error('Wrong value');
+	},
+	Error
 );
 ```
 
@@ -2280,10 +2280,10 @@ assert.throws(
 const assert = require('assert/strict');
 
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    Error
+	() => {
+		throw new Error('Wrong value');
+	},
+	Error
 );
 ```
 
@@ -2296,10 +2296,10 @@ therefore also include the error name.
 import assert from 'assert/strict';
 
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    /^Error: Wrong value$/
+	() => {
+		throw new Error('Wrong value');
+	},
+	/^Error: Wrong value$/
 );
 ```
 
@@ -2307,10 +2307,10 @@ assert.throws(
 const assert = require('assert/strict');
 
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    /^Error: Wrong value$/
+	() => {
+		throw new Error('Wrong value');
+	},
+	/^Error: Wrong value$/
 );
 ```
 
@@ -2323,20 +2323,20 @@ It will otherwise fail with an [`AssertionError`][].
 import assert from 'assert/strict';
 
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    (err) => {
-        assert(err instanceof Error);
-        assert(/value/.test(err));
-        // Avoid returning anything from validation functions besides `true`.
-        // Otherwise, it's not clear what part of the validation failed. Instead,
-        // throw an error about the specific validation that failed (as done in this
-        // example) and add as much helpful debugging information to that error as
-        // possible.
-        return true;
-    },
-    'unexpected error'
+	() => {
+		throw new Error('Wrong value');
+	},
+	(err) => {
+		assert(err instanceof Error);
+		assert(/value/.test(err));
+		// Avoid returning anything from validation functions besides `true`.
+		// Otherwise, it's not clear what part of the validation failed. Instead,
+		// throw an error about the specific validation that failed (as done in this
+		// example) and add as much helpful debugging information to that error as
+		// possible.
+		return true;
+	},
+	'unexpected error'
 );
 ```
 
@@ -2344,20 +2344,20 @@ assert.throws(
 const assert = require('assert/strict');
 
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    (err) => {
-        assert(err instanceof Error);
-        assert(/value/.test(err));
-        // Avoid returning anything from validation functions besides `true`.
-        // Otherwise, it's not clear what part of the validation failed. Instead,
-        // throw an error about the specific validation that failed (as done in this
-        // example) and add as much helpful debugging information to that error as
-        // possible.
-        return true;
-    },
-    'unexpected error'
+	() => {
+		throw new Error('Wrong value');
+	},
+	(err) => {
+		assert(err instanceof Error);
+		assert(/value/.test(err));
+		// Avoid returning anything from validation functions besides `true`.
+		// Otherwise, it's not clear what part of the validation failed. Instead,
+		// throw an error about the specific validation that failed (as done in this
+		// example) and add as much helpful debugging information to that error as
+		// possible.
+		return true;
+	},
+	'unexpected error'
 );
 ```
 
@@ -2372,11 +2372,11 @@ a string as the second argument gets considered:
 import assert from 'assert/strict';
 
 function throwingFirst() {
-    throw new Error('First');
+	throw new Error('First');
 }
 
 function throwingSecond() {
-    throw new Error('Second');
+	throw new Error('Second');
 }
 
 function notThrowing() {}
@@ -2408,11 +2408,11 @@ assert.throws(throwingFirst, /Second$/);
 const assert = require('assert/strict');
 
 function throwingFirst() {
-    throw new Error('First');
+	throw new Error('First');
 }
 
 function throwingSecond() {
-    throw new Error('Second');
+	throw new Error('Second');
 }
 
 function notThrowing() {}

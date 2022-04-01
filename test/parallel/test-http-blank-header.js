@@ -26,36 +26,36 @@ const http = require('http');
 const net = require('net');
 
 const server = http.createServer(common.mustCall((req, res) => {
-    assert.strictEqual(req.method, 'GET');
-    assert.strictEqual(req.url, '/blah');
-    assert.deepStrictEqual(req.headers, {
-        host: 'example.org:443',
-        origin: 'http://example.org',
-        cookie: ''
-    });
+	assert.strictEqual(req.method, 'GET');
+	assert.strictEqual(req.url, '/blah');
+	assert.deepStrictEqual(req.headers, {
+		host: 'example.org:443',
+		origin: 'http://example.org',
+		cookie: ''
+	});
 }));
 
 
 server.listen(0, common.mustCall(() => {
-    const c = net.createConnection(server.address().port);
-    let received = '';
+	const c = net.createConnection(server.address().port);
+	let received = '';
 
-    c.on('connect', common.mustCall(() => {
-        c.write('GET /blah HTTP/1.1\r\n' +
+	c.on('connect', common.mustCall(() => {
+		c.write('GET /blah HTTP/1.1\r\n' +
             'Host: example.org:443\r\n' +
             'Cookie:\r\n' +
             'Origin: http://example.org\r\n' +
             '\r\n\r\nhello world'
-        );
-    }));
-    c.on('data', common.mustCall((data) => {
-        received += data.toString();
-    }));
-    c.on('end', common.mustCall(() => {
-        assert.strictEqual(received,
-                           'HTTP/1.1 400 Bad Request\r\n' +
+		);
+	}));
+	c.on('data', common.mustCall((data) => {
+		received += data.toString();
+	}));
+	c.on('end', common.mustCall(() => {
+		assert.strictEqual(received,
+																					'HTTP/1.1 400 Bad Request\r\n' +
                        'Connection: close\r\n\r\n');
-        c.end();
-    }));
-    c.on('close', common.mustCall(() => server.close()));
+		c.end();
+	}));
+	c.on('close', common.mustCall(() => server.close()));
 }));

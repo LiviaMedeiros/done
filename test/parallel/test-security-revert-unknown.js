@@ -9,6 +9,6 @@ const { signal, status, output } =
 assert.strictEqual(signal, null);
 assert.strictEqual(status, 12);
 assert.strictEqual(
-    output[2].toString(),
-    `${process.execPath}: Error: ` +
+	output[2].toString(),
+	`${process.execPath}: Error: ` +
   `Attempt to revert an unknown CVE [not-a-cve]${os.EOL}`);

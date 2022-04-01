@@ -5,16 +5,16 @@ const spawn = require('child_process').spawn;
 const expectedError = common.isWindows ? /\bENOTSUP\b/ : /\bEPERM\b/;
 
 if (common.isIBMi)
-    common.skip('IBMi has a different behavior');
+	common.skip('IBMi has a different behavior');
 
 if (common.isWindows || process.getuid() !== 0) {
-    assert.throws(() => {
-        spawn('echo', ['fhqwhgads'], { uid: 0 });
-    }, expectedError);
+	assert.throws(() => {
+		spawn('echo', ['fhqwhgads'], { uid: 0 });
+	}, expectedError);
 }
 
 if (common.isWindows || !process.getgroups().some((gid) => gid === 0)) {
-    assert.throws(() => {
-        spawn('echo', ['fhqwhgads'], { gid: 0 });
-    }, expectedError);
+	assert.throws(() => {
+		spawn('echo', ['fhqwhgads'], { gid: 0 });
+	}, expectedError);
 }

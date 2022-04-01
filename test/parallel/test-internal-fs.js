@@ -10,44 +10,44 @@ fs.assertEncoding();
 fs.assertEncoding('utf8');
 
 assert.throws(
-    () => fs.assertEncoding('foo'),
-    { code: 'ERR_INVALID_ARG_VALUE', name: 'TypeError' }
+	() => fs.assertEncoding('foo'),
+	{ code: 'ERR_INVALID_ARG_VALUE', name: 'TypeError' }
 );
 
 // Test junction symlinks
 {
-    const pathString = 'c:\\test1';
-    const linkPathString = '\\test2';
+	const pathString = 'c:\\test1';
+	const linkPathString = '\\test2';
 
-    const preprocessSymlinkDestination = fs.preprocessSymlinkDestination(
-        pathString,
-        'junction',
-        linkPathString
-    );
+	const preprocessSymlinkDestination = fs.preprocessSymlinkDestination(
+		pathString,
+		'junction',
+		linkPathString
+	);
 
-    if (process.platform === 'win32') {
-        assert.match(preprocessSymlinkDestination, /^\\\\\?\\/);
-    } else {
-        assert.strictEqual(preprocessSymlinkDestination, pathString);
-    }
+	if (process.platform === 'win32') {
+		assert.match(preprocessSymlinkDestination, /^\\\\\?\\/);
+	} else {
+		assert.strictEqual(preprocessSymlinkDestination, pathString);
+	}
 }
 
 // Test none junction symlinks
 {
-    const pathString = 'c:\\test1';
-    const linkPathString = '\\test2';
+	const pathString = 'c:\\test1';
+	const linkPathString = '\\test2';
 
-    const preprocessSymlinkDestination = fs.preprocessSymlinkDestination(
-        pathString,
-        undefined,
-        linkPathString
-    );
+	const preprocessSymlinkDestination = fs.preprocessSymlinkDestination(
+		pathString,
+		undefined,
+		linkPathString
+	);
 
-    if (process.platform === 'win32') {
-    // There should not be any forward slashes
-        assert.strictEqual(
-            /\//.test(preprocessSymlinkDestination), false);
-    } else {
-        assert.strictEqual(preprocessSymlinkDestination, pathString);
-    }
+	if (process.platform === 'win32') {
+		// There should not be any forward slashes
+		assert.strictEqual(
+			/\//.test(preprocessSymlinkDestination), false);
+	} else {
+		assert.strictEqual(preprocessSymlinkDestination, pathString);
+	}
 }

@@ -32,9 +32,9 @@ console.log(`${cmd}\n\n`);
 fs.writeFileSync(tmpFile, string);
 
 childProcess.exec(cmd, common.mustCall(function(err, stdout, stderr) {
-    fs.unlinkSync(tmpFile);
+	fs.unlinkSync(tmpFile);
 
-    assert.ifError(err);
-    assert.strictEqual(stdout, `hello world\r\n${string}`);
-    assert.strictEqual(stderr, '');
+	assert.ifError(err);
+	assert.strictEqual(stdout, `hello world\r\n${string}`);
+	assert.strictEqual(stderr, '');
 }));

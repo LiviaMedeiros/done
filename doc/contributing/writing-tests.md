@@ -41,16 +41,16 @@ const assert = require('assert');                                      // 8
 const http = require('http');                                          // 9
 
 const server = http.createServer(common.mustCall((req, res) => {       // 11
-    res.end('ok');                                                       // 12
+	res.end('ok');                                                       // 12
 }));                                                                   // 13
 server.listen(0, () => {                                               // 14
-    http.get({                                                           // 15
-        port: server.address().port,                                       // 16
-        headers: { 'Test': 'Düsseldorf' }                                  // 17
-    }, common.mustCall((res) => {                                        // 18
-        assert.strictEqual(res.statusCode, 200);                           // 19
-        server.close();                                                    // 20
-    }));                                                                 // 21
+	http.get({                                                           // 15
+		port: server.address().port,                                       // 16
+		headers: { 'Test': 'Düsseldorf' }                                  // 17
+	}, common.mustCall((res) => {                                        // 18
+		assert.strictEqual(res.statusCode, 200);                           // 19
+		server.close();                                                    // 20
+	}));                                                                 // 21
 });                                                                    // 22
 // ...                                                                 // 23
 ```
@@ -111,16 +111,16 @@ case, `_`, lower case).
 
 ```js
 const server = http.createServer(common.mustCall((req, res) => {
-    res.end('ok');
+	res.end('ok');
 }));
 server.listen(0, () => {
-    http.get({
-        port: server.address().port,
-        headers: { 'Test': 'Düsseldorf' }
-    }, common.mustCall((res) => {
-        assert.strictEqual(res.statusCode, 200);
-        server.close();
-    }));
+	http.get({
+		port: server.address().port,
+		headers: { 'Test': 'Düsseldorf' }
+	}, common.mustCall((res) => {
+		assert.strictEqual(res.statusCode, 200);
+		server.close();
+	}));
 });
 ```
 
@@ -180,25 +180,25 @@ let request = 0;
 let listening = 0;
 let response = 0;
 process.on('exit', () => {
-    assert.equal(request, 1, 'http server "request" callback was not called');
-    assert.equal(listening, 1, 'http server "listening" callback was not called');
-    assert.equal(response, 1, 'http request "response" callback was not called');
+	assert.equal(request, 1, 'http server "request" callback was not called');
+	assert.equal(listening, 1, 'http server "listening" callback was not called');
+	assert.equal(response, 1, 'http request "response" callback was not called');
 });
 
 const server = http.createServer((req, res) => {
-    request++;
-    res.end();
+	request++;
+	res.end();
 }).listen(0, () => {
-    listening++;
-    const options = {
-        agent: null,
-        port: server.address().port
-    };
-    http.get(options, (res) => {
-        response++;
-        res.resume();
-        server.close();
-    });
+	listening++;
+	const options = {
+		agent: null,
+		port: server.address().port
+	};
+	http.get(options, (res) => {
+		response++;
+		res.resume();
+		server.close();
+	});
 });
 ```
 
@@ -210,16 +210,16 @@ const common = require('../common');
 const http = require('http');
 
 const server = http.createServer(common.mustCall((req, res) => {
-    res.end();
+	res.end();
 })).listen(0, common.mustCall(() => {
-    const options = {
-        agent: null,
-        port: server.address().port
-    };
-    http.get(options, common.mustCall((res) => {
-        res.resume();
-        server.close();
-    }));
+	const options = {
+		agent: null,
+		port: server.address().port
+	};
+	http.get(options, common.mustCall((res) => {
+		res.resume();
+		server.close();
+	}));
 }));
 ```
 
@@ -239,7 +239,7 @@ shutting down an HTTP server after a specific number of requests).
 const Countdown = require('../common/countdown');
 
 const countdown = new Countdown(2, () => {
-    console.log('.');
+	console.log('.');
 });
 
 countdown.dec();
@@ -261,9 +261,9 @@ const fs = require('fs').promises;
 
 // Wrap the `onFulfilled` handler in `common.mustCall()`.
 fs.readFile('test-file').then(
-    common.mustCall(
-        (content) => assert.strictEqual(content.toString(), 'test2')
-    ));
+	common.mustCall(
+		(content) => assert.strictEqual(content.toString(), 'test2')
+	));
 ```
 
 ### Flags
@@ -304,10 +304,10 @@ When using `assert.throws()`, if possible, provide the full error message:
 
 ```js
 assert.throws(
-    () => {
-        throw new Error('Wrong value');
-    },
-    /^Error: Wrong value$/ // Instead of something like /Wrong value/
+	() => {
+		throw new Error('Wrong value');
+	},
+	/^Error: Wrong value$/ // Instead of something like /Wrong value/
 );
 ```
 

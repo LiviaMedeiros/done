@@ -33,64 +33,64 @@ source.unpipe(dest1);
 assert.strictEqual(source._readableState.pipes.length, 0);
 
 {
-    // Test `cleanup()` if we unpipe all streams.
-    const source = Readable({ read: () => {} });
-    const dest1 = Writable({ write: () => {} });
-    const dest2 = Writable({ write: () => {} });
+	// Test `cleanup()` if we unpipe all streams.
+	const source = Readable({ read: () => {} });
+	const dest1 = Writable({ write: () => {} });
+	const dest2 = Writable({ write: () => {} });
 
-    let destCount = 0;
-    const srcCheckEventNames = ['end', 'data'];
-    const destCheckEventNames = ['close', 'finish', 'drain', 'error', 'unpipe'];
+	let destCount = 0;
+	const srcCheckEventNames = ['end', 'data'];
+	const destCheckEventNames = ['close', 'finish', 'drain', 'error', 'unpipe'];
 
-    const checkSrcCleanup = common.mustCall(() => {
-        assert.strictEqual(source._readableState.pipes.length, 0);
-        assert.strictEqual(source._readableState.flowing, false);
+	const checkSrcCleanup = common.mustCall(() => {
+		assert.strictEqual(source._readableState.pipes.length, 0);
+		assert.strictEqual(source._readableState.flowing, false);
 
-        srcCheckEventNames.forEach((eventName) => {
-            assert.strictEqual(
-                source.listenerCount(eventName), 0,
-                `source's '${eventName}' event listeners not removed`
-            );
-        });
-    });
+		srcCheckEventNames.forEach((eventName) => {
+			assert.strictEqual(
+				source.listenerCount(eventName), 0,
+				`source's '${eventName}' event listeners not removed`
+			);
+		});
+	});
 
-    function checkDestCleanup(dest) {
-        const currentDestId = ++destCount;
-        source.pipe(dest);
+	function checkDestCleanup(dest) {
+		const currentDestId = ++destCount;
+		source.pipe(dest);
 
-        const unpipeChecker = common.mustCall(() => {
-            assert.deepStrictEqual(
-                dest.listeners('unpipe'), [unpipeChecker],
-                `destination{${currentDestId}} should have a 'unpipe' event ` +
+		const unpipeChecker = common.mustCall(() => {
+			assert.deepStrictEqual(
+				dest.listeners('unpipe'), [unpipeChecker],
+				`destination{${currentDestId}} should have a 'unpipe' event ` +
         'listener which is `unpipeChecker`'
-            );
-            dest.removeListener('unpipe', unpipeChecker);
-            destCheckEventNames.forEach((eventName) => {
-                assert.strictEqual(
-                    dest.listenerCount(eventName), 0,
-                    `destination{${currentDestId}}'s '${eventName}' event ` +
+			);
+			dest.removeListener('unpipe', unpipeChecker);
+			destCheckEventNames.forEach((eventName) => {
+				assert.strictEqual(
+					dest.listenerCount(eventName), 0,
+					`destination{${currentDestId}}'s '${eventName}' event ` +
           'listeners not removed'
-                );
-            });
+				);
+			});
 
-            if (--destCount === 0)
-                checkSrcCleanup();
-        });
+			if (--destCount === 0)
+				checkSrcCleanup();
+		});
 
-        dest.on('unpipe', unpipeChecker);
-    }
+		dest.on('unpipe', unpipeChecker);
+	}
 
-    checkDestCleanup(dest1);
-    checkDestCleanup(dest2);
-    source.unpipe();
+	checkDestCleanup(dest1);
+	checkDestCleanup(dest2);
+	source.unpipe();
 }
 
 {
-    const src = Readable({ read: () => {} });
-    const dst = Writable({ write: () => {} });
-    src.pipe(dst);
-    src.on('resume', common.mustCall(() => {
-        src.on('pause', common.mustCall());
-        src.unpipe(dst);
-    }));
+	const src = Readable({ read: () => {} });
+	const dst = Writable({ write: () => {} });
+	src.pipe(dst);
+	src.on('resume', common.mustCall(() => {
+		src.on('pause', common.mustCall());
+		src.unpipe(dst);
+	}));
 }

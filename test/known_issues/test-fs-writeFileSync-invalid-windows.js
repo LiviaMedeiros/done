@@ -12,10 +12,10 @@ const assert = require('assert');
 const fs = require('fs');
 
 if (!common.isWindows) {
-    // Change to `common.skip()` when the test is moved out of `known_issues`.
-    assert.fail('Windows-only test');
+	// Change to `common.skip()` when the test is moved out of `known_issues`.
+	assert.fail('Windows-only test');
 }
 
 assert.throws(() => {
-    fs.writeFileSync('fhqwhgads??', 'come on');
+	fs.writeFileSync('fhqwhgads??', 'come on');
 }, { code: 'EINVAL' });

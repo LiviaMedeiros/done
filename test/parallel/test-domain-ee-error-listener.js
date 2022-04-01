@@ -11,7 +11,7 @@ const ee = new EventEmitter();
 
 const plainObject = { justAn: 'object' };
 ee.once('error', common.mustCall((err) => {
-    assert.deepStrictEqual(err, plainObject);
+	assert.deepStrictEqual(err, plainObject);
 }));
 ee.emit('error', plainObject);
 

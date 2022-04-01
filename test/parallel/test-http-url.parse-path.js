@@ -26,21 +26,21 @@ const http = require('http');
 const url = require('url');
 
 function check(request) {
-    // A path should come over
-    assert.strictEqual(request.url, '/asdf');
+	// A path should come over
+	assert.strictEqual(request.url, '/asdf');
 }
 
 const server = http.createServer(function(request, response) {
-    // Run the check function
-    check(request);
-    response.writeHead(200, {});
-    response.end('ok');
-    server.close();
+	// Run the check function
+	check(request);
+	response.writeHead(200, {});
+	response.end('ok');
+	server.close();
 });
 
 server.listen(0, function() {
-    const testURL = url.parse(`http://localhost:${this.address().port}/asdf`);
+	const testURL = url.parse(`http://localhost:${this.address().port}/asdf`);
 
-    // make the request
-    http.request(testURL).end();
+	// make the request
+	http.request(testURL).end();
 });

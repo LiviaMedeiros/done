@@ -100,30 +100,30 @@ expectWarning('Warning', 'Foobar is really bad');
 expectWarning('DeprecationWarning', 'Foobar is deprecated', 'DEP0XXX');
 
 expectWarning('DeprecationWarning', [
-    'Foobar is deprecated', 'DEP0XXX',
+	'Foobar is deprecated', 'DEP0XXX',
 ]);
 
 expectWarning('DeprecationWarning', [
-    ['Foobar is deprecated', 'DEP0XXX'],
-    ['Baz is also deprecated', 'DEP0XX2'],
+	['Foobar is deprecated', 'DEP0XXX'],
+	['Baz is also deprecated', 'DEP0XX2'],
 ]);
 
 expectWarning('DeprecationWarning', {
-    DEP0XXX: 'Foobar is deprecated',
-    DEP0XX2: 'Baz is also deprecated'
+	DEP0XXX: 'Foobar is deprecated',
+	DEP0XX2: 'Baz is also deprecated'
 });
 
 expectWarning({
-    DeprecationWarning: {
-        DEP0XXX: 'Foobar is deprecated',
-        DEP0XX1: 'Baz is also deprecated'
-    },
-    Warning: [
-        ['Multiple array entries are fine', 'SpecialWarningCode'],
-        ['No code is also fine'],
-    ],
-    SingleEntry: ['This will also work', 'WarningCode'],
-    SingleString: 'Single string entries without code will also work'
+	DeprecationWarning: {
+		DEP0XXX: 'Foobar is deprecated',
+		DEP0XX1: 'Baz is also deprecated'
+	},
+	Warning: [
+		['Multiple array entries are fine', 'SpecialWarningCode'],
+		['No code is also fine'],
+	],
+	SingleEntry: ['This will also work', 'WarningCode'],
+	SingleString: 'Single string entries without code will also work'
 });
 ```
 
@@ -438,7 +438,7 @@ requests). The Countdown will fail the test if the remainder did not reach 0.
 const Countdown = require('../common/countdown');
 
 function doSomething() {
-    console.log('.');
+	console.log('.');
 }
 
 const countdown = new Countdown(2, doSomething);
@@ -681,13 +681,13 @@ Create a heap dump and an embedder graph copy and validate occurrences.
 
 ```js
 validateSnapshotNodes('TLSWRAP', [
-    {
-        children: [
-            { name: 'enc_out' },
-            { name: 'enc_in' },
-            { name: 'TLSWrap' },
-        ]
-    },
+	{
+		children: [
+			{ name: 'enc_out' },
+			{ name: 'enc_in' },
+			{ name: 'TLSWrap' },
+		]
+	},
 ]);
 ```
 
@@ -702,8 +702,8 @@ The `hijackstdio` module provides utility functions for temporarily redirecting
 const { hijackStdout, restoreStdout } = require('../common/hijackstdio');
 
 hijackStdout((data) => {
-    /* Do something with data */
-    restoreStdout();
+	/* Do something with data */
+	restoreStdout();
 });
 
 console.log('this is sent to the hijacked listener');

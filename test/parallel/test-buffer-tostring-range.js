@@ -80,21 +80,21 @@ assert.strictEqual(rangeBuffer.toString('ascii', 0, true), 'a');
 
 // Try toString() with an object as an encoding
 assert.strictEqual(rangeBuffer.toString({ toString: function() {
-    return 'ascii';
+	return 'ascii';
 } }), 'abc');
 
 // Try toString() with 0 and null as the encoding
 assert.throws(() => {
-    rangeBuffer.toString(0, 1, 2);
+	rangeBuffer.toString(0, 1, 2);
 }, {
-    code: 'ERR_UNKNOWN_ENCODING',
-    name: 'TypeError',
-    message: 'Unknown encoding: 0'
+	code: 'ERR_UNKNOWN_ENCODING',
+	name: 'TypeError',
+	message: 'Unknown encoding: 0'
 });
 assert.throws(() => {
-    rangeBuffer.toString(null, 1, 2);
+	rangeBuffer.toString(null, 1, 2);
 }, {
-    code: 'ERR_UNKNOWN_ENCODING',
-    name: 'TypeError',
-    message: 'Unknown encoding: null'
+	code: 'ERR_UNKNOWN_ENCODING',
+	name: 'TypeError',
+	message: 'Unknown encoding: null'
 });

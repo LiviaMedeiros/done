@@ -20,8 +20,8 @@ clearTimeout(t1);
 clearInterval(i1);
 
 process.on('exit', () => {
-    assert.strictEqual(t1._destroyed, true);
-    assert.strictEqual(t2._destroyed, true);
-    assert.strictEqual(i1._destroyed, true);
-    assert.strictEqual(i2._destroyed, false);
+	assert.strictEqual(t1._destroyed, true);
+	assert.strictEqual(t2._destroyed, true);
+	assert.strictEqual(i1._destroyed, true);
+	assert.strictEqual(i2._destroyed, false);
 });

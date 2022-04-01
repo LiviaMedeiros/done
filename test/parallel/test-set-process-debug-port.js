@@ -9,8 +9,8 @@ const kMinPort = 1024;
 const kMaxPort = 65535;
 
 function check(value, expected) {
-    process.debugPort = value;
-    assert.strictEqual(process.debugPort, expected);
+	process.debugPort = value;
+	assert.strictEqual(process.debugPort, expected);
 }
 
 // Expected usage with numbers.
@@ -39,22 +39,22 @@ check([], 0);
 
 // Symbols do not coerce.
 assert.throws(() => {
-    process.debugPort = Symbol();
+	process.debugPort = Symbol();
 }, /^TypeError: Cannot convert a Symbol value to a number$/);
 
 // Verify port bounds checking.
 [
-    true,
-    -1,
-    1,
-    kMinPort - 1,
-    kMaxPort + 1,
-    '-1',
-    '1',
-    `${kMinPort - 1}`,
-    `${kMaxPort + 1}`,
+	true,
+	-1,
+	1,
+	kMinPort - 1,
+	kMaxPort + 1,
+	'-1',
+	'1',
+	`${kMinPort - 1}`,
+	`${kMaxPort + 1}`,
 ].forEach((value) => {
-    assert.throws(() => {
-        process.debugPort = value;
-    }, /^RangeError: process\.debugPort must be 0 or in range 1024 to 65535$/);
+	assert.throws(() => {
+		process.debugPort = value;
+	}, /^RangeError: process\.debugPort must be 0 or in range 1024 to 65535$/);
 });

@@ -3,7 +3,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const { strictEqual, deepStrictEqual } = require('assert');
 const { translatePeerCertificate } = require('_tls_common');
@@ -22,49 +22,49 @@ deepStrictEqual(translatePeerCertificate({}), {});
 // incorrectly. This behavior has now reached end-of-life and user-supplied
 // strings will not be parsed at all.
 deepStrictEqual(translatePeerCertificate({ issuer: '' }),
-                { issuer: '' });
+																{ issuer: '' });
 deepStrictEqual(translatePeerCertificate({ issuer: null }),
-                { issuer: null });
+																{ issuer: null });
 deepStrictEqual(translatePeerCertificate({ issuer: certString }),
-                { issuer: certString });
+																{ issuer: certString });
 
 // Earlier versions of Node.js parsed the issuer property but did so
 // incorrectly. This behavior has now reached end-of-life and user-supplied
 // strings will not be parsed at all.
 deepStrictEqual(translatePeerCertificate({ subject: '' }),
-                { subject: '' });
+																{ subject: '' });
 deepStrictEqual(translatePeerCertificate({ subject: null }),
-                { subject: null });
+																{ subject: null });
 deepStrictEqual(translatePeerCertificate({ subject: certString }),
-                { subject: certString });
+																{ subject: certString });
 
 deepStrictEqual(translatePeerCertificate({ issuerCertificate: '' }),
-                { issuerCertificate: null });
+																{ issuerCertificate: null });
 deepStrictEqual(translatePeerCertificate({ issuerCertificate: null }),
-                { issuerCertificate: null });
+																{ issuerCertificate: null });
 deepStrictEqual(
-    translatePeerCertificate({ issuerCertificate: { subject: certString } }),
-    { issuerCertificate: { subject: certString } });
+	translatePeerCertificate({ issuerCertificate: { subject: certString } }),
+	{ issuerCertificate: { subject: certString } });
 
 {
-    const cert = {};
-    cert.issuerCertificate = cert;
-    deepStrictEqual(translatePeerCertificate(cert), { issuerCertificate: cert });
+	const cert = {};
+	cert.issuerCertificate = cert;
+	deepStrictEqual(translatePeerCertificate(cert), { issuerCertificate: cert });
 }
 
 deepStrictEqual(translatePeerCertificate({ infoAccess: '' }),
-                { infoAccess: Object.create(null) });
+																{ infoAccess: Object.create(null) });
 deepStrictEqual(translatePeerCertificate({ infoAccess: null }),
-                { infoAccess: null });
+																{ infoAccess: null });
 {
-    const input =
+	const input =
       '__proto__:mostly harmless\n' +
       'hasOwnProperty:not a function\n' +
       'OCSP - URI:file:///etc/passwd\n';
-    const expected = Object.create(null);
-    expected.__proto__ = ['mostly harmless'];
-    expected.hasOwnProperty = ['not a function'];
-    expected['OCSP - URI'] = ['file:///etc/passwd'];
-    deepStrictEqual(translatePeerCertificate({ infoAccess: input }),
-                    { infoAccess: expected });
+	const expected = Object.create(null);
+	expected.__proto__ = ['mostly harmless'];
+	expected.hasOwnProperty = ['not a function'];
+	expected['OCSP - URI'] = ['file:///etc/passwd'];
+	deepStrictEqual(translatePeerCertificate({ infoAccess: input }),
+																	{ infoAccess: expected });
 }

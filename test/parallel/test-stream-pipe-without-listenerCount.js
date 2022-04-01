@@ -9,8 +9,8 @@ const w = new stream.Stream();
 w.listenerCount = undefined;
 
 w.on('pipe', function() {
-    r.emit('error', new Error('Readable Error'));
-    w.emit('error', new Error('Writable Error'));
+	r.emit('error', new Error('Readable Error'));
+	w.emit('error', new Error('Writable Error'));
 });
 r.on('error', common.mustCall());
 w.on('error', common.mustCall());

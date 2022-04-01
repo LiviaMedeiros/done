@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const { randomFillSync } = require('crypto');
 const { notStrictEqual } = require('assert');

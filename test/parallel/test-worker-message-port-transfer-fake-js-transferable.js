@@ -9,29 +9,29 @@ const { once } = require('events');
 // not enable loading arbitrary code from the disk.
 
 module.exports = {
-    NotARealClass: common.mustNotCall()
+	NotARealClass: common.mustNotCall()
 };
 
 (async function() {
-    const fh = await fs.open(__filename);
-    assert.strictEqual(fh.constructor.name, 'FileHandle');
+	const fh = await fs.open(__filename);
+	assert.strictEqual(fh.constructor.name, 'FileHandle');
 
-    const kTransfer = Object.getOwnPropertySymbols(Object.getPrototypeOf(fh))
+	const kTransfer = Object.getOwnPropertySymbols(Object.getPrototypeOf(fh))
     .filter((symbol) => symbol.description === 'messaging_transfer_symbol')[0];
-    assert.strictEqual(typeof kTransfer, 'symbol');
-    fh[kTransfer] = () => {
-        return {
-            data: '✨',
-            deserializeInfo: `${__filename}:NotARealClass`
-        };
-    };
+	assert.strictEqual(typeof kTransfer, 'symbol');
+	fh[kTransfer] = () => {
+		return {
+			data: '✨',
+			deserializeInfo: `${__filename}:NotARealClass`
+		};
+	};
 
-    const { port1, port2 } = new MessageChannel();
-    port1.postMessage(fh, [ fh ]);
-    port2.on('message', common.mustNotCall());
+	const { port1, port2 } = new MessageChannel();
+	port1.postMessage(fh, [ fh ]);
+	port2.on('message', common.mustNotCall());
 
-    const [ exception ] = await once(port2, 'messageerror');
+	const [ exception ] = await once(port2, 'messageerror');
 
-    assert.match(exception.message, /Missing internal module/);
-    port2.close();
+	assert.match(exception.message, /Missing internal module/);
+	port2.close();
 })().then(common.mustCall());

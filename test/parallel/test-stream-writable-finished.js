@@ -6,94 +6,94 @@ const assert = require('assert');
 
 // basic
 {
-    // Find it on Writable.prototype
-    assert(Object.hasOwn(Writable.prototype, 'writableFinished'));
+	// Find it on Writable.prototype
+	assert(Object.hasOwn(Writable.prototype, 'writableFinished'));
 }
 
 // event
 {
-    const writable = new Writable();
+	const writable = new Writable();
 
-    writable._write = (chunk, encoding, cb) => {
-    // The state finished should start in false.
-        assert.strictEqual(writable.writableFinished, false);
-        cb();
-    };
+	writable._write = (chunk, encoding, cb) => {
+		// The state finished should start in false.
+		assert.strictEqual(writable.writableFinished, false);
+		cb();
+	};
 
-    writable.on('finish', common.mustCall(() => {
-        assert.strictEqual(writable.writableFinished, true);
-    }));
+	writable.on('finish', common.mustCall(() => {
+		assert.strictEqual(writable.writableFinished, true);
+	}));
 
-    writable.end('testing finished state', common.mustCall(() => {
-        assert.strictEqual(writable.writableFinished, true);
-    }));
+	writable.end('testing finished state', common.mustCall(() => {
+		assert.strictEqual(writable.writableFinished, true);
+	}));
 }
 
 {
-    // Emit finish asynchronously.
+	// Emit finish asynchronously.
 
-    const w = new Writable({
-        write(chunk, encoding, cb) {
-            cb();
-        }
-    });
+	const w = new Writable({
+		write(chunk, encoding, cb) {
+			cb();
+		}
+	});
 
-    w.end();
-    w.on('finish', common.mustCall());
+	w.end();
+	w.on('finish', common.mustCall());
 }
 
 {
-    // Emit prefinish synchronously.
+	// Emit prefinish synchronously.
 
-    const w = new Writable({
-        write(chunk, encoding, cb) {
-            cb();
-        }
-    });
+	const w = new Writable({
+		write(chunk, encoding, cb) {
+			cb();
+		}
+	});
 
-    let sync = true;
-    w.on('prefinish', common.mustCall(() => {
-        assert.strictEqual(sync, true);
-    }));
-    w.end();
-    sync = false;
+	let sync = true;
+	w.on('prefinish', common.mustCall(() => {
+		assert.strictEqual(sync, true);
+	}));
+	w.end();
+	sync = false;
 }
 
 {
-    // Emit prefinish synchronously w/ final.
+	// Emit prefinish synchronously w/ final.
 
-    const w = new Writable({
-        write(chunk, encoding, cb) {
-            cb();
-        },
-        final(cb) {
-            cb();
-        }
-    });
+	const w = new Writable({
+		write(chunk, encoding, cb) {
+			cb();
+		},
+		final(cb) {
+			cb();
+		}
+	});
 
-    let sync = true;
-    w.on('prefinish', common.mustCall(() => {
-        assert.strictEqual(sync, true);
-    }));
-    w.end();
-    sync = false;
+	let sync = true;
+	w.on('prefinish', common.mustCall(() => {
+		assert.strictEqual(sync, true);
+	}));
+	w.end();
+	sync = false;
 }
 
 
 {
-    // Call _final synchronously.
+	// Call _final synchronously.
 
-    let sync = true;
-    const w = new Writable({
-        write(chunk, encoding, cb) {
-            cb();
-        },
-        final: common.mustCall((cb) => {
-            assert.strictEqual(sync, true);
-            cb();
-        })
-    });
+	let sync = true;
+	const w = new Writable({
+		write(chunk, encoding, cb) {
+			cb();
+		},
+		final: common.mustCall((cb) => {
+			assert.strictEqual(sync, true);
+			cb();
+		})
+	});
 
-    w.end();
-    sync = false;
+	w.end();
+	sync = false;
 }

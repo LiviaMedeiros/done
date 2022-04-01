@@ -16,14 +16,14 @@ fs.createWriteStream(example, 'utf8').end();
 fs.createWriteStream(example, { encoding: 'utf8' }).end();
 
 const createWriteStreamErr = (path, opt) => {
-    assert.throws(
-        () => {
-            fs.createWriteStream(path, opt);
-        },
-        {
-            code: 'ERR_INVALID_ARG_TYPE',
-            name: 'TypeError'
-        });
+	assert.throws(
+		() => {
+			fs.createWriteStream(path, opt);
+		},
+		{
+			code: 'ERR_INVALID_ARG_TYPE',
+			name: 'TypeError'
+		});
 };
 
 createWriteStreamErr(example, 123);

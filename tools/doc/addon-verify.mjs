@@ -23,71 +23,71 @@ let currentHeader;
 
 const validNames = /^\/\/\s+(.*\.(?:cc|h|js))[\r\n]/;
 tree.children.forEach((node) => {
-    if (node.type === 'heading') {
-        currentHeader = file.value.slice(
-            node.children[0].position.start.offset,
-            node.position.end.offset);
-        addons[currentHeader] = { files: {} };
-    } else if (node.type === 'code') {
-        const match = node.value.match(validNames);
-        if (match !== null) {
-            addons[currentHeader].files[match[1]] = node.value;
-        }
-    }
+	if (node.type === 'heading') {
+		currentHeader = file.value.slice(
+			node.children[0].position.start.offset,
+			node.position.end.offset);
+		addons[currentHeader] = { files: {} };
+	} else if (node.type === 'code') {
+		const match = node.value.match(validNames);
+		if (match !== null) {
+			addons[currentHeader].files[match[1]] = node.value;
+		}
+	}
 });
 
 await Promise.all(
-    Object.keys(addons).flatMap(
-        (header) => verifyFiles(addons[header].files, header)
-    ));
+	Object.keys(addons).flatMap(
+		(header) => verifyFiles(addons[header].files, header)
+	));
 
 function verifyFiles(files, blockName) {
-    const fileNames = Object.keys(files);
+	const fileNames = Object.keys(files);
 
-    // Must have a .cc and a .js to be a valid test.
-    if (!fileNames.some((name) => name.endsWith('.cc')) ||
+	// Must have a .cc and a .js to be a valid test.
+	if (!fileNames.some((name) => name.endsWith('.cc')) ||
       !fileNames.some((name) => name.endsWith('.js'))) {
-        return [];
-    }
+		return [];
+	}
 
-    blockName = blockName.toLowerCase().replace(/\s/g, '_').replace(/\W/g, '');
-    const dir = new URL(
-        `./${String(++id).padStart(2, '0')}_${blockName}/`,
-        verifyDir,
-    );
+	blockName = blockName.toLowerCase().replace(/\s/g, '_').replace(/\W/g, '');
+	const dir = new URL(
+		`./${String(++id).padStart(2, '0')}_${blockName}/`,
+		verifyDir,
+	);
 
-    files = fileNames.map((name) => {
-        if (name === 'test.js') {
-            files[name] = `'use strict';
+	files = fileNames.map((name) => {
+		if (name === 'test.js') {
+			files[name] = `'use strict';
 const common = require('../../common');
 ${files[name].replace(
-        "'./build/Release/addon'",
-        // eslint-disable-next-line no-template-curly-in-string
-        '`./build/${common.buildType}/addon`')}
+		"'./build/Release/addon'",
+		// eslint-disable-next-line no-template-curly-in-string
+		'`./build/${common.buildType}/addon`')}
 `;
-        }
-        return {
-            content: files[name],
-            name,
-            url: new URL(`./${name}`, dir),
-        };
-    });
+		}
+		return {
+			content: files[name],
+			name,
+			url: new URL(`./${name}`, dir),
+		};
+	});
 
-    files.push({
-        url: new URL('./binding.gyp', dir),
-        content: JSON.stringify({
-            targets: [
-                {
-                    target_name: 'addon',
-                    sources: files.map(({ name }) => name),
-                    includes: ['../common.gypi'],
-                },
-            ]
-        })
-    });
+	files.push({
+		url: new URL('./binding.gyp', dir),
+		content: JSON.stringify({
+			targets: [
+				{
+					target_name: 'addon',
+					sources: files.map(({ name }) => name),
+					includes: ['../common.gypi'],
+				},
+			]
+		})
+	});
 
-    const dirCreation = mkdir(dir);
+	const dirCreation = mkdir(dir);
 
-    return files.map(({ url, content }) =>
-        dirCreation.then(() => writeFile(url, content)));
+	return files.map(({ url, content }) =>
+		dirCreation.then(() => writeFile(url, content)));
 }

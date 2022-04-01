@@ -10,8 +10,8 @@ const ref = new WeakReference(obj);
 assert.strictEqual(ref.get(), obj);
 
 setImmediate(() => {
-    obj = null;
-    global.gc();
+	obj = null;
+	global.gc();
 
-    assert.strictEqual(ref.get(), undefined);
+	assert.strictEqual(ref.get(), undefined);
 });

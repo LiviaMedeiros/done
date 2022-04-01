@@ -7,5 +7,5 @@ const binding = require(`./build/${common.buildType}/binding`);
 binding.run();
 global.gc();
 setImmediate(() => {
-    assert.strictEqual(binding.isAlive(), 0);
+	assert.strictEqual(binding.isAlive(), 0);
 });

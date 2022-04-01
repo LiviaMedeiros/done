@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 if (!common.isMainThread)
-    common.skip('process.chdir is not available in Workers');
+	common.skip('process.chdir is not available in Workers');
 
 const tmpdir = require('../common/tmpdir');
 
@@ -17,11 +17,11 @@ assert.strictEqual(process.cwd(), __dirname);
 
 let dirName;
 if (process.versions.icu) {
-    // ICU is available, use characters that could possibly be decomposed
-    dirName = 'weird \uc3a4\uc3ab\uc3af characters \u00e1\u00e2\u00e3';
+	// ICU is available, use characters that could possibly be decomposed
+	dirName = 'weird \uc3a4\uc3ab\uc3af characters \u00e1\u00e2\u00e3';
 } else {
-    // ICU is unavailable, use characters that can't be decomposed
-    dirName = 'weird \ud83d\udc04 characters \ud83d\udc05';
+	// ICU is unavailable, use characters that can't be decomposed
+	dirName = 'weird \ud83d\udc04 characters \ud83d\udc05';
 }
 const dir = path.resolve(tmpdir.path, dirName);
 
@@ -34,11 +34,11 @@ assert.strictEqual(process.cwd().normalize(), dir.normalize());
 
 process.chdir('..');
 assert.strictEqual(process.cwd().normalize(),
-                   path.resolve(tmpdir.path).normalize());
+																			path.resolve(tmpdir.path).normalize());
 
 const err = {
-    code: 'ERR_INVALID_ARG_TYPE',
-    message: /The "directory" argument must be of type string/
+	code: 'ERR_INVALID_ARG_TYPE',
+	message: /The "directory" argument must be of type string/
 };
 assert.throws(function() { process.chdir({}); }, err);
 assert.throws(function() { process.chdir(); }, err);

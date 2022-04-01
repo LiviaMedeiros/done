@@ -6,21 +6,21 @@ const SlowBuffer = require('buffer').SlowBuffer;
 const vm = require('vm');
 
 [
-    [32, 'latin1'],
-    [NaN, 'utf8'],
-    [{}, 'latin1'],
-    [],
+	[32, 'latin1'],
+	[NaN, 'utf8'],
+	[{}, 'latin1'],
+	[],
 ].forEach((args) => {
-    assert.throws(
-        () => Buffer.byteLength(...args),
-        {
-            code: 'ERR_INVALID_ARG_TYPE',
-            name: 'TypeError',
-            message: 'The "string" argument must be of type string or an instance ' +
+	assert.throws(
+		() => Buffer.byteLength(...args),
+		{
+			code: 'ERR_INVALID_ARG_TYPE',
+			name: 'TypeError',
+			message: 'The "string" argument must be of type string or an instance ' +
                'of Buffer or ArrayBuffer.' +
                common.invalidArgTypeHelper(args[0])
-        }
-    );
+		}
+	);
 });
 
 assert(ArrayBuffer.isView(new Buffer(10)));
@@ -87,7 +87,7 @@ assert.strictEqual(Buffer.byteLength('aGVsbG8gd29ybGQ=', 'BASE64'), 11);
 assert.strictEqual(Buffer.byteLength('bm9kZS5qcyByb2NrcyE=', 'base64'), 14);
 assert.strictEqual(Buffer.byteLength('aGkk', 'base64'), 3);
 assert.strictEqual(
-    Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw==', 'base64'), 25
+	Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw==', 'base64'), 25
 );
 // base64url
 assert.strictEqual(Buffer.byteLength('aGVsbG8gd29ybGQ', 'base64url'), 11);
@@ -95,7 +95,7 @@ assert.strictEqual(Buffer.byteLength('aGVsbG8gd29ybGQ', 'BASE64URL'), 11);
 assert.strictEqual(Buffer.byteLength('bm9kZS5qcyByb2NrcyE', 'base64url'), 14);
 assert.strictEqual(Buffer.byteLength('aGkk', 'base64url'), 3);
 assert.strictEqual(
-    Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw', 'base64url'), 25
+	Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw', 'base64url'), 25
 );
 // special padding
 assert.strictEqual(Buffer.byteLength('aaa=', 'base64'), 2);
@@ -109,13 +109,13 @@ assert.strictEqual(Buffer.byteLength('Il était tué', 'utf8'), 14);
 ['ascii', 'latin1', 'binary']
   .reduce((es, e) => es.concat(e, e.toUpperCase()), [])
   .forEach((encoding) => {
-      assert.strictEqual(Buffer.byteLength('Il était tué', encoding), 12);
+  	assert.strictEqual(Buffer.byteLength('Il était tué', encoding), 12);
   });
 
 ['ucs2', 'ucs-2', 'utf16le', 'utf-16le']
   .reduce((es, e) => es.concat(e, e.toUpperCase()), [])
   .forEach((encoding) => {
-      assert.strictEqual(Buffer.byteLength('Il était tué', encoding), 24);
+  	assert.strictEqual(Buffer.byteLength('Il était tué', encoding), 24);
   });
 
 // Test that ArrayBuffer from a different context is detected correctly
@@ -124,9 +124,9 @@ assert.strictEqual(Buffer.byteLength(arrayBuf), 0);
 
 // Verify that invalid encodings are treated as utf8
 for (let i = 1; i < 10; i++) {
-    const encoding = String(i).repeat(i);
+	const encoding = String(i).repeat(i);
 
-    assert.ok(!Buffer.isEncoding(encoding));
-    assert.strictEqual(Buffer.byteLength('foo', encoding),
-                       Buffer.byteLength('foo', 'utf8'));
+	assert.ok(!Buffer.isEncoding(encoding));
+	assert.strictEqual(Buffer.byteLength('foo', encoding),
+																				Buffer.byteLength('foo', 'utf8'));
 }

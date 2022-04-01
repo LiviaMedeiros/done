@@ -7,11 +7,11 @@ const getterOnlyErrorRE =
   /^TypeError: Cannot set property .* of #<.*> which has only a getter$/;
 
 const valueDescriptor = Object.getOwnPropertyDescriptor(
-    addon.MyObject.prototype, 'value');
+	addon.MyObject.prototype, 'value');
 const valueReadonlyDescriptor = Object.getOwnPropertyDescriptor(
-    addon.MyObject.prototype, 'valueReadonly');
+	addon.MyObject.prototype, 'valueReadonly');
 const plusOneDescriptor = Object.getOwnPropertyDescriptor(
-    addon.MyObject.prototype, 'plusOne');
+	addon.MyObject.prototype, 'plusOne');
 assert.strictEqual(typeof valueDescriptor.get, 'function');
 assert.strictEqual(typeof valueDescriptor.set, 'function');
 assert.strictEqual(valueDescriptor.value, undefined);

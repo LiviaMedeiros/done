@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const assert = require('assert');
 const crypto = require('crypto');
@@ -18,17 +18,17 @@ hasher1.end();
 const expected = hasher1.read().toString('hex');
 
 class OldStream extends Stream {
-    constructor() {
-        super();
-        this.readable = true;
-    }
+	constructor() {
+		super();
+		this.readable = true;
+	}
 }
 
 const stream = new OldStream();
 
 stream.pipe(hasher2).on('finish', common.mustCall(function() {
-    const hash = hasher2.read().toString('hex');
-    assert.strictEqual(hash, expected);
+	const hash = hasher2.read().toString('hex');
+	assert.strictEqual(hash, expected);
 }));
 
 stream.emit('data', Buffer.from('hello'));

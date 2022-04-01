@@ -12,7 +12,7 @@ const common = require('../common');
 const fs = require('fs');
 
 const listener = common.mustNotCall(
-    'listener should have been removed before the event was emitted'
+	'listener should have been removed before the event was emitted'
 );
 
 const watch = fs.watchFile(__filename, common.mustNotCall());

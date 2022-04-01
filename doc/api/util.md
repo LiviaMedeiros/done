@@ -33,13 +33,13 @@ resolved), and the second argument will be the resolved value.
 const util = require('util');
 
 async function fn() {
-    return 'hello world';
+	return 'hello world';
 }
 const callbackFunction = util.callbackify(fn);
 
 callbackFunction((err, ret) => {
-    if (err) throw err;
-    console.log(ret);
+	if (err) throw err;
+	console.log(ret);
 });
 ```
 
@@ -60,14 +60,14 @@ is wrapped in an `Error` with the original value stored in a field named
 
 ```js
 function fn() {
-    return Promise.reject(null);
+	return Promise.reject(null);
 }
 const callbackFunction = util.callbackify(fn);
 
 callbackFunction((err, ret) => {
-    // When the Promise was rejected with `null` it is wrapped with an Error and
-    // the original value is stored in `reason`.
-    err && Object.hasOwn(err, 'reason') && err.reason === null;  // true
+	// When the Promise was rejected with `null` it is wrapped with an Error and
+	// the original value is stored in `reason`.
+	err && Object.hasOwn(err, 'reason') && err.reason === null;  // true
 });
 ```
 
@@ -132,9 +132,9 @@ unnecessary wrapping.
 ```js
 const util = require('util');
 let debuglog = util.debuglog('internals', (debug) => {
-    // Replace with a logging function that optimizes out
-    // testing if the section is enabled
-    debuglog = debug;
+	// Replace with a logging function that optimizes out
+	// testing if the section is enabled
+	debuglog = debug;
 });
 ```
 
@@ -156,7 +156,7 @@ then the returned value will be `true`. If not, then the returned value will be
 const util = require('util');
 const enabled = util.debuglog('foo').enabled;
 if (enabled) {
-    console.log('hello from foo [%d]', 123);
+	console.log('hello from foo [%d]', 123);
 }
 ```
 
@@ -200,7 +200,7 @@ such a way that it is marked as deprecated.
 const util = require('util');
 
 exports.obsoleteFunction = util.deprecate(() => {
-    // Do something here.
+	// Do something here.
 }, 'obsoleteFunction() is deprecated. Use newShinyFunction() instead.');
 ```
 
@@ -379,8 +379,8 @@ See [Common System Errors][] for the names of common errors.
 
 ```js
 fs.access('file/that/does/not/exist', (err) => {
-    const name = util.getSystemErrorName(err.errno);
-    console.error(name);  // ENOENT
+	const name = util.getSystemErrorName(err.errno);
+	console.error(name);  // ENOENT
 });
 ```
 
@@ -400,9 +400,9 @@ See [Common System Errors][] for the names of common errors.
 
 ```js
 fs.access('file/that/does/not/exist', (err) => {
-    const errorMap = util.getSystemErrorMap();
-    const name = errorMap.get(err.errno);
-    console.error(name);  // ENOENT
+	const errorMap = util.getSystemErrorMap();
+	const name = errorMap.get(err.errno);
+	console.error(name);  // ENOENT
 });
 ```
 
@@ -439,13 +439,13 @@ const util = require('util');
 const EventEmitter = require('events');
 
 function MyStream() {
-    EventEmitter.call(this);
+	EventEmitter.call(this);
 }
 
 util.inherits(MyStream, EventEmitter);
 
 MyStream.prototype.write = function(data) {
-    this.emit('data', data);
+	this.emit('data', data);
 };
 
 const stream = new MyStream();
@@ -454,7 +454,7 @@ console.log(stream instanceof EventEmitter); // true
 console.log(MyStream.super_ === EventEmitter); // true
 
 stream.on('data', (data) => {
-    console.log(`Received data: "${data}"`);
+	console.log(`Received data: "${data}"`);
 });
 stream.write('It works!'); // Received data: "It works!"
 ```
@@ -465,15 +465,15 @@ ES6 example using `class` and `extends`:
 const EventEmitter = require('events');
 
 class MyStream extends EventEmitter {
-    write(data) {
-        this.emit('data', data);
-    }
+	write(data) {
+		this.emit('data', data);
+	}
 }
 
 const stream = new MyStream();
 
 stream.on('data', (data) => {
-    console.log(`Received data: "${data}"`);
+	console.log(`Received data: "${data}"`);
 });
 stream.write('With ES6');
 ```
@@ -625,9 +625,9 @@ an identifiable tag for an inspected value.
 
 ```js
 class Foo {
-    get [Symbol.toStringTag]() {
-        return 'bar';
-    }
+	get [Symbol.toStringTag]() {
+		return 'bar';
+	}
 }
 
 class Bar {}
@@ -671,12 +671,12 @@ The following example highlights the effect of the `compact` option:
 const util = require('util');
 
 const o = {
-    a: [1, 2, [[
-        'Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do ' +
+	a: [1, 2, [[
+		'Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit, sed do ' +
       'eiusmod \ntempor incididunt ut labore et dolore magna aliqua.',
-        'test',
-        'foo']], 4],
-    b: new Map([['za', 1], ['zb', 'test']])
+		'test',
+		'foo']], 4],
+	b: new Map([['za', 1], ['zb', 'test']])
 };
 console.log(util.inspect(o, { compact: true, depth: 5, breakLength: 80 }));
 
@@ -742,9 +742,9 @@ const { inspect } = require('util');
 const assert = require('assert');
 
 const o1 = {
-    b: [2, 3, 1],
-    a: '`a` comes before `b`',
-    c: new Set([2, 3, 1])
+	b: [2, 3, 1],
+	a: '`a` comes before `b`',
+	c: new Set([2, 3, 1])
 };
 console.log(inspect(o1, { sorted: true }));
 // { a: '`a` comes before `b`', b: [ 2, 3, 1 ], c: Set(3) { 1, 2, 3 } }
@@ -752,13 +752,13 @@ console.log(inspect(o1, { sorted: (a, b) => b.localeCompare(a) }));
 // { c: Set(3) { 3, 2, 1 }, b: [ 2, 3, 1 ], a: '`a` comes before `b`' }
 
 const o2 = {
-    c: new Set([2, 1, 3]),
-    a: '`a` comes before `b`',
-    b: [2, 3, 1]
+	c: new Set([2, 1, 3]),
+	a: '`a` comes before `b`',
+	b: [2, 3, 1]
 };
 assert.strict.equal(
-    inspect(o1, { sorted: true }),
-    inspect(o2, { sorted: true })
+	inspect(o1, { sorted: true }),
+	inspect(o2, { sorted: true })
 );
 ```
 
@@ -895,25 +895,25 @@ the object.
 const util = require('util');
 
 class Box {
-    constructor(value) {
-        this.value = value;
-    }
+	constructor(value) {
+		this.value = value;
+	}
 
-    [util.inspect.custom](depth, options, inspect) {
-        if (depth < 0) {
-            return options.stylize('[Box]', 'special');
-        }
+	[util.inspect.custom](depth, options, inspect) {
+		if (depth < 0) {
+			return options.stylize('[Box]', 'special');
+		}
 
-        const newOptions = Object.assign({}, options, {
-            depth: options.depth === null ? null : options.depth - 1
-        });
+		const newOptions = Object.assign({}, options, {
+			depth: options.depth === null ? null : options.depth - 1
+		});
 
-        // Five space padding because that's the size of "Box< ".
-        const padding = ' '.repeat(5);
-        const inner = inspect(this.value, newOptions)
+		// Five space padding because that's the size of "Box< ".
+		const padding = ' '.repeat(5);
+		const inner = inspect(this.value, newOptions)
                   .replace(/\n/g, `\n${padding}`);
-        return `${options.stylize('Box', 'special')}< ${inner} >`;
-    }
+		return `${options.stylize('Box', 'special')}< ${inner} >`;
+	}
 }
 
 const box = new Box(true);
@@ -931,7 +931,7 @@ const util = require('util');
 
 const obj = { foo: 'this will not show up in the inspect() output' };
 obj[util.inspect.custom] = (depth) => {
-    return { bar: 'baz' };
+	return { bar: 'baz' };
 };
 
 util.inspect(obj);
@@ -963,17 +963,17 @@ inspect function to allow further portability.
 const customInspectSymbol = Symbol.for('nodejs.util.inspect.custom');
 
 class Password {
-    constructor(value) {
-        this.value = value;
-    }
+	constructor(value) {
+		this.value = value;
+	}
 
-    toString() {
-        return 'xxxxxxxx';
-    }
+	toString() {
+		return 'xxxxxxxx';
+	}
 
-    [customInspectSymbol](depth, inspectOptions, inspect) {
-        return `Password <${this.toString()}>`;
-    }
+	[customInspectSymbol](depth, inspectOptions, inspect) {
+		return `Password <${this.toString()}>`;
+	}
 }
 
 const password = new Password('r0sebud');
@@ -1039,9 +1039,9 @@ const fs = require('fs');
 
 const stat = util.promisify(fs.stat);
 stat('.').then((stats) => {
-    // Do something with `stats`
+	// Do something with `stats`
 }).catch((error) => {
-    // Handle the error.
+	// Handle the error.
 });
 ```
 
@@ -1054,8 +1054,8 @@ const fs = require('fs');
 const stat = util.promisify(fs.stat);
 
 async function callStat() {
-    const stats = await stat('.');
-    console.log(`This directory is owned by ${stats.uid}`);
+	const stats = await stat('.');
+	console.log(`This directory is owned by ${stats.uid}`);
 }
 ```
 
@@ -1075,13 +1075,13 @@ work as expected unless handled specially:
 const util = require('util');
 
 class Foo {
-    constructor() {
-        this.a = 42;
-    }
+	constructor() {
+		this.a = 42;
+	}
 
-    bar(callback) {
-        callback(null, this.a);
-    }
+	bar(callback) {
+		callback(null, this.a);
+	}
 }
 
 const foo = new Foo();
@@ -1105,11 +1105,11 @@ Using the `util.promisify.custom` symbol one can override the return value of
 const util = require('util');
 
 function doSomething(foo, callback) {
-    // ...
+	// ...
 }
 
 doSomething[util.promisify.custom] = (foo) => {
-    return getPromiseSomehow();
+	return getPromiseSomehow();
 };
 
 const promisified = util.promisify(doSomething);
@@ -1125,9 +1125,9 @@ For example, with a function that takes in
 
 ```js
 doSomething[util.promisify.custom] = (foo) => {
-    return new Promise((resolve, reject) => {
-        doSomething(foo, resolve, reject);
-    });
+	return new Promise((resolve, reject) => {
+		doSomething(foo, resolve, reject);
+	});
 };
 ```
 
@@ -1160,9 +1160,9 @@ For example, with a function that takes in
 const kCustomPromisifiedSymbol = Symbol.for('nodejs.util.promisify.custom');
 
 doSomething[kCustomPromisifiedSymbol] = (foo) => {
-    return new Promise((resolve, reject) => {
-        doSomething(foo, resolve, reject);
-    });
+	return new Promise((resolve, reject) => {
+		doSomething(foo, resolve, reject);
+	});
 };
 ```
 
@@ -1466,7 +1466,7 @@ Returns `true` if the value is an `arguments` object.
 
 ```js
 function foo() {
-    util.types.isArgumentsObject(arguments);  // Returns true
+	util.types.isArgumentsObject(arguments);  // Returns true
 }
 ```
 

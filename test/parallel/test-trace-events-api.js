@@ -5,9 +5,9 @@ const common = require('../common');
 common.skipIfWorker(); // https://github.com/nodejs/node/issues/22767
 
 try {
-    require('trace_events');
+	require('trace_events');
 } catch {
-    common.skip('missing trace events');
+	common.skip('missing trace events');
 }
 
 const assert = require('assert');
@@ -16,16 +16,16 @@ const path = require('path');
 const fs = require('fs');
 const tmpdir = require('../common/tmpdir');
 const {
-    createTracing,
-    getEnabledCategories
+	createTracing,
+	getEnabledCategories
 } = require('trace_events');
 
 function getEnabledCategoriesFromCommandLine() {
-    const indexOfCatFlag = process.execArgv.indexOf('--trace-event-categories');
-    if (indexOfCatFlag === -1) {
-        return undefined;
-    }
-    return process.execArgv[indexOfCatFlag + 1];
+	const indexOfCatFlag = process.execArgv.indexOf('--trace-event-categories');
+	if (indexOfCatFlag === -1) {
+		return undefined;
+	}
+	return process.execArgv[indexOfCatFlag + 1];
 }
 
 const isChild = process.argv[2] === 'child';
@@ -33,22 +33,22 @@ const enabledCategories = getEnabledCategoriesFromCommandLine();
 
 assert.strictEqual(getEnabledCategories(), enabledCategories);
 [1, 'foo', true, false, null, undefined].forEach((i) => {
-    assert.throws(() => createTracing(i), {
-        code: 'ERR_INVALID_ARG_TYPE',
-        name: 'TypeError'
-    });
-    assert.throws(() => createTracing({ categories: i }), {
-        code: 'ERR_INVALID_ARG_TYPE',
-        name: 'TypeError'
-    });
+	assert.throws(() => createTracing(i), {
+		code: 'ERR_INVALID_ARG_TYPE',
+		name: 'TypeError'
+	});
+	assert.throws(() => createTracing({ categories: i }), {
+		code: 'ERR_INVALID_ARG_TYPE',
+		name: 'TypeError'
+	});
 });
 
 assert.throws(
-    () => createTracing({ categories: [] }),
-    {
-        code: 'ERR_TRACE_EVENTS_CATEGORY_REQUIRED',
-        name: 'TypeError'
-    }
+	() => createTracing({ categories: [] }),
+	{
+		code: 'ERR_TRACE_EVENTS_CATEGORY_REQUIRED',
+		name: 'TypeError'
+	}
 );
 
 const tracing = createTracing({ categories: [ 'node.perf' ] });
@@ -62,9 +62,9 @@ tracing.enable();  // Purposefully enable twice to test calling twice
 assert.strictEqual(tracing.enabled, true);
 
 assert.strictEqual(getEnabledCategories(),
-                   [
-                       ...[enabledCategories].filter((_) => !!_), 'node.perf',
-                   ].join(','));
+																			[
+																				...[enabledCategories].filter((_) => !!_), 'node.perf',
+																			].join(','));
 
 tracing.disable();
 assert.strictEqual(tracing.enabled, false);
@@ -78,107 +78,107 @@ tracing2.disable();  // Purposefully disable twice to test calling twice
 assert.strictEqual(getEnabledCategories(), enabledCategories);
 
 if (isChild) {
-    const { internalBinding } = require('internal/test/binding');
+	const { internalBinding } = require('internal/test/binding');
 
-    const {
-        trace: {
-            TRACE_EVENT_PHASE_NESTABLE_ASYNC_BEGIN: kBeforeEvent,
-            TRACE_EVENT_PHASE_NESTABLE_ASYNC_END: kEndEvent,
-        }
-    } = internalBinding('constants');
+	const {
+		trace: {
+			TRACE_EVENT_PHASE_NESTABLE_ASYNC_BEGIN: kBeforeEvent,
+			TRACE_EVENT_PHASE_NESTABLE_ASYNC_END: kEndEvent,
+		}
+	} = internalBinding('constants');
 
-    const { trace } = internalBinding('trace_events');
+	const { trace } = internalBinding('trace_events');
 
-    tracing.enable();
+	tracing.enable();
 
-    trace(kBeforeEvent, 'foo', 'test1', 0, 'test');
-    setTimeout(() => {
-        trace(kEndEvent, 'foo', 'test1');
-    }, 1);
+	trace(kBeforeEvent, 'foo', 'test1', 0, 'test');
+	setTimeout(() => {
+		trace(kEndEvent, 'foo', 'test1');
+	}, 1);
 } else {
-    // Test that enabled tracing references do not get garbage collected
-    // until after they are disabled.
-    {
-        {
-            let tracing3 = createTracing({ categories: [ 'abc' ] });
-            tracing3.enable();
-            assert.strictEqual(getEnabledCategories(), 'abc');
-            tracing3 = undefined;
-        }
-        global.gc();
-        assert.strictEqual(getEnabledCategories(), 'abc');
-    // Not able to disable the thing after this point, however.
-    }
+	// Test that enabled tracing references do not get garbage collected
+	// until after they are disabled.
+	{
+		{
+			let tracing3 = createTracing({ categories: [ 'abc' ] });
+			tracing3.enable();
+			assert.strictEqual(getEnabledCategories(), 'abc');
+			tracing3 = undefined;
+		}
+		global.gc();
+		assert.strictEqual(getEnabledCategories(), 'abc');
+		// Not able to disable the thing after this point, however.
+	}
 
-    {
-        common.expectWarning(
-            'Warning',
-            'Possible trace_events memory leak detected. There are more than ' +
+	{
+		common.expectWarning(
+			'Warning',
+			'Possible trace_events memory leak detected. There are more than ' +
       '10 enabled Tracing objects.');
-        for (let n = 0; n < 10; n++) {
-            const tracing = createTracing({ categories: [ `a${n}` ] });
-            tracing.enable();
-        }
-    }
+		for (let n = 0; n < 10; n++) {
+			const tracing = createTracing({ categories: [ `a${n}` ] });
+			tracing.enable();
+		}
+	}
 
-    testApiInChildProcess(['--trace-event-categories', 'foo'], () => {
-        testApiInChildProcess(['--trace-event-categories', 'foo']);
-    });
+	testApiInChildProcess(['--trace-event-categories', 'foo'], () => {
+		testApiInChildProcess(['--trace-event-categories', 'foo']);
+	});
 }
 
 function testApiInChildProcess(execArgs, cb) {
-    tmpdir.refresh();
-    // Save the current directory so we can chdir back to it later
-    const parentDir = process.cwd();
-    process.chdir(tmpdir.path);
+	tmpdir.refresh();
+	// Save the current directory so we can chdir back to it later
+	const parentDir = process.cwd();
+	process.chdir(tmpdir.path);
 
-    const expectedBegins = [{ cat: 'foo', name: 'test1' }];
-    const expectedEnds = [{ cat: 'foo', name: 'test1' }];
+	const expectedBegins = [{ cat: 'foo', name: 'test1' }];
+	const expectedEnds = [{ cat: 'foo', name: 'test1' }];
 
-    const proc = cp.fork(__filename,
-                         ['child'],
-                         {
-                             execArgv: [
-                                 '--expose-gc',
-                                 '--expose-internals',
-                                 '--no-warnings',
-                                 ...execArgs,
-                             ]
-                         });
+	const proc = cp.fork(__filename,
+																						['child'],
+																						{
+																							execArgv: [
+																								'--expose-gc',
+																								'--expose-internals',
+																								'--no-warnings',
+																								...execArgs,
+																							]
+																						});
 
-    proc.once('exit', common.mustCall(() => {
-        const file = path.join(tmpdir.path, 'node_trace.1.log');
+	proc.once('exit', common.mustCall(() => {
+		const file = path.join(tmpdir.path, 'node_trace.1.log');
 
-        assert(fs.existsSync(file));
-        fs.readFile(file, common.mustSucceed((data) => {
-            const traces = JSON.parse(data.toString()).traceEvents
+		assert(fs.existsSync(file));
+		fs.readFile(file, common.mustSucceed((data) => {
+			const traces = JSON.parse(data.toString()).traceEvents
         .filter((trace) => trace.cat !== '__metadata');
 
-            assert.strictEqual(
-                traces.length,
-                expectedBegins.length + expectedEnds.length);
+			assert.strictEqual(
+				traces.length,
+				expectedBegins.length + expectedEnds.length);
 
-            traces.forEach((trace) => {
-                assert.strictEqual(trace.pid, proc.pid);
-                switch (trace.ph) {
-                    case 'b': {
-                        const expectedBegin = expectedBegins.shift();
-                        assert.strictEqual(trace.cat, expectedBegin.cat);
-                        assert.strictEqual(trace.name, expectedBegin.name);
-                        break;
-                    }
-                    case 'e': {
-                        const expectedEnd = expectedEnds.shift();
-                        assert.strictEqual(trace.cat, expectedEnd.cat);
-                        assert.strictEqual(trace.name, expectedEnd.name);
-                        break;
-                    }
-                    default:
-                        assert.fail('Unexpected trace event phase');
-                }
-            });
-            process.chdir(parentDir);
-            cb && process.nextTick(cb);
-        }));
-    }));
+			traces.forEach((trace) => {
+				assert.strictEqual(trace.pid, proc.pid);
+				switch (trace.ph) {
+					case 'b': {
+						const expectedBegin = expectedBegins.shift();
+						assert.strictEqual(trace.cat, expectedBegin.cat);
+						assert.strictEqual(trace.name, expectedBegin.name);
+						break;
+					}
+					case 'e': {
+						const expectedEnd = expectedEnds.shift();
+						assert.strictEqual(trace.cat, expectedEnd.cat);
+						assert.strictEqual(trace.name, expectedEnd.name);
+						break;
+					}
+					default:
+						assert.fail('Unexpected trace event phase');
+				}
+			});
+			process.chdir(parentDir);
+			cb && process.nextTick(cb);
+		}));
+	}));
 }

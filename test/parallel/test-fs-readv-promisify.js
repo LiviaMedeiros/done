@@ -12,7 +12,7 @@ const expected = [Buffer.from('xyz\n')];
 
 readv(fd, expected)
   .then(function({ bytesRead, buffers }) {
-      assert.deepStrictEqual(bytesRead, expected[0].length);
-      assert.deepStrictEqual(buffers, expected);
+  	assert.deepStrictEqual(bytesRead, expected[0].length);
+  	assert.deepStrictEqual(buffers, expected);
   })
   .then(common.mustCall());

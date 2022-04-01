@@ -11,6 +11,6 @@ tmpdir.refresh();
 // O_WRONLY without O_CREAT shall fail with ENOENT
 const pathNE = path.join(tmpdir.path, 'file-should-not-exist');
 assert.throws(
-    () => fs.openSync(pathNE, fs.constants.O_WRONLY),
-    (e) => e.code === 'ENOENT'
+	() => fs.openSync(pathNE, fs.constants.O_WRONLY),
+	(e) => e.code === 'ENOENT'
 );

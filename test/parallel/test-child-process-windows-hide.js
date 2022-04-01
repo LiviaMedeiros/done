@@ -14,38 +14,38 @@ const originalSpawn = internalCp.ChildProcess.prototype.spawn;
 const originalSpawnSync = internalCp.spawnSync;
 
 internalCp.ChildProcess.prototype.spawn = common.mustCall(function(options) {
-    assert.strictEqual(options.windowsHide, true);
-    return originalSpawn.apply(this, arguments);
+	assert.strictEqual(options.windowsHide, true);
+	return originalSpawn.apply(this, arguments);
 }, 2);
 
 internalCp.spawnSync = common.mustCall(function(options) {
-    assert.strictEqual(options.windowsHide, true);
-    return originalSpawnSync.apply(this, arguments);
+	assert.strictEqual(options.windowsHide, true);
+	return originalSpawnSync.apply(this, arguments);
 });
 
 {
-    const child = cp.spawnSync(cmd, args, options);
+	const child = cp.spawnSync(cmd, args, options);
 
-    assert.strictEqual(child.status, 0);
-    assert.strictEqual(child.signal, null);
-    assert.strictEqual(child.stdout.toString().trim(), '42');
-    assert.strictEqual(child.stderr.toString().trim(), '');
+	assert.strictEqual(child.status, 0);
+	assert.strictEqual(child.signal, null);
+	assert.strictEqual(child.stdout.toString().trim(), '42');
+	assert.strictEqual(child.stderr.toString().trim(), '');
 }
 
 {
-    const child = cp.spawn(cmd, args, options);
+	const child = cp.spawn(cmd, args, options);
 
-    child.on('exit', common.mustCall((code, signal) => {
-        assert.strictEqual(code, 0);
-        assert.strictEqual(signal, null);
-    }));
+	child.on('exit', common.mustCall((code, signal) => {
+		assert.strictEqual(code, 0);
+		assert.strictEqual(signal, null);
+	}));
 }
 
 {
-    const callback = common.mustSucceed((stdout, stderr) => {
-        assert.strictEqual(stdout.trim(), '42');
-        assert.strictEqual(stderr.trim(), '');
-    });
+	const callback = common.mustSucceed((stdout, stderr) => {
+		assert.strictEqual(stdout.trim(), '42');
+		assert.strictEqual(stderr.trim(), '');
+	});
 
-    cp.execFile(cmd, args, options, callback);
+	cp.execFile(cmd, args, options, callback);
 }

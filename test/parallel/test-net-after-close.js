@@ -25,27 +25,27 @@ const assert = require('assert');
 const net = require('net');
 
 const server = net.createServer(common.mustCall((s) => {
-    console.error('SERVER: got connection');
-    s.end();
+	console.error('SERVER: got connection');
+	s.end();
 }));
 
 server.listen(0, common.mustCall(() => {
-    const c = net.createConnection(server.address().port);
-    c.on('close', common.mustCall(() => {
-    /* eslint-disable no-unused-expressions */
-        console.error('connection closed');
-        assert.strictEqual(c._handle, null);
-        // Calling functions / accessing properties of a closed socket should not
-        // throw.
-        c.setNoDelay();
-        c.setKeepAlive();
-        c.bufferSize;
-        c.pause();
-        c.resume();
-        c.address();
-        c.remoteAddress;
-        c.remotePort;
-        server.close();
-    /* eslint-enable no-unused-expressions */
-    }));
+	const c = net.createConnection(server.address().port);
+	c.on('close', common.mustCall(() => {
+		/* eslint-disable no-unused-expressions */
+		console.error('connection closed');
+		assert.strictEqual(c._handle, null);
+		// Calling functions / accessing properties of a closed socket should not
+		// throw.
+		c.setNoDelay();
+		c.setKeepAlive();
+		c.bufferSize;
+		c.pause();
+		c.resume();
+		c.address();
+		c.remoteAddress;
+		c.remotePort;
+		server.close();
+		/* eslint-enable no-unused-expressions */
+	}));
 }));

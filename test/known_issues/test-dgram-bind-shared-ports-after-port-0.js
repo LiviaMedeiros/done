@@ -14,43 +14,43 @@ const dgram = require('dgram');
 const BYE = 'bye';
 
 if (cluster.isPrimary) {
-    const worker1 = cluster.fork();
+	const worker1 = cluster.fork();
 
-    // Verify that Windows doesn't support this scenario
-    worker1.on('error', (err) => {
-        if (err.code === 'ENOTSUP') throw err;
-    });
+	// Verify that Windows doesn't support this scenario
+	worker1.on('error', (err) => {
+		if (err.code === 'ENOTSUP') throw err;
+	});
 
-    worker1.on('message', (msg) => {
-        if (typeof msg !== 'object') process.exit(0);
-        if (msg.message !== 'success') process.exit(0);
-        if (typeof msg.port1 !== 'number') process.exit(0);
+	worker1.on('message', (msg) => {
+		if (typeof msg !== 'object') process.exit(0);
+		if (msg.message !== 'success') process.exit(0);
+		if (typeof msg.port1 !== 'number') process.exit(0);
 
-        const worker2 = cluster.fork({ PRT1: msg.port1 });
-        worker2.on('message', () => process.exit(0));
-        worker2.on('exit', (code, signal) => {
-            // This is the droid we are looking for
-            assert.strictEqual(code, 0);
-            assert.strictEqual(signal, null);
-        });
+		const worker2 = cluster.fork({ PRT1: msg.port1 });
+		worker2.on('message', () => process.exit(0));
+		worker2.on('exit', (code, signal) => {
+			// This is the droid we are looking for
+			assert.strictEqual(code, 0);
+			assert.strictEqual(signal, null);
+		});
 
-        // cleanup anyway
-        process.on('exit', () => {
-            worker1.send(BYE);
-            worker2.send(BYE);
-        });
-    });
-    // end primary code
+		// cleanup anyway
+		process.on('exit', () => {
+			worker1.send(BYE);
+			worker2.send(BYE);
+		});
+	});
+	// end primary code
 } else {
-    // worker code
-    process.on('message', (msg) => msg === BYE && process.exit(0));
+	// worker code
+	process.on('message', (msg) => msg === BYE && process.exit(0));
 
-    // First worker will bind to '0', second will try the assigned port and fail
-    const PRT1 = process.env.PRT1 || 0;
-    const socket1 = dgram.createSocket('udp4', () => {});
-    socket1.on('error', PRT1 === 0 ? () => {} : assert.fail);
-    socket1.bind(
-        { address: common.localhostIPv4, port: PRT1, exclusive: false },
-        () => process.send({ message: 'success', port1: socket1.address().port })
-    );
+	// First worker will bind to '0', second will try the assigned port and fail
+	const PRT1 = process.env.PRT1 || 0;
+	const socket1 = dgram.createSocket('udp4', () => {});
+	socket1.on('error', PRT1 === 0 ? () => {} : assert.fail);
+	socket1.bind(
+		{ address: common.localhostIPv4, port: PRT1, exclusive: false },
+		() => process.send({ message: 'success', port1: socket1.address().port })
+	);
 }

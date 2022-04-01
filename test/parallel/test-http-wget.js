@@ -41,38 +41,38 @@ const http = require('http');
 // closed.
 
 const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('hello ');
-    res.write('world\n');
-    res.end();
+	res.writeHead(200, { 'Content-Type': 'text/plain' });
+	res.write('hello ');
+	res.write('world\n');
+	res.end();
 });
 server.listen(0);
 
 server.on('listening', common.mustCall(() => {
-    const c = net.createConnection(server.address().port);
-    let server_response = '';
+	const c = net.createConnection(server.address().port);
+	let server_response = '';
 
-    c.setEncoding('utf8');
+	c.setEncoding('utf8');
 
-    c.on('connect', () => {
-        c.write('GET / HTTP/1.0\r\n' +
+	c.on('connect', () => {
+		c.write('GET / HTTP/1.0\r\n' +
             'Connection: Keep-Alive\r\n\r\n');
-    });
+	});
 
-    c.on('data', (chunk) => {
-        console.log(chunk);
-        server_response += chunk;
-    });
+	c.on('data', (chunk) => {
+		console.log(chunk);
+		server_response += chunk;
+	});
 
-    c.on('end', common.mustCall(() => {
-        const m = server_response.split('\r\n\r\n');
-        assert.strictEqual(m[1], 'hello world\n');
-        console.log('got end');
-        c.end();
-    }));
+	c.on('end', common.mustCall(() => {
+		const m = server_response.split('\r\n\r\n');
+		assert.strictEqual(m[1], 'hello world\n');
+		console.log('got end');
+		c.end();
+	}));
 
-    c.on('close', common.mustCall(() => {
-        console.log('got close');
-        server.close();
-    }));
+	c.on('close', common.mustCall(() => {
+		console.log('got close');
+		server.close();
+	}));
 }));

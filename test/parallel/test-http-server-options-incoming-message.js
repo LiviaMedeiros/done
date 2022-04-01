@@ -11,31 +11,31 @@ const assert = require('assert');
 const http = require('http');
 
 class MyIncomingMessage extends http.IncomingMessage {
-    getUserAgent() {
-        return this.headers['user-agent'] || 'unknown';
-    }
+	getUserAgent() {
+		return this.headers['user-agent'] || 'unknown';
+	}
 }
 
 const server = http.createServer({
-    IncomingMessage: MyIncomingMessage
+	IncomingMessage: MyIncomingMessage
 }, common.mustCall(function(req, res) {
-    assert.strictEqual(req.getUserAgent(), 'node-test');
-    res.statusCode = 200;
-    res.end();
+	assert.strictEqual(req.getUserAgent(), 'node-test');
+	res.statusCode = 200;
+	res.end();
 }));
 server.listen();
 
 server.on('listening', function makeRequest() {
-    http.get({
-        port: this.address().port,
-        headers: {
-            'User-Agent': 'node-test'
-        }
-    }, (res) => {
-        assert.strictEqual(res.statusCode, 200);
-        res.on('end', () => {
-            server.close();
-        });
-        res.resume();
-    });
+	http.get({
+		port: this.address().port,
+		headers: {
+			'User-Agent': 'node-test'
+		}
+	}, (res) => {
+		assert.strictEqual(res.statusCode, 200);
+		res.on('end', () => {
+			server.close();
+		});
+		res.resume();
+	});
 });

@@ -30,9 +30,9 @@ process.env.HELLO = 'WORLD';
 
 let child;
 if (isWindows) {
-    child = spawn('cmd.exe', ['/c', 'set'], {});
+	child = spawn('cmd.exe', ['/c', 'set'], {});
 } else {
-    child = spawn('/usr/bin/env', [], {});
+	child = spawn('/usr/bin/env', [], {});
 }
 
 let response = '';
@@ -40,12 +40,12 @@ let response = '';
 child.stdout.setEncoding('utf8');
 
 child.stdout.on('data', function(chunk) {
-    debug(`stdout: ${chunk}`);
-    response += chunk;
+	debug(`stdout: ${chunk}`);
+	response += chunk;
 });
 
 process.on('exit', function() {
-    assert.ok(response.includes('HELLO=WORLD'),
-              'spawn did not use process.env as default ' +
+	assert.ok(response.includes('HELLO=WORLD'),
+											'spawn did not use process.env as default ' +
             `(process.env.HELLO = ${process.env.HELLO})`);
 });

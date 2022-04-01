@@ -6,7 +6,7 @@ const { ERR_INVALID_ARG_TYPE } = require('internal/errors').codes;
 const { serializeError, deserializeError } = require('internal/error_serdes');
 
 function cycle(err) {
-    return deserializeError(serializeError(err));
+	return deserializeError(serializeError(err));
 }
 
 assert.strictEqual(cycle(0), 0);
@@ -18,15 +18,15 @@ assert.strictEqual(cycle('foo'), 'foo');
 
 let err = new Error('foo');
 for (let i = 0; i < 10; i++) {
-    assert(err instanceof Error);
-    assert(Object.prototype.toString.call(err), '[object Error]');
-    assert.strictEqual(err.name, 'Error');
-    assert.strictEqual(err.message, 'foo');
-    assert.match(err.stack, /^Error: foo\n/);
+	assert(err instanceof Error);
+	assert(Object.prototype.toString.call(err), '[object Error]');
+	assert.strictEqual(err.name, 'Error');
+	assert.strictEqual(err.message, 'foo');
+	assert.match(err.stack, /^Error: foo\n/);
 
-    const prev = err;
-    err = cycle(err);
-    assert.deepStrictEqual(err, prev);
+	const prev = err;
+	err = cycle(err);
+	assert.deepStrictEqual(err, prev);
 }
 
 assert.strictEqual(cycle(new RangeError('foo')).name, 'RangeError');
@@ -44,25 +44,25 @@ assert.deepStrictEqual(cycle({ message: 'foo' }), { message: 'foo' });
 assert.strictEqual(cycle(Function), '[Function: Function]');
 
 {
-    const err = new ERR_INVALID_ARG_TYPE('object', 'Object', 42);
-    assert.match(String(err), /^TypeError \[ERR_INVALID_ARG_TYPE\]:/);
-    assert.strictEqual(err.name, 'TypeError');
-    assert.strictEqual(err.code, 'ERR_INVALID_ARG_TYPE');
+	const err = new ERR_INVALID_ARG_TYPE('object', 'Object', 42);
+	assert.match(String(err), /^TypeError \[ERR_INVALID_ARG_TYPE\]:/);
+	assert.strictEqual(err.name, 'TypeError');
+	assert.strictEqual(err.code, 'ERR_INVALID_ARG_TYPE');
 }
 
 {
-    let called = false;
-    class DynamicError extends Error {
-        get type() {
-            called = true;
-            return 'dynamic';
-        }
+	let called = false;
+	class DynamicError extends Error {
+		get type() {
+			called = true;
+			return 'dynamic';
+		}
 
-        get shouldIgnoreError() {
-            throw new Error();
-        }
-    }
+		get shouldIgnoreError() {
+			throw new Error();
+		}
+	}
 
-    serializeError(new DynamicError());
-    assert.strictEqual(called, true);
+	serializeError(new DynamicError());
+	assert.strictEqual(called, true);
 }

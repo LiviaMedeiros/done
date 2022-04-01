@@ -17,9 +17,9 @@ fs.writeFileSync(file, '');
 let counter = 0;
 
 const writeInterval = setInterval(() => {
-    counter = counter + 1;
-    const line = `hello at ${counter}\n`;
-    fs.writeFileSync(file, line, { flag: 'a' });
+	counter = counter + 1;
+	const line = `hello at ${counter}\n`;
+	fs.writeFileSync(file, line, { flag: 'a' });
 }, 1);
 
 const hwm = 10;
@@ -29,55 +29,55 @@ let cur = 0;
 let stream;
 
 const readInterval = setInterval(() => {
-    if (stream) return;
+	if (stream) return;
 
-    stream = fs.createReadStream(file, {
-        highWaterMark: hwm,
-        start: cur
-    });
-    stream.on('data', common.mustCallAtLeast((chunk) => {
-        cur += chunk.length;
-        bufs.push(chunk);
-        if (isLow) {
-            const brokenLines = Buffer.concat(bufs).toString()
+	stream = fs.createReadStream(file, {
+		highWaterMark: hwm,
+		start: cur
+	});
+	stream.on('data', common.mustCallAtLeast((chunk) => {
+		cur += chunk.length;
+		bufs.push(chunk);
+		if (isLow) {
+			const brokenLines = Buffer.concat(bufs).toString()
         .split('\n')
         .filter((line) => {
-            const s = 'hello at'.slice(0, line.length);
-            if (line && !line.startsWith(s)) {
-                return true;
-            }
-            return false;
+        	const s = 'hello at'.slice(0, line.length);
+        	if (line && !line.startsWith(s)) {
+        		return true;
+        	}
+        	return false;
         });
-            assert.strictEqual(brokenLines.length, 0);
-            exitTest();
-            return;
-        }
-        if (chunk.length !== hwm) {
-            isLow = true;
-        }
-    }));
-    stream.on('end', () => {
-        stream = null;
-        isLow = false;
-        bufs = [];
-    });
+			assert.strictEqual(brokenLines.length, 0);
+			exitTest();
+			return;
+		}
+		if (chunk.length !== hwm) {
+			isLow = true;
+		}
+	}));
+	stream.on('end', () => {
+		stream = null;
+		isLow = false;
+		bufs = [];
+	});
 }, 10);
 
 // Time longer than 90 seconds to exit safely
 const endTimer = setTimeout(() => {
-    exitTest();
+	exitTest();
 }, 90000);
 
 const exitTest = () => {
-    clearInterval(readInterval);
-    clearInterval(writeInterval);
-    clearTimeout(endTimer);
-    if (stream && !stream.destroyed) {
-        stream.on('close', () => {
-            process.exit();
-        });
-        stream.destroy();
-    } else {
-        process.exit();
-    }
+	clearInterval(readInterval);
+	clearInterval(writeInterval);
+	clearTimeout(endTimer);
+	if (stream && !stream.destroyed) {
+		stream.on('close', () => {
+			process.exit();
+		});
+		stream.destroy();
+	} else {
+		process.exit();
+	}
 };

@@ -11,13 +11,13 @@ const { internalBinding } = require('internal/test/binding');
 const isTTY = internalBinding('tty_wrap').isTTY;
 strictEqual(isTTY(0), true, 'tty_wrap: stdin is not a TTY');
 strictEqual(tty._handle.hasRef(),
-            true, 'tty_wrap: not initially refed');
+												true, 'tty_wrap: not initially refed');
 tty.unref();
 strictEqual(tty._handle.hasRef(),
-            false, 'tty_wrap: unref() ineffective');
+												false, 'tty_wrap: unref() ineffective');
 tty.ref();
 strictEqual(tty._handle.hasRef(),
-            true, 'tty_wrap: ref() ineffective');
+												true, 'tty_wrap: ref() ineffective');
 tty._handle.close(common.mustCall(() =>
-    strictEqual(tty._handle.hasRef(),
-                false, 'tty_wrap: not unrefed on close')));
+	strictEqual(tty._handle.hasRef(),
+													false, 'tty_wrap: not unrefed on close')));

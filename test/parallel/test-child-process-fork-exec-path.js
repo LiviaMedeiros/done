@@ -39,10 +39,10 @@ addLibraryPath(process.env);
 
 // Child
 if (process.env.FORK) {
-    assert.strictEqual(process.execPath, copyPath);
-    assert.ok(process.send);
-    process.send(msg);
-    return process.exit();
+	assert.strictEqual(process.execPath, copyPath);
+	assert.ok(process.send);
+	process.send(msg);
+	return process.exit();
 }
 
 // Parent
@@ -54,8 +54,8 @@ fs.chmodSync(copyPath, '0755');
 const envCopy = { ...process.env, FORK: 'true' };
 const child = fork(__filename, { execPath: copyPath, env: envCopy });
 child.on('message', common.mustCall(function(recv) {
-    assert.deepStrictEqual(recv, msg);
+	assert.deepStrictEqual(recv, msg);
 }));
 child.on('exit', common.mustCall(function(code) {
-    assert.strictEqual(code, 0);
+	assert.strictEqual(code, 0);
 }));

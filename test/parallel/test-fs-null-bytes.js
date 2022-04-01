@@ -25,30 +25,30 @@ const assert = require('assert');
 const fs = require('fs');
 
 function check(async, sync) {
-    const argsSync = Array.prototype.slice.call(arguments, 2);
-    const argsAsync = argsSync.concat(common.mustNotCall());
+	const argsSync = Array.prototype.slice.call(arguments, 2);
+	const argsAsync = argsSync.concat(common.mustNotCall());
 
-    if (sync) {
-        assert.throws(
-            () => {
-                sync.apply(null, argsSync);
-            },
-            {
-                code: 'ERR_INVALID_ARG_VALUE',
-                name: 'TypeError',
-            });
-    }
+	if (sync) {
+		assert.throws(
+			() => {
+				sync.apply(null, argsSync);
+			},
+			{
+				code: 'ERR_INVALID_ARG_VALUE',
+				name: 'TypeError',
+			});
+	}
 
-    if (async) {
-        assert.throws(
-            () => {
-                async.apply(null, argsAsync);
-            },
-            {
-                code: 'ERR_INVALID_ARG_VALUE',
-                name: 'TypeError'
-            });
-    }
+	if (async) {
+		assert.throws(
+			() => {
+				async.apply(null, argsAsync);
+			},
+			{
+				code: 'ERR_INVALID_ARG_VALUE',
+				name: 'TypeError'
+			});
+	}
 }
 
 check(fs.access, fs.accessSync, 'foo\u0000bar');
@@ -150,6 +150,6 @@ check(fs.writeFile, fs.writeFileSync, fileUrl2, 'abc');
 // An 'error' for exists means that it doesn't exist.
 // One of many reasons why this file is the absolute worst.
 fs.exists('foo\u0000bar', common.mustCall((exists) => {
-    assert(!exists);
+	assert(!exists);
 }));
 assert(!fs.existsSync('foo\u0000bar'));

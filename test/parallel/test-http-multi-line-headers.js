@@ -27,9 +27,9 @@ const http = require('http');
 const net = require('net');
 
 const server = net.createServer(function(conn) {
-    const body = 'Yet another node.js server.';
+	const body = 'Yet another node.js server.';
 
-    const response =
+	const response =
       'HTTP/1.1 200 OK\r\n' +
       'Connection: close\r\n' +
       `Content-Length: ${body.length}\r\n` +
@@ -39,17 +39,17 @@ const server = net.createServer(function(conn) {
       '\r\n' +
       body;
 
-    conn.end(response);
-    server.close();
+	conn.end(response);
+	server.close();
 });
 
 server.listen(0, common.mustCall(function() {
-    http.get({
-        host: '127.0.0.1',
-        port: this.address().port
-    }, common.mustCall(function(res) {
-        assert.strictEqual(res.headers['content-type'],
-                           'text/plain; x-unix-mode=0600; name="hello.txt"');
-        res.destroy();
-    }));
+	http.get({
+		host: '127.0.0.1',
+		port: this.address().port
+	}, common.mustCall(function(res) {
+		assert.strictEqual(res.headers['content-type'],
+																					'text/plain; x-unix-mode=0600; name="hello.txt"');
+		res.destroy();
+	}));
 }));

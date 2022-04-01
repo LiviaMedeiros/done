@@ -6,9 +6,9 @@ import { lookupService } from 'dns/promises';
 const invalidAddress = 'fasdfdsaf';
 
 assert.throws(() => {
-    lookupService(invalidAddress, 0);
+	lookupService(invalidAddress, 0);
 }, {
-    code: 'ERR_INVALID_ARG_VALUE',
-    name: 'TypeError',
-    message: `The argument 'address' is invalid. Received '${invalidAddress}'`
+	code: 'ERR_INVALID_ARG_VALUE',
+	name: 'TypeError',
+	message: `The argument 'address' is invalid. Received '${invalidAddress}'`
 });

@@ -15,41 +15,41 @@ const TTY = internalBinding('tty_wrap').TTY;
 const UDP = internalBinding('udp_wrap').UDP;
 
 {
-    // Should throw instead of raise assertions
-    assert.throws(() => {
-        UDP.prototype.fd; // eslint-disable-line no-unused-expressions
-    }, TypeError);
+	// Should throw instead of raise assertions
+	assert.throws(() => {
+		UDP.prototype.fd; // eslint-disable-line no-unused-expressions
+	}, TypeError);
 
-    const StreamWrapProto = Object.getPrototypeOf(TTY.prototype);
-    const properties = ['bytesRead', 'fd', '_externalStream'];
+	const StreamWrapProto = Object.getPrototypeOf(TTY.prototype);
+	const properties = ['bytesRead', 'fd', '_externalStream'];
 
-    properties.forEach((property) => {
-    // Should throw instead of raise assertions
-        assert.throws(() => {
-            TTY.prototype[property]; // eslint-disable-line no-unused-expressions
-        }, TypeError, `Missing expected TypeError for TTY.prototype.${property}`);
+	properties.forEach((property) => {
+		// Should throw instead of raise assertions
+		assert.throws(() => {
+			TTY.prototype[property]; // eslint-disable-line no-unused-expressions
+		}, TypeError, `Missing expected TypeError for TTY.prototype.${property}`);
 
-        // Should not throw for Object.getOwnPropertyDescriptor
-        assert.strictEqual(
-            typeof Object.getOwnPropertyDescriptor(StreamWrapProto, property),
-            'object',
-            'typeof property descriptor ' + property + ' is not \'object\''
-        );
-    });
+		// Should not throw for Object.getOwnPropertyDescriptor
+		assert.strictEqual(
+			typeof Object.getOwnPropertyDescriptor(StreamWrapProto, property),
+			'object',
+			'typeof property descriptor ' + property + ' is not \'object\''
+		);
+	});
 
-    if (common.hasCrypto) { // eslint-disable-line node-core/crypto-check
-    // There are accessor properties in crypto too
-        const crypto = internalBinding('crypto');
+	if (common.hasCrypto) { // eslint-disable-line node-core/crypto-check
+		// There are accessor properties in crypto too
+		const crypto = internalBinding('crypto');
 
-        assert.throws(() => {
-            // eslint-disable-next-line no-unused-expressions
-            crypto.SecureContext.prototype._external;
-        }, TypeError);
+		assert.throws(() => {
+			// eslint-disable-next-line no-unused-expressions
+			crypto.SecureContext.prototype._external;
+		}, TypeError);
 
-        assert.strictEqual(
-            typeof Object.getOwnPropertyDescriptor(
-                crypto.SecureContext.prototype, '_external'),
-            'object'
-        );
-    }
+		assert.strictEqual(
+			typeof Object.getOwnPropertyDescriptor(
+				crypto.SecureContext.prototype, '_external'),
+			'object'
+		);
+	}
 }

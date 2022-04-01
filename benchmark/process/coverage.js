@@ -4,7 +4,7 @@
 
 const common = require('../common.js');
 const bench = common.createBenchmark(main, {
-    n: [1e5]
+	n: [1e5]
 });
 const path = require('path');
 const { rmSync } = require('fs');
@@ -14,19 +14,19 @@ const tmpdir = require('../../test/common/tmpdir');
 const coverageDir = path.join(tmpdir.path, `./cov-${Date.now()}`);
 
 function main({ n }) {
-    bench.start();
-    const result = spawnSync(process.execPath, [
-        require.resolve('../fixtures/coverage-many-branches'),
-    ], {
-        env: {
-            NODE_V8_COVERAGE: coverageDir,
-            N: n,
-            ...process.env
-        }
-    });
-    bench.end(n);
-    rmSync(coverageDir, { recursive: true, force: true });
-    if (result.status !== 0) {
-        throw new Error(result.stderr.toString('utf8'));
-    }
+	bench.start();
+	const result = spawnSync(process.execPath, [
+		require.resolve('../fixtures/coverage-many-branches'),
+	], {
+		env: {
+			NODE_V8_COVERAGE: coverageDir,
+			N: n,
+			...process.env
+		}
+	});
+	bench.end(n);
+	rmSync(coverageDir, { recursive: true, force: true });
+	if (result.status !== 0) {
+		throw new Error(result.stderr.toString('utf8'));
+	}
 }

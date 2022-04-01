@@ -9,13 +9,13 @@ const tmpdir = require('../common/tmpdir');
 
 const path = require('path');
 const {
-    readFile,
-    writeFile,
-    truncate,
-    lchmod,
+	readFile,
+	writeFile,
+	truncate,
+	lchmod,
 } = require('fs/promises');
 const {
-    FileHandle,
+	FileHandle,
 } = require('internal/fs/promises');
 
 const assert = require('assert');
@@ -23,45 +23,45 @@ const originalFd = Object.getOwnPropertyDescriptor(FileHandle.prototype, 'fd');
 
 let count = 0;
 async function createFile() {
-    const filePath = path.join(tmpdir.path, `close_errors_${++count}.txt`);
-    await writeFile(filePath, 'content');
-    return filePath;
+	const filePath = path.join(tmpdir.path, `close_errors_${++count}.txt`);
+	await writeFile(filePath, 'content');
+	return filePath;
 }
 
 async function checkCloseError(op) {
-    try {
-        const filePath = await createFile();
-        Object.defineProperty(FileHandle.prototype, 'fd', {
-            get: function() {
-                // Close is set by using a setter,
-                // so it needs to be set on the instance.
-                const originalClose = this.close;
-                this.close = async () => {
-                    // close the file
-                    await originalClose.call(this);
-                    const closeError = new Error('CLOSE_ERROR');
-                    closeError.code = 456;
-                    throw closeError;
-                };
-                return originalFd.get.call(this);
-            }
-        });
+	try {
+		const filePath = await createFile();
+		Object.defineProperty(FileHandle.prototype, 'fd', {
+			get: function() {
+				// Close is set by using a setter,
+				// so it needs to be set on the instance.
+				const originalClose = this.close;
+				this.close = async () => {
+					// close the file
+					await originalClose.call(this);
+					const closeError = new Error('CLOSE_ERROR');
+					closeError.code = 456;
+					throw closeError;
+				};
+				return originalFd.get.call(this);
+			}
+		});
 
-        await assert.rejects(op(filePath), {
-            name: 'Error',
-            message: 'CLOSE_ERROR',
-            code: 456,
-        });
-    } finally {
-        Object.defineProperty(FileHandle.prototype, 'fd', originalFd);
-    }
+		await assert.rejects(op(filePath), {
+			name: 'Error',
+			message: 'CLOSE_ERROR',
+			code: 456,
+		});
+	} finally {
+		Object.defineProperty(FileHandle.prototype, 'fd', originalFd);
+	}
 }
 (async function() {
-    tmpdir.refresh();
-    await checkCloseError((filePath) => truncate(filePath));
-    await checkCloseError((filePath) => readFile(filePath));
-    await checkCloseError((filePath) => writeFile(filePath, '123'));
-    if (common.isOSX) {
-        await checkCloseError((filePath) => lchmod(filePath, 0o777));
-    }
+	tmpdir.refresh();
+	await checkCloseError((filePath) => truncate(filePath));
+	await checkCloseError((filePath) => readFile(filePath));
+	await checkCloseError((filePath) => writeFile(filePath, '123'));
+	if (common.isOSX) {
+		await checkCloseError((filePath) => lchmod(filePath, 0o777));
+	}
 })().then(common.mustCall());

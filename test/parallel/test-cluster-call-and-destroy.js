@@ -4,12 +4,12 @@ const cluster = require('cluster');
 const assert = require('assert');
 
 if (cluster.isPrimary) {
-    const worker = cluster.fork();
-    worker.on('disconnect', common.mustCall(() => {
-        assert.strictEqual(worker.isConnected(), false);
-        worker.destroy();
-    }));
+	const worker = cluster.fork();
+	worker.on('disconnect', common.mustCall(() => {
+		assert.strictEqual(worker.isConnected(), false);
+		worker.destroy();
+	}));
 } else {
-    assert.strictEqual(cluster.worker.isConnected(), true);
-    cluster.worker.disconnect();
+	assert.strictEqual(cluster.worker.isConnected(), true);
+	cluster.worker.disconnect();
 }

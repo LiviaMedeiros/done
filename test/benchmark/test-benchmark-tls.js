@@ -3,10 +3,10 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 if (!common.enoughTestMem)
-    common.skip('Insufficient memory for TLS benchmark test');
+	common.skip('Insufficient memory for TLS benchmark test');
 
 // Because the TLS benchmarks use hardcoded ports, this should be in sequential
 // rather than parallel to make sure it does not conflict with tests that choose

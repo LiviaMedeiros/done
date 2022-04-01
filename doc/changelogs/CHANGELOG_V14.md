@@ -1276,13 +1276,13 @@ const dc = require('diagnostics_channel');
 const channel = dc.channel('mysql.query');
 
 MySQL.prototype.query = function query(queryString, values, callback) {
-    // Broadcast query information whenever a query is made
-    channel.publish({
-        query: queryString,
-        host: this.hostname,
-    });
+	// Broadcast query information whenever a query is made
+	channel.publish({
+		query: queryString,
+		host: this.hostname,
+	});
 
-    this.doQuery(queryString, values, callback);
+	this.doQuery(queryString, values, callback);
 };
 ```
 
@@ -1293,7 +1293,7 @@ const dc = require('diagnostics_channel');
 const channel = dc.channel('mysql.query');
 
 channel.subscribe(({ query, host }) => {
-    console.log(`mysql query to ${host}: ${query}`);
+	console.log(`mysql query to ${host}: ${query}`);
 });
 ```
 
@@ -3282,7 +3282,7 @@ Example Usage:
 const target = getEventTargetSomehow();
 
 target.addEventListener('foo', (event) => {
-    console.log('foo event happened!');
+	console.log('foo event happened!');
 });
 ```
 
@@ -3814,7 +3814,7 @@ callsotherFunc();
 // Calls tracker.verify() and verifies if all tracker.calls() functions have
 // been called the right number of times.
 process.on('exit', () => {
-    tracker.verify();
+	tracker.verify();
 });
 ```
 
@@ -3857,9 +3857,9 @@ This is useful in case you want different grouping width than 2 spaces.
 ```js
 const { Console } = require('console');
 const customConsole = new Console({
-    stdout: process.stdout,
-    stderr: process.stderr,
-    groupIndentation: 10
+	stdout: process.stdout,
+	stderr: process.stderr,
+	groupIndentation: 10
 });
 
 customConsole.log('foo');

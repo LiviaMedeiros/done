@@ -19,16 +19,16 @@ const addonPath = path.join(__dirname, 'build', common.buildType);
 const addonLink = path.join(tmpdir.path, 'addon');
 
 try {
-    fs.symlinkSync(addonPath, addonLink, 'dir');
+	fs.symlinkSync(addonPath, addonLink, 'dir');
 } catch (err) {
-    if (err.code !== 'EPERM') throw err;
-    common.skip('module identity test (no privs for symlinks)');
+	if (err.code !== 'EPERM') throw err;
+	common.skip('module identity test (no privs for symlinks)');
 }
 
 const sub = require('./submodule');
 [addonPath, addonLink].forEach((i) => {
-    const mod = require(path.join(i, 'binding.node'));
-    assert.notStrictEqual(mod, null);
-    assert.strictEqual(mod.hello(), 'world');
-    sub.test(i); // Should not throw.
+	const mod = require(path.join(i, 'binding.node'));
+	assert.notStrictEqual(mod, null);
+	assert.strictEqual(mod.hello(), 'world');
+	sub.test(i); // Should not throw.
 });

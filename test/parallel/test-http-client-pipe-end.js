@@ -26,37 +26,37 @@ const common = require('../common');
 const http = require('http');
 
 const server = http.createServer(function(req, res) {
-    req.resume();
-    req.once('end', function() {
-        res.writeHead(200);
-        res.end();
-        server.close();
-    });
+	req.resume();
+	req.once('end', function() {
+		res.writeHead(200);
+		res.end();
+		server.close();
+	});
 });
 
 const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
 server.listen(common.PIPE, function() {
-    const req = http.request({
-        socketPath: common.PIPE,
-        headers: { 'Content-Length': '1' },
-        method: 'POST',
-        path: '/'
-    });
+	const req = http.request({
+		socketPath: common.PIPE,
+		headers: { 'Content-Length': '1' },
+		method: 'POST',
+		path: '/'
+	});
 
-    req.write('.');
+	req.write('.');
 
-    sched(function() { req.end(); }, 5);
+	sched(function() { req.end(); }, 5);
 });
 
 // Schedule a callback after `ticks` event loop ticks
 function sched(cb, ticks) {
-    function fn() {
-        if (--ticks)
-            setImmediate(fn);
-        else
-            cb();
-    }
-    setImmediate(fn);
+	function fn() {
+		if (--ticks)
+			setImmediate(fn);
+		else
+			cb();
+	}
+	setImmediate(fn);
 }

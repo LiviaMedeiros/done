@@ -12,32 +12,32 @@ let async = false;
 let port;
 
 function onsend() {
-    if (sent++ < limit) {
-        client.send(chunk, 0, chunk.length, port, common.localhostIPv4, onsend);
-    } else {
-        assert.strictEqual(async, true);
-    }
+	if (sent++ < limit) {
+		client.send(chunk, 0, chunk.length, port, common.localhostIPv4, onsend);
+	} else {
+		assert.strictEqual(async, true);
+	}
 }
 
 client.on('listening', function() {
-    port = this.address().port;
+	port = this.address().port;
 
-    process.nextTick(() => {
-        async = true;
-    });
+	process.nextTick(() => {
+		async = true;
+	});
 
-    onsend();
+	onsend();
 });
 
 client.on('message', (buf, info) => {
-    received++;
-    if (received === limit) {
-        client.close();
-    }
+	received++;
+	if (received === limit) {
+		client.close();
+	}
 });
 
 client.on('close', common.mustCall(function() {
-    assert.strictEqual(received, limit);
+	assert.strictEqual(received, limit);
 }));
 
 client.bind(0);

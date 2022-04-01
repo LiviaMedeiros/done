@@ -11,30 +11,30 @@ const opts = { showProxy: true };
 let proxyObj;
 let called = false;
 const target = {
-    [util.inspect.custom](depth, { showProxy }) {
-        if (showProxy === false) {
-            called = true;
-            if (proxyObj !== this) {
-                throw new Error('Failed');
-            }
-        }
-        return [1, 2, 3];
-    }
+	[util.inspect.custom](depth, { showProxy }) {
+		if (showProxy === false) {
+			called = true;
+			if (proxyObj !== this) {
+				throw new Error('Failed');
+			}
+		}
+		return [1, 2, 3];
+	}
 };
 const handler = {
-    getPrototypeOf() { throw new Error('getPrototypeOf'); },
-    setPrototypeOf() { throw new Error('setPrototypeOf'); },
-    isExtensible() { throw new Error('isExtensible'); },
-    preventExtensions() { throw new Error('preventExtensions'); },
-    getOwnPropertyDescriptor() { throw new Error('getOwnPropertyDescriptor'); },
-    defineProperty() { throw new Error('defineProperty'); },
-    has() { throw new Error('has'); },
-    get() { throw new Error('get'); },
-    set() { throw new Error('set'); },
-    deleteProperty() { throw new Error('deleteProperty'); },
-    ownKeys() { throw new Error('ownKeys'); },
-    apply() { throw new Error('apply'); },
-    construct() { throw new Error('construct'); }
+	getPrototypeOf() { throw new Error('getPrototypeOf'); },
+	setPrototypeOf() { throw new Error('setPrototypeOf'); },
+	isExtensible() { throw new Error('isExtensible'); },
+	preventExtensions() { throw new Error('preventExtensions'); },
+	getOwnPropertyDescriptor() { throw new Error('getOwnPropertyDescriptor'); },
+	defineProperty() { throw new Error('defineProperty'); },
+	has() { throw new Error('has'); },
+	get() { throw new Error('get'); },
+	set() { throw new Error('set'); },
+	deleteProperty() { throw new Error('deleteProperty'); },
+	ownKeys() { throw new Error('ownKeys'); },
+	apply() { throw new Error('apply'); },
+	construct() { throw new Error('construct'); }
 };
 proxyObj = new Proxy(target, handler);
 
@@ -58,8 +58,8 @@ details = processUtil.getProxyDetails(proxyObj, false);
 assert.strictEqual(target, details);
 
 assert.strictEqual(
-    util.inspect(proxyObj, opts),
-    'Proxy [\n' +
+	util.inspect(proxyObj, opts),
+	'Proxy [\n' +
   '  [ 1, 2, 3 ],\n' +
   '  {\n' +
   '    getPrototypeOf: [Function: getPrototypeOf],\n' +
@@ -115,8 +115,8 @@ const expected6 = 'Proxy [\n' +
                   '  ]\n' +
                   ']';
 assert.strictEqual(
-    util.inspect(proxy1, { showProxy: 1, depth: null }),
-    expected1);
+	util.inspect(proxy1, { showProxy: 1, depth: null }),
+	expected1);
 assert.strictEqual(util.inspect(proxy2, opts), expected2);
 assert.strictEqual(util.inspect(proxy3, opts), expected3);
 assert.strictEqual(util.inspect(proxy4, opts), expected4);
@@ -147,12 +147,12 @@ assert.strictEqual(util.inspect(proxy9), '[Function: Date]');
 
 const proxy10 = new Proxy(() => {}, {});
 const proxy11 = new Proxy(() => {}, {
-    get() {
-        return proxy11;
-    },
-    apply() {
-        return proxy11;
-    }
+	get() {
+		return proxy11;
+	},
+	apply() {
+		return proxy11;
+	}
 });
 const expected10 = '[Function (anonymous)]';
 const expected11 = '[Function (anonymous)]';

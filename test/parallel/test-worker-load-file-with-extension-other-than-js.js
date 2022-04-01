@@ -5,5 +5,5 @@ const fixtures = require('../common/fixtures');
 const { Worker } = require('worker_threads');
 
 (common.mustCall(() => {
-    new Worker(fixtures.path('worker-script.ts'));
+	new Worker(fixtures.path('worker-script.ts'));
 }))();

@@ -11,7 +11,7 @@ const thisArg = {};
 const res = new AsyncResource('fhqwhgads');
 
 function callback() {
-    assert.strictEqual(this, thisArg);
+	assert.strictEqual(this, thisArg);
 }
 
 res.runInAsyncScope(common.mustCall(callback), thisArg);

@@ -34,44 +34,44 @@ a.enter(); // This will be our "root" domain
 a.on('error', common.mustNotCall());
 
 const server = http.createServer((req, res) => {
-    // child domain of a.
-    const b = domain.create();
-    a.add(b);
+	// child domain of a.
+	const b = domain.create();
+	a.add(b);
 
-    // Treat these EE objects as if they are a part of the b domain
-    // so, an 'error' event on them propagates to the domain, rather
-    // than being thrown.
-    b.add(req);
-    b.add(res);
+	// Treat these EE objects as if they are a part of the b domain
+	// so, an 'error' event on them propagates to the domain, rather
+	// than being thrown.
+	b.add(req);
+	b.add(res);
 
-    b.on('error', common.mustCall((er) => {
-        if (res) {
-            res.writeHead(500);
-            res.end('An error occurred');
-        }
-        // res.writeHead(500), res.destroy, etc.
-        server.close();
-    }));
+	b.on('error', common.mustCall((er) => {
+		if (res) {
+			res.writeHead(500);
+			res.end('An error occurred');
+		}
+		// res.writeHead(500), res.destroy, etc.
+		server.close();
+	}));
 
-    // XXX this bind should not be necessary.
-    // the write cb behavior in http/net should use an
-    // event so that it picks up the domain handling.
-    res.write('HELLO\n', b.bind(() => {
-        throw new Error('this kills domain B, not A');
-    }));
+	// XXX this bind should not be necessary.
+	// the write cb behavior in http/net should use an
+	// event so that it picks up the domain handling.
+	res.write('HELLO\n', b.bind(() => {
+		throw new Error('this kills domain B, not A');
+	}));
 
 }).listen(0, () => {
-    const c = domain.create();
-    const req = http.get({ host: 'localhost', port: server.address().port });
+	const c = domain.create();
+	const req = http.get({ host: 'localhost', port: server.address().port });
 
-    // Add the request to the C domain
-    c.add(req);
+	// Add the request to the C domain
+	c.add(req);
 
-    req.on('response', (res) => {
-    // Add the response object to the C domain
-        c.add(res);
-        res.pipe(process.stdout);
-    });
+	req.on('response', (res) => {
+		// Add the response object to the C domain
+		c.add(res);
+		res.pipe(process.stdout);
+	});
 
-    c.on('error', common.mustCall((er) => { }));
+	c.on('error', common.mustCall((er) => { }));
 });

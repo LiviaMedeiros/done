@@ -8,11 +8,11 @@ const dns = require('dns');
 validateSnapshotNodes('Node / ChannelWrap', [{}]);
 dns.resolve('localhost', () => {});
 validateSnapshotNodes('Node / ChannelWrap', [
-    {
-        children: [
-            { node_name: 'Node / NodeAresTask::List', edge_name: 'task_list' },
-            // `Node / ChannelWrap` (C++) -> `ChannelWrap` (JS)
-            { node_name: 'ChannelWrap', edge_name: 'wrapped' },
-        ]
-    },
+	{
+		children: [
+			{ node_name: 'Node / NodeAresTask::List', edge_name: 'task_list' },
+			// `Node / ChannelWrap` (C++) -> `ChannelWrap` (JS)
+			{ node_name: 'ChannelWrap', edge_name: 'wrapped' },
+		]
+	},
 ]);

@@ -7,7 +7,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const { TLSSocket } = require('tls');
 const makeDuplexPair = require('../common/duplexpair');
@@ -18,12 +18,12 @@ let clientTLS = new TLSSocket(clientSide, { isServer: false });
 let clientTLSHandle = clientTLS._handle;  // eslint-disable-line no-unused-vars
 
 setImmediate(() => {
-    clientTLS = null;
-    global.gc();
-    clientTLSHandle = null;
-    global.gc();
-    setImmediate(() => {
-        clientSide = null;
-        global.gc();
-    });
+	clientTLS = null;
+	global.gc();
+	clientTLSHandle = null;
+	global.gc();
+	setImmediate(() => {
+		clientSide = null;
+		global.gc();
+	});
 });

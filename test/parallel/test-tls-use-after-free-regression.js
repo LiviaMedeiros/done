@@ -3,7 +3,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-    common.skip('missing crypto');
+	common.skip('missing crypto');
 
 const https = require('https');
 const tls = require('tls');
@@ -33,26 +33,26 @@ glj2R1NNr1X68w==
 -----END CERTIFICATE-----`;
 
 const server = https.createServer(
-    { key, cert },
-    common.mustCall((req, res) => {
-        res.writeHead(200);
-        res.end('boom goes the dynamite\n');
-    }, 3));
+	{ key, cert },
+	common.mustCall((req, res) => {
+		res.writeHead(200);
+		res.end('boom goes the dynamite\n');
+	}, 3));
 
 server.listen(0, common.mustCall(() => {
-    const socket =
+	const socket =
     tls.connect(
-        server.address().port,
-        'localhost',
-        { rejectUnauthorized: false },
-        common.mustCall(() => {
-            socket.write(kMessage);
-            socket.write(kMessage);
-            socket.write(kMessage);
-        }));
+    	server.address().port,
+    	'localhost',
+    	{ rejectUnauthorized: false },
+    	common.mustCall(() => {
+    		socket.write(kMessage);
+    		socket.write(kMessage);
+    		socket.write(kMessage);
+    	}));
 
-    socket.on('data', common.mustCall(() => socket.destroy()));
-    socket.on('close', () => {
-        setImmediate(() => server.close());
-    });
+	socket.on('data', common.mustCall(() => socket.destroy()));
+	socket.on('close', () => {
+		setImmediate(() => server.close());
+	});
 }));

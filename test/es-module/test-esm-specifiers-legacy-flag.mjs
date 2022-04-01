@@ -10,7 +10,7 @@ import module from '../fixtures/es-module-specifiers/package-type-module';
 import main from '../fixtures/es-module-specifiers/dir-with-main';
 // Notice the trailing slash
 import success, { explicit, implicit, implicitModule }
-    from '../fixtures/es-module-specifiers/';
+	from '../fixtures/es-module-specifiers/';
 
 assert.strictEqual(commonjs, 'commonjs');
 assert.strictEqual(module, 'module');

@@ -5,74 +5,74 @@ const fs = require('fs');
 
 const options = 'test';
 const expectedError = {
-    code: 'ERR_INVALID_ARG_VALUE',
-    name: 'TypeError',
+	code: 'ERR_INVALID_ARG_VALUE',
+	name: 'TypeError',
 };
 
 assert.throws(() => {
-    fs.readFile('path', options, common.mustNotCall());
+	fs.readFile('path', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.readFileSync('path', options);
+	fs.readFileSync('path', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.readdir('path', options, common.mustNotCall());
+	fs.readdir('path', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.readdirSync('path', options);
+	fs.readdirSync('path', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.readlink('path', options, common.mustNotCall());
+	fs.readlink('path', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.readlinkSync('path', options);
+	fs.readlinkSync('path', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.writeFile('path', 'data', options, common.mustNotCall());
+	fs.writeFile('path', 'data', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.writeFileSync('path', 'data', options);
+	fs.writeFileSync('path', 'data', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.appendFile('path', 'data', options, common.mustNotCall());
+	fs.appendFile('path', 'data', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.appendFileSync('path', 'data', options);
+	fs.appendFileSync('path', 'data', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.watch('path', options, common.mustNotCall());
+	fs.watch('path', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.realpath('path', options, common.mustNotCall());
+	fs.realpath('path', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.realpathSync('path', options);
+	fs.realpathSync('path', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.mkdtemp('path', options, common.mustNotCall());
+	fs.mkdtemp('path', options, common.mustNotCall());
 }, expectedError);
 
 assert.throws(() => {
-    fs.mkdtempSync('path', options);
+	fs.mkdtempSync('path', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.ReadStream('path', options);
+	fs.ReadStream('path', options);
 }, expectedError);
 
 assert.throws(() => {
-    fs.WriteStream('path', options);
+	fs.WriteStream('path', options);
 }, expectedError);

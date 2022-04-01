@@ -17,7 +17,7 @@ const { Worker, MessageChannel } = require('worker_threads');
 // - Thread 2 closes the port, discarding message B in the process.
 
 async function test() {
-    const worker = new Worker(`
+	const worker = new Worker(`
   require('worker_threads').parentPort.on('message', ({ port }) => {
     port.postMessage('firstMessage');
     port.postMessage('lastMessage');
@@ -25,14 +25,14 @@ async function test() {
   });
   `, { eval: true });
 
-    for (let i = 0; i < 10000; i++) {
-        const { port1, port2 } = new MessageChannel();
-        worker.postMessage({ port: port2 }, [ port2 ]);
-        assert.deepStrictEqual(await once(port1, 'message'), ['firstMessage']);
-        assert.deepStrictEqual(await once(port1, 'message'), ['lastMessage']);
-    }
+	for (let i = 0; i < 10000; i++) {
+		const { port1, port2 } = new MessageChannel();
+		worker.postMessage({ port: port2 }, [ port2 ]);
+		assert.deepStrictEqual(await once(port1, 'message'), ['firstMessage']);
+		assert.deepStrictEqual(await once(port1, 'message'), ['lastMessage']);
+	}
 
-    await worker.terminate();
+	await worker.terminate();
 }
 
 test().then(common.mustCall());

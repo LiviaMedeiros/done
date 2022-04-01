@@ -605,8 +605,8 @@ with [`JSON.stringify()`][].
 
 ```js
 const myURLs = [
-    new URL('https://www.example.com'),
-    new URL('https://test.example.org'),
+	new URL('https://www.example.com'),
+	new URL('https://test.example.org'),
 ];
 console.log(JSON.stringify(myURLs));
 // Prints ["https://www.example.com/","https://test.example.org/"]
@@ -628,8 +628,8 @@ object and can be used to retrieve the `Blob` later.
 
 ```js
 const {
-    Blob,
-    resolveObjectURL,
+	Blob,
+	resolveObjectURL,
 } = require('buffer');
 
 const blob = new Blob(['hello']);
@@ -761,8 +761,8 @@ joins all array elements with commas.
 
 ```js
 const params = new URLSearchParams({
-    user: 'abc',
-    query: ['first', 'second']
+	user: 'abc',
+	query: ['first', 'second']
 });
 console.log(params.getAll('query'));
 // Prints [ 'first,second' ]
@@ -794,9 +794,9 @@ let params;
 
 // Using an array
 params = new URLSearchParams([
-    ['user', 'abc'],
-    ['query', 'first'],
-    ['query', 'second'],
+	['user', 'abc'],
+	['query', 'first'],
+	['query', 'second'],
 ]);
 console.log(params.toString());
 // Prints 'user=abc&query=first&query=second'
@@ -811,9 +811,9 @@ console.log(params.toString());
 
 // Using a generator function
 function* getQueryPairs() {
-    yield ['user', 'abc'];
-    yield ['query', 'first'];
-    yield ['query', 'second'];
+	yield ['user', 'abc'];
+	yield ['query', 'first'];
+	yield ['query', 'second'];
 }
 params = new URLSearchParams(getQueryPairs());
 console.log(params.toString());
@@ -821,7 +821,7 @@ console.log(params.toString());
 
 // Each key-value pair must have exactly two elements
 new URLSearchParams([
-    ['user', 'abc', 'error'],
+	['user', 'abc', 'error'],
 ]);
 // Throws TypeError [ERR_INVALID_TUPLE]:
 //        Each query pair must be an iterable [name, value] tuple
@@ -869,7 +869,7 @@ Iterates over each name-value pair in the query and invokes the given function.
 ```js
 const myURL = new URL('https://example.org/?a=b&c=d');
 myURL.searchParams.forEach((value, name, searchParams) => {
-    console.log(name, value, myURL.searchParams === searchParams);
+	console.log(name, value, myURL.searchParams === searchParams);
 });
 // Prints:
 //   a b true
@@ -909,7 +909,7 @@ Returns an ES6 `Iterator` over the names of each name-value pair.
 ```js
 const params = new URLSearchParams('foo=bar&foo=baz');
 for (const name of params.keys()) {
-    console.log(name);
+	console.log(name);
 }
 // Prints:
 //   foo
@@ -987,7 +987,7 @@ Alias for [`urlSearchParams.entries()`][].
 ```js
 const params = new URLSearchParams('foo=bar&xyz=baz');
 for (const [name, value] of params) {
-    console.log(name, value);
+	console.log(name, value);
 }
 // Prints:
 //   foo bar
@@ -1448,13 +1448,13 @@ The `url.format()` method returns a formatted URL string derived from
 ```js
 const url = require('url');
 url.format({
-    protocol: 'https',
-    hostname: 'example.com',
-    pathname: '/some/path',
-    query: {
-        page: 1,
-        format: 'json'
-    }
+	protocol: 'https',
+	hostname: 'example.com',
+	pathname: '/some/path',
+	query: {
+		page: 1,
+		format: 'json'
+	}
 });
 
 // => 'https://example.com/some/path?page=1&format=json'
@@ -1619,13 +1619,13 @@ To achieve the same result using the WHATWG URL API:
 
 ```js
 function resolve(from, to) {
-    const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
-    if (resolvedUrl.protocol === 'resolve:') {
-    // `from` is a relative URL.
-        const { pathname, search, hash } = resolvedUrl;
-        return pathname + search + hash;
-    }
-    return resolvedUrl.toString();
+	const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
+	if (resolvedUrl.protocol === 'resolve:') {
+		// `from` is a relative URL.
+		const { pathname, search, hash } = resolvedUrl;
+		return pathname + search + hash;
+	}
+	return resolvedUrl.toString();
 }
 
 resolve('/one/two/three', 'four');         // '/one/two/four'

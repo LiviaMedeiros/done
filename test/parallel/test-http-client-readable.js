@@ -27,45 +27,45 @@ const http = require('http');
 const Duplex = require('stream').Duplex;
 
 class FakeAgent extends http.Agent {
-    createConnection() {
-        const s = new Duplex();
-        let once = false;
+	createConnection() {
+		const s = new Duplex();
+		let once = false;
 
-        s._read = function() {
-            if (once)
-                return this.push(null);
-            once = true;
+		s._read = function() {
+			if (once)
+				return this.push(null);
+			once = true;
 
-            this.push('HTTP/1.1 200 Ok\r\nTransfer-Encoding: chunked\r\n\r\n');
-            this.push('b\r\nhello world\r\n');
-            this.readable = false;
-            this.push('0\r\n\r\n');
-        };
+			this.push('HTTP/1.1 200 Ok\r\nTransfer-Encoding: chunked\r\n\r\n');
+			this.push('b\r\nhello world\r\n');
+			this.readable = false;
+			this.push('0\r\n\r\n');
+		};
 
-        // Blackhole
-        s._write = function(data, enc, cb) {
-            cb();
-        };
+		// Blackhole
+		s._write = function(data, enc, cb) {
+			cb();
+		};
 
-        s.destroy = s.destroySoon = function() {
-            this.writable = false;
-        };
+		s.destroy = s.destroySoon = function() {
+			this.writable = false;
+		};
 
-        return s;
-    }
+		return s;
+	}
 }
 
 let received = '';
 
 const req = http.request({
-    agent: new FakeAgent()
+	agent: new FakeAgent()
 }, common.mustCall(function requestCallback(res) {
-    res.on('data', function dataCallback(chunk) {
-        received += chunk;
-    });
+	res.on('data', function dataCallback(chunk) {
+		received += chunk;
+	});
 
-    res.on('end', common.mustCall(function endCallback() {
-        assert.strictEqual(received, 'hello world');
-    }));
+	res.on('end', common.mustCall(function endCallback() {
+		assert.strictEqual(received, 'hello world');
+	}));
 }));
 req.end();

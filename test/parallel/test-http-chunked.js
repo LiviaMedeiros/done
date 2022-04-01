@@ -35,22 +35,22 @@ const UTF8_STRING = '南越国是前203年至前111年存在于岭南地区的�
                     '有效的改善了岭南地区落后的政治、经济现状。';
 
 const server = http.createServer(common.mustCall((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf8' });
-    res.end(UTF8_STRING, 'utf8');
+	res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf8' });
+	res.end(UTF8_STRING, 'utf8');
 }));
 server.listen(0, common.mustCall(() => {
-    let data = '';
-    http.get({
-        path: '/',
-        host: 'localhost',
-        port: server.address().port
-    }, common.mustCall((x) => {
-        x.setEncoding('utf8');
-        x.on('data', (c) => data += c);
-        x.on('end', common.mustCall(() => {
-            assert.strictEqual(typeof data, 'string');
-            assert.strictEqual(UTF8_STRING, data);
-            server.close();
-        }));
-    })).end();
+	let data = '';
+	http.get({
+		path: '/',
+		host: 'localhost',
+		port: server.address().port
+	}, common.mustCall((x) => {
+		x.setEncoding('utf8');
+		x.on('data', (c) => data += c);
+		x.on('end', common.mustCall(() => {
+			assert.strictEqual(typeof data, 'string');
+			assert.strictEqual(UTF8_STRING, data);
+			server.close();
+		}));
+	})).end();
 }));

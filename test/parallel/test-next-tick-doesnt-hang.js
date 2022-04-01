@@ -26,5 +26,5 @@
 
 require('../common');
 process.nextTick(function() {
-    // Nothing
+	// Nothing
 });

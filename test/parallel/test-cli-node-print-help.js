@@ -12,44 +12,44 @@ let stdOut;
 
 
 function startPrintHelpTest() {
-    exec(`${process.execPath} --help`, common.mustSucceed((stdout, stderr) => {
-        stdOut = stdout;
-        validateNodePrintHelp();
-    }));
+	exec(`${process.execPath} --help`, common.mustSucceed((stdout, stderr) => {
+		stdOut = stdout;
+		validateNodePrintHelp();
+	}));
 }
 
 function validateNodePrintHelp() {
-    const HAVE_OPENSSL = common.hasCrypto;
-    const NODE_HAVE_I18N_SUPPORT = common.hasIntl;
-    const HAVE_INSPECTOR = process.features.inspector;
+	const HAVE_OPENSSL = common.hasCrypto;
+	const NODE_HAVE_I18N_SUPPORT = common.hasIntl;
+	const HAVE_INSPECTOR = process.features.inspector;
 
-    const cliHelpOptions = [
-        { compileConstant: HAVE_OPENSSL,
-          flags: [ '--openssl-config=...', '--tls-cipher-list=...',
-                   '--use-bundled-ca', '--use-openssl-ca',
-                   '--enable-fips', '--force-fips' ] },
-        { compileConstant: NODE_HAVE_I18N_SUPPORT,
-          flags: [ '--icu-data-dir=...', 'NODE_ICU_DATA' ] },
-        { compileConstant: HAVE_INSPECTOR,
-          flags: [ '--inspect-brk[=[host:]port]', '--inspect-port=[host:]port',
-                   '--inspect[=[host:]port]' ] },
-    ];
+	const cliHelpOptions = [
+		{ compileConstant: HAVE_OPENSSL,
+				flags: [ '--openssl-config=...', '--tls-cipher-list=...',
+													'--use-bundled-ca', '--use-openssl-ca',
+													'--enable-fips', '--force-fips' ] },
+		{ compileConstant: NODE_HAVE_I18N_SUPPORT,
+				flags: [ '--icu-data-dir=...', 'NODE_ICU_DATA' ] },
+		{ compileConstant: HAVE_INSPECTOR,
+				flags: [ '--inspect-brk[=[host:]port]', '--inspect-port=[host:]port',
+													'--inspect[=[host:]port]' ] },
+	];
 
-    cliHelpOptions.forEach(testForSubstring);
+	cliHelpOptions.forEach(testForSubstring);
 }
 
 function testForSubstring(options) {
-    if (options.compileConstant) {
-        options.flags.forEach((flag) => {
-            assert.strictEqual(stdOut.indexOf(flag) !== -1, true,
-                               `Missing flag ${flag} in ${stdOut}`);
-        });
-    } else {
-        options.flags.forEach((flag) => {
-            assert.strictEqual(stdOut.indexOf(flag), -1,
-                               `Unexpected flag ${flag} in ${stdOut}`);
-        });
-    }
+	if (options.compileConstant) {
+		options.flags.forEach((flag) => {
+			assert.strictEqual(stdOut.indexOf(flag) !== -1, true,
+																						`Missing flag ${flag} in ${stdOut}`);
+		});
+	} else {
+		options.flags.forEach((flag) => {
+			assert.strictEqual(stdOut.indexOf(flag), -1,
+																						`Unexpected flag ${flag} in ${stdOut}`);
+		});
+	}
 }
 
 startPrintHelpTest();

@@ -43,10 +43,10 @@ asynchronous operation is complete.
 import { unlink } from 'fs/promises';
 
 try {
-    await unlink('/tmp/hello');
-    console.log('successfully deleted /tmp/hello');
+	await unlink('/tmp/hello');
+	console.log('successfully deleted /tmp/hello');
 } catch (error) {
-    console.error('there was an error:', error.message);
+	console.error('there was an error:', error.message);
 }
 ```
 
@@ -54,12 +54,12 @@ try {
 const { unlink } = require('fs/promises');
 
 (async function(path) {
-    try {
-        await unlink(path);
-        console.log(`successfully deleted ${path}`);
-    } catch (error) {
-        console.error('there was an error:', error.message);
-    }
+	try {
+		await unlink(path);
+		console.log(`successfully deleted ${path}`);
+	} catch (error) {
+		console.error('there was an error:', error.message);
+	}
 })('/tmp/hello');
 ```
 
@@ -75,8 +75,8 @@ the first argument is `null` or `undefined`.
 import { unlink } from 'fs';
 
 unlink('/tmp/hello', (err) => {
-    if (err) throw err;
-    console.log('successfully deleted /tmp/hello');
+	if (err) throw err;
+	console.log('successfully deleted /tmp/hello');
 });
 ```
 
@@ -84,8 +84,8 @@ unlink('/tmp/hello', (err) => {
 const { unlink } = require('fs');
 
 unlink('/tmp/hello', (err) => {
-    if (err) throw err;
-    console.log('successfully deleted /tmp/hello');
+	if (err) throw err;
+	console.log('successfully deleted /tmp/hello');
 });
 ```
 
@@ -103,10 +103,10 @@ and can be handled using `try…catch`, or can be allowed to bubble up.
 import { unlinkSync } from 'fs';
 
 try {
-    unlinkSync('/tmp/hello');
-    console.log('successfully deleted /tmp/hello');
+	unlinkSync('/tmp/hello');
+	console.log('successfully deleted /tmp/hello');
 } catch (err) {
-    // handle the error
+	// handle the error
 }
 ```
 
@@ -114,10 +114,10 @@ try {
 const { unlinkSync } = require('fs');
 
 try {
-    unlinkSync('/tmp/hello');
-    console.log('successfully deleted /tmp/hello');
+	unlinkSync('/tmp/hello');
+	console.log('successfully deleted /tmp/hello');
 } catch (err) {
-    // handle the error
+	// handle the error
 }
 ```
 
@@ -231,9 +231,9 @@ import { open } from 'fs/promises';
 
 let filehandle;
 try {
-    filehandle = await open('thefile.txt', 'r');
+	filehandle = await open('thefile.txt', 'r');
 } finally {
-    await filehandle?.close();
+	await filehandle?.close();
 }
 ```
 
@@ -278,14 +278,14 @@ const fd = await open('/dev/input/event0');
 // Create a stream from some character device.
 const stream = fd.createReadStream();
 setTimeout(() => {
-    stream.close(); // This may not close the stream.
-    // Artificially marking end-of-stream, as if the underlying resource had
-    // indicated end-of-file by itself, allows the stream to close.
-    // This does not cancel pending read operations, and if there is such an
-    // operation, the process may still not be able to exit successfully
-    // until it finishes.
-    stream.push(null);
-    stream.read(0);
+	stream.close(); // This may not close the stream.
+	// Artificially marking end-of-stream, as if the underlying resource had
+	// indicated end-of-file by itself, allows the stream to close.
+	// This does not cancel pending read operations, and if there is such an
+	// operation, the process may still not be able to exit successfully
+	// until it finishes.
+	stream.push(null);
+	stream.read(0);
 }, 100);
 ```
 
@@ -424,29 +424,29 @@ after the `FileHandle` is closed or closing.
 
 ```mjs
 import {
-    open,
+	open,
 } from 'node:fs/promises';
 
 const file = await open('./some/file/to/read');
 
 for await (const chunk of file.readableWebStream())
-    console.log(chunk);
+	console.log(chunk);
 
 await file.close();
 ```
 
 ```cjs
 const {
-    open,
+	open,
 } = require('fs/promises');
 
 (async () => {
-    const file = await open('./some/file/to/read');
+	const file = await open('./some/file/to/read');
 
-    for await (const chunk of file.readableWebStream())
-        console.log(chunk);
+	for await (const chunk of file.readableWebStream())
+		console.log(chunk);
 
-    await file.close();
+	await file.close();
 })();
 ```
 
@@ -546,10 +546,10 @@ import { open } from 'fs/promises';
 
 let filehandle = null;
 try {
-    filehandle = await open('temp.txt', 'r+');
-    await filehandle.truncate(4);
+	filehandle = await open('temp.txt', 'r+');
+	await filehandle.truncate(4);
 } finally {
-    await filehandle?.close();
+	await filehandle?.close();
 }
 ```
 
@@ -754,10 +754,10 @@ import { access } from 'fs/promises';
 import { constants } from 'fs';
 
 try {
-    await access('/etc/passwd', constants.R_OK | constants.W_OK);
-    console.log('can access');
+	await access('/etc/passwd', constants.R_OK | constants.W_OK);
+	console.log('can access');
 } catch {
-    console.error('cannot access');
+	console.error('cannot access');
 }
 ```
 
@@ -857,18 +857,18 @@ import { constants } from 'fs';
 import { copyFile } from 'fs/promises';
 
 try {
-    await copyFile('source.txt', 'destination.txt');
-    console.log('source.txt was copied to destination.txt');
+	await copyFile('source.txt', 'destination.txt');
+	console.log('source.txt was copied to destination.txt');
 } catch {
-    console.log('The file could not be copied');
+	console.log('The file could not be copied');
 }
 
 // By using COPYFILE_EXCL, the operation will fail if destination.txt exists.
 try {
-    await copyFile('source.txt', 'destination.txt', constants.COPYFILE_EXCL);
-    console.log('source.txt was copied to destination.txt');
+	await copyFile('source.txt', 'destination.txt', constants.COPYFILE_EXCL);
+	console.log('source.txt was copied to destination.txt');
 } catch {
-    console.log('The file could not be copied');
+	console.log('The file could not be copied');
 }
 ```
 
@@ -1047,9 +1047,9 @@ object with an `encoding` property specifying the character encoding to use.
 import { mkdtemp } from 'fs/promises';
 
 try {
-    await mkdtemp(path.join(os.tmpdir(), 'foo-'));
+	await mkdtemp(path.join(os.tmpdir(), 'foo-'));
 } catch (err) {
-    console.error(err);
+	console.error(err);
 }
 ```
 
@@ -1120,11 +1120,11 @@ Example using async iteration:
 import { opendir } from 'fs/promises';
 
 try {
-    const dir = await opendir('./');
-    for await (const dirent of dir)
-        console.log(dirent.name);
+	const dir = await opendir('./');
+	for await (const dirent of dir)
+		console.log(dirent.name);
 } catch (err) {
-    console.error(err);
+	console.error(err);
 }
 ```
 
@@ -1162,11 +1162,11 @@ If `options.withFileTypes` is set to `true`, the resolved array will contain
 import { readdir } from 'fs/promises';
 
 try {
-    const files = await readdir(path);
-    for (const file of files)
-        console.log(file);
+	const files = await readdir(path);
+	for (const file of files)
+		console.log(file);
 } catch (err) {
-    console.error(err);
+	console.error(err);
 }
 ```
 
@@ -1209,17 +1209,17 @@ request is aborted the promise returned is rejected with an `AbortError`:
 import { readFile } from 'fs/promises';
 
 try {
-    const controller = new AbortController();
-    const { signal } = controller;
-    const promise = readFile(fileName, { signal });
+	const controller = new AbortController();
+	const { signal } = controller;
+	const promise = readFile(fileName, { signal });
 
-    // Abort the request before the promise settles.
-    controller.abort();
+	// Abort the request before the promise settles.
+	controller.abort();
 
-    await promise;
+	await promise;
 } catch (err) {
-    // When a request is aborted - err is an AbortError
-    console.error(err);
+	// When a request is aborted - err is an AbortError
+	console.error(err);
 }
 ```
 
@@ -1488,15 +1488,15 @@ const { signal } = ac;
 setTimeout(() => ac.abort(), 10000);
 
 (async () => {
-    try {
-        const watcher = watch(__filename, { signal });
-        for await (const event of watcher)
-            console.log(event);
-    } catch (err) {
-        if (err.name === 'AbortError')
-            return;
-        throw err;
-    }
+	try {
+		const watcher = watch(__filename, { signal });
+		for await (const event of watcher)
+			console.log(event);
+	} catch (err) {
+		if (err.name === 'AbortError')
+			return;
+		throw err;
+	}
 })();
 ```
 
@@ -1571,18 +1571,18 @@ import { writeFile } from 'fs/promises';
 import { Buffer } from 'buffer';
 
 try {
-    const controller = new AbortController();
-    const { signal } = controller;
-    const data = new Uint8Array(Buffer.from('Hello Node.js'));
-    const promise = writeFile('message.txt', data, { signal });
+	const controller = new AbortController();
+	const { signal } = controller;
+	const data = new Uint8Array(Buffer.from('Hello Node.js'));
+	const promise = writeFile('message.txt', data, { signal });
 
-    // Abort the request before the promise settles.
-    controller.abort();
+	// Abort the request before the promise settles.
+	controller.abort();
 
-    await promise;
+	await promise;
 } catch (err) {
-    // When a request is aborted - err is an AbortError
-    console.error(err);
+	// When a request is aborted - err is an AbortError
+	console.error(err);
 }
 ```
 
@@ -1648,22 +1648,22 @@ const file = 'package.json';
 
 // Check if the file exists in the current directory.
 access(file, constants.F_OK, (err) => {
-    console.log(`${file} ${err ? 'does not exist' : 'exists'}`);
+	console.log(`${file} ${err ? 'does not exist' : 'exists'}`);
 });
 
 // Check if the file is readable.
 access(file, constants.R_OK, (err) => {
-    console.log(`${file} ${err ? 'is not readable' : 'is readable'}`);
+	console.log(`${file} ${err ? 'is not readable' : 'is readable'}`);
 });
 
 // Check if the file is writable.
 access(file, constants.W_OK, (err) => {
-    console.log(`${file} ${err ? 'is not writable' : 'is writable'}`);
+	console.log(`${file} ${err ? 'is not writable' : 'is writable'}`);
 });
 
 // Check if the file is readable and writable.
 access(file, constants.R_OK | constants.W_OK, (err) => {
-    console.log(`${file} ${err ? 'is not' : 'is'} readable and writable`);
+	console.log(`${file} ${err ? 'is not' : 'is'} readable and writable`);
 });
 ```
 
@@ -1679,22 +1679,22 @@ file directly and handle the error raised if the file is not accessible.
 import { access, open, close } from 'fs';
 
 access('myfile', (err) => {
-    if (!err) {
-        console.error('myfile already exists');
-        return;
-    }
+	if (!err) {
+		console.error('myfile already exists');
+		return;
+	}
 
-    open('myfile', 'wx', (err, fd) => {
-        if (err) throw err;
+	open('myfile', 'wx', (err, fd) => {
+		if (err) throw err;
 
-        try {
-            writeMyData(fd);
-        } finally {
-            close(fd, (err) => {
-                if (err) throw err;
-            });
-        }
-    });
+		try {
+			writeMyData(fd);
+		} finally {
+			close(fd, (err) => {
+				if (err) throw err;
+			});
+		}
+	});
 });
 ```
 
@@ -1704,22 +1704,22 @@ access('myfile', (err) => {
 import { open, close } from 'fs';
 
 open('myfile', 'wx', (err, fd) => {
-    if (err) {
-        if (err.code === 'EEXIST') {
-            console.error('myfile already exists');
-            return;
-        }
+	if (err) {
+		if (err.code === 'EEXIST') {
+			console.error('myfile already exists');
+			return;
+		}
 
-        throw err;
-    }
+		throw err;
+	}
 
-    try {
-        writeMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
+	try {
+		writeMyData(fd);
+	} finally {
+		close(fd, (err) => {
+			if (err) throw err;
+		});
+	}
 });
 ```
 
@@ -1728,26 +1728,26 @@ open('myfile', 'wx', (err, fd) => {
 ```mjs
 import { access, open, close } from 'fs';
 access('myfile', (err) => {
-    if (err) {
-        if (err.code === 'ENOENT') {
-            console.error('myfile does not exist');
-            return;
-        }
+	if (err) {
+		if (err.code === 'ENOENT') {
+			console.error('myfile does not exist');
+			return;
+		}
 
-        throw err;
-    }
+		throw err;
+	}
 
-    open('myfile', 'r', (err, fd) => {
-        if (err) throw err;
+	open('myfile', 'r', (err, fd) => {
+		if (err) throw err;
 
-        try {
-            readMyData(fd);
-        } finally {
-            close(fd, (err) => {
-                if (err) throw err;
-            });
-        }
-    });
+		try {
+			readMyData(fd);
+		} finally {
+			close(fd, (err) => {
+				if (err) throw err;
+			});
+		}
+	});
 });
 ```
 
@@ -1757,22 +1757,22 @@ access('myfile', (err) => {
 import { open, close } from 'fs';
 
 open('myfile', 'r', (err, fd) => {
-    if (err) {
-        if (err.code === 'ENOENT') {
-            console.error('myfile does not exist');
-            return;
-        }
+	if (err) {
+		if (err.code === 'ENOENT') {
+			console.error('myfile does not exist');
+			return;
+		}
 
-        throw err;
-    }
+		throw err;
+	}
 
-    try {
-        readMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
+	try {
+		readMyData(fd);
+	} finally {
+		close(fd, (err) => {
+			if (err) throw err;
+		});
+	}
 });
 ```
 
@@ -1834,8 +1834,8 @@ for more details.
 import { appendFile } from 'fs';
 
 appendFile('message.txt', 'data to append', (err) => {
-    if (err) throw err;
-    console.log('The "data to append" was appended to file!');
+	if (err) throw err;
+	console.log('The "data to append" was appended to file!');
 });
 ```
 
@@ -1855,23 +1855,23 @@ not be closed automatically.
 import { open, close, appendFile } from 'fs';
 
 function closeFd(fd) {
-    close(fd, (err) => {
-        if (err) throw err;
-    });
+	close(fd, (err) => {
+		if (err) throw err;
+	});
 }
 
 open('message.txt', 'a', (err, fd) => {
-    if (err) throw err;
+	if (err) throw err;
 
-    try {
-        appendFile(fd, 'data to append', 'utf8', (err) => {
-            closeFd(fd);
-            if (err) throw err;
-        });
-    } catch (err) {
-        closeFd(fd);
-        throw err;
-    }
+	try {
+		appendFile(fd, 'data to append', 'utf8', (err) => {
+			closeFd(fd);
+			if (err) throw err;
+		});
+	} catch (err) {
+		closeFd(fd);
+		throw err;
+	}
 });
 ```
 
@@ -1913,8 +1913,8 @@ See the POSIX chmod(2) documentation for more detail.
 import { chmod } from 'fs';
 
 chmod('my_file.txt', 0o775, (err) => {
-    if (err) throw err;
-    console.log('The permissions for file "my_file.txt" have been changed!');
+	if (err) throw err;
+	console.log('The permissions for file "my_file.txt" have been changed!');
 });
 ```
 
@@ -2085,8 +2085,8 @@ OR of two or more values (e.g.
 import { copyFile, constants } from 'fs';
 
 function callback(err) {
-    if (err) throw err;
-    console.log('source.txt was copied to destination.txt');
+	if (err) throw err;
+	console.log('source.txt was copied to destination.txt');
 }
 
 // destination.txt will be created or overwritten by default.
@@ -2235,14 +2235,14 @@ import { createReadStream } from 'fs';
 // Create a stream from some character device.
 const stream = createReadStream('/dev/input/event0');
 setTimeout(() => {
-    stream.close(); // This may not close the stream.
-    // Artificially marking end-of-stream, as if the underlying resource had
-    // indicated end-of-file by itself, allows the stream to close.
-    // This does not cancel pending read operations, and if there is such an
-    // operation, the process may still not be able to exit successfully
-    // until it finishes.
-    stream.push(null);
-    stream.read(0);
+	stream.close(); // This may not close the stream.
+	// Artificially marking end-of-stream, as if the underlying resource had
+	// indicated end-of-file by itself, allows the stream to close.
+	// This does not cancel pending read operations, and if there is such an
+	// operation, the process may still not be able to exit successfully
+	// until it finishes.
+	stream.push(null);
+	stream.read(0);
 }, 100);
 ```
 
@@ -2380,7 +2380,7 @@ Then call the `callback` argument with either true or false:
 import { exists } from 'fs';
 
 exists('/etc/passwd', (e) => {
-    console.log(e ? 'it exists' : 'no passwd!');
+	console.log(e ? 'it exists' : 'no passwd!');
 });
 ```
 
@@ -2402,21 +2402,21 @@ file directly and handle the error raised if the file does not exist.
 import { exists, open, close } from 'fs';
 
 exists('myfile', (e) => {
-    if (e) {
-        console.error('myfile already exists');
-    } else {
-        open('myfile', 'wx', (err, fd) => {
-            if (err) throw err;
+	if (e) {
+		console.error('myfile already exists');
+	} else {
+		open('myfile', 'wx', (err, fd) => {
+			if (err) throw err;
 
-            try {
-                writeMyData(fd);
-            } finally {
-                close(fd, (err) => {
-                    if (err) throw err;
-                });
-            }
-        });
-    }
+			try {
+				writeMyData(fd);
+			} finally {
+				close(fd, (err) => {
+					if (err) throw err;
+				});
+			}
+		});
+	}
 });
 ```
 
@@ -2425,22 +2425,22 @@ exists('myfile', (e) => {
 ```mjs
 import { open, close } from 'fs';
 open('myfile', 'wx', (err, fd) => {
-    if (err) {
-        if (err.code === 'EEXIST') {
-            console.error('myfile already exists');
-            return;
-        }
+	if (err) {
+		if (err.code === 'EEXIST') {
+			console.error('myfile already exists');
+			return;
+		}
 
-        throw err;
-    }
+		throw err;
+	}
 
-    try {
-        writeMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
+	try {
+		writeMyData(fd);
+	} finally {
+		close(fd, (err) => {
+			if (err) throw err;
+		});
+	}
 });
 ```
 
@@ -2450,21 +2450,21 @@ open('myfile', 'wx', (err, fd) => {
 import { open, close, exists } from 'fs';
 
 exists('myfile', (e) => {
-    if (e) {
-        open('myfile', 'r', (err, fd) => {
-            if (err) throw err;
+	if (e) {
+		open('myfile', 'r', (err, fd) => {
+			if (err) throw err;
 
-            try {
-                readMyData(fd);
-            } finally {
-                close(fd, (err) => {
-                    if (err) throw err;
-                });
-            }
-        });
-    } else {
-        console.error('myfile does not exist');
-    }
+			try {
+				readMyData(fd);
+			} finally {
+				close(fd, (err) => {
+					if (err) throw err;
+				});
+			}
+		});
+	} else {
+		console.error('myfile does not exist');
+	}
 });
 ```
 
@@ -2474,22 +2474,22 @@ exists('myfile', (e) => {
 import { open, close } from 'fs';
 
 open('myfile', 'r', (err, fd) => {
-    if (err) {
-        if (err.code === 'ENOENT') {
-            console.error('myfile does not exist');
-            return;
-        }
+	if (err) {
+		if (err.code === 'ENOENT') {
+			console.error('myfile does not exist');
+			return;
+		}
 
-        throw err;
-    }
+		throw err;
+	}
 
-    try {
-        readMyData(fd);
-    } finally {
-        close(fd, (err) => {
-            if (err) throw err;
-        });
-    }
+	try {
+		readMyData(fd);
+	} finally {
+		close(fd, (err) => {
+			if (err) throw err;
+		});
+	}
 });
 ```
 
@@ -2696,23 +2696,23 @@ file:
 import { open, close, ftruncate } from 'fs';
 
 function closeFd(fd) {
-    close(fd, (err) => {
-        if (err) throw err;
-    });
+	close(fd, (err) => {
+		if (err) throw err;
+	});
 }
 
 open('temp.txt', 'r+', (err, fd) => {
-    if (err) throw err;
+	if (err) throw err;
 
-    try {
-        ftruncate(fd, 4, (err) => {
-            closeFd(fd);
-            if (err) throw err;
-        });
-    } catch (err) {
-        closeFd(fd);
-        if (err) throw err;
-    }
+	try {
+		ftruncate(fd, 4, (err) => {
+			closeFd(fd);
+			if (err) throw err;
+		});
+	} catch (err) {
+		closeFd(fd);
+		if (err) throw err;
+	}
 });
 ```
 
@@ -2989,7 +2989,7 @@ import { mkdir } from 'fs';
 
 // Creates /tmp/a/apple, regardless of whether `/tmp` and /tmp/a exist.
 mkdir('/tmp/a/apple', { recursive: true }, (err) => {
-    if (err) throw err;
+	if (err) throw err;
 });
 ```
 
@@ -3000,7 +3000,7 @@ result in an error:
 import { mkdir } from 'fs';
 
 mkdir('/', { recursive: true }, (err) => {
-    // => [Error: EPERM: operation not permitted, mkdir 'C:\']
+	// => [Error: EPERM: operation not permitted, mkdir 'C:\']
 });
 ```
 
@@ -3059,9 +3059,9 @@ object with an `encoding` property specifying the character encoding to use.
 import { mkdtemp } from 'fs';
 
 mkdtemp(path.join(os.tmpdir(), 'foo-'), (err, directory) => {
-    if (err) throw err;
-    console.log(directory);
-    // Prints: /tmp/foo-itXde2 or C:\Users\...\AppData\Local\Temp\foo-itXde2
+	if (err) throw err;
+	console.log(directory);
+	// Prints: /tmp/foo-itXde2 or C:\Users\...\AppData\Local\Temp\foo-itXde2
 });
 ```
 
@@ -3080,21 +3080,21 @@ const tmpDir = tmpdir();
 
 // This method is *INCORRECT*:
 mkdtemp(tmpDir, (err, directory) => {
-    if (err) throw err;
-    console.log(directory);
-    // Will print something similar to `/tmpabc123`.
-    // A new temporary directory is created at the file system root
-    // rather than *within* the /tmp directory.
+	if (err) throw err;
+	console.log(directory);
+	// Will print something similar to `/tmpabc123`.
+	// A new temporary directory is created at the file system root
+	// rather than *within* the /tmp directory.
 });
 
 // This method is *CORRECT*:
 import { sep } from 'path';
 mkdtemp(`${tmpDir}${sep}`, (err, directory) => {
-    if (err) throw err;
-    console.log(directory);
-    // Will print something similar to `/tmp/abc123`.
-    // A new temporary directory is created within
-    // the /tmp directory.
+	if (err) throw err;
+	console.log(directory);
+	// Will print something similar to `/tmp/abc123`.
+	// A new temporary directory is created within
+	// the /tmp directory.
 });
 ```
 
@@ -3364,8 +3364,8 @@ Asynchronously reads the entire contents of a file.
 import { readFile } from 'fs';
 
 readFile('/etc/passwd', (err, data) => {
-    if (err) throw err;
-    console.log(data);
+	if (err) throw err;
+	console.log(data);
 });
 ```
 
@@ -3392,12 +3392,12 @@ import { readFile } from 'fs';
 
 // macOS, Linux, and Windows
 readFile('<directory>', (err, data) => {
-    // => [Error: EISDIR: illegal operation on a directory, read <directory>]
+	// => [Error: EISDIR: illegal operation on a directory, read <directory>]
 });
 
 //  FreeBSD
 readFile('<directory>', (err, data) => {
-    // => null, <data>
+	// => null, <data>
 });
 ```
 
@@ -3410,7 +3410,7 @@ import { readFile } from 'fs';
 const controller = new AbortController();
 const signal = controller.signal;
 readFile(fileInfo[0].name, { signal }, (err, buf) => {
-    // ...
+	// ...
 });
 // When you want to abort the request
 controller.abort();
@@ -3673,8 +3673,8 @@ See also: rename(2).
 import { rename } from 'fs';
 
 rename('oldFile.txt', 'newFile.txt', (err) => {
-    if (err) throw err;
-    console.log('Rename complete!');
+	if (err) throw err;
+	console.log('Rename complete!');
 });
 ```
 
@@ -3856,10 +3856,10 @@ import { stat } from 'fs';
 const pathsToCheck = ['./txtDir', './txtDir/file.txt'];
 
 for (let i = 0; i < pathsToCheck.length; i++) {
-    stat(pathsToCheck[i], (err, stats) => {
-        console.log(stats.isDirectory());
-        console.log(stats);
-    });
+	stat(pathsToCheck[i], (err, stats) => {
+		console.log(stats.isDirectory());
+		console.log(stats);
+	});
 }
 ```
 
@@ -4004,8 +4004,8 @@ first argument. In this case, `fs.ftruncate()` is called.
 import { truncate } from 'fs';
 // Assuming that 'path/file.txt' is a regular file.
 truncate('path/file.txt', (err) => {
-    if (err) throw err;
-    console.log('path/file.txt was truncated');
+	if (err) throw err;
+	console.log('path/file.txt was truncated');
 });
 ```
 
@@ -4013,8 +4013,8 @@ truncate('path/file.txt', (err) => {
 const { truncate } = require('fs');
 // Assuming that 'path/file.txt' is a regular file.
 truncate('path/file.txt', (err) => {
-    if (err) throw err;
-    console.log('path/file.txt was truncated');
+	if (err) throw err;
+	console.log('path/file.txt was truncated');
 });
 ```
 
@@ -4058,8 +4058,8 @@ possible exception are given to the completion callback.
 import { unlink } from 'fs';
 // Assuming that 'path/file.txt' is a regular file.
 unlink('path/file.txt', (err) => {
-    if (err) throw err;
-    console.log('path/file.txt was deleted');
+	if (err) throw err;
+	console.log('path/file.txt was deleted');
 });
 ```
 
@@ -4256,12 +4256,12 @@ always provided in the callback, and have some fallback logic if it is `null`.
 ```mjs
 import { watch } from 'fs';
 watch('somedir', (eventType, filename) => {
-    console.log(`event type is: ${eventType}`);
-    if (filename) {
-        console.log(`filename provided: ${filename}`);
-    } else {
-        console.log('filename not provided');
-    }
+	console.log(`event type is: ${eventType}`);
+	if (filename) {
+		console.log(`filename provided: ${filename}`);
+	} else {
+		console.log('filename not provided');
+	}
 });
 ```
 
@@ -4305,8 +4305,8 @@ stat object:
 import { watchFile } from 'fs';
 
 watchFile('message.text', (curr, prev) => {
-    console.log(`the current mtime is: ${curr.mtime}`);
-    console.log(`the previous mtime was: ${prev.mtime}`);
+	console.log(`the current mtime is: ${curr.mtime}`);
+	console.log(`the previous mtime was: ${prev.mtime}`);
 });
 ```
 
@@ -4551,8 +4551,8 @@ import { Buffer } from 'buffer';
 
 const data = new Uint8Array(Buffer.from('Hello Node.js'));
 writeFile('message.txt', data, (err) => {
-    if (err) throw err;
-    console.log('The file has been saved!');
+	if (err) throw err;
+	console.log('The file has been saved!');
 });
 ```
 
@@ -4584,7 +4584,7 @@ const controller = new AbortController();
 const { signal } = controller;
 const data = new Uint8Array(Buffer.from('Hello Node.js'));
 writeFile('message.txt', data, { signal }, (err) => {
-    // When a request is aborted - the callback is called with an AbortError
+	// When a request is aborted - the callback is called with an AbortError
 });
 // When the request should be aborted
 controller.abort();
@@ -4696,10 +4696,10 @@ the method will return `undefined`.
 import { accessSync, constants } from 'fs';
 
 try {
-    accessSync('etc/passwd', constants.R_OK | constants.W_OK);
-    console.log('can read/write');
+	accessSync('etc/passwd', constants.R_OK | constants.W_OK);
+	console.log('can read/write');
 } catch (err) {
-    console.error('no access!');
+	console.error('no access!');
 }
 ```
 
@@ -4733,10 +4733,10 @@ for more details.
 import { appendFileSync } from 'fs';
 
 try {
-    appendFileSync('message.txt', 'data to append');
-    console.log('The "data to append" was appended to file!');
+	appendFileSync('message.txt', 'data to append');
+	console.log('The "data to append" was appended to file!');
 } catch (err) {
-    /* Handle the error */
+	/* Handle the error */
 }
 ```
 
@@ -4758,13 +4758,13 @@ import { openSync, closeSync, appendFileSync } from 'fs';
 let fd;
 
 try {
-    fd = openSync('message.txt', 'a');
-    appendFileSync(fd, 'data to append', 'utf8');
+	fd = openSync('message.txt', 'a');
+	appendFileSync(fd, 'data to append', 'utf8');
 } catch (err) {
-    /* Handle the error */
+	/* Handle the error */
 } finally {
-    if (fd !== undefined)
-        closeSync(fd);
+	if (fd !== undefined)
+		closeSync(fd);
 }
 ```
 
@@ -4931,7 +4931,7 @@ Node.js callbacks. `fs.existsSync()` does not use a callback.
 import { existsSync } from 'fs';
 
 if (existsSync('/etc/passwd'))
-    console.log('The path exists.');
+	console.log('The path exists.');
 ```
 
 ### `fs.fchmodSync(fd, mode)`
@@ -5852,11 +5852,11 @@ Created by [`fs.opendir()`][], [`fs.opendirSync()`][], or
 import { opendir } from 'fs/promises';
 
 try {
-    const dir = await opendir('./');
-    for await (const dirent of dir)
-        console.log(dirent.name);
+	const dir = await opendir('./');
+	for await (const dirent of dir)
+		console.log(dirent.name);
 } catch (err) {
-    console.error(err);
+	console.error(err);
 }
 ```
 
@@ -6129,10 +6129,10 @@ support. If `filename` is provided, it will be provided as a {Buffer} if
 import { watch } from 'fs';
 // Example when handled through fs.watch() listener
 watch('./tmp', { encoding: 'buffer' }, (eventType, filename) => {
-    if (filename) {
-        console.log(filename);
-    // Prints: <Buffer ...>
-    }
+	if (filename) {
+		console.log(filename);
+		// Prints: <Buffer ...>
+	}
 });
 ```
 
@@ -6807,13 +6807,13 @@ Example:
 import { open, constants } from 'fs';
 
 const {
-    O_RDWR,
-    O_CREAT,
-    O_EXCL
+	O_RDWR,
+	O_CREAT,
+	O_EXCL
 } = constants;
 
 open('/path/to/my/file', O_RDWR | O_CREAT | O_EXCL, (err, fd) => {
-    // ...
+	// ...
 });
 ```
 
@@ -7089,12 +7089,12 @@ operation might complete before the `fs.rename()` operation:
 
 ```js
 fs.rename('/tmp/hello', '/tmp/world', (err) => {
-    if (err) throw err;
-    console.log('renamed complete');
+	if (err) throw err;
+	console.log('renamed complete');
 });
 fs.stat('/tmp/world', (err, stats) => {
-    if (err) throw err;
-    console.log(`stats: ${JSON.stringify(stats)}`);
+	if (err) throw err;
+	console.log(`stats: ${JSON.stringify(stats)}`);
 });
 ```
 
@@ -7108,11 +7108,11 @@ const from = '/tmp/hello';
 const to = '/tmp/world';
 
 try {
-    await rename(from, to);
-    const stats = await stat(to);
-    console.log(`stats: ${JSON.stringify(stats)}`);
+	await rename(from, to);
+	const stats = await stat(to);
+	console.log(`stats: ${JSON.stringify(stats)}`);
 } catch (error) {
-    console.error('there was an error:', error.message);
+	console.error('there was an error:', error.message);
 }
 ```
 
@@ -7120,13 +7120,13 @@ try {
 const { rename, stat } = require('fs/promises');
 
 (async function(from, to) {
-    try {
-        await rename(from, to);
-        const stats = await stat(to);
-        console.log(`stats: ${JSON.stringify(stats)}`);
-    } catch (error) {
-        console.error('there was an error:', error.message);
-    }
+	try {
+		await rename(from, to);
+		const stats = await stat(to);
+		console.log(`stats: ${JSON.stringify(stats)}`);
+	} catch (error) {
+		console.error('there was an error:', error.message);
+	}
 })('/tmp/hello', '/tmp/world');
 ```
 
@@ -7137,11 +7137,11 @@ of the `fs.rename()` operation:
 import { rename, stat } from 'fs';
 
 rename('/tmp/hello', '/tmp/world', (err) => {
-    if (err) throw err;
-    stat('/tmp/world', (err, stats) => {
-        if (err) throw err;
-        console.log(`stats: ${JSON.stringify(stats)}`);
-    });
+	if (err) throw err;
+	stat('/tmp/world', (err, stats) => {
+		if (err) throw err;
+		console.log(`stats: ${JSON.stringify(stats)}`);
+	});
 });
 ```
 
@@ -7149,11 +7149,11 @@ rename('/tmp/hello', '/tmp/world', (err) => {
 const { rename, stat } = require('fs/promises');
 
 rename('/tmp/hello', '/tmp/world', (err) => {
-    if (err) throw err;
-    stat('/tmp/world', (err, stats) => {
-        if (err) throw err;
-        console.log(`stats: ${JSON.stringify(stats)}`);
-    });
+	if (err) throw err;
+	stat('/tmp/world', (err, stats) => {
+		if (err) throw err;
+		console.log(`stats: ${JSON.stringify(stats)}`);
+	});
 });
 ```
 
@@ -7175,10 +7175,10 @@ import { open } from 'fs/promises';
 
 let fd;
 try {
-    fd = await open('/open/some/file.txt', 'r');
-    // Do something with the file
+	fd = await open('/open/some/file.txt', 'r');
+	// Do something with the file
 } finally {
-    await fd.close();
+	await fd.close();
 }
 ```
 
@@ -7189,10 +7189,10 @@ import { open } from 'fs/promises';
 
 let fd;
 try {
-    fd = await open('file.txt', 'r');
-    // Do something with the file
+	fd = await open('file.txt', 'r');
+	// Do something with the file
 } finally {
-    await fd.close();
+	await fd.close();
 }
 ```
 
@@ -7304,10 +7304,10 @@ import { Buffer } from 'buffer';
 
 let fd;
 try {
-    fd = await open(Buffer.from('/open/some/file.txt'), 'r');
-    // Do something with the file
+	fd = await open(Buffer.from('/open/some/file.txt'), 'r');
+	// Do something with the file
 } finally {
-    await fd.close();
+	await fd.close();
 }
 ```
 
@@ -7343,28 +7343,28 @@ eventually cause an application to crash.
 import { open, close, fstat } from 'fs';
 
 function closeFd(fd) {
-    close(fd, (err) => {
-        if (err) throw err;
-    });
+	close(fd, (err) => {
+		if (err) throw err;
+	});
 }
 
 open('/open/some/file.txt', 'r', (err, fd) => {
-    if (err) throw err;
-    try {
-        fstat(fd, (err, stat) => {
-            if (err) {
-                closeFd(fd);
-                throw err;
-            }
+	if (err) throw err;
+	try {
+		fstat(fd, (err, stat) => {
+			if (err) {
+				closeFd(fd);
+				throw err;
+			}
 
-            // use stat
+			// use stat
 
-            closeFd(fd);
-        });
-    } catch (err) {
-        closeFd(fd);
-        throw err;
-    }
+			closeFd(fd);
+		});
+	} catch (err) {
+		closeFd(fd);
+		throw err;
+	}
 });
 ```
 
@@ -7378,11 +7378,11 @@ import { open } from 'fs/promises';
 
 let file;
 try {
-    file = await open('/open/some/file.txt', 'r');
-    const stat = await file.stat();
-    // use stat
+	file = await open('/open/some/file.txt', 'r');
+	const stat = await file.stat();
+	// use stat
 } finally {
-    await file.close();
+	await file.close();
 }
 ```
 
@@ -7466,12 +7466,12 @@ will be returned.
 ```js
 // macOS and Linux
 fs.open('<directory>', 'a+', (err, fd) => {
-    // => [Error: EISDIR: illegal operation on a directory, open <directory>]
+	// => [Error: EISDIR: illegal operation on a directory, open <directory>]
 });
 
 // Windows and FreeBSD
 fs.open('<directory>', 'a+', (err, fd) => {
-    // => null, <fd>
+	// => null, <fd>
 });
 ```
 

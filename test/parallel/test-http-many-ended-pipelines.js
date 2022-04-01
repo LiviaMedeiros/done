@@ -29,36 +29,36 @@ const numRequests = 20;
 let first = false;
 
 const server = http.createServer(function(req, res) {
-    if (!first) {
-        first = true;
-        req.socket.on('close', function() {
-            server.close();
-        });
-    }
+	if (!first) {
+		first = true;
+		req.socket.on('close', function() {
+			server.close();
+		});
+	}
 
-    res.end('ok');
-    // Oh no!  The connection died!
-    req.socket.destroy();
+	res.end('ok');
+	// Oh no!  The connection died!
+	req.socket.destroy();
 });
 
 server.listen(0, function() {
-    const client = net.connect({ port: this.address().port,
-                                 allowHalfOpen: true });
+	const client = net.connect({ port: this.address().port,
+																														allowHalfOpen: true });
 
-    client.on('error', function(err) {
-    // The socket might be destroyed by the other peer while data is still
-    // being written. The `'EPIPE'` and `'ECONNABORTED'` codes might also be
-    // valid but they have not been seen yet.
-        assert.strictEqual(err.code, 'ECONNRESET');
-    });
+	client.on('error', function(err) {
+		// The socket might be destroyed by the other peer while data is still
+		// being written. The `'EPIPE'` and `'ECONNABORTED'` codes might also be
+		// valid but they have not been seen yet.
+		assert.strictEqual(err.code, 'ECONNRESET');
+	});
 
-    for (let i = 0; i < numRequests; i++) {
-        client.write('GET / HTTP/1.1\r\n' +
+	for (let i = 0; i < numRequests; i++) {
+		client.write('GET / HTTP/1.1\r\n' +
                  'Host: some.host.name\r\n' +
                  '\r\n\r\n');
-    }
-    client.end();
-    client.pipe(process.stdout);
+	}
+	client.end();
+	client.pipe(process.stdout);
 });
 
 process.on('warning', common.mustNotCall());

@@ -23,7 +23,7 @@ assert.ok(test_object.hiddenValue);
 // Properties with napi_enumerable attribute should be enumerable.
 const propertyNames = [];
 for (const name in test_object) {
-    propertyNames.push(name);
+	propertyNames.push(name);
 }
 assert.ok(propertyNames.includes('echo'));
 assert.ok(propertyNames.includes('readwriteValue'));
@@ -63,6 +63,6 @@ assert.throws(() => { test_object.readonlyAccessor2 = 3; }, getterOnlyErrorRE);
 
 assert.strictEqual(test_object.hasNamedProperty(test_object, 'echo'), true);
 assert.strictEqual(test_object.hasNamedProperty(test_object, 'hiddenValue'),
-                   true);
+																			true);
 assert.strictEqual(test_object.hasNamedProperty(test_object, 'doesnotexist'),
-                   false);
+																			false);

@@ -31,33 +31,33 @@ let received = 0;
 const buf = Buffer.alloc(SIZE, 'a');
 
 const server = net.createServer(function(socket) {
-    socket.setNoDelay();
-    socket.setTimeout(9999);
-    socket.on('timeout', function() {
-        assert.fail(`flushed: ${flushed}, received: ${received}/${SIZE * N}`);
-    });
+	socket.setNoDelay();
+	socket.setTimeout(9999);
+	socket.on('timeout', function() {
+		assert.fail(`flushed: ${flushed}, received: ${received}/${SIZE * N}`);
+	});
 
-    for (let i = 0; i < N; ++i) {
-        socket.write(buf, function() {
-            ++flushed;
-            if (flushed === N) {
-                socket.setTimeout(0);
-            }
-        });
-    }
-    socket.end();
+	for (let i = 0; i < N; ++i) {
+		socket.write(buf, function() {
+			++flushed;
+			if (flushed === N) {
+				socket.setTimeout(0);
+			}
+		});
+	}
+	socket.end();
 
 }).listen(0, common.mustCall(function() {
-    const conn = net.connect(this.address().port);
-    conn.on('data', function(buf) {
-        received += buf.length;
-        conn.pause();
-        setTimeout(function() {
-            conn.resume();
-        }, 20);
-    });
-    conn.on('end', common.mustCall(function() {
-        server.close();
-        assert.strictEqual(received, SIZE * N);
-    }));
+	const conn = net.connect(this.address().port);
+	conn.on('data', function(buf) {
+		received += buf.length;
+		conn.pause();
+		setTimeout(function() {
+			conn.resume();
+		}, 20);
+	});
+	conn.on('end', common.mustCall(function() {
+		server.close();
+		assert.strictEqual(received, SIZE * N);
+	}));
 }));

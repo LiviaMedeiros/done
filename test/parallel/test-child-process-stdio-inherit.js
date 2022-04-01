@@ -25,32 +25,32 @@ const assert = require('assert');
 const spawn = require('child_process').spawn;
 
 if (process.argv[2] === 'parent')
-    parent();
+	parent();
 else
-    grandparent();
+	grandparent();
 
 function grandparent() {
-    const child = spawn(process.execPath, [__filename, 'parent']);
-    child.stderr.pipe(process.stderr);
-    let output = '';
-    const input = 'asdfasdf';
+	const child = spawn(process.execPath, [__filename, 'parent']);
+	child.stderr.pipe(process.stderr);
+	let output = '';
+	const input = 'asdfasdf';
 
-    child.stdout.on('data', function(chunk) {
-        output += chunk;
-    });
-    child.stdout.setEncoding('utf8');
+	child.stdout.on('data', function(chunk) {
+		output += chunk;
+	});
+	child.stdout.setEncoding('utf8');
 
-    child.stdin.end(input);
+	child.stdin.end(input);
 
-    child.on('close', function(code, signal) {
-        assert.strictEqual(code, 0);
-        assert.strictEqual(signal, null);
-        // 'cat' on windows adds a \r\n at the end.
-        assert.strictEqual(output.trim(), input.trim());
-    });
+	child.on('close', function(code, signal) {
+		assert.strictEqual(code, 0);
+		assert.strictEqual(signal, null);
+		// 'cat' on windows adds a \r\n at the end.
+		assert.strictEqual(output.trim(), input.trim());
+	});
 }
 
 function parent() {
-    // Should not immediately exit.
-    spawn('cat', [], { stdio: 'inherit' });
+	// Should not immediately exit.
+	spawn('cat', [], { stdio: 'inherit' });
 }

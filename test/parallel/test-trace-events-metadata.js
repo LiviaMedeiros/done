@@ -14,28 +14,28 @@ tmpdir.refresh();
 const FILE_NAME = path.join(tmpdir.path, 'node_trace.1.log');
 
 const proc = cp.spawn(process.execPath,
-                      [ '--trace-event-categories', 'node.perf.usertiming',
-                        '--title=bar',
-                        '-e', CODE ],
-                      { cwd: tmpdir.path });
+																						[ '--trace-event-categories', 'node.perf.usertiming',
+																								'--title=bar',
+																								'-e', CODE ],
+																						{ cwd: tmpdir.path });
 proc.once('exit', common.mustCall(() => {
-    assert(fs.existsSync(FILE_NAME));
-    fs.readFile(FILE_NAME, common.mustCall((err, data) => {
-        const traces = JSON.parse(data.toString()).traceEvents
+	assert(fs.existsSync(FILE_NAME));
+	fs.readFile(FILE_NAME, common.mustCall((err, data) => {
+		const traces = JSON.parse(data.toString()).traceEvents
       .filter((trace) => trace.cat === '__metadata');
-        assert(traces.length > 0);
-        assert(traces.some((trace) =>
-            trace.name === 'thread_name' &&
+		assert(traces.length > 0);
+		assert(traces.some((trace) =>
+			trace.name === 'thread_name' &&
         trace.args.name === 'JavaScriptMainThread'));
-        assert(traces.some((trace) =>
-            trace.name === 'thread_name' &&
+		assert(traces.some((trace) =>
+			trace.name === 'thread_name' &&
         trace.args.name === 'PlatformWorkerThread'));
-        assert(traces.some((trace) =>
-            trace.name === 'version' &&
+		assert(traces.some((trace) =>
+			trace.name === 'version' &&
         trace.args.node === process.versions.node));
 
-        assert(traces.some((trace) =>
-            trace.name === 'node' &&
+		assert(traces.some((trace) =>
+			trace.name === 'node' &&
         trace.args.process.versions.http_parser ===
           process.versions.http_parser &&
         trace.args.process.versions.llhttp ===
@@ -64,13 +64,13 @@ proc.once('exit', common.mustCall(() => {
         (!process.release.lts ||
           trace.args.process.release.lts === process.release.lts)));
 
-        if (!common.isSunOS && !common.isIBMi) {
-            // Changing process.title is currently unsupported on SunOS/SmartOS
-            // and IBMi
-            assert(traces.some((trace) =>
-                trace.name === 'process_name' && trace.args.name === 'foo'));
-            assert(traces.some((trace) =>
-                trace.name === 'process_name' && trace.args.name === 'bar'));
-        }
-    }));
+		if (!common.isSunOS && !common.isIBMi) {
+			// Changing process.title is currently unsupported on SunOS/SmartOS
+			// and IBMi
+			assert(traces.some((trace) =>
+				trace.name === 'process_name' && trace.args.name === 'foo'));
+			assert(traces.some((trace) =>
+				trace.name === 'process_name' && trace.args.name === 'bar'));
+		}
+	}));
 }));

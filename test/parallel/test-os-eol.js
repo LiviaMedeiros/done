@@ -14,11 +14,11 @@ assert.throws(function() { os.EOL = 123; }, TypeError);
 
 const foo = 'foo';
 Object.defineProperties(os, {
-    EOL: {
-        configurable: true,
-        enumerable: true,
-        writable: false,
-        value: foo
-    }
+	EOL: {
+		configurable: true,
+		enumerable: true,
+		writable: false,
+		value: foo
+	}
 });
 assert.strictEqual(os.EOL, foo);

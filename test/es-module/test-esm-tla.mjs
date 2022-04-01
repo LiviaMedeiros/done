@@ -5,5 +5,5 @@ import { pathToFileURL } from 'url';
 
 import(pathToFileURL(fixtures.path('/es-modules/tla/parent.mjs')))
   .then(({ default: order }) => {
-      assert.deepStrictEqual(order, ['order', 'b', 'c', 'd', 'a', 'parent']);
+  	assert.deepStrictEqual(order, ['order', 'b', 'c', 'd', 'a', 'parent']);
   });

@@ -7,13 +7,13 @@ const dgram = require('dgram');
 
 const client = dgram.createSocket('udp4');
 client.connect(common.PORT, addresses.INVALID_HOST, common.mustCall((err) => {
-    assert.ok(err.code === 'ENOTFOUND' || err.code === 'EAI_AGAIN');
+	assert.ok(err.code === 'ENOTFOUND' || err.code === 'EAI_AGAIN');
 
-    client.once('error', common.mustCall((err) => {
-        assert.ok(err.code === 'ENOTFOUND' || err.code === 'EAI_AGAIN');
-        client.once('connect', common.mustCall(() => client.close()));
-        client.connect(common.PORT);
-    }));
+	client.once('error', common.mustCall((err) => {
+		assert.ok(err.code === 'ENOTFOUND' || err.code === 'EAI_AGAIN');
+		client.once('connect', common.mustCall(() => client.close()));
+		client.connect(common.PORT);
+	}));
 
-    client.connect(common.PORT, addresses.INVALID_HOST);
+	client.connect(common.PORT, addresses.INVALID_HOST);
 }));
