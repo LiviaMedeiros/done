@@ -20,6 +20,6 @@ new Worker(new URL('data:text/javascript,await Promise.reject()'))
   .on('error', common.mustCall(() => {}));
 new Worker(new URL('data:text/javascript,await new Promise(()=>{})'))
   .on(
-    'exit',
-    common.mustCall((exitCode) => { assert.strictEqual(exitCode, 13); })
+      'exit',
+      common.mustCall((exitCode) => { assert.strictEqual(exitCode, 13); })
   );

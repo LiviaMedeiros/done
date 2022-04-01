@@ -23,7 +23,7 @@
 const common = require('../common');
 
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const tls = require('tls');
 
@@ -67,14 +67,14 @@ sPWhSOb9VQjMXekI4Y2l8fqAVTS2Fn6+8jkVKxXBywSVCw==
 -----END RSA PRIVATE KEY-----`;
 
 function test(cert, key, cb) {
-  const server = tls.createServer({
-    cert,
-    key
-  }).listen(0, function() {
-    server.close(cb);
-  });
+    const server = tls.createServer({
+        cert,
+        key
+    }).listen(0, function() {
+        server.close(cb);
+    });
 }
 
 test(cert, key, common.mustCall(function() {
-  test(Buffer.from(cert), Buffer.from(key), common.mustCall());
+    test(Buffer.from(cert), Buffer.from(key), common.mustCall());
 }));

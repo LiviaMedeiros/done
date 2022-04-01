@@ -13,10 +13,10 @@ const { stringToFlags } = require('internal/fs/utils');
 
 let fdnum;
 {
-  const ctx = {};
-  fdnum = fs.openFileHandle(path.toNamespacedPath(__filename),
-                            stringToFlags('r'), 0o666, undefined, ctx).fd;
-  assert.strictEqual(ctx.errno, undefined);
+    const ctx = {};
+    fdnum = fs.openFileHandle(path.toNamespacedPath(__filename),
+                              stringToFlags('r'), 0o666, undefined, ctx).fd;
+    assert.strictEqual(ctx.errno, undefined);
 }
 
 const deprecationWarning =
@@ -26,13 +26,13 @@ const deprecationWarning =
   'thrown if a file descriptor is closed during garbage collection.';
 
 common.expectWarning({
-  'internal/test/binding': [
-    'These APIs are for internal testing only. Do not use them.',
-  ],
-  'Warning': [
-    `Closing file descriptor ${fdnum} on garbage collection`,
-  ],
-  'DeprecationWarning': [[deprecationWarning, 'DEP0137']]
+    'internal/test/binding': [
+        'These APIs are for internal testing only. Do not use them.',
+    ],
+    'Warning': [
+        `Closing file descriptor ${fdnum} on garbage collection`,
+    ],
+    'DeprecationWarning': [[deprecationWarning, 'DEP0137']]
 });
 
 global.gc();

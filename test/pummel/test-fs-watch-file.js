@@ -46,10 +46,10 @@ const filenameThree = 'charm'; // Because the third time is
 const filenameFour = 'get';
 
 process.on('exit', function() {
-  assert.strictEqual(watchSeenOne, 1);
-  assert.strictEqual(watchSeenTwo, 2);
-  assert.strictEqual(watchSeenThree, 1);
-  assert.strictEqual(watchSeenFour, 1);
+    assert.strictEqual(watchSeenOne, 1);
+    assert.strictEqual(watchSeenTwo, 2);
+    assert.strictEqual(watchSeenThree, 1);
+    assert.strictEqual(watchSeenFour, 1);
 });
 
 
@@ -57,18 +57,18 @@ tmpdir.refresh();
 fs.writeFileSync(filepathOne, 'hello');
 
 assert.throws(
-  () => { fs.watchFile(filepathOne); },
-  { code: 'ERR_INVALID_ARG_TYPE' }
+    () => { fs.watchFile(filepathOne); },
+    { code: 'ERR_INVALID_ARG_TYPE' }
 );
 
 // Does not throw.
 fs.watchFile(filepathOne, function() {
-  fs.unwatchFile(filepathOne);
-  ++watchSeenOne;
+    fs.unwatchFile(filepathOne);
+    ++watchSeenOne;
 });
 
 setTimeout(function() {
-  fs.writeFileSync(filepathOne, 'world');
+    fs.writeFileSync(filepathOne, 'world');
 }, 1000);
 
 
@@ -77,56 +77,56 @@ process.chdir(testDir);
 fs.writeFileSync(filepathTwoAbs, 'howdy');
 
 assert.throws(
-  () => { fs.watchFile(filepathTwo); },
-  { code: 'ERR_INVALID_ARG_TYPE' }
+    () => { fs.watchFile(filepathTwo); },
+    { code: 'ERR_INVALID_ARG_TYPE' }
 );
 
 { // Does not throw.
-  function a() {
-    fs.unwatchFile(filepathTwo, a);
-    ++watchSeenTwo;
-  }
+    function a() {
+        fs.unwatchFile(filepathTwo, a);
+        ++watchSeenTwo;
+    }
 
-  function b() {
-    fs.unwatchFile(filepathTwo, b);
-    ++watchSeenTwo;
-  }
-  fs.watchFile(filepathTwo, a);
-  fs.watchFile(filepathTwo, b);
+    function b() {
+        fs.unwatchFile(filepathTwo, b);
+        ++watchSeenTwo;
+    }
+    fs.watchFile(filepathTwo, a);
+    fs.watchFile(filepathTwo, b);
 }
 
 setTimeout(function() {
-  fs.writeFileSync(filepathTwoAbs, 'pardner');
+    fs.writeFileSync(filepathTwoAbs, 'pardner');
 }, 1000);
 
 { // Does not throw.
-  function b() {
-    fs.unwatchFile(filenameThree, b);
-    ++watchSeenThree;
-  }
-  const uncalledListener = common.mustNotCall();
-  fs.watchFile(filenameThree, uncalledListener);
-  fs.watchFile(filenameThree, b);
-  fs.unwatchFile(filenameThree, uncalledListener);
+    function b() {
+        fs.unwatchFile(filenameThree, b);
+        ++watchSeenThree;
+    }
+    const uncalledListener = common.mustNotCall();
+    fs.watchFile(filenameThree, uncalledListener);
+    fs.watchFile(filenameThree, b);
+    fs.unwatchFile(filenameThree, uncalledListener);
 }
 
 setTimeout(function() {
-  fs.writeFileSync(filenameThree, 'pardner');
+    fs.writeFileSync(filenameThree, 'pardner');
 }, 1000);
 
 setTimeout(function() {
-  fs.writeFileSync(filenameFour, 'hey');
+    fs.writeFileSync(filenameFour, 'hey');
 }, 200);
 
 setTimeout(function() {
-  fs.writeFileSync(filenameFour, 'hey');
+    fs.writeFileSync(filenameFour, 'hey');
 }, 500);
 
 { // Does not throw.
-  function a() {
-    ++watchSeenFour;
-    assert.strictEqual(watchSeenFour, 1);
-    fs.unwatchFile(`.${path.sep}${filenameFour}`, a);
-  }
-  fs.watchFile(filenameFour, a);
+    function a() {
+        ++watchSeenFour;
+        assert.strictEqual(watchSeenFour, 1);
+        fs.unwatchFile(`.${path.sep}${filenameFour}`, a);
+    }
+    fs.watchFile(filenameFour, a);
 }

@@ -10,9 +10,9 @@ const inspector = require('inspector');
 const wsUrl = inspector.url();
 assert(wsUrl.startsWith('ws://'));
 assert.throws(() => {
-  inspector.open(0, undefined, false);
+    inspector.open(0, undefined, false);
 }, {
-  code: 'ERR_INSPECTOR_ALREADY_ACTIVATED'
+    code: 'ERR_INSPECTOR_ALREADY_ACTIVATED'
 });
 assert.strictEqual(inspector.url(), wsUrl);
 inspector.close();

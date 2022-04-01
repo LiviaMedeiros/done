@@ -5,27 +5,27 @@ const vm = require('vm');
 
 const dSymbol = Symbol('d');
 const sandbox = {
-  a: 'a',
-  dSymbol
+    a: 'a',
+    dSymbol
 };
 
 Object.defineProperties(sandbox, {
-  b: {
-    value: 'b'
-  },
-  c: {
-    value: 'c',
-    writable: true,
-    enumerable: true
-  },
-  [dSymbol]: {
-    value: 'd'
-  },
-  e: {
-    value: 'e',
-    configurable: true
-  },
-  f: {}
+    b: {
+        value: 'b'
+    },
+    c: {
+        value: 'c',
+        writable: true,
+        enumerable: true
+    },
+    [dSymbol]: {
+        value: 'd'
+    },
+    e: {
+        value: 'e',
+        configurable: true
+    },
+    f: {}
 });
 
 const ctx = vm.createContext(sandbox);
@@ -46,18 +46,18 @@ result;
 
 // eslint-disable-next-line no-restricted-properties
 assert.deepEqual(result, {
-  a: { value: 'a', writable: true, enumerable: true, configurable: true },
-  b: { value: 'b', writable: false, enumerable: false, configurable: false },
-  c: { value: 'c', writable: true, enumerable: true, configurable: false },
-  d: { value: 'd', writable: false, enumerable: false, configurable: false },
-  e: { value: 'e', writable: false, enumerable: false, configurable: true },
-  f: {
-    value: undefined,
-    writable: false,
-    enumerable: false,
-    configurable: false
-  },
-  g: undefined
+    a: { value: 'a', writable: true, enumerable: true, configurable: true },
+    b: { value: 'b', writable: false, enumerable: false, configurable: false },
+    c: { value: 'c', writable: true, enumerable: true, configurable: false },
+    d: { value: 'd', writable: false, enumerable: false, configurable: false },
+    e: { value: 'e', writable: false, enumerable: false, configurable: true },
+    f: {
+        value: undefined,
+        writable: false,
+        enumerable: false,
+        configurable: false
+    },
+    g: undefined
 });
 
 // Define new properties
@@ -75,17 +75,17 @@ Object.defineProperty(this, 'k', {
 `, ctx);
 
 assert.deepStrictEqual(Object.getOwnPropertyDescriptor(ctx, 'h'), {
-  value: 'h',
-  writable: false,
-  enumerable: false,
-  configurable: false
+    value: 'h',
+    writable: false,
+    enumerable: false,
+    configurable: false
 });
 
 assert.deepStrictEqual(Object.getOwnPropertyDescriptor(ctx, 'i'), {
-  value: undefined,
-  writable: false,
-  enumerable: false,
-  configurable: false
+    value: undefined,
+    writable: false,
+    enumerable: false,
+    configurable: false
 });
 
 const jDesc = Object.getOwnPropertyDescriptor(ctx, 'j');

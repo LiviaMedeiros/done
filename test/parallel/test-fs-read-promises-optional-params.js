@@ -13,7 +13,7 @@ const defaultBufferAsync = Buffer.alloc(16384);
 
 read(fd, {})
   .then(function({ bytesRead, buffer }) {
-    assert.strictEqual(bytesRead, expected.length);
-    assert.deepStrictEqual(defaultBufferAsync.length, buffer.length);
+      assert.strictEqual(bytesRead, expected.length);
+      assert.deepStrictEqual(defaultBufferAsync.length, buffer.length);
   })
   .then(common.mustCall());

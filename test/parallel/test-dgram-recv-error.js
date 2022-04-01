@@ -8,11 +8,11 @@ const s = dgram.createSocket('udp4');
 const { handle } = s[kStateSymbol];
 
 s.on('error', common.mustCall((err) => {
-  s.close();
+    s.close();
 
-  // Don't check the full error message, as the errno is not important here.
-  assert.match(String(err), /^Error: recvmsg/);
-  assert.strictEqual(err.syscall, 'recvmsg');
+    // Don't check the full error message, as the errno is not important here.
+    assert.match(String(err), /^Error: recvmsg/);
+    assert.strictEqual(err.syscall, 'recvmsg');
 }));
 
 s.on('message', common.mustNotCall('no message should be received.'));

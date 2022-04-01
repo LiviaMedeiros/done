@@ -9,30 +9,30 @@ const { connect } = require('net');
 // on to that request object afterwards.
 
 const server = createServer(common.mustCall((req, res) => {
-  req.on('end', common.mustCall(() => {
-    const parser = req.socket.parser;
-    assert.strictEqual(parser.incoming, req);
-    process.nextTick(() => {
-      assert.strictEqual(parser.incoming, null);
-    });
-  }));
-  res.end('hello world');
+    req.on('end', common.mustCall(() => {
+        const parser = req.socket.parser;
+        assert.strictEqual(parser.incoming, req);
+        process.nextTick(() => {
+            assert.strictEqual(parser.incoming, null);
+        });
+    }));
+    res.end('hello world');
 }));
 
 server.unref();
 
 server.listen(0, common.mustCall(() => {
-  const client = connect(server.address().port);
+    const client = connect(server.address().port);
 
-  const req = [
-    'POST / HTTP/1.1',
-    `Host: localhost:${server.address().port}`,
-    'Connection: keep-alive',
-    'Content-Length: 11',
-    '',
-    'hello world',
-    '',
-  ].join('\r\n');
+    const req = [
+        'POST / HTTP/1.1',
+        `Host: localhost:${server.address().port}`,
+        'Connection: keep-alive',
+        'Content-Length: 11',
+        '',
+        'hello world',
+        '',
+    ].join('\r\n');
 
-  client.end(req);
+    client.end(req);
 }));

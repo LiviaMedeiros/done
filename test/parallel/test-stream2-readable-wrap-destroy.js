@@ -9,19 +9,19 @@ oldStream.pause = () => {};
 oldStream.resume = () => {};
 
 {
-  new Readable({
-    autoDestroy: false,
-    destroy: common.mustCall()
-  })
+    new Readable({
+        autoDestroy: false,
+        destroy: common.mustCall()
+    })
     .wrap(oldStream);
-  oldStream.emit('destroy');
+    oldStream.emit('destroy');
 }
 
 {
-  new Readable({
-    autoDestroy: false,
-    destroy: common.mustCall()
-  })
+    new Readable({
+        autoDestroy: false,
+        destroy: common.mustCall()
+    })
     .wrap(oldStream);
-  oldStream.emit('close');
+    oldStream.emit('close');
 }

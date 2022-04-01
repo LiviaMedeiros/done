@@ -32,7 +32,7 @@ assert.strictEqual(result, 'passed');
 // Thrown error
 script = new Script('throw new Error(\'test\');');
 assert.throws(() => {
-  script.runInThisContext(script);
+    script.runInThisContext(script);
 }, /^Error: test$/);
 
 global.hello = 5;
@@ -60,9 +60,9 @@ script.runInThisContext(script);
 assert.strictEqual(global.foo, 100);
 
 common.allowGlobals(
-  global.hello,
-  global.code,
-  global.foo,
-  global.obj,
-  global.f
+    global.hello,
+    global.code,
+    global.foo,
+    global.obj,
+    global.f
 );

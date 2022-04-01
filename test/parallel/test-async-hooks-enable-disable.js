@@ -4,10 +4,10 @@ const assert = require('assert');
 const async_hooks = require('async_hooks');
 
 const hook = async_hooks.createHook({
-  init: common.mustCall(() => {}, 1),
-  before: common.mustNotCall(),
-  after: common.mustNotCall(),
-  destroy: common.mustNotCall()
+    init: common.mustCall(() => {}, 1),
+    before: common.mustNotCall(),
+    after: common.mustNotCall(),
+    destroy: common.mustNotCall()
 });
 
 assert.strictEqual(hook.enable(), hook);

@@ -8,17 +8,17 @@ const outer = {};
 const inner = {};
 
 function testInner() {
-  assert.strictEqual(asyncLocalStorage.getStore(), outer);
+    assert.strictEqual(asyncLocalStorage.getStore(), outer);
 
-  asyncLocalStorage.run(inner, () => {
-    assert.strictEqual(asyncLocalStorage.getStore(), inner);
-  });
-  assert.strictEqual(asyncLocalStorage.getStore(), outer);
+    asyncLocalStorage.run(inner, () => {
+        assert.strictEqual(asyncLocalStorage.getStore(), inner);
+    });
+    assert.strictEqual(asyncLocalStorage.getStore(), outer);
 
-  asyncLocalStorage.exit(() => {
-    assert.strictEqual(asyncLocalStorage.getStore(), undefined);
-  });
-  assert.strictEqual(asyncLocalStorage.getStore(), outer);
+    asyncLocalStorage.exit(() => {
+        assert.strictEqual(asyncLocalStorage.getStore(), undefined);
+    });
+    assert.strictEqual(asyncLocalStorage.getStore(), outer);
 }
 
 asyncLocalStorage.run(outer, testInner);

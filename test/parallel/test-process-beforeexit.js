@@ -26,23 +26,23 @@ const net = require('net');
 process.once('beforeExit', common.mustCall(tryImmediate));
 
 function tryImmediate() {
-  setImmediate(common.mustCall(() => {
-    process.once('beforeExit', common.mustCall(tryTimer));
-  }));
+    setImmediate(common.mustCall(() => {
+        process.once('beforeExit', common.mustCall(tryTimer));
+    }));
 }
 
 function tryTimer() {
-  setTimeout(common.mustCall(() => {
-    process.once('beforeExit', common.mustCall(tryListen));
-  }), 1);
+    setTimeout(common.mustCall(() => {
+        process.once('beforeExit', common.mustCall(tryListen));
+    }), 1);
 }
 
 function tryListen() {
-  net.createServer()
+    net.createServer()
     .listen(0)
     .on('listening', common.mustCall(function() {
-      this.close();
-      process.once('beforeExit', common.mustCall(tryRepeatedTimer));
+        this.close();
+        process.once('beforeExit', common.mustCall(tryRepeatedTimer));
     }));
 }
 
@@ -53,20 +53,20 @@ function tryListen() {
 // After N times, call function `tryNextTick` to test behaviors of the
 // `process.nextTick`.
 function tryRepeatedTimer() {
-  const N = 5;
-  let n = 0;
-  const repeatedTimer = common.mustCall(function() {
-    if (++n < N)
-      setTimeout(repeatedTimer, 1);
-    else // n == N
-      process.once('beforeExit', common.mustCall(tryNextTick));
-  }, N);
-  setTimeout(repeatedTimer, 1);
+    const N = 5;
+    let n = 0;
+    const repeatedTimer = common.mustCall(function() {
+        if (++n < N)
+            setTimeout(repeatedTimer, 1);
+        else // n == N
+            process.once('beforeExit', common.mustCall(tryNextTick));
+    }, N);
+    setTimeout(repeatedTimer, 1);
 }
 
 // Test if the callback of `process.nextTick` can be invoked.
 function tryNextTick() {
-  process.nextTick(common.mustCall(function() {
-    process.once('beforeExit', common.mustNotCall());
-  }));
+    process.nextTick(common.mustCall(function() {
+        process.once('beforeExit', common.mustNotCall());
+    }));
 }

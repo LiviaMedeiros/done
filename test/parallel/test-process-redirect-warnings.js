@@ -20,7 +20,7 @@ const warnpath = path.join(tmpdir.path, 'warnings.txt');
 
 fork(warnmod, { execArgv: [`--redirect-warnings=${warnpath}`] })
   .on('exit', common.mustCall(() => {
-    fs.readFile(warnpath, 'utf8', common.mustSucceed((data) => {
-      assert.match(data, /\(node:\d+\) Warning: a bad practice warning/);
-    }));
+      fs.readFile(warnpath, 'utf8', common.mustSucceed((data) => {
+          assert.match(data, /\(node:\d+\) Warning: a bad practice warning/);
+      }));
   }));

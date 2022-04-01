@@ -45,15 +45,15 @@ const channel = diagnostics_channel.channel('my-channel');
 
 // Subscribe to the channel
 channel.subscribe((message, name) => {
-  // Received data
+    // Received data
 });
 
 // Check if the channel has an active subscriber
 if (channel.hasSubscribers) {
-  // Publish data to the channel
-  channel.publish({
-    some: 'data'
-  });
+    // Publish data to the channel
+    channel.publish({
+        some: 'data'
+    });
 }
 ```
 
@@ -65,15 +65,15 @@ const channel = diagnostics_channel.channel('my-channel');
 
 // Subscribe to the channel
 channel.subscribe((message, name) => {
-  // Received data
+    // Received data
 });
 
 // Check if the channel has an active subscriber
 if (channel.hasSubscribers) {
-  // Publish data to the channel
-  channel.publish({
-    some: 'data'
-  });
+    // Publish data to the channel
+    channel.publish({
+        some: 'data'
+    });
 }
 ```
 
@@ -98,7 +98,7 @@ performance-sensitive code.
 import diagnostics_channel from 'diagnostics_channel';
 
 if (diagnostics_channel.hasSubscribers('my-channel')) {
-  // There are subscribers, prepare and publish message
+    // There are subscribers, prepare and publish message
 }
 ```
 
@@ -106,7 +106,7 @@ if (diagnostics_channel.hasSubscribers('my-channel')) {
 const diagnostics_channel = require('diagnostics_channel');
 
 if (diagnostics_channel.hasSubscribers('my-channel')) {
-  // There are subscribers, prepare and publish message
+    // There are subscribers, prepare and publish message
 }
 ```
 
@@ -175,7 +175,7 @@ import diagnostics_channel from 'diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 if (channel.hasSubscribers) {
-  // There are subscribers, prepare and publish message
+    // There are subscribers, prepare and publish message
 }
 ```
 
@@ -185,7 +185,7 @@ const diagnostics_channel = require('diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 if (channel.hasSubscribers) {
-  // There are subscribers, prepare and publish message
+    // There are subscribers, prepare and publish message
 }
 ```
 
@@ -208,7 +208,7 @@ import diagnostics_channel from 'diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.publish({
-  some: 'message'
+    some: 'message'
 });
 ```
 
@@ -218,7 +218,7 @@ const diagnostics_channel = require('diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.publish({
-  some: 'message'
+    some: 'message'
 });
 ```
 
@@ -244,7 +244,7 @@ import diagnostics_channel from 'diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.subscribe((message, name) => {
-  // Received data
+    // Received data
 });
 ```
 
@@ -254,7 +254,7 @@ const diagnostics_channel = require('diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 channel.subscribe((message, name) => {
-  // Received data
+    // Received data
 });
 ```
 
@@ -285,7 +285,7 @@ import diagnostics_channel from 'diagnostics_channel';
 const channel = diagnostics_channel.channel('my-channel');
 
 function onMessage(message, name) {
-  // Received data
+    // Received data
 }
 
 channel.subscribe(onMessage);
@@ -299,7 +299,7 @@ const diagnostics_channel = require('diagnostics_channel');
 const channel = diagnostics_channel.channel('my-channel');
 
 function onMessage(message, name) {
-  // Received data
+    // Received data
 }
 
 channel.subscribe(onMessage);

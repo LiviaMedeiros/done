@@ -17,23 +17,23 @@ assertHasWarning(spawnWithFlags(['--no-warnings', '--warnings']));
 
 // Non-boolean flags cannot be negated.
 assert(spawnWithFlags(['--no-max-http-header-size']).stderr.toString().includes(
-  '--no-max-http-header-size is an invalid negation because it is not ' +
+    '--no-max-http-header-size is an invalid negation because it is not ' +
   'a boolean option',
 ));
 
 // Inexistant flags cannot be negated.
 assert(spawnWithFlags(['--no-i-dont-exist']).stderr.toString().includes(
-  'bad option: --no-i-dont-exist',
+    'bad option: --no-i-dont-exist',
 ));
 
 function spawnWithFlags(flags) {
-  return spawnSync(process.execPath, [...flags, '-e', 'new Buffer(0)']);
+    return spawnSync(process.execPath, [...flags, '-e', 'new Buffer(0)']);
 }
 
 function assertHasWarning(proc) {
-  assert(proc.stderr.toString().includes('Buffer() is deprecated'));
+    assert(proc.stderr.toString().includes('Buffer() is deprecated'));
 }
 
 function assertHasNoWarning(proc) {
-  assert(!proc.stderr.toString().includes('Buffer() is deprecated'));
+    assert(!proc.stderr.toString().includes('Buffer() is deprecated'));
 }

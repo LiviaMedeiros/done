@@ -8,23 +8,23 @@ const { Console } = require('console');
 const queue = [];
 
 const console = new Console({ write: (x) => {
-  queue.push(x);
+    queue.push(x);
 }, removeListener: () => {} }, process.stderr, false);
 
 function test(data, only, expected) {
-  if (arguments.length === 2) {
-    expected = only;
-    only = undefined;
-  }
-  console.table(data, only);
-  assert.deepStrictEqual(
-    queue.shift().split('\n'),
-    expected.trimLeft().split('\n')
-  );
+    if (arguments.length === 2) {
+        expected = only;
+        only = undefined;
+    }
+    console.table(data, only);
+    assert.deepStrictEqual(
+        queue.shift().split('\n'),
+        expected.trimLeft().split('\n')
+    );
 }
 
 assert.throws(() => console.table([], false), {
-  code: 'ERR_INVALID_ARG_TYPE',
+    code: 'ERR_INVALID_ARG_TYPE',
 });
 
 test(null, 'null\n');
@@ -246,11 +246,11 @@ test([{ a: 1, b: 'Y' }, { a: 'Z', b: 2 }], `
 `);
 
 {
-  const line = '─'.repeat(79);
-  const header = `${' '.repeat(37)}name${' '.repeat(40)}`;
-  const name = 'very long long long long long long long long long long long ' +
+    const line = '─'.repeat(79);
+    const header = `${' '.repeat(37)}name${' '.repeat(40)}`;
+    const name = 'very long long long long long long long long long long long ' +
                'long long long long';
-  test([{ name }], `
+    test([{ name }], `
 ┌─────────┬──${line}──┐
 │ (index) │  ${header}│
 ├─────────┼──${line}──┤

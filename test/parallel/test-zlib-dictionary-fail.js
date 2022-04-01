@@ -28,33 +28,33 @@ const zlib = require('zlib');
 const input = Buffer.from([0x78, 0xBB, 0x04, 0x09, 0x01, 0xA5]);
 
 {
-  const stream = zlib.createInflate();
+    const stream = zlib.createInflate();
 
-  stream.on('error', common.mustCall(function(err) {
-    assert.match(err.message, /Missing dictionary/);
-  }));
+    stream.on('error', common.mustCall(function(err) {
+        assert.match(err.message, /Missing dictionary/);
+    }));
 
-  stream.write(input);
+    stream.write(input);
 }
 
 {
-  const stream = zlib.createInflate({ dictionary: Buffer.from('fail') });
+    const stream = zlib.createInflate({ dictionary: Buffer.from('fail') });
 
-  stream.on('error', common.mustCall(function(err) {
-    assert.match(err.message, /Bad dictionary/);
-  }));
+    stream.on('error', common.mustCall(function(err) {
+        assert.match(err.message, /Bad dictionary/);
+    }));
 
-  stream.write(input);
+    stream.write(input);
 }
 
 {
-  const stream = zlib.createInflateRaw({ dictionary: Buffer.from('fail') });
+    const stream = zlib.createInflateRaw({ dictionary: Buffer.from('fail') });
 
-  stream.on('error', common.mustCall(function(err) {
+    stream.on('error', common.mustCall(function(err) {
     // It's not possible to separate invalid dict and invalid data when using
     // the raw format
-    assert.match(err.message, /invalid/);
-  }));
+        assert.match(err.message, /invalid/);
+    }));
 
-  stream.write(input);
+    stream.write(input);
 }

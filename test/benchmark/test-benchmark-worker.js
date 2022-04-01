@@ -3,7 +3,7 @@
 const common = require('../common');
 
 if (!common.enoughTestMem)
-  common.skip('Insufficient memory for Worker benchmark test');
+    common.skip('Insufficient memory for Worker benchmark test');
 
 // Because the worker benchmarks can run on different threads,
 // this should be in sequential rather than parallel to make sure

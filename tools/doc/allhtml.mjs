@@ -21,51 +21,51 @@ let apicontent = '';
 const seen = new Set(['all.html', 'index.html']);
 
 for (const link of toc.match(/<a.*?>/g)) {
-  const href = /href="(.*?)"/.exec(link)[1];
-  if (!htmlFiles.includes(href) || seen.has(href)) continue;
-  const data = fs.readFileSync(new URL(`./${href}`, source), 'utf8');
+    const href = /href="(.*?)"/.exec(link)[1];
+    if (!htmlFiles.includes(href) || seen.has(href)) continue;
+    const data = fs.readFileSync(new URL(`./${href}`, source), 'utf8');
 
-  // Split the doc.
-  const match = /(<\/ul>\s*)?<\/\w+>\s*<\w+ id="apicontent">/.exec(data);
+    // Split the doc.
+    const match = /(<\/ul>\s*)?<\/\w+>\s*<\w+ id="apicontent">/.exec(data);
 
-  // Get module name
-  const moduleName = href.replace(/\.html$/, '');
+    // Get module name
+    const moduleName = href.replace(/\.html$/, '');
 
-  contents += data.slice(0, match.index)
+    contents += data.slice(0, match.index)
     .replace(/[\s\S]*?id="toc"[^>]*>\s*<\w+>.*?<\/\w+>\s*(<ul>\s*)?/, '')
     // Prefix TOC links with current module name
     .replace(/<a href="#(?!DEP[0-9]{4})([^"]+)"/g, (match, anchor) => {
-      return `<a href="#all_${moduleName}_${anchor}"`;
+        return `<a href="#all_${moduleName}_${anchor}"`;
     });
 
-  apicontent += '<section>' + data.slice(match.index + match[0].length)
+    apicontent += '<section>' + data.slice(match.index + match[0].length)
     .replace(/<!-- API END -->[\s\S]*/, '</section>')
     // Prefix all in-page anchor marks with module name
     .replace(/<a class="mark" href="#([^"]+)" id="([^"]+)"/g, (match, anchor, id) => {
-      if (anchor !== id) throw new Error(`Mark does not match: ${anchor} should match ${id}`);
-      return `<a class="mark" href="#all_${moduleName}_${anchor}" id="all_${moduleName}_${anchor}"`;
+        if (anchor !== id) throw new Error(`Mark does not match: ${anchor} should match ${id}`);
+        return `<a class="mark" href="#all_${moduleName}_${anchor}" id="all_${moduleName}_${anchor}"`;
     })
     // Prefix all in-page links with current module name
     .replace(/<a href="#(?!DEP[0-9]{4})([^"]+)"/g, (match, anchor) => {
-      return `<a href="#all_${moduleName}_${anchor}"`;
+        return `<a href="#all_${moduleName}_${anchor}"`;
     })
     // Update footnote id attributes on anchors
     .replace(/<a href="([^"]+)" id="(user-content-fn[^"]+)"/g, (match, href, id) => {
-      return `<a href="${href}" id="all_${moduleName}_${id}"`;
+        return `<a href="${href}" id="all_${moduleName}_${id}"`;
     })
     // Update footnote id attributes on list items
     .replace(/<(\S+) id="(user-content-fn[^"]+)"/g, (match, tagName, id) => {
-      return `<${tagName} id="all_${moduleName}_${id}"`;
+        return `<${tagName} id="all_${moduleName}_${id}"`;
     })
     // Prefix all links to other docs modules with those module names
     .replace(/<a href="((\w[^#"]*)\.html)#/g, (match, href, linkModule) => {
-      if (!htmlFiles.includes(href)) return match;
-      return `<a href="#all_${linkModule}_`;
+        if (!htmlFiles.includes(href)) return match;
+        return `<a href="#all_${linkModule}_`;
     })
     .trim() + '\n';
 
-  // Mark source as seen.
-  seen.add(href);
+    // Mark source as seen.
+    seen.add(href);
 }
 
 // Replace various mentions of index with all.
@@ -104,5 +104,5 @@ const ids = new Set([...all.matchAll(idRe)].map((match) => match[1]));
 const hrefRe = / href="#([^"]+)"/g;
 const hrefMatches = all.matchAll(hrefRe);
 for (const match of hrefMatches) {
-  if (!ids.has(match[1])) throw new Error(`link not found: ${match[1]}`);
+    if (!ids.has(match[1])) throw new Error(`link not found: ${match[1]}`);
 }

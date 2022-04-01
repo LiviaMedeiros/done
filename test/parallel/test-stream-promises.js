@@ -3,13 +3,13 @@
 const common = require('../common');
 const stream = require('stream');
 const {
-  Readable,
-  Writable,
-  promises,
+    Readable,
+    Writable,
+    promises,
 } = stream;
 const {
-  finished,
-  pipeline,
+    finished,
+    pipeline,
 } = require('stream/promises');
 const fs = require('fs');
 const assert = require('assert');
@@ -22,82 +22,82 @@ assert.strictEqual(finished, promisify(stream.finished));
 
 // pipeline success
 {
-  let finished = false;
-  const processed = [];
-  const expected = [
-    Buffer.from('a'),
-    Buffer.from('b'),
-    Buffer.from('c'),
-  ];
+    let finished = false;
+    const processed = [];
+    const expected = [
+        Buffer.from('a'),
+        Buffer.from('b'),
+        Buffer.from('c'),
+    ];
 
-  const read = new Readable({
-    read() { }
-  });
+    const read = new Readable({
+        read() { }
+    });
 
-  const write = new Writable({
-    write(data, enc, cb) {
-      processed.push(data);
-      cb();
+    const write = new Writable({
+        write(data, enc, cb) {
+            processed.push(data);
+            cb();
+        }
+    });
+
+    write.on('finish', () => {
+        finished = true;
+    });
+
+    for (let i = 0; i < expected.length; i++) {
+        read.push(expected[i]);
     }
-  });
+    read.push(null);
 
-  write.on('finish', () => {
-    finished = true;
-  });
-
-  for (let i = 0; i < expected.length; i++) {
-    read.push(expected[i]);
-  }
-  read.push(null);
-
-  pipeline(read, write).then(common.mustCall((value) => {
-    assert.ok(finished);
-    assert.deepStrictEqual(processed, expected);
-  }));
+    pipeline(read, write).then(common.mustCall((value) => {
+        assert.ok(finished);
+        assert.deepStrictEqual(processed, expected);
+    }));
 }
 
 // pipeline error
 {
-  const read = new Readable({
-    read() { }
-  });
+    const read = new Readable({
+        read() { }
+    });
 
-  const write = new Writable({
-    write(data, enc, cb) {
-      cb();
-    }
-  });
+    const write = new Writable({
+        write(data, enc, cb) {
+            cb();
+        }
+    });
 
-  read.push('data');
-  setImmediate(() => read.destroy());
+    read.push('data');
+    setImmediate(() => read.destroy());
 
-  pipeline(read, write).catch(common.mustCall((err) => {
-    assert.ok(err, 'should have an error');
-  }));
+    pipeline(read, write).catch(common.mustCall((err) => {
+        assert.ok(err, 'should have an error');
+    }));
 }
 
 // finished success
 {
-  async function run() {
-    const rs = fs.createReadStream(__filename);
+    async function run() {
+        const rs = fs.createReadStream(__filename);
 
-    let ended = false;
-    rs.resume();
-    rs.on('end', () => {
-      ended = true;
-    });
-    await finished(rs);
-    assert(ended);
-  }
+        let ended = false;
+        rs.resume();
+        rs.on('end', () => {
+            ended = true;
+        });
+        await finished(rs);
+        assert(ended);
+    }
 
-  run().then(common.mustCall());
+    run().then(common.mustCall());
 }
 
 // finished error
 {
-  const rs = fs.createReadStream('file-does-not-exist');
+    const rs = fs.createReadStream('file-does-not-exist');
 
-  assert.rejects(finished(rs), {
-    code: 'ENOENT'
-  }).then(common.mustCall());
+    assert.rejects(finished(rs), {
+        code: 'ENOENT'
+    }).then(common.mustCall());
 }

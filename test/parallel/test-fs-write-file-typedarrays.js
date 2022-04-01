@@ -22,20 +22,20 @@ const s = '南越国是前203年至前111年存在于岭南地区的一个国家
 const inputBuffer = Buffer.from(s.repeat(8), 'utf8');
 
 for (const expectView of common.getArrayBufferViews(inputBuffer)) {
-  console.log('Sync test for ', expectView[Symbol.toStringTag]);
-  fs.writeFileSync(filename, expectView);
-  assert.strictEqual(
-    fs.readFileSync(filename, 'utf8'),
-    inputBuffer.toString('utf8')
-  );
+    console.log('Sync test for ', expectView[Symbol.toStringTag]);
+    fs.writeFileSync(filename, expectView);
+    assert.strictEqual(
+        fs.readFileSync(filename, 'utf8'),
+        inputBuffer.toString('utf8')
+    );
 }
 
 for (const expectView of common.getArrayBufferViews(inputBuffer)) {
-  console.log('Async test for ', expectView[Symbol.toStringTag]);
-  const file = `${filename}-${expectView[Symbol.toStringTag]}`;
-  fs.writeFile(file, expectView, common.mustSucceed(() => {
-    fs.readFile(file, 'utf8', common.mustSucceed((data) => {
-      assert.strictEqual(data, inputBuffer.toString('utf8'));
+    console.log('Async test for ', expectView[Symbol.toStringTag]);
+    const file = `${filename}-${expectView[Symbol.toStringTag]}`;
+    fs.writeFile(file, expectView, common.mustSucceed(() => {
+        fs.readFile(file, 'utf8', common.mustSucceed((data) => {
+            assert.strictEqual(data, inputBuffer.toString('utf8'));
+        }));
     }));
-  }));
 }

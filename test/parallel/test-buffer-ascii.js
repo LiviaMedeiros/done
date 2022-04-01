@@ -38,9 +38,9 @@ const expected = 'Cb\u0000\u0019est, graphiquement, la rC)union ' +
 const buf = Buffer.from(input);
 
 for (let i = 0; i < expected.length; ++i) {
-  assert.strictEqual(buf.slice(i).toString('ascii'), expected.slice(i));
+    assert.strictEqual(buf.slice(i).toString('ascii'), expected.slice(i));
 
-  // Skip remainder of multi-byte sequence.
-  if (input.charCodeAt(i) > 65535) ++i;
-  if (input.charCodeAt(i) > 127) ++i;
+    // Skip remainder of multi-byte sequence.
+    if (input.charCodeAt(i) > 65535) ++i;
+    if (input.charCodeAt(i) > 127) ++i;
 }

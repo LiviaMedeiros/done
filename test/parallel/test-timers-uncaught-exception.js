@@ -26,14 +26,14 @@ const errorMsg = 'BAM!';
 
 // The first timer throws...
 setTimeout(common.mustCall(function() {
-  throw new Error(errorMsg);
+    throw new Error(errorMsg);
 }), 1);
 
 // ...but the second one should still run
 setTimeout(common.mustCall(), 1);
 
 function uncaughtException(err) {
-  assert.strictEqual(err.message, errorMsg);
+    assert.strictEqual(err.message, errorMsg);
 }
 
 process.on('uncaughtException', common.mustCall(uncaughtException));

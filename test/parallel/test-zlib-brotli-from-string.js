@@ -25,14 +25,14 @@ const compressedString = 'G/gBQBwHdky2aHV5KK9Snf05//1pPdmNw/7232fnIm1IB' +
                          'KmEUQf1HBogRYhFIt4ymRNEgHAIzOyNEsQM=';
 
 zlib.brotliCompress(inputString, common.mustCall((err, buffer) => {
-  assert(inputString.length > buffer.length);
+    assert(inputString.length > buffer.length);
 
-  zlib.brotliDecompress(buffer, common.mustCall((err, buffer) => {
-    assert.strictEqual(buffer.toString(), inputString);
-  }));
+    zlib.brotliDecompress(buffer, common.mustCall((err, buffer) => {
+        assert.strictEqual(buffer.toString(), inputString);
+    }));
 }));
 
 const buffer = Buffer.from(compressedString, 'base64');
 zlib.brotliDecompress(buffer, common.mustCall((err, buffer) => {
-  assert.strictEqual(buffer.toString(), inputString);
+    assert.strictEqual(buffer.toString(), inputString);
 }));

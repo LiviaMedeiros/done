@@ -8,23 +8,23 @@ const bufferBlerg = Buffer.from('blerg');
 const w = new Writable();
 
 assert.throws(
-  () => {
-    w.end(bufferBlerg);
-  },
-  {
-    name: 'Error',
-    code: 'ERR_METHOD_NOT_IMPLEMENTED',
-    message: 'The _write() method is not implemented'
-  }
+    () => {
+        w.end(bufferBlerg);
+    },
+    {
+        name: 'Error',
+        code: 'ERR_METHOD_NOT_IMPLEMENTED',
+        message: 'The _write() method is not implemented'
+    }
 );
 
 const _write = common.mustCall((chunk, _, next) => {
-  next();
+    next();
 });
 
 const _writev = common.mustCall((chunks, next) => {
-  assert.strictEqual(chunks.length, 2);
-  next();
+    assert.strictEqual(chunks.length, 2);
+    next();
 });
 
 const w2 = new Writable({ write: _write, writev: _writev });

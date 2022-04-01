@@ -14,10 +14,10 @@ const expectedPromiseWarning = ['Unhandled promise rejection. ' +
   '(rejection id: 1)'];
 
 common.expectWarning({
-  UnhandledPromiseRejectionWarning: [
-    expectedValueWarning,
-    expectedPromiseWarning,
-  ],
+    UnhandledPromiseRejectionWarning: [
+        expectedValueWarning,
+        expectedPromiseWarning,
+    ],
 });
 
 // Ensure this doesn't crash

@@ -7,9 +7,9 @@ const assert = require('assert');
 const ref = new URL('http://example.com/path');
 const url = new URL('http://example.com/path');
 assert.throws(() => {
-  url.href = '';
+    url.href = '';
 }, {
-  name: 'TypeError'
+    name: 'TypeError'
 });
 
 assert.deepStrictEqual(url, ref);

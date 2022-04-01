@@ -31,13 +31,13 @@ let persistentPid = -1;
 const child = spawn(process.execPath, [ childPath ]);
 
 child.stdout.on('data', function(data) {
-  persistentPid = parseInt(data, 10);
+    persistentPid = parseInt(data, 10);
 });
 
 process.on('exit', function() {
-  assert.notStrictEqual(persistentPid, -1);
-  assert.throws(function() {
-    process.kill(child.pid);
-  }, /^Error: kill ESRCH$/);
-  process.kill(persistentPid);
+    assert.notStrictEqual(persistentPid, -1);
+    assert.throws(function() {
+        process.kill(child.pid);
+    }, /^Error: kill ESRCH$/);
+    process.kill(persistentPid);
 });

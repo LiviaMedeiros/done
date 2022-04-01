@@ -26,23 +26,23 @@ assert.strictEqual(obj.stack, undefined);
 
 // Verify that the stack is decorated when possible.
 function checkStack(stack) {
-  // Matching only on a minimal piece of the stack because the string will vary
-  // greatly depending on the JavaScript engine. V8 includes `;` because it
-  // displays the line of code (`var foo bar;`) that is causing a problem.
-  // ChakraCore does not display the line of code but includes `;` in the phrase
-  // `Expected ';' `.
-  assert.match(stack, /;/g);
-  // Test that it's a multiline string.
-  assert.match(stack, /\n/g);
+    // Matching only on a minimal piece of the stack because the string will vary
+    // greatly depending on the JavaScript engine. V8 includes `;` because it
+    // displays the line of code (`var foo bar;`) that is causing a problem.
+    // ChakraCore does not display the line of code but includes `;` in the phrase
+    // `Expected ';' `.
+    assert.match(stack, /;/g);
+    // Test that it's a multiline string.
+    assert.match(stack, /\n/g);
 }
 let err;
 const badSyntaxPath =
   fixtures.path('syntax', 'bad_syntax').replace(/\\/g, '\\\\');
 
 try {
-  require(badSyntaxPath);
+    require(badSyntaxPath);
 } catch (e) {
-  err = e;
+    err = e;
 }
 
 assert(typeof err, 'object');
@@ -55,8 +55,8 @@ checkStack(err.stack);
 
 // Verify that the stack is only decorated once for uncaught exceptions.
 const args = [
-  '-e',
-  `require('${badSyntaxPath}')`,
+    '-e',
+    `require('${badSyntaxPath}')`,
 ];
 const result = spawnSync(process.argv[0], args, { encoding: 'utf8' });
 checkStack(result.stderr);
@@ -78,4 +78,4 @@ decorateErrorStack(err);
 
 assert.strictEqual(err.stack, `${arrowMessage}${originalStack}`);
 assert.strictEqual(
-  binding.getHiddenValue(err, kDecoratedPrivateSymbolIndex), true);
+    binding.getHiddenValue(err, kDecoratedPrivateSymbolIndex), true);

@@ -46,11 +46,11 @@ fs.mkdirSync(path.join(moduleA, 'node_modules'));
 fs.mkdirSync(path.join(moduleB, 'node_modules'));
 
 try {
-  fs.symlinkSync(moduleA, moduleA_link);
-  fs.symlinkSync(moduleB, moduleB_link);
+    fs.symlinkSync(moduleA, moduleA_link);
+    fs.symlinkSync(moduleB, moduleB_link);
 } catch (err) {
-  if (err.code !== 'EPERM') throw err;
-  common.skip('insufficient privileges for symlinks');
+    if (err.code !== 'EPERM') throw err;
+    common.skip('insufficient privileges for symlinks');
 }
 
 fs.writeFileSync(path.join(tmpDir, 'index.js'),

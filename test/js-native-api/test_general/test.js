@@ -36,15 +36,15 @@ assert.notStrictEqual(test_general.testGetPrototype(baseObject),
 assert.strictEqual(test_general.testGetVersion(), 8);
 
 [
-  123,
-  'test string',
-  function() {},
-  new Object(),
-  true,
-  undefined,
-  Symbol(),
+    123,
+    'test string',
+    function() {},
+    new Object(),
+    true,
+    undefined,
+    Symbol(),
 ].forEach((val) => {
-  assert.strictEqual(test_general.testNapiTypeof(val), typeof val);
+    assert.strictEqual(test_general.testNapiTypeof(val), typeof val);
 });
 
 // Since typeof in js return object need to validate specific case
@@ -74,23 +74,23 @@ assert.strictEqual(typeof adjustedValue, 'number');
 assert(adjustedValue > 0);
 
 async function runGCTests() {
-  // Ensure that garbage collecting an object with a wrapped native item results
-  // in the finalize callback being called.
-  assert.strictEqual(test_general.derefItemWasCalled(), false);
+    // Ensure that garbage collecting an object with a wrapped native item results
+    // in the finalize callback being called.
+    assert.strictEqual(test_general.derefItemWasCalled(), false);
 
-  (() => test_general.wrap({}))();
-  await common.gcUntil('deref_item() was called upon garbage collecting a ' +
+    (() => test_general.wrap({}))();
+    await common.gcUntil('deref_item() was called upon garbage collecting a ' +
                        'wrapped object.',
-                       () => test_general.derefItemWasCalled());
+                         () => test_general.derefItemWasCalled());
 
-  // Ensure that removing a wrap and garbage collecting does not fire the
-  // finalize callback.
-  let z = {};
-  test_general.testFinalizeWrap(z);
-  test_general.removeWrap(z);
-  z = null;
-  await common.gcUntil(
-    'finalize callback was not called upon garbage collection.',
-    () => (!test_general.finalizeWasCalled()));
+    // Ensure that removing a wrap and garbage collecting does not fire the
+    // finalize callback.
+    let z = {};
+    test_general.testFinalizeWrap(z);
+    test_general.removeWrap(z);
+    z = null;
+    await common.gcUntil(
+        'finalize callback was not called upon garbage collection.',
+        () => (!test_general.finalizeWasCalled()));
 }
 runGCTests();

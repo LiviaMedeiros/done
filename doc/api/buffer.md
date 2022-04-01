@@ -294,9 +294,9 @@ import { Buffer } from 'buffer';
 
 const buf = Buffer.from('hello', 'utf16le');
 const uint16array = new Uint16Array(
-  buf.buffer,
-  buf.byteOffset,
-  buf.length / Uint16Array.BYTES_PER_ELEMENT);
+    buf.buffer,
+    buf.byteOffset,
+    buf.length / Uint16Array.BYTES_PER_ELEMENT);
 
 console.log(uint16array);
 
@@ -308,9 +308,9 @@ const { Buffer } = require('buffer');
 
 const buf = Buffer.from('hello', 'utf16le');
 const uint16array = new Uint16Array(
-  buf.buffer,
-  buf.byteOffset,
-  buf.length / Uint16Array.BYTES_PER_ELEMENT);
+    buf.buffer,
+    buf.byteOffset,
+    buf.length / Uint16Array.BYTES_PER_ELEMENT);
 
 console.log(uint16array);
 
@@ -425,7 +425,7 @@ import { Buffer } from 'buffer';
 const buf = Buffer.from([1, 2, 3]);
 
 for (const b of buf) {
-  console.log(b);
+    console.log(b);
 }
 // Prints:
 //   1
@@ -439,7 +439,7 @@ const { Buffer } = require('buffer');
 const buf = Buffer.from([1, 2, 3]);
 
 for (const b of buf) {
-  console.log(b);
+    console.log(b);
 }
 // Prints:
 //   1
@@ -588,14 +588,14 @@ const mc1 = new MessageChannel();
 const mc2 = new MessageChannel();
 
 mc1.port1.onmessage = async ({ data }) => {
-  console.log(await data.arrayBuffer());
-  mc1.port1.close();
+    console.log(await data.arrayBuffer());
+    mc1.port1.close();
 };
 
 mc2.port1.onmessage = async ({ data }) => {
-  await delay(1000);
-  console.log(await data.arrayBuffer());
-  mc2.port1.close();
+    await delay(1000);
+    console.log(await data.arrayBuffer());
+    mc2.port1.close();
 };
 
 mc1.port2.postMessage(blob);
@@ -615,14 +615,14 @@ const mc1 = new MessageChannel();
 const mc2 = new MessageChannel();
 
 mc1.port1.onmessage = async ({ data }) => {
-  console.log(await data.arrayBuffer());
-  mc1.port1.close();
+    console.log(await data.arrayBuffer());
+    mc1.port1.close();
 };
 
 mc2.port1.onmessage = async ({ data }) => {
-  await delay(1000);
-  console.log(await data.arrayBuffer());
-  mc2.port1.close();
+    await delay(1000);
+    console.log(await data.arrayBuffer());
+    mc2.port1.close();
 };
 
 mc1.port2.postMessage(blob);
@@ -851,16 +851,16 @@ import { Buffer } from 'buffer';
 const store = [];
 
 socket.on('readable', () => {
-  let data;
-  while (null !== (data = readable.read())) {
+    let data;
+    while (null !== (data = readable.read())) {
     // Allocate for retained data.
-    const sb = Buffer.allocUnsafeSlow(10);
+        const sb = Buffer.allocUnsafeSlow(10);
 
-    // Copy the data into the new allocation.
-    data.copy(sb, 0, 0, 10);
+        // Copy the data into the new allocation.
+        data.copy(sb, 0, 0, 10);
 
-    store.push(sb);
-  }
+        store.push(sb);
+    }
 });
 ```
 
@@ -871,16 +871,16 @@ const { Buffer } = require('buffer');
 const store = [];
 
 socket.on('readable', () => {
-  let data;
-  while (null !== (data = readable.read())) {
+    let data;
+    while (null !== (data = readable.read())) {
     // Allocate for retained data.
-    const sb = Buffer.allocUnsafeSlow(10);
+        const sb = Buffer.allocUnsafeSlow(10);
 
-    // Copy the data into the new allocation.
-    data.copy(sb, 0, 0, 10);
+        // Copy the data into the new allocation.
+        data.copy(sb, 0, 0, 10);
 
-    store.push(sb);
-  }
+        store.push(sb);
+    }
 });
 ```
 
@@ -1279,9 +1279,9 @@ For objects that support `Symbol.toPrimitive`, returns
 import { Buffer } from 'buffer';
 
 class Foo {
-  [Symbol.toPrimitive]() {
-    return 'this is a test';
-  }
+    [Symbol.toPrimitive]() {
+        return 'this is a test';
+    }
 }
 
 const buf = Buffer.from(new Foo(), 'utf8');
@@ -1292,9 +1292,9 @@ const buf = Buffer.from(new Foo(), 'utf8');
 const { Buffer } = require('buffer');
 
 class Foo {
-  [Symbol.toPrimitive]() {
-    return 'this is a test';
-  }
+    [Symbol.toPrimitive]() {
+        return 'this is a test';
+    }
 }
 
 const buf = Buffer.from(new Foo(), 'utf8');
@@ -1458,7 +1458,7 @@ const str = 'Node.js';
 const buf = Buffer.allocUnsafe(str.length);
 
 for (let i = 0; i < str.length; i++) {
-  buf[i] = str.charCodeAt(i);
+    buf[i] = str.charCodeAt(i);
 }
 
 console.log(buf.toString('utf8'));
@@ -1476,7 +1476,7 @@ const str = 'Node.js';
 const buf = Buffer.allocUnsafe(str.length);
 
 for (let i = 0; i < str.length; i++) {
-  buf[i] = str.charCodeAt(i);
+    buf[i] = str.charCodeAt(i);
 }
 
 console.log(buf.toString('utf8'));
@@ -1692,8 +1692,8 @@ const buf1 = Buffer.allocUnsafe(26);
 const buf2 = Buffer.allocUnsafe(26).fill('!');
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf1[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf1[i] = i + 97;
 }
 
 // Copy `buf1` bytes 16 through 19 into `buf2` starting at byte 8 of `buf2`.
@@ -1713,8 +1713,8 @@ const buf1 = Buffer.allocUnsafe(26);
 const buf2 = Buffer.allocUnsafe(26).fill('!');
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf1[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf1[i] = i + 97;
 }
 
 // Copy `buf1` bytes 16 through 19 into `buf2` starting at byte 8 of `buf2`.
@@ -1735,8 +1735,8 @@ import { Buffer } from 'buffer';
 const buf = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf[i] = i + 97;
 }
 
 buf.copy(buf, 0, 4, 10);
@@ -1754,8 +1754,8 @@ const { Buffer } = require('buffer');
 const buf = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf[i] = i + 97;
 }
 
 buf.copy(buf, 0, 4, 10);
@@ -1783,7 +1783,7 @@ import { Buffer } from 'buffer';
 const buf = Buffer.from('buffer');
 
 for (const pair of buf.entries()) {
-  console.log(pair);
+    console.log(pair);
 }
 // Prints:
 //   [0, 98]
@@ -1802,7 +1802,7 @@ const { Buffer } = require('buffer');
 const buf = Buffer.from('buffer');
 
 for (const pair of buf.entries()) {
-  console.log(pair);
+    console.log(pair);
 }
 // Prints:
 //   [0, 98]
@@ -2176,7 +2176,7 @@ import { Buffer } from 'buffer';
 const buf = Buffer.from('buffer');
 
 for (const key of buf.keys()) {
-  console.log(key);
+    console.log(key);
 }
 // Prints:
 //   0
@@ -2193,7 +2193,7 @@ const { Buffer } = require('buffer');
 const buf = Buffer.from('buffer');
 
 for (const key of buf.keys()) {
-  console.log(key);
+    console.log(key);
 }
 // Prints:
 //   0
@@ -3306,8 +3306,8 @@ import { Buffer } from 'buffer';
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf1[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf1[i] = i + 97;
 }
 
 const buf2 = buf1.subarray(0, 3);
@@ -3330,8 +3330,8 @@ const { Buffer } = require('buffer');
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf1[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf1[i] = i + 97;
 }
 
 const buf2 = buf1.subarray(0, 3);
@@ -3652,9 +3652,9 @@ console.log(json);
 // Prints: {"type":"Buffer","data":[1,2,3,4,5]}
 
 const copy = JSON.parse(json, (key, value) => {
-  return value && value.type === 'Buffer' ?
-    Buffer.from(value) :
-    value;
+    return value && value.type === 'Buffer' ?
+        Buffer.from(value) :
+        value;
 });
 
 console.log(copy);
@@ -3671,9 +3671,9 @@ console.log(json);
 // Prints: {"type":"Buffer","data":[1,2,3,4,5]}
 
 const copy = JSON.parse(json, (key, value) => {
-  return value && value.type === 'Buffer' ?
-    Buffer.from(value) :
-    value;
+    return value && value.type === 'Buffer' ?
+        Buffer.from(value) :
+        value;
 });
 
 console.log(copy);
@@ -3707,8 +3707,8 @@ import { Buffer } from 'buffer';
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf1[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf1[i] = i + 97;
 }
 
 console.log(buf1.toString('utf8'));
@@ -3732,8 +3732,8 @@ const { Buffer } = require('buffer');
 const buf1 = Buffer.allocUnsafe(26);
 
 for (let i = 0; i < 26; i++) {
-  // 97 is the decimal ASCII value for 'a'.
-  buf1[i] = i + 97;
+    // 97 is the decimal ASCII value for 'a'.
+    buf1[i] = i + 97;
 }
 
 console.log(buf1.toString('utf8'));
@@ -3768,7 +3768,7 @@ import { Buffer } from 'buffer';
 const buf = Buffer.from('buffer');
 
 for (const value of buf.values()) {
-  console.log(value);
+    console.log(value);
 }
 // Prints:
 //   98
@@ -3779,7 +3779,7 @@ for (const value of buf.values()) {
 //   114
 
 for (const value of buf) {
-  console.log(value);
+    console.log(value);
 }
 // Prints:
 //   98
@@ -3796,7 +3796,7 @@ const { Buffer } = require('buffer');
 const buf = Buffer.from('buffer');
 
 for (const value of buf.values()) {
-  console.log(value);
+    console.log(value);
 }
 // Prints:
 //   98
@@ -3807,7 +3807,7 @@ for (const value of buf.values()) {
 //   114
 
 for (const value of buf) {
-  console.log(value);
+    console.log(value);
 }
 // Prints:
 //   98

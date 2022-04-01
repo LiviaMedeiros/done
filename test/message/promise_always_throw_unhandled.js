@@ -7,7 +7,7 @@ require('../common');
 // unhandled rejections mode is set to `'strict'`.
 
 const ref1 = new Promise(() => {
-  throw new Error('One');
+    throw new Error('One');
 });
 
 const ref2 = Promise.reject(new Error('Two'));

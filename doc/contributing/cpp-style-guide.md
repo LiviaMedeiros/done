@@ -367,17 +367,17 @@ env->SetMethod(target, "foo", Foo);
 
 ```js
 exports.foo = function(str) {
-  // Prefer doing the type-checks in JavaScript
-  if (typeof str !== 'string') {
-    throw new errors.codes.ERR_INVALID_ARG_TYPE('str', 'string');
-  }
+    // Prefer doing the type-checks in JavaScript
+    if (typeof str !== 'string') {
+        throw new errors.codes.ERR_INVALID_ARG_TYPE('str', 'string');
+    }
 
-  const ctx = {};
-  const result = binding.foo(str, ctx);
-  if (ctx.code !== undefined) {
-    throw new errors.codes.ERR_ERROR_NAME(ctx.code);
-  }
-  return result;
+    const ctx = {};
+    const result = binding.foo(str, ctx);
+    if (ctx.code !== undefined) {
+        throw new errors.codes.ERR_ERROR_NAME(ctx.code);
+    }
+    return result;
 };
 ```
 

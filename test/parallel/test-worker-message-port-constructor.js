@@ -12,16 +12,16 @@ assert(port1 instanceof MessagePort);
 assert.strictEqual(port1.constructor, MessagePort);
 
 assert.throws(() => MessagePort(), {
-  constructor: TypeError,
-  code: 'ERR_CONSTRUCT_CALL_INVALID'
+    constructor: TypeError,
+    code: 'ERR_CONSTRUCT_CALL_INVALID'
 });
 
 assert.throws(() => new MessagePort(), {
-  constructor: TypeError,
-  code: 'ERR_CONSTRUCT_CALL_INVALID'
+    constructor: TypeError,
+    code: 'ERR_CONSTRUCT_CALL_INVALID'
 });
 
 assert.throws(() => MessageChannel(), {
-  constructor: TypeError,
-  code: 'ERR_CONSTRUCT_CALL_REQUIRED'
+    constructor: TypeError,
+    code: 'ERR_CONSTRUCT_CALL_REQUIRED'
 });

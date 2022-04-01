@@ -5,14 +5,14 @@ const assert = require('assert');
 const fixtures = require('../common/fixtures');
 
 common.expectWarning({
-  Warning: [
-    ["Accessing non-existent property 'missingPropB' " +
+    Warning: [
+        ["Accessing non-existent property 'missingPropB' " +
      'of module exports inside circular dependency'],
-    ["Accessing non-existent property 'Symbol(someSymbol)' " +
+        ["Accessing non-existent property 'Symbol(someSymbol)' " +
      'of module exports inside circular dependency'],
-    ["Accessing non-existent property 'missingPropModuleExportsB' " +
+        ["Accessing non-existent property 'missingPropModuleExportsB' " +
      'of module exports inside circular dependency'],
-  ]
+    ]
 });
 const required = require(fixtures.path('cycles', 'warning-a.js'));
 assert.strictEqual(Object.getPrototypeOf(required), Object.prototype);

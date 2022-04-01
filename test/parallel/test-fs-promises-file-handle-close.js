@@ -17,25 +17,25 @@ const warning =
   'thrown if a file descriptor is closed during garbage collection.';
 
 async function doOpen() {
-  const fh = await fs.open(__filename);
+    const fh = await fs.open(__filename);
 
-  common.expectWarning({
-    Warning: [[`Closing file descriptor ${fh.fd} on garbage collection`]],
-    DeprecationWarning: [[warning, 'DEP0137']]
-  });
+    common.expectWarning({
+        Warning: [[`Closing file descriptor ${fh.fd} on garbage collection`]],
+        DeprecationWarning: [[warning, 'DEP0137']]
+    });
 
-  return fh;
+    return fh;
 }
 
 doOpen().then(common.mustCall((fd) => {
-  assert.strictEqual(typeof fd, 'object');
+    assert.strictEqual(typeof fd, 'object');
 })).then(common.mustCall(() => {
-  setImmediate(() => {
+    setImmediate(() => {
     // The FileHandle should be out-of-scope and no longer accessed now.
-    global.gc();
+        global.gc();
 
-    // Wait an extra event loop turn, as the warning is emitted from the
-    // native layer in an unref()'ed setImmediate() callback.
-    setImmediate(common.mustCall());
-  });
+        // Wait an extra event loop turn, as the warning is emitted from the
+        // native layer in an unref()'ed setImmediate() callback.
+        setImmediate(common.mustCall());
+    });
 }));

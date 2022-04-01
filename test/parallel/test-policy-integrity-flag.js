@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 common.requireNoPackageJSONAbove();
 
 const fixtures = require('../common/fixtures');
@@ -30,37 +30,37 @@ const windowsPolicySRI = 'sha512-OeyCPRo4OZMosHyquZXDHpuU1F4KzG9UHFnn12FMaHsvqFU
 
 const depPolicySRI = `${nixPolicySRI} ${windowsPolicySRI}`;
 {
-  const { status, stderr } = spawnSync(
-    process.execPath,
-    [
-      '--policy-integrity', emptySRI,
-      '--experimental-policy', depPolicy, dep,
-    ]
-  );
+    const { status, stderr } = spawnSync(
+        process.execPath,
+        [
+            '--policy-integrity', emptySRI,
+            '--experimental-policy', depPolicy, dep,
+        ]
+    );
 
-  assert.ok(stderr.includes('ERR_MANIFEST_ASSERT_INTEGRITY'));
-  assert.strictEqual(status, 1);
+    assert.ok(stderr.includes('ERR_MANIFEST_ASSERT_INTEGRITY'));
+    assert.strictEqual(status, 1);
 }
 {
-  const { status, stderr } = spawnSync(
-    process.execPath,
-    [
-      '--policy-integrity', '',
-      '--experimental-policy', depPolicy, dep,
-    ]
-  );
+    const { status, stderr } = spawnSync(
+        process.execPath,
+        [
+            '--policy-integrity', '',
+            '--experimental-policy', depPolicy, dep,
+        ]
+    );
 
-  assert.ok(stderr.includes('--policy-integrity'));
-  assert.strictEqual(status, 9);
+    assert.ok(stderr.includes('--policy-integrity'));
+    assert.strictEqual(status, 9);
 }
 {
-  const { status, stderr } = spawnSync(
-    process.execPath,
-    [
-      '--policy-integrity', depPolicySRI,
-      '--experimental-policy', depPolicy, dep,
-    ]
-  );
+    const { status, stderr } = spawnSync(
+        process.execPath,
+        [
+            '--policy-integrity', depPolicySRI,
+            '--experimental-policy', depPolicy, dep,
+        ]
+    );
 
-  assert.strictEqual(status, 0, `status: ${status}\nstderr: ${stderr}`);
+    assert.strictEqual(status, 0, `status: ${status}\nstderr: ${stderr}`);
 }

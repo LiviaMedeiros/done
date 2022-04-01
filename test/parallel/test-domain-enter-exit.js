@@ -27,9 +27,9 @@ const assert = require('assert');
 const domain = require('domain');
 
 function names(array) {
-  return array.map(function(d) {
-    return d.name;
-  }).join(', ');
+    return array.map(function(d) {
+        return d.name;
+    }).join(', ');
 }
 
 const a = domain.create();

@@ -31,32 +31,32 @@ const { builtinModules } = require('module');
 
 // Load all modules to actually cover most code parts.
 builtinModules.forEach((moduleName) => {
-  if (!moduleName.includes('/')) {
-    try {
-      // This could throw for e.g., crypto if the binary is not compiled
-      // accordingly.
-      require(moduleName);
-    } catch {
-      // Continue regardless of error.
+    if (!moduleName.includes('/')) {
+        try {
+            // This could throw for e.g., crypto if the binary is not compiled
+            // accordingly.
+            require(moduleName);
+        } catch {
+            // Continue regardless of error.
+        }
     }
-  }
 });
 
 {
-  const expected = [
-    'global',
-    'queueMicrotask',
-    'clearImmediate',
-    'clearInterval',
-    'clearTimeout',
-    'performance',
-    'setImmediate',
-    'setInterval',
-    'setTimeout',
-    'structuredClone',
-    'fetch',
-  ];
-  assert.deepStrictEqual(new Set(Object.keys(global)), new Set(expected));
+    const expected = [
+        'global',
+        'queueMicrotask',
+        'clearImmediate',
+        'clearInterval',
+        'clearTimeout',
+        'performance',
+        'setImmediate',
+        'setInterval',
+        'setTimeout',
+        'structuredClone',
+        'fetch',
+    ];
+    assert.deepStrictEqual(new Set(Object.keys(global)), new Set(expected));
 }
 
 common.allowGlobals('bar', 'foo');

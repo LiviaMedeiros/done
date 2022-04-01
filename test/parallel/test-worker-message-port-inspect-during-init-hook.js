@@ -9,11 +9,11 @@ const { MessageChannel } = require('worker_threads');
 // constructing does not crash the process.
 
 async_hooks.createHook({
-  init: common.mustCall((id, type, triggerId, resource) => {
-    assert.strictEqual(
-      util.inspect(resource),
-      'MessagePort [EventTarget] { active: true, refed: false }');
-  }, 2)
+    init: common.mustCall((id, type, triggerId, resource) => {
+        assert.strictEqual(
+            util.inspect(resource),
+            'MessagePort [EventTarget] { active: true, refed: false }');
+    }, 2)
 }).enable();
 
 const { port1 } = new MessageChannel();

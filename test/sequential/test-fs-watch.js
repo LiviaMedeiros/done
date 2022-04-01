@@ -22,7 +22,7 @@
 'use strict';
 const common = require('../common');
 if (common.isIBMi)
-  common.skip('IBMi does not support fs.watch()');
+    common.skip('IBMi does not support fs.watch()');
 
 const assert = require('assert');
 const fs = require('fs');
@@ -31,7 +31,7 @@ const path = require('path');
 const tmpdir = require('../common/tmpdir');
 
 if (!common.isMainThread)
-  common.skip('process.chdir is not available in Workers');
+    common.skip('process.chdir is not available in Workers');
 
 const expectFilePath = common.isWindows ||
                        common.isLinux ||
@@ -46,119 +46,119 @@ tmpdir.refresh();
 // before it is actually watching, we need to repeat the operation to avoid
 // a race condition.
 function repeat(fn) {
-  setImmediate(fn);
-  const interval = setInterval(fn, 5000);
-  return interval;
+    setImmediate(fn);
+    const interval = setInterval(fn, 5000);
+    return interval;
 }
 
 {
-  const filepath = path.join(testDir, 'watch.txt');
+    const filepath = path.join(testDir, 'watch.txt');
 
-  fs.writeFileSync(filepath, 'hello');
+    fs.writeFileSync(filepath, 'hello');
 
-  const watcher = fs.watch(filepath);
-  watcher.on('change', common.mustCall(function(event, filename) {
-    assert.strictEqual(event, 'change');
+    const watcher = fs.watch(filepath);
+    watcher.on('change', common.mustCall(function(event, filename) {
+        assert.strictEqual(event, 'change');
 
-    if (expectFilePath) {
-      assert.strictEqual(filename, 'watch.txt');
-    }
-    clearInterval(interval);
-    watcher.close();
-  }));
+        if (expectFilePath) {
+            assert.strictEqual(filename, 'watch.txt');
+        }
+        clearInterval(interval);
+        watcher.close();
+    }));
 
-  const interval = repeat(() => { fs.writeFileSync(filepath, 'world'); });
+    const interval = repeat(() => { fs.writeFileSync(filepath, 'world'); });
 }
 
 {
-  const filepathAbs = path.join(testDir, 'hasOwnProperty');
+    const filepathAbs = path.join(testDir, 'hasOwnProperty');
 
-  process.chdir(testDir);
+    process.chdir(testDir);
 
-  fs.writeFileSync(filepathAbs, 'howdy');
+    fs.writeFileSync(filepathAbs, 'howdy');
 
-  const watcher =
+    const watcher =
     fs.watch('hasOwnProperty', common.mustCall(function(event, filename) {
-      assert.strictEqual(event, 'change');
+        assert.strictEqual(event, 'change');
 
-      if (expectFilePath) {
-        assert.strictEqual(filename, 'hasOwnProperty');
-      }
-      clearInterval(interval);
-      watcher.close();
+        if (expectFilePath) {
+            assert.strictEqual(filename, 'hasOwnProperty');
+        }
+        clearInterval(interval);
+        watcher.close();
     }));
 
-  const interval = repeat(() => { fs.writeFileSync(filepathAbs, 'pardner'); });
+    const interval = repeat(() => { fs.writeFileSync(filepathAbs, 'pardner'); });
 }
 
 {
-  const testsubdir = fs.mkdtempSync(testDir + path.sep);
-  const filepath = path.join(testsubdir, 'newfile.txt');
+    const testsubdir = fs.mkdtempSync(testDir + path.sep);
+    const filepath = path.join(testsubdir, 'newfile.txt');
 
-  const watcher =
+    const watcher =
     fs.watch(testsubdir, common.mustCall(function(event, filename) {
-      const renameEv = common.isSunOS || common.isAIX ? 'change' : 'rename';
-      assert.strictEqual(event, renameEv);
-      if (expectFilePath) {
-        assert.strictEqual(filename, 'newfile.txt');
-      } else {
-        assert.strictEqual(filename, null);
-      }
-      clearInterval(interval);
-      watcher.close();
+        const renameEv = common.isSunOS || common.isAIX ? 'change' : 'rename';
+        assert.strictEqual(event, renameEv);
+        if (expectFilePath) {
+            assert.strictEqual(filename, 'newfile.txt');
+        } else {
+            assert.strictEqual(filename, null);
+        }
+        clearInterval(interval);
+        watcher.close();
     }));
 
-  const interval = repeat(() => {
-    fs.rmSync(filepath, { force: true });
-    const fd = fs.openSync(filepath, 'w');
-    fs.closeSync(fd);
-  });
+    const interval = repeat(() => {
+        fs.rmSync(filepath, { force: true });
+        const fd = fs.openSync(filepath, 'w');
+        fs.closeSync(fd);
+    });
 }
 
 // https://github.com/joyent/node/issues/2293 - non-persistent watcher should
 // not block the event loop
 {
-  fs.watch(__filename, { persistent: false }, common.mustNotCall());
+    fs.watch(__filename, { persistent: false }, common.mustNotCall());
 }
 
 // Whitebox test to ensure that wrapped FSEvent is safe
 // https://github.com/joyent/node/issues/6690
 {
-  let oldhandle;
-  assert.throws(
-    () => {
-      const w = fs.watch(__filename, common.mustNotCall());
-      oldhandle = w._handle;
-      w._handle = { close: w._handle.close };
-      w.close();
-    },
-    {
-      name: 'Error',
-      code: 'ERR_INTERNAL_ASSERTION',
-      message: /^handle must be a FSEvent/,
-    }
-  );
-  oldhandle.close(); // clean up
+    let oldhandle;
+    assert.throws(
+        () => {
+            const w = fs.watch(__filename, common.mustNotCall());
+            oldhandle = w._handle;
+            w._handle = { close: w._handle.close };
+            w.close();
+        },
+        {
+            name: 'Error',
+            code: 'ERR_INTERNAL_ASSERTION',
+            message: /^handle must be a FSEvent/,
+        }
+    );
+    oldhandle.close(); // clean up
 }
 
 {
-  let oldhandle;
-  assert.throws(
-    () => {
-      const w = fs.watch(__filename, common.mustNotCall());
-      oldhandle = w._handle;
-      const protoSymbols =
+    let oldhandle;
+    assert.throws(
+        () => {
+            const w = fs.watch(__filename, common.mustNotCall());
+            oldhandle = w._handle;
+            const protoSymbols =
         Object.getOwnPropertySymbols(Object.getPrototypeOf(w));
-      const kFSWatchStart =
+            const kFSWatchStart =
         protoSymbols.find((val) => val.toString() === 'Symbol(kFSWatchStart)');
-      w._handle = {};
-      w[kFSWatchStart]();
-    },
-    {
-      name: 'Error',
-      code: 'ERR_INTERNAL_ASSERTION',
-      message: /^handle must be a FSEvent/,
-    }
-  );
-  oldhandle.close(); // clean up
+            w._handle = {};
+            w[kFSWatchStart]();
+        },
+        {
+            name: 'Error',
+            code: 'ERR_INTERNAL_ASSERTION',
+            message: /^handle must be a FSEvent/,
+        }
+    );
+    oldhandle.close(); // clean up
 }

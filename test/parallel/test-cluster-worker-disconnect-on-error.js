@@ -8,25 +8,25 @@ cluster.schedulingPolicy = cluster.SCHED_NONE;
 
 const server = http.createServer();
 if (cluster.isPrimary) {
-  let worker;
+    let worker;
 
-  server.listen(0, common.mustSucceed(() => {
-    assert(worker);
+    server.listen(0, common.mustSucceed(() => {
+        assert(worker);
 
-    worker.send({ port: server.address().port });
-  }));
-
-  worker = cluster.fork();
-  worker.on('exit', common.mustCall(() => {
-    server.close();
-  }));
-} else {
-  process.on('message', common.mustCall((msg) => {
-    assert(msg.port);
-
-    server.listen(msg.port);
-    server.on('error', common.mustCall((e) => {
-      cluster.worker.disconnect();
+        worker.send({ port: server.address().port });
     }));
-  }));
+
+    worker = cluster.fork();
+    worker.on('exit', common.mustCall(() => {
+        server.close();
+    }));
+} else {
+    process.on('message', common.mustCall((msg) => {
+        assert(msg.port);
+
+        server.listen(msg.port);
+        server.on('error', common.mustCall((e) => {
+            cluster.worker.disconnect();
+        }));
+    }));
 }

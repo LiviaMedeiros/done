@@ -34,7 +34,7 @@ const exe = 'overlapped-checker' + exeExtension;
 const exePath = path.join(path.dirname(process.execPath), exe);
 
 const child = child_process.spawn(exePath, [], {
-  stdio: ['overlapped', 'pipe', 'pipe']
+    stdio: ['overlapped', 'pipe', 'pipe']
 });
 
 child.stdin.setEncoding('utf8');
@@ -42,34 +42,34 @@ child.stdout.setEncoding('utf8');
 child.stderr.setEncoding('utf8');
 
 function writeNext(n) {
-  child.stdin.write((n + 50).toString());
+    child.stdin.write((n + 50).toString());
 }
 
 child.stdout.on('data', (s) => {
-  const n = Number(s);
-  if (n >= 200) {
-    child.stdin.write('exit');
-    return;
-  }
-  writeNext(n);
+    const n = Number(s);
+    if (n >= 200) {
+        child.stdin.write('exit');
+        return;
+    }
+    writeNext(n);
 });
 
 let stderr = '';
 child.stderr.on('data', (s) => {
-  stderr += s;
+    stderr += s;
 });
 
 child.stderr.on('end', common.mustCall(() => {
-  // This is the sequence of numbers sent to us:
-  // - 0 (1 byte written)
-  // - 50 (2 bytes written)
-  // - 100 (3 bytes written)
-  // - 150 (3 bytes written)
-  // - 200 (3 bytes written)
-  assert.strictEqual(stderr, '12333');
+    // This is the sequence of numbers sent to us:
+    // - 0 (1 byte written)
+    // - 50 (2 bytes written)
+    // - 100 (3 bytes written)
+    // - 150 (3 bytes written)
+    // - 200 (3 bytes written)
+    assert.strictEqual(stderr, '12333');
 }));
 
 child.on('exit', common.mustCall((status) => {
-  // The test program will return the number of writes as status code.
-  assert.strictEqual(status, 0);
+    // The test program will return the number of writes as status code.
+    assert.strictEqual(status, 0);
 }));

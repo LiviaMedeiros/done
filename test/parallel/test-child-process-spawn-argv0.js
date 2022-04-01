@@ -6,8 +6,8 @@ const cp = require('child_process');
 // This test spawns itself with an argument to indicate when it is a child to
 // easily and portably print the value of argv[0]
 if (process.argv[2] === 'child') {
-  console.log(process.argv0);
-  return;
+    console.log(process.argv0);
+    return;
 }
 
 const noArgv0 = cp.spawnSync(process.execPath, [__filename, 'child']);

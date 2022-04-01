@@ -21,44 +21,44 @@ let done;
 
 const server = http
   .createServer((req, res) => {
-    if (!once) server.close();
-    once = true;
+      if (!once) server.close();
+      once = true;
 
-    if (first === null) {
-      first = res;
-      return;
-    }
-    if (second === null) {
-      second = res;
-      res.write(chunk);
-    } else {
-      res.end(chunk);
-    }
-    size += res.outputSize;
-    if (size <= req.socket.writableHighWaterMark) {
-      more();
-      return;
-    }
-    done();
+      if (first === null) {
+          first = res;
+          return;
+      }
+      if (second === null) {
+          second = res;
+          res.write(chunk);
+      } else {
+          res.end(chunk);
+      }
+      size += res.outputSize;
+      if (size <= req.socket.writableHighWaterMark) {
+          more();
+          return;
+      }
+      done();
   })
   .on('upgrade', (req, socket) => {
-    second.end(chunk, () => {
-      socket.end();
-    });
-    first.end('hello');
+      second.end(chunk, () => {
+          socket.end();
+      });
+      first.end('hello');
   })
   .listen(0, () => {
-    const s = net.connect(server.address().port);
-    more = () => {
-      s.write('GET / HTTP/1.1\r\n\r\n');
-    };
-    done = () => {
-      s.write(
-        'GET / HTTP/1.1\r\n\r\n' +
+      const s = net.connect(server.address().port);
+      more = () => {
+          s.write('GET / HTTP/1.1\r\n\r\n');
+      };
+      done = () => {
+          s.write(
+              'GET / HTTP/1.1\r\n\r\n' +
           'GET / HTTP/1.1\r\nConnection: upgrade\r\nUpgrade: ws\r\n\r\naaa'
-      );
-    };
-    more();
-    more();
-    s.resume();
+          );
+      };
+      more();
+      more();
+      s.resume();
   });

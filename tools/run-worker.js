@@ -1,7 +1,7 @@
 'use strict';
 if (typeof require === 'undefined') {
-  console.log('1..0 # Skipped: Not being run as CommonJS');
-  process.exit(0);
+    console.log('1..0 # Skipped: Not being run as CommonJS');
+    process.exit(0);
 }
 
 const path = require('path');

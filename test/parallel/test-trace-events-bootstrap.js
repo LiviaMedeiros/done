@@ -7,39 +7,39 @@ const path = require('path');
 const tmpdir = require('../common/tmpdir');
 
 const names = [
-  'environment',
-  'nodeStart',
-  'v8Start',
-  'loopStart',
-  'loopExit',
-  'bootstrapComplete',
+    'environment',
+    'nodeStart',
+    'v8Start',
+    'loopStart',
+    'loopExit',
+    'bootstrapComplete',
 ];
 
 if (process.argv[2] === 'child') {
-  1 + 1; // eslint-disable-line no-unused-expressions
+    1 + 1; // eslint-disable-line no-unused-expressions
 } else {
-  tmpdir.refresh();
+    tmpdir.refresh();
 
-  const proc = cp.fork(__filename,
-                       [ 'child' ], {
-                         cwd: tmpdir.path,
-                         execArgv: [
-                           '--trace-event-categories',
-                           'node.bootstrap',
-                         ]
-                       });
+    const proc = cp.fork(__filename,
+                         [ 'child' ], {
+                             cwd: tmpdir.path,
+                             execArgv: [
+                                 '--trace-event-categories',
+                                 'node.bootstrap',
+                             ]
+                         });
 
-  proc.once('exit', common.mustCall(() => {
-    const file = path.join(tmpdir.path, 'node_trace.1.log');
+    proc.once('exit', common.mustCall(() => {
+        const file = path.join(tmpdir.path, 'node_trace.1.log');
 
-    assert(fs.existsSync(file));
-    fs.readFile(file, common.mustCall((err, data) => {
-      const traces = JSON.parse(data.toString()).traceEvents
+        assert(fs.existsSync(file));
+        fs.readFile(file, common.mustCall((err, data) => {
+            const traces = JSON.parse(data.toString()).traceEvents
         .filter((trace) => trace.cat !== '__metadata');
-      traces.forEach((trace) => {
-        assert.strictEqual(trace.pid, proc.pid);
-        assert(names.includes(trace.name));
-      });
+            traces.forEach((trace) => {
+                assert.strictEqual(trace.pid, proc.pid);
+                assert(names.includes(trace.name));
+            });
+        }));
     }));
-  }));
 }

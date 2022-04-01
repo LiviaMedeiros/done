@@ -6,7 +6,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 const assert = require('assert');
 const http2 = require('http2');
 
@@ -24,54 +24,54 @@ const y = 'foo⠊Set-Cookie: foo=bar';
 let remaining = 3;
 
 function makeUrl(headers) {
-  return `${headers[':scheme']}://${headers[':authority']}${headers[':path']}`;
+    return `${headers[':scheme']}://${headers[':authority']}${headers[':path']}`;
 }
 
 const server = http2.createServer();
 server.on('stream', common.mustCall((stream, headers) => {
 
-  const obj = Object.create(null);
-  switch (remaining--) {
-    case 3: {
-      const url = new URL(makeUrl(headers));
-      obj[':status'] = 302;
-      obj.Location = `/foo?lang=${url.searchParams.get('lang')}`;
-      break;
+    const obj = Object.create(null);
+    switch (remaining--) {
+        case 3: {
+            const url = new URL(makeUrl(headers));
+            obj[':status'] = 302;
+            obj.Location = `/foo?lang=${url.searchParams.get('lang')}`;
+            break;
+        }
+        case 2:
+            obj.foo = x;
+            break;
+        case 1:
+            obj.foo = y;
+            break;
     }
-    case 2:
-      obj.foo = x;
-      break;
-    case 1:
-      obj.foo = y;
-      break;
-  }
-  stream.respond(obj);
-  stream.end();
+    stream.respond(obj);
+    stream.end();
 }, 3));
 
 server.listen(0, common.mustCall(() => {
-  const client = http2.connect(`http://localhost:${server.address().port}`);
+    const client = http2.connect(`http://localhost:${server.address().port}`);
 
-  function maybeClose() {
-    if (remaining === 0) {
-      server.close();
-      client.close();
+    function maybeClose() {
+        if (remaining === 0) {
+            server.close();
+            client.close();
+        }
     }
-  }
 
-  function doTest(path, key, expected) {
-    const req = client.request({ ':path': path });
-    req.on('response', common.mustCall((headers) => {
-      assert.strictEqual(headers.foo, undefined);
-      assert.strictEqual(headers.location, undefined);
-    }));
-    req.resume();
-    req.on('end', common.mustCall());
-    req.on('close', common.mustCall(maybeClose));
-  }
+    function doTest(path, key, expected) {
+        const req = client.request({ ':path': path });
+        req.on('response', common.mustCall((headers) => {
+            assert.strictEqual(headers.foo, undefined);
+            assert.strictEqual(headers.location, undefined);
+        }));
+        req.resume();
+        req.on('end', common.mustCall());
+        req.on('close', common.mustCall(maybeClose));
+    }
 
-  doTest(str, 'location', str);
-  doTest('/', 'foo', x);
-  doTest('/', 'foo', y);
+    doTest(str, 'location', str);
+    doTest('/', 'foo', x);
+    doTest('/', 'foo', y);
 
 }));

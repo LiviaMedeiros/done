@@ -12,23 +12,23 @@ const countdown =
                 common.mustCall(() => server.close()));
 
 const server = http.createServer(common.mustCall((req, res) => {
-  res.end();
-  countdown.dec();
+    res.end();
+    countdown.dec();
 }, expectedSuccesses.length));
 
 server.listen(0, common.mustCall(() => {
-  expectedFails.forEach((method) => {
-    assert.throws(() => {
-      http.request({ method, path: '/' }, common.mustNotCall());
-    }, {
-      code: 'ERR_INVALID_ARG_TYPE',
-      name: 'TypeError',
-      message: 'The "options.method" property must be of type string.' +
+    expectedFails.forEach((method) => {
+        assert.throws(() => {
+            http.request({ method, path: '/' }, common.mustNotCall());
+        }, {
+            code: 'ERR_INVALID_ARG_TYPE',
+            name: 'TypeError',
+            message: 'The "options.method" property must be of type string.' +
                common.invalidArgTypeHelper(method)
+        });
     });
-  });
 
-  expectedSuccesses.forEach((method) => {
-    http.request({ method, port: server.address().port }).end();
-  });
+    expectedSuccesses.forEach((method) => {
+        http.request({ method, port: server.address().port }).end();
+    });
 }));

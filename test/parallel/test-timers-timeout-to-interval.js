@@ -5,8 +5,8 @@ const common = require('../common');
 // currently possible and as such it shouldn't cause the process to crash
 
 const t = setTimeout(common.mustCall(() => {
-  if (t._repeat) {
-    clearInterval(t);
-  }
-  t._repeat = 1;
+    if (t._repeat) {
+        clearInterval(t);
+    }
+    t._repeat = 1;
 }, 2), 1);

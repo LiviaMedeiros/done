@@ -11,6 +11,6 @@ tmpdir.refresh();
 const file = fs.createWriteStream(writeFile, { autoClose: true });
 
 file.on('finish', common.mustCall(() => {
-  assert.strictEqual(file.destroyed, false);
+    assert.strictEqual(file.destroyed, false);
 }));
 file.end('asd');

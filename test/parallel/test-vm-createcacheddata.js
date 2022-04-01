@@ -16,7 +16,7 @@ assert(!new Script(source, { cachedData }).cachedDataRejected);
 script.runInNewContext();
 
 for (let i = 0; i < 10; i += 1) {
-  cachedData = script.createCachedData();
+    cachedData = script.createCachedData();
 
-  assert(!new Script(source, { cachedData }).cachedDataRejected);
+    assert(!new Script(source, { cachedData }).cachedDataRejected);
 }

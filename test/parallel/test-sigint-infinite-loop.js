@@ -13,22 +13,22 @@ const c = spawn(process.execPath, ['-e', 'while(true) { console.log("hi"); }']);
 let sentKill = false;
 
 c.stdout.on('data', function(s) {
-  // Prevent race condition:
-  // Wait for the first bit of output from the child process
-  // so that we're sure that it's in the V8 event loop and not
-  // just in the startup phase of execution.
-  if (!sentKill) {
-    c.kill('SIGINT');
-    console.log('SIGINT infinite-loop.js');
-    sentKill = true;
-  }
+    // Prevent race condition:
+    // Wait for the first bit of output from the child process
+    // so that we're sure that it's in the V8 event loop and not
+    // just in the startup phase of execution.
+    if (!sentKill) {
+        c.kill('SIGINT');
+        console.log('SIGINT infinite-loop.js');
+        sentKill = true;
+    }
 });
 
 c.on('exit', common.mustCall(function(code) {
-  assert.ok(code !== 0);
-  console.log('killed infinite-loop.js');
+    assert.ok(code !== 0);
+    console.log('killed infinite-loop.js');
 }));
 
 process.on('exit', function() {
-  assert.ok(sentKill);
+    assert.ok(sentKill);
 });

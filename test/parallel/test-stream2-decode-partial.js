@@ -15,9 +15,9 @@ readable.push(source.slice(4, 6));
 readable.push(null);
 
 readable.on('data', function(data) {
-  buf += data;
+    buf += data;
 });
 
 process.on('exit', function() {
-  assert.strictEqual(buf, '€¢');
+    assert.strictEqual(buf, '€¢');
 });

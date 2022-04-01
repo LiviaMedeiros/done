@@ -4,19 +4,19 @@ const assert = require('assert');
 const { promiseHooks } = require('v8');
 
 assert.throws(() => {
-  promiseHooks.onInit(async function() { });
+    promiseHooks.onInit(async function() { });
 }, /The "initHook" argument must be of type function/);
 
 assert.throws(() => {
-  promiseHooks.onInit(async function*() { });
+    promiseHooks.onInit(async function*() { });
 }, /The "initHook" argument must be of type function/);
 
 let seenPromise;
 let seenParent;
 
 const stop = promiseHooks.onInit(common.mustCall((promise, parent) => {
-  seenPromise = promise;
-  seenParent = parent;
+    seenPromise = promise;
+    seenParent = parent;
 }, 2));
 
 const parent = Promise.resolve();

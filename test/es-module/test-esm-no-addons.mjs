@@ -5,23 +5,23 @@ import { fileURLToPath } from 'url';
 import { requireFixture, importFixture } from '../fixtures/pkgexports.mjs';
 
 if (isMainThread) {
-  const tests = [[], ['--no-addons']];
+    const tests = [[], ['--no-addons']];
 
-  for (const execArgv of tests) {
-    new Worker(fileURLToPath(import.meta.url), { execArgv });
-  }
+    for (const execArgv of tests) {
+        new Worker(fileURLToPath(import.meta.url), { execArgv });
+    }
 } else {
-  [requireFixture, importFixture].forEach((loadFixture) => {
-    loadFixture('pkgexports/no-addons').then(
-      mustCall((module) => {
-        const message = module.default;
+    [requireFixture, importFixture].forEach((loadFixture) => {
+        loadFixture('pkgexports/no-addons').then(
+            mustCall((module) => {
+                const message = module.default;
 
-        if (process.execArgv.length === 0) {
-          assert.strictEqual(message, 'using native addons');
-        } else {
-          assert.strictEqual(message, 'not using native addons');
-        }
-      })
-    );
-  });
+                if (process.execArgv.length === 0) {
+                    assert.strictEqual(message, 'using native addons');
+                } else {
+                    assert.strictEqual(message, 'not using native addons');
+                }
+            })
+        );
+    });
 }

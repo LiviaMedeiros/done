@@ -11,9 +11,9 @@ require('worker_threads').parentPort.postMessage('up');
 `, { eval: true });
 
 worker.once('message', common.mustCall(() => {
-  setImmediate(() => worker.terminate());
+    setImmediate(() => worker.terminate());
 }));
 
 worker.once('exit', common.mustCall((code) => {
-  assert.strictEqual(code, 1);
+    assert.strictEqual(code, 1);
 }));

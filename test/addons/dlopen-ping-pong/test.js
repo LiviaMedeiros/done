@@ -2,7 +2,7 @@
 const common = require('../../common');
 
 if (common.isWindows)
-  common.skip('dlopen global symbol loading is not supported on this os.');
+    common.skip('dlopen global symbol loading is not supported on this os.');
 
 const assert = require('assert');
 const path = require('path');

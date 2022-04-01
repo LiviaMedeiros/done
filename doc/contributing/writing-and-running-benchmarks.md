@@ -482,16 +482,16 @@ const common = require('../common.js');
 const { SlowBuffer } = require('buffer');
 
 const configs = {
-  // Number of operations, specified here so they show up in the report.
-  // Most benchmarks just use one value for all runs.
-  n: [1024],
-  type: ['fast', 'slow'],  // Custom configurations
-  size: [16, 128, 1024]  // Custom configurations
+    // Number of operations, specified here so they show up in the report.
+    // Most benchmarks just use one value for all runs.
+    n: [1024],
+    type: ['fast', 'slow'],  // Custom configurations
+    size: [16, 128, 1024]  // Custom configurations
 };
 
 const options = {
-  // Add --expose-internals in order to require internal modules in main
-  flags: ['--zero-fill-buffers']
+    // Add --expose-internals in order to require internal modules in main
+    flags: ['--zero-fill-buffers']
 };
 
 // `main` and `configs` are required, `options` is optional.
@@ -501,23 +501,23 @@ const bench = common.createBenchmark(main, configs, options);
 // in different processes, with different command line arguments.
 
 function main(conf) {
-  // Only flags that have been passed to createBenchmark
-  // earlier when main is run will be in effect.
-  // In order to benchmark the internal modules, require them here. For example:
-  // const URL = require('internal/url').URL
+    // Only flags that have been passed to createBenchmark
+    // earlier when main is run will be in effect.
+    // In order to benchmark the internal modules, require them here. For example:
+    // const URL = require('internal/url').URL
 
-  // Start the timer
-  bench.start();
+    // Start the timer
+    bench.start();
 
-  // Do operations here
-  const BufferConstructor = conf.type === 'fast' ? Buffer : SlowBuffer;
+    // Do operations here
+    const BufferConstructor = conf.type === 'fast' ? Buffer : SlowBuffer;
 
-  for (let i = 0; i < conf.n; i++) {
-    new BufferConstructor(conf.size);
-  }
+    for (let i = 0; i < conf.n; i++) {
+        new BufferConstructor(conf.size);
+    }
 
-  // End the timer, pass in the number of operations
-  bench.end(conf.n);
+    // End the timer, pass in the number of operations
+    bench.end(conf.n);
 }
 ```
 
@@ -533,26 +533,26 @@ benchmark HTTP servers.
 const common = require('../common.js');
 
 const bench = common.createBenchmark(main, {
-  kb: [64, 128, 256, 1024],
-  connections: [100, 500],
-  duration: 5
+    kb: [64, 128, 256, 1024],
+    connections: [100, 500],
+    duration: 5
 });
 
 function main(conf) {
-  const http = require('http');
-  const len = conf.kb * 1024;
-  const chunk = Buffer.alloc(len, 'x');
-  const server = http.createServer((req, res) => {
-    res.end(chunk);
-  });
-
-  server.listen(common.PORT, () => {
-    bench.http({
-      connections: conf.connections,
-    }, () => {
-      server.close();
+    const http = require('http');
+    const len = conf.kb * 1024;
+    const chunk = Buffer.alloc(len, 'x');
+    const server = http.createServer((req, res) => {
+        res.end(chunk);
     });
-  });
+
+    server.listen(common.PORT, () => {
+        bench.http({
+            connections: conf.connections,
+        }, () => {
+            server.close();
+        });
+    });
 }
 ```
 

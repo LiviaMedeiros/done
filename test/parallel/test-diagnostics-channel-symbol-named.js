@@ -5,7 +5,7 @@ const dc = require('diagnostics_channel');
 const assert = require('assert');
 
 const input = {
-  foo: 'bar'
+    foo: 'bar'
 };
 
 const symbol = Symbol('test');
@@ -15,14 +15,14 @@ const channel = dc.channel(symbol);
 
 // Expect two successful publishes later
 channel.subscribe(common.mustCall((message, name) => {
-  assert.strictEqual(name, symbol);
-  assert.deepStrictEqual(message, input);
+    assert.strictEqual(name, symbol);
+    assert.deepStrictEqual(message, input);
 }));
 
 channel.publish(input);
 
 {
-  assert.throws(() => {
-    dc.channel(null);
-  }, /ERR_INVALID_ARG_TYPE/);
+    assert.throws(() => {
+        dc.channel(null);
+    }, /ERR_INVALID_ARG_TYPE/);
 }

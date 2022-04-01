@@ -73,23 +73,23 @@ assert.strictEqual(getStringWidth('\u200E\n\u220A\u20D2'), 1);
 // Test that the fast path for ASCII characters yields results consistent
 // with the 'slow' path.
 for (let i = 0; i < 256; i++) {
-  const char = String.fromCharCode(i);
-  assert.strictEqual(
-    getStringWidth(char + '🎉'),
-    getStringWidth(char) + 2);
+    const char = String.fromCharCode(i);
+    assert.strictEqual(
+        getStringWidth(char + '🎉'),
+        getStringWidth(char) + 2);
 
-  if (i < 32 || (i >= 127 && i < 160)) {  // Control character
-    assert.strictEqual(getStringWidth(char), 0);
-  } else {  // Regular ASCII character
-    assert.strictEqual(getStringWidth(char), 1);
-  }
+    if (i < 32 || (i >= 127 && i < 160)) {  // Control character
+        assert.strictEqual(getStringWidth(char), 0);
+    } else {  // Regular ASCII character
+        assert.strictEqual(getStringWidth(char), 1);
+    }
 }
 
 if (common.hasIntl) {
-  const a = '한글'.normalize('NFD'); // 한글
-  const b = '한글'.normalize('NFC'); // 한글
-  assert.strictEqual(a.length, 6);
-  assert.strictEqual(b.length, 2);
-  assert.strictEqual(getStringWidth(a), 4);
-  assert.strictEqual(getStringWidth(b), 4);
+    const a = '한글'.normalize('NFD'); // 한글
+    const b = '한글'.normalize('NFC'); // 한글
+    assert.strictEqual(a.length, 6);
+    assert.strictEqual(b.length, 2);
+    assert.strictEqual(getStringWidth(a), 4);
+    assert.strictEqual(getStringWidth(b), 4);
 }

@@ -7,11 +7,11 @@ const fs = require('fs');
 // with EBADF.
 
 (async function() {
-  const fh = await fs.promises.open(__filename);
-  fs.closeSync(fh.fd);
+    const fh = await fs.promises.open(__filename);
+    fs.closeSync(fh.fd);
 
-  assert.rejects(() => fh.close(), {
-    code: 'EBADF',
-    syscall: 'close'
-  });
+    assert.rejects(() => fh.close(), {
+        code: 'EBADF',
+        syscall: 'close'
+    });
 })().then(common.mustCall());

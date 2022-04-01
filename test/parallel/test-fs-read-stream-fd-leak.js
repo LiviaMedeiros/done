@@ -14,49 +14,49 @@ const totalCheck = 50;
 const emptyTxt = fixtures.path('empty.txt');
 
 fs.open = function() {
-  openCount++;
-  return _fsopen.apply(null, arguments);
+    openCount++;
+    return _fsopen.apply(null, arguments);
 };
 
 fs.close = function() {
-  openCount--;
-  return _fsclose.apply(null, arguments);
+    openCount--;
+    return _fsclose.apply(null, arguments);
 };
 
 function testLeak(endFn, callback) {
-  console.log(`testing for leaks from fs.createReadStream().${endFn}()...`);
+    console.log(`testing for leaks from fs.createReadStream().${endFn}()...`);
 
-  let i = 0;
-  let check = 0;
+    let i = 0;
+    let check = 0;
 
-  function checkFunction() {
-    if (openCount !== 0 && check < totalCheck) {
-      check++;
-      setTimeout(checkFunction, 100);
-      return;
+    function checkFunction() {
+        if (openCount !== 0 && check < totalCheck) {
+            check++;
+            setTimeout(checkFunction, 100);
+            return;
+        }
+
+        assert.strictEqual(
+            openCount,
+            0,
+            `no leaked file descriptors using ${endFn}() (got ${openCount})`
+        );
+
+        openCount = 0;
+        callback && setTimeout(callback, 100);
     }
 
-    assert.strictEqual(
-      openCount,
-      0,
-      `no leaked file descriptors using ${endFn}() (got ${openCount})`
-    );
+    setInterval(function() {
+        const s = fs.createReadStream(emptyTxt);
+        s[endFn]();
 
-    openCount = 0;
-    callback && setTimeout(callback, 100);
-  }
-
-  setInterval(function() {
-    const s = fs.createReadStream(emptyTxt);
-    s[endFn]();
-
-    if (++i === loopCount) {
-      clearTimeout(this);
-      setTimeout(checkFunction, 100);
-    }
-  }, 2);
+        if (++i === loopCount) {
+            clearTimeout(this);
+            setTimeout(checkFunction, 100);
+        }
+    }, 2);
 }
 
 testLeak('close', function() {
-  testLeak('destroy');
+    testLeak('destroy');
 });

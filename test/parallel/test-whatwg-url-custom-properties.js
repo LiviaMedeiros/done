@@ -13,7 +13,7 @@ const oldParams = url.searchParams;  // For test of [SameObject]
 // we need to use the for-in loop.
 const props = [];
 for (const prop in url) {
-  props.push(prop);
+    props.push(prop);
 }
 
 // See: https://url.spec.whatwg.org/#api
@@ -43,8 +43,8 @@ assert.strictEqual(url.searchParams, oldParams);  // [SameObject]
 // non-writable property should throw.
 // Note: this error message is subject to change in V8 updates
 assert.throws(
-  () => url.origin = 'http://foo.bar.com:22',
-  /^TypeError: Cannot set property origin of \[object URL\] which has only a getter$/
+    () => url.origin = 'http://foo.bar.com:22',
+    /^TypeError: Cannot set property origin of \[object URL\] which has only a getter$/
 );
 assert.strictEqual(url.origin, 'http://foo.bar.com:21');
 assert.strictEqual(url.toString(),
@@ -120,8 +120,8 @@ assert.strictEqual(url.hash, '#abcd');
 // non-writable property should throw.
 // Note: this error message is subject to change in V8 updates
 assert.throws(
-  () => url.searchParams = '?k=88',
-  /^TypeError: Cannot set property searchParams of \[object URL\] which has only a getter$/
+    () => url.searchParams = '?k=88',
+    /^TypeError: Cannot set property searchParams of \[object URL\] which has only a getter$/
 );
 assert.strictEqual(url.searchParams, oldParams);
 assert.strictEqual(url.toString(),
@@ -131,16 +131,16 @@ assert.strictEqual(url.searchParams, oldParams);
 
 // Test special origins
 [
-  { expected: 'https://whatwg.org',
-    url: 'blob:https://whatwg.org/d0360e2f-caee-469f-9a2f-87d5b0456f6f' },
-  { expected: 'ftp://example.org', url: 'ftp://example.org/foo' },
-  { expected: 'http://example.org', url: 'http://example.org/foo' },
-  { expected: 'https://example.org', url: 'https://example.org/foo' },
-  { expected: 'ws://example.org', url: 'ws://example.org/foo' },
-  { expected: 'wss://example.org', url: 'wss://example.org/foo' },
-  { expected: 'null', url: 'gopher://gopher.quux.org/1/' },
-  { expected: 'null', url: 'file:///tmp/mock/path' },
-  { expected: 'null', url: 'npm://nodejs/rules' },
+    { expected: 'https://whatwg.org',
+      url: 'blob:https://whatwg.org/d0360e2f-caee-469f-9a2f-87d5b0456f6f' },
+    { expected: 'ftp://example.org', url: 'ftp://example.org/foo' },
+    { expected: 'http://example.org', url: 'http://example.org/foo' },
+    { expected: 'https://example.org', url: 'https://example.org/foo' },
+    { expected: 'ws://example.org', url: 'ws://example.org/foo' },
+    { expected: 'wss://example.org', url: 'wss://example.org/foo' },
+    { expected: 'null', url: 'gopher://gopher.quux.org/1/' },
+    { expected: 'null', url: 'file:///tmp/mock/path' },
+    { expected: 'null', url: 'npm://nodejs/rules' },
 ].forEach((test) => {
-  assert.strictEqual(new URL(test.url).origin, test.expected);
+    assert.strictEqual(new URL(test.url).origin, test.expected);
 });

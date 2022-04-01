@@ -9,6 +9,6 @@ const binding = require(`./build/${common.buildType}/binding`);
 global.it = new binding.MyObject();
 
 global.cleanup = () => {
-  delete global.it;
-  global.gc();
+    delete global.it;
+    global.gc();
 };

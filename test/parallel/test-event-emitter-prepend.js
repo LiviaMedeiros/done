@@ -24,15 +24,15 @@ const stream = require('stream');
 delete EventEmitter.prototype.prependListener;
 
 function Writable() {
-  this.writable = true;
-  stream.Stream.call(this);
+    this.writable = true;
+    stream.Stream.call(this);
 }
 Object.setPrototypeOf(Writable.prototype, stream.Stream.prototype);
 Object.setPrototypeOf(Writable, stream.Stream);
 
 function Readable() {
-  this.readable = true;
-  stream.Stream.call(this);
+    this.readable = true;
+    stream.Stream.call(this);
 }
 Object.setPrototypeOf(Readable.prototype, stream.Stream.prototype);
 Object.setPrototypeOf(Readable, stream.Stream);

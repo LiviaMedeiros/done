@@ -14,11 +14,11 @@ const { validateSnapshotNodes } = require('../common/heap');
 const context = require('vm').createScript('const foo = 123');
 
 validateSnapshotNodes('Node / Environment', [{
-  children: [
-    { node_name: 'Node / cleanup_hooks', edge_name: 'cleanup_hooks' },
-    { node_name: 'process', edge_name: 'process_object' },
-    { node_name: 'Node / IsolateData', edge_name: 'isolate_data' },
-  ]
+    children: [
+        { node_name: 'Node / cleanup_hooks', edge_name: 'cleanup_hooks' },
+        { node_name: 'process', edge_name: 'process_object' },
+        { node_name: 'Node / IsolateData', edge_name: 'isolate_data' },
+    ]
 }]);
 
 console.log(context);  // Make sure it's not GC'ed

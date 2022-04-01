@@ -48,41 +48,41 @@ let apilinks = {};
 let versions = [];
 
 async function main() {
-  for (const arg of args) {
-    if (!arg.startsWith('--')) {
-      filename = arg;
-    } else if (arg.startsWith('--node-version=')) {
-      nodeVersion = arg.replace(/^--node-version=/, '');
-    } else if (arg.startsWith('--output-directory=')) {
-      outputDir = arg.replace(/^--output-directory=/, '');
-    } else if (arg.startsWith('--apilinks=')) {
-      const linkFile = arg.replace(/^--apilinks=/, '');
-      const data = await fs.readFile(linkFile, 'utf8');
-      if (!data.trim()) {
-        throw new Error(`${linkFile} is empty`);
-      }
-      apilinks = JSON.parse(data);
-    } else if (arg.startsWith('--versions-file=')) {
-      const versionsFile = arg.replace(/^--versions-file=/, '');
-      const data = await fs.readFile(versionsFile, 'utf8');
-      if (!data.trim()) {
-        throw new Error(`${versionsFile} is empty`);
-      }
-      versions = JSON.parse(data);
+    for (const arg of args) {
+        if (!arg.startsWith('--')) {
+            filename = arg;
+        } else if (arg.startsWith('--node-version=')) {
+            nodeVersion = arg.replace(/^--node-version=/, '');
+        } else if (arg.startsWith('--output-directory=')) {
+            outputDir = arg.replace(/^--output-directory=/, '');
+        } else if (arg.startsWith('--apilinks=')) {
+            const linkFile = arg.replace(/^--apilinks=/, '');
+            const data = await fs.readFile(linkFile, 'utf8');
+            if (!data.trim()) {
+                throw new Error(`${linkFile} is empty`);
+            }
+            apilinks = JSON.parse(data);
+        } else if (arg.startsWith('--versions-file=')) {
+            const versionsFile = arg.replace(/^--versions-file=/, '');
+            const data = await fs.readFile(versionsFile, 'utf8');
+            if (!data.trim()) {
+                throw new Error(`${versionsFile} is empty`);
+            }
+            versions = JSON.parse(data);
+        }
     }
-  }
 
-  nodeVersion = nodeVersion || process.version;
+    nodeVersion = nodeVersion || process.version;
 
-  if (!filename) {
-    throw new Error('No input file specified');
-  } else if (!outputDir) {
-    throw new Error('No output directory specified');
-  }
+    if (!filename) {
+        throw new Error('No input file specified');
+    } else if (!outputDir) {
+        throw new Error('No output directory specified');
+    }
 
-  const input = await fs.readFile(filename, 'utf8');
+    const input = await fs.readFile(filename, 'utf8');
 
-  const content = await unified()
+    const content = await unified()
     .use(frontmatter)
     .use(replaceLinks, { filename, linksMapper })
     .use(markdown)
@@ -97,39 +97,39 @@ async function main() {
     .use(htmlStringify)
     .process(input);
 
-  const myHtml = await html.toHTML({ input, content, filename, nodeVersion,
-                                     versions });
-  const basename = path.basename(filename, '.md');
-  const htmlTarget = path.join(outputDir, `${basename}.html`);
-  const jsonTarget = path.join(outputDir, `${basename}.json`);
+    const myHtml = await html.toHTML({ input, content, filename, nodeVersion,
+                                       versions });
+    const basename = path.basename(filename, '.md');
+    const htmlTarget = path.join(outputDir, `${basename}.html`);
+    const jsonTarget = path.join(outputDir, `${basename}.json`);
 
-  return Promise.allSettled([
-    fs.writeFile(htmlTarget, myHtml),
-    fs.writeFile(jsonTarget, JSON.stringify(content.json, null, 2)),
-  ]);
+    return Promise.allSettled([
+        fs.writeFile(htmlTarget, myHtml),
+        fs.writeFile(jsonTarget, JSON.stringify(content.json, null, 2)),
+    ]);
 }
 
 main()
   .then((tasks) => {
-    // Filter rejected tasks
-    const errors = tasks.filter(({ status }) => status === 'rejected')
+      // Filter rejected tasks
+      const errors = tasks.filter(({ status }) => status === 'rejected')
       .map(({ reason }) => reason);
 
-    // Log errors
-    for (const error of errors) {
-      console.error(error);
-    }
+      // Log errors
+      for (const error of errors) {
+          console.error(error);
+      }
 
-    // Exit process with code 1 if some errors
-    if (errors.length > 0) {
-      return process.exit(1);
-    }
+      // Exit process with code 1 if some errors
+      if (errors.length > 0) {
+          return process.exit(1);
+      }
 
-    // Else with code 0
-    process.exit(0);
+      // Else with code 0
+      process.exit(0);
   })
   .catch((error) => {
-    console.error(error);
+      console.error(error);
 
-    process.exit(1);
+      process.exit(1);
   });

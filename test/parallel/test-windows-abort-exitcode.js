@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../common');
 if (!common.isWindows)
-  common.skip('test is windows specific');
+    common.skip('test is windows specific');
 
 const assert = require('assert');
 const spawn = require('child_process').spawn;
@@ -12,11 +12,11 @@ const spawn = require('child_process').spawn;
 // exit code in the parent.
 
 if (process.argv[2] === 'child') {
-  process.abort();
+    process.abort();
 } else {
-  const child = spawn(process.execPath, [__filename, 'child']);
-  child.on('exit', common.mustCall((code, signal) => {
-    assert.strictEqual(code, 134);
-    assert.strictEqual(signal, null);
-  }));
+    const child = spawn(process.execPath, [__filename, 'child']);
+    child.on('exit', common.mustCall((code, signal) => {
+        assert.strictEqual(code, 134);
+        assert.strictEqual(signal, null);
+    }));
 }

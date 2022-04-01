@@ -6,10 +6,10 @@ const assert = require('assert');
 const { testNull } = require(`./build/${common.buildType}/test_string`);
 
 const expectedResult = {
-  envIsNull: 'Invalid argument',
-  stringIsNullNonZeroLength: 'Invalid argument',
-  stringIsNullZeroLength: 'napi_ok',
-  resultIsNull: 'Invalid argument',
+    envIsNull: 'Invalid argument',
+    stringIsNullNonZeroLength: 'Invalid argument',
+    stringIsNullZeroLength: 'napi_ok',
+    resultIsNull: 'Invalid argument',
 };
 
 assert.deepStrictEqual(expectedResult, testNull.test_create_latin1());

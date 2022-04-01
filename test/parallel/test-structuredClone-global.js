@@ -5,12 +5,12 @@
 require('../common');
 
 const {
-  structuredClone: _structuredClone,
+    structuredClone: _structuredClone,
 } = require('internal/structured_clone');
 
 const {
-  strictEqual,
-  throws,
+    strictEqual,
+    throws,
 } = require('assert');
 
 strictEqual(globalThis.structuredClone, _structuredClone);

@@ -17,23 +17,23 @@ const expectedResourceType = 'test-resource';
 let insideHook = false;
 let expectedId;
 async_hooks.createHook({
-  init: common.mustCall((id, type, triggerAsyncId, resource) => {
-    if (type !== expectedResourceType) {
-      return;
-    }
-    assert.strictEqual(resource, expectedResource);
-    expectedId = id;
-  }),
-  before: common.mustCall((id) => {
-    assert.strictEqual(id, expectedId);
-    insideHook = true;
-  }),
-  after: common.mustCall((id) => {
-    assert.strictEqual(id, expectedId);
-    insideHook = false;
-  })
+    init: common.mustCall((id, type, triggerAsyncId, resource) => {
+        if (type !== expectedResourceType) {
+            return;
+        }
+        assert.strictEqual(resource, expectedResource);
+        expectedId = id;
+    }),
+    before: common.mustCall((id) => {
+        assert.strictEqual(id, expectedId);
+        insideHook = true;
+    }),
+    after: common.mustCall((id) => {
+        assert.strictEqual(id, expectedId);
+        insideHook = false;
+    })
 }).enable();
 
 runInCallbackScope(expectedResource, expectedResourceType, () => {
-  assert(insideHook);
+    assert(insideHook);
 });

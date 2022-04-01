@@ -20,28 +20,28 @@ let done = 0;
 const arrayBuffers = new Set();
 
 function startRead() {
-  ++started;
-  const chunks = [];
-  fs.createReadStream(filename)
+    ++started;
+    const chunks = [];
+    fs.createReadStream(filename)
     .on('data', (chunk) => {
-      chunks.push(chunk);
-      arrayBuffers.add(chunk.buffer);
+        chunks.push(chunk);
+        arrayBuffers.add(chunk.buffer);
     })
     .on('end', common.mustCall(() => {
-      if (started < N)
-        startRead();
-      assert.deepStrictEqual(Buffer.concat(chunks), content);
-      if (++done === N) {
-        const retainedMemory =
+        if (started < N)
+            startRead();
+        assert.deepStrictEqual(Buffer.concat(chunks), content);
+        if (++done === N) {
+            const retainedMemory =
           [...arrayBuffers].map((ab) => ab.byteLength).reduce((a, b) => a + b);
-        assert(retainedMemory / (N * content.length) <= 3,
-               `Retaining ${retainedMemory} bytes in ABs for ${N} ` +
+            assert(retainedMemory / (N * content.length) <= 3,
+                   `Retaining ${retainedMemory} bytes in ABs for ${N} ` +
                `chunks of size ${content.length}`);
-      }
+        }
     }));
 }
 
 // Don’t start the reads all at once – that way we would have to allocate
 // a large amount of memory upfront.
 for (let i = 0; i < 6; ++i)
-  startRead();
+    startRead();

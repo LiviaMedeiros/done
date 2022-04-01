@@ -30,7 +30,7 @@ assert.strictEqual(result, 'passed');
 
 // thrown error
 assert.throws(function() {
-  vm.runInThisContext('throw new Error(\'test\');');
+    vm.runInThisContext('throw new Error(\'test\');');
 }, /test/);
 
 global.hello = 5;
@@ -58,8 +58,8 @@ vm.runInThisContext('f()');
 assert.strictEqual(global.foo, 100);
 
 common.allowGlobals(
-  global.hello,
-  global.foo,
-  global.obj,
-  global.f
+    global.hello,
+    global.foo,
+    global.obj,
+    global.f
 );

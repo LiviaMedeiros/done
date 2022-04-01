@@ -26,25 +26,25 @@ const stream = require('stream');
 const str = 'asdfasdfasdfasdfasdf';
 
 const r = new stream.Readable({
-  highWaterMark: 5,
-  encoding: 'utf8'
+    highWaterMark: 5,
+    encoding: 'utf8'
 });
 
 let reads = 0;
 
 function _read() {
-  if (reads === 0) {
-    setTimeout(() => {
-      r.push(str);
-    }, 1);
-    reads++;
-  } else if (reads === 1) {
-    const ret = r.push(str);
-    assert.strictEqual(ret, false);
-    reads++;
-  } else {
-    r.push(null);
-  }
+    if (reads === 0) {
+        setTimeout(() => {
+            r.push(str);
+        }, 1);
+        reads++;
+    } else if (reads === 1) {
+        const ret = r.push(str);
+        assert.strictEqual(ret, false);
+        reads++;
+    } else {
+        r.push(null);
+    }
 }
 
 r._read = common.mustCall(_read, 3);
@@ -62,13 +62,13 @@ chunk = r.read();
 assert.strictEqual(chunk, null);
 
 r.once('readable', () => {
-  // This time, we'll get *all* the remaining data, because
-  // it's been added synchronously, as the read WOULD take
-  // us below the hwm, and so it triggered a _read() again,
-  // which synchronously added more, which we then return.
-  chunk = r.read();
-  assert.strictEqual(chunk, str + str);
+    // This time, we'll get *all* the remaining data, because
+    // it's been added synchronously, as the read WOULD take
+    // us below the hwm, and so it triggered a _read() again,
+    // which synchronously added more, which we then return.
+    chunk = r.read();
+    assert.strictEqual(chunk, str + str);
 
-  chunk = r.read();
-  assert.strictEqual(chunk, null);
+    chunk = r.read();
+    assert.strictEqual(chunk, null);
 });

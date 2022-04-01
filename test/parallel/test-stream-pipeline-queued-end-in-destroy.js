@@ -9,31 +9,31 @@ const { Readable, Duplex, pipeline } = require('stream');
 // Refs: https://github.com/nodejs/node/issues/24456
 
 const readable = new Readable({
-  read: common.mustCall(() => {})
+    read: common.mustCall(() => {})
 });
 
 const duplex = new Duplex({
-  write(chunk, enc, cb) {
+    write(chunk, enc, cb) {
     // Simulate messages queueing up.
-  },
-  read() {},
-  destroy(err, cb) {
+    },
+    read() {},
+    destroy(err, cb) {
     // Call end() from inside the destroy() method, like HTTP/2 streams
     // do at the time of writing.
-    this.end();
-    cb(err);
-  }
+        this.end();
+        cb(err);
+    }
 });
 
 duplex.on('finished', common.mustNotCall());
 
 pipeline(readable, duplex, common.mustCall((err) => {
-  assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
+    assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
 }));
 
 // Write one chunk of data, and destroy the stream later.
 // That should trigger the pipeline destruction.
 readable.push('foo');
 setImmediate(() => {
-  readable.destroy();
+    readable.destroy();
 });

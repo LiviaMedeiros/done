@@ -14,8 +14,8 @@ const callsfoo = tracker.calls(foo, 1);
 
 // Expects an error as callsfoo() was called less than one time.
 assert.throws(
-  () => tracker.verify(),
-  { message: msg }
+    () => tracker.verify(),
+    { message: msg }
 );
 
 callsfoo();
@@ -27,6 +27,6 @@ callsfoo();
 
 // Expects an error as callsfoo() was called more than once.
 assert.throws(
-  () => tracker.verify(),
-  { message: msg }
+    () => tracker.verify(),
+    { message: msg }
 );

@@ -10,19 +10,19 @@ const expected = 'asdf';
 
 
 function _transform(d, e, n) {
-  n();
+    n();
 }
 
 function _flush(n) {
-  n(null, expected);
+    n(null, expected);
 }
 
 const t = new Transform({
-  transform: _transform,
-  flush: _flush
+    transform: _transform,
+    flush: _flush
 });
 
 t.end(Buffer.from('blerg'));
 t.on('data', (data) => {
-  assert.strictEqual(data.toString(), expected);
+    assert.strictEqual(data.toString(), expected);
 });

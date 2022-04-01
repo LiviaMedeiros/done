@@ -55,27 +55,27 @@ const expectedBase64Gzip = 'H4sIAAAAAAAAA11RS05DMQy8yhzg6d2BPSAkJPZu4laWkjiN4' +
                            'sHnHNzRtagj5AQAA';
 
 zlib.deflate(inputString, common.mustCall((err, buffer) => {
-  assert.strictEqual(buffer.toString('base64'), expectedBase64Deflate);
+    assert.strictEqual(buffer.toString('base64'), expectedBase64Deflate);
 }));
 
 zlib.gzip(inputString, common.mustCall((err, buffer) => {
-  // Can't actually guarantee that we'll get exactly the same
-  // deflated bytes when we compress a string, since the header
-  // depends on stuff other than the input string itself.
-  // However, decrypting it should definitely yield the same
-  // result that we're expecting, and this should match what we get
-  // from inflating the known valid deflate data.
-  zlib.gunzip(buffer, common.mustCall((err, gunzipped) => {
-    assert.strictEqual(gunzipped.toString(), inputString);
-  }));
+    // Can't actually guarantee that we'll get exactly the same
+    // deflated bytes when we compress a string, since the header
+    // depends on stuff other than the input string itself.
+    // However, decrypting it should definitely yield the same
+    // result that we're expecting, and this should match what we get
+    // from inflating the known valid deflate data.
+    zlib.gunzip(buffer, common.mustCall((err, gunzipped) => {
+        assert.strictEqual(gunzipped.toString(), inputString);
+    }));
 }));
 
 let buffer = Buffer.from(expectedBase64Deflate, 'base64');
 zlib.unzip(buffer, common.mustCall((err, buffer) => {
-  assert.strictEqual(buffer.toString(), inputString);
+    assert.strictEqual(buffer.toString(), inputString);
 }));
 
 buffer = Buffer.from(expectedBase64Gzip, 'base64');
 zlib.unzip(buffer, common.mustCall((err, buffer) => {
-  assert.strictEqual(buffer.toString(), inputString);
+    assert.strictEqual(buffer.toString(), inputString);
 }));

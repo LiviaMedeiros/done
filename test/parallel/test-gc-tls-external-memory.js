@@ -6,7 +6,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const makeDuplexPair = require('../common/duplexpair');
 const onGC = require('../common/ongc');
@@ -26,24 +26,24 @@ function ongc() { gced++; }
 connect();
 
 function connect() {
-  if (runs % 64 === 0)
-    global.gc();
-  const externalMemoryUsage = process.memoryUsage().external;
-  assert(externalMemoryUsage >= 0, `${externalMemoryUsage} < 0`);
-  if (runs++ === 512) {
+    if (runs % 64 === 0)
+        global.gc();
+    const externalMemoryUsage = process.memoryUsage().external;
+    assert(externalMemoryUsage >= 0, `${externalMemoryUsage} < 0`);
+    if (runs++ === 512) {
     // Make sure at least half the TLS sockets have been garbage collected
     // (so that this test can actually check what it's testing):
-    assert(gced >= 256, `${gced} < 256`);
-    return;
-  }
+        assert(gced >= 256, `${gced} < 256`);
+        return;
+    }
 
-  const { clientSide, serverSide } = makeDuplexPair();
+    const { clientSide, serverSide } = makeDuplexPair();
 
-  const tlsSocket = tls.connect({ socket: clientSide });
-  tlsSocket.on('error', common.mustCall(connect));
-  onGC(tlsSocket, { ongc });
+    const tlsSocket = tls.connect({ socket: clientSide });
+    tlsSocket.on('error', common.mustCall(connect));
+    onGC(tlsSocket, { ongc });
 
-  // Use setImmediate so that we don't trigger the error within the same
-  // event loop tick.
-  setImmediate(() => serverSide.write(dummyPayload));
+    // Use setImmediate so that we don't trigger the error within the same
+    // event loop tick.
+    setImmediate(() => serverSide.write(dummyPayload));
 }

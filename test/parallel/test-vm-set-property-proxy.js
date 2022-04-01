@@ -6,9 +6,9 @@ const vm = require('vm');
 // Regression test for https://github.com/nodejs/node/issues/34606
 
 const handler = {
-  getOwnPropertyDescriptor: common.mustCallAtLeast(() => {
-    return {};
-  })
+    getOwnPropertyDescriptor: common.mustCallAtLeast(() => {
+        return {};
+    })
 };
 
 const proxy = new Proxy({}, handler);

@@ -8,7 +8,7 @@ const common = require('../common');
 common.skipIfInspectorDisabled();
 
 if (common.isWindows)
-  common.skip('test does not apply to Windows');
+    common.skip('test does not apply to Windows');
 
 common.skipIfWorker(); // Worker inspector never has a server running
 

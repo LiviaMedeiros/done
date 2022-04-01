@@ -10,28 +10,28 @@ let output = '';
 const inputStream = new stream.PassThrough();
 const outputStream = new stream.PassThrough();
 outputStream.on('data', function(d) {
-  output += d;
+    output += d;
 });
 
 const r = repl.start({
-  input: inputStream,
-  output: outputStream,
-  terminal: true
+    input: inputStream,
+    output: outputStream,
+    terminal: true
 });
 
 r.defineCommand('say1', {
-  help: 'help for say1',
-  action: function(thing) {
-    output = '';
-    this.output.write(`hello ${thing}\n`);
-    this.displayPrompt();
-  }
+    help: 'help for say1',
+    action: function(thing) {
+        output = '';
+        this.output.write(`hello ${thing}\n`);
+        this.displayPrompt();
+    }
 });
 
 r.defineCommand('say2', function() {
-  output = '';
-  this.output.write('hello from say2\n');
-  this.displayPrompt();
+    output = '';
+    this.output.write('hello from say2\n');
+    this.displayPrompt();
 });
 
 inputStream.write('.help\n');

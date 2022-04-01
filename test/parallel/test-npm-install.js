@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const path = require('path');
 const exec = require('child_process').exec;
@@ -19,19 +19,19 @@ const installDir = path.join(tmpdir.path, 'install-dir');
 fs.mkdirSync(installDir);
 
 const npmPath = path.join(
-  __dirname,
-  '..',
-  '..',
-  'deps',
-  'npm',
-  'bin',
-  'npm-cli.js'
+    __dirname,
+    '..',
+    '..',
+    'deps',
+    'npm',
+    'bin',
+    'npm-cli.js'
 );
 
 const pkgContent = JSON.stringify({
-  dependencies: {
-    'package-name': fixtures.path('packages/main')
-  }
+    dependencies: {
+        'package-name': fixtures.path('packages/main')
+    }
 });
 
 const pkgPath = path.join(installDir, 'package.json');
@@ -47,19 +47,19 @@ const env = { ...process.env,
               HOME: homeDir };
 
 exec(`${process.execPath} ${npmPath} install`, {
-  cwd: installDir,
-  env: env
+    cwd: installDir,
+    env: env
 }, common.mustCall(handleExit));
 
 function handleExit(error, stdout, stderr) {
-  const code = error ? error.code : 0;
-  const signalCode = error ? error.signal : null;
+    const code = error ? error.code : 0;
+    const signalCode = error ? error.signal : null;
 
-  if (code !== 0) {
-    process.stderr.write(stderr);
-  }
+    if (code !== 0) {
+        process.stderr.write(stderr);
+    }
 
-  assert.strictEqual(code, 0, `npm install got error code ${code}`);
-  assert.strictEqual(signalCode, null, `unexpected signal: ${signalCode}`);
-  assert(fs.existsSync(`${installDir}/node_modules/package-name`));
+    assert.strictEqual(code, 0, `npm install got error code ${code}`);
+    assert.strictEqual(signalCode, null, `unexpected signal: ${signalCode}`);
+    assert(fs.existsSync(`${installDir}/node_modules/package-name`));
 }

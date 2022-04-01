@@ -13,5 +13,5 @@ const w = new Worker(`require(${JSON.stringify(binding)})`, { eval: true });
 
 assert.strictEqual(getFreeCallCount(), 0);
 w.on('exit', common.mustCall(() => {
-  assert.strictEqual(getFreeCallCount(), 1);
+    assert.strictEqual(getFreeCallCount(), 1);
 }));

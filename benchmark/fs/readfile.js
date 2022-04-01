@@ -14,56 +14,56 @@ const filename = path.resolve(tmpdir.path,
                               `.removeme-benchmark-garbage-${process.pid}`);
 
 const bench = common.createBenchmark(main, {
-  duration: [5],
-  len: [1024, 16 * 1024 * 1024],
-  concurrent: [1, 10]
+    duration: [5],
+    len: [1024, 16 * 1024 * 1024],
+    concurrent: [1, 10]
 });
 
 function main({ len, duration, concurrent }) {
-  try {
-    fs.unlinkSync(filename);
-  } catch {
-    // Continue regardless of error.
-  }
-  let data = Buffer.alloc(len, 'x');
-  fs.writeFileSync(filename, data);
-  data = null;
-
-  let reads = 0;
-  let benchEnded = false;
-  bench.start();
-  setTimeout(() => {
-    benchEnded = true;
-    bench.end(reads);
     try {
-      fs.unlinkSync(filename);
+        fs.unlinkSync(filename);
     } catch {
-      // Continue regardless of error.
+    // Continue regardless of error.
     }
-    process.exit(0);
-  }, duration * 1000);
+    let data = Buffer.alloc(len, 'x');
+    fs.writeFileSync(filename, data);
+    data = null;
 
-  function read() {
-    fs.readFile(filename, afterRead);
-  }
+    let reads = 0;
+    let benchEnded = false;
+    bench.start();
+    setTimeout(() => {
+        benchEnded = true;
+        bench.end(reads);
+        try {
+            fs.unlinkSync(filename);
+        } catch {
+            // Continue regardless of error.
+        }
+        process.exit(0);
+    }, duration * 1000);
 
-  function afterRead(er, data) {
-    if (er) {
-      if (er.code === 'ENOENT') {
-        // Only OK if unlinked by the timer from main.
-        assert.ok(benchEnded);
-        return;
-      }
-      throw er;
+    function read() {
+        fs.readFile(filename, afterRead);
     }
 
-    if (data.length !== len)
-      throw new Error('wrong number of bytes returned');
+    function afterRead(er, data) {
+        if (er) {
+            if (er.code === 'ENOENT') {
+                // Only OK if unlinked by the timer from main.
+                assert.ok(benchEnded);
+                return;
+            }
+            throw er;
+        }
 
-    reads++;
-    if (!benchEnded)
-      read();
-  }
+        if (data.length !== len)
+            throw new Error('wrong number of bytes returned');
 
-  while (concurrent--) read();
+        reads++;
+        if (!benchEnded)
+            read();
+    }
+
+    while (concurrent--) read();
 }

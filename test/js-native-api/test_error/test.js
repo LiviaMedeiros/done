@@ -45,61 +45,61 @@ assert.strictEqual(test_error.checkError({}), false);
 assert.strictEqual(test_error.checkError('non-object'), false);
 
 assert.throws(() => {
-  test_error.throwExistingError();
+    test_error.throwExistingError();
 }, /^Error: existing error$/);
 
 assert.throws(() => {
-  test_error.throwError();
+    test_error.throwError();
 }, /^Error: error$/);
 
 assert.throws(() => {
-  test_error.throwRangeError();
+    test_error.throwRangeError();
 }, /^RangeError: range error$/);
 
 assert.throws(() => {
-  test_error.throwTypeError();
+    test_error.throwTypeError();
 }, /^TypeError: type error$/);
 
 assert.throws(() => {
-  test_error.throwSyntaxError();
+    test_error.throwSyntaxError();
 }, /^SyntaxError: syntax error$/);
 
 [42, {}, [], Symbol('xyzzy'), true, 'ball', undefined, null, NaN]
   .forEach((value) => assert.throws(
-    () => test_error.throwArbitrary(value),
-    (err) => {
-      assert.strictEqual(err, value);
-      return true;
-    }
+      () => test_error.throwArbitrary(value),
+      (err) => {
+          assert.strictEqual(err, value);
+          return true;
+      }
   ));
 
 assert.throws(
-  () => test_error.throwErrorCode(),
-  {
-    code: 'ERR_TEST_CODE',
-    message: 'Error [error]'
-  });
+    () => test_error.throwErrorCode(),
+    {
+        code: 'ERR_TEST_CODE',
+        message: 'Error [error]'
+    });
 
 assert.throws(
-  () => test_error.throwRangeErrorCode(),
-  {
-    code: 'ERR_TEST_CODE',
-    message: 'RangeError [range error]'
-  });
+    () => test_error.throwRangeErrorCode(),
+    {
+        code: 'ERR_TEST_CODE',
+        message: 'RangeError [range error]'
+    });
 
 assert.throws(
-  () => test_error.throwTypeErrorCode(),
-  {
-    code: 'ERR_TEST_CODE',
-    message: 'TypeError [type error]'
-  });
+    () => test_error.throwTypeErrorCode(),
+    {
+        code: 'ERR_TEST_CODE',
+        message: 'TypeError [type error]'
+    });
 
 assert.throws(
-  () => test_error.throwSyntaxErrorCode(),
-  {
-    code: 'ERR_TEST_CODE',
-    message: 'SyntaxError [syntax error]'
-  });
+    () => test_error.throwSyntaxErrorCode(),
+    {
+        code: 'ERR_TEST_CODE',
+        message: 'SyntaxError [syntax error]'
+    });
 
 let error = test_error.createError();
 assert.ok(error instanceof Error, 'expected error to be an instance of Error');

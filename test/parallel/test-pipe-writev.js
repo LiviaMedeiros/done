@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if (common.isWindows)
-  common.skip('Unix-specific test');
+    common.skip('Unix-specific test');
 
 const assert = require('assert');
 const net = require('net');
@@ -11,35 +11,35 @@ const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
 
 const server = net.createServer((connection) => {
-  connection.on('error', (err) => {
-    throw err;
-  });
+    connection.on('error', (err) => {
+        throw err;
+    });
 
-  const writev = connection._writev.bind(connection);
-  connection._writev = common.mustCall(writev);
+    const writev = connection._writev.bind(connection);
+    connection._writev = common.mustCall(writev);
 
-  connection.cork();
-  connection.write('pi');
-  connection.write('ng');
-  connection.end();
+    connection.cork();
+    connection.write('pi');
+    connection.write('ng');
+    connection.end();
 });
 
 server.on('error', (err) => {
-  throw err;
+    throw err;
 });
 
 server.listen(common.PIPE, () => {
-  const client = net.connect(common.PIPE);
+    const client = net.connect(common.PIPE);
 
-  client.on('error', (err) => {
-    throw err;
-  });
+    client.on('error', (err) => {
+        throw err;
+    });
 
-  client.on('data', common.mustCall((data) => {
-    assert.strictEqual(data.toString(), 'ping');
-  }));
+    client.on('data', common.mustCall((data) => {
+        assert.strictEqual(data.toString(), 'ping');
+    }));
 
-  client.on('end', () => {
-    server.close();
-  });
+    client.on('end', () => {
+        server.close();
+    });
 });

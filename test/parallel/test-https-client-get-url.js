@@ -23,7 +23,7 @@
 const common = require('../common');
 const fixtures = require('../common/fixtures');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 // Disable strict server certificate validation by the client
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -33,25 +33,25 @@ const https = require('https');
 const url = require('url');
 
 const options = {
-  key: fixtures.readKey('agent1-key.pem'),
-  cert: fixtures.readKey('agent1-cert.pem')
+    key: fixtures.readKey('agent1-key.pem'),
+    cert: fixtures.readKey('agent1-cert.pem')
 };
 
 const server = https.createServer(options, common.mustCall((req, res) => {
-  assert.strictEqual(req.method, 'GET');
-  assert.strictEqual(req.url, '/foo?bar');
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.write('hello\n');
-  res.end();
+    assert.strictEqual(req.method, 'GET');
+    assert.strictEqual(req.url, '/foo?bar');
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write('hello\n');
+    res.end();
 }, 3));
 
 server.listen(0, common.mustCall(() => {
-  const u = `https://${common.localhostIPv4}:${server.address().port}/foo?bar`;
-  https.get(u, common.mustCall(() => {
-    https.get(url.parse(u), common.mustCall(() => {
-      https.get(new URL(u), common.mustCall(() => {
-        server.close();
-      }));
+    const u = `https://${common.localhostIPv4}:${server.address().port}/foo?bar`;
+    https.get(u, common.mustCall(() => {
+        https.get(url.parse(u), common.mustCall(() => {
+            https.get(new URL(u), common.mustCall(() => {
+                server.close();
+            }));
+        }));
     }));
-  }));
 }));

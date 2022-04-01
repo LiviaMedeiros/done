@@ -33,15 +33,15 @@ timers.unenroll(someObject);
 timers.enroll(someObject, 1);
 
 someObject._onTimeout = function _onTimeout() {
-  ++nbTimeouts;
+    ++nbTimeouts;
 
-  if (nbTimeouts === N) timers.unenroll(someObject);
+    if (nbTimeouts === N) timers.unenroll(someObject);
 
-  timers._unrefActive(someObject);
+    timers._unrefActive(someObject);
 };
 
 timers._unrefActive(someObject);
 
 setTimeout(function() {
-  assert.strictEqual(nbTimeouts, N);
+    assert.strictEqual(nbTimeouts, N);
 }, TEST_DURATION);

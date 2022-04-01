@@ -19,7 +19,7 @@ assert.strictEqual(ctxGlobal.Object.prototype.__proto__, undefined);
 assert(!Object.hasOwn(ctxGlobal.Object.prototype, '__proto__'));
 
 if (isMainThread) {
-  new Worker(__filename);
+    new Worker(__filename);
 } else {
-  process.exit();
+    process.exit();
 }

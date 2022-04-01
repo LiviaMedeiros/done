@@ -2,7 +2,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 const fixtures = require('../common/fixtures');
 const assert = require('assert');
 const http2 = require('http2');
@@ -20,36 +20,36 @@ const fn = path.join(tmpdir.path, 'person-large.jpg');
 const server = http2.createServer();
 
 server.on('stream', common.mustCall((stream) => {
-  const dest = stream.pipe(fs.createWriteStream(fn));
+    const dest = stream.pipe(fs.createWriteStream(fn));
 
-  stream.on('end', common.mustCall(() => {
-    stream.respond();
-    stream.end();
-  }));
+    stream.on('end', common.mustCall(() => {
+        stream.respond();
+        stream.end();
+    }));
 
-  dest.on('finish', common.mustCall(() => {
-    assert.strictEqual(fs.readFileSync(fn).length,
-                       fs.readFileSync(loc).length);
-  }));
+    dest.on('finish', common.mustCall(() => {
+        assert.strictEqual(fs.readFileSync(fn).length,
+                           fs.readFileSync(loc).length);
+    }));
 }));
 
 server.listen(common.PIPE, common.mustCall(() => {
-  const client = http2.connect('http://localhost', {
-    createConnection(url) {
-      return net.connect(server.address());
-    }
-  });
+    const client = http2.connect('http://localhost', {
+        createConnection(url) {
+            return net.connect(server.address());
+        }
+    });
 
-  const req = client.request({ ':method': 'POST' });
-  req.on('response', common.mustCall());
-  req.resume();
+    const req = client.request({ ':method': 'POST' });
+    req.on('response', common.mustCall());
+    req.resume();
 
-  req.on('close', common.mustCall(() => {
-    server.close();
-    client.close();
-  }));
+    req.on('close', common.mustCall(() => {
+        server.close();
+        client.close();
+    }));
 
-  const str = fs.createReadStream(loc);
-  str.on('end', common.mustCall());
-  str.pipe(req);
+    const str = fs.createReadStream(loc);
+    str.on('end', common.mustCall());
+    str.pipe(req);
 }));

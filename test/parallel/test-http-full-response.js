@@ -31,51 +31,51 @@ const bodyLength = 12345;
 const body = 'c'.repeat(bodyLength);
 
 const server = http.createServer(function(req, res) {
-  res.writeHead(200, {
-    'Content-Length': bodyLength,
-    'Content-Type': 'text/plain'
-  });
-  res.end(body);
+    res.writeHead(200, {
+        'Content-Length': bodyLength,
+        'Content-Type': 'text/plain'
+    });
+    res.end(body);
 });
 
 function runAb(opts, callback) {
-  const command = `ab ${opts} http://127.0.0.1:${server.address().port}/`;
-  exec(command, function(err, stdout, stderr) {
-    if (err) {
-      if (/ab|apr/i.test(stderr)) {
-        common.printSkipMessage(`problem spawning \`ab\`.\n${stderr}`);
-        process.reallyExit(0);
-      }
-      throw err;
-    }
+    const command = `ab ${opts} http://127.0.0.1:${server.address().port}/`;
+    exec(command, function(err, stdout, stderr) {
+        if (err) {
+            if (/ab|apr/i.test(stderr)) {
+                common.printSkipMessage(`problem spawning \`ab\`.\n${stderr}`);
+                process.reallyExit(0);
+            }
+            throw err;
+        }
 
-    let m = /Document Length:\s*(\d+) bytes/i.exec(stdout);
-    const documentLength = parseInt(m[1]);
+        let m = /Document Length:\s*(\d+) bytes/i.exec(stdout);
+        const documentLength = parseInt(m[1]);
 
-    m = /Complete requests:\s*(\d+)/i.exec(stdout);
-    const completeRequests = parseInt(m[1]);
+        m = /Complete requests:\s*(\d+)/i.exec(stdout);
+        const completeRequests = parseInt(m[1]);
 
-    m = /HTML transferred:\s*(\d+) bytes/i.exec(stdout);
-    const htmlTransferred = parseInt(m[1]);
+        m = /HTML transferred:\s*(\d+) bytes/i.exec(stdout);
+        const htmlTransferred = parseInt(m[1]);
 
-    assert.strictEqual(bodyLength, documentLength);
-    assert.strictEqual(completeRequests * documentLength, htmlTransferred);
+        assert.strictEqual(bodyLength, documentLength);
+        assert.strictEqual(completeRequests * documentLength, htmlTransferred);
 
-    if (callback) callback();
-  });
+        if (callback) callback();
+    });
 }
 
 server.listen(0, common.mustCall(function() {
-  runAb('-c 1 -n 10', common.mustCall(function() {
-    console.log('-c 1 -n 10 okay');
+    runAb('-c 1 -n 10', common.mustCall(function() {
+        console.log('-c 1 -n 10 okay');
 
-    runAb('-c 1 -n 100', common.mustCall(function() {
-      console.log('-c 1 -n 100 okay');
+        runAb('-c 1 -n 100', common.mustCall(function() {
+            console.log('-c 1 -n 100 okay');
 
-      runAb('-c 1 -n 1000', common.mustCall(function() {
-        console.log('-c 1 -n 1000 okay');
-        server.close();
-      }));
+            runAb('-c 1 -n 1000', common.mustCall(function() {
+                console.log('-c 1 -n 1000 okay');
+                server.close();
+            }));
+        }));
     }));
-  }));
 }));

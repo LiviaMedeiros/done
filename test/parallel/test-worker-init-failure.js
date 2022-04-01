@@ -7,7 +7,7 @@ const child_process = require('child_process');
 // when their initialization fails.
 
 if (common.isWindows) {
-  common.skip('ulimit does not work on Windows.');
+    common.skip('ulimit does not work on Windows.');
 }
 
 // A reasonably low fd count. An empty node process
@@ -20,49 +20,49 @@ const OPENFILES = 128;
 const WORKERCOUNT = 256;
 
 if (process.argv[2] === 'child') {
-  const { Worker } = require('worker_threads');
-  for (let i = 0; i < WORKERCOUNT; ++i) {
-    const worker = new Worker(
-      'require(\'worker_threads\').parentPort.postMessage(2 + 2)',
-      { eval: true });
-    worker.on('message', (result) => {
-      assert.strictEqual(result, 4);
-    });
+    const { Worker } = require('worker_threads');
+    for (let i = 0; i < WORKERCOUNT; ++i) {
+        const worker = new Worker(
+            'require(\'worker_threads\').parentPort.postMessage(2 + 2)',
+            { eval: true });
+        worker.on('message', (result) => {
+            assert.strictEqual(result, 4);
+        });
 
-    // We want to test that if there is an error in a constrained running
-    // environment, it will be one of `ENFILE`, `EMFILE`, 'ENOENT', or
-    // `ERR_WORKER_INIT_FAILED`.
-    const expected = ['ERR_WORKER_INIT_FAILED', 'EMFILE', 'ENFILE', 'ENOENT'];
+        // We want to test that if there is an error in a constrained running
+        // environment, it will be one of `ENFILE`, `EMFILE`, 'ENOENT', or
+        // `ERR_WORKER_INIT_FAILED`.
+        const expected = ['ERR_WORKER_INIT_FAILED', 'EMFILE', 'ENFILE', 'ENOENT'];
 
-    // `common.mustCall*` cannot be used here as in some environments
-    // (i.e. single cpu) `ulimit` may not lead to such an error.
-    worker.on('error', (e) => {
-      assert.ok(expected.includes(e.code), `${e.code} not expected`);
-    });
-  }
+        // `common.mustCall*` cannot be used here as in some environments
+        // (i.e. single cpu) `ulimit` may not lead to such an error.
+        worker.on('error', (e) => {
+            assert.ok(expected.includes(e.code), `${e.code} not expected`);
+        });
+    }
 
 } else {
-  // Limit the number of open files, to force workers to fail.
-  let testCmd = `ulimit -n ${OPENFILES} && `;
-  testCmd += `${process.execPath} ${__filename} child`;
-  const cp = child_process.exec(testCmd);
+    // Limit the number of open files, to force workers to fail.
+    let testCmd = `ulimit -n ${OPENFILES} && `;
+    testCmd += `${process.execPath} ${__filename} child`;
+    const cp = child_process.exec(testCmd);
 
-  // Turn on the child streams for debugging purposes.
-  let stdout = '';
-  cp.stdout.setEncoding('utf8');
-  cp.stdout.on('data', (chunk) => {
-    stdout += chunk;
-  });
-  let stderr = '';
-  cp.stderr.setEncoding('utf8');
-  cp.stderr.on('data', (chunk) => {
-    stderr += chunk;
-  });
+    // Turn on the child streams for debugging purposes.
+    let stdout = '';
+    cp.stdout.setEncoding('utf8');
+    cp.stdout.on('data', (chunk) => {
+        stdout += chunk;
+    });
+    let stderr = '';
+    cp.stderr.setEncoding('utf8');
+    cp.stderr.on('data', (chunk) => {
+        stderr += chunk;
+    });
 
-  cp.on('exit', common.mustCall((code, signal) => {
-    console.log(`child stdout: ${stdout}\n`);
-    console.log(`child stderr: ${stderr}\n`);
-    assert.strictEqual(code, 0);
-    assert.strictEqual(signal, null);
-  }));
+    cp.on('exit', common.mustCall((code, signal) => {
+        console.log(`child stdout: ${stdout}\n`);
+        console.log(`child stderr: ${stderr}\n`);
+        assert.strictEqual(code, 0);
+        assert.strictEqual(signal, null);
+    }));
 }

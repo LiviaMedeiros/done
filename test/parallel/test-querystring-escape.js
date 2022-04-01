@@ -14,18 +14,18 @@ assert.strictEqual(qs.escape(`${String.fromCharCode(0xD800 + 1)}test`),
                    '%F0%90%91%B4est');
 
 assert.throws(
-  () => qs.escape(String.fromCharCode(0xD800 + 1)),
-  {
-    code: 'ERR_INVALID_URI',
-    name: 'URIError',
-    message: 'URI malformed'
-  }
+    () => qs.escape(String.fromCharCode(0xD800 + 1)),
+    {
+        code: 'ERR_INVALID_URI',
+        name: 'URIError',
+        message: 'URI malformed'
+    }
 );
 
 // Using toString for objects
 assert.strictEqual(
-  qs.escape({ test: 5, toString: () => 'test', valueOf: () => 10 }),
-  'test'
+    qs.escape({ test: 5, toString: () => 'test', valueOf: () => 10 }),
+    'test'
 );
 
 // `toString` is not callable, must throw an error.

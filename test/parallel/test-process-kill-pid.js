@@ -39,26 +39,26 @@ const assert = require('assert');
 // process.pid, String(process.pid): ourself
 
 ['SIGTERM', null, undefined, NaN, Infinity, -Infinity].forEach((val) => {
-  assert.throws(() => process.kill(val), {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError',
-    message: 'The "pid" argument must be of type number.' +
+    assert.throws(() => process.kill(val), {
+        code: 'ERR_INVALID_ARG_TYPE',
+        name: 'TypeError',
+        message: 'The "pid" argument must be of type number.' +
              common.invalidArgTypeHelper(val)
-  });
+    });
 });
 
 // Test that kill throws an error for unknown signal names
 assert.throws(() => process.kill(0, 'test'), {
-  code: 'ERR_UNKNOWN_SIGNAL',
-  name: 'TypeError',
-  message: 'Unknown signal: test'
+    code: 'ERR_UNKNOWN_SIGNAL',
+    name: 'TypeError',
+    message: 'Unknown signal: test'
 });
 
 // Test that kill throws an error for invalid signal numbers
 assert.throws(() => process.kill(0, 987), {
-  code: 'EINVAL',
-  name: 'Error',
-  message: 'kill EINVAL'
+    code: 'EINVAL',
+    name: 'Error',
+    message: 'kill EINVAL'
 });
 
 // Test kill argument processing in valid cases.
@@ -67,21 +67,21 @@ assert.throws(() => process.kill(0, 987), {
 // that we don't kill our process group, or try to actually send ANY signals on
 // windows, which doesn't support them.
 function kill(tryPid, trySig, expectPid, expectSig) {
-  let getPid;
-  let getSig;
-  const origKill = process._kill;
-  process._kill = function(pid, sig) {
-    getPid = pid;
-    getSig = sig;
+    let getPid;
+    let getSig;
+    const origKill = process._kill;
+    process._kill = function(pid, sig) {
+        getPid = pid;
+        getSig = sig;
 
-    // un-monkey patch process._kill
-    process._kill = origKill;
-  };
+        // un-monkey patch process._kill
+        process._kill = origKill;
+    };
 
-  process.kill(tryPid, trySig);
+    process.kill(tryPid, trySig);
 
-  assert.strictEqual(getPid.toString(), expectPid.toString());
-  assert.strictEqual(getSig, expectSig);
+    assert.strictEqual(getPid.toString(), expectPid.toString());
+    assert.strictEqual(getSig, expectSig);
 }
 
 // Note that SIGHUP and SIGTERM map to 1 and 15 respectively, even on Windows

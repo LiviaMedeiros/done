@@ -24,7 +24,7 @@ assert.ok(test_object.hiddenValue);
 // Properties with napi_enumerable attribute should be enumerable.
 const propertyNames = [];
 for (const name in test_object) {
-  propertyNames.push(name);
+    propertyNames.push(name);
 }
 assert.ok(propertyNames.includes('echo'));
 assert.ok(propertyNames.includes('readwriteValue'));
@@ -53,10 +53,10 @@ assert.strictEqual(test_object.staticReadonlyAccessor1, undefined);
 // Verify that passing NULL to napi_define_class() results in the correct
 // error.
 assert.deepStrictEqual(TestConstructor.TestDefineClass(), {
-  envIsNull: 'Invalid argument',
-  nameIsNull: 'Invalid argument',
-  cbIsNull: 'Invalid argument',
-  cbDataIsNull: 'napi_ok',
-  propertiesIsNull: 'Invalid argument',
-  resultIsNull: 'Invalid argument'
+    envIsNull: 'Invalid argument',
+    nameIsNull: 'Invalid argument',
+    cbIsNull: 'Invalid argument',
+    cbDataIsNull: 'napi_ok',
+    propertiesIsNull: 'Invalid argument',
+    resultIsNull: 'Invalid argument'
 });

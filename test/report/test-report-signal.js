@@ -4,10 +4,10 @@
 const common = require('../common');
 
 if (common.isWindows)
-  return common.skip('Unsupported on Windows.');
+    return common.skip('Unsupported on Windows.');
 
 if (!common.isMainThread)
-  common.skip('Signal reporting is only supported in the main thread');
+    common.skip('Signal reporting is only supported in the main thread');
 
 const assert = require('assert');
 const helper = require('../common/report');
@@ -23,11 +23,11 @@ process.kill(process.pid, 'SIGUSR2');
 // appears to be enough. Use an async loop to be a bit more robust in case
 // platform or machine differences throw off the timing.
 (function validate() {
-  const reports = helper.findReports(process.pid, tmpdir.path);
+    const reports = helper.findReports(process.pid, tmpdir.path);
 
-  if (reports.length === 0)
-    return setImmediate(validate);
+    if (reports.length === 0)
+        return setImmediate(validate);
 
-  assert.strictEqual(reports.length, 1);
-  helper.validate(reports[0]);
+    assert.strictEqual(reports.length, 1);
+    helper.validate(reports[0]);
 })();

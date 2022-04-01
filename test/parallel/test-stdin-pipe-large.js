@@ -6,8 +6,8 @@ const assert = require('assert');
 const spawn = require('child_process').spawn;
 
 if (process.argv[2] === 'child') {
-  process.stdin.pipe(process.stdout);
-  return;
+    process.stdin.pipe(process.stdout);
+    return;
 }
 
 const child = spawn(process.execPath, [__filename, 'child'], { stdio: 'pipe' });
@@ -19,5 +19,5 @@ child.stdin.end(Buffer.alloc(expectedBytes));
 
 child.stdout.on('data', (chunk) => readBytes += chunk.length);
 child.stdout.on('end', common.mustCall(() => {
-  assert.strictEqual(readBytes, expectedBytes);
+    assert.strictEqual(readBytes, expectedBytes);
 }));

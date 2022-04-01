@@ -11,16 +11,16 @@ const { fork } = require('child_process');
 const tmpdir = require('../common/tmpdir');
 
 if (process.argv[2] !== 'child') {
-  // Parent
-  tmpdir.refresh();
+    // Parent
+    tmpdir.refresh();
 
-  // Run test
-  const child = fork(__filename, ['child'], { stdio: 'inherit' });
-  child.on('exit', common.mustCall(function(code) {
-    assert.strictEqual(code, 0);
-  }));
+    // Run test
+    const child = fork(__filename, ['child'], { stdio: 'inherit' });
+    child.on('exit', common.mustCall(function(code) {
+        assert.strictEqual(code, 0);
+    }));
 
-  return;
+    return;
 }
 
 // Child

@@ -7,16 +7,16 @@ let N = 3;
 
 const keepOpen =
   setTimeout(
-    common.mustNotCall('Test timed out. keepOpen was not canceled.'),
-    TEST_DURATION);
+      common.mustNotCall('Test timed out. keepOpen was not canceled.'),
+      TEST_DURATION);
 
 const timer = setInterval(common.mustCall(() => {
-  if (--N === 0) {
-    clearInterval(timer);
-    timer._onTimeout =
+    if (--N === 0) {
+        clearInterval(timer);
+        timer._onTimeout =
       common.mustNotCall('Unrefd interval fired after being cleared');
-    clearTimeout(keepOpen);
-  }
+        clearTimeout(keepOpen);
+    }
 }, N), 1);
 
 timer.unref();

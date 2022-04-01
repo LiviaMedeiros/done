@@ -11,13 +11,13 @@ const offset = 20;
 const len = buf.length - offset;
 
 const messageSent = common.mustSucceed(function messageSent(bytes) {
-  assert.notStrictEqual(bytes, buf.length);
-  assert.strictEqual(bytes, buf.length - offset);
-  client.close();
+    assert.notStrictEqual(bytes, buf.length);
+    assert.strictEqual(bytes, buf.length - offset);
+    client.close();
 });
 
 client.bind(0, common.mustCall(() => {
-  client.connect(client.address().port, common.mustCall(() => {
-    client.send(buf, offset, len, messageSent);
-  }));
+    client.connect(client.address().port, common.mustCall(() => {
+        client.send(buf, offset, len, messageSent);
+    }));
 }));

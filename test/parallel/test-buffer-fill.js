@@ -113,21 +113,21 @@ testBufs('61c8b462c8b563c8b6', 4, 1, 'hex');
 testBufs('61c8b462c8b563c8b6', 12, 1, 'hex');
 
 assert.throws(() => {
-  const buf = Buffer.allocUnsafe(SIZE);
+    const buf = Buffer.allocUnsafe(SIZE);
 
-  buf.fill('yKJh', 'hex');
+    buf.fill('yKJh', 'hex');
 }, {
-  code: 'ERR_INVALID_ARG_VALUE',
-  name: 'TypeError'
+    code: 'ERR_INVALID_ARG_VALUE',
+    name: 'TypeError'
 });
 
 assert.throws(() => {
-  const buf = Buffer.allocUnsafe(SIZE);
+    const buf = Buffer.allocUnsafe(SIZE);
 
-  buf.fill('\u0222', 'hex');
+    buf.fill('\u0222', 'hex');
 }, {
-  code: 'ERR_INVALID_ARG_VALUE',
-  name: 'TypeError'
+    code: 'ERR_INVALID_ARG_VALUE',
+    name: 'TypeError'
 });
 
 // BASE64
@@ -164,9 +164,9 @@ testBufs('Yci0Ysi1Y8i2', 12, 1, 'base64url');
 
 // Buffer
 function deepStrictEqualValues(buf, arr) {
-  for (const [index, value] of buf.entries()) {
-    assert.deepStrictEqual(value, arr[index]);
-  }
+    for (const [index, value] of buf.entries()) {
+        assert.deepStrictEqual(value, arr[index]);
+    }
 }
 
 const buf2Fill = Buffer.allocUnsafe(1).fill(2);
@@ -182,58 +182,58 @@ deepStrictEqualValues(genBuffer(4, [hexBufFill, 1, 1]), [0, 0, 0, 0]);
 
 // Check exceptions
 [
-  [0, -1],
-  [0, 0, buf1.length + 1],
-  ['', -1],
-  ['', 0, buf1.length + 1],
-  ['', 1, -1],
+    [0, -1],
+    [0, 0, buf1.length + 1],
+    ['', -1],
+    ['', 0, buf1.length + 1],
+    ['', 1, -1],
 ].forEach((args) => {
-  assert.throws(
-    () => buf1.fill(...args),
-    { code: 'ERR_OUT_OF_RANGE' }
-  );
+    assert.throws(
+        () => buf1.fill(...args),
+        { code: 'ERR_OUT_OF_RANGE' }
+    );
 });
 
 assert.throws(
-  () => buf1.fill('a', 0, buf1.length, 'node rocks!'),
-  {
-    code: 'ERR_UNKNOWN_ENCODING',
-    name: 'TypeError',
-    message: 'Unknown encoding: node rocks!'
-  }
+    () => buf1.fill('a', 0, buf1.length, 'node rocks!'),
+    {
+        code: 'ERR_UNKNOWN_ENCODING',
+        name: 'TypeError',
+        message: 'Unknown encoding: node rocks!'
+    }
 );
 
 [
-  ['a', 0, 0, NaN],
-  ['a', 0, 0, false],
+    ['a', 0, 0, NaN],
+    ['a', 0, 0, false],
 ].forEach((args) => {
-  assert.throws(
-    () => buf1.fill(...args),
-    {
-      code: 'ERR_INVALID_ARG_TYPE',
-      message: 'The "encoding" argument must be of type ' +
+    assert.throws(
+        () => buf1.fill(...args),
+        {
+            code: 'ERR_INVALID_ARG_TYPE',
+            message: 'The "encoding" argument must be of type ' +
       `string.${common.invalidArgTypeHelper(args[3])}`
-    }
-  );
+        }
+    );
 });
 
 assert.throws(
-  () => buf1.fill('a', 0, 0, 'foo'),
-  {
-    code: 'ERR_UNKNOWN_ENCODING',
-    name: 'TypeError',
-    message: 'Unknown encoding: foo'
-  }
+    () => buf1.fill('a', 0, 0, 'foo'),
+    {
+        code: 'ERR_UNKNOWN_ENCODING',
+        name: 'TypeError',
+        message: 'Unknown encoding: foo'
+    }
 );
 
 function genBuffer(size, args) {
-  const b = Buffer.allocUnsafe(size);
-  return b.fill(0).fill.apply(b, args);
+    const b = Buffer.allocUnsafe(size);
+    return b.fill(0).fill.apply(b, args);
 }
 
 function bufReset() {
-  buf1.fill(0);
-  buf2.fill(0);
+    buf1.fill(0);
+    buf2.fill(0);
 }
 
 // This is mostly accurate. Except write() won't write partial bytes to the
@@ -241,191 +241,191 @@ function bufReset() {
 // error will be thrown if not all the data can be written, and the SIZE has
 // been massaged to work with the input characters.
 function writeToFill(string, offset, end, encoding) {
-  if (typeof offset === 'string') {
-    encoding = offset;
-    offset = 0;
-    end = buf2.length;
-  } else if (typeof end === 'string') {
-    encoding = end;
-    end = buf2.length;
-  } else if (end === undefined) {
-    end = buf2.length;
-  }
-
-  // Should never be reached.
-  if (offset < 0 || end > buf2.length)
-    throw new ERR_OUT_OF_RANGE();
-
-  if (end <= offset)
-    return buf2;
-
-  offset >>>= 0;
-  end >>>= 0;
-  assert(offset <= buf2.length);
-
-  // Convert "end" to "length" (which write understands).
-  const length = end - offset < 0 ? 0 : end - offset;
-
-  let wasZero = false;
-  do {
-    const written = buf2.write(string, offset, length, encoding);
-    offset += written;
-    // Safety check in case write falls into infinite loop.
-    if (written === 0) {
-      if (wasZero)
-        throw new Error('Could not write all data to Buffer');
-      else
-        wasZero = true;
+    if (typeof offset === 'string') {
+        encoding = offset;
+        offset = 0;
+        end = buf2.length;
+    } else if (typeof end === 'string') {
+        encoding = end;
+        end = buf2.length;
+    } else if (end === undefined) {
+        end = buf2.length;
     }
-  } while (offset < buf2.length);
 
-  return buf2;
+    // Should never be reached.
+    if (offset < 0 || end > buf2.length)
+        throw new ERR_OUT_OF_RANGE();
+
+    if (end <= offset)
+        return buf2;
+
+    offset >>>= 0;
+    end >>>= 0;
+    assert(offset <= buf2.length);
+
+    // Convert "end" to "length" (which write understands).
+    const length = end - offset < 0 ? 0 : end - offset;
+
+    let wasZero = false;
+    do {
+        const written = buf2.write(string, offset, length, encoding);
+        offset += written;
+        // Safety check in case write falls into infinite loop.
+        if (written === 0) {
+            if (wasZero)
+                throw new Error('Could not write all data to Buffer');
+            else
+                wasZero = true;
+        }
+    } while (offset < buf2.length);
+
+    return buf2;
 }
 
 function testBufs(string, offset, length, encoding) {
-  bufReset();
-  buf1.fill.apply(buf1, arguments);
-  // Swap bytes on BE archs for ucs2 encoding.
-  assert.deepStrictEqual(buf1.fill.apply(buf1, arguments),
-                         writeToFill.apply(null, arguments));
+    bufReset();
+    buf1.fill.apply(buf1, arguments);
+    // Swap bytes on BE archs for ucs2 encoding.
+    assert.deepStrictEqual(buf1.fill.apply(buf1, arguments),
+                           writeToFill.apply(null, arguments));
 }
 
 // Make sure these throw.
 assert.throws(
-  () => Buffer.allocUnsafe(8).fill('a', -1),
-  { code: 'ERR_OUT_OF_RANGE' });
+    () => Buffer.allocUnsafe(8).fill('a', -1),
+    { code: 'ERR_OUT_OF_RANGE' });
 assert.throws(
-  () => Buffer.allocUnsafe(8).fill('a', 0, 9),
-  { code: 'ERR_OUT_OF_RANGE' });
+    () => Buffer.allocUnsafe(8).fill('a', 0, 9),
+    { code: 'ERR_OUT_OF_RANGE' });
 
 // Make sure this doesn't hang indefinitely.
 Buffer.allocUnsafe(8).fill('');
 Buffer.alloc(8, '');
 
 {
-  const buf = Buffer.alloc(64, 10);
-  for (let i = 0; i < buf.length; i++)
-    assert.strictEqual(buf[i], 10);
+    const buf = Buffer.alloc(64, 10);
+    for (let i = 0; i < buf.length; i++)
+        assert.strictEqual(buf[i], 10);
 
-  buf.fill(11, 0, buf.length >> 1);
-  for (let i = 0; i < buf.length >> 1; i++)
-    assert.strictEqual(buf[i], 11);
-  for (let i = (buf.length >> 1) + 1; i < buf.length; i++)
-    assert.strictEqual(buf[i], 10);
+    buf.fill(11, 0, buf.length >> 1);
+    for (let i = 0; i < buf.length >> 1; i++)
+        assert.strictEqual(buf[i], 11);
+    for (let i = (buf.length >> 1) + 1; i < buf.length; i++)
+        assert.strictEqual(buf[i], 10);
 
-  buf.fill('h');
-  for (let i = 0; i < buf.length; i++)
-    assert.strictEqual(buf[i], 'h'.charCodeAt(0));
+    buf.fill('h');
+    for (let i = 0; i < buf.length; i++)
+        assert.strictEqual(buf[i], 'h'.charCodeAt(0));
 
-  buf.fill(0);
-  for (let i = 0; i < buf.length; i++)
-    assert.strictEqual(buf[i], 0);
+    buf.fill(0);
+    for (let i = 0; i < buf.length; i++)
+        assert.strictEqual(buf[i], 0);
 
-  buf.fill(null);
-  for (let i = 0; i < buf.length; i++)
-    assert.strictEqual(buf[i], 0);
+    buf.fill(null);
+    for (let i = 0; i < buf.length; i++)
+        assert.strictEqual(buf[i], 0);
 
-  buf.fill(1, 16, 32);
-  for (let i = 0; i < 16; i++)
-    assert.strictEqual(buf[i], 0);
-  for (let i = 16; i < 32; i++)
-    assert.strictEqual(buf[i], 1);
-  for (let i = 32; i < buf.length; i++)
-    assert.strictEqual(buf[i], 0);
+    buf.fill(1, 16, 32);
+    for (let i = 0; i < 16; i++)
+        assert.strictEqual(buf[i], 0);
+    for (let i = 16; i < 32; i++)
+        assert.strictEqual(buf[i], 1);
+    for (let i = 32; i < buf.length; i++)
+        assert.strictEqual(buf[i], 0);
 }
 
 {
-  const buf = Buffer.alloc(10, 'abc');
-  assert.strictEqual(buf.toString(), 'abcabcabca');
-  buf.fill('է');
-  assert.strictEqual(buf.toString(), 'էէէէէ');
+    const buf = Buffer.alloc(10, 'abc');
+    assert.strictEqual(buf.toString(), 'abcabcabca');
+    buf.fill('է');
+    assert.strictEqual(buf.toString(), 'էէէէէ');
 }
 
 // Testing process.binding. Make sure "start" is properly checked for range
 // errors.
 assert.throws(
-  () => { internalBinding('buffer').fill(Buffer.alloc(1), 1, -1, 0, 1); },
-  { code: 'ERR_OUT_OF_RANGE' }
+    () => { internalBinding('buffer').fill(Buffer.alloc(1), 1, -1, 0, 1); },
+    { code: 'ERR_OUT_OF_RANGE' }
 );
 
 // Make sure "end" is properly checked, even if it's magically mangled using
 // Symbol.toPrimitive.
 {
-  assert.throws(() => {
-    const end = {
-      [Symbol.toPrimitive]() {
-        return 1;
-      }
-    };
-    Buffer.alloc(1).fill(Buffer.alloc(1), 0, end);
-  }, {
-    code: 'ERR_INVALID_ARG_TYPE',
-    message: 'The "end" argument must be of type number. Received an ' +
+    assert.throws(() => {
+        const end = {
+            [Symbol.toPrimitive]() {
+                return 1;
+            }
+        };
+        Buffer.alloc(1).fill(Buffer.alloc(1), 0, end);
+    }, {
+        code: 'ERR_INVALID_ARG_TYPE',
+        message: 'The "end" argument must be of type number. Received an ' +
              'instance of Object'
-  });
+    });
 }
 
 // Testing process.binding. Make sure "end" is properly checked for range
 // errors.
 assert.throws(
-  () => { internalBinding('buffer').fill(Buffer.alloc(1), 1, 1, -2, 1); },
-  { code: 'ERR_OUT_OF_RANGE' }
+    () => { internalBinding('buffer').fill(Buffer.alloc(1), 1, 1, -2, 1); },
+    { code: 'ERR_OUT_OF_RANGE' }
 );
 
 // Test that bypassing 'length' won't cause an abort.
 assert.throws(() => {
-  const buf = Buffer.from('w00t');
-  Object.defineProperty(buf, 'length', {
-    value: 1337,
-    enumerable: true
-  });
-  buf.fill('');
+    const buf = Buffer.from('w00t');
+    Object.defineProperty(buf, 'length', {
+        value: 1337,
+        enumerable: true
+    });
+    buf.fill('');
 }, {
-  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
-  name: 'RangeError',
-  message: 'Attempt to access memory outside buffer bounds'
+    code: 'ERR_BUFFER_OUT_OF_BOUNDS',
+    name: 'RangeError',
+    message: 'Attempt to access memory outside buffer bounds'
 });
 
 assert.deepStrictEqual(
-  Buffer.allocUnsafeSlow(16).fill('ab', 'utf16le'),
-  Buffer.from('61006200610062006100620061006200', 'hex'));
+    Buffer.allocUnsafeSlow(16).fill('ab', 'utf16le'),
+    Buffer.from('61006200610062006100620061006200', 'hex'));
 
 assert.deepStrictEqual(
-  Buffer.allocUnsafeSlow(15).fill('ab', 'utf16le'),
-  Buffer.from('610062006100620061006200610062', 'hex'));
+    Buffer.allocUnsafeSlow(15).fill('ab', 'utf16le'),
+    Buffer.from('610062006100620061006200610062', 'hex'));
 
 assert.deepStrictEqual(
-  Buffer.allocUnsafeSlow(16).fill('ab', 'utf16le'),
-  Buffer.from('61006200610062006100620061006200', 'hex'));
+    Buffer.allocUnsafeSlow(16).fill('ab', 'utf16le'),
+    Buffer.from('61006200610062006100620061006200', 'hex'));
 assert.deepStrictEqual(
-  Buffer.allocUnsafeSlow(16).fill('a', 'utf16le'),
-  Buffer.from('61006100610061006100610061006100', 'hex'));
+    Buffer.allocUnsafeSlow(16).fill('a', 'utf16le'),
+    Buffer.from('61006100610061006100610061006100', 'hex'));
 
 assert.strictEqual(
-  Buffer.allocUnsafeSlow(16).fill('a', 'utf16le').toString('utf16le'),
-  'a'.repeat(8));
+    Buffer.allocUnsafeSlow(16).fill('a', 'utf16le').toString('utf16le'),
+    'a'.repeat(8));
 assert.strictEqual(
-  Buffer.allocUnsafeSlow(16).fill('a', 'latin1').toString('latin1'),
-  'a'.repeat(16));
+    Buffer.allocUnsafeSlow(16).fill('a', 'latin1').toString('latin1'),
+    'a'.repeat(16));
 assert.strictEqual(
-  Buffer.allocUnsafeSlow(16).fill('a', 'utf8').toString('utf8'),
-  'a'.repeat(16));
+    Buffer.allocUnsafeSlow(16).fill('a', 'utf8').toString('utf8'),
+    'a'.repeat(16));
 
 assert.strictEqual(
-  Buffer.allocUnsafeSlow(16).fill('Љ', 'utf16le').toString('utf16le'),
-  'Љ'.repeat(8));
+    Buffer.allocUnsafeSlow(16).fill('Љ', 'utf16le').toString('utf16le'),
+    'Љ'.repeat(8));
 assert.strictEqual(
-  Buffer.allocUnsafeSlow(16).fill('Љ', 'latin1').toString('latin1'),
-  '\t'.repeat(16));
+    Buffer.allocUnsafeSlow(16).fill('Љ', 'latin1').toString('latin1'),
+    '\t'.repeat(16));
 assert.strictEqual(
-  Buffer.allocUnsafeSlow(16).fill('Љ', 'utf8').toString('utf8'),
-  'Љ'.repeat(8));
+    Buffer.allocUnsafeSlow(16).fill('Љ', 'utf8').toString('utf8'),
+    'Љ'.repeat(8));
 
 assert.throws(() => {
-  const buf = Buffer.from('a'.repeat(1000));
+    const buf = Buffer.from('a'.repeat(1000));
 
-  buf.fill('This is not correctly encoded', 'hex');
+    buf.fill('This is not correctly encoded', 'hex');
 }, {
-  code: 'ERR_INVALID_ARG_VALUE',
-  name: 'TypeError'
+    code: 'ERR_INVALID_ARG_VALUE',
+    name: 'TypeError'
 });

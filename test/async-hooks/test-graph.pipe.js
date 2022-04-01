@@ -21,12 +21,12 @@ function onsleepClose() {}
 process.on('exit', onexit);
 
 function onexit() {
-  hooks.disable();
-  verifyGraph(
-    hooks,
-    [ { type: 'PROCESSWRAP', id: 'process:1', triggerAsyncId: null },
-      { type: 'PIPEWRAP', id: 'pipe:1', triggerAsyncId: null },
-      { type: 'PIPEWRAP', id: 'pipe:2', triggerAsyncId: null },
-      { type: 'PIPEWRAP', id: 'pipe:3', triggerAsyncId: null } ]
-  );
+    hooks.disable();
+    verifyGraph(
+        hooks,
+        [ { type: 'PROCESSWRAP', id: 'process:1', triggerAsyncId: null },
+          { type: 'PIPEWRAP', id: 'pipe:1', triggerAsyncId: null },
+          { type: 'PIPEWRAP', id: 'pipe:2', triggerAsyncId: null },
+          { type: 'PIPEWRAP', id: 'pipe:3', triggerAsyncId: null } ]
+    );
 }

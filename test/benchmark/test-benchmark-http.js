@@ -3,7 +3,7 @@
 const common = require('../common');
 
 if (!common.enoughTestMem)
-  common.skip('Insufficient memory for HTTP benchmark test');
+    common.skip('Insufficient memory for HTTP benchmark test');
 
 // Because the http benchmarks use hardcoded ports, this should be in sequential
 // rather than parallel to make sure it does not conflict with tests that choose

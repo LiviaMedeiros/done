@@ -24,17 +24,17 @@
 // to an http server. You should get an error and exit.
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const http = require('http');
 const https = require('https');
 const server = http.createServer(common.mustNotCall());
 
 server.listen(0, common.mustCall(function() {
-  const req = https.get({ port: this.address().port }, common.mustNotCall());
+    const req = https.get({ port: this.address().port }, common.mustNotCall());
 
-  req.on('error', common.mustCall(function(e) {
-    console.log('Got expected error: ', e.message);
-    server.close();
-  }));
+    req.on('error', common.mustCall(function(e) {
+        console.log('Got expected error: ', e.message);
+        server.close();
+    }));
 }));

@@ -37,19 +37,19 @@ assert.strictEqual(parser.writableHighWaterMark,
                    parser._writableState.highWaterMark);
 
 parser._transform = function(chunk, enc, callback) {
-  callback(null, { val: chunk[0] });
+    callback(null, { val: chunk[0] });
 };
 
 let parsed;
 
 parser.on('data', function(obj) {
-  parsed = obj;
+    parsed = obj;
 });
 
 parser.end(Buffer.from([42]));
 
 process.on('exit', function() {
-  assert.strictEqual(parsed.val, 42);
+    assert.strictEqual(parsed.val, 42);
 });
 
 
@@ -65,17 +65,17 @@ assert.strictEqual(parser.writableHighWaterMark,
                    parser._writableState.highWaterMark);
 
 serializer._transform = function(obj, _, callback) {
-  callback(null, Buffer.from([obj.val]));
+    callback(null, Buffer.from([obj.val]));
 };
 
 let serialized;
 
 serializer.on('data', function(chunk) {
-  serialized = chunk;
+    serialized = chunk;
 });
 
 serializer.write({ val: 42 });
 
 process.on('exit', function() {
-  assert.strictEqual(serialized[0], 42);
+    assert.strictEqual(serialized[0], 42);
 });

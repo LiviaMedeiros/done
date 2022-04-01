@@ -15,9 +15,9 @@ const proc = cp.spawn(process.execPath,
                       { cwd: tmpdir.path });
 
 proc.once('exit', common.mustCall(() => {
-  assert(fs.existsSync(FILE_NAME));
-  fs.readFile(FILE_NAME, common.mustCall((err, data) => {
-    const traces = JSON.parse(data.toString()).traceEvents;
-    assert(traces.length > 0);
-  }));
+    assert(fs.existsSync(FILE_NAME));
+    fs.readFile(FILE_NAME, common.mustCall((err, data) => {
+        const traces = JSON.parse(data.toString()).traceEvents;
+        assert(traces.length > 0);
+    }));
 }));

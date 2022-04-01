@@ -39,7 +39,7 @@ tmpdir.refresh();
 
 // Test fs.symlink()
 fs.symlink(linkData, linkPath1, 'junction', common.mustSucceed(() => {
-  verifyLink(linkPath1);
+    verifyLink(linkPath1);
 }));
 
 // Test fs.symlinkSync()
@@ -47,13 +47,13 @@ fs.symlinkSync(linkData, linkPath2, 'junction');
 verifyLink(linkPath2);
 
 function verifyLink(linkPath) {
-  const stats = fs.lstatSync(linkPath);
-  assert.ok(stats.isSymbolicLink());
+    const stats = fs.lstatSync(linkPath);
+    assert.ok(stats.isSymbolicLink());
 
-  const data1 = fs.readFileSync(`${linkPath}/x.txt`, 'ascii');
-  const data2 = fs.readFileSync(`${linkTarget}/x.txt`, 'ascii');
-  assert.strictEqual(data1, data2);
+    const data1 = fs.readFileSync(`${linkPath}/x.txt`, 'ascii');
+    const data2 = fs.readFileSync(`${linkTarget}/x.txt`, 'ascii');
+    assert.strictEqual(data1, data2);
 
-  // Clean up.
-  fs.unlinkSync(linkPath);
+    // Clean up.
+    fs.unlinkSync(linkPath);
 }

@@ -23,27 +23,27 @@ instances.
 
 ```js
 const {
-  Worker, isMainThread, parentPort, workerData
+    Worker, isMainThread, parentPort, workerData
 } = require('worker_threads');
 
 if (isMainThread) {
-  module.exports = function parseJSAsync(script) {
-    return new Promise((resolve, reject) => {
-      const worker = new Worker(__filename, {
-        workerData: script
-      });
-      worker.on('message', resolve);
-      worker.on('error', reject);
-      worker.on('exit', (code) => {
-        if (code !== 0)
-          reject(new Error(`Worker stopped with exit code ${code}`));
-      });
-    });
-  };
+    module.exports = function parseJSAsync(script) {
+        return new Promise((resolve, reject) => {
+            const worker = new Worker(__filename, {
+                workerData: script
+            });
+            worker.on('message', resolve);
+            worker.on('error', reject);
+            worker.on('exit', (code) => {
+                if (code !== 0)
+                    reject(new Error(`Worker stopped with exit code ${code}`));
+            });
+        });
+    };
 } else {
-  const { parse } = require('some-js-parsing-library');
-  const script = workerData;
-  parentPort.postMessage(parse(script));
+    const { parse } = require('some-js-parsing-library');
+    const script = workerData;
+    parentPort.postMessage(parse(script));
 }
 ```
 
@@ -84,17 +84,17 @@ automatically.
 
 ```js
 const {
-  Worker,
-  isMainThread,
-  setEnvironmentData,
-  getEnvironmentData,
+    Worker,
+    isMainThread,
+    setEnvironmentData,
+    getEnvironmentData,
 } = require('worker_threads');
 
 if (isMainThread) {
-  setEnvironmentData('Hello', 'World!');
-  const worker = new Worker(__filename);
+    setEnvironmentData('Hello', 'World!');
+    const worker = new Worker(__filename);
 } else {
-  console.log(getEnvironmentData('Hello'));  // Prints 'World!'.
+    console.log(getEnvironmentData('Hello'));  // Prints 'World!'.
 }
 ```
 
@@ -112,11 +112,11 @@ Is `true` if this code is not running inside of a [`Worker`][] thread.
 const { Worker, isMainThread } = require('worker_threads');
 
 if (isMainThread) {
-  // This re-loads the current file inside a Worker instance.
-  new Worker(__filename);
+    // This re-loads the current file inside a Worker instance.
+    new Worker(__filename);
 } else {
-  console.log('Inside Worker!');
-  console.log(isMainThread);  // Prints 'false'.
+    console.log('Inside Worker!');
+    console.log(isMainThread);  // Prints 'false'.
 }
 ```
 
@@ -205,16 +205,16 @@ using `worker.postMessage()` are available in this thread using
 const { Worker, isMainThread, parentPort } = require('worker_threads');
 
 if (isMainThread) {
-  const worker = new Worker(__filename);
-  worker.once('message', (message) => {
-    console.log(message);  // Prints 'Hello, world!'.
-  });
-  worker.postMessage('Hello, world!');
+    const worker = new Worker(__filename);
+    worker.once('message', (message) => {
+        console.log(message);  // Prints 'Hello, world!'.
+    });
+    worker.postMessage('Hello, world!');
 } else {
-  // When a message from the parent thread is received, send it back:
-  parentPort.once('message', (message) => {
-    parentPort.postMessage(message);
-  });
+    // When a message from the parent thread is received, send it back:
+    parentPort.once('message', (message) => {
+        parentPort.postMessage(message);
+    });
 }
 ```
 
@@ -287,7 +287,7 @@ share read and write access to the same set of environment variables.
 const { Worker, SHARE_ENV } = require('worker_threads');
 new Worker('process.env.SET_IN_WORKER = "foo"', { eval: true, env: SHARE_ENV })
   .on('exit', () => {
-    console.log(process.env.SET_IN_WORKER);  // Prints 'foo'.
+      console.log(process.env.SET_IN_WORKER);  // Prints 'foo'.
   });
 ```
 
@@ -341,9 +341,9 @@ according to the [HTML structured clone algorithm][].
 const { Worker, isMainThread, workerData } = require('worker_threads');
 
 if (isMainThread) {
-  const worker = new Worker(__filename, { workerData: 'Hello, world!' });
+    const worker = new Worker(__filename, { workerData: 'Hello, world!' });
 } else {
-  console.log(workerData);  // Prints 'Hello, world!'.
+    console.log(workerData);  // Prints 'Hello, world!'.
 }
 ```
 
@@ -364,24 +364,24 @@ with all other `BroadcastChannel` instances bound to the same channel name.
 'use strict';
 
 const {
-  isMainThread,
-  BroadcastChannel,
-  Worker
+    isMainThread,
+    BroadcastChannel,
+    Worker
 } = require('worker_threads');
 
 const bc = new BroadcastChannel('hello');
 
 if (isMainThread) {
-  let c = 0;
-  bc.onmessage = (event) => {
-    console.log(event.data);
-    if (++c === 10) bc.close();
-  };
-  for (let n = 0; n < 10; n++)
-    new Worker(__filename);
+    let c = 0;
+    bc.onmessage = (event) => {
+        console.log(event.data);
+        if (++c === 10) bc.close();
+    };
+    for (let n = 0; n < 10; n++)
+        new Worker(__filename);
 } else {
-  bc.postMessage('hello from every worker');
-  bc.close();
+    bc.postMessage('hello from every worker');
+    bc.close();
 }
 ```
 
@@ -732,13 +732,13 @@ classes will be cloned as plain JavaScript objects.
 const b = Symbol('b');
 
 class Foo {
-  #a = 1;
-  constructor() {
-    this[b] = 2;
-    this.c = 3;
-  }
+    #a = 1;
+    constructor() {
+        this[b] = 2;
+        this.c = 3;
+    }
 
-  get d() { return 4; }
+    get d() { return 4; }
 }
 
 const { port1, port2 } = new MessageChannel();
@@ -865,21 +865,21 @@ the thread barrier.
 ```js
 const assert = require('assert');
 const {
-  Worker, MessageChannel, MessagePort, isMainThread, parentPort
+    Worker, MessageChannel, MessagePort, isMainThread, parentPort
 } = require('worker_threads');
 if (isMainThread) {
-  const worker = new Worker(__filename);
-  const subChannel = new MessageChannel();
-  worker.postMessage({ hereIsYourPort: subChannel.port1 }, [subChannel.port1]);
-  subChannel.port2.on('message', (value) => {
-    console.log('received:', value);
-  });
+    const worker = new Worker(__filename);
+    const subChannel = new MessageChannel();
+    worker.postMessage({ hereIsYourPort: subChannel.port1 }, [subChannel.port1]);
+    subChannel.port2.on('message', (value) => {
+        console.log('received:', value);
+    });
 } else {
-  parentPort.once('message', (value) => {
-    assert(value.hereIsYourPort instanceof MessagePort);
-    value.hereIsYourPort.postMessage('the worker is sending this');
-    value.hereIsYourPort.close();
-  });
+    parentPort.once('message', (value) => {
+        assert(value.hereIsYourPort instanceof MessagePort);
+        value.hereIsYourPort.postMessage('the worker is sending this');
+        value.hereIsYourPort.close();
+    });
 }
 ```
 
@@ -1110,20 +1110,20 @@ messages.
 const { Worker, isMainThread, parentPort } = require('worker_threads');
 
 if (isMainThread) {
-  const worker = new Worker(__filename);
-  setInterval(() => {
-    worker.postMessage('hi');
-    console.log(worker.performance.eventLoopUtilization());
-  }, 100).unref();
-  return;
+    const worker = new Worker(__filename);
+    setInterval(() => {
+        worker.postMessage('hi');
+        console.log(worker.performance.eventLoopUtilization());
+    }, 100).unref();
+    return;
 }
 
 parentPort.on('message', () => console.log('msg')).unref();
 (function r(n) {
-  if (--n < 0) return;
-  const t = Date.now();
-  while (Date.now() - t < 300);
-  setImmediate(r, n);
+    if (--n < 0) return;
+    const t = Date.now();
+    while (Date.now() - t < 300);
+    setImmediate(r, n);
 })(10);
 ```
 
@@ -1265,18 +1265,18 @@ Node.js event loop.
 
 ```mjs
 import {
-  Worker,
-  isMainThread,
+    Worker,
+    isMainThread,
 } from 'worker_threads';
 
 if (isMainThread) {
-  new Worker(new URL(import.meta.url));
-  for (let n = 0; n < 1e10; n++) {
+    new Worker(new URL(import.meta.url));
+    for (let n = 0; n < 1e10; n++) {
     // Looping to simulate work.
-  }
+    }
 } else {
-  // This output will be blocked by the for loop in the main thread.
-  console.log('foo');
+    // This output will be blocked by the for loop in the main thread.
+    console.log('foo');
 }
 ```
 
@@ -1284,18 +1284,18 @@ if (isMainThread) {
 'use strict';
 
 const {
-  Worker,
-  isMainThread,
+    Worker,
+    isMainThread,
 } = require('worker_threads');
 
 if (isMainThread) {
-  new Worker(__filename);
-  for (let n = 0; n < 1e10; n++) {
+    new Worker(__filename);
+    for (let n = 0; n < 1e10; n++) {
     // Looping to simulate work.
-  }
+    }
 } else {
-  // This output will be blocked by the for loop in the main thread.
-  console.log('foo');
+    // This output will be blocked by the for loop in the main thread.
+    console.log('foo');
 }
 ```
 

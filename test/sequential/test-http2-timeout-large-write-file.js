@@ -1,7 +1,7 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 const assert = require('assert');
 const fixtures = require('../common/fixtures');
 const fs = require('fs');
@@ -36,52 +36,52 @@ const fd = fs.openSync(filepath, 'r');
 process.on('beforeExit', () => fs.closeSync(fd));
 
 const server = http2.createSecureServer({
-  key: fixtures.readKey('agent1-key.pem'),
-  cert: fixtures.readKey('agent1-cert.pem')
+    key: fixtures.readKey('agent1-key.pem'),
+    cert: fixtures.readKey('agent1-cert.pem')
 });
 server.on('stream', common.mustCall((stream) => {
-  stream.respondWithFD(fd, {
-    'Content-Type': 'application/octet-stream',
-    'Content-Length': content.length.toString(),
-    'Vary': 'Accept-Encoding'
-  });
-  stream.end();
+    stream.respondWithFD(fd, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Length': content.length.toString(),
+        'Vary': 'Accept-Encoding'
+    });
+    stream.end();
 }));
 server.setTimeout(serverTimeout);
 server.on('timeout', () => {
-  assert.ok(!didReceiveData, 'Should not timeout');
+    assert.ok(!didReceiveData, 'Should not timeout');
 });
 
 server.listen(0, common.mustCall(() => {
-  const client = http2.connect(`https://localhost:${server.address().port}`,
-                               { rejectUnauthorized: false });
+    const client = http2.connect(`https://localhost:${server.address().port}`,
+                                 { rejectUnauthorized: false });
 
-  const req = client.request({ ':path': '/' });
-  req.end();
+    const req = client.request({ ':path': '/' });
+    req.end();
 
-  const resume = () => req.resume();
-  let receivedBufferLength = 0;
-  let firstReceivedAt;
-  req.on('data', common.mustCallAtLeast((buf) => {
-    if (receivedBufferLength === 0) {
-      didReceiveData = false;
-      firstReceivedAt = Date.now();
-    }
-    receivedBufferLength += buf.length;
-    if (receivedBufferLength >= minReadSize &&
+    const resume = () => req.resume();
+    let receivedBufferLength = 0;
+    let firstReceivedAt;
+    req.on('data', common.mustCallAtLeast((buf) => {
+        if (receivedBufferLength === 0) {
+            didReceiveData = false;
+            firstReceivedAt = Date.now();
+        }
+        receivedBufferLength += buf.length;
+        if (receivedBufferLength >= minReadSize &&
         receivedBufferLength < writeSize) {
-      didReceiveData = true;
-      receivedBufferLength = 0;
-      req.pause();
-      setTimeout(
-        resume,
-        serverTimeout + offsetTimeout - (Date.now() - firstReceivedAt)
-      );
-      offsetTimeout = 0;
-    }
-  }, 1));
-  req.on('end', common.mustCall(() => {
-    client.close();
-    server.close();
-  }));
+            didReceiveData = true;
+            receivedBufferLength = 0;
+            req.pause();
+            setTimeout(
+                resume,
+                serverTimeout + offsetTimeout - (Date.now() - firstReceivedAt)
+            );
+            offsetTimeout = 0;
+        }
+    }, 1));
+    req.on('end', common.mustCall(() => {
+        client.close();
+        server.close();
+    }));
 }));

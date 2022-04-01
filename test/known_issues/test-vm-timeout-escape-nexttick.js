@@ -16,31 +16,31 @@ const nextTick = process.nextTick;
 const waitDuration = common.platformTimeout(100n);
 
 function loop() {
-  const start = hrtime();
-  while (1) {
-    const current = hrtime();
-    const span = (current - start) / NS_PER_MS;
-    if (span >= waitDuration) {
-      throw new Error(
-        `escaped timeout at ${span} milliseconds!`);
+    const start = hrtime();
+    while (1) {
+        const current = hrtime();
+        const span = (current - start) / NS_PER_MS;
+        if (span >= waitDuration) {
+            throw new Error(
+                `escaped timeout at ${span} milliseconds!`);
+        }
     }
-  }
 }
 
 // The bug won't happen 100% reliably so run the test a small number of times to
 // make sure we catch it if the bug exists.
 for (let i = 0; i < 4; i++) {
-  assert.throws(() => {
-    vm.runInNewContext(
-      'nextTick(loop); loop();',
-      {
-        hrtime,
-        nextTick,
-        loop
-      },
-      { timeout: common.platformTimeout(10) }
-    );
-  }, {
-    code: 'ERR_SCRIPT_EXECUTION_TIMEOUT'
-  });
+    assert.throws(() => {
+        vm.runInNewContext(
+            'nextTick(loop); loop();',
+            {
+                hrtime,
+                nextTick,
+                loop
+            },
+            { timeout: common.platformTimeout(10) }
+        );
+    }, {
+        code: 'ERR_SCRIPT_EXECUTION_TIMEOUT'
+    });
 }

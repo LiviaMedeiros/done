@@ -26,20 +26,20 @@ const http = require('http');
 const url = require('url');
 
 const invalidUrls = [
-  'file:///whatever',
-  'mailto:asdf@asdf.com',
-  'ftp://www.example.com',
-  'javascript:alert(\'hello\');',
-  'xmpp:foo@bar.com',
-  'f://some.host/path',
+    'file:///whatever',
+    'mailto:asdf@asdf.com',
+    'ftp://www.example.com',
+    'javascript:alert(\'hello\');',
+    'xmpp:foo@bar.com',
+    'f://some.host/path',
 ];
 
 invalidUrls.forEach((invalid) => {
-  assert.throws(
-    () => { http.request(url.parse(invalid)); },
-    {
-      code: 'ERR_INVALID_PROTOCOL',
-      name: 'TypeError'
-    }
-  );
+    assert.throws(
+        () => { http.request(url.parse(invalid)); },
+        {
+            code: 'ERR_INVALID_PROTOCOL',
+            name: 'TypeError'
+        }
+    );
 });

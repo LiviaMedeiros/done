@@ -25,32 +25,32 @@ const assert = require('assert');
 const util = require('util');
 
 const {
-  hijackStdout,
-  hijackStderr,
-  restoreStdout,
-  restoreStderr
+    hijackStdout,
+    hijackStderr,
+    restoreStdout,
+    restoreStderr
 } = require('../common/hijackstdio');
 
 assert.ok(process.stdout.writable);
 assert.ok(process.stderr.writable);
 // Support legacy API
 if (common.isMainThread) {
-  assert.strictEqual(typeof process.stdout.fd, 'number');
-  assert.strictEqual(typeof process.stderr.fd, 'number');
+    assert.strictEqual(typeof process.stdout.fd, 'number');
+    assert.strictEqual(typeof process.stderr.fd, 'number');
 }
 
 common.expectWarning(
-  'Warning',
-  [
-    ['Count for \'noLabel\' does not exist'],
-    ['No such label \'noLabel\' for console.timeLog()'],
-    ['No such label \'noLabel\' for console.timeEnd()'],
-    ['Count for \'default\' does not exist'],
-    ['No such label \'default\' for console.timeLog()'],
-    ['No such label \'default\' for console.timeEnd()'],
-    ['Label \'default\' already exists for console.time()'],
-    ['Label \'test\' already exists for console.time()'],
-  ]
+    'Warning',
+    [
+        ['Count for \'noLabel\' does not exist'],
+        ['No such label \'noLabel\' for console.timeLog()'],
+        ['No such label \'noLabel\' for console.timeEnd()'],
+        ['Count for \'default\' does not exist'],
+        ['No such label \'default\' for console.timeLog()'],
+        ['No such label \'default\' for console.timeEnd()'],
+        ['Label \'default\' already exists for console.time()'],
+        ['Label \'test\' already exists for console.time()'],
+    ]
 );
 
 console.countReset('noLabel');
@@ -86,11 +86,11 @@ const strings = [];
 const errStrings = [];
 process.stdout.isTTY = false;
 hijackStdout(function(data) {
-  strings.push(data);
+    strings.push(data);
 });
 process.stderr.isTTY = false;
 hijackStderr(function(data) {
-  errStrings.push(data);
+    errStrings.push(data);
 });
 
 // Test console.log() goes to stdout
@@ -137,9 +137,9 @@ console.dir({ foo: { bar: { baz: true } } }, { depth: 1 });
 // Test console.dirxml()
 console.dirxml(custom_inspect, custom_inspect);
 console.dirxml(
-  { foo: { bar: { baz: true } } },
-  { foo: { bar: { quux: false } } },
-  { foo: { bar: { quux: true } } }
+    { foo: { bar: { baz: true } } },
+    { foo: { bar: { quux: false } } },
+    { foo: { bar: { quux: true } } }
 );
 
 // Test console.trace()
@@ -178,9 +178,9 @@ console.timeEnd(NaN);
 console.time('test');
 const time = console._times.get('test');
 setTimeout(() => {
-  console.time('test');
-  assert.deepStrictEqual(console._times.get('test'), time);
-  console.timeEnd('test');
+    console.time('test');
+    assert.deepStrictEqual(console._times.get('test'), time);
+    console.timeEnd('test');
 }, 1);
 
 console.time('log1');
@@ -216,21 +216,21 @@ console.timeEnd('label3');
 assert.strictEqual(console._times.size, timesMapSize);
 
 const expectedStrings = [
-  'foo', 'foo bar', 'foo bar hop', "{ slashes: '\\\\\\\\' }", 'inspect',
+    'foo', 'foo bar', 'foo bar hop', "{ slashes: '\\\\\\\\' }", 'inspect',
 ];
 
 for (const expected of expectedStrings) {
-  assert.strictEqual(strings.shift(), `${expected}\n`);
-  assert.strictEqual(errStrings.shift(), `${expected}\n`);
+    assert.strictEqual(strings.shift(), `${expected}\n`);
+    assert.strictEqual(errStrings.shift(), `${expected}\n`);
 }
 
 for (const expected of expectedStrings) {
-  assert.strictEqual(strings.shift(), `${expected}\n`);
-  assert.strictEqual(errStrings.shift(), `${expected}\n`);
+    assert.strictEqual(strings.shift(), `${expected}\n`);
+    assert.strictEqual(errStrings.shift(), `${expected}\n`);
 }
 
 for (const expected of expectedStrings) {
-  assert.strictEqual(strings.shift(), `${expected}\n`);
+    assert.strictEqual(strings.shift(), `${expected}\n`);
 }
 
 assert.strictEqual(strings.shift(),
@@ -277,10 +277,10 @@ assert.strictEqual(errStrings.shift().split('\n').shift(),
 // Hijack stderr to catch `process.emitWarning` which is using
 // `process.nextTick`
 hijackStderr(common.mustCall(function(data) {
-  restoreStderr();
+    restoreStderr();
 
-  // stderr.write will catch sync error, so use `process.nextTick` here
-  process.nextTick(function() {
-    assert.strictEqual(data.includes('noLabel'), true);
-  });
+    // stderr.write will catch sync error, so use `process.nextTick` here
+    process.nextTick(function() {
+        assert.strictEqual(data.includes('noLabel'), true);
+    });
 }));

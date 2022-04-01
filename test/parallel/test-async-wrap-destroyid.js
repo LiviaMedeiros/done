@@ -12,28 +12,28 @@ let run_cntr = 0;
 let hooks = null;
 
 process.on('beforeExit', common.mustCall(() => {
-  process.removeAllListeners('uncaughtException');
-  hooks.disable();
-  assert.strictEqual(test_id, null);
-  assert.strictEqual(run_cntr, RUNS);
+    process.removeAllListeners('uncaughtException');
+    hooks.disable();
+    assert.strictEqual(test_id, null);
+    assert.strictEqual(run_cntr, RUNS);
 }));
 
 
 hooks = async_hooks.createHook({
-  destroy(id) {
-    if (id === test_id) {
-      run_cntr++;
-      test_id = null;
-    }
-  },
+    destroy(id) {
+        if (id === test_id) {
+            run_cntr++;
+            test_id = null;
+        }
+    },
 }).enable();
 
 
 (function runner(n) {
-  assert.strictEqual(test_id, null);
-  if (n <= 0) return;
+    assert.strictEqual(test_id, null);
+    if (n <= 0) return;
 
-  test_id = (Math.random() * 1e9) >>> 0;
-  async_wrap.queueDestroyAsyncId(test_id);
-  setImmediate(common.mustCall(runner), n - 1);
+    test_id = (Math.random() * 1e9) >>> 0;
+    async_wrap.queueDestroyAsyncId(test_id);
+    setImmediate(common.mustCall(runner), n - 1);
 })(RUNS);

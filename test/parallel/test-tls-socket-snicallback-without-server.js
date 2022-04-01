@@ -5,7 +5,7 @@
 
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const assert = require('assert');
 const tls = require('tls');
@@ -14,10 +14,10 @@ const makeDuplexPair = require('../common/duplexpair');
 
 const { clientSide, serverSide } = makeDuplexPair();
 new tls.TLSSocket(serverSide, {
-  isServer: true,
-  SNICallback: common.mustCall((servername, cb) => {
-    assert.strictEqual(servername, 'www.google.com');
-  })
+    isServer: true,
+    SNICallback: common.mustCall((servername, cb) => {
+        assert.strictEqual(servername, 'www.google.com');
+    })
 });
 
 // Captured traffic from browser's request to https://www.google.com

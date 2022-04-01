@@ -22,7 +22,7 @@
 'use strict';
 const common = require('../common');
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const fixtures = require('../common/fixtures');
 const assert = require('assert');
@@ -37,40 +37,40 @@ let gotChunk = false;
 let gotDrain = false;
 
 function onconnection(conn) {
-  conn.on('data', function(c) {
-    if (!gotChunk) {
-      gotChunk = true;
-      console.log('ok - got chunk');
-    }
+    conn.on('data', function(c) {
+        if (!gotChunk) {
+            gotChunk = true;
+            console.log('ok - got chunk');
+        }
 
-    // Just some basic sanity checks.
-    assert(c.length);
-    assert(Buffer.isBuffer(c));
+        // Just some basic sanity checks.
+        assert(c.length);
+        assert(Buffer.isBuffer(c));
 
-    if (gotDrain)
-      process.exit(0);
-  });
+        if (gotDrain)
+            process.exit(0);
+    });
 }
 
 server.listen(0, function() {
-  const chunk = Buffer.alloc(1024, 'x');
-  const opt = { port: this.address().port, rejectUnauthorized: false };
-  const conn = tls.connect(opt, function() {
-    conn.on('drain', ondrain);
-    write();
-  });
-  function ondrain() {
-    if (!gotDrain) {
-      gotDrain = true;
-      console.log('ok - got drain');
+    const chunk = Buffer.alloc(1024, 'x');
+    const opt = { port: this.address().port, rejectUnauthorized: false };
+    const conn = tls.connect(opt, function() {
+        conn.on('drain', ondrain);
+        write();
+    });
+    function ondrain() {
+        if (!gotDrain) {
+            gotDrain = true;
+            console.log('ok - got drain');
+        }
+        if (gotChunk)
+            process.exit(0);
+        write();
     }
-    if (gotChunk)
-      process.exit(0);
-    write();
-  }
 
-  function write() {
+    function write() {
     // This needs to return false eventually
-    while (false !== conn.write(chunk));
-  }
+        while (false !== conn.write(chunk));
+    }
 });

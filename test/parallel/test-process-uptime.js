@@ -32,6 +32,6 @@ assert.ok(process.uptime() <= 15);
 const original = process.uptime();
 
 setTimeout(function() {
-  const uptime = process.uptime();
-  assert.ok(original < uptime);
+    const uptime = process.uptime();
+    assert.ok(original < uptime);
 }, 10);

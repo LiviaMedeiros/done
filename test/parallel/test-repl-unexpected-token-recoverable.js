@@ -16,18 +16,18 @@ const expectOut = /> \.\.\. undefined\n/;
 
 child.stderr.setEncoding('utf8');
 child.stderr.on('data', (d) => {
-  throw new Error('child.stderr be silent');
+    throw new Error('child.stderr be silent');
 });
 
 child.stdout.setEncoding('utf8');
 let out = '';
 child.stdout.on('data', (d) => {
-  out += d;
+    out += d;
 });
 
 child.stdout.on('end', () => {
-  assert.match(out, expectOut);
-  console.log('ok');
+    assert.match(out, expectOut);
+    console.log('ok');
 });
 
 child.stdin.end(input);

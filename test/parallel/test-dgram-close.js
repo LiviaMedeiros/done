@@ -37,20 +37,20 @@ const { handle } = socket[kStateSymbol];
 // Get a random port for send
 const portGetter = dgram.createSocket('udp4')
   .bind(0, 'localhost', common.mustCall(() => {
-    socket.send(buf, 0, buf.length,
-                portGetter.address().port,
-                portGetter.address().address);
+      socket.send(buf, 0, buf.length,
+                  portGetter.address().port,
+                  portGetter.address().address);
 
-    assert.strictEqual(socket.close(common.mustCall()), socket);
-    socket.on('close', common.mustCall());
-    socket = null;
+      assert.strictEqual(socket.close(common.mustCall()), socket);
+      socket.on('close', common.mustCall());
+      socket = null;
 
-    // Verify that accessing handle after closure doesn't throw
-    setImmediate(function() {
+      // Verify that accessing handle after closure doesn't throw
       setImmediate(function() {
-        console.log('Handle fd is: ', handle.fd);
+          setImmediate(function() {
+              console.log('Handle fd is: ', handle.fd);
+          });
       });
-    });
 
-    portGetter.close();
+      portGetter.close();
   }));

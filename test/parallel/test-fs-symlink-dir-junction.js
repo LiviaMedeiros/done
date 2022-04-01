@@ -35,30 +35,30 @@ const linkPath = path.join(tmpdir.path, 'cycles_link');
 tmpdir.refresh();
 
 fs.symlink(linkData, linkPath, 'junction', common.mustSucceed(() => {
-  fs.lstat(linkPath, common.mustSucceed((stats) => {
-    assert.ok(stats.isSymbolicLink());
+    fs.lstat(linkPath, common.mustSucceed((stats) => {
+        assert.ok(stats.isSymbolicLink());
 
-    fs.readlink(linkPath, common.mustSucceed((destination) => {
-      assert.strictEqual(destination, linkData);
+        fs.readlink(linkPath, common.mustSucceed((destination) => {
+            assert.strictEqual(destination, linkData);
 
-      fs.unlink(linkPath, common.mustSucceed(() => {
-        assert(!fs.existsSync(linkPath));
-        assert(fs.existsSync(linkData));
-      }));
+            fs.unlink(linkPath, common.mustSucceed(() => {
+                assert(!fs.existsSync(linkPath));
+                assert(fs.existsSync(linkData));
+            }));
+        }));
     }));
-  }));
 }));
 
 // Test invalid symlink
 {
-  const linkData = fixtures.path('/not/exists/dir');
-  const linkPath = path.join(tmpdir.path, 'invalid_junction_link');
+    const linkData = fixtures.path('/not/exists/dir');
+    const linkPath = path.join(tmpdir.path, 'invalid_junction_link');
 
-  fs.symlink(linkData, linkPath, 'junction', common.mustSucceed(() => {
-    assert(!fs.existsSync(linkPath));
+    fs.symlink(linkData, linkPath, 'junction', common.mustSucceed(() => {
+        assert(!fs.existsSync(linkPath));
 
-    fs.unlink(linkPath, common.mustSucceed(() => {
-      assert(!fs.existsSync(linkPath));
+        fs.unlink(linkPath, common.mustSucceed(() => {
+            assert(!fs.existsSync(linkPath));
+        }));
     }));
-  }));
 }

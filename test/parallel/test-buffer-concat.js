@@ -45,37 +45,37 @@ assert.strictEqual(flatLong.toString(), check);
 assert.strictEqual(flatLongLen.toString(), check);
 
 [undefined, null, Buffer.from('hello')].forEach((value) => {
-  assert.throws(() => {
-    Buffer.concat(value);
-  }, {
-    code: 'ERR_INVALID_ARG_TYPE',
-    message: 'The "list" argument must be an instance of Array.' +
+    assert.throws(() => {
+        Buffer.concat(value);
+    }, {
+        code: 'ERR_INVALID_ARG_TYPE',
+        message: 'The "list" argument must be an instance of Array.' +
              `${common.invalidArgTypeHelper(value)}`
-  });
+    });
 });
 
 [[42], ['hello', Buffer.from('world')]].forEach((value) => {
-  assert.throws(() => {
-    Buffer.concat(value);
-  }, {
-    code: 'ERR_INVALID_ARG_TYPE',
-    message: 'The "list[0]" argument must be an instance of Buffer ' +
+    assert.throws(() => {
+        Buffer.concat(value);
+    }, {
+        code: 'ERR_INVALID_ARG_TYPE',
+        message: 'The "list[0]" argument must be an instance of Buffer ' +
              `or Uint8Array.${common.invalidArgTypeHelper(value[0])}`
-  });
+    });
 });
 
 assert.throws(() => {
-  Buffer.concat([Buffer.from('hello'), 3]);
+    Buffer.concat([Buffer.from('hello'), 3]);
 }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  message: 'The "list[1]" argument must be an instance of Buffer ' +
+    code: 'ERR_INVALID_ARG_TYPE',
+    message: 'The "list[1]" argument must be an instance of Buffer ' +
            'or Uint8Array. Received type number (3)'
 });
 
 // eslint-disable-next-line node-core/crypto-check
 const random10 = common.hasCrypto ?
-  require('crypto').randomBytes(10) :
-  Buffer.alloc(10, 1);
+    require('crypto').randomBytes(10) :
+    Buffer.alloc(10, 1);
 const empty = Buffer.alloc(0);
 
 assert.notDeepStrictEqual(random10, empty);
@@ -92,8 +92,8 @@ assert.deepStrictEqual(Buffer.concat([random10, empty, empty]), random10);
 assert.deepStrictEqual(Buffer.concat([empty], 100), Buffer.alloc(100));
 assert.deepStrictEqual(Buffer.concat([empty], 4096), Buffer.alloc(4096));
 assert.deepStrictEqual(
-  Buffer.concat([random10], 40),
-  Buffer.concat([random10, Buffer.alloc(30)]));
+    Buffer.concat([random10], 40),
+    Buffer.concat([random10, Buffer.alloc(30)]));
 
 assert.deepStrictEqual(Buffer.concat([new Uint8Array([0x41, 0x42]),
                                       new Uint8Array([0x43, 0x44])]),

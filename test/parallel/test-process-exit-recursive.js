@@ -27,11 +27,11 @@ const assert = require('assert');
 let nexits = 0;
 
 process.on('exit', function(code) {
-  assert.strictEqual(nexits++, 0);
-  assert.strictEqual(code, 1);
+    assert.strictEqual(nexits++, 0);
+    assert.strictEqual(code, 1);
 
-  // Now override the exit code of 1 with 0 so that the test passes
-  process.exit(0);
+    // Now override the exit code of 1 with 0 so that the test passes
+    process.exit(0);
 });
 
 process.exit(1);

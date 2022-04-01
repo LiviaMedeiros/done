@@ -9,5 +9,5 @@ const w = new Worker(`
 require('worker_threads').parentPort.postMessage(
   require(${JSON.stringify(binding)}).hello());`, { eval: true });
 w.on('message', common.mustCall((message) => {
-  assert.strictEqual(message, 'world');
+    assert.strictEqual(message, 'world');
 }));

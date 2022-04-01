@@ -23,9 +23,9 @@ assert.strictEqual(tls.rootCertificates.length,
                    new Set(tls.rootCertificates).size);
 
 assert(tls.rootCertificates.every((s) => {
-  return s.startsWith('-----BEGIN CERTIFICATE-----\n');
+    return s.startsWith('-----BEGIN CERTIFICATE-----\n');
 }));
 
 assert(tls.rootCertificates.every((s) => {
-  return s.endsWith('\n-----END CERTIFICATE-----');
+    return s.endsWith('\n-----END CERTIFICATE-----');
 }));

@@ -42,39 +42,39 @@ const fullResponse =
     body;
 
 const server = net.createServer(function(socket) {
-  let postBody = '';
+    let postBody = '';
 
-  socket.setEncoding('utf8');
+    socket.setEncoding('utf8');
 
-  socket.on('data', function(chunk) {
-    postBody += chunk;
+    socket.on('data', function(chunk) {
+        postBody += chunk;
 
-    if (postBody.includes('\r\n')) {
-      socket.write(fullResponse);
-      socket.end(fullResponse);
-    }
-  });
+        if (postBody.includes('\r\n')) {
+            socket.write(fullResponse);
+            socket.end(fullResponse);
+        }
+    });
 
-  socket.on('error', function(err) {
-    assert.strictEqual(err.code, 'ECONNRESET');
-  });
+    socket.on('error', function(err) {
+        assert.strictEqual(err.code, 'ECONNRESET');
+    });
 });
 
 
 server.listen(0, common.mustCall(function() {
-  http.get({ port: this.address().port }, common.mustCall(function(res) {
-    let buffer = '';
-    console.log(`Got res code: ${res.statusCode}`);
+    http.get({ port: this.address().port }, common.mustCall(function(res) {
+        let buffer = '';
+        console.log(`Got res code: ${res.statusCode}`);
 
-    res.setEncoding('utf8');
-    res.on('data', function(chunk) {
-      buffer += chunk;
-    });
+        res.setEncoding('utf8');
+        res.on('data', function(chunk) {
+            buffer += chunk;
+        });
 
-    res.on('end', common.mustCall(function() {
-      console.log(`Response ended, read ${buffer.length} bytes`);
-      assert.strictEqual(body, buffer);
-      server.close();
+        res.on('end', common.mustCall(function() {
+            console.log(`Response ended, read ${buffer.length} bytes`);
+            assert.strictEqual(body, buffer);
+            server.close();
+        }));
     }));
-  }));
 }));

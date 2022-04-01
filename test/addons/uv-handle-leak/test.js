@@ -11,13 +11,13 @@ const binding = require(bindingPath);
 // from workers.
 
 try {
-  // We don’t want to run this in Workers because they do actually enforce
-  // a clean-exit policy.
-  const { isMainThread } = require('worker_threads');
-  if (!isMainThread)
-    common.skip('Cannot run test in environment with clean-exit policy');
+    // We don’t want to run this in Workers because they do actually enforce
+    // a clean-exit policy.
+    const { isMainThread } = require('worker_threads');
+    if (!isMainThread)
+        common.skip('Cannot run test in environment with clean-exit policy');
 } catch {
-  // Continue regardless of error.
+    // Continue regardless of error.
 }
 
 binding.leakHandle();

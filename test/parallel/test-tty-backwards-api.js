@@ -9,27 +9,27 @@ const { internalBinding } = require('internal/test/binding');
 const TTY = internalBinding('tty_wrap').TTY = function() {};
 
 TTY.prototype = {
-  setBlocking: noop,
-  getWindowSize: noop
+    setBlocking: noop,
+    getWindowSize: noop
 };
 
 const { WriteStream } = require('tty');
 
 [
-  'cursorTo',
-  'moveCursor',
-  'clearLine',
-  'clearScreenDown',
+    'cursorTo',
+    'moveCursor',
+    'clearLine',
+    'clearScreenDown',
 ].forEach((method) => {
-  readline[method] = common.mustCall(function() {
-    const lastArg = arguments[arguments.length - 1];
+    readline[method] = common.mustCall(function() {
+        const lastArg = arguments[arguments.length - 1];
 
-    if (typeof lastArg === 'function') {
-      process.nextTick(lastArg);
-    }
+        if (typeof lastArg === 'function') {
+            process.nextTick(lastArg);
+        }
 
-    return true;
-  }, 2);
+        return true;
+    }, 2);
 });
 
 const writeStream = new WriteStream(1);

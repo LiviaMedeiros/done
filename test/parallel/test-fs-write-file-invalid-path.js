@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 if (!common.isWindows)
-  common.skip('This test is for Windows only.');
+    common.skip('This test is for Windows only.');
 
 const tmpdir = require('../common/tmpdir');
 tmpdir.refresh();
@@ -18,13 +18,13 @@ const DATA_VALUE = 'hello';
 const RESERVED_CHARACTERS = '<>"|?*';
 
 [...RESERVED_CHARACTERS].forEach((ch) => {
-  const pathname = path.join(tmpdir.path, `somefile_${ch}`);
-  assert.throws(
-    () => {
-      fs.writeFileSync(pathname, DATA_VALUE);
-    },
-    /^Error: ENOENT: no such file or directory, open '.*'$/,
-    `failed with '${ch}'`);
+    const pathname = path.join(tmpdir.path, `somefile_${ch}`);
+    assert.throws(
+        () => {
+            fs.writeFileSync(pathname, DATA_VALUE);
+        },
+        /^Error: ENOENT: no such file or directory, open '.*'$/,
+        `failed with '${ch}'`);
 });
 
 // Test for ':' (NTFS data streams).
@@ -34,13 +34,13 @@ fs.writeFileSync(pathname, DATA_VALUE);
 
 let content = '';
 const fileDataStream = fs.createReadStream(pathname, {
-  encoding: 'utf8'
+    encoding: 'utf8'
 });
 
 fileDataStream.on('data', (data) => {
-  content += data;
+    content += data;
 });
 
 fileDataStream.on('end', common.mustCall(() => {
-  assert.strictEqual(content, DATA_VALUE);
+    assert.strictEqual(content, DATA_VALUE);
 }));

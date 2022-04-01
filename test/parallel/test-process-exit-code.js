@@ -28,31 +28,31 @@ const { getTestCases } = require('../fixtures/process-exit-code-cases');
 const testCases = getTestCases(false);
 
 if (!process.argv[2]) {
-  parent();
+    parent();
 } else {
-  const i = parseInt(process.argv[2]);
-  if (Number.isNaN(i)) {
-    debug('Invalid test case index');
-    process.exit(100);
-    return;
-  }
-  testCases[i].func();
+    const i = parseInt(process.argv[2]);
+    if (Number.isNaN(i)) {
+        debug('Invalid test case index');
+        process.exit(100);
+        return;
+    }
+    testCases[i].func();
 }
 
 function parent() {
-  const { spawn } = require('child_process');
-  const node = process.execPath;
-  const f = __filename;
-  const option = { stdio: [ 0, 1, 'ignore' ] };
+    const { spawn } = require('child_process');
+    const node = process.execPath;
+    const f = __filename;
+    const option = { stdio: [ 0, 1, 'ignore' ] };
 
-  const test = (arg, name = 'child', exit) => {
-    spawn(node, [f, arg], option).on('exit', (code) => {
-      assert.strictEqual(
-        code, exit,
-        `wrong exit for ${arg}-${name}\nexpected:${exit} but got:${code}`);
-      debug(`ok - ${arg} exited with ${exit}`);
-    });
-  };
+    const test = (arg, name = 'child', exit) => {
+        spawn(node, [f, arg], option).on('exit', (code) => {
+            assert.strictEqual(
+                code, exit,
+                `wrong exit for ${arg}-${name}\nexpected:${exit} but got:${code}`);
+            debug(`ok - ${arg} exited with ${exit}`);
+        });
+    };
 
-  testCases.forEach((tc, i) => test(i, tc.func.name, tc.result));
+    testCases.forEach((tc, i) => test(i, tc.func.name, tc.result));
 }

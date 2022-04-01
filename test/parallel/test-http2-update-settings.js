@@ -11,49 +11,49 @@ const assert = require('assert');
 const http2 = require('http2');
 
 testUpdateSettingsWith({
-  server: http2.createSecureServer(),
-  newServerSettings: {
-    'headerTableSize': 1,
-    'initialWindowSize': 1,
-    'maxConcurrentStreams': 1,
-    'maxHeaderListSize': 1,
-    'maxFrameSize': 16385,
-    'enablePush': false,
-    'enableConnectProtocol': true
-  }
+    server: http2.createSecureServer(),
+    newServerSettings: {
+        'headerTableSize': 1,
+        'initialWindowSize': 1,
+        'maxConcurrentStreams': 1,
+        'maxHeaderListSize': 1,
+        'maxFrameSize': 16385,
+        'enablePush': false,
+        'enableConnectProtocol': true
+    }
 });
 testUpdateSettingsWith({
-  server: http2.createServer(),
-  newServerSettings: {
-    'enablePush': false
-  }
+    server: http2.createServer(),
+    newServerSettings: {
+        'enablePush': false
+    }
 });
 
 function testUpdateSettingsWith({ server, newServerSettings }) {
-  const oldServerSettings = getServerSettings(server);
-  assert.notDeepStrictEqual(oldServerSettings, newServerSettings);
-  server.updateSettings(newServerSettings);
-  const updatedServerSettings = getServerSettings(server);
-  assert.deepStrictEqual(updatedServerSettings, { ...oldServerSettings,
-                                                  ...newServerSettings });
-  assert.throws(() => server.updateSettings(''), {
-    message: 'The "settings" argument must be of type object. ' +
+    const oldServerSettings = getServerSettings(server);
+    assert.notDeepStrictEqual(oldServerSettings, newServerSettings);
+    server.updateSettings(newServerSettings);
+    const updatedServerSettings = getServerSettings(server);
+    assert.deepStrictEqual(updatedServerSettings, { ...oldServerSettings,
+                                                    ...newServerSettings });
+    assert.throws(() => server.updateSettings(''), {
+        message: 'The "settings" argument must be of type object. ' +
     'Received type string (\'\')',
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-  });
-  assert.throws(() => server.updateSettings({
-    'maxHeaderListSize': 'foo'
-  }), {
-    message: 'Invalid value for setting "maxHeaderListSize": foo',
-    code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-    name: 'RangeError'
-  });
+        code: 'ERR_INVALID_ARG_TYPE',
+        name: 'TypeError'
+    });
+    assert.throws(() => server.updateSettings({
+        'maxHeaderListSize': 'foo'
+    }), {
+        message: 'Invalid value for setting "maxHeaderListSize": foo',
+        code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
+        name: 'RangeError'
+    });
 }
 
 function getServerSettings(server) {
-  const options = Object
+    const options = Object
                   .getOwnPropertySymbols(server)
                   .find((s) => s.toString() === 'Symbol(options)');
-  return server[options].settings;
+    return server[options].settings;
 }

@@ -8,8 +8,8 @@ const child = spawn(process.execPath,
                     { 'stdio': 'inherit' });
 
 function signalHandler() {
-  child.kill();
-  process.exit(1);
+    child.kill();
+    process.exit(1);
 }
 
 process.on('SIGINT', signalHandler);

@@ -11,19 +11,19 @@ const reqstr = 'POST / HTTP/1.1\r\n' +
 
 const server = http.createServer(common.mustNotCall());
 server.on('clientError', common.mustCall((err) => {
-  assert.match(err.message, /^Parse Error/);
-  assert.strictEqual(err.code, 'HPE_UNEXPECTED_CONTENT_LENGTH');
-  server.close();
+    assert.match(err.message, /^Parse Error/);
+    assert.strictEqual(err.code, 'HPE_UNEXPECTED_CONTENT_LENGTH');
+    server.close();
 }));
 server.listen(0, () => {
-  const client = net.connect({ port: server.address().port }, () => {
-    client.write(reqstr);
-    client.end();
-  });
-  client.on('data', (data) => {
+    const client = net.connect({ port: server.address().port }, () => {
+        client.write(reqstr);
+        client.end();
+    });
+    client.on('data', (data) => {
     // Should not get to this point because the server should simply
     // close the connection without returning any data.
-    assert.fail('no data should be returned by the server');
-  });
-  client.on('end', common.mustCall());
+        assert.fail('no data should be returned by the server');
+    });
+    client.on('end', common.mustCall());
 });

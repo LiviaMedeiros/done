@@ -46,39 +46,39 @@ assert.strictEqual(sp[Symbol.iterator], sp.entries);
 let key, val;
 let n = 0;
 for ([key, val] of sp) {
-  assert.strictEqual(key, 'a', n);
-  assert.strictEqual(val, normalizedValues[n], n);
-  n++;
+    assert.strictEqual(key, 'a', n);
+    assert.strictEqual(val, normalizedValues[n], n);
+    n++;
 }
 n = 0;
 for (key of sp.keys()) {
-  assert.strictEqual(key, 'a', n);
-  n++;
+    assert.strictEqual(key, 'a', n);
+    n++;
 }
 n = 0;
 for (val of sp.values()) {
-  assert.strictEqual(val, normalizedValues[n], n);
-  n++;
+    assert.strictEqual(val, normalizedValues[n], n);
+    n++;
 }
 n = 0;
 sp.forEach(function(val, key, obj) {
-  assert.strictEqual(this, undefined, n);
-  assert.strictEqual(key, 'a', n);
-  assert.strictEqual(val, normalizedValues[n], n);
-  assert.strictEqual(obj, sp, n);
-  n++;
+    assert.strictEqual(this, undefined, n);
+    assert.strictEqual(key, 'a', n);
+    assert.strictEqual(val, normalizedValues[n], n);
+    assert.strictEqual(obj, sp, n);
+    n++;
 });
 sp.forEach(function() {
-  assert.strictEqual(this, m);
+    assert.strictEqual(this, m);
 }, m);
 
 {
-  const callbackErr = {
-    code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-  };
-  assert.throws(() => sp.forEach(), callbackErr);
-  assert.throws(() => sp.forEach(1), callbackErr);
+    const callbackErr = {
+        code: 'ERR_INVALID_ARG_TYPE',
+        name: 'TypeError'
+    };
+    assert.throws(() => sp.forEach(), callbackErr);
+    assert.throws(() => sp.forEach(1), callbackErr);
 }
 
 m.search = '?a=a&b=b';
@@ -87,23 +87,23 @@ assert.strictEqual(sp.toString(), 'a=a&b=b');
 const tests = require(fixtures.path('url-searchparams.js'));
 
 for (const [input, expected, parsed] of tests) {
-  if (input[0] !== '?') {
-    const sp = new URLSearchParams(input);
-    assert.strictEqual(String(sp), expected);
-    assert.deepStrictEqual(Array.from(sp), parsed);
+    if (input[0] !== '?') {
+        const sp = new URLSearchParams(input);
+        assert.strictEqual(String(sp), expected);
+        assert.deepStrictEqual(Array.from(sp), parsed);
 
-    m.search = input;
-    assert.strictEqual(String(m.searchParams), expected);
-    assert.deepStrictEqual(Array.from(m.searchParams), parsed);
-  }
+        m.search = input;
+        assert.strictEqual(String(m.searchParams), expected);
+        assert.deepStrictEqual(Array.from(m.searchParams), parsed);
+    }
 
-  {
-    const sp = new URLSearchParams(`?${input}`);
-    assert.strictEqual(String(sp), expected);
-    assert.deepStrictEqual(Array.from(sp), parsed);
+    {
+        const sp = new URLSearchParams(`?${input}`);
+        assert.strictEqual(String(sp), expected);
+        assert.deepStrictEqual(Array.from(sp), parsed);
 
-    m.search = `?${input}`;
-    assert.strictEqual(String(m.searchParams), expected);
-    assert.deepStrictEqual(Array.from(m.searchParams), parsed);
-  }
+        m.search = `?${input}`;
+        assert.strictEqual(String(m.searchParams), expected);
+        assert.deepStrictEqual(Array.from(m.searchParams), parsed);
+    }
 }

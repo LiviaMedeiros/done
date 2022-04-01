@@ -22,52 +22,52 @@ fs.readdir(__dirname, options, common.mustCall(errHandler));
 fs.readdirSync(__dirname, options);
 
 if (common.canCreateSymLink()) {
-  const sourceFile = path.resolve(tmpdir.path, 'test-readlink');
-  const linkFile = path.resolve(tmpdir.path, 'test-readlink-link');
+    const sourceFile = path.resolve(tmpdir.path, 'test-readlink');
+    const linkFile = path.resolve(tmpdir.path, 'test-readlink-link');
 
-  fs.writeFileSync(sourceFile, '');
-  fs.symlinkSync(sourceFile, linkFile);
+    fs.writeFileSync(sourceFile, '');
+    fs.symlinkSync(sourceFile, linkFile);
 
-  fs.readlink(linkFile, options, common.mustCall(errHandler));
-  fs.readlinkSync(linkFile, options);
+    fs.readlink(linkFile, options, common.mustCall(errHandler));
+    fs.readlinkSync(linkFile, options);
 }
 
 {
-  const fileName = path.resolve(tmpdir.path, 'writeFile');
-  fs.writeFileSync(fileName, 'ABCD', options);
-  fs.writeFile(fileName, 'ABCD', options, common.mustCall(errHandler));
+    const fileName = path.resolve(tmpdir.path, 'writeFile');
+    fs.writeFileSync(fileName, 'ABCD', options);
+    fs.writeFile(fileName, 'ABCD', options, common.mustCall(errHandler));
 }
 
 {
-  const fileName = path.resolve(tmpdir.path, 'appendFile');
-  fs.appendFileSync(fileName, 'ABCD', options);
-  fs.appendFile(fileName, 'ABCD', options, common.mustCall(errHandler));
+    const fileName = path.resolve(tmpdir.path, 'appendFile');
+    fs.appendFileSync(fileName, 'ABCD', options);
+    fs.appendFile(fileName, 'ABCD', options, common.mustCall(errHandler));
 }
 
 if (!common.isIBMi) { // IBMi does not support fs.watch()
-  const watch = fs.watch(__filename, options, common.mustNotCall());
-  watch.close();
+    const watch = fs.watch(__filename, options, common.mustNotCall());
+    watch.close();
 }
 
 {
-  fs.watchFile(__filename, options, common.mustNotCall());
-  fs.unwatchFile(__filename);
+    fs.watchFile(__filename, options, common.mustNotCall());
+    fs.unwatchFile(__filename);
 }
 
 {
-  fs.realpathSync(__filename, options);
-  fs.realpath(__filename, options, common.mustCall(errHandler));
+    fs.realpathSync(__filename, options);
+    fs.realpath(__filename, options, common.mustCall(errHandler));
 }
 
 {
-  const tempFileName = path.resolve(tmpdir.path, 'mkdtemp-');
-  fs.mkdtempSync(tempFileName, options);
-  fs.mkdtemp(tempFileName, options, common.mustCall(errHandler));
+    const tempFileName = path.resolve(tmpdir.path, 'mkdtemp-');
+    fs.mkdtempSync(tempFileName, options);
+    fs.mkdtemp(tempFileName, options, common.mustCall(errHandler));
 }
 
 {
-  const fileName = path.resolve(tmpdir.path, 'streams');
-  fs.WriteStream(fileName, options).once('open', common.mustCall(() => {
-    fs.ReadStream(fileName, options).destroy();
-  })).end();
+    const fileName = path.resolve(tmpdir.path, 'streams');
+    fs.WriteStream(fileName, options).once('open', common.mustCall(() => {
+        fs.ReadStream(fileName, options).destroy();
+    })).end();
 }

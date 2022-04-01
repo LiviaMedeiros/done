@@ -4,7 +4,7 @@ const common = require('../common');
 const fixtures = require('../common/fixtures');
 
 if (!common.hasCrypto)
-  common.skip('missing crypto');
+    common.skip('missing crypto');
 
 const assert = require('assert');
 const crypto = require('crypto');
@@ -13,22 +13,22 @@ const { subtle } = crypto.webcrypto;
 const sizes = [1024, 2048, 4096];
 
 const hashes = [
-  'SHA-1',
-  'SHA-256',
-  'SHA-384',
-  'SHA-512',
+    'SHA-1',
+    'SHA-256',
+    'SHA-384',
+    'SHA-512',
 ];
 
 const keyData = {
-  1024: {
-    spki: Buffer.from(
-      '30819f300d06092a864886f70d010101050003818d0030818902818100cd99f8b111' +
+    1024: {
+        spki: Buffer.from(
+            '30819f300d06092a864886f70d010101050003818d0030818902818100cd99f8b111' +
       '9f8d0a2ce7ac8bfd0cb547d348f931cc9c5ca79fde20e51c40eb01ab261e01253df1' +
       'e88f71d086e94b7abe77839103a476bee0cc87c743151afd4431fa5d8fa051271cf5' +
       '4e49cf7500d8a9957ec09b9d43ef70098c57f10d03bfd31748af563b881687720d3c' +
       '7b10a1cd553ac71d296b6edeeca5b99c8afb36dd970203010001', 'hex'),
-    pkcs8: Buffer.from(
-      '30820278020100300d06092a864886f70d0101010500048202623082025e02010002' +
+        pkcs8: Buffer.from(
+            '30820278020100300d06092a864886f70d0101010500048202623082025e02010002' +
       '818100cd99f8b1119f8d0a2ce7ac8bfd0cb547d348f931cc9c5ca79fde20e51c40eb' +
       '01ab261e01253df1e88f71d086e94b7abe77839103a476bee0cc87c743151afd4431' +
       'fa5d8fa051271cf54e49cf7500d8a9957ec09b9d43ef70098c57f10d03bfd31748af' +
@@ -47,31 +47,31 @@ const keyData = {
       'd85666b2711e0dc02aca70463d051c6c6d80bff8601f3d8e67024100cdba49400862' +
       '9ebc526d52b1050d846461540f67b75825db009458a64f07550e40039d8e84a4e270' +
       'ec9eda11079eb82914acc2f22ce74ec086dc5324bf0723e1', 'hex'),
-    jwk: {
-      kty: 'RSA',
-      n: 'zZn4sRGfjQos56yL_Qy1R9NI-THMnFynn94g5RxA6wGrJh4BJT3x6I9x0IbpS3q-d' +
+        jwk: {
+            kty: 'RSA',
+            n: 'zZn4sRGfjQos56yL_Qy1R9NI-THMnFynn94g5RxA6wGrJh4BJT3x6I9x0IbpS3q-d' +
          '4ORA6R2vuDMh8dDFRr9RDH6XY-gUScc9U5Jz3UA2KmVfsCbnUPvcAmMV_ENA7_TF0' +
          'ivVjuIFodyDTx7EKHNVTrHHSlrbt7spbmcivs23Zc',
-      e: 'AQAB',
-      d: 'YqIK_GdH85F-GWZdgfgmv15NE78gOaL5h2g4v7DeM9-JC7A5PHSLKNYn87HFGcC4v' +
+            e: 'AQAB',
+            d: 'YqIK_GdH85F-GWZdgfgmv15NE78gOaL5h2g4v7DeM9-JC7A5PHSLKNYn87HFGcC4v' +
          'v0PBIBRtyCA_mJJfEaGWORVCOXSBpWNepMYpio52n3w5uj5UZEsBnbtZc0EtWhVF2' +
          'Auqa7VbiKrWcQUEgEI8V0gE5D4tyBg8GXv9975dQE',
-      p: '9BrAg5L1zfqGPuWJDuDCBX-TmtZdrOI3Ys4ZaN-yMPlTjwWSEPO0qnfjEZcw2VgXH' +
+            p: '9BrAg5L1zfqGPuWJDuDCBX-TmtZdrOI3Ys4ZaN-yMPlTjwWSEPO0qnfjEZcw2VgXH' +
          'gJJmbVco6TxckJCmEYqeQ',
-      q: '157jDJ1Ya5nmQvTPbhKAPAeMWogxCyaQTkBrp30pEKd6mGSB385hqr4BIk8s3f7Md' +
+            q: '157jDJ1Ya5nmQvTPbhKAPAeMWogxCyaQTkBrp30pEKd6mGSB385hqr4BIk8s3f7Md' +
          'XpM-USpaZgUoT4o_2VEjw',
-      dp: 'qdd_QUzcaB-6jkKo1Ug-1xKIAgDLFsIjJUUfWt_iHL8ti2Kl2dOnTcCypgebPm5T' +
+            dp: 'qdd_QUzcaB-6jkKo1Ug-1xKIAgDLFsIjJUUfWt_iHL8ti2Kl2dOnTcCypgebPm5T' +
           'T1bqHN-agGYAdK5zpX2UiQ',
-      dq: 'hNRfwOSplNfhLvxLUN7a2qA3yYm-1MSz_1DWQP7srlLORlUcYPht2FZmsnEeDcAq' +
+            dq: 'hNRfwOSplNfhLvxLUN7a2qA3yYm-1MSz_1DWQP7srlLORlUcYPht2FZmsnEeDcAq' +
           'ynBGPQUcbG2Av_hgHz2OZw',
-      qi: 'zbpJQAhinrxSbVKxBQ2EZGFUD2e3WCXbAJRYpk8HVQ5AA52OhKTicOye2hEHnrgp' +
+            qi: 'zbpJQAhinrxSbVKxBQ2EZGFUD2e3WCXbAJRYpk8HVQ5AA52OhKTicOye2hEHnrgp' +
           'FKzC8iznTsCG3FMkvwcj4Q'
-    }
-  },
+        }
+    },
 
-  2048: {
-    spki: Buffer.from(
-      '30820122300d06092a864886f70d01010105000382010f003082010a0282010100d9' +
+    2048: {
+        spki: Buffer.from(
+            '30820122300d06092a864886f70d01010105000382010f003082010a0282010100d9' +
       '8580eb2d1772f4a476bc5404bee60d9a3c2acbbcf24a74754d9f5a6812388f9e3f26' +
       '0ad81687ddb366f8da559462b397f1c097896d0df6e6de31c04f8d47cd15600d11be' +
       '4ec4e6309e200416257fabba8bbed33ab0c165da3c9b1fcec2c4e9e52aca6359a7cf' +
@@ -80,8 +80,8 @@ const keyData = {
       '67009273f79d45b85b9f33f57318dfc5af981aa2964834e7f5b33012d369646a6738' +
       'b22bca55e59066f1e69f6a69f1eedecce881b7423fd44dfc7a7c989c426741d8813c' +
       '3fcdc024b53d84290a3beda3c83872cafd0203010001', 'hex'),
-    pkcs8: Buffer.from(
-      '308204be020100300d06092a864886f70d0101010500048204a8308204a402010002' +
+        pkcs8: Buffer.from(
+            '308204be020100300d06092a864886f70d0101010500048204a8308204a402010002' +
       '82010100d98580eb2d1772f4a476bc5404bee60d9a3c2acbbcf24a74754d9f5a6812' +
       '388f9e3f260ad81687ddb366f8da559462b397f1c097896d0df6e6de31c04f8d47cd' +
       '15600d11be4ec4e6309e200416257fabba8bbed33ab0c165da3c9b1fcec2c4e9e52a' +
@@ -117,42 +117,42 @@ const keyData = {
       'bb120015ca4446ec3fdb9ec980a661d2aad23850511898f07c148716095cd1bd60d6' +
       '31464ac89b524660bd465952d2e57d8740b7c3f3db79492b16b87a5cd1767e13526e' +
       'f66d79c691e2c7f2528b69652c29ba210a5e679d23b21a680cbf0d07', 'hex'),
-    jwk: {
-      kty: 'RSA',
-      n: '2YWA6y0XcvSkdrxUBL7mDZo8Ksu88kp0dU2fWmgSOI-ePyYK2BaH3bNm-NpVlGKzl' +
+        jwk: {
+            kty: 'RSA',
+            n: '2YWA6y0XcvSkdrxUBL7mDZo8Ksu88kp0dU2fWmgSOI-ePyYK2BaH3bNm-NpVlGKzl' +
          '_HAl4ltDfbm3jHAT41HzRVgDRG-TsTmMJ4gBBYlf6u6i77TOrDBZdo8mx_OwsTp5S' +
          'rKY1mnz1TVJ1tEhr8BorRfBPriC3F9AaeUVwcogVKXsrfyK-AO8wI4E8qHt-C-g0M' +
          'zXPrwdp42bPklbPRCOUWLtH69azLwFomAZwCSc_edRbhbnzP1cxjfxa-YGqKWSDTn' +
          '9bMwEtNpZGpnOLIrylXlkGbx5p9qafHu3szogbdCP9RN_Hp8mJxCZ0HYgTw_zcAkt' +
          'T2EKQo77aPIOHLK_Q',
-      e: 'AQAB',
-      d: 'WtKndYqqU9FaKkmQOzsKC3vuy1-uUOxNm_0BIFp74Sn2RR-5P2iI6kTSJe3j9cUQf' +
+            e: 'AQAB',
+            d: 'WtKndYqqU9FaKkmQOzsKC3vuy1-uUOxNm_0BIFp74Sn2RR-5P2iI6kTSJe3j9cUQf' +
          '8ztQVicNEx3MSdMyOqQpEzcghh6gaEtC_e6HnqwxZIKnfbbc5IB7mklDRBG4IQftR' +
          'Qc1UbGDoe5SGmPP0PZhvoRAp9OasDEFUDHa18NxpDURf_iv3kuHmeZb6umiVjlVo5' +
          'C7ogYSPgbK3Rl12Mn9tRv8YSpB_wTaKzpCCjjrCovJIYi1mHks9fBBN6BpQE72Ksy' +
          'EWREx-JyrzEGX4F6vcaYEXFGeWgzSxLSG-1dV2gxQHB6xiI90QcGeRa_X5f4fAdXj' +
          'y17FoCZxYLE9KTh8Q',
-      p: '_N9tEtPffJJDitOOnJlmwMDsgRUOnhzkDLhF76XD0Qns8Fg7j2jHxXxTqMmm-Z6cQ' +
+            p: '_N9tEtPffJJDitOOnJlmwMDsgRUOnhzkDLhF76XD0Qns8Fg7j2jHxXxTqMmm-Z6cQ' +
          '54PdJvgU6xwuwHhf_6vr9bWJG_aVW0h5J3APcPPGYia9IZFEmfhrIMQqEYDHgVioi' +
          '9Yv2Pxf10kBEhh4wdGPI0Zlk2qyVaBHWA8Kee-yGs',
-      q: '3DYojMxPB5XxKOXtDQN2rEw9iQj9SN93vRNXxwM9xS1vEjrgeb6QLo_hB4EKmhiMY' +
+            q: '3DYojMxPB5XxKOXtDQN2rEw9iQj9SN93vRNXxwM9xS1vEjrgeb6QLo_hB4EKmhiMY' +
          'PbU4OiQQ2IGvKcR4NegtvmErvkVToo7urjvCkeSLr3OpTkyJvHmOalNTOU1LbhXFs' +
          'JeMET2q_9JxRlADYQ4ePFkxfOrVPYgVjc32HlANDc',
-      dp: 'bd29DCMVxI_f3J9SJOPZawHnP6Ygdb3jr0sYx6hjzZzcXwhWyFYkBb-gsYL7kxTA' +
+            dp: 'bd29DCMVxI_f3J9SJOPZawHnP6Ygdb3jr0sYx6hjzZzcXwhWyFYkBb-gsYL7kxTA' +
           'm_g-itF2w6P2TqngibXkKyfSXn5ihB8oTKXlcnByuItLl9YGiJqtyEAhqprQm-iH' +
           'FCQyEOWhdU7IaTvxm6v7bi934H_aJiP5cQPw39waXgU',
-      dq: 'lXG7uzG8QG2lqBfB9B7xnqRu7lzHZ3kgjZRe8ZRlizb2Nez3AigtOSwzjyAnzcPz' +
+            dq: 'lXG7uzG8QG2lqBfB9B7xnqRu7lzHZ3kgjZRe8ZRlizb2Nez3AigtOSwzjyAnzcPz' +
           'IKridW_e15vi7oyDOY-cZhCX1xb7Or3dIy72Koe_0TDG2KIkQwHPODqJVzIGEO0V' +
           'TUDDIwbqUHeD3Nrx-TpOCOXped2P3Kzb7Sa0I5jF1ak',
-      qi: 'nSIby2WhW-eV3_-6sq-oXcKjq2W6X24m-hcmEtVXISm7EgAVykRG7D_bnsmApmHS' +
+            qi: 'nSIby2WhW-eV3_-6sq-oXcKjq2W6X24m-hcmEtVXISm7EgAVykRG7D_bnsmApmHS' +
           'qtI4UFEYmPB8FIcWCVzRvWDWMUZKyJtSRmC9RllS0uV9h0C3w_PbeUkrFrh6XNF2' +
           'fhNSbvZtecaR4sfyUotpZSwpuiEKXmedI7IaaAy_DQc'
-    }
-  },
+        }
+    },
 
-  4096: {
-    spki: Buffer.from(
-      '30820222300d06092a864886f70d01010105000382020f003082020a0282020100da' +
+    4096: {
+        spki: Buffer.from(
+            '30820222300d06092a864886f70d01010105000382020f003082020a0282020100da' +
       'aaf64cbd9cd8999bb0dd0e2c846768007f64a6f5f8687d1f4a9be25ac1b836aa916f' +
       'de14fc13f8922cbe7349bc34fb04b279eed4cc223e7a64cb6fe9e7d249359293d30e' +
       'a16d89d4afe212b7ad67671e801fda457eea4158e7a05b33f54d3604a7c02144f4a3' +
@@ -169,8 +169,8 @@ const keyData = {
       '9b657b14da835c7c4e522c378b4d69b18879b12b4d0cf0004c14857981490fa0c896' +
       '725f3b3ba5f0cc0d9c86c204469ed56fe567d8ef8410b897cefee53e173a7d3190d0' +
       'd70203010001', 'hex'),
-    pkcs8: Buffer.from(
-      '30820944020100300d06092a864886f70d01010105000482092e3082092a02010002' +
+        pkcs8: Buffer.from(
+            '30820944020100300d06092a864886f70d01010105000482092e3082092a02010002' +
       '82020100daaaf64cbd9cd8999bb0dd0e2c846768007f64a6f5f8687d1f4a9be25ac1' +
       'b836aa916fde14fc13f8922cbe7349bc34fb04b279eed4cc223e7a64cb6fe9e7d249' +
       '359293d30ea16d89d4afe212b7ad67671e801fda457eea4158e7a05b33f54d3604a7' +
@@ -240,9 +240,9 @@ const keyData = {
       'b55580f749862930b7397f1cea1af4b19f715af97820f8864f637b9badc9b9d8a620' +
       '98b5069a7612b5f56a1925927610d71e5360239a5d000d05ce9c81937657f89b3187' +
       '07279de2ab6010707aad3a9113065a0bdd6dd010fbbc12786aaa8f954fc0', 'hex'),
-    jwk: {
-      kty: 'RSA',
-      n: '2qr2TL2c2JmbsN0OLIRnaAB_ZKb1-Gh9H0qb4lrBuDaqkW_eFPwT-JIsvnNJvDT7B' +
+        jwk: {
+            kty: 'RSA',
+            n: '2qr2TL2c2JmbsN0OLIRnaAB_ZKb1-Gh9H0qb4lrBuDaqkW_eFPwT-JIsvnNJvDT7B' +
          'LJ57tTMIj56ZMtv6efSSTWSk9MOoW2J1K_iEretZ2cegB_aRX7qQVjnoFsz9U02BK' +
          'fAIUT0o_K7b9G08d1rrAUohi_SVQhwObodg7BddMbKUmz70QNIS487LN44WUVnn9O' +
          'gE9atTYUARNukT0DuQb3J-K20ksTuVujXbSelohDmLobqlGoi5sY_548Qs9BtFmQ2' +
@@ -253,8 +253,8 @@ const keyData = {
          'ipm1JvkweEgP9eMPpEC8SgRU1VNDSVe1SF4uNsH8vA7PHFKfg6juqJEc5ht-l10FY' +
          'ER-Qq6bZXsU2oNcfE5SLDeLTWmxiHmxK00M8ABMFIV5gUkPoMiWcl87O6XwzA2chs' +
          'IERp7Vb-Vn2O-EELiXzv7lPhc6fTGQ0Nc',
-      e: 'AQAB',
-      d: 'uXPRXBhcE5-DWabBRKQuhxgU8ype5gTISWefeYP7U96ZHqu_sBByZ5ihdgyU9pgAZ' +
+            e: 'AQAB',
+            d: 'uXPRXBhcE5-DWabBRKQuhxgU8ype5gTISWefeYP7U96ZHqu_sBByZ5ihdgyU9pgAZ' +
          'GVx4Ep9rnVKnH2lNr2zrP9Qhyqy99nM0aMxmypIWLAuP__DwLj4t99M4sU29c48CA' +
          'q1egHfccSFjzpNuetOTCA71EJuokt70pm0OmGzgTyvjuR7VTLxd5PMXitBowSn8_c' +
          'phmnFpT8tkTiuy8CH0R3DU7MOuINomDD1s8-yPBcVAVTPUnwJiauNuzestLQKMLlh' +
@@ -265,294 +265,294 @@ const keyData = {
          'PhMPq02393_giinQquMknrBvgKxGSfGUrDKuflCx611ZZlRM3R7YMX2OIy1g4DyhP' +
          'zBVjxRMtm8PnIs3m3Hi-O-C_PHF93w9J8Wqd0yIw7SpavDqZXLPC6Cqi8K7MBZyVE' +
          'CXHtRj1bBqT-h_xZmFCDjSU0NqfOdgApE',
-      p: '9NrXwq4kY9kBBOwLoFZVQc4kJI_NbKa_W9FLdQdRIbMsZZHXJ3XDUR9vJAcaaR75W' +
+            p: '9NrXwq4kY9kBBOwLoFZVQc4kJI_NbKa_W9FLdQdRIbMsZZHXJ3XDUR9vJAcaaR75W' +
          'wIC7X6N55nVtWTq28Bys9flJ9RrCTfciOntHEphBhYaL5ZTUl-6khYmsOf_psff2V' +
          'aOOCvHGff5ejuOmBQxkw2E-cv7knRgWFHoLWpku2NJIMuGHt9ks7OAUfIZVYl9YJn' +
          'w4FYUzhgaxemknjLeZ8XTkGW2zckzF-d95YI9i8zD80Umubsw-YxriSfqFQ0rGHBs' +
          'bQ8ZOTd_KJju42BWnXIjNDYmjFUqdzVjI4XQ8EGrCEf_8_iwphGyXD7LOJ4fqd97B' +
          '3bYpoRTPnCgY_SEHQ',
-      q: '5J758_NeKr1XPZiLxXohYQQnh0Lb4QtGZ1xzCgjhBQLcIBeTOG_tYjCues9tmLt93' +
+            q: '5J758_NeKr1XPZiLxXohYQQnh0Lb4QtGZ1xzCgjhBQLcIBeTOG_tYjCues9tmLt93' +
          'LpJfypSJ-SjDLwkR2s069_IByYGpxyeGtV-ulqYhSw1nD2CXKMDGyO5jXDs9tJrS_' +
          'UhfobXKQH03CRdFugyPkSNmXY-AafFynG7xLr7oYBC05FnhUXPm3VBTPt9K-BpqwY' +
          'd_h9vkAWeprSPo83UlwcLMupSJY9LaHxhRdz2yi0ZKNwXXHRwcszGjDBvvzUcCYbq' +
          'WqjzbEvFY6KtH8Jh4LhM46rHaoEOTernJsDF6a6W8Df88RthqTExcwnaQf0O_dlbj' +
          'SxEIPfbxx8t1EQugw',
-      dp: '4Y7Hu5tYAnLhMXuQqj9dgqU3PkcKYdCp7xc6f7Ah2P2JJHfYz4z4RD7Ez1eLyNKz' +
+            dp: '4Y7Hu5tYAnLhMXuQqj9dgqU3PkcKYdCp7xc6f7Ah2P2JJHfYz4z4RD7Ez1eLyNKz' +
           'ulZ8A_PVHUjlSZiRkaYTBAEaJDrV70P6cFWuC6WpA0ZREQ1V7EgrQnANbGILa8Qs' +
           'PbYyhSQu4YlB1IwQq5_OmzyVBtgWA7AZIMMzMsMT0FuB_if-gWohBjmRN-vh0p45' +
           'VUf6UW568-_YmgDFmMYbg1UFs7s_TwrNenPR0h7MO4CB8hP9vJLoZrooRczzIjlj' +
           'Pbwy5bRG9CJfjTJ0vhj9MUT3kR1hHV1HJVGU5iBbfTfBKnvJGSI6-IDM4ZUm-B0R' +
           '5hbs6s9cfOjhFmACIJIbMQ',
-      dq: 'gT4iPbfyHyVEwWyQb4X4grjvg7bXSKSwG1SXMDAOzV9tg7LwJjKYNy8gJAtJgNNV' +
+            dq: 'gT4iPbfyHyVEwWyQb4X4grjvg7bXSKSwG1SXMDAOzV9tg7LwJjKYNy8gJAtJgNNV' +
           'dsfVLs-E_Epzpoph1AIWO9YZZXkov6Yc9zyEVONMX9S7ReU74hTBd8E9b2lMfMg9' +
           'ogYk9jtSPTt-6kigW4fOh4cHqZ6_tP3cgfLD3JZ8FDPHE4WaySvLDq49yUBO5dQK' +
           'yIU_xV6OGhQjOUjP_yEoMmzn9tOittsIHTxbXTxqQ6c1FvU9O6YTv8Jl5_Cl66kh' +
           'fX1I1RG38xvurcHULyUbYgeuZ_Iuo9XreT73h9_owo9RguGT29XH4vcNZmRGf5GI' +
           'vRb4e5lvtleIZkwJA3u78w',
-      qi: 'JHmVKb1zwW5iRR6RCeexYnh2fmY-3DrPSdM8Dxhr0F8dayi-tlRqEdnG0hvp45n8' +
+            qi: 'JHmVKb1zwW5iRR6RCeexYnh2fmY-3DrPSdM8Dxhr0F8dayi-tlRqEdnG0hvp45n8' +
           'gLUskWWcB9EXlUJObZGKDfGuxgMa3g_xeLA2vmFQ12MxPsyH4iCNZvsgmGxx7TuO' +
           'HrnDh5EBVnM4_de63crEJON2sYI8Ozi-xp2OEmAr2seWKq4sxkFni6exLhqb-NE4' +
           'm9HMKlng1EtQh2rLBFG1VYD3SYYpMLc5fxzqGvSxn3Fa-Xgg-IZPY3ubrcm52KYg' +
           'mLUGmnYStfVqGSWSdhDXHlNgI5pdAA0FzpyBk3ZX-JsxhwcnneKrYBBweq06kRMG' +
           'WgvdbdAQ-7wSeGqqj5VPwA'
-    }
-  },
+        }
+    },
 };
 
 async function testImportSpki({ name, publicUsages }, size, hash, extractable) {
-  const key = await subtle.importKey(
-    'spki',
-    keyData[size].spki,
-    { name, hash },
-    extractable,
-    publicUsages);
+    const key = await subtle.importKey(
+        'spki',
+        keyData[size].spki,
+        { name, hash },
+        extractable,
+        publicUsages);
 
-  assert.strictEqual(key.type, 'public');
-  assert.strictEqual(key.extractable, extractable);
-  assert.deepStrictEqual(key.usages, publicUsages);
-  assert.strictEqual(key.algorithm.name, name);
-  assert.strictEqual(key.algorithm.modulusLength, size);
-  assert.deepStrictEqual(key.algorithm.publicExponent,
-                         new Uint8Array([1, 0, 1]));
-  assert.strictEqual(key.algorithm.hash.name, hash);
+    assert.strictEqual(key.type, 'public');
+    assert.strictEqual(key.extractable, extractable);
+    assert.deepStrictEqual(key.usages, publicUsages);
+    assert.strictEqual(key.algorithm.name, name);
+    assert.strictEqual(key.algorithm.modulusLength, size);
+    assert.deepStrictEqual(key.algorithm.publicExponent,
+                           new Uint8Array([1, 0, 1]));
+    assert.strictEqual(key.algorithm.hash.name, hash);
 
-  if (extractable) {
-    const spki = await subtle.exportKey('spki', key);
-    assert.strictEqual(
-      Buffer.from(spki).toString('hex'),
-      keyData[size].spki.toString('hex'));
-  } else {
-    await assert.rejects(
-      subtle.exportKey('spki', key), {
-        message: /key is not extractable/
-      });
-  }
+    if (extractable) {
+        const spki = await subtle.exportKey('spki', key);
+        assert.strictEqual(
+            Buffer.from(spki).toString('hex'),
+            keyData[size].spki.toString('hex'));
+    } else {
+        await assert.rejects(
+            subtle.exportKey('spki', key), {
+                message: /key is not extractable/
+            });
+    }
 }
 
 async function testImportPkcs8(
-  { name, privateUsages },
-  size,
-  hash,
-  extractable) {
-  const key = await subtle.importKey(
-    'pkcs8',
-    keyData[size].pkcs8,
-    { name, hash },
-    extractable,
-    privateUsages);
+    { name, privateUsages },
+    size,
+    hash,
+    extractable) {
+    const key = await subtle.importKey(
+        'pkcs8',
+        keyData[size].pkcs8,
+        { name, hash },
+        extractable,
+        privateUsages);
 
-  assert.strictEqual(key.type, 'private');
-  assert.strictEqual(key.extractable, extractable);
-  assert.deepStrictEqual(key.usages, privateUsages);
-  assert.strictEqual(key.algorithm.name, name);
-  assert.strictEqual(key.algorithm.modulusLength, size);
-  assert.deepStrictEqual(key.algorithm.publicExponent,
-                         new Uint8Array([1, 0, 1]));
-  assert.strictEqual(key.algorithm.hash.name, hash);
+    assert.strictEqual(key.type, 'private');
+    assert.strictEqual(key.extractable, extractable);
+    assert.deepStrictEqual(key.usages, privateUsages);
+    assert.strictEqual(key.algorithm.name, name);
+    assert.strictEqual(key.algorithm.modulusLength, size);
+    assert.deepStrictEqual(key.algorithm.publicExponent,
+                           new Uint8Array([1, 0, 1]));
+    assert.strictEqual(key.algorithm.hash.name, hash);
 
-  if (extractable) {
-    const pkcs8 = await subtle.exportKey('pkcs8', key);
-    assert.strictEqual(
-      Buffer.from(pkcs8).toString('hex'),
-      keyData[size].pkcs8.toString('hex'));
-  } else {
-    await assert.rejects(
-      subtle.exportKey('pkcs8', key), {
-        message: /key is not extractable/
-      });
-  }
+    if (extractable) {
+        const pkcs8 = await subtle.exportKey('pkcs8', key);
+        assert.strictEqual(
+            Buffer.from(pkcs8).toString('hex'),
+            keyData[size].pkcs8.toString('hex'));
+    } else {
+        await assert.rejects(
+            subtle.exportKey('pkcs8', key), {
+                message: /key is not extractable/
+            });
+    }
 }
 
 async function testImportJwk(
-  { name, publicUsages, privateUsages },
-  size,
-  hash,
-  extractable) {
+    { name, publicUsages, privateUsages },
+    size,
+    hash,
+    extractable) {
 
-  const jwk = keyData[size].jwk;
+    const jwk = keyData[size].jwk;
 
-  const [
-    publicKey,
-    privateKey,
-  ] = await Promise.all([
-    subtle.importKey(
-      'jwk',
-      {
-        kty: jwk.kty,
-        n: jwk.n,
-        e: jwk.e,
-        alg: `PS${hash.substring(4)}`
-      },
-      { name, hash },
-      extractable,
-      publicUsages),
-    subtle.importKey(
-      'jwk',
-      { ...jwk, alg: `PS${hash.substring(4)}` },
-      { name, hash },
-      extractable,
-      privateUsages),
-  ]);
-
-  assert.strictEqual(publicKey.type, 'public');
-  assert.strictEqual(privateKey.type, 'private');
-  assert.strictEqual(publicKey.extractable, extractable);
-  assert.strictEqual(privateKey.extractable, extractable);
-  assert.strictEqual(publicKey.algorithm.name, name);
-  assert.strictEqual(privateKey.algorithm.name, name);
-  assert.strictEqual(publicKey.algorithm.modulusLength, size);
-  assert.strictEqual(privateKey.algorithm.modulusLength, size);
-  assert.deepStrictEqual(publicKey.algorithm.publicExponent,
-                         new Uint8Array([1, 0, 1]));
-  assert.deepStrictEqual(publicKey.algorithm.publicExponent,
-                         privateKey.algorithm.publicExponent);
-
-  if (extractable) {
     const [
-      pubJwk,
-      pvtJwk,
+        publicKey,
+        privateKey,
     ] = await Promise.all([
-      subtle.exportKey('jwk', publicKey),
-      subtle.exportKey('jwk', privateKey),
+        subtle.importKey(
+            'jwk',
+            {
+                kty: jwk.kty,
+                n: jwk.n,
+                e: jwk.e,
+                alg: `PS${hash.substring(4)}`
+            },
+            { name, hash },
+            extractable,
+            publicUsages),
+        subtle.importKey(
+            'jwk',
+            { ...jwk, alg: `PS${hash.substring(4)}` },
+            { name, hash },
+            extractable,
+            privateUsages),
     ]);
 
-    assert.strictEqual(pubJwk.kty, 'RSA');
-    assert.strictEqual(pvtJwk.kty, 'RSA');
-    assert.strictEqual(pubJwk.n, jwk.n);
-    assert.strictEqual(pvtJwk.n, jwk.n);
-    assert.strictEqual(pubJwk.e, jwk.e);
-    assert.strictEqual(pvtJwk.e, jwk.e);
-    assert.strictEqual(pvtJwk.d, jwk.d);
-    assert.strictEqual(pvtJwk.p, jwk.p);
-    assert.strictEqual(pvtJwk.q, jwk.q);
-    assert.strictEqual(pvtJwk.dp, jwk.dp);
-    assert.strictEqual(pvtJwk.dq, jwk.dq);
-    assert.strictEqual(pvtJwk.qi, jwk.qi);
-    assert.strictEqual(pubJwk.d, undefined);
-    assert.strictEqual(pubJwk.p, undefined);
-    assert.strictEqual(pubJwk.q, undefined);
-    assert.strictEqual(pubJwk.dp, undefined);
-    assert.strictEqual(pubJwk.dq, undefined);
-    assert.strictEqual(pubJwk.qi, undefined);
-  } else {
-    await assert.rejects(
-      subtle.exportKey('jwk', publicKey), {
-        message: /key is not extractable/
-      });
-    await assert.rejects(
-      subtle.exportKey('jwk', privateKey), {
-        message: /key is not extractable/
-      });
-  }
+    assert.strictEqual(publicKey.type, 'public');
+    assert.strictEqual(privateKey.type, 'private');
+    assert.strictEqual(publicKey.extractable, extractable);
+    assert.strictEqual(privateKey.extractable, extractable);
+    assert.strictEqual(publicKey.algorithm.name, name);
+    assert.strictEqual(privateKey.algorithm.name, name);
+    assert.strictEqual(publicKey.algorithm.modulusLength, size);
+    assert.strictEqual(privateKey.algorithm.modulusLength, size);
+    assert.deepStrictEqual(publicKey.algorithm.publicExponent,
+                           new Uint8Array([1, 0, 1]));
+    assert.deepStrictEqual(publicKey.algorithm.publicExponent,
+                           privateKey.algorithm.publicExponent);
+
+    if (extractable) {
+        const [
+            pubJwk,
+            pvtJwk,
+        ] = await Promise.all([
+            subtle.exportKey('jwk', publicKey),
+            subtle.exportKey('jwk', privateKey),
+        ]);
+
+        assert.strictEqual(pubJwk.kty, 'RSA');
+        assert.strictEqual(pvtJwk.kty, 'RSA');
+        assert.strictEqual(pubJwk.n, jwk.n);
+        assert.strictEqual(pvtJwk.n, jwk.n);
+        assert.strictEqual(pubJwk.e, jwk.e);
+        assert.strictEqual(pvtJwk.e, jwk.e);
+        assert.strictEqual(pvtJwk.d, jwk.d);
+        assert.strictEqual(pvtJwk.p, jwk.p);
+        assert.strictEqual(pvtJwk.q, jwk.q);
+        assert.strictEqual(pvtJwk.dp, jwk.dp);
+        assert.strictEqual(pvtJwk.dq, jwk.dq);
+        assert.strictEqual(pvtJwk.qi, jwk.qi);
+        assert.strictEqual(pubJwk.d, undefined);
+        assert.strictEqual(pubJwk.p, undefined);
+        assert.strictEqual(pubJwk.q, undefined);
+        assert.strictEqual(pubJwk.dp, undefined);
+        assert.strictEqual(pubJwk.dq, undefined);
+        assert.strictEqual(pubJwk.qi, undefined);
+    } else {
+        await assert.rejects(
+            subtle.exportKey('jwk', publicKey), {
+                message: /key is not extractable/
+            });
+        await assert.rejects(
+            subtle.exportKey('jwk', privateKey), {
+                message: /key is not extractable/
+            });
+    }
 }
 
 // combinations to test
 const testVectors = [
-  {
-    name: 'RSA-OAEP',
-    privateUsages: ['decrypt', 'unwrapKey'],
-    publicUsages: ['encrypt', 'wrapKey']
-  },
-  {
-    name: 'RSA-PSS',
-    privateUsages: ['sign'],
-    publicUsages: ['verify']
-  },
-  {
-    name: 'RSASSA-PKCS1-v1_5',
-    privateUsages: ['sign'],
-    publicUsages: ['verify']
-  },
+    {
+        name: 'RSA-OAEP',
+        privateUsages: ['decrypt', 'unwrapKey'],
+        publicUsages: ['encrypt', 'wrapKey']
+    },
+    {
+        name: 'RSA-PSS',
+        privateUsages: ['sign'],
+        publicUsages: ['verify']
+    },
+    {
+        name: 'RSASSA-PKCS1-v1_5',
+        privateUsages: ['sign'],
+        publicUsages: ['verify']
+    },
 ];
 
 (async function() {
-  const variations = [];
-  sizes.forEach((size) => {
-    hashes.forEach((hash) => {
-      [true, false].forEach((extractable) => {
-        testVectors.forEach((vector) => {
-          variations.push(testImportSpki(vector, size, hash, extractable));
-          variations.push(testImportPkcs8(vector, size, hash, extractable));
-          variations.push(testImportJwk(vector, size, hash, extractable));
+    const variations = [];
+    sizes.forEach((size) => {
+        hashes.forEach((hash) => {
+            [true, false].forEach((extractable) => {
+                testVectors.forEach((vector) => {
+                    variations.push(testImportSpki(vector, size, hash, extractable));
+                    variations.push(testImportPkcs8(vector, size, hash, extractable));
+                    variations.push(testImportJwk(vector, size, hash, extractable));
+                });
+            });
         });
-      });
     });
-  });
-  await Promise.all(variations);
+    await Promise.all(variations);
 })().then(common.mustCall());
 
 {
-  const publicPem = fixtures.readKey('rsa_pss_public_2048.pem', 'ascii');
-  const privatePem = fixtures.readKey('rsa_pss_private_2048.pem', 'ascii');
+    const publicPem = fixtures.readKey('rsa_pss_public_2048.pem', 'ascii');
+    const privatePem = fixtures.readKey('rsa_pss_private_2048.pem', 'ascii');
 
-  const publicDer = Buffer.from(
-    publicPem.replace(
-      /(?:-----(?:BEGIN|END) PUBLIC KEY-----|\s)/g,
-      ''
-    ),
-    'base64'
-  );
-  const privateDer = Buffer.from(
-    privatePem.replace(
-      /(?:-----(?:BEGIN|END) PRIVATE KEY-----|\s)/g,
-      ''
-    ),
-    'base64'
-  );
+    const publicDer = Buffer.from(
+        publicPem.replace(
+            /(?:-----(?:BEGIN|END) PUBLIC KEY-----|\s)/g,
+            ''
+        ),
+        'base64'
+    );
+    const privateDer = Buffer.from(
+        privatePem.replace(
+            /(?:-----(?:BEGIN|END) PRIVATE KEY-----|\s)/g,
+            ''
+        ),
+        'base64'
+    );
 
-  (async () => {
-    const key = await subtle.importKey(
-      'spki',
-      publicDer,
-      { name: 'RSA-PSS', hash: 'SHA-256' },
-      true,
-      ['verify']);
-    const jwk = await subtle.exportKey('jwk', key);
-    assert.strictEqual(jwk.alg, 'PS256');
-  })().then(common.mustCall());
+    (async () => {
+        const key = await subtle.importKey(
+            'spki',
+            publicDer,
+            { name: 'RSA-PSS', hash: 'SHA-256' },
+            true,
+            ['verify']);
+        const jwk = await subtle.exportKey('jwk', key);
+        assert.strictEqual(jwk.alg, 'PS256');
+    })().then(common.mustCall());
 
-  (async () => {
-    const key = await subtle.importKey(
-      'pkcs8',
-      privateDer,
-      { name: 'RSA-PSS', hash: 'SHA-256' },
-      true,
-      ['sign']);
-    const jwk = await subtle.exportKey('jwk', key);
-    assert.strictEqual(jwk.alg, 'PS256');
-  })().then(common.mustCall());
+    (async () => {
+        const key = await subtle.importKey(
+            'pkcs8',
+            privateDer,
+            { name: 'RSA-PSS', hash: 'SHA-256' },
+            true,
+            ['sign']);
+        const jwk = await subtle.exportKey('jwk', key);
+        assert.strictEqual(jwk.alg, 'PS256');
+    })().then(common.mustCall());
 }
 
 {
-  const ecPublic = crypto.createPublicKey(
-    fixtures.readKey('ec_p256_public.pem'));
-  const ecPrivate = crypto.createPrivateKey(
-    fixtures.readKey('ec_p256_private.pem'));
+    const ecPublic = crypto.createPublicKey(
+        fixtures.readKey('ec_p256_public.pem'));
+    const ecPrivate = crypto.createPrivateKey(
+        fixtures.readKey('ec_p256_private.pem'));
 
-  for (const [name, [publicUsage, privateUsage]] of Object.entries({
-    'RSA-PSS': ['verify', 'sign'],
-    'RSASSA-PKCS1-v1_5': ['verify', 'sign'],
-    'RSA-OAEP': ['encrypt', 'decrypt'],
-  })) {
-    assert.rejects(subtle.importKey(
-      'node.keyObject',
-      ecPublic,
-      { name, hash: 'SHA-256' },
-      true, [publicUsage]), { message: /Invalid key type/ });
-    assert.rejects(subtle.importKey(
-      'node.keyObject',
-      ecPrivate,
-      { name, hash: 'SHA-256' },
-      true, [privateUsage]), { message: /Invalid key type/ });
-    assert.rejects(subtle.importKey(
-      'spki',
-      ecPublic.export({ format: 'der', type: 'spki' }),
-      { name, hash: 'SHA-256' },
-      true, [publicUsage]), { message: /Invalid key type/ });
-    assert.rejects(subtle.importKey(
-      'pkcs8',
-      ecPrivate.export({ format: 'der', type: 'pkcs8' }),
-      { name, hash: 'SHA-256' },
-      true, [privateUsage]), { message: /Invalid key type/ });
-  }
+    for (const [name, [publicUsage, privateUsage]] of Object.entries({
+        'RSA-PSS': ['verify', 'sign'],
+        'RSASSA-PKCS1-v1_5': ['verify', 'sign'],
+        'RSA-OAEP': ['encrypt', 'decrypt'],
+    })) {
+        assert.rejects(subtle.importKey(
+            'node.keyObject',
+            ecPublic,
+            { name, hash: 'SHA-256' },
+            true, [publicUsage]), { message: /Invalid key type/ });
+        assert.rejects(subtle.importKey(
+            'node.keyObject',
+            ecPrivate,
+            { name, hash: 'SHA-256' },
+            true, [privateUsage]), { message: /Invalid key type/ });
+        assert.rejects(subtle.importKey(
+            'spki',
+            ecPublic.export({ format: 'der', type: 'spki' }),
+            { name, hash: 'SHA-256' },
+            true, [publicUsage]), { message: /Invalid key type/ });
+        assert.rejects(subtle.importKey(
+            'pkcs8',
+            ecPrivate.export({ format: 'der', type: 'pkcs8' }),
+            { name, hash: 'SHA-256' },
+            true, [privateUsage]), { message: /Invalid key type/ });
+    }
 }

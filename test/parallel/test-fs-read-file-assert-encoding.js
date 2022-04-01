@@ -7,6 +7,6 @@ const fs = require('fs');
 const encoding = 'foo-8';
 const filename = 'bar.txt';
 assert.throws(
-  () => fs.readFile(filename, { encoding }, common.mustNotCall()),
-  { code: 'ERR_INVALID_ARG_VALUE', name: 'TypeError' }
+    () => fs.readFile(filename, { encoding }, common.mustNotCall()),
+    { code: 'ERR_INVALID_ARG_VALUE', name: 'TypeError' }
 );

@@ -23,19 +23,19 @@
 const common = require('../common.js');
 
 const bench = common.createBenchmark(main, {
-  size: [16, 512, 4096, 16386],
-  n: [1e6]
+    size: [16, 512, 4096, 16386],
+    n: [1e6]
 });
 
 function main({ n, size }) {
-  const b0 = Buffer.alloc(size, 'a');
-  const b1 = Buffer.alloc(size, 'a');
+    const b0 = Buffer.alloc(size, 'a');
+    const b1 = Buffer.alloc(size, 'a');
 
-  b1[size - 1] = 'b'.charCodeAt(0);
+    b1[size - 1] = 'b'.charCodeAt(0);
 
-  bench.start();
-  for (let i = 0; i < n; i++) {
-    Buffer.compare(b0, b1);
-  }
-  bench.end(n);
+    bench.start();
+    for (let i = 0; i < n; i++) {
+        Buffer.compare(b0, b1);
+    }
+    bench.end(n);
 }

@@ -24,18 +24,18 @@ let counter2 = 0;
 //    it would have fired 11 more times, and the assertion in the
 //    process'exit event handler would fail.
 function Test1() {
-  // Server only for maintaining event loop
-  const server = net.createServer().listen(0);
+    // Server only for maintaining event loop
+    const server = net.createServer().listen(0);
 
-  const timer1 = setInterval(common.mustCall(() => {
-    timer1.unref();
-    if (counter1++ === 3) {
-      clearInterval(timer1);
-      server.close(() => {
-        Test2();
-      });
-    }
-  }, 4), 1);
+    const timer1 = setInterval(common.mustCall(() => {
+        timer1.unref();
+        if (counter1++ === 3) {
+            clearInterval(timer1);
+            server.close(() => {
+                Test2();
+            });
+        }
+    }, 4), 1);
 }
 
 
@@ -43,14 +43,14 @@ function Test1() {
 // timer callback. counter2 continues to be incremented more than 11
 // until server close completed.
 function Test2() {
-  // Server only for maintaining event loop
-  const server = net.createServer().listen(0);
+    // Server only for maintaining event loop
+    const server = net.createServer().listen(0);
 
-  const timer2 = setInterval(() => {
-    timer2.unref();
-    if (counter2++ === 3)
-      server.close();
-  }, 1);
+    const timer2 = setInterval(() => {
+        timer2.unref();
+        if (counter2++ === 3)
+            server.close();
+    }, 1);
 }
 
 Test1();

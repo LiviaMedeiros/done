@@ -25,8 +25,8 @@ stream:
 const { createGzip } = require('zlib');
 const { pipeline } = require('stream');
 const {
-  createReadStream,
-  createWriteStream
+    createReadStream,
+    createWriteStream
 } = require('fs');
 
 const gzip = createGzip();
@@ -34,10 +34,10 @@ const source = createReadStream('input.txt');
 const destination = createWriteStream('input.txt.gz');
 
 pipeline(source, gzip, destination, (err) => {
-  if (err) {
-    console.error('An error occurred:', err);
-    process.exitCode = 1;
-  }
+    if (err) {
+        console.error('An error occurred:', err);
+        process.exitCode = 1;
+    }
 });
 
 // Or, Promisified
@@ -46,16 +46,16 @@ const { promisify } = require('util');
 const pipe = promisify(pipeline);
 
 async function do_gzip(input, output) {
-  const gzip = createGzip();
-  const source = createReadStream(input);
-  const destination = createWriteStream(output);
-  await pipe(source, gzip, destination);
+    const gzip = createGzip();
+    const source = createReadStream(input);
+    const destination = createWriteStream(output);
+    await pipe(source, gzip, destination);
 }
 
 do_gzip('input.txt', 'input.txt.gz')
   .catch((err) => {
-    console.error('An error occurred:', err);
-    process.exitCode = 1;
+      console.error('An error occurred:', err);
+      process.exitCode = 1;
   });
 ```
 
@@ -66,20 +66,20 @@ const { deflate, unzip } = require('zlib');
 
 const input = '.................................';
 deflate(input, (err, buffer) => {
-  if (err) {
-    console.error('An error occurred:', err);
-    process.exitCode = 1;
-  }
-  console.log(buffer.toString('base64'));
+    if (err) {
+        console.error('An error occurred:', err);
+        process.exitCode = 1;
+    }
+    console.log(buffer.toString('base64'));
 });
 
 const buffer = Buffer.from('eJzT0yMAAGTvBe8=', 'base64');
 unzip(buffer, (err, buffer) => {
-  if (err) {
-    console.error('An error occurred:', err);
-    process.exitCode = 1;
-  }
-  console.log(buffer.toString());
+    if (err) {
+        console.error('An error occurred:', err);
+        process.exitCode = 1;
+    }
+    console.log(buffer.toString());
 });
 
 // Or, Promisified
@@ -90,8 +90,8 @@ const do_unzip = promisify(unzip);
 do_unzip(buffer)
   .then((buf) => console.log(buf.toString()))
   .catch((err) => {
-    console.error('An error occurred:', err);
-    process.exitCode = 1;
+      console.error('An error occurred:', err);
+      process.exitCode = 1;
   });
 ```
 
@@ -111,7 +111,7 @@ const payload = Buffer.from('This is some data');
 
 // WARNING: DO NOT DO THIS!
 for (let i = 0; i < 30000; ++i) {
-  zlib.deflate(payload, (err, buffer) => {});
+    zlib.deflate(payload, (err, buffer) => {});
 }
 ```
 
@@ -150,30 +150,30 @@ const request = http.get({ host: 'example.com',
                            port: 80,
                            headers: { 'Accept-Encoding': 'br,gzip,deflate' } });
 request.on('response', (response) => {
-  const output = fs.createWriteStream('example.com_index.html');
+    const output = fs.createWriteStream('example.com_index.html');
 
-  const onError = (err) => {
-    if (err) {
-      console.error('An error occurred:', err);
-      process.exitCode = 1;
+    const onError = (err) => {
+        if (err) {
+            console.error('An error occurred:', err);
+            process.exitCode = 1;
+        }
+    };
+
+    switch (response.headers['content-encoding']) {
+        case 'br':
+            pipeline(response, zlib.createBrotliDecompress(), output, onError);
+            break;
+            // Or, just use zlib.createUnzip() to handle both of the following cases:
+        case 'gzip':
+            pipeline(response, zlib.createGunzip(), output, onError);
+            break;
+        case 'deflate':
+            pipeline(response, zlib.createInflate(), output, onError);
+            break;
+        default:
+            pipeline(response, output, onError);
+            break;
     }
-  };
-
-  switch (response.headers['content-encoding']) {
-    case 'br':
-      pipeline(response, zlib.createBrotliDecompress(), output, onError);
-      break;
-    // Or, just use zlib.createUnzip() to handle both of the following cases:
-    case 'gzip':
-      pipeline(response, zlib.createGunzip(), output, onError);
-      break;
-    case 'deflate':
-      pipeline(response, zlib.createInflate(), output, onError);
-      break;
-    default:
-      pipeline(response, output, onError);
-      break;
-  }
 });
 ```
 
@@ -187,41 +187,41 @@ const fs = require('fs');
 const { pipeline } = require('stream');
 
 http.createServer((request, response) => {
-  const raw = fs.createReadStream('index.html');
-  // Store both a compressed and an uncompressed version of the resource.
-  response.setHeader('Vary', 'Accept-Encoding');
-  let acceptEncoding = request.headers['accept-encoding'];
-  if (!acceptEncoding) {
-    acceptEncoding = '';
-  }
-
-  const onError = (err) => {
-    if (err) {
-      // If an error occurs, there's not much we can do because
-      // the server has already sent the 200 response code and
-      // some amount of data has already been sent to the client.
-      // The best we can do is terminate the response immediately
-      // and log the error.
-      response.end();
-      console.error('An error occurred:', err);
+    const raw = fs.createReadStream('index.html');
+    // Store both a compressed and an uncompressed version of the resource.
+    response.setHeader('Vary', 'Accept-Encoding');
+    let acceptEncoding = request.headers['accept-encoding'];
+    if (!acceptEncoding) {
+        acceptEncoding = '';
     }
-  };
 
-  // Note: This is not a conformant accept-encoding parser.
-  // See https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
-  if (/\bdeflate\b/.test(acceptEncoding)) {
-    response.writeHead(200, { 'Content-Encoding': 'deflate' });
-    pipeline(raw, zlib.createDeflate(), response, onError);
-  } else if (/\bgzip\b/.test(acceptEncoding)) {
-    response.writeHead(200, { 'Content-Encoding': 'gzip' });
-    pipeline(raw, zlib.createGzip(), response, onError);
-  } else if (/\bbr\b/.test(acceptEncoding)) {
-    response.writeHead(200, { 'Content-Encoding': 'br' });
-    pipeline(raw, zlib.createBrotliCompress(), response, onError);
-  } else {
-    response.writeHead(200, {});
-    pipeline(raw, response, onError);
-  }
+    const onError = (err) => {
+        if (err) {
+            // If an error occurs, there's not much we can do because
+            // the server has already sent the 200 response code and
+            // some amount of data has already been sent to the client.
+            // The best we can do is terminate the response immediately
+            // and log the error.
+            response.end();
+            console.error('An error occurred:', err);
+        }
+    };
+
+    // Note: This is not a conformant accept-encoding parser.
+    // See https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
+    if (/\bdeflate\b/.test(acceptEncoding)) {
+        response.writeHead(200, { 'Content-Encoding': 'deflate' });
+        pipeline(raw, zlib.createDeflate(), response, onError);
+    } else if (/\bgzip\b/.test(acceptEncoding)) {
+        response.writeHead(200, { 'Content-Encoding': 'gzip' });
+        pipeline(raw, zlib.createGzip(), response, onError);
+    } else if (/\bbr\b/.test(acceptEncoding)) {
+        response.writeHead(200, { 'Content-Encoding': 'br' });
+        pipeline(raw, zlib.createBrotliCompress(), response, onError);
+    } else {
+        response.writeHead(200, {});
+        pipeline(raw, response, onError);
+    }
 }).listen(1337);
 ```
 
@@ -236,16 +236,16 @@ method that is used to decompress the last chunk of input data:
 const buffer = Buffer.from('eJzT0yMA', 'base64');
 
 zlib.unzip(
-  buffer,
-  // For Brotli, the equivalent is zlib.constants.BROTLI_OPERATION_FLUSH.
-  { finishFlush: zlib.constants.Z_SYNC_FLUSH },
-  (err, buffer) => {
-    if (err) {
-      console.error('An error occurred:', err);
-      process.exitCode = 1;
-    }
-    console.log(buffer.toString());
-  });
+    buffer,
+    // For Brotli, the equivalent is zlib.constants.BROTLI_OPERATION_FLUSH.
+    { finishFlush: zlib.constants.Z_SYNC_FLUSH },
+    (err, buffer) => {
+        if (err) {
+            console.error('An error occurred:', err);
+            process.exitCode = 1;
+        }
+        console.log(buffer.toString());
+    });
 ```
 
 This will not change the behavior in other error-throwing situations, e.g.
@@ -324,33 +324,33 @@ const http = require('http');
 const { pipeline } = require('stream');
 
 http.createServer((request, response) => {
-  // For the sake of simplicity, the Accept-Encoding checks are omitted.
-  response.writeHead(200, { 'content-encoding': 'gzip' });
-  const output = zlib.createGzip();
-  let i;
+    // For the sake of simplicity, the Accept-Encoding checks are omitted.
+    response.writeHead(200, { 'content-encoding': 'gzip' });
+    const output = zlib.createGzip();
+    let i;
 
-  pipeline(output, response, (err) => {
-    if (err) {
-      // If an error occurs, there's not much we can do because
-      // the server has already sent the 200 response code and
-      // some amount of data has already been sent to the client.
-      // The best we can do is terminate the response immediately
-      // and log the error.
-      clearInterval(i);
-      response.end();
-      console.error('An error occurred:', err);
-    }
-  });
-
-  i = setInterval(() => {
-    output.write(`The current time is ${Date()}\n`, () => {
-      // The data has been passed to zlib, but the compression algorithm may
-      // have decided to buffer the data for more efficient compression.
-      // Calling .flush() will make the data available as soon as the client
-      // is ready to receive it.
-      output.flush();
+    pipeline(output, response, (err) => {
+        if (err) {
+            // If an error occurs, there's not much we can do because
+            // the server has already sent the 200 response code and
+            // some amount of data has already been sent to the client.
+            // The best we can do is terminate the response immediately
+            // and log the error.
+            clearInterval(i);
+            response.end();
+            console.error('An error occurred:', err);
+        }
     });
-  }, 1000);
+
+    i = setInterval(() => {
+        output.write(`The current time is ${Date()}\n`, () => {
+            // The data has been passed to zlib, but the compression algorithm may
+            // have decided to buffer the data for more efficient compression.
+            // Calling .flush() will make the data available as soon as the client
+            // is ready to receive it.
+            output.flush();
+        });
+    }, 1000);
 }).listen(1337);
 ```
 
@@ -558,12 +558,12 @@ For example:
 
 ```js
 const stream = zlib.createBrotliCompress({
-  chunkSize: 32 * 1024,
-  params: {
-    [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-    [zlib.constants.BROTLI_PARAM_QUALITY]: 4,
-    [zlib.constants.BROTLI_PARAM_SIZE_HINT]: fs.statSync(inputFile).size
-  }
+    chunkSize: 32 * 1024,
+    params: {
+        [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+        [zlib.constants.BROTLI_PARAM_QUALITY]: 4,
+        [zlib.constants.BROTLI_PARAM_SIZE_HINT]: fs.statSync(inputFile).size
+    }
 });
 ```
 

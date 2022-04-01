@@ -10,13 +10,13 @@ console.log('%s q', 'string');
 console.log('%o with object format param', { foo: 'bar' });
 
 console.log(
-  new Error('test\n    at abc (../fixtures/node_modules/bar.js:4:4)\nfoobar')
+    new Error('test\n    at abc (../fixtures/node_modules/bar.js:4:4)\nfoobar')
 );
 
 try {
-  require('../fixtures/node_modules/node_modules/bar.js');
+    require('../fixtures/node_modules/node_modules/bar.js');
 } catch (err) {
-  console.log(err);
+    console.log(err);
 }
 
 vm.runInThisContext('console.log(new Error())');

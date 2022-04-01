@@ -18,20 +18,20 @@ strictEqual(addImported(1), 43);
 
 // Test warning message
 const child = spawn(process.execPath, [
-  '--experimental-wasm-modules',
-  path('/es-modules/wasm-modules.mjs'),
+    '--experimental-wasm-modules',
+    path('/es-modules/wasm-modules.mjs'),
 ]);
 
 let stderr = '';
 child.stderr.setEncoding('utf8');
 child.stderr.on('data', (data) => {
-  stderr += data;
+    stderr += data;
 });
 child.on('close', (code, signal) => {
-  strictEqual(code, 0);
-  strictEqual(signal, null);
-  ok(stderr.toString().includes(
-    'ExperimentalWarning: Importing WebAssembly modules is ' +
+    strictEqual(code, 0);
+    strictEqual(signal, null);
+    ok(stderr.toString().includes(
+        'ExperimentalWarning: Importing WebAssembly modules is ' +
     'an experimental feature. This feature could change at any time'
-  ));
+    ));
 });

@@ -6,7 +6,7 @@ const common = require('../common');
 // Verify that --unhandled-rejections=warn works fine
 
 new Promise(() => {
-  throw new Error('One');
+    throw new Error('One');
 });
 
 Promise.reject('test');

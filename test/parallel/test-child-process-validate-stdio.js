@@ -15,12 +15,12 @@ assert.throws(() => getValidStdio(600), expectedError);
 
 // Should populate stdio with undefined if len < 3
 {
-  const stdio1 = [];
-  const result = getValidStdio(stdio1, false);
-  assert.strictEqual(stdio1.length, 3);
-  assert.strictEqual(Object.hasOwn(result, 'stdio'), true);
-  assert.strictEqual(Object.hasOwn(result, 'ipc'), true);
-  assert.strictEqual(Object.hasOwn(result, 'ipcFd'), true);
+    const stdio1 = [];
+    const result = getValidStdio(stdio1, false);
+    assert.strictEqual(stdio1.length, 3);
+    assert.strictEqual(Object.hasOwn(result, 'stdio'), true);
+    assert.strictEqual(Object.hasOwn(result, 'ipc'), true);
+    assert.strictEqual(Object.hasOwn(result, 'ipcFd'), true);
 }
 
 // Should throw if stdio has ipc and sync is true
@@ -31,31 +31,31 @@ assert.throws(() => getValidStdio(stdio2, true),
 
 // Should throw if stdio is not a valid input
 {
-  const stdio = ['foo'];
-  assert.throws(() => getValidStdio(stdio, false),
-                { code: 'ERR_INVALID_SYNC_FORK_INPUT', name: 'TypeError' }
-  );
+    const stdio = ['foo'];
+    assert.throws(() => getValidStdio(stdio, false),
+                  { code: 'ERR_INVALID_SYNC_FORK_INPUT', name: 'TypeError' }
+    );
 }
 
 // Should throw if stdio is not a valid option
 {
-  const stdio = [{ foo: 'bar' }];
-  assert.throws(() => getValidStdio(stdio), expectedError);
+    const stdio = [{ foo: 'bar' }];
+    assert.throws(() => getValidStdio(stdio), expectedError);
 }
 
 if (common.isMainThread) {
-  const stdio3 = [process.stdin, process.stdout, process.stderr];
-  const result = getValidStdio(stdio3, false);
-  assert.deepStrictEqual(result, {
-    stdio: [
-      { type: 'fd', fd: 0 },
-      { type: 'fd', fd: 1 },
-      { type: 'fd', fd: 2 },
-    ],
-    ipc: undefined,
-    ipcFd: undefined
-  });
+    const stdio3 = [process.stdin, process.stdout, process.stderr];
+    const result = getValidStdio(stdio3, false);
+    assert.deepStrictEqual(result, {
+        stdio: [
+            { type: 'fd', fd: 0 },
+            { type: 'fd', fd: 1 },
+            { type: 'fd', fd: 2 },
+        ],
+        ipc: undefined,
+        ipcFd: undefined
+    });
 } else {
-  common.printSkipMessage(
-    'stdio is not associated with file descriptors in Workers');
+    common.printSkipMessage(
+        'stdio is not associated with file descriptors in Workers');
 }

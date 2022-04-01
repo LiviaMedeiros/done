@@ -13,11 +13,11 @@ const modules = [ 'fs', 'assert', 'async_hooks', 'buffer', 'child_process',
                   'net', 'http', 'os', 'path', 'v8', 'vm',
 ];
 if (common.hasCrypto) {
-  modules.push('https');
+    modules.push('https');
 }
 
 for (let i = 0; i < 10; i++) {
-  new Worker(`const modules = [${modules.map((m) => `'${m}'`)}];` +
+    new Worker(`const modules = [${modules.map((m) => `'${m}'`)}];` +
     'modules.forEach((module) => {' +
     'const m = require(module);' +
     '});', { eval: true });
@@ -25,5 +25,5 @@ for (let i = 0; i < 10; i++) {
 
 // Allow workers to go live.
 setTimeout(() => {
-  process.exit(0);
+    process.exit(0);
 }, 200);

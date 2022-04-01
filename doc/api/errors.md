@@ -38,10 +38,10 @@ JavaScript language.
 ```js
 // Throws with a ReferenceError because z is not defined.
 try {
-  const m = 1;
-  const n = m + z;
+    const m = 1;
+    const n = m + z;
 } catch (err) {
-  // Handle the error here.
+    // Handle the error here.
 }
 ```
 
@@ -65,11 +65,11 @@ Errors that occur within _Asynchronous APIs_ may be reported in multiple ways:
   ```js
   const fs = require('fs');
   fs.readFile('a file that does not exist', (err, data) => {
-    if (err) {
-      console.error('There was an error reading the file!', err);
-      return;
-    }
-    // Otherwise handle the data
+      if (err) {
+          console.error('There was an error reading the file!', err);
+          return;
+      }
+      // Otherwise handle the data
   });
   ```
 
@@ -82,10 +82,10 @@ Errors that occur within _Asynchronous APIs_ may be reported in multiple ways:
 
   // Adding an 'error' event handler to a stream:
   connection.on('error', (err) => {
-    // If the connection is reset by the server, or if it can't
-    // connect at all, or on any sort of error encountered by
-    // the connection, the error will be sent here.
-    console.error(err);
+      // If the connection is reset by the server, or if it can't
+      // connect at all, or on any sort of error encountered by
+      // the connection, the error will be sent here.
+      console.error(err);
   });
 
   connection.pipe(process.stdout);
@@ -113,9 +113,9 @@ const EventEmitter = require('events');
 const ee = new EventEmitter();
 
 setImmediate(() => {
-  // This will crash the process because no 'error' event
-  // handler has been added.
-  ee.emit('error', new Error('This will crash'));
+    // This will crash the process because no 'error' event
+    // handler has been added.
+    ee.emit('error', new Error('This will crash'));
 });
 ```
 
@@ -140,11 +140,11 @@ the first argument will be passed as `null`.
 const fs = require('fs');
 
 function errorFirstCallback(err, data) {
-  if (err) {
-    console.error('There was an error', err);
-    return;
-  }
-  console.log(data);
+    if (err) {
+        console.error('There was an error', err);
+        return;
+    }
+    console.log(data);
 }
 
 fs.readFile('/some/file/that/does-not-exist', errorFirstCallback);
@@ -160,15 +160,15 @@ use `throw` inside an error-first callback:
 const fs = require('fs');
 
 try {
-  fs.readFile('/some/file/that/does-not-exist', (err, data) => {
+    fs.readFile('/some/file/that/does-not-exist', (err, data) => {
     // Mistaken assumption: throwing here...
-    if (err) {
-      throw err;
-    }
-  });
+        if (err) {
+            throw err;
+        }
+    });
 } catch (err) {
-  // This will not catch the throw!
-  console.error(err);
+    // This will not catch the throw!
+    console.error(err);
 }
 ```
 
@@ -230,7 +230,7 @@ details of error generation from the user. For instance:
 
 ```js
 function MyError() {
-  Error.captureStackTrace(this, MyError);
+    Error.captureStackTrace(this, MyError);
 }
 
 // Without passing MyError to captureStackTrace, the MyError
@@ -314,10 +314,10 @@ will not be present in the stack traces:
 const cheetahify = require('./native-binding.node');
 
 function makeFaster() {
-  // `cheetahify()` *synchronously* calls speedy.
-  cheetahify(function speedy() {
-    throw new Error('oh no!');
-  });
+    // `cheetahify()` *synchronously* calls speedy.
+    cheetahify(function speedy() {
+        throw new Error('oh no!');
+    });
 }
 
 makeFaster();
@@ -409,9 +409,9 @@ are almost always indicative of a broken program.
 
 ```js
 try {
-  require('vm').runInThisContext('binary ! isNotOk');
+    require('vm').runInThisContext('binary ! isNotOk');
 } catch (err) {
-  // 'err' will be a SyntaxError.
+    // 'err' will be a SyntaxError.
 }
 ```
 

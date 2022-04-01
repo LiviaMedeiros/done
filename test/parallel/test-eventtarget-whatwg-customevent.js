@@ -8,26 +8,26 @@ const { strictEqual, throws, equal } = require('assert');
 // in order to define the `document` ourselves
 
 {
-  const type = 'foo';
-  const target = new EventTarget();
+    const type = 'foo';
+    const target = new EventTarget();
 
-  target.addEventListener(type, common.mustCall((evt) => {
-    strictEqual(evt.type, type);
-  }));
+    target.addEventListener(type, common.mustCall((evt) => {
+        strictEqual(evt.type, type);
+    }));
 
-  target.dispatchEvent(new Event(type));
+    target.dispatchEvent(new Event(type));
 }
 
 {
-  throws(() => {
-    new Event();
-  }, TypeError);
+    throws(() => {
+        new Event();
+    }, TypeError);
 }
 
 {
-  const event = new Event('foo');
-  equal(event.type, 'foo');
-  equal(event.bubbles, false);
-  equal(event.cancelable, false);
-  equal(event.detail, null);
+    const event = new Event('foo');
+    equal(event.type, 'foo');
+    equal(event.bubbles, false);
+    equal(event.cancelable, false);
+    equal(event.detail, null);
 }

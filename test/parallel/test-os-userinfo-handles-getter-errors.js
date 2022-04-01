@@ -14,5 +14,5 @@ const script = `os.userInfo({
 
 const node = process.execPath;
 execFile(node, [ '-e', script ], common.mustCall((err, stdout, stderr) => {
-  assert(stderr.includes('Error: xyz'), 'userInfo crashes');
+    assert(stderr.includes('Error: xyz'), 'userInfo crashes');
 }));

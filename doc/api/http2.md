@@ -41,9 +41,9 @@ When using CommonJS, the error thrown can be caught using try/catch:
 ```cjs
 let http2;
 try {
-  http2 = require('http2');
+    http2 = require('http2');
 } catch (err) {
-  console.log('http2 support is disabled!');
+    console.log('http2 support is disabled!');
 }
 ```
 
@@ -59,9 +59,9 @@ of Node.js where crypto support is not enabled, consider using the
 ```mjs
 let http2;
 try {
-  http2 = await import('http2');
+    http2 = await import('http2');
 } catch (err) {
-  console.log('http2 support is disabled!');
+    console.log('http2 support is disabled!');
 }
 ```
 
@@ -89,18 +89,18 @@ const http2 = require('http2');
 const fs = require('fs');
 
 const server = http2.createSecureServer({
-  key: fs.readFileSync('localhost-privkey.pem'),
-  cert: fs.readFileSync('localhost-cert.pem')
+    key: fs.readFileSync('localhost-privkey.pem'),
+    cert: fs.readFileSync('localhost-cert.pem')
 });
 server.on('error', (err) => console.error(err));
 
 server.on('stream', (stream, headers) => {
-  // stream is a Duplex
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200
-  });
-  stream.end('<h1>Hello World</h1>');
+    // stream is a Duplex
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200
+    });
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(8443);
@@ -121,24 +121,24 @@ The following illustrates an HTTP/2 client:
 const http2 = require('http2');
 const fs = require('fs');
 const client = http2.connect('https://localhost:8443', {
-  ca: fs.readFileSync('localhost-cert.pem')
+    ca: fs.readFileSync('localhost-cert.pem')
 });
 client.on('error', (err) => console.error(err));
 
 const req = client.request({ ':path': '/' });
 
 req.on('response', (headers, flags) => {
-  for (const name in headers) {
-    console.log(`${name}: ${headers[name]}`);
-  }
+    for (const name in headers) {
+        console.log(`${name}: ${headers[name]}`);
+    }
 });
 
 req.setEncoding('utf8');
 let data = '';
 req.on('data', (chunk) => { data += chunk; });
 req.on('end', () => {
-  console.log(`\n${data}`);
-  client.close();
+    console.log(`\n${data}`);
+    client.close();
 });
 req.end();
 ```
@@ -273,7 +273,7 @@ settings do not take effect until the `'localSettings'` event is emitted.
 session.settings({ enablePush: false });
 
 session.on('localSettings', (settings) => {
-  /* Use the new settings */
+    /* Use the new settings */
 });
 ```
 
@@ -301,7 +301,7 @@ from the connected peer.
 
 ```js
 session.on('remoteSettings', (settings) => {
-  /* Use the new settings */
+    /* Use the new settings */
 });
 ```
 
@@ -322,15 +322,15 @@ The `'stream'` event is emitted when a new `Http2Stream` is created.
 ```js
 const http2 = require('http2');
 session.on('stream', (stream, headers, flags) => {
-  const method = headers[':method'];
-  const path = headers[':path'];
-  // ...
-  stream.respond({
-    ':status': 200,
-    'content-type': 'text/plain; charset=utf-8'
-  });
-  stream.write('hello ');
-  stream.end('world');
+    const method = headers[':method'];
+    const path = headers[':path'];
+    // ...
+    stream.respond({
+        ':status': 200,
+        'content-type': 'text/plain; charset=utf-8'
+    });
+    stream.write('hello ');
+    stream.end('world');
 });
 ```
 
@@ -346,12 +346,12 @@ const http2 = require('http2');
 const server = http2.createServer();
 
 server.on('stream', (stream, headers) => {
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200
-  });
-  stream.on('error', (error) => console.error(error));
-  stream.end('<h1>Hello World</h1>');
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200
+    });
+    stream.on('error', (error) => console.error(error));
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(80);
@@ -562,10 +562,10 @@ payload.
 
 ```js
 session.ping(Buffer.from('abcdefgh'), (err, duration, payload) => {
-  if (!err) {
-    console.log(`Ping acknowledged in ${duration} milliseconds`);
-    console.log(`With payload '${payload.toString()}'`);
-  }
+    if (!err) {
+        console.log(`Ping acknowledged in ${duration} milliseconds`);
+        console.log(`With payload '${payload.toString()}'`);
+    }
 });
 ```
 
@@ -613,8 +613,8 @@ const server = http2.createServer();
 const expectedWindowSize = 2 ** 20;
 server.on('connect', (session) => {
 
-  // Set local window size to be 2 ** 20
-  session.setLocalWindowSize(expectedWindowSize);
+    // Set local window size to be 2 ** 20
+    session.setLocalWindowSize(expectedWindowSize);
 });
 ```
 
@@ -767,13 +767,13 @@ const http2 = require('http2');
 
 const server = http2.createServer();
 server.on('session', (session) => {
-  // Set altsvc for origin https://example.org:80
-  session.altsvc('h2=":8000"', 'https://example.org:80');
+    // Set altsvc for origin https://example.org:80
+    session.altsvc('h2=":8000"', 'https://example.org:80');
 });
 
 server.on('stream', (stream) => {
-  // Set altsvc for a specific stream
-  stream.session.altsvc('h2=":8000"', stream.id);
+    // Set altsvc for a specific stream
+    stream.session.altsvc('h2=":8000"', stream.id);
 });
 ```
 
@@ -833,11 +833,11 @@ const http2 = require('http2');
 const options = getSecureOptionsSomehow();
 const server = http2.createSecureServer(options);
 server.on('stream', (stream) => {
-  stream.respond();
-  stream.end('ok');
+    stream.respond();
+    stream.end('ok');
 });
 server.on('session', (session) => {
-  session.origin('https://example.com', 'https://example.org');
+    session.origin('https://example.com', 'https://example.org');
 });
 ```
 
@@ -861,8 +861,8 @@ const options = getSecureOptionsSomehow();
 options.origins = ['https://example.com', 'https://example.org'];
 const server = http2.createSecureServer(options);
 server.on('stream', (stream) => {
-  stream.respond();
-  stream.end('ok');
+    stream.respond();
+    stream.end('ok');
 });
 ```
 
@@ -894,9 +894,9 @@ const http2 = require('http2');
 const client = http2.connect('https://example.org');
 
 client.on('altsvc', (alt, origin, streamId) => {
-  console.log(alt);
-  console.log(origin);
-  console.log(streamId);
+    console.log(alt);
+    console.log(origin);
+    console.log(streamId);
 });
 ```
 
@@ -918,8 +918,8 @@ const http2 = require('http2');
 const client = http2.connect('https://example.org');
 
 client.on('origin', (origins) => {
-  for (let n = 0; n < origins.length; n++)
-    console.log(origins[n]);
+    for (let n = 0; n < origins.length; n++)
+        console.log(origins[n]);
 });
 ```
 
@@ -970,15 +970,15 @@ This method is only available if `http2session.type` is equal to
 const http2 = require('http2');
 const clientSession = http2.connect('https://localhost:1234');
 const {
-  HTTP2_HEADER_PATH,
-  HTTP2_HEADER_STATUS
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_STATUS
 } = http2.constants;
 
 const req = clientSession.request({ [HTTP2_HEADER_PATH]: '/' });
 req.on('response', (headers) => {
-  console.log(headers[HTTP2_HEADER_STATUS]);
-  req.on('data', (chunk) => { /* .. */ });
-  req.on('end', () => { /* .. */ });
+    console.log(headers[HTTP2_HEADER_STATUS]);
+    req.on('data', (chunk) => { /* .. */ });
+    req.on('end', () => { /* .. */ });
 });
 ```
 
@@ -1038,8 +1038,8 @@ encoding used.
 
 ```js
 stream.respond({
-  'content-type': 'text/html; charset=utf-8',
-  ':status': 200
+    'content-type': 'text/html; charset=utf-8',
+    ':status': 200
 });
 ```
 
@@ -1182,7 +1182,7 @@ listened for.
 
 ```js
 stream.on('trailers', (headers, flags) => {
-  console.log(headers);
+    console.log(headers);
 });
 ```
 
@@ -1440,11 +1440,11 @@ trailers can be sent.
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond(undefined, { waitForTrailers: true });
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ xyz: 'abc' });
-  });
-  stream.end('Hello World');
+    stream.respond(undefined, { waitForTrailers: true });
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ xyz: 'abc' });
+    });
+    stream.end('Hello World');
 });
 ```
 
@@ -1487,7 +1487,7 @@ associated with the headers.
 
 ```js
 stream.on('headers', (headers, flags) => {
-  console.log(headers);
+    console.log(headers);
 });
 ```
 
@@ -1503,7 +1503,7 @@ flags associated with the headers.
 
 ```js
 stream.on('push', (headers, flags) => {
-  console.log(headers);
+    console.log(headers);
 });
 ```
 
@@ -1523,7 +1523,7 @@ const http2 = require('http2');
 const client = http2.connect('https://localhost');
 const req = client.request({ ':path': '/' });
 req.on('response', (headers, flags) => {
-  console.log(headers[':status']);
+    console.log(headers[':status']);
 });
 ```
 
@@ -1608,13 +1608,13 @@ instance created for the push stream passed as the second argument, or an
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond({ ':status': 200 });
-  stream.pushStream({ ':path': '/' }, (err, pushStream, headers) => {
-    if (err) throw err;
-    pushStream.respond({ ':status': 200 });
-    pushStream.end('some pushed data');
-  });
-  stream.end('some data');
+    stream.respond({ ':status': 200 });
+    stream.pushStream({ ':path': '/' }, (err, pushStream, headers) => {
+        if (err) throw err;
+        pushStream.respond({ ':status': 200 });
+        pushStream.end('some pushed data');
+    });
+    stream.end('some data');
 });
 ```
 
@@ -1648,8 +1648,8 @@ changes:
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond({ ':status': 200 });
-  stream.end('some data');
+    stream.respond({ ':status': 200 });
+    stream.end('some data');
 });
 ```
 
@@ -1667,11 +1667,11 @@ close when the final `DATA` frame is transmitted. User code must call either
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respond({ ':status': 200 }, { waitForTrailers: true });
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ ABC: 'some value to send' });
-  });
-  stream.end('some data');
+    stream.respond({ ':status': 200 }, { waitForTrailers: true });
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ ABC: 'some value to send' });
+    });
+    stream.end('some data');
 });
 ```
 
@@ -1717,16 +1717,16 @@ const fs = require('fs');
 
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  const fd = fs.openSync('/some/file', 'r');
+    const fd = fs.openSync('/some/file', 'r');
 
-  const stat = fs.fstatSync(fd);
-  const headers = {
-    'content-length': stat.size,
-    'last-modified': stat.mtime.toUTCString(),
-    'content-type': 'text/plain; charset=utf-8'
-  };
-  stream.respondWithFD(fd, headers);
-  stream.on('close', () => fs.closeSync(fd));
+    const stat = fs.fstatSync(fd);
+    const headers = {
+        'content-length': stat.size,
+        'last-modified': stat.mtime.toUTCString(),
+        'content-type': 'text/plain; charset=utf-8'
+    };
+    stream.respondWithFD(fd, headers);
+    stream.on('close', () => fs.closeSync(fd));
 });
 ```
 
@@ -1762,20 +1762,20 @@ const fs = require('fs');
 
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  const fd = fs.openSync('/some/file', 'r');
+    const fd = fs.openSync('/some/file', 'r');
 
-  const stat = fs.fstatSync(fd);
-  const headers = {
-    'content-length': stat.size,
-    'last-modified': stat.mtime.toUTCString(),
-    'content-type': 'text/plain; charset=utf-8'
-  };
-  stream.respondWithFD(fd, headers, { waitForTrailers: true });
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ ABC: 'some value to send' });
-  });
+    const stat = fs.fstatSync(fd);
+    const headers = {
+        'content-length': stat.size,
+        'last-modified': stat.mtime.toUTCString(),
+        'content-type': 'text/plain; charset=utf-8'
+    };
+    stream.respondWithFD(fd, headers, { waitForTrailers: true });
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ ABC: 'some value to send' });
+    });
 
-  stream.on('close', () => fs.closeSync(fd));
+    stream.on('close', () => fs.closeSync(fd));
 });
 ```
 
@@ -1827,29 +1827,29 @@ Example using a file path:
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  function statCheck(stat, headers) {
-    headers['last-modified'] = stat.mtime.toUTCString();
-  }
+    function statCheck(stat, headers) {
+        headers['last-modified'] = stat.mtime.toUTCString();
+    }
 
-  function onError(err) {
+    function onError(err) {
     // stream.respond() can throw if the stream has been destroyed by
     // the other side.
-    try {
-      if (err.code === 'ENOENT') {
-        stream.respond({ ':status': 404 });
-      } else {
-        stream.respond({ ':status': 500 });
-      }
-    } catch (err) {
-      // Perform actual error handling.
-      console.log(err);
+        try {
+            if (err.code === 'ENOENT') {
+                stream.respond({ ':status': 404 });
+            } else {
+                stream.respond({ ':status': 500 });
+            }
+        } catch (err) {
+            // Perform actual error handling.
+            console.log(err);
+        }
+        stream.end();
     }
-    stream.end();
-  }
 
-  stream.respondWithFile('/some/file',
-                         { 'content-type': 'text/plain; charset=utf-8' },
-                         { statCheck, onError });
+    stream.respondWithFile('/some/file',
+                           { 'content-type': 'text/plain; charset=utf-8' },
+                           { statCheck, onError });
 });
 ```
 
@@ -1862,14 +1862,14 @@ results to determine if the file has been modified to return an appropriate
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  function statCheck(stat, headers) {
+    function statCheck(stat, headers) {
     // Check the stat here...
-    stream.respond({ ':status': 304 });
-    return false; // Cancel the send operation
-  }
-  stream.respondWithFile('/some/file',
-                         { 'content-type': 'text/plain; charset=utf-8' },
-                         { statCheck });
+        stream.respond({ ':status': 304 });
+        return false; // Cancel the send operation
+    }
+    stream.respondWithFile('/some/file',
+                           { 'content-type': 'text/plain; charset=utf-8' },
+                           { statCheck });
 });
 ```
 
@@ -1897,12 +1897,12 @@ close when the final `DATA` frame is transmitted. User code must call either
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream) => {
-  stream.respondWithFile('/some/file',
-                         { 'content-type': 'text/plain; charset=utf-8' },
-                         { waitForTrailers: true });
-  stream.on('wantTrailers', () => {
-    stream.sendTrailers({ ABC: 'some value to send' });
-  });
+    stream.respondWithFile('/some/file',
+                           { 'content-type': 'text/plain; charset=utf-8' },
+                           { waitForTrailers: true });
+    stream.on('wantTrailers', () => {
+        stream.sendTrailers({ ABC: 'some value to send' });
+    });
 });
 ```
 
@@ -2006,23 +2006,23 @@ See also [`Http2Session`'s `'stream'` event][].
 ```js
 const http2 = require('http2');
 const {
-  HTTP2_HEADER_METHOD,
-  HTTP2_HEADER_PATH,
-  HTTP2_HEADER_STATUS,
-  HTTP2_HEADER_CONTENT_TYPE
+    HTTP2_HEADER_METHOD,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_STATUS,
+    HTTP2_HEADER_CONTENT_TYPE
 } = http2.constants;
 
 const server = http2.createServer();
 server.on('stream', (stream, headers, flags) => {
-  const method = headers[HTTP2_HEADER_METHOD];
-  const path = headers[HTTP2_HEADER_PATH];
-  // ...
-  stream.respond({
-    [HTTP2_HEADER_STATUS]: 200,
-    [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain; charset=utf-8'
-  });
-  stream.write('hello ');
-  stream.end('world');
+    const method = headers[HTTP2_HEADER_METHOD];
+    const path = headers[HTTP2_HEADER_PATH];
+    // ...
+    stream.respond({
+        [HTTP2_HEADER_STATUS]: 200,
+        [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain; charset=utf-8'
+    });
+    stream.write('hello ');
+    stream.end('world');
 });
 ```
 
@@ -2221,25 +2221,25 @@ See also [`Http2Session`'s `'stream'` event][].
 ```js
 const http2 = require('http2');
 const {
-  HTTP2_HEADER_METHOD,
-  HTTP2_HEADER_PATH,
-  HTTP2_HEADER_STATUS,
-  HTTP2_HEADER_CONTENT_TYPE
+    HTTP2_HEADER_METHOD,
+    HTTP2_HEADER_PATH,
+    HTTP2_HEADER_STATUS,
+    HTTP2_HEADER_CONTENT_TYPE
 } = http2.constants;
 
 const options = getOptionsSomehow();
 
 const server = http2.createSecureServer(options);
 server.on('stream', (stream, headers, flags) => {
-  const method = headers[HTTP2_HEADER_METHOD];
-  const path = headers[HTTP2_HEADER_PATH];
-  // ...
-  stream.respond({
-    [HTTP2_HEADER_STATUS]: 200,
-    [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain; charset=utf-8'
-  });
-  stream.write('hello ');
-  stream.end('world');
+    const method = headers[HTTP2_HEADER_METHOD];
+    const path = headers[HTTP2_HEADER_PATH];
+    // ...
+    stream.respond({
+        [HTTP2_HEADER_STATUS]: 200,
+        [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain; charset=utf-8'
+    });
+    stream.write('hello ');
+    stream.end('world');
 });
 ```
 
@@ -2491,11 +2491,11 @@ const http2 = require('http2');
 const server = http2.createServer();
 
 server.on('stream', (stream, headers) => {
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200
-  });
-  stream.end('<h1>Hello World</h1>');
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200
+    });
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(80);
@@ -2624,19 +2624,19 @@ const http2 = require('http2');
 const fs = require('fs');
 
 const options = {
-  key: fs.readFileSync('server-key.pem'),
-  cert: fs.readFileSync('server-cert.pem')
+    key: fs.readFileSync('server-key.pem'),
+    cert: fs.readFileSync('server-cert.pem')
 };
 
 // Create a secure HTTP/2 server
 const server = http2.createSecureServer(options);
 
 server.on('stream', (stream, headers) => {
-  stream.respond({
-    'content-type': 'text/html; charset=utf-8',
-    ':status': 200
-  });
-  stream.end('<h1>Hello World</h1>');
+    stream.respond({
+        'content-type': 'text/html; charset=utf-8',
+        ':status': 200
+    });
+    stream.end('<h1>Hello World</h1>');
 });
 
 server.listen(80);
@@ -2853,9 +2853,9 @@ to send more than one value per header field).
 
 ```js
 const headers = {
-  ':status': '200',
-  'content-type': 'text-plain',
-  'ABC': ['has', 'more', 'than', 'one', 'value']
+    ':status': '200',
+    'content-type': 'text-plain',
+    'ABC': ['has', 'more', 'than', 'one', 'value']
 };
 
 stream.respond(headers);
@@ -2887,8 +2887,8 @@ For incoming headers:
 const http2 = require('http2');
 const server = http2.createServer();
 server.on('stream', (stream, headers) => {
-  console.log(headers[':path']);
-  console.log(headers.ABC);
+    console.log(headers[':path']);
+    console.log(headers.ABC);
 });
 ```
 
@@ -2902,11 +2902,11 @@ the header name to the `[http2.sensitiveHeaders]` property as an array:
 
 ```js
 const headers = {
-  ':status': '200',
-  'content-type': 'text-plain',
-  'cookie': 'some-cookie',
-  'other-sensitive-header': 'very secret data',
-  [http2.sensitiveHeaders]: ['cookie', 'other-sensitive-header']
+    ':status': '200',
+    'content-type': 'text-plain',
+    'cookie': 'some-cookie',
+    'other-sensitive-header': 'very secret data',
+    [http2.sensitiveHeaders]: ['cookie', 'other-sensitive-header']
 };
 
 stream.respond(headers);
@@ -3022,10 +3022,10 @@ const http2 = require('http2');
 const client = http2.connect('http://localhost');
 
 client.on('stream', (pushedStream, requestHeaders) => {
-  pushedStream.on('push', (responseHeaders) => {
+    pushedStream.on('push', (responseHeaders) => {
     // Process response headers
-  });
-  pushedStream.on('data', (chunk) => { /* handle pushed data */ });
+    });
+    pushedStream.on('data', (chunk) => { /* handle pushed data */ });
 });
 
 const req = client.request({ ':path': '/' });
@@ -3042,10 +3042,10 @@ A simple TCP Server:
 const net = require('net');
 
 const server = net.createServer((socket) => {
-  let name = '';
-  socket.setEncoding('utf8');
-  socket.on('data', (chunk) => name += chunk);
-  socket.on('end', () => socket.end(`hello ${name}`));
+    let name = '';
+    socket.setEncoding('utf8');
+    socket.on('data', (chunk) => name += chunk);
+    socket.on('end', () => socket.end(`hello ${name}`));
 });
 
 server.listen(8000);
@@ -3060,22 +3060,22 @@ const net = require('net');
 
 const proxy = http2.createServer();
 proxy.on('stream', (stream, headers) => {
-  if (headers[':method'] !== 'CONNECT') {
+    if (headers[':method'] !== 'CONNECT') {
     // Only accept CONNECT requests
-    stream.close(NGHTTP2_REFUSED_STREAM);
-    return;
-  }
-  const auth = new URL(`tcp://${headers[':authority']}`);
-  // It's a very good idea to verify that hostname and port are
-  // things this proxy should be connecting to.
-  const socket = net.connect(auth.port, auth.hostname, () => {
-    stream.respond();
-    socket.pipe(stream);
-    stream.pipe(socket);
-  });
-  socket.on('error', (error) => {
-    stream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
-  });
+        stream.close(NGHTTP2_REFUSED_STREAM);
+        return;
+    }
+    const auth = new URL(`tcp://${headers[':authority']}`);
+    // It's a very good idea to verify that hostname and port are
+    // things this proxy should be connecting to.
+    const socket = net.connect(auth.port, auth.hostname, () => {
+        stream.respond();
+        socket.pipe(stream);
+        stream.pipe(socket);
+    });
+    socket.on('error', (error) => {
+        stream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
+    });
 });
 
 proxy.listen(8001);
@@ -3091,19 +3091,19 @@ const client = http2.connect('http://localhost:8001');
 // Must not specify the ':path' and ':scheme' headers
 // for CONNECT requests or an error will be thrown.
 const req = client.request({
-  ':method': 'CONNECT',
-  ':authority': `localhost:${port}`
+    ':method': 'CONNECT',
+    ':authority': `localhost:${port}`
 });
 
 req.on('response', (headers) => {
-  console.log(headers[http2.constants.HTTP2_HEADER_STATUS]);
+    console.log(headers[http2.constants.HTTP2_HEADER_STATUS]);
 });
 let data = '';
 req.setEncoding('utf8');
 req.on('data', (chunk) => data += chunk);
 req.on('end', () => {
-  console.log(`The server says: ${data}`);
-  client.close();
+    console.log(`The server says: ${data}`);
+    client.close();
 });
 req.end('Jane');
 ```
@@ -3131,10 +3131,10 @@ the extended CONNECT may be used, it may send `CONNECT` requests that use the
 const http2 = require('http2');
 const client = http2.connect('http://localhost:8080');
 client.on('remoteSettings', (settings) => {
-  if (settings.enableConnectProtocol) {
-    const req = client.request({ ':method': 'CONNECT', ':protocol': 'foo' });
+    if (settings.enableConnectProtocol) {
+        const req = client.request({ ':method': 'CONNECT', ':protocol': 'foo' });
     // ...
-  }
+    }
 });
 ```
 
@@ -3153,10 +3153,10 @@ API:
 ```js
 const http2 = require('http2');
 const server = http2.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html');
-  res.setHeader('X-Foo', 'bar');
-  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-  res.end('ok');
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('X-Foo', 'bar');
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('ok');
 });
 ```
 
@@ -3187,19 +3187,19 @@ const cert = readFileSync('./cert.pem');
 const key = readFileSync('./key.pem');
 
 const server = createSecureServer(
-  { cert, key, allowHTTP1: true },
-  onRequest
+    { cert, key, allowHTTP1: true },
+    onRequest
 ).listen(4443);
 
 function onRequest(req, res) {
-  // Detects if it is a HTTPS request or HTTP/2
-  const { socket: { alpnProtocol } } = req.httpVersion === '2.0' ?
-    req.stream.session : req;
-  res.writeHead(200, { 'content-type': 'application/json' });
-  res.end(JSON.stringify({
-    alpnProtocol,
-    httpVersion: req.httpVersion
-  }));
+    // Detects if it is a HTTPS request or HTTP/2
+    const { socket: { alpnProtocol } } = req.httpVersion === '2.0' ?
+        req.stream.session : req;
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({
+        alpnProtocol,
+        httpVersion: req.httpVersion
+    }));
 }
 ```
 
@@ -3810,10 +3810,10 @@ to [`response.writeHead()`][] given precedence.
 ```js
 // Returns content-type = text/plain
 const server = http2.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('X-Foo', 'bar');
-  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-  res.end('ok');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('X-Foo', 'bar');
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('ok');
 });
 ```
 
@@ -3864,9 +3864,9 @@ All other interactions will be routed directly to the socket.
 ```js
 const http2 = require('http2');
 const server = http2.createServer((req, res) => {
-  const ip = req.socket.remoteAddress;
-  const port = req.socket.remotePort;
-  res.end(`Your IP address is ${ip} and your source port is ${port}.`);
+    const ip = req.socket.remoteAddress;
+    const port = req.socket.remotePort;
+    res.end(`Your IP address is ${ip} and your source port is ${port}.`);
 }).listen(3000);
 ```
 
@@ -4002,8 +4002,8 @@ will be emitted.
 ```js
 const body = 'hello world';
 response.writeHead(200, {
-  'Content-Length': Buffer.byteLength(body),
-  'Content-Type': 'text/plain; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
+    'Content-Type': 'text/plain; charset=utf-8',
 });
 ```
 
@@ -4027,10 +4027,10 @@ to [`response.writeHead()`][] given precedence.
 ```js
 // Returns content-type = text/plain
 const server = http2.createServer((req, res) => {
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('X-Foo', 'bar');
-  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-  res.end('ok');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('X-Foo', 'bar');
+    res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('ok');
 });
 ```
 
@@ -4046,13 +4046,13 @@ metrics for each `Http2Session` and `Http2Stream` instance.
 const { PerformanceObserver } = require('perf_hooks');
 
 const obs = new PerformanceObserver((items) => {
-  const entry = items.getEntries()[0];
-  console.log(entry.entryType);  // prints 'http2'
-  if (entry.name === 'Http2Session') {
+    const entry = items.getEntries()[0];
+    console.log(entry.entryType);  // prints 'http2'
+    if (entry.name === 'Http2Session') {
     // Entry contains statistics about the Http2Session
-  } else if (entry.name === 'Http2Stream') {
+    } else if (entry.name === 'Http2Stream') {
     // Entry contains statistics about the Http2Stream
-  }
+    }
 });
 obs.observe({ entryTypes: ['http2'] });
 ```

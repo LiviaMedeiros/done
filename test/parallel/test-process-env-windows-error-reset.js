@@ -6,17 +6,17 @@ const assert = require('assert');
 // env read will succeed even for empty variables.
 
 {
-  process.env.FOO = '';
-  process.env.NONEXISTENT_ENV_VAR; // eslint-disable-line no-unused-expressions
-  const foo = process.env.FOO;
+    process.env.FOO = '';
+    process.env.NONEXISTENT_ENV_VAR; // eslint-disable-line no-unused-expressions
+    const foo = process.env.FOO;
 
-  assert.strictEqual(foo, '');
+    assert.strictEqual(foo, '');
 }
 
 {
-  process.env.FOO = '';
-  process.env.NONEXISTENT_ENV_VAR; // eslint-disable-line no-unused-expressions
-  const hasFoo = 'FOO' in process.env;
+    process.env.FOO = '';
+    process.env.NONEXISTENT_ENV_VAR; // eslint-disable-line no-unused-expressions
+    const hasFoo = 'FOO' in process.env;
 
-  assert.strictEqual(hasFoo, true);
+    assert.strictEqual(hasFoo, true);
 }

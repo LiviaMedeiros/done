@@ -12,10 +12,10 @@ child.stderr.setEncoding('utf8');
 let stdout = '';
 child.stdout.setEncoding('utf8');
 child.stdout.on('data', (data) => {
-  stdout += data;
+    stdout += data;
 });
 child.on('close', common.mustCall((code, signal) => {
-  assert.strictEqual(code, 0);
-  assert.strictEqual(signal, null);
-  assert.strictEqual(stdout, 'ok\n');
+    assert.strictEqual(code, 0);
+    assert.strictEqual(signal, null);
+    assert.strictEqual(stdout, 'ok\n');
 }));

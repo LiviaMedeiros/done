@@ -277,8 +277,8 @@ const signal = ac.signal;
 setImmediatePromise('foobar', { signal })
   .then(console.log)
   .catch((err) => {
-    if (err.name === 'AbortError')
-      console.log('The immediate was aborted');
+      if (err.name === 'AbortError')
+          console.log('The immediate was aborted');
   });
 
 ac.abort();
@@ -295,8 +295,8 @@ const signal = ac.signal;
 setTimeoutPromise(1000, 'foobar', { signal })
   .then(console.log)
   .catch((err) => {
-    if (err.name === 'AbortError')
-      console.log('The timeout was aborted');
+      if (err.name === 'AbortError')
+          console.log('The timeout was aborted');
   });
 
 ac.abort();
@@ -351,17 +351,17 @@ that return `Promise` objects. The API is accessible via
 
 ```mjs
 import {
-  setTimeout,
-  setImmediate,
-  setInterval,
+    setTimeout,
+    setImmediate,
+    setInterval,
 } from 'timers/promises';
 ```
 
 ```cjs
 const {
-  setTimeout,
-  setImmediate,
-  setInterval,
+    setTimeout,
+    setImmediate,
+    setInterval,
 } = require('timers/promises');
 ```
 
@@ -383,7 +383,7 @@ added: v15.0.0
 
 ```mjs
 import {
-  setTimeout,
+    setTimeout,
 } from 'timers/promises';
 
 const res = await setTimeout(100, 'result');
@@ -393,11 +393,11 @@ console.log(res);  // Prints 'result'
 
 ```cjs
 const {
-  setTimeout,
+    setTimeout,
 } = require('timers/promises');
 
 setTimeout(100, 'result').then((res) => {
-  console.log(res);  // Prints 'result'
+    console.log(res);  // Prints 'result'
 });
 ```
 
@@ -417,7 +417,7 @@ added: v15.0.0
 
 ```mjs
 import {
-  setImmediate,
+    setImmediate,
 } from 'timers/promises';
 
 const res = await setImmediate('result');
@@ -427,11 +427,11 @@ console.log(res);  // Prints 'result'
 
 ```cjs
 const {
-  setImmediate,
+    setImmediate,
 } = require('timers/promises');
 
 setImmediate('result').then((res) => {
-  console.log(res);  // Prints 'result'
+    console.log(res);  // Prints 'result'
 });
 ```
 
@@ -456,33 +456,33 @@ Returns an async iterator that generates values in an interval of `delay` ms.
 
 ```mjs
 import {
-  setInterval,
+    setInterval,
 } from 'timers/promises';
 
 const interval = 100;
 for await (const startTime of setInterval(interval, Date.now())) {
-  const now = Date.now();
-  console.log(now);
-  if ((now - startTime) > 1000)
-    break;
+    const now = Date.now();
+    console.log(now);
+    if ((now - startTime) > 1000)
+        break;
 }
 console.log(Date.now());
 ```
 
 ```cjs
 const {
-  setInterval,
+    setInterval,
 } = require('timers/promises');
 const interval = 100;
 
 (async function() {
-  for await (const startTime of setInterval(interval, Date.now())) {
-    const now = Date.now();
-    console.log(now);
-    if ((now - startTime) > 1000)
-      break;
-  }
-  console.log(Date.now());
+    for await (const startTime of setInterval(interval, Date.now())) {
+        const now = Date.now();
+        console.log(now);
+        if ((now - startTime) > 1000)
+            break;
+    }
+    console.log(Date.now());
 })();
 ```
 

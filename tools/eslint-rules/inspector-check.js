@@ -14,53 +14,53 @@ const msg = 'Please add a skipIfInspectorDisabled() call to allow this ' +
             'test to be skipped when Node is built \'--without-inspector\'.';
 
 module.exports = {
-  meta: {
-    fixable: 'code',
-  },
-  create(context) {
-    const missingCheckNodes = [];
-    let commonModuleNode = null;
-    let hasInspectorCheck = false;
+    meta: {
+        fixable: 'code',
+    },
+    create(context) {
+        const missingCheckNodes = [];
+        let commonModuleNode = null;
+        let hasInspectorCheck = false;
 
-    function testInspectorUsage(context, node) {
-      if (utils.isRequired(node, ['inspector'])) {
-        missingCheckNodes.push(node);
-      }
-
-      if (utils.isCommonModule(node)) {
-        commonModuleNode = node;
-      }
-    }
-
-    function checkMemberExpression(context, node) {
-      if (utils.usesCommonProperty(node, ['skipIfInspectorDisabled'])) {
-        hasInspectorCheck = true;
-      }
-    }
-
-    function reportIfMissing(context) {
-      if (!hasInspectorCheck) {
-        missingCheckNodes.forEach((node) => {
-          context.report({
-            node,
-            message: msg,
-            fix: (fixer) => {
-              if (commonModuleNode) {
-                return fixer.insertTextAfter(
-                  commonModuleNode,
-                  '\ncommon.skipIfInspectorDisabled();'
-                );
-              }
+        function testInspectorUsage(context, node) {
+            if (utils.isRequired(node, ['inspector'])) {
+                missingCheckNodes.push(node);
             }
-          });
-        });
-      }
-    }
 
-    return {
-      'CallExpression': (node) => testInspectorUsage(context, node),
-      'MemberExpression': (node) => checkMemberExpression(context, node),
-      'Program:exit': () => reportIfMissing(context)
-    };
-  }
+            if (utils.isCommonModule(node)) {
+                commonModuleNode = node;
+            }
+        }
+
+        function checkMemberExpression(context, node) {
+            if (utils.usesCommonProperty(node, ['skipIfInspectorDisabled'])) {
+                hasInspectorCheck = true;
+            }
+        }
+
+        function reportIfMissing(context) {
+            if (!hasInspectorCheck) {
+                missingCheckNodes.forEach((node) => {
+                    context.report({
+                        node,
+                        message: msg,
+                        fix: (fixer) => {
+                            if (commonModuleNode) {
+                                return fixer.insertTextAfter(
+                                    commonModuleNode,
+                                    '\ncommon.skipIfInspectorDisabled();'
+                                );
+                            }
+                        }
+                    });
+                });
+            }
+        }
+
+        return {
+            'CallExpression': (node) => testInspectorUsage(context, node),
+            'MemberExpression': (node) => checkMemberExpression(context, node),
+            'Program:exit': () => reportIfMissing(context)
+        };
+    }
 };

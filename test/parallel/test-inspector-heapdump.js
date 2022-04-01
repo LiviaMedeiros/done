@@ -15,15 +15,15 @@ session.connect();
 const chunks = [];
 
 session.on('HeapProfiler.addHeapSnapshotChunk', (m) => {
-  chunks.push(m.params.chunk);
+    chunks.push(m.params.chunk);
 });
 
 session.post('HeapProfiler.takeHeapSnapshot', null, common.mustSucceed((r) => {
-  assert.deepStrictEqual(r, {});
-  session.disconnect();
+    assert.deepStrictEqual(r, {});
+    session.disconnect();
 
-  const profile = JSON.parse(chunks.join(''));
-  assert(profile.snapshot.meta);
-  assert(profile.snapshot.node_count > 0);
-  assert(profile.snapshot.edge_count > 0);
+    const profile = JSON.parse(chunks.join(''));
+    assert(profile.snapshot.meta);
+    assert(profile.snapshot.node_count > 0);
+    assert(profile.snapshot.edge_count > 0);
 }));

@@ -9,18 +9,18 @@ const assert = require('assert');
 
 function test() {
 
-  const code = [
-    'var foo = {m: 1};',
-    '',
-    'function bar() {',
-    '\'use strict\';',
-    'return foo; // foo isn\'t captured in 0.10',
-    '};',
-  ].join('\n');
+    const code = [
+        'var foo = {m: 1};',
+        '',
+        'function bar() {',
+        '\'use strict\';',
+        'return foo; // foo isn\'t captured in 0.10',
+        '};',
+    ].join('\n');
 
-  eval(code);
+    eval(code);
 
-  return bar(); // eslint-disable-line no-undef
+    return bar(); // eslint-disable-line no-undef
 
 }
 

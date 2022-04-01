@@ -3,157 +3,157 @@
 const common = require('../common');
 const { EventEmitterAsyncResource } = require('events');
 const {
-  createHook,
-  executionAsyncId,
+    createHook,
+    executionAsyncId,
 } = require('async_hooks');
 
 const {
-  deepStrictEqual,
-  strictEqual,
-  throws,
+    deepStrictEqual,
+    strictEqual,
+    throws,
 } = require('assert');
 
 const {
-  setImmediate: tick,
+    setImmediate: tick,
 } = require('timers/promises');
 
 function makeHook(trackedTypes) {
-  const eventMap = new Map();
+    const eventMap = new Map();
 
-  function log(asyncId, name) {
-    const entry = eventMap.get(asyncId);
-    if (entry !== undefined) entry.push({ name });
-  }
-
-  const hook = createHook({
-    init(asyncId, type, triggerAsyncId, resource) {
-      if (trackedTypes.includes(type)) {
-        eventMap.set(asyncId, [
-          {
-            name: 'init',
-            type,
-            triggerAsyncId,
-            resource,
-          },
-        ]);
-      }
-    },
-
-    before(asyncId) { log(asyncId, 'before'); },
-    after(asyncId) { log(asyncId, 'after'); },
-    destroy(asyncId) { log(asyncId, 'destroy'); }
-  }).enable();
-
-  return {
-    done() {
-      hook.disable();
-      return new Set(eventMap.values());
-    },
-    ids() {
-      return new Set(eventMap.keys());
+    function log(asyncId, name) {
+        const entry = eventMap.get(asyncId);
+        if (entry !== undefined) entry.push({ name });
     }
-  };
+
+    const hook = createHook({
+        init(asyncId, type, triggerAsyncId, resource) {
+            if (trackedTypes.includes(type)) {
+                eventMap.set(asyncId, [
+                    {
+                        name: 'init',
+                        type,
+                        triggerAsyncId,
+                        resource,
+                    },
+                ]);
+            }
+        },
+
+        before(asyncId) { log(asyncId, 'before'); },
+        after(asyncId) { log(asyncId, 'after'); },
+        destroy(asyncId) { log(asyncId, 'destroy'); }
+    }).enable();
+
+    return {
+        done() {
+            hook.disable();
+            return new Set(eventMap.values());
+        },
+        ids() {
+            return new Set(eventMap.keys());
+        }
+    };
 }
 
 // Tracks emit() calls correctly using async_hooks
 (async () => {
-  const tracer = makeHook(['Foo']);
+    const tracer = makeHook(['Foo']);
 
-  class Foo extends EventEmitterAsyncResource {}
+    class Foo extends EventEmitterAsyncResource {}
 
-  const origExecutionAsyncId = executionAsyncId();
-  const foo = new Foo();
+    const origExecutionAsyncId = executionAsyncId();
+    const foo = new Foo();
 
-  foo.on('someEvent', common.mustCall());
-  foo.emit('someEvent');
+    foo.on('someEvent', common.mustCall());
+    foo.emit('someEvent');
 
-  deepStrictEqual([foo.asyncId], [...tracer.ids()]);
-  strictEqual(foo.triggerAsyncId, origExecutionAsyncId);
-  strictEqual(foo.asyncResource.eventEmitter, foo);
+    deepStrictEqual([foo.asyncId], [...tracer.ids()]);
+    strictEqual(foo.triggerAsyncId, origExecutionAsyncId);
+    strictEqual(foo.asyncResource.eventEmitter, foo);
 
-  foo.emitDestroy();
+    foo.emitDestroy();
 
-  await tick();
+    await tick();
 
-  deepStrictEqual(tracer.done(), new Set([
-    [
-      {
-        name: 'init',
-        type: 'Foo',
-        triggerAsyncId: origExecutionAsyncId,
-        resource: foo.asyncResource,
-      },
-      { name: 'before' },
-      { name: 'after' },
-      { name: 'destroy' },
-    ],
-  ]));
+    deepStrictEqual(tracer.done(), new Set([
+        [
+            {
+                name: 'init',
+                type: 'Foo',
+                triggerAsyncId: origExecutionAsyncId,
+                resource: foo.asyncResource,
+            },
+            { name: 'before' },
+            { name: 'after' },
+            { name: 'destroy' },
+        ],
+    ]));
 })().then(common.mustCall());
 
 // Can explicitly specify name as positional arg
 (async () => {
-  const tracer = makeHook(['ResourceName']);
+    const tracer = makeHook(['ResourceName']);
 
-  const origExecutionAsyncId = executionAsyncId();
-  class Foo extends EventEmitterAsyncResource {}
+    const origExecutionAsyncId = executionAsyncId();
+    class Foo extends EventEmitterAsyncResource {}
 
-  const foo = new Foo('ResourceName');
+    const foo = new Foo('ResourceName');
 
-  deepStrictEqual(tracer.done(), new Set([
-    [
-      {
-        name: 'init',
-        type: 'ResourceName',
-        triggerAsyncId: origExecutionAsyncId,
-        resource: foo.asyncResource,
-      },
-    ],
-  ]));
+    deepStrictEqual(tracer.done(), new Set([
+        [
+            {
+                name: 'init',
+                type: 'ResourceName',
+                triggerAsyncId: origExecutionAsyncId,
+                resource: foo.asyncResource,
+            },
+        ],
+    ]));
 })().then(common.mustCall());
 
 // Can explicitly specify name as option
 (async () => {
-  const tracer = makeHook(['ResourceName']);
+    const tracer = makeHook(['ResourceName']);
 
-  const origExecutionAsyncId = executionAsyncId();
-  class Foo extends EventEmitterAsyncResource {}
+    const origExecutionAsyncId = executionAsyncId();
+    class Foo extends EventEmitterAsyncResource {}
 
-  const foo = new Foo({ name: 'ResourceName' });
+    const foo = new Foo({ name: 'ResourceName' });
 
-  deepStrictEqual(tracer.done(), new Set([
-    [
-      {
-        name: 'init',
-        type: 'ResourceName',
-        triggerAsyncId: origExecutionAsyncId,
-        resource: foo.asyncResource,
-      },
-    ],
-  ]));
+    deepStrictEqual(tracer.done(), new Set([
+        [
+            {
+                name: 'init',
+                type: 'ResourceName',
+                triggerAsyncId: origExecutionAsyncId,
+                resource: foo.asyncResource,
+            },
+        ],
+    ]));
 })().then(common.mustCall());
 
 // Member methods ERR_INVALID_THIS
 throws(
-  () => EventEmitterAsyncResource.prototype.emit(),
-  { code: 'ERR_INVALID_THIS' }
+    () => EventEmitterAsyncResource.prototype.emit(),
+    { code: 'ERR_INVALID_THIS' }
 );
 
 throws(
-  () => EventEmitterAsyncResource.prototype.emitDestroy(),
-  { code: 'ERR_INVALID_THIS' }
+    () => EventEmitterAsyncResource.prototype.emitDestroy(),
+    { code: 'ERR_INVALID_THIS' }
 );
 
 throws(
-  () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncId', {}),
-  { code: 'ERR_INVALID_THIS' }
+    () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncId', {}),
+    { code: 'ERR_INVALID_THIS' }
 );
 
 throws(
-  () => Reflect.get(EventEmitterAsyncResource.prototype, 'triggerAsyncId', {}),
-  { code: 'ERR_INVALID_THIS' }
+    () => Reflect.get(EventEmitterAsyncResource.prototype, 'triggerAsyncId', {}),
+    { code: 'ERR_INVALID_THIS' }
 );
 
 throws(
-  () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncResource', {}),
-  { code: 'ERR_INVALID_THIS' }
+    () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncResource', {}),
+    { code: 'ERR_INVALID_THIS' }
 );

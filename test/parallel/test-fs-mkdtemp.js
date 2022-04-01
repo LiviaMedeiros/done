@@ -19,9 +19,9 @@ assert.strictEqual(Buffer.byteLength(path.basename(utf8)),
 assert(fs.existsSync(utf8));
 
 function handler(err, folder) {
-  assert.ifError(err);
-  assert(fs.existsSync(folder));
-  assert.strictEqual(this, undefined);
+    assert.ifError(err);
+    assert(fs.existsSync(folder));
+    assert.strictEqual(this, undefined);
 }
 
 fs.mkdtemp(path.join(tmpdir.path, 'bar.'), common.mustCall(handler));

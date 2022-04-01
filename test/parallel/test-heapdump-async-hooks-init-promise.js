@@ -10,35 +10,35 @@ const v8 = require('v8');
 // works for Promises.
 
 const createSnapshot = common.mustCall(() => {
-  v8.getHeapSnapshot().resume();
+    v8.getHeapSnapshot().resume();
 }, 8);  // 2 × init + 2 × resolve + 1 × (after + before) + 2 × destroy = 8 calls
 
 const promiseIds = [];
 
 async_hooks.createHook({
-  init(id, type) {
-    if (type === 'PROMISE') {
-      createSnapshot();
-      promiseIds.push(id);
+    init(id, type) {
+        if (type === 'PROMISE') {
+            createSnapshot();
+            promiseIds.push(id);
+        }
+    },
+
+    before(id) {
+        if (promiseIds.includes(id)) createSnapshot();
+    },
+
+    after(id) {
+        if (promiseIds.includes(id)) createSnapshot();
+    },
+
+    promiseResolve(id) {
+        assert(promiseIds.includes(id));
+        createSnapshot();
+    },
+
+    destroy(id) {
+        if (promiseIds.includes(id)) createSnapshot();
     }
-  },
-
-  before(id) {
-    if (promiseIds.includes(id)) createSnapshot();
-  },
-
-  after(id) {
-    if (promiseIds.includes(id)) createSnapshot();
-  },
-
-  promiseResolve(id) {
-    assert(promiseIds.includes(id));
-    createSnapshot();
-  },
-
-  destroy(id) {
-    if (promiseIds.includes(id)) createSnapshot();
-  }
 }).enable();
 
 

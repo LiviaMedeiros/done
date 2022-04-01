@@ -34,40 +34,40 @@ validateTuple(process.hrtime(tuple));
 
 // Test that only an Array may be passed to process.hrtime()
 assert.throws(() => {
-  process.hrtime(1);
+    process.hrtime(1);
 }, {
-  code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError',
-  message: 'The "time" argument must be an instance of Array. Received type ' +
+    code: 'ERR_INVALID_ARG_TYPE',
+    name: 'TypeError',
+    message: 'The "time" argument must be an instance of Array. Received type ' +
            'number (1)'
 });
 assert.throws(() => {
-  process.hrtime([]);
+    process.hrtime([]);
 }, {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
-  message: 'The value of "time" is out of range. It must be 2. Received 0'
+    code: 'ERR_OUT_OF_RANGE',
+    name: 'RangeError',
+    message: 'The value of "time" is out of range. It must be 2. Received 0'
 });
 assert.throws(() => {
-  process.hrtime([1]);
+    process.hrtime([1]);
 }, {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
-  message: 'The value of "time" is out of range. It must be 2. Received 1'
+    code: 'ERR_OUT_OF_RANGE',
+    name: 'RangeError',
+    message: 'The value of "time" is out of range. It must be 2. Received 1'
 });
 assert.throws(() => {
-  process.hrtime([1, 2, 3]);
+    process.hrtime([1, 2, 3]);
 }, {
-  code: 'ERR_OUT_OF_RANGE',
-  name: 'RangeError',
-  message: 'The value of "time" is out of range. It must be 2. Received 3'
+    code: 'ERR_OUT_OF_RANGE',
+    name: 'RangeError',
+    message: 'The value of "time" is out of range. It must be 2. Received 3'
 });
 
 function validateTuple(tuple) {
-  assert(Array.isArray(tuple));
-  assert.strictEqual(tuple.length, 2);
-  assert(Number.isInteger(tuple[0]));
-  assert(Number.isInteger(tuple[1]));
+    assert(Array.isArray(tuple));
+    assert.strictEqual(tuple.length, 2);
+    assert(Number.isInteger(tuple[0]));
+    assert(Number.isInteger(tuple[1]));
 }
 
 const diff = process.hrtime([0, 1e9 - 1]);

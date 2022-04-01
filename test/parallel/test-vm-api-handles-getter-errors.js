@@ -11,7 +11,7 @@ const scripts = [];
 
 ['filename', 'cachedData', 'produceCachedData', 'lineOffset', 'columnOffset']
   .forEach((prop) => {
-    scripts.push(`vm.createScript('', {
+      scripts.push(`vm.createScript('', {
       get ${prop} () {
         throw new Error('xyz');
       }
@@ -20,7 +20,7 @@ const scripts = [];
 
 ['breakOnSigint', 'timeout', 'displayErrors']
   .forEach((prop) => {
-    scripts.push(`vm.createScript('').runInThisContext({
+      scripts.push(`vm.createScript('').runInThisContext({
       get ${prop} () {
         throw new Error('xyz');
       }
@@ -28,8 +28,8 @@ const scripts = [];
   });
 
 scripts.forEach((script) => {
-  const node = process.execPath;
-  execFile(node, [ '-e', script ], common.mustCall((err, stdout, stderr) => {
-    assert(stderr.includes('Error: xyz'), 'createScript crashes');
-  }));
+    const node = process.execPath;
+    execFile(node, [ '-e', script ], common.mustCall((err, stdout, stderr) => {
+        assert(stderr.includes('Error: xyz'), 'createScript crashes');
+    }));
 });

@@ -17,76 +17,76 @@ const zlib = require('zlib');
 const assert = require('assert');
 
 const bench = common.createBenchmark(main, {
-  dur: [5],
-  len: [1024, 16 * 1024 * 1024],
-  concurrent: [1, 10]
+    dur: [5],
+    len: [1024, 16 * 1024 * 1024],
+    concurrent: [1, 10]
 });
 
 function main({ len, dur, concurrent }) {
-  try {
-    fs.unlinkSync(filename);
-  } catch {
-    // Continue regardless of error.
-  }
-  let data = Buffer.alloc(len, 'x');
-  fs.writeFileSync(filename, data);
-  data = null;
-
-  const zipData = Buffer.alloc(1024, 'a');
-
-  let reads = 0;
-  let zips = 0;
-  let benchEnded = false;
-  bench.start();
-  setTimeout(() => {
-    const totalOps = reads + zips;
-    benchEnded = true;
-    bench.end(totalOps);
     try {
-      fs.unlinkSync(filename);
+        fs.unlinkSync(filename);
     } catch {
-      // Continue regardless of error.
+    // Continue regardless of error.
     }
-  }, dur * 1000);
+    let data = Buffer.alloc(len, 'x');
+    fs.writeFileSync(filename, data);
+    data = null;
 
-  function read() {
-    fs.readFile(filename, afterRead);
-  }
+    const zipData = Buffer.alloc(1024, 'a');
 
-  function afterRead(er, data) {
-    if (er) {
-      if (er.code === 'ENOENT') {
-        // Only OK if unlinked by the timer from main.
-        assert.ok(benchEnded);
-        return;
-      }
-      throw er;
+    let reads = 0;
+    let zips = 0;
+    let benchEnded = false;
+    bench.start();
+    setTimeout(() => {
+        const totalOps = reads + zips;
+        benchEnded = true;
+        bench.end(totalOps);
+        try {
+            fs.unlinkSync(filename);
+        } catch {
+            // Continue regardless of error.
+        }
+    }, dur * 1000);
+
+    function read() {
+        fs.readFile(filename, afterRead);
     }
 
-    if (data.length !== len)
-      throw new Error('wrong number of bytes returned');
+    function afterRead(er, data) {
+        if (er) {
+            if (er.code === 'ENOENT') {
+                // Only OK if unlinked by the timer from main.
+                assert.ok(benchEnded);
+                return;
+            }
+            throw er;
+        }
 
-    reads++;
-    if (!benchEnded)
-      read();
-  }
+        if (data.length !== len)
+            throw new Error('wrong number of bytes returned');
 
-  function zip() {
-    zlib.deflate(zipData, afterZip);
-  }
+        reads++;
+        if (!benchEnded)
+            read();
+    }
 
-  function afterZip(er, data) {
-    if (er)
-      throw er;
+    function zip() {
+        zlib.deflate(zipData, afterZip);
+    }
 
-    zips++;
-    if (!benchEnded)
-      zip();
-  }
+    function afterZip(er, data) {
+        if (er)
+            throw er;
 
-  // Start reads
-  while (concurrent-- > 0) read();
+        zips++;
+        if (!benchEnded)
+            zip();
+    }
 
-  // Start a competing zip
-  zip();
+    // Start reads
+    while (concurrent-- > 0) read();
+
+    // Start a competing zip
+    zip();
 }

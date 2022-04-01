@@ -34,53 +34,53 @@ let gotPipeEOF = false;
 let gotPipeData = false;
 
 p.onexit = function(exitCode, signal) {
-  console.log('exit');
-  p.close();
-  pipe.readStart();
+    console.log('exit');
+    p.close();
+    pipe.readStart();
 
-  assert.strictEqual(exitCode, 0);
-  assert.strictEqual(signal, '');
+    assert.strictEqual(exitCode, 0);
+    assert.strictEqual(signal, '');
 
-  processExited = true;
+    processExited = true;
 };
 
 pipe.onread = function(arrayBuffer) {
-  assert.ok(processExited);
-  if (arrayBuffer) {
-    gotPipeData = true;
-  } else {
-    gotPipeEOF = true;
-    pipe.close();
-  }
+    assert.ok(processExited);
+    if (arrayBuffer) {
+        gotPipeData = true;
+    } else {
+        gotPipeEOF = true;
+        pipe.close();
+    }
 };
 
 p.spawn({
-  file: process.execPath,
-  args: [process.execPath, '-v'],
-  stdio: [
-    { type: 'ignore' },
-    { type: 'pipe', handle: pipe },
-    { type: 'ignore' },
-  ]
+    file: process.execPath,
+    args: [process.execPath, '-v'],
+    stdio: [
+        { type: 'ignore' },
+        { type: 'pipe', handle: pipe },
+        { type: 'ignore' },
+    ]
 });
 
 // 'this' safety
 // https://github.com/joyent/node/issues/6690
 assert.throws(function() {
-  const notp = { spawn: p.spawn };
-  notp.spawn({
-    file: process.execPath,
-    args: [process.execPath, '-v'],
-    stdio: [
-      { type: 'ignore' },
-      { type: 'pipe', handle: pipe },
-      { type: 'ignore' },
-    ]
-  });
+    const notp = { spawn: p.spawn };
+    notp.spawn({
+        file: process.execPath,
+        args: [process.execPath, '-v'],
+        stdio: [
+            { type: 'ignore' },
+            { type: 'pipe', handle: pipe },
+            { type: 'ignore' },
+        ]
+    });
 }, TypeError);
 
 process.on('exit', function() {
-  assert.ok(processExited);
-  assert.ok(gotPipeEOF);
-  assert.ok(gotPipeData);
+    assert.ok(processExited);
+    assert.ok(gotPipeEOF);
+    assert.ok(gotPipeData);
 });

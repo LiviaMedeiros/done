@@ -29,81 +29,81 @@
 
 const common = require('../common');
 if (common.isWindows)
-  common.skip('Sending dgram sockets to child processes is not supported');
+    common.skip('Sending dgram sockets to child processes is not supported');
 
 const dgram = require('dgram');
 const fork = require('child_process').fork;
 const assert = require('assert');
 
 if (process.argv[2] === 'child') {
-  let childServer;
+    let childServer;
 
-  process.once('message', (msg, clusterServer) => {
-    childServer = clusterServer;
+    process.once('message', (msg, clusterServer) => {
+        childServer = clusterServer;
 
-    childServer.once('message', () => {
-      process.send('gotMessage');
-      childServer.close();
+        childServer.once('message', () => {
+            process.send('gotMessage');
+            childServer.close();
+        });
+
+        process.send('handleReceived');
     });
-
-    process.send('handleReceived');
-  });
 
 } else {
-  const parentServer = dgram.createSocket('udp4');
-  const client = dgram.createSocket('udp4');
-  const child = fork(__filename, ['child']);
+    const parentServer = dgram.createSocket('udp4');
+    const client = dgram.createSocket('udp4');
+    const child = fork(__filename, ['child']);
 
-  const msg = Buffer.from('Some bytes');
+    const msg = Buffer.from('Some bytes');
 
-  let childGotMessage = false;
-  let parentGotMessage = false;
+    let childGotMessage = false;
+    let parentGotMessage = false;
 
-  parentServer.once('message', (msg, rinfo) => {
-    parentGotMessage = true;
-    parentServer.close();
-  });
-
-  parentServer.on('listening', () => {
-    child.send('server', parentServer);
-
-    child.on('message', (msg) => {
-      if (msg === 'gotMessage') {
-        childGotMessage = true;
-      } else if (msg === 'handleReceived') {
-        sendMessages();
-      }
+    parentServer.once('message', (msg, rinfo) => {
+        parentGotMessage = true;
+        parentServer.close();
     });
-  });
 
-  function sendMessages() {
-    const serverPort = parentServer.address().port;
+    parentServer.on('listening', () => {
+        child.send('server', parentServer);
 
-    const timer = setInterval(() => {
-      // Both the parent and the child got at least one message,
-      // test passed, clean up everything.
-      if (parentGotMessage && childGotMessage) {
-        clearInterval(timer);
-        client.close();
-      } else {
-        client.send(
-          msg,
-          0,
-          msg.length,
-          serverPort,
-          '127.0.0.1',
-          (err) => {
-            assert.ifError(err);
-          }
-        );
-      }
-    }, 1);
-  }
+        child.on('message', (msg) => {
+            if (msg === 'gotMessage') {
+                childGotMessage = true;
+            } else if (msg === 'handleReceived') {
+                sendMessages();
+            }
+        });
+    });
 
-  parentServer.bind(0, '127.0.0.1');
+    function sendMessages() {
+        const serverPort = parentServer.address().port;
 
-  process.once('exit', () => {
-    assert(parentGotMessage);
-    assert(childGotMessage);
-  });
+        const timer = setInterval(() => {
+            // Both the parent and the child got at least one message,
+            // test passed, clean up everything.
+            if (parentGotMessage && childGotMessage) {
+                clearInterval(timer);
+                client.close();
+            } else {
+                client.send(
+                    msg,
+                    0,
+                    msg.length,
+                    serverPort,
+                    '127.0.0.1',
+                    (err) => {
+                        assert.ifError(err);
+                    }
+                );
+            }
+        }, 1);
+    }
+
+    parentServer.bind(0, '127.0.0.1');
+
+    process.once('exit', () => {
+        assert(parentGotMessage);
+        assert(childGotMessage);
+    });
 }

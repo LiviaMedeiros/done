@@ -7,22 +7,22 @@ const WrapStream = require('internal/js_stream_socket');
 const Stream = require('stream');
 
 class FakeStream extends Stream {
-  constructor() {
-    super();
-    this._paused = false;
-  }
+    constructor() {
+        super();
+        this._paused = false;
+    }
 
-  pause() {
-    this._paused = true;
-  }
+    pause() {
+        this._paused = true;
+    }
 
-  resume() {
-    this._paused = false;
-  }
+    resume() {
+        this._paused = false;
+    }
 
-  isPaused() {
-    return this._paused;
-  }
+    isPaused() {
+        return this._paused;
+    }
 }
 
 const fakeStreamObj = new FakeStream();

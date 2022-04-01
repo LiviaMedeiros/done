@@ -23,7 +23,7 @@ assert.ok(test_object.hiddenValue);
 // Properties with napi_enumerable attribute should be enumerable.
 const propertyNames = [];
 for (const name in test_object) {
-  propertyNames.push(name);
+    propertyNames.push(name);
 }
 assert.ok(propertyNames.includes('echo'));
 assert.ok(propertyNames.includes('readwriteValue'));

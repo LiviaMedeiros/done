@@ -13,7 +13,7 @@ const err1 = new Error('One');
 const errors = [err1, null];
 
 const ref = new Promise(() => {
-  throw err1;
+    throw err1;
 });
 // Explicitly reject `null`.
 Promise.reject(null);
@@ -26,11 +26,11 @@ process.on('uncaughtException', common.mustNotCall('uncaughtException'));
 const timer = setTimeout(() => console.log(ref), 1000);
 
 const counter = new Countdown(2, () => {
-  clearTimeout(timer);
+    clearTimeout(timer);
 });
 
 process.on('unhandledRejection', common.mustCall((err) => {
-  counter.dec();
-  const knownError = errors.shift();
-  assert.deepStrictEqual(err, knownError);
+    counter.dec();
+    const knownError = errors.shift();
+    assert.deepStrictEqual(err, knownError);
 }, 2));

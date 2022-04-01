@@ -33,52 +33,52 @@ const filename = path.join(tmpdir.path, 'big');
 let count = 0;
 
 const server = http.createServer((req, res) => {
-  let timeoutId;
-  assert.strictEqual(req.method, 'POST');
-  req.pause();
+    let timeoutId;
+    assert.strictEqual(req.method, 'POST');
+    req.pause();
 
-  setTimeout(() => {
-    req.resume();
-  }, 1000);
+    setTimeout(() => {
+        req.resume();
+    }, 1000);
 
-  req.on('data', (chunk) => {
-    count += chunk.length;
-  });
+    req.on('data', (chunk) => {
+        count += chunk.length;
+    });
 
-  req.on('end', () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end();
-  });
+    req.on('end', () => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end();
+    });
 });
 server.listen(0);
 
 server.on('listening', () => {
-  common.createZeroFilledFile(filename);
-  makeRequest();
+    common.createZeroFilledFile(filename);
+    makeRequest();
 });
 
 function makeRequest() {
-  const req = http.request({
-    port: server.address().port,
-    path: '/',
-    method: 'POST'
-  });
-
-  const s = fs.ReadStream(filename);
-  s.pipe(req);
-  s.on('close', common.mustSucceed());
-
-  req.on('response', (res) => {
-    res.resume();
-    res.on('end', () => {
-      server.close();
+    const req = http.request({
+        port: server.address().port,
+        path: '/',
+        method: 'POST'
     });
-  });
+
+    const s = fs.ReadStream(filename);
+    s.pipe(req);
+    s.on('close', common.mustSucceed());
+
+    req.on('response', (res) => {
+        res.resume();
+        res.on('end', () => {
+            server.close();
+        });
+    });
 }
 
 process.on('exit', () => {
-  assert.strictEqual(count, 1024 * 10240);
+    assert.strictEqual(count, 1024 * 10240);
 });

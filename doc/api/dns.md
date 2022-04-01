@@ -19,7 +19,7 @@ system do, use [`dns.lookup()`][].
 const dns = require('dns');
 
 dns.lookup('example.org', (err, address, family) => {
-  console.log('address: %j family: IPv%s', address, family);
+    console.log('address: %j family: IPv%s', address, family);
 });
 // address: "93.184.216.34" family: IPv4
 ```
@@ -34,18 +34,18 @@ DNS queries, bypassing other name-resolution facilities.
 const dns = require('dns');
 
 dns.resolve4('archive.org', (err, addresses) => {
-  if (err) throw err;
+    if (err) throw err;
 
-  console.log(`addresses: ${JSON.stringify(addresses)}`);
+    console.log(`addresses: ${JSON.stringify(addresses)}`);
 
-  addresses.forEach((a) => {
-    dns.reverse(a, (err, hostnames) => {
-      if (err) {
-        throw err;
-      }
-      console.log(`reverse for ${a}: ${JSON.stringify(hostnames)}`);
+    addresses.forEach((a) => {
+        dns.reverse(a, (err, hostnames) => {
+            if (err) {
+                throw err;
+            }
+            console.log(`reverse for ${a}: ${JSON.stringify(hostnames)}`);
+        });
     });
-  });
 });
 ```
 
@@ -71,7 +71,7 @@ resolver.setServers(['4.4.4.4']);
 
 // This request will use the server at 4.4.4.4, independent of global settings.
 resolver.resolve4('example.org', (err, addresses) => {
-  // ...
+    // ...
 });
 ```
 
@@ -167,10 +167,10 @@ section if a custom port is used.
 
 ```js
 [
-  '4.4.4.4',
-  '2001:4860:4860::8888',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '2001:4860:4860::8888',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ]
 ```
 
@@ -243,17 +243,17 @@ Example usage:
 ```js
 const dns = require('dns');
 const options = {
-  family: 6,
-  hints: dns.ADDRCONFIG | dns.V4MAPPED,
+    family: 6,
+    hints: dns.ADDRCONFIG | dns.V4MAPPED,
 };
 dns.lookup('example.com', options, (err, address, family) =>
-  console.log('address: %j family: IPv%s', address, family));
+    console.log('address: %j family: IPv%s', address, family));
 // address: "2606:2800:220:1:248:1893:25c8:1946" family: IPv6
 
 // When options.all is true, the result will be an Array.
 options.all = true;
 dns.lookup('example.com', options, (err, addresses) =>
-  console.log('addresses: %j', addresses));
+    console.log('addresses: %j', addresses));
 // addresses: [{"address":"2606:2800:220:1:248:1893:25c8:1946","family":6}]
 ```
 
@@ -314,8 +314,8 @@ On an error, `err` is an [`Error`][] object, where `err.code` is the error code.
 ```js
 const dns = require('dns');
 dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
-  console.log(hostname, service);
-  // Prints: localhost ssh
+    console.log(hostname, service);
+    // Prints: localhost ssh
 });
 ```
 
@@ -796,10 +796,10 @@ addresses. If the port is the IANA default DNS port (53) it can be omitted.
 
 ```js
 dns.setServers([
-  '4.4.4.4',
-  '[2001:4860:4860::8888]',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '[2001:4860:4860::8888]',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ]);
 ```
 
@@ -858,12 +858,12 @@ resolver.setServers(['4.4.4.4']);
 
 // This request will use the server at 4.4.4.4, independent of global settings.
 resolver.resolve4('example.org').then((addresses) => {
-  // ...
+    // ...
 });
 
 // Alternatively, the same code can be written using async-await style.
 (async function() {
-  const addresses = await resolver.resolve4('example.org');
+    const addresses = await resolver.resolve4('example.org');
 })();
 ```
 
@@ -913,10 +913,10 @@ section if a custom port is used.
 
 ```js
 [
-  '4.4.4.4',
-  '2001:4860:4860::8888',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '2001:4860:4860::8888',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ]
 ```
 
@@ -970,20 +970,20 @@ Example usage:
 const dns = require('dns');
 const dnsPromises = dns.promises;
 const options = {
-  family: 6,
-  hints: dns.ADDRCONFIG | dns.V4MAPPED,
+    family: 6,
+    hints: dns.ADDRCONFIG | dns.V4MAPPED,
 };
 
 dnsPromises.lookup('example.com', options).then((result) => {
-  console.log('address: %j family: IPv%s', result.address, result.family);
-  // address: "2606:2800:220:1:248:1893:25c8:1946" family: IPv6
+    console.log('address: %j family: IPv%s', result.address, result.family);
+    // address: "2606:2800:220:1:248:1893:25c8:1946" family: IPv6
 });
 
 // When options.all is true, the result will be an Array.
 options.all = true;
 dnsPromises.lookup('example.com', options).then((result) => {
-  console.log('addresses: %j', result);
-  // addresses: [{"address":"2606:2800:220:1:248:1893:25c8:1946","family":6}]
+    console.log('addresses: %j', result);
+    // addresses: [{"address":"2606:2800:220:1:248:1893:25c8:1946","family":6}]
 });
 ```
 
@@ -1009,8 +1009,8 @@ is the error code.
 ```js
 const dnsPromises = require('dns').promises;
 dnsPromises.lookupService('127.0.0.1', 22).then((result) => {
-  console.log(result.hostname, result.service);
-  // Prints: localhost ssh
+    console.log(result.hostname, result.service);
+    // Prints: localhost ssh
 });
 ```
 
@@ -1351,10 +1351,10 @@ addresses. If the port is the IANA default DNS port (53) it can be omitted.
 
 ```js
 dnsPromises.setServers([
-  '4.4.4.4',
-  '[2001:4860:4860::8888]',
-  '4.4.4.4:1053',
-  '[2001:4860:4860::8888]:1053',
+    '4.4.4.4',
+    '[2001:4860:4860::8888]',
+    '4.4.4.4:1053',
+    '[2001:4860:4860::8888]:1053',
 ]);
 ```
 
