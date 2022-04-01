@@ -126,7 +126,7 @@ fs.promises.access(readOnlyFile, fs.R_OK)
  };
  assert.throws(
   () => { fs.access(100, fs.F_OK, common.mustNotCall()); },
-  expectedError
+  expectedError,
  );
 
  fs.promises.access(100, fs.F_OK)
@@ -140,7 +140,7 @@ assert.throws(
  },
  {
   code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError'
+  name: 'TypeError',
  });
 
 assert.throws(
@@ -149,7 +149,7 @@ assert.throws(
  },
  {
   code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError'
+  name: 'TypeError',
  });
 
 // Regular access should not throw.
@@ -170,15 +170,15 @@ fs.accessSync(readWriteFile, mode);
   () => fs.access(readWriteFile, mode, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   message: /"mode" argument.+integer/
-  }
+   message: /"mode" argument.+integer/,
+  },
  );
  assert.throws(
   () => fs.accessSync(readWriteFile, mode),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   message: /"mode" argument.+integer/
-  }
+   message: /"mode" argument.+integer/,
+  },
  );
 });
 
@@ -194,15 +194,15 @@ fs.accessSync(readWriteFile, mode);
   () => fs.access(readWriteFile, mode, common.mustNotCall()),
   {
    code: 'ERR_OUT_OF_RANGE',
-   message: /"mode".+It must be an integer >= 0 && <= 7/
-  }
+   message: /"mode".+It must be an integer >= 0 && <= 7/,
+  },
  );
  assert.throws(
   () => fs.accessSync(readWriteFile, mode),
   {
    code: 'ERR_OUT_OF_RANGE',
-   message: /"mode".+It must be an integer >= 0 && <= 7/
-  }
+   message: /"mode".+It must be an integer >= 0 && <= 7/,
+  },
  );
 });
 
@@ -213,13 +213,13 @@ assert.throws(
   assert.strictEqual(err.path, doesNotExist);
   assert.strictEqual(
    err.message,
-   `ENOENT: no such file or directory, access '${doesNotExist}'`
+   `ENOENT: no such file or directory, access '${doesNotExist}'`,
   );
   assert.strictEqual(err.constructor, Error);
   assert.strictEqual(err.syscall, 'access');
   assert.strictEqual(err.errno, UV_ENOENT);
   return true;
- }
+ },
 );
 
 assert.throws(
@@ -229,11 +229,11 @@ assert.throws(
   assert.strictEqual(err.path, doesNotExist);
   assert.strictEqual(
    err.message,
-   `ENOENT: no such file or directory, access '${doesNotExist}'`
+   `ENOENT: no such file or directory, access '${doesNotExist}'`,
   );
   assert.strictEqual(err.constructor, Error);
   assert.strictEqual(err.syscall, 'access');
   assert.strictEqual(err.errno, UV_ENOENT);
   return true;
- }
+ },
 );

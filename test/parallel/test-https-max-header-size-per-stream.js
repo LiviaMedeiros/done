@@ -28,7 +28,7 @@ const certFixture = {
 
  const req = https.request({
   createConnection: common.mustCall(() => clientSide),
-  maxHeaderSize: http.maxHeaderSize * 4
+  maxHeaderSize: http.maxHeaderSize * 4,
  }, common.mustCall((res) => {
   assert.strictEqual(res.headers.hello, 'A'.repeat(http.maxHeaderSize * 3));
   res.resume();  // We don’t actually care about contents.
@@ -48,7 +48,7 @@ const certFixture = {
  const { clientSide, serverSide } = MakeDuplexPair();
 
  const req = https.request({
-  createConnection: common.mustCall(() => clientSide)
+  createConnection: common.mustCall(() => clientSide),
  }, common.mustNotCall());
  req.end();
  req.on('error', common.mustCall());
@@ -77,7 +77,7 @@ const certFixture = {
  server.listen(0, common.mustCall(() => {
   const client = tls.connect({
    port: server.address().port,
-   rejectUnauthorized: false
+   rejectUnauthorized: false,
   });
   client.write(
    'GET / HTTP/1.1\r\n' +
@@ -103,7 +103,7 @@ const certFixture = {
  server.listen(0, common.mustCall(() => {
   const client = tls.connect({
    port: server.address().port,
-   rejectUnauthorized: false
+   rejectUnauthorized: false,
   });
   client.write(
    'GET / HTTP/1.1\r\n' +

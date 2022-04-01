@@ -22,11 +22,11 @@ for (const value of truthyValues) {
 
    const client = net.connect(
     { port, keepAlive: value, keepAliveInitialDelay: delay[0] },
-    common.mustCall(() => client.end())
+    common.mustCall(() => client.end()),
    );
 
    client._handle.setKeepAlive = common.mustCall(
-    genSetKeepAlive(true, delay[1])
+    genSetKeepAlive(true, delay[1]),
    );
 
    client.on('end', common.mustCall(function() {
@@ -44,7 +44,7 @@ for (const value of falseyValues) {
 
   const client = net.connect(
    { port, keepAlive: value },
-   common.mustCall(() => client.end())
+   common.mustCall(() => client.end()),
   );
 
   client._handle.setKeepAlive = common.mustNotCall();

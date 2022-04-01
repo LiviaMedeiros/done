@@ -46,13 +46,13 @@ function checkMethods(certificate) {
 
  assert.strictEqual(
   stripLineEndings(certificate.exportPublicKey(spkacValid).toString('utf8')),
-  stripLineEndings(spkacPublicPem.toString('utf8'))
+  stripLineEndings(spkacPublicPem.toString('utf8')),
  );
  assert.strictEqual(certificate.exportPublicKey(spkacFail), '');
 
  assert.strictEqual(
   certificate.exportChallenge(spkacValid).toString('utf8'),
-  spkacChallenge
+  spkacChallenge,
  );
  assert.strictEqual(certificate.exportChallenge(spkacFail), '');
 
@@ -77,15 +77,15 @@ function checkMethods(certificate) {
  if (!skip) {
   assert.throws(
    () => Certificate.verifySpkac(buf), {
-    code: 'ERR_OUT_OF_RANGE'
+    code: 'ERR_OUT_OF_RANGE',
    });
   assert.throws(
    () => Certificate.exportChallenge(buf), {
-    code: 'ERR_OUT_OF_RANGE'
+    code: 'ERR_OUT_OF_RANGE',
    });
   assert.throws(
    () => Certificate.exportPublicKey(buf), {
-    code: 'ERR_OUT_OF_RANGE'
+    code: 'ERR_OUT_OF_RANGE',
    });
  }
 }
@@ -110,7 +110,7 @@ assert(Certificate() instanceof Certificate);
 [1, {}, [], Infinity, true, undefined, null].forEach((val) => {
  assert.throws(
   () => Certificate.verifySpkac(val),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 });
 

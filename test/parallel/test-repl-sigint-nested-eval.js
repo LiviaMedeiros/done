@@ -12,7 +12,7 @@ const spawn = require('child_process').spawn;
 
 process.env.REPL_TEST_PPID = process.pid;
 const child = spawn(process.execPath, [ '-i' ], {
- stdio: [null, null, 2]
+ stdio: [null, null, 2],
 });
 
 let stdout = '';
@@ -39,10 +39,10 @@ child.on('close', function(code) {
  const expected = 'Script execution was interrupted by `SIGINT`';
  assert.ok(
   stdout.includes(expected),
-  `Expected stdout to contain "${expected}", got ${stdout}`
+  `Expected stdout to contain "${expected}", got ${stdout}`,
  );
  assert.ok(
   stdout.includes('foobar'),
-  `Expected stdout to contain "foobar", got ${stdout}`
+  `Expected stdout to contain "foobar", got ${stdout}`,
  );
 });

@@ -33,7 +33,7 @@ function start() {
     'Transfer-Encoding: chunked\r\n' +
     '\r\n' +
     '0\r\n' +
-    '\r\n'
+    '\r\n',
  );
 
  sock.resume();

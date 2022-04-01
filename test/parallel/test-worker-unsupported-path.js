@@ -8,7 +8,7 @@ const { Worker } = require('worker_threads');
 {
  const expectedErr = {
   code: 'ERR_WORKER_PATH',
-  name: 'TypeError'
+  name: 'TypeError',
  };
  const existingRelPathNoDot = path.relative('.', __filename);
  assert.throws(() => { new Worker(existingRelPathNoDot); }, expectedErr);
@@ -20,23 +20,23 @@ const { Worker } = require('worker_threads');
 {
  assert.throws(
   () => { new Worker('file:///file_url'); },
-  /Wrap file:\/\/ URLs with `new URL`/
+  /Wrap file:\/\/ URLs with `new URL`/,
  );
  assert.throws(
   () => { new Worker('data:text/javascript,'); },
-  /Wrap data: URLs with `new URL`/
+  /Wrap data: URLs with `new URL`/,
  );
  assert.throws(
   () => { new Worker('relative_no_dot'); },
   // eslint-disable-next-line node-core/no-unescaped-regexp-dot
-  /^((?!Wrap file:\/\/ URLs with `new URL`).)*$/s
+  /^((?!Wrap file:\/\/ URLs with `new URL`).)*$/s,
  );
 }
 
 {
  const expectedErr = {
   code: 'ERR_INVALID_URL_SCHEME',
-  name: 'TypeError'
+  name: 'TypeError',
  };
  assert.throws(() => { new Worker(new URL('https://www.url.com')); },
                expectedErr);

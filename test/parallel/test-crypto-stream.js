@@ -51,7 +51,7 @@ if (!common.hasFipsCrypto) {
  hasher1.pipe(new Stream2buffer(common.mustCall(function end(err, hash) {
   assert.strictEqual(err, null);
   assert.strictEqual(
-   hash.toString('hex'), '06460dadb35d3d503047ce750ceb2d07'
+   hash.toString('hex'), '06460dadb35d3d503047ce750ceb2d07',
   );
  })));
  hasher1.end('Hallo world');

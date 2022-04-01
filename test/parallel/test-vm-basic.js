@@ -29,7 +29,7 @@ const vm = require('vm');
  const sandbox = {};
  const result = vm.runInNewContext(
   'foo = "bar"; this.typeofProcess = typeof process; typeof Object;',
-  sandbox
+  sandbox,
  );
  assert.deepStrictEqual(sandbox, {
   foo: 'bar',
@@ -44,12 +44,12 @@ const vm = require('vm');
  const context = vm.createContext(sandbox);
  const result = vm.runInContext(
   'baz = foo; this.typeofProcess = typeof process; typeof Object;',
-  context
+  context,
  );
  assert.deepStrictEqual(sandbox, {
   foo: 'bar',
   baz: 'bar',
-  typeofProcess: 'undefined'
+  typeofProcess: 'undefined',
  });
  assert.strictEqual(result, 'function');
 }
@@ -57,7 +57,7 @@ const vm = require('vm');
 // vm.runInThisContext
 {
  const result = vm.runInThisContext(
-  'vmResult = "foo"; Object.prototype.toString.call(process);'
+  'vmResult = "foo"; Object.prototype.toString.call(process);',
  );
  assert.strictEqual(global.vmResult, 'foo');
  assert.strictEqual(result, '[object process]');
@@ -67,7 +67,7 @@ const vm = require('vm');
 // vm.runInNewContext
 {
  const result = vm.runInNewContext(
-  'vmResult = "foo"; typeof process;'
+  'vmResult = "foo"; typeof process;',
  );
  assert.strictEqual(global.vmResult, undefined);
  assert.strictEqual(result, 'undefined');
@@ -103,7 +103,7 @@ const vm = require('vm');
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "options" argument must be of type object.' +
-             common.invalidArgTypeHelper(input)
+             common.invalidArgTypeHelper(input),
  });
 });
 
@@ -114,7 +114,7 @@ const vm = require('vm');
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: `The "options.${propertyName}" property must be of type string. ` +
-             'Received null'
+             'Received null',
  });
 });
 
@@ -125,7 +125,7 @@ const vm = require('vm');
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: `The "options.${propertyName}" property must be of type string. ` +
-             'Received null'
+             'Received null',
  });
 });
 
@@ -133,26 +133,26 @@ const vm = require('vm');
 {
  assert.strictEqual(
   vm.compileFunction('console.log("Hello, World!")').toString(),
-  'function () {\nconsole.log("Hello, World!")\n}'
+  'function () {\nconsole.log("Hello, World!")\n}',
  );
 
  assert.strictEqual(
   vm.compileFunction(
    'return p + q + r + s + t',
-   ['p', 'q', 'r', 's', 't']
+   ['p', 'q', 'r', 's', 't'],
   )('ab', 'cd', 'ef', 'gh', 'ij'),
-  'abcdefghij'
+  'abcdefghij',
  );
 
  vm.compileFunction('return'); // Should not throw on 'return'
 
  assert.throws(() => {
   vm.compileFunction(
-   '});\n\n(function() {\nconsole.log(1);\n})();\n\n(function() {'
+   '});\n\n(function() {\nconsole.log(1);\n})();\n\n(function() {',
   );
  }, {
   name: 'SyntaxError',
-  message: "Unexpected token '}'"
+  message: "Unexpected token '}'",
  });
 
  // Tests for failed argument validation
@@ -160,7 +160,7 @@ const vm = require('vm');
   name: 'TypeError',
   code: 'ERR_INVALID_ARG_TYPE',
   message: 'The "code" argument must be of type string. ' +
-      'Received undefined'
+      'Received undefined',
  });
 
  vm.compileFunction(''); // Should pass without params or options
@@ -169,7 +169,7 @@ const vm = require('vm');
   name: 'TypeError',
   code: 'ERR_INVALID_ARG_TYPE',
   message: 'The "params" argument must be an instance of Array. ' +
-      'Received null'
+      'Received null',
  });
 
  // vm.compileFunction('', undefined, null);
@@ -191,7 +191,7 @@ const vm = require('vm');
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_TYPE',
    message: typeErrorMessage +
-        ` ${optionTypes[option]}. Received null`
+        ` ${optionTypes[option]}. Received null`,
   });
  }
 
@@ -204,9 +204,9 @@ const vm = require('vm');
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_TYPE',
     message: 'The "options.parsingContext" property must be an instance ' +
-          `of Context.${common.invalidArgTypeHelper(value)}`
+          `of Context.${common.invalidArgTypeHelper(value)}`,
    });
-  }
+  },
  );
 
  // Testing for non Array type-based failures
@@ -218,18 +218,18 @@ const vm = require('vm');
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_TYPE',
     message: 'The "params" argument must be an instance of Array.' +
-          common.invalidArgTypeHelper(value)
+          common.invalidArgTypeHelper(value),
    });
-  }
+  },
  );
 
  assert.strictEqual(
   vm.compileFunction(
    'return a;',
    undefined,
-   { contextExtensions: [{ a: 5 }] }
+   { contextExtensions: [{ a: 5 }] },
   )(),
-  5
+  5,
  );
 
  assert.throws(() => {
@@ -238,7 +238,7 @@ const vm = require('vm');
   name: 'TypeError',
   code: 'ERR_INVALID_ARG_TYPE',
   message: 'The "options.contextExtensions" property must be an instance of' +
-       ' Array. Received null'
+       ' Array. Received null',
  });
 
  assert.throws(() => {
@@ -247,7 +247,7 @@ const vm = require('vm');
   name: 'TypeError',
   code: 'ERR_INVALID_ARG_TYPE',
   message: 'The "options.contextExtensions[0]" property must be of type ' +
-       'object. Received type number (0)'
+       'object. Received type number (0)',
  });
 
  const oldLimit = Error.stackTraceLimit;
@@ -258,29 +258,29 @@ const vm = require('vm');
   vm.compileFunction('throw new Error("Sample Error")')();
  }, {
   message: 'Sample Error',
-  stack: 'Error: Sample Error\n    at <anonymous>:1:7'
+  stack: 'Error: Sample Error\n    at <anonymous>:1:7',
  });
 
  assert.throws(() => {
   vm.compileFunction(
    'throw new Error("Sample Error")',
    [],
-   { lineOffset: 3 }
+   { lineOffset: 3 },
   )();
  }, {
   message: 'Sample Error',
-  stack: 'Error: Sample Error\n    at <anonymous>:4:7'
+  stack: 'Error: Sample Error\n    at <anonymous>:4:7',
  });
 
  assert.throws(() => {
   vm.compileFunction(
    'throw new Error("Sample Error")',
    [],
-   { columnOffset: 3 }
+   { columnOffset: 3 },
   )();
  }, {
   message: 'Sample Error',
-  stack: 'Error: Sample Error\n    at <anonymous>:1:10'
+  stack: 'Error: Sample Error\n    at <anonymous>:1:10',
  });
 
  assert.strictEqual(
@@ -288,20 +288,20 @@ const vm = require('vm');
    'return varInContext',
    [],
    {
-    parsingContext: vm.createContext({ varInContext: 'abc' })
-   }
+    parsingContext: vm.createContext({ varInContext: 'abc' }),
+   },
   )(),
-  'abc'
+  'abc',
  );
 
  assert.throws(() => {
   vm.compileFunction(
    'return varInContext',
-   []
+   [],
   )();
  }, {
   message: 'varInContext is not defined',
-  stack: 'ReferenceError: varInContext is not defined\n    at <anonymous>:1:1'
+  stack: 'ReferenceError: varInContext is not defined\n    at <anonymous>:1:1',
  });
 
  assert.notDeepStrictEqual(
@@ -309,18 +309,18 @@ const vm = require('vm');
    'return global',
    [],
    {
-    parsingContext: vm.createContext({ global: {} })
-   }
+    parsingContext: vm.createContext({ global: {} }),
+   },
   )(),
-  global
+  global,
  );
 
  assert.deepStrictEqual(
   vm.compileFunction(
    'return global',
-   []
+   [],
   )(),
-  global
+  global,
  );
 
  // Test compileFunction produceCachedData option

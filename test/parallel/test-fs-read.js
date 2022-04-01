@@ -74,13 +74,13 @@ assert.throws(
  () => fs.read(fd, Buffer.alloc(1), 0, 1, 0),
  {
   code: 'ERR_INVALID_ARG_TYPE',
- }
+ },
 );
 
 assert.throws(
  () => fs.read(fd, { buffer: null }, common.mustNotCall()),
  /TypeError: Cannot read properties of null \(reading 'byteLength'\)/,
- 'throws when options.buffer is null'
+ 'throws when options.buffer is null',
 );
 
 assert.throws(
@@ -90,7 +90,7 @@ assert.throws(
   message: 'The "buffer" argument must be an instance of Buffer, ' +
     'TypedArray, or DataView. Received an instance of Object',
  },
- 'throws when options.buffer is null'
+ 'throws when options.buffer is null',
 );
 
 assert.throws(
@@ -98,5 +98,5 @@ assert.throws(
  {
   message: 'The "fd" argument must be of type number. Received null',
   code: 'ERR_INVALID_ARG_TYPE',
- }
+ },
 );

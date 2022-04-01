@@ -28,7 +28,7 @@ console.log('validateHeaderName');
  console.log('throws for: "%s"', name.slice(0, 50));
  assert.throws(
   () => validateHeaderName(name),
-  { code: 'ERR_INVALID_HTTP_TOKEN' }
+  { code: 'ERR_INVALID_HTTP_TOKEN' },
  );
 });
 
@@ -52,7 +52,7 @@ console.log('validateHeaderValue');
  console.log('throws %s for: "%s: %s"', code, name, value);
  assert.throws(
   () => validateHeaderValue(name, value),
-  { code }
+  { code },
  );
 });
 

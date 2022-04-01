@@ -55,21 +55,21 @@ testEnd(
  'utf16le',
  Buffer.of(0x3D, 0xD8),
  Buffer.of(0x4D, 0xDC),
- '\uD83D\uDC4D'
+ '\uD83D\uDC4D',
 );
 testEnd('utf16le', Buffer.of(0x3D, 0xD8, 0x4D), Buffer.of(), '\uD83D');
 testEnd(
  'utf16le',
  Buffer.of(0x3D, 0xD8, 0x4D),
  Buffer.of(0x61, 0x00),
- '\uD83Da'
+ '\uD83Da',
 );
 testEnd('utf16le', Buffer.of(0x3D, 0xD8, 0x4D), Buffer.of(0xDC), '\uD83D');
 testEnd(
  'utf16le',
  Buffer.of(0x3D, 0xD8, 0x4D, 0xDC),
  Buffer.of(0x61, 0x00),
- '👍a'
+ '👍a',
 );
 
 testEnd('base64', Buffer.of(0x61), Buffer.of(), 'YQ==');

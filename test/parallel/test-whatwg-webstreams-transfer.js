@@ -10,7 +10,7 @@ const {
 } = require('stream/web');
 
 const {
- Worker
+ Worker,
 } = require('worker_threads');
 
 const {
@@ -206,7 +206,7 @@ const theData = 'hello';
  const transform = new TransformStream({
   transform(chunk, controller) {
    controller.enqueue(chunk.toUpperCase());
-  }
+  },
  });
 
  port2.onmessage = common.mustCall(({ data }) => {
@@ -289,7 +289,7 @@ const theData = 'hello';
     assert.strictEqual(error.code, 25);
     assert.strictEqual(error.name, 'DataCloneError');
    });
-  })
+  }),
  };
 
  const writable = new WritableStream(source);
@@ -355,7 +355,7 @@ const theData = 'hello';
  const source = {
   abort: common.mustCall((error) => {
    process.nextTick(() => assert.strictEqual(error.code, 25));
-  })
+  }),
  };
 
  const writable = new WritableStream(source);
@@ -366,7 +366,7 @@ const theData = 'hello';
   const m = new WebAssembly.Memory({ initial: 1 });
 
   assert.rejects(writer.abort(m), {
-   code: 25
+   code: 25,
   });
   port1.close();
  });
@@ -411,7 +411,7 @@ const theData = 'hello';
   start(controller) {
    controller.enqueue(new Uint8Array(10));
    controller.close();
-  }
+  },
  });
 
  worker.postMessage(readable, [readable]);
@@ -455,7 +455,7 @@ const theData = 'hello';
   reader.closed.then(common.mustCall());
 
   assert.rejects(cancel, {
-   code: 25
+   code: 25,
   });
 
   port1.close();
@@ -492,12 +492,12 @@ const theData = 'hello';
  const readable = new ReadableStream();
  readable.getReader();
  assert.throws(() => readable[kTransfer](), {
-  code: 25
+  code: 25,
  });
 
  const writable = new WritableStream();
  writable.getWriter();
  assert.throws(() => writable[kTransfer](), {
-  code: 25
+  code: 25,
  });
 }

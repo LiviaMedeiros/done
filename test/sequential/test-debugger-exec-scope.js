@@ -30,7 +30,7 @@ const assert = require('assert');
     	assert.doesNotMatch(
     		cli.output,
     		/'encodeURIComponent'/,
-    		'omits global scope'
+    		'omits global scope',
     	);
     })
     .then(() => cli.quit())

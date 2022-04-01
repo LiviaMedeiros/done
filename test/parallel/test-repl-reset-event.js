@@ -35,7 +35,7 @@ function testReset(cb) {
  const r = repl.start({
   input: dummy,
   output: dummy,
-  useGlobal: false
+  useGlobal: false,
  });
  r.context.foo = 42;
  r.on('reset', common.mustCall(function(context) {
@@ -46,7 +46,7 @@ function testReset(cb) {
    context.foo,
    undefined,
    'REPL emitted the previous context and is not using global as context. ' +
-      `context.foo is ${context.foo}, expected undefined.`
+      `context.foo is ${context.foo}, expected undefined.`,
   );
   context.foo = 42;
   cb();
@@ -58,7 +58,7 @@ function testResetGlobal() {
  const r = repl.start({
   input: dummy,
   output: dummy,
-  useGlobal: true
+  useGlobal: true,
  });
  r.context.foo = 42;
  r.on('reset', common.mustCall(function(context) {
@@ -66,7 +66,7 @@ function testResetGlobal() {
    context.foo,
    42,
    '"foo" property is different from REPL using global as context. ' +
-      `context.foo is ${context.foo}, expected 42.`
+      `context.foo is ${context.foo}, expected 42.`,
   );
  }));
  r.resetContext();

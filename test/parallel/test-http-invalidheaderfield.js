@@ -25,20 +25,20 @@ server.listen(0, function() {
   function() {
    const options = {
     port: server.address().port,
-    headers: { 'testing 123': 123 }
+    headers: { 'testing 123': 123 },
    };
    http.get(options, common.mustNotCall());
   },
   function(err) {
    ee.emit('done');
    if (err instanceof TypeError) return true;
-  }
+  },
  );
 
  // Should not throw.
  const options = {
   port: server.address().port,
-  headers: { 'testing_123': 123 }
+  headers: { 'testing_123': 123 },
  };
  http.get(options, function() {
   ee.emit('done');

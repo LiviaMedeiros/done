@@ -26,7 +26,7 @@ const { generateKeyPair } = require('crypto');
   modulusLength: 512,
   saltLength: 16,
   hash: 'sha256',
-  mgf1Hash: 'sha256'
+  mgf1Hash: 'sha256',
  }, common.mustSucceed((publicKey, privateKey) => {
   assert.strictEqual(publicKey.type, 'public');
   assert.strictEqual(publicKey.asymmetricKeyType, 'rsa-pss');
@@ -35,7 +35,7 @@ const { generateKeyPair } = require('crypto');
    publicExponent: 65537n,
    hashAlgorithm: 'sha256',
    mgf1HashAlgorithm: 'sha256',
-   saltLength: 16
+   saltLength: 16,
   });
 
   assert.strictEqual(privateKey.type, 'private');
@@ -45,7 +45,7 @@ const { generateKeyPair } = require('crypto');
    publicExponent: 65537n,
    hashAlgorithm: 'sha256',
    mgf1HashAlgorithm: 'sha256',
-   saltLength: 16
+   saltLength: 16,
   });
  }));
 }

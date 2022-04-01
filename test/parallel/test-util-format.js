@@ -63,15 +63,15 @@ assert.strictEqual(util.format('%d %d', 42, 43), '42 43');
 assert.strictEqual(util.format('%d %d', 42), '42 %d');
 assert.strictEqual(
  util.format('%d', 1180591620717411303424),
- '1.1805916207174113e+21'
+ '1.1805916207174113e+21',
 );
 assert.strictEqual(
  util.format('%d', 1180591620717411303424n),
- '1180591620717411303424n'
+ '1180591620717411303424n',
 );
 assert.strictEqual(
  util.format('%d %d', 1180591620717411303424n, 12345678901234567890123n),
- '1180591620717411303424n 12345678901234567890123n'
+ '1180591620717411303424n 12345678901234567890123n',
 );
 
 {
@@ -80,28 +80,28 @@ assert.strictEqual(
 
  assert.strictEqual(
   util.format('%d', 1180591620717411303424),
-  '1.1805916207174113e+21'
+  '1.1805916207174113e+21',
  );
 
  assert.strictEqual(
   util.format(
    // eslint-disable-next-line no-loss-of-precision
    '%d %s %i', 118059162071741130342, 118059162071741130342, 123_123_123),
-  '118_059_162_071_741_140_000 118_059_162_071_741_140_000 123_123_123'
+  '118_059_162_071_741_140_000 118_059_162_071_741_140_000 123_123_123',
  );
 
  assert.strictEqual(
   util.format(
    '%d %s',
    1_180_591_620_717_411_303_424n,
-   12_345_678_901_234_567_890_123n
+   12_345_678_901_234_567_890_123n,
   ),
-  '1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n'
+  '1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n',
  );
 
  assert.strictEqual(
   util.format('%i', 1_180_591_620_717_411_303_424n),
-  '1_180_591_620_717_411_303_424n'
+  '1_180_591_620_717_411_303_424n',
  );
 
  util.inspect.defaultOptions.numericSeparator = numericSeparator;
@@ -122,32 +122,32 @@ assert.strictEqual(util.format('%i %i', 42, 43), '42 43');
 assert.strictEqual(util.format('%i %i', 42), '42 %i');
 assert.strictEqual(
  util.format('%i', 1180591620717411303424),
- '1'
+ '1',
 );
 assert.strictEqual(
  util.format('%i', 1180591620717411303424n),
- '1180591620717411303424n'
+ '1180591620717411303424n',
 );
 assert.strictEqual(
  util.format('%i %i', 1180591620717411303424n, 12345678901234567890123n),
- '1180591620717411303424n 12345678901234567890123n'
+ '1180591620717411303424n 12345678901234567890123n',
 );
 
 assert.strictEqual(
  util.format('%d %i', 1180591620717411303424n, 12345678901234567890123n),
- '1180591620717411303424n 12345678901234567890123n'
+ '1180591620717411303424n 12345678901234567890123n',
 );
 
 assert.strictEqual(
  util.format('%i %d', 1180591620717411303424n, 12345678901234567890123n),
- '1180591620717411303424n 12345678901234567890123n'
+ '1180591620717411303424n 12345678901234567890123n',
 );
 
 assert.strictEqual(
  util.formatWithOptions(
   { numericSeparator: true },
   '%i %d', 1180591620717411303424n, 12345678901234567890123n),
- '1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n'
+ '1_180_591_620_717_411_303_424n 12_345_678_901_234_567_890_123n',
 );
 
 // Float format specifier
@@ -195,7 +195,7 @@ assert.strictEqual(util.format('%s', -Infinity), '-Infinity');
  assert.strictEqual(util.format('%s', new Foo()), 'Bar');
  assert.strictEqual(
   util.format('%s', Object.setPrototypeOf(new Foo(), null)),
-  '[Foo: null prototype] {}'
+  '[Foo: null prototype] {}',
  );
  global.Foo = Foo;
  assert.strictEqual(util.format('%s', new Foo()), 'Bar');
@@ -205,7 +205,7 @@ assert.strictEqual(util.format('%s', -Infinity), '-Infinity');
  class Foobar extends Array { aaa = true; }
  assert.strictEqual(
   util.format('%s', new Foobar(5)),
-  'Foobar(5) [ <5 empty items>, aaa: true ]'
+  'Foobar(5) [ <5 empty items>, aaa: true ]',
  );
 
  // Subclassing:
@@ -223,49 +223,49 @@ assert.strictEqual(util.format('%s', -Infinity), '-Infinity');
 
  assert.strictEqual(
   util.format('%s', new B()),
-  'Bar'
+  'Bar',
  );
  assert.strictEqual(
   util.format('%s', new C()),
-  'Custom'
+  'Custom',
  );
  assert.strictEqual(
   util.format('%s', new D()),
-  'Custom'
+  'Custom',
  );
 
  D.prototype.constructor = D;
  assert.strictEqual(
   util.format('%s', new D()),
-  'Custom'
+  'Custom',
  );
 
  D.prototype.constructor = null;
  assert.strictEqual(
   util.format('%s', new D()),
-  'Custom'
+  'Custom',
  );
 
  D.prototype.constructor = { name: 'Foobar' };
  assert.strictEqual(
   util.format('%s', new D()),
-  'Custom'
+  'Custom',
  );
 
  Object.defineProperty(D.prototype, 'constructor', {
   get() {
    throw new Error();
   },
-  configurable: true
+  configurable: true,
  });
  assert.strictEqual(
   util.format('%s', new D()),
-  'Custom'
+  'Custom',
  );
 
  assert.strictEqual(
   util.format('%s', Object.create(null)),
-  '[Object: null prototype] {}'
+  '[Object: null prototype] {}',
  );
 }
 
@@ -280,19 +280,19 @@ assert.strictEqual(util.format('%j %j', 42), '42 %j');
 const obj = {
  foo: 'bar',
  foobar: 1,
- func: function() {}
+ func: function() {},
 };
 const nestedObj = {
  foo: 'bar',
  foobar: {
   foo: 'bar',
-  func: function() {}
- }
+  func: function() {},
+ },
 };
 const nestedObj2 = {
  foo: 'bar',
  foobar: 1,
- func: [{ a: function() {} }]
+ func: [{ a: function() {} }],
 };
 assert.strictEqual(util.format('%o'), '%o');
 assert.strictEqual(util.format('%o', 42), '42');
@@ -440,7 +440,7 @@ assert.strictEqual(util.format('%cab', 'color: blue', 'c'), 'ab c');
  const o = {
   toJSON() {
    throw new Error('Not a circular object but still not serializable');
-  }
+  },
  };
  assert.throws(() => util.format('%j', o),
                /^Error: Not a circular object but still not serializable$/);
@@ -492,7 +492,7 @@ assert.strictEqual(util.format(5n, 5n), '5n 5n');
 assert.strictEqual(
  util.formatWithOptions(
   { colors: true },
-  true, undefined, Symbol(), 1, 5n, null, 'foobar'
+  true, undefined, Symbol(), 1, 5n, null, 'foobar',
  ),
  '\u001b[33mtrue\u001b[39m ' +
     '\u001b[90mundefined\u001b[39m ' +
@@ -500,20 +500,20 @@ assert.strictEqual(
     '\u001b[33m1\u001b[39m ' +
     '\u001b[33m5n\u001b[39m ' +
     '\u001b[1mnull\u001b[22m ' +
-    'foobar'
+    'foobar',
 );
 
 assert.strictEqual(
  util.format(new SharedArrayBuffer(4)),
- 'SharedArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }'
+ 'SharedArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }',
 );
 
 assert.strictEqual(
  util.formatWithOptions(
   { colors: true, compact: 3 },
-  '%s', [ 1, { a: true }]
+  '%s', [ 1, { a: true }],
  ),
- '[ 1, [Object] ]'
+ '[ 1, [Object] ]',
 );
 
 [
@@ -529,6 +529,6 @@ assert.strictEqual(
   util.formatWithOptions(invalidOptions, { a: true });
  }, {
   code: 'ERR_INVALID_ARG_TYPE',
-  message: /"inspectOptions".+object/
+  message: /"inspectOptions".+object/,
  });
 });

@@ -31,7 +31,7 @@ const {
  truncate,
  unlink,
  utimes,
- writeFile
+ writeFile,
 } = fsPromises;
 
 const tmpDir = tmpdir.path;
@@ -44,7 +44,7 @@ function nextdir() {
 // fs.promises should be enumerable.
 assert.strictEqual(
  Object.prototype.propertyIsEnumerable.call(fs, 'promises'),
- true
+ true,
 );
 
 {
@@ -56,24 +56,24 @@ assert.strictEqual(
   {
    code: 'ENOENT',
    name: 'Error',
-   message: /^ENOENT: no such file or directory, access/
-  }
+   message: /^ENOENT: no such file or directory, access/,
+  },
  );
 
  assert.rejects(
   access(__filename, 8),
   {
    code: 'ERR_OUT_OF_RANGE',
-   message: /"mode".*must be an integer >= 0 && <= 7\. Received 8$/
-  }
+   message: /"mode".*must be an integer >= 0 && <= 7\. Received 8$/,
+  },
  );
 
  assert.rejects(
   access(__filename, { [Symbol.toPrimitive]() { return 5; } }),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   message: /"mode" argument.+integer\. Received an instance of Object$/
-  }
+   message: /"mode" argument.+integer\. Received an instance of Object$/,
+  },
  );
 }
 
@@ -209,7 +209,7 @@ async function executeOnHandle(dest, func) {
       code: 'ERR_OUT_OF_RANGE',
       name: 'RangeError',
       message: 'The value of "gid" is out of range. ' +
-                     'It must be >= -1 && <= 4294967295. Received -2'
+                     'It must be >= -1 && <= 4294967295. Received -2',
      });
 
     await assert.rejects(
@@ -220,7 +220,7 @@ async function executeOnHandle(dest, func) {
       code: 'ERR_OUT_OF_RANGE',
       name: 'RangeError',
       message: 'The value of "gid" is out of range. ' +
-                      'It must be >= -1 && <= 4294967295. Received -2'
+                      'It must be >= -1 && <= 4294967295. Received -2',
      });
    });
   }
@@ -238,7 +238,7 @@ async function executeOnHandle(dest, func) {
      // expect it to be ENOSYS
      common.expectsError({
       code: 'ENOSYS',
-      name: 'Error'
+      name: 'Error',
      })(err);
     }
    });
@@ -291,8 +291,8 @@ async function executeOnHandle(dest, func) {
        common.expectsError({
         code: 'ERR_METHOD_NOT_IMPLEMENTED',
         name: 'Error',
-        message: 'The lchmod() method is not implemented'
-       })
+        message: 'The lchmod() method is not implemented',
+       }),
       ),
      ]);
     }
@@ -380,7 +380,7 @@ async function executeOnHandle(dest, func) {
      message: /EEXIST: .*mkdir/,
      name: 'Error',
      syscall: 'mkdir',
-    }
+    },
    );
   }
 
@@ -397,7 +397,7 @@ async function executeOnHandle(dest, func) {
      message: /ENOTDIR: .*mkdir/,
      name: 'Error',
      syscall: 'mkdir',
-    }
+    },
    );
   }
 
@@ -427,8 +427,8 @@ async function executeOnHandle(dest, func) {
      async () => mkdir(dir, { recursive }),
      {
       code: 'ERR_INVALID_ARG_TYPE',
-      name: 'TypeError'
-     }
+      name: 'TypeError',
+     },
     );
    });
   }
@@ -441,8 +441,8 @@ async function executeOnHandle(dest, func) {
     async () => mkdtemp(1),
     {
      code: 'ERR_INVALID_ARG_TYPE',
-     name: 'TypeError'
-    }
+     name: 'TypeError',
+    },
    );
   }
 
@@ -453,8 +453,8 @@ async function executeOnHandle(dest, func) {
      async () => handle.write('abc', 0, 'hex'),
      {
       code: 'ERR_INVALID_ARG_VALUE',
-      message: /'encoding' is invalid for data of length 3/
-     }
+      message: /'encoding' is invalid for data of length 3/,
+     },
     );
 
     const ret = await handle.write('abcd', 0, 'hex');
@@ -467,7 +467,7 @@ async function executeOnHandle(dest, func) {
    await executeOnHandle(dest, async (handle) => {
     await assert.rejects(() => handle.stat.call({}), {
      code: 'ERR_INTERNAL_ASSERTION',
-     message: /handle must be an instance of FileHandle/
+     message: /handle must be an instance of FileHandle/,
     });
    });
   }

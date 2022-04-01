@@ -27,7 +27,7 @@ const server = net.createServer((socket) => {
   {},
   0,
   0,
-  1e3
+  1e3,
  );
 
  parser[HTTPParser.kOnTimeout] = common.mustNotCall();

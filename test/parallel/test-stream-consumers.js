@@ -14,7 +14,7 @@ const {
 
 const {
  Readable,
- PassThrough
+ PassThrough,
 } = require('stream');
 
 const {
@@ -76,7 +76,7 @@ const kArrayBuffer =
 
 {
  const readable = new Readable({
-  read() {}
+  read() {},
  });
 
  text(readable).then((data) => {

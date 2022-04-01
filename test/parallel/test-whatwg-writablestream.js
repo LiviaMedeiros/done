@@ -141,7 +141,7 @@ class Sink {
  const sink = new Sink();
 
  const stream = new WritableStream(
-  sink, { highWaterMark: 1 }
+  sink, { highWaterMark: 1 },
  );
 
  async function write(stream) {
@@ -220,7 +220,7 @@ class Sink {
 {
  let controller;
  const writable = new WritableStream({
-  start(c) { controller = c; }
+  start(c) { controller = c; },
  });
  assert.strictEqual(
   inspect(writable),

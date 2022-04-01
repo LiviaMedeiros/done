@@ -22,6 +22,6 @@ function requiresArgument(option) {
  const msg = r.stderr.split(/\r?\n/)[0];
  assert.strictEqual(
   msg,
-  `${process.execPath}: ${option} requires an argument`
+  `${process.execPath}: ${option} requires an argument`,
  );
 }

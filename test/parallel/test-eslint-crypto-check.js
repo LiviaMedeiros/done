@@ -37,7 +37,7 @@ new RuleTester().run('crypto-check', rule, {
             'if (!common.hasCrypto) {\n' +
             '  common.skip("missing crypto");\n' +
             '}',
-   errors: [{ message }]
+   errors: [{ message }],
   },
   {
    code: 'require("common")\n' +
@@ -47,7 +47,7 @@ new RuleTester().run('crypto-check', rule, {
               'if (!common.hasCrypto) {' +
               ' common.skip("missing crypto");' +
               '}\n' +
-              'require("crypto")'
+              'require("crypto")',
   },
   {
    code: 'require("common")\n' +
@@ -59,7 +59,7 @@ new RuleTester().run('crypto-check', rule, {
               ' common.skip("missing crypto");' +
               '}\n' +
               'if (common.foo) {}\n' +
-              'require("crypto")'
+              'require("crypto")',
   },
   {
    code: 'require("common")\n' +
@@ -71,7 +71,7 @@ new RuleTester().run('crypto-check', rule, {
               ' common.skip("missing crypto");' +
               '}\n' +
               'if (common.foo) {}\n' +
-              'internalBinding("crypto")'
+              'internalBinding("crypto")',
   },
- ]
+ ],
 });

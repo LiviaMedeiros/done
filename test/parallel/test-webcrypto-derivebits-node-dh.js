@@ -102,14 +102,14 @@ async function prepareKeys() {
  const {
   publicKey,
   privateKey,
-  result
+  result,
  } = await prepareKeys();
 
  {
   // Good parameters
   const bits = await subtle.deriveBits({
    name: 'NODE-DH',
-   public: publicKey
+   public: publicKey,
   }, privateKey, null);
 
   assert(bits instanceof ArrayBuffer);
@@ -120,7 +120,7 @@ async function prepareKeys() {
   // Case insensitivity
   const bits = await subtle.deriveBits({
    name: 'node-dH',
-   public: publicKey
+   public: publicKey,
   }, privateKey, null);
 
   assert.strictEqual(Buffer.from(bits).toString('hex'), result);
@@ -130,7 +130,7 @@ async function prepareKeys() {
   // Short Result
   const bits = await subtle.deriveBits({
    name: 'NODE-DH',
-   public: publicKey
+   public: publicKey,
   }, privateKey, 16);
 
   assert.strictEqual(
@@ -142,9 +142,9 @@ async function prepareKeys() {
   // Too long result
   await assert.rejects(subtle.deriveBits({
    name: 'NODE-DH',
-   public: publicKey
+   public: publicKey,
   }, privateKey, result.length * 16), {
-   message: /derived bit length is too small/
+   message: /derived bit length is too small/,
   });
  }
 
@@ -152,7 +152,7 @@ async function prepareKeys() {
   // Non-multiple of 8
   const bits = await subtle.deriveBits({
    name: 'NODE-DH',
-   public: publicKey
+   public: publicKey,
   }, privateKey, 15);
 
   assert.strictEqual(
@@ -177,7 +177,7 @@ async function prepareKeys() {
    subtle.deriveBits(
     {
      name: 'NODE-DH',
-     public: { message: 'Not a CryptoKey' }
+     public: { message: 'Not a CryptoKey' },
     },
     privateKey,
     null),
@@ -189,14 +189,14 @@ async function prepareKeys() {
   const { publicKey } = await subtle.generateKey(
    {
     name: 'ECDSA',
-    namedCurve: 'P-521'
+    namedCurve: 'P-521',
    }, false, ['verify']);
 
   await assert.rejects(subtle.deriveBits({
    name: 'NODE-DH',
-   public: publicKey
+   public: publicKey,
   }, privateKey, null), {
-   message: /Keys must be DH keys/
+   message: /Keys must be DH keys/,
   });
  }
 
@@ -213,7 +213,7 @@ async function prepareKeys() {
    name: 'NODE-DH',
    public: publicKey,
   }, privateKey, null), {
-   message: /baseKey does not have deriveBits usage/
+   message: /baseKey does not have deriveBits usage/,
   });
  }
 })().then(common.mustCall());

@@ -88,97 +88,97 @@ assert.throws(() => b.indexOf('bad', 'enc'), /Unknown encoding: enc/);
 assert.strictEqual(
  Buffer.from(b.toString('hex'), 'hex')
     .indexOf('64', 0, 'hex'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from(b.toString('hex'), 'hex')
     .indexOf(Buffer.from('64', 'hex'), 0, 'hex'),
- 3
+ 3,
 );
 
 // Test base64 encoding
 assert.strictEqual(
  Buffer.from(b.toString('base64'), 'base64')
     .indexOf('ZA==', 0, 'base64'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from(b.toString('base64'), 'base64')
     .indexOf(Buffer.from('ZA==', 'base64'), 0, 'base64'),
- 3
+ 3,
 );
 
 // Test base64url encoding
 assert.strictEqual(
  Buffer.from(b.toString('base64url'), 'base64url')
     .indexOf('ZA==', 0, 'base64url'),
- 3
+ 3,
 );
 
 // test ascii encoding
 assert.strictEqual(
  Buffer.from(b.toString('ascii'), 'ascii')
     .indexOf('d', 0, 'ascii'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from(b.toString('ascii'), 'ascii')
     .indexOf(Buffer.from('d', 'ascii'), 0, 'ascii'),
- 3
+ 3,
 );
 
 // Test latin1 encoding
 assert.strictEqual(
  Buffer.from(b.toString('latin1'), 'latin1')
     .indexOf('d', 0, 'latin1'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from(b.toString('latin1'), 'latin1')
     .indexOf(Buffer.from('d', 'latin1'), 0, 'latin1'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from('aa\u00e8aa', 'latin1')
     .indexOf('\u00e8', 'latin1'),
- 2
+ 2,
 );
 assert.strictEqual(
  Buffer.from('\u00e8', 'latin1')
     .indexOf('\u00e8', 'latin1'),
- 0
+ 0,
 );
 assert.strictEqual(
  Buffer.from('\u00e8', 'latin1')
     .indexOf(Buffer.from('\u00e8', 'latin1'), 'latin1'),
- 0
+ 0,
 );
 
 // Test binary encoding
 assert.strictEqual(
  Buffer.from(b.toString('binary'), 'binary')
     .indexOf('d', 0, 'binary'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from(b.toString('binary'), 'binary')
     .indexOf(Buffer.from('d', 'binary'), 0, 'binary'),
- 3
+ 3,
 );
 assert.strictEqual(
  Buffer.from('aa\u00e8aa', 'binary')
     .indexOf('\u00e8', 'binary'),
- 2
+ 2,
 );
 assert.strictEqual(
  Buffer.from('\u00e8', 'binary')
     .indexOf('\u00e8', 'binary'),
- 0
+ 0,
 );
 assert.strictEqual(
  Buffer.from('\u00e8', 'binary')
     .indexOf(Buffer.from('\u00e8', 'binary'), 'binary'),
- 0
+ 0,
 );
 
 
@@ -369,8 +369,8 @@ assert.strictEqual(Buffer.from('aaaaa').indexOf('b', 'ucs2'), -1);
    name: 'TypeError',
    message: 'The "value" argument must be one of type number or string ' +
                'or an instance of Buffer or Uint8Array.' +
-               common.invalidArgTypeHelper(val)
-  }
+               common.invalidArgTypeHelper(val),
+  },
  );
 });
 
@@ -628,6 +628,6 @@ assert.strictEqual(reallyLong.lastIndexOf(pattern), 0);
   name: 'TypeError',
   message: 'The "buffer" argument must be an instance of Buffer, ' +
              'TypedArray, or DataView. ' +
-             'Received an instance of lastIndexOf'
+             'Received an instance of lastIndexOf',
  });
 }

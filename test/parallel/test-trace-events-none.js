@@ -15,7 +15,7 @@ const FILE_NAME = path.join(tmpdir.path, 'node_trace.1.log');
 const proc_no_categories = cp.spawn(
  process.execPath,
  [ '--trace-event-categories', '""', '-e', CODE ],
- { cwd: tmpdir.path }
+ { cwd: tmpdir.path },
 );
 
 proc_no_categories.once('exit', common.mustCall(() => {

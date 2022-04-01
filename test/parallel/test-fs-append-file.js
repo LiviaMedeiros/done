@@ -124,31 +124,31 @@ const throwNextTick = (e) => { process.nextTick(() => { throw e; }); };
 [false, 5, {}, null, undefined].forEach(async (data) => {
  const errObj = {
   code: 'ERR_INVALID_ARG_TYPE',
-  message: /"data"|"buffer"/
+  message: /"data"|"buffer"/,
  };
  const filename = join(tmpdir.path, 'append-invalid-data.txt');
 
  assert.throws(
   () => fs.appendFile(filename, data, common.mustNotCall()),
-  errObj
+  errObj,
  );
 
  assert.throws(
   () => fs.appendFileSync(filename, data),
-  errObj
+  errObj,
  );
 
  await assert.rejects(
   fs.promises.appendFile(filename, data),
-  errObj
+  errObj,
  );
  // The filename shouldn't exist if throwing error.
  assert.throws(
   () => fs.statSync(filename),
   {
    code: 'ENOENT',
-   message: /no such file or directory/
-  }
+   message: /no such file or directory/,
+  },
  );
 });
 

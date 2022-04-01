@@ -11,7 +11,7 @@ const {
 } = require('crypto');
 
 const {
- isX509Certificate
+ isX509Certificate,
 } = require('internal/crypto/x509');
 
 const assert = require('assert');
@@ -26,7 +26,7 @@ const privateKey = createPrivateKey(key);
 
 [1, {}, false, null].forEach((i) => {
  assert.throws(() => new X509Certificate(i), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
 });
 
@@ -101,13 +101,13 @@ const der = Buffer.from(
  assert.strictEqual(
   x509.fingerprint256,
   'B0:BE:46:49:B8:29:63:E0:6F:63:C8:8A:57:9C:3F:9B:72:C6:F5:89:E3:0D:' +
-    '84:AC:5B:08:9A:20:89:B6:8F:D6'
+    '84:AC:5B:08:9A:20:89:B6:8F:D6',
  );
  assert.strictEqual(
   x509.fingerprint512,
   'D0:05:01:82:2C:D8:09:BE:27:94:E7:83:F1:88:BC:7A:8B:D0:39:97:54:B6:' +
     'D0:B4:46:5B:DE:13:5B:68:86:B6:F2:A8:95:22:D5:6E:8B:35:DA:89:29:CA:' +
-    'A3:06:C5:CE:43:C1:7F:2D:7E:5F:44:A5:EE:A3:CB:97:05:A3:E3:68'
+    'A3:06:C5:CE:43:C1:7F:2D:7E:5F:44:A5:EE:A3:CB:97:05:A3:E3:68',
  );
  assert.strictEqual(x509.keyUsage, undefined);
  assert.strictEqual(x509.serialNumber, 'ECC9B856270DA9A8');
@@ -123,7 +123,7 @@ const der = Buffer.from(
 
  assert(x509.checkPrivateKey(privateKey));
  assert.throws(() => x509.checkPrivateKey(x509.publicKey), {
-  code: 'ERR_INVALID_ARG_VALUE'
+  code: 'ERR_INVALID_ARG_VALUE',
  });
 
  assert.strictEqual(x509.checkIP('127.0.0.1'), undefined);
@@ -133,21 +133,21 @@ const der = Buffer.from(
  assert.strictEqual(x509.checkEmail('ry@tinyclouds.org'), 'ry@tinyclouds.org');
  assert.strictEqual(x509.checkEmail('sally@example.com'), undefined);
  assert.throws(() => x509.checkHost('agent\x001'), {
-  code: 'ERR_INVALID_ARG_VALUE'
+  code: 'ERR_INVALID_ARG_VALUE',
  });
  assert.throws(() => x509.checkIP('[::]'), {
-  code: 'ERR_INVALID_ARG_VALUE'
+  code: 'ERR_INVALID_ARG_VALUE',
  });
  assert.throws(() => x509.checkEmail('not\x00hing'), {
-  code: 'ERR_INVALID_ARG_VALUE'
+  code: 'ERR_INVALID_ARG_VALUE',
  });
 
  [1, false, null].forEach((i) => {
   assert.throws(() => x509.checkHost('agent1', i), {
-   code: 'ERR_INVALID_ARG_TYPE'
+   code: 'ERR_INVALID_ARG_TYPE',
   });
   assert.throws(() => x509.checkHost('agent1', { subject: i }), {
-   code: 'ERR_INVALID_ARG_TYPE'
+   code: 'ERR_INVALID_ARG_TYPE',
   });
  });
 
@@ -159,7 +159,7 @@ const der = Buffer.from(
  ].forEach((key) => {
   [1, '', null, {}].forEach((i) => {
    assert.throws(() => x509.checkHost('agent1', { [key]: i }), {
-    code: 'ERR_INVALID_ARG_TYPE'
+    code: 'ERR_INVALID_ARG_TYPE',
    });
   });
  });
@@ -172,19 +172,19 @@ const der = Buffer.from(
  assert(!x509.verify(x509.publicKey));
 
  assert.throws(() => x509.checkIssued({}), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
  assert.throws(() => x509.checkIssued(''), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
  assert.throws(() => x509.verify({}), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
  assert.throws(() => x509.verify(''), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
  assert.throws(() => x509.verify(privateKey), {
-  code: 'ERR_INVALID_ARG_VALUE'
+  code: 'ERR_INVALID_ARG_VALUE',
  });
 
  // X509Certificate can be cloned via MessageChannel/MessagePort
@@ -218,7 +218,7 @@ const der = Buffer.from(
   }),
   infoAccess: Object.assign(Object.create(null), {
    'OCSP - URI': ['http://ocsp.nodejs.org/'],
-   'CA Issuers - URI': ['http://ca.nodejs.org/ca.cert']
+   'CA Issuers - URI': ['http://ca.nodejs.org/ca.cert'],
   }),
   modulus: 'EF5440701637E28ABB038E5641F828D834C342A9D25EDBB86A2BF' +
              '6FBD809CB8E037A98B71708E001242E4DEB54C6164885F599DD87' +
@@ -238,7 +238,7 @@ const der = Buffer.from(
       'D0:39:97:54:B6:D0:B4:46:5B:DE:13:5B:68:86:B6:F2:A8:' +
       '95:22:D5:6E:8B:35:DA:89:29:CA:A3:06:C5:CE:43:C1:7F:' +
       '2D:7E:5F:44:A5:EE:A3:CB:97:05:A3:E3:68',
-  serialNumber: 'ECC9B856270DA9A8'
+  serialNumber: 'ECC9B856270DA9A8',
  };
 
  const legacyObject = x509.toLegacyObject();

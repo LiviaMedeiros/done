@@ -80,60 +80,60 @@ assert(!Buffer.from('ff').includes(Buffer.from('f'), 1, 'ucs2'));
 assert.strictEqual(
  Buffer.from(b.toString('hex'), 'hex')
     .includes('64', 0, 'hex'),
- true
+ true,
 );
 assert.strictEqual(
  Buffer.from(b.toString('hex'), 'hex')
     .includes(Buffer.from('64', 'hex'), 0, 'hex'),
- true
+ true,
 );
 
 // Test base64 encoding
 assert.strictEqual(
  Buffer.from(b.toString('base64'), 'base64')
     .includes('ZA==', 0, 'base64'),
- true
+ true,
 );
 assert.strictEqual(
  Buffer.from(b.toString('base64'), 'base64')
     .includes(Buffer.from('ZA==', 'base64'), 0, 'base64'),
- true
+ true,
 );
 
 // test ascii encoding
 assert.strictEqual(
  Buffer.from(b.toString('ascii'), 'ascii')
     .includes('d', 0, 'ascii'),
- true
+ true,
 );
 assert.strictEqual(
  Buffer.from(b.toString('ascii'), 'ascii')
     .includes(Buffer.from('d', 'ascii'), 0, 'ascii'),
- true
+ true,
 );
 
 // Test latin1 encoding
 assert.strictEqual(
  Buffer.from(b.toString('latin1'), 'latin1')
     .includes('d', 0, 'latin1'),
- true
+ true,
 );
 assert.strictEqual(
  Buffer.from(b.toString('latin1'), 'latin1')
     .includes(Buffer.from('d', 'latin1'), 0, 'latin1'),
- true
+ true,
 );
 
 // Test binary encoding
 assert.strictEqual(
  Buffer.from(b.toString('binary'), 'binary')
     .includes('d', 0, 'binary'),
- true
+ true,
 );
 assert.strictEqual(
  Buffer.from(b.toString('binary'), 'binary')
     .includes(Buffer.from('d', 'binary'), 0, 'binary'),
- true
+ true,
 );
 
 
@@ -284,8 +284,8 @@ for (let lengthIndex = 0; lengthIndex < lengths.length; lengthIndex++) {
    name: 'TypeError',
    message: 'The "value" argument must be one of type number or string ' +
                'or an instance of Buffer or Uint8Array.' +
-               common.invalidArgTypeHelper(val)
-  }
+               common.invalidArgTypeHelper(val),
+  },
  );
 });
 

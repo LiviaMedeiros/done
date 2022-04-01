@@ -15,8 +15,8 @@ server.on('stream', common.mustCall((stream) => {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "code" argument must be of type number. ' +
-               "Received type string ('string')"
-  }
+               "Received type string ('string')",
+  },
  );
  assert.throws(
   () => stream.close(1.01),
@@ -24,8 +24,8 @@ server.on('stream', common.mustCall((stream) => {
    code: 'ERR_OUT_OF_RANGE',
    name: 'RangeError',
    message: 'The value of "code" is out of range. It must be an integer. ' +
-               'Received 1.01'
-  }
+               'Received 1.01',
+  },
  );
  [-1, 2 ** 32].forEach((code) => {
   assert.throws(
@@ -35,8 +35,8 @@ server.on('stream', common.mustCall((stream) => {
     name: 'RangeError',
     message: 'The value of "code" is out of range. ' +
                  'It must be >= 0 && <= 4294967295. ' +
-                 `Received ${code}`
-   }
+                 `Received ${code}`,
+   },
   );
  });
  stream.respond();

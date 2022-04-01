@@ -45,7 +45,7 @@ function testHttp10(port, callback) {
   c.end();
   assert.ok(
    !/x-foo/.test(res_buffer),
-   `No trailer in HTTP/1.0 response. Response buffer: ${res_buffer}`
+   `No trailer in HTTP/1.0 response. Response buffer: ${res_buffer}`,
   );
   callback();
  });
@@ -70,7 +70,7 @@ function testHttp11(port, callback) {
    clearTimeout(tid);
    assert.ok(
     /0\r\nx-foo: bar\r\n\r\n$/.test(res_buffer),
-    `No trailer in HTTP/1.1 response. Response buffer: ${res_buffer}`
+    `No trailer in HTTP/1.1 response. Response buffer: ${res_buffer}`,
    );
    callback();
   }

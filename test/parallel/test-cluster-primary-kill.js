@@ -36,7 +36,7 @@ if (cluster.isWorker) {
 
  // send PID info to testcase process
  process.send({
-  pid: worker.process.pid
+  pid: worker.process.pid,
  });
 
  // Terminate the cluster process
@@ -82,7 +82,7 @@ if (cluster.isWorker) {
   assert.strictEqual(typeof pid, 'number',
                      `got ${pid} instead of a worker pid`);
   assert.strictEqual(alive, false,
-                     `worker was alive after primary died (alive = ${alive})`
+                     `worker was alive after primary died (alive = ${alive})`,
   );
  });
 

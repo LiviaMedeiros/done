@@ -4,7 +4,7 @@ const common = require('../common');
 const {
  Writable,
  Readable,
- destroy
+ destroy,
 } = require('stream');
 const assert = require('assert');
 const http = require('http');
@@ -62,7 +62,7 @@ const http = require('http');
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   req.write('asd');
@@ -72,7 +72,7 @@ const http = require('http');
    res.on('end', common.mustCall(() => {
     assert.deepStrictEqual(
      Buffer.concat(buf),
-     Buffer.from('hello')
+     Buffer.from('hello'),
     );
     server.close();
    }));
@@ -96,7 +96,7 @@ const http = require('http');
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   req.write('asd');
@@ -106,7 +106,7 @@ const http = require('http');
    res.on('end', common.mustCall(() => {
     assert.deepStrictEqual(
      Buffer.concat(buf),
-     Buffer.from('hello')
+     Buffer.from('hello'),
     );
     server.close();
    }));

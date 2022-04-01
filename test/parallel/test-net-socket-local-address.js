@@ -36,6 +36,6 @@ function connect() {
   client,
   client.connect(server.address().port, common.localhostIPv4, () => {
    clientLocalPorts.push(client.localPort);
-  })
+  }),
  );
 }

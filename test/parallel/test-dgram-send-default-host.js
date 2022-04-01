@@ -15,7 +15,7 @@ const received = [];
 let totalBytesSent = 0;
 let totalBytesReceived = 0;
 const arrayBufferViewsCount = common.getArrayBufferViews(
- Buffer.from('')
+ Buffer.from(''),
 ).length;
 
 client.on('listening', common.mustCall(() => {

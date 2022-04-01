@@ -118,7 +118,7 @@ assert.throws(() => {
  buf.fill('yKJh', 'hex');
 }, {
  code: 'ERR_INVALID_ARG_VALUE',
- name: 'TypeError'
+ name: 'TypeError',
 });
 
 assert.throws(() => {
@@ -127,7 +127,7 @@ assert.throws(() => {
  buf.fill('\u0222', 'hex');
 }, {
  code: 'ERR_INVALID_ARG_VALUE',
- name: 'TypeError'
+ name: 'TypeError',
 });
 
 // BASE64
@@ -190,7 +190,7 @@ deepStrictEqualValues(genBuffer(4, [hexBufFill, 1, 1]), [0, 0, 0, 0]);
 ].forEach((args) => {
  assert.throws(
   () => buf1.fill(...args),
-  { code: 'ERR_OUT_OF_RANGE' }
+  { code: 'ERR_OUT_OF_RANGE' },
  );
 });
 
@@ -199,8 +199,8 @@ assert.throws(
  {
   code: 'ERR_UNKNOWN_ENCODING',
   name: 'TypeError',
-  message: 'Unknown encoding: node rocks!'
- }
+  message: 'Unknown encoding: node rocks!',
+ },
 );
 
 [
@@ -212,8 +212,8 @@ assert.throws(
   {
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "encoding" argument must be of type ' +
-      `string.${common.invalidArgTypeHelper(args[3])}`
-  }
+      `string.${common.invalidArgTypeHelper(args[3])}`,
+  },
  );
 });
 
@@ -222,8 +222,8 @@ assert.throws(
  {
   code: 'ERR_UNKNOWN_ENCODING',
   name: 'TypeError',
-  message: 'Unknown encoding: foo'
- }
+  message: 'Unknown encoding: foo',
+ },
 );
 
 function genBuffer(size, args) {
@@ -345,7 +345,7 @@ Buffer.alloc(8, '');
 // errors.
 assert.throws(
  () => { internalBinding('buffer').fill(Buffer.alloc(1), 1, -1, 0, 1); },
- { code: 'ERR_OUT_OF_RANGE' }
+ { code: 'ERR_OUT_OF_RANGE' },
 );
 
 // Make sure "end" is properly checked, even if it's magically mangled using
@@ -355,13 +355,13 @@ assert.throws(
   const end = {
    [Symbol.toPrimitive]() {
     return 1;
-   }
+   },
   };
   Buffer.alloc(1).fill(Buffer.alloc(1), 0, end);
  }, {
   code: 'ERR_INVALID_ARG_TYPE',
   message: 'The "end" argument must be of type number. Received an ' +
-             'instance of Object'
+             'instance of Object',
  });
 }
 
@@ -369,7 +369,7 @@ assert.throws(
 // errors.
 assert.throws(
  () => { internalBinding('buffer').fill(Buffer.alloc(1), 1, 1, -2, 1); },
- { code: 'ERR_OUT_OF_RANGE' }
+ { code: 'ERR_OUT_OF_RANGE' },
 );
 
 // Test that bypassing 'length' won't cause an abort.
@@ -377,13 +377,13 @@ assert.throws(() => {
  const buf = Buffer.from('w00t');
  Object.defineProperty(buf, 'length', {
   value: 1337,
-  enumerable: true
+  enumerable: true,
  });
  buf.fill('');
 }, {
  code: 'ERR_BUFFER_OUT_OF_BOUNDS',
  name: 'RangeError',
- message: 'Attempt to access memory outside buffer bounds'
+ message: 'Attempt to access memory outside buffer bounds',
 });
 
 assert.deepStrictEqual(
@@ -427,5 +427,5 @@ assert.throws(() => {
  buf.fill('This is not correctly encoded', 'hex');
 }, {
  code: 'ERR_INVALID_ARG_VALUE',
- name: 'TypeError'
+ name: 'TypeError',
 });

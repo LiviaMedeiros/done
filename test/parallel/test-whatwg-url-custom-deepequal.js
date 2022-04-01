@@ -10,9 +10,9 @@ const assert = require('assert');
 
 assert.deepStrictEqual(
  new URL('./foo', 'https://example.com/'),
- new URL('https://example.com/foo')
+ new URL('https://example.com/foo'),
 );
 assert.deepStrictEqual(
  new URL('./foo', 'https://user:pass@example.com/'),
- new URL('https://user:pass@example.com/foo')
+ new URL('https://user:pass@example.com/foo'),
 );

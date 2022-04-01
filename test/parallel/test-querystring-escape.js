@@ -18,14 +18,14 @@ assert.throws(
  {
   code: 'ERR_INVALID_URI',
   name: 'URIError',
-  message: 'URI malformed'
- }
+  message: 'URI malformed',
+ },
 );
 
 // Using toString for objects
 assert.strictEqual(
  qs.escape({ test: 5, toString: () => 'test', valueOf: () => 10 }),
- 'test'
+ 'test',
 );
 
 // `toString` is not callable, must throw an error.

@@ -26,23 +26,23 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'file:///': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
    assert.strictEqual(
     manifest.assertIntegrity(href),
-    true
+    true,
    );
    assert.strictEqual(
     manifest.assertIntegrity(href, null),
-    true
+    true,
    );
    assert.strictEqual(
     manifest.assertIntegrity(href, ''),
-    true
+    true,
    );
   }
  }
@@ -50,23 +50,23 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'file:': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
    assert.strictEqual(
     manifest.assertIntegrity(href),
-    true
+    true,
    );
    assert.strictEqual(
     manifest.assertIntegrity(href, null),
-    true
+    true,
    );
    assert.strictEqual(
     manifest.assertIntegrity(href, ''),
-    true
+    true,
    );
   }
  }
@@ -75,8 +75,8 @@ const assert = require('assert');
    resources: {
     'file:///root/dir1/isolated': {},
     'file:///root/dir1/cascade': {
-     cascade: true
-    }
+     cascade: true,
+    },
    },
    scopes: {
     'file:///root/dir1/': {
@@ -87,31 +87,31 @@ const assert = require('assert');
     },
     'file:///root/dir1/censor/': {
     },
-   }
+   },
   });
   assert.throws(
    () => {
     manifest.assertIntegrity('file:///root/dir1/isolated');
    },
-   /ERR_MANIFEST_ASSERT_INTEGRITY/
+   /ERR_MANIFEST_ASSERT_INTEGRITY/,
   );
   assert.strictEqual(
    manifest.assertIntegrity('file:///root/dir1/cascade'),
-   true
+   true,
   );
   assert.strictEqual(
    manifest.assertIntegrity('file:///root/dir1/enoent'),
-   true
+   true,
   );
   assert.strictEqual(
    manifest.assertIntegrity('file:///root/dir1/dir2/enoent'),
-   true
+   true,
   );
   assert.throws(
    () => {
     manifest.assertIntegrity('file:///root/dir1/censor/enoent');
    },
-   /ERR_MANIFEST_ASSERT_INTEGRITY/
+   /ERR_MANIFEST_ASSERT_INTEGRITY/,
   );
  }
 }
@@ -127,9 +127,9 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'data:text/': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
@@ -137,7 +137,7 @@ const assert = require('assert');
     () => {
      manifest.assertIntegrity(href);
     },
-    /ERR_MANIFEST_ASSERT_INTEGRITY/
+    /ERR_MANIFEST_ASSERT_INTEGRITY/,
    );
   }
  }
@@ -145,9 +145,9 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'data:/': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
@@ -155,7 +155,7 @@ const assert = require('assert');
     () => {
      manifest.assertIntegrity(href);
     },
-    /ERR_MANIFEST_ASSERT_INTEGRITY/
+    /ERR_MANIFEST_ASSERT_INTEGRITY/,
    );
   }
  }
@@ -163,9 +163,9 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'data:': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
@@ -176,9 +176,9 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'data:text/javascript,0/': {
-     integrity: true
+     integrity: true,
     },
-   }
+   },
   });
 
   for (const href of baseURLs) {
@@ -186,7 +186,7 @@ const assert = require('assert');
     () => {
      manifest.assertIntegrity(href);
     },
-    /ERR_MANIFEST_ASSERT_INTEGRITY/
+    /ERR_MANIFEST_ASSERT_INTEGRITY/,
    );
   }
  }
@@ -198,85 +198,85 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'https://example.com/': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   assert.strictEqual(
    manifest.assertIntegrity('blob:https://example.com/has-origin'),
-   true
+   true,
   );
  }
  {
   const manifest = new Manifest({
    scopes: {
-   }
+   },
   });
 
   assert.throws(
    () => {
     manifest.assertIntegrity('blob:https://example.com/has-origin');
    },
-   /ERR_MANIFEST_ASSERT_INTEGRITY/
+   /ERR_MANIFEST_ASSERT_INTEGRITY/,
   );
  }
  {
   const manifest = new Manifest({
    scopes: {
     'blob:https://example.com/has-origin': {
-     cascade: true
-    }
-   }
+     cascade: true,
+    },
+   },
   });
 
   assert.throws(
    () => {
     manifest.assertIntegrity('blob:https://example.com/has-origin');
    },
-   /ERR_MANIFEST_ASSERT_INTEGRITY/
+   /ERR_MANIFEST_ASSERT_INTEGRITY/,
   );
  }
  {
   const manifest = new Manifest({
    resources: {
     'blob:https://example.com/has-origin': {
-     cascade: true
-    }
+     cascade: true,
+    },
    },
    scopes: {
     'https://example.com': {
-     integrity: true
-    }
-   }
+     integrity: true,
+    },
+   },
   });
 
   assert.strictEqual(
    manifest.assertIntegrity('blob:https://example.com/has-origin'),
-   true
+   true,
   );
  }
  {
   const manifest = new Manifest({
    scopes: {
     'blob:': {
-     integrity: true
+     integrity: true,
     },
     'https://example.com': {
-     cascade: true
-    }
-   }
+     cascade: true,
+    },
+   },
   });
 
   assert.throws(
    () => {
     manifest.assertIntegrity('blob:https://example.com/has-origin');
    },
-   /ERR_MANIFEST_ASSERT_INTEGRITY/
+   /ERR_MANIFEST_ASSERT_INTEGRITY/,
   );
   assert.strictEqual(
    manifest.assertIntegrity('blob:foo'),
-   true
+   true,
   );
  }
 }
@@ -286,16 +286,16 @@ const assert = require('assert');
  const manifest = new Manifest({
   scopes: {
    'file:///': {
-    integrity: true
-   }
+    integrity: true,
+   },
   },
-  onerror: 'throw'
+  onerror: 'throw',
  });
  assert.throws(
   () => {
    manifest.assertIntegrity('http://example.com');
   },
-  /ERR_MANIFEST_ASSERT_INTEGRITY/
+  /ERR_MANIFEST_ASSERT_INTEGRITY/,
  );
 }
 {
@@ -304,13 +304,13 @@ const assert = require('assert');
    new Manifest({
     scopes: {
      'file:///': {
-      integrity: true
-     }
+      integrity: true,
+     },
     },
-    onerror: 'unknown'
+    onerror: 'unknown',
    });
   },
-  /ERR_MANIFEST_UNKNOWN_ONERROR/
+  /ERR_MANIFEST_UNKNOWN_ONERROR/,
  );
 }
 // #endonerror

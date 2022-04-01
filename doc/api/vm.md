@@ -181,7 +181,7 @@ const vm = require('vm');
 
 const context = {
  animal: 'cat',
- count: 2
+ count: 2,
 };
 
 const script = new vm.Script('count += 1; name = "kitty";');
@@ -725,7 +725,7 @@ const module = new vm.SourceTextModule(
    // Object.prototype in the top context rather than that in
    // the contextified object.
    meta.prop = {};
-  }
+  },
  });
 // Since module has no dependencies, the linker function will never be called.
 await module.link(() => {});
@@ -752,7 +752,7 @@ const contextifiedObject = vm.createContext({ secret: 42 });
     // Object.prototype in the top context rather than that in
     // the contextified object.
     meta.prop = {};
-   }
+   },
   });
  // Since module has no dependencies, the linker function will never be called.
  await module.link(() => {});
@@ -1306,7 +1306,7 @@ const vm = require('vm');
 
 const contextObject = {
  animal: 'cat',
- count: 2
+ count: 2,
 };
 
 vm.runInNewContext('count += 1; name = "kitty"', contextObject);
@@ -1479,7 +1479,7 @@ function loop() {
 vm.runInNewContext(
  'Promise.resolve().then(() => loop());',
  { loop, console },
- { timeout: 5 }
+ { timeout: 5 },
 );
 // This is printed *before* 'entering loop' (!)
 console.log('done executing');
@@ -1498,7 +1498,7 @@ function loop() {
 vm.runInNewContext(
  'Promise.resolve().then(() => loop());',
  { loop, console },
- { timeout: 5, microtaskMode: 'afterEvaluate' }
+ { timeout: 5, microtaskMode: 'afterEvaluate' },
 );
 ```
 

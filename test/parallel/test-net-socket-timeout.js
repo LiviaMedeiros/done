@@ -59,8 +59,8 @@ for (let i = 0; i < invalidCallbacks.length; i++) {
    {
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
-   }
-  )
+   },
+  ),
  );
 }
 
@@ -73,6 +73,6 @@ server.listen(0, common.mustCall(() => {
    assert.strictEqual(socket.setTimeout(1, common.mustNotCall()), socket);
    server.close();
   })),
-  socket
+  socket,
  );
 }));

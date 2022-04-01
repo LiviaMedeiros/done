@@ -19,14 +19,14 @@ const server = tls
   		pfx: pfx,
   		passphrase: 'sample',
   		requestCert: true,
-  		rejectUnauthorized: false
+  		rejectUnauthorized: false,
   	},
   	common.mustCall(function(c) {
   		assert.strictEqual(c.getPeerCertificate().serialNumber,
   																					'ECC9B856270DA9A8');
   		assert.strictEqual(c.authorizationError, null);
   		c.end();
-  	})
+  	}),
   )
   .listen(0, function() {
   	const client = tls.connect(
@@ -34,7 +34,7 @@ const server = tls
   			port: this.address().port,
   			pfx: pfx,
   			passphrase: 'sample',
-  			rejectUnauthorized: false
+  			rejectUnauthorized: false,
   		},
   		function() {
   			for (let i = 0; i < 10; ++i) {
@@ -46,6 +46,6 @@ const server = tls
   			}
   			client.end();
   			server.close();
-  		}
+  		},
   	);
   });

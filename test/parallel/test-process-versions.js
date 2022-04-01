@@ -47,7 +47,7 @@ assert.match(process.versions.zlib, commonTemplate);
 
 assert.match(
  process.versions.v8,
- /^\d+\.\d+\.\d+(?:\.\d+)?-node\.\d+(?: \(candidate\))?$/
+ /^\d+\.\d+\.\d+(?:\.\d+)?-node\.\d+(?: \(candidate\))?$/,
 );
 assert.match(process.versions.modules, /^\d+$/);
 

@@ -16,32 +16,32 @@ const kWrappingData = {
    hash: 'SHA-256',
   },
   wrap: { label: new Uint8Array(8) },
-  pair: true
+  pair: true,
  },
  'AES-CTR': {
   generate: { length: 128 },
   wrap: { counter: new Uint8Array(16), length: 64 },
-  pair: false
+  pair: false,
  },
  'AES-CBC': {
   generate: { length: 128 },
   wrap: { iv: new Uint8Array(16) },
-  pair: false
+  pair: false,
  },
  'AES-GCM': {
   generate: { length: 128 },
   wrap: {
    iv: new Uint8Array(16),
    additionalData: new Uint8Array(16),
-   tagLength: 64
+   tagLength: 64,
   },
-  pair: false
+  pair: false,
  },
  'AES-KW': {
   generate: { length: 128 },
   wrap: { },
-  pair: false
- }
+  pair: false,
+ },
 };
 
 function generateWrappingKeys() {
@@ -67,7 +67,7 @@ async function generateKeysToWrap() {
     name: 'RSASSA-PKCS1-v1_5',
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256'
+    hash: 'SHA-256',
    },
    privateUsages: ['sign'],
    publicUsages: ['verify'],
@@ -78,7 +78,7 @@ async function generateKeysToWrap() {
     name: 'RSA-PSS',
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256'
+    hash: 'SHA-256',
    },
    privateUsages: ['sign'],
    publicUsages: ['verify'],
@@ -89,7 +89,7 @@ async function generateKeysToWrap() {
     name: 'RSA-OAEP',
     modulusLength: 1024,
     publicExponent: new Uint8Array([1, 0, 1]),
-    hash: 'SHA-256'
+    hash: 'SHA-256',
    },
    privateUsages: ['decrypt'],
    publicUsages: ['encrypt'],
@@ -98,7 +98,7 @@ async function generateKeysToWrap() {
   {
    algorithm: {
     name: 'ECDSA',
-    namedCurve: 'P-384'
+    namedCurve: 'P-384',
    },
    privateUsages: ['sign'],
    publicUsages: ['verify'],
@@ -107,7 +107,7 @@ async function generateKeysToWrap() {
   {
    algorithm: {
     name: 'ECDH',
-    namedCurve: 'P-384'
+    namedCurve: 'P-384',
    },
    privateUsages: ['deriveBits'],
    publicUsages: [],
@@ -116,7 +116,7 @@ async function generateKeysToWrap() {
   {
    algorithm: {
     name: 'AES-CTR',
-    length: 128
+    length: 128,
    },
    usages: ['encrypt', 'decrypt'],
    pair: false,
@@ -124,14 +124,14 @@ async function generateKeysToWrap() {
   {
    algorithm: {
     name: 'AES-CBC',
-    length: 128
+    length: 128,
    },
    usages: ['encrypt', 'decrypt'],
    pair: false,
   },
   {
    algorithm: {
-    name: 'AES-GCM', length: 128
+    name: 'AES-GCM', length: 128,
    },
    usages: ['encrypt', 'decrypt'],
    pair: false,
@@ -139,7 +139,7 @@ async function generateKeysToWrap() {
   {
    algorithm: {
     name: 'AES-KW',
-    length: 128
+    length: 128,
    },
    usages: ['wrapKey', 'unwrapKey'],
    pair: false,
@@ -148,7 +148,7 @@ async function generateKeysToWrap() {
    algorithm: {
     name: 'HMAC',
     length: 128,
-    hash: 'SHA-256'
+    hash: 'SHA-256',
    },
    usages: ['sign', 'verify'],
    pair: false,
@@ -250,7 +250,7 @@ async function testWrapping(name, keys) {
  const {
   wrappingKey,
   unwrappingKey,
-  wrap
+  wrap,
  } = kWrappingData[name];
 
  keys.forEach((key) => {

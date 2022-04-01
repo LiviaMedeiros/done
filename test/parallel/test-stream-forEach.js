@@ -117,7 +117,7 @@ const { once } = require('events');
  }, /ERR_INVALID_ARG_TYPE/).then(common.mustCall());
  assert.rejects(async () => {
   await Readable.from([1]).forEach((x) => x, {
-   concurrency: 'Foo'
+   concurrency: 'Foo',
   });
  }, /ERR_OUT_OF_RANGE/).then(common.mustCall());
  assert.rejects(async () => {

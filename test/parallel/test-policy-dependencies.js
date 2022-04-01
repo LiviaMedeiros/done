@@ -20,7 +20,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  console.log('%s\n%s', stderr, stdout);
  assert.strictEqual(status, 0);
@@ -34,7 +34,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 0);
 }
@@ -47,7 +47,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 1);
 }
@@ -60,7 +60,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  console.log('%s\n%s', stderr, stdout);
  assert.strictEqual(status, 0);
@@ -74,7 +74,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 1);
 }
@@ -87,7 +87,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 0);
 }
@@ -100,7 +100,7 @@ const dep = fixtures.path('policy', 'parent.js');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 1);
 }
@@ -116,7 +116,7 @@ const dep = fixtures.path('policy', 'parent.js');
    '--experimental-policy',
    depPolicy,
    fixtures.path('policy', 'bad-main.mjs'),
-  ]
+  ],
  );
  assert.strictEqual(status, 1);
  assert.match(
@@ -135,12 +135,12 @@ const dep = fixtures.path('policy', 'parent.js');
    '--experimental-policy',
    depPolicy,
    fixtures.path('policy', 'canonicalize.mjs'),
-  ]
+  ],
  );
  assert.strictEqual(
   status,
   0,
   new Error(
-   'policies should canonicalize specifiers by default prior to matching')
+   'policies should canonicalize specifiers by default prior to matching'),
  );
 }

@@ -24,7 +24,7 @@ createDir(moduleDir);
 fs.cpSync(
  fixtures.path('es-modules', moduleName),
  moduleDir,
- { recursive: true }
+ { recursive: true },
 );
 
 const { importedESM: importedESMBefore,

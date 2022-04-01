@@ -65,7 +65,7 @@ server.listen(0, common.mustCall(function() {
      assert.strictEqual(res.headers[name], 'A');
     }
     assert.strictEqual(res.headers['x-a'], 'A, B');
-   })
+   }),
   );
  }
 }));

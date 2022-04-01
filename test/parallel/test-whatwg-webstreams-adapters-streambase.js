@@ -15,7 +15,7 @@ const {
 } = require('internal/webstreams/adapters');
 
 const {
- JSStream
+ JSStream,
 } = internalBinding('js_stream');
 
 {

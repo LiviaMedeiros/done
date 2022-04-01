@@ -5,7 +5,7 @@ const assert = require('assert');
 
 assert.throws(
  () => Object.defineProperty = 'asdf',
- TypeError
+ TypeError,
 );
 
 // Ensure we can extend Console

@@ -20,7 +20,7 @@ import assert from 'assert';
      controller.close();
     });
    });
-  }
+  },
  }).tee();
 
  (async () => {

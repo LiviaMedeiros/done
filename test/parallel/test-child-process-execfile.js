@@ -20,7 +20,7 @@ const execOpts = { encoding: 'utf8', shell: true };
    assert.strictEqual(e.message.trim(),
                       `Command failed: ${process.execPath} ${fixture} 42`);
    assert.strictEqual(e.code, 42);
-  })
+  }),
  );
 }
 

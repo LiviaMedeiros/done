@@ -55,7 +55,7 @@ const server = http
   	done = () => {
   		s.write(
   			'GET / HTTP/1.1\r\n\r\n' +
-          'GET / HTTP/1.1\r\nConnection: upgrade\r\nUpgrade: ws\r\n\r\naaa'
+          'GET / HTTP/1.1\r\nConnection: upgrade\r\nUpgrade: ws\r\n\r\naaa',
   		);
   	};
   	more();

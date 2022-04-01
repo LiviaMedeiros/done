@@ -11,35 +11,35 @@ assert.rejects(
  dnsPromises.lookup(addresses.NOT_FOUND, {
   hints: 0,
   family: 0,
-  all: false
+  all: false,
  }),
  {
   code: 'ENOTFOUND',
-  message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
- }
+  message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
+ },
 );
 
 assert.rejects(
  dnsPromises.lookup(addresses.NOT_FOUND, {
   hints: 0,
   family: 0,
-  all: true
+  all: true,
  }),
  {
   code: 'ENOTFOUND',
-  message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
- }
+  message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
+ },
 );
 
 dns.lookup(addresses.NOT_FOUND, {
  hints: 0,
  family: 0,
- all: true
+ all: true,
 }, common.mustCall((error) => {
  assert.strictEqual(error.code, 'ENOTFOUND');
  assert.strictEqual(
   error.message,
-  `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
+  `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
  );
  assert.strictEqual(error.syscall, 'getaddrinfo');
  assert.strictEqual(error.hostname, addresses.NOT_FOUND);
@@ -52,10 +52,10 @@ common.expectWarning('DeprecationWarning',
 assert.rejects(
  dnsPromises.lookup(addresses.NOT_FOUND, {
   family: 'IPv4',
-  all: 'all'
+  all: 'all',
  }),
  {
   code: 'ENOTFOUND',
-  message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`
- }
+  message: `getaddrinfo ENOTFOUND ${addresses.NOT_FOUND}`,
+ },
 );

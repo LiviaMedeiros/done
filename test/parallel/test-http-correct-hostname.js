@@ -17,7 +17,7 @@ if (common.hasCrypto) {
 
 Object.keys(modules).forEach((module) => {
  const doNotCall = common.mustNotCall(
-  `${module}.request should not connect to ${module}://example.com%60x.example.com`
+  `${module}.request should not connect to ${module}://example.com%60x.example.com`,
  );
  const req = modules[module].request(`${module}://example.com%60x.example.com`, doNotCall);
  assert.deepStrictEqual(req[kOutHeaders].host, [

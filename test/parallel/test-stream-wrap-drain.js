@@ -30,7 +30,7 @@ const { ShutdownWrap } = internalBinding('stream_wrap');
  socket.write(
   // Make the buffer long enough so that the `Writable` will emit "drain".
   Buffer.allocUnsafe(socket.writableHighWaterMark * 2),
-  common.mustCall()
+  common.mustCall(),
  );
 
  // Make sure that the 'drain' events will be emitted.

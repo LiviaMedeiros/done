@@ -26,25 +26,25 @@ assert(isPromisePending(new Promise(() => {})));
 assert.throws(() => {
  Reflect.get(ByteLengthQueuingStrategy.prototype, 'highWaterMark', {});
 }, {
- code: 'ERR_INVALID_THIS'
+ code: 'ERR_INVALID_THIS',
 });
 
 assert.throws(() => {
  Reflect.get(ByteLengthQueuingStrategy.prototype, 'size', {});
 }, {
- code: 'ERR_INVALID_THIS'
+ code: 'ERR_INVALID_THIS',
 });
 
 assert.throws(() => {
  Reflect.get(CountQueuingStrategy.prototype, 'highWaterMark', {});
 }, {
- code: 'ERR_INVALID_THIS'
+ code: 'ERR_INVALID_THIS',
 });
 
 assert.throws(() => {
  Reflect.get(CountQueuingStrategy.prototype, 'size', {});
 }, {
- code: 'ERR_INVALID_THIS'
+ code: 'ERR_INVALID_THIS',
 });
 
 // Custom Inspect Works

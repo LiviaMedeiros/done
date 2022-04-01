@@ -43,15 +43,15 @@ is used to read the data from the stream.
 
 ```mjs
 import {
- ReadableStream
+ ReadableStream,
 } from 'node:stream/web';
 
 import {
- setInterval as every
+ setInterval as every,
 } from 'node:timers/promises';
 
 import {
- performance
+ performance,
 } from 'node:perf_hooks';
 
 const SECOND = 1000;
@@ -60,7 +60,7 @@ const stream = new ReadableStream({
  async start(controller) {
   for await (const _ of every(SECOND))
    controller.enqueue(performance.now());
- }
+ },
 });
 
 for await (const value of stream)
@@ -69,15 +69,15 @@ for await (const value of stream)
 
 ```cjs
 const {
- ReadableStream
+ ReadableStream,
 } = require('stream/web');
 
 const {
- setInterval: every
+ setInterval: every,
 } = require('timers/promises');
 
 const {
- performance
+ performance,
 } = require('perf_hooks');
 
 const SECOND = 1000;
@@ -86,7 +86,7 @@ const stream = new ReadableStream({
  async start(controller) {
   for await (const _ of every(SECOND))
    controller.enqueue(performance.now());
- }
+ },
 });
 
 (async () => {
@@ -242,7 +242,7 @@ const stream = new ReadableStream({
 const transform = new TransformStream({
  transform(chunk, controller) {
   controller.enqueue(chunk.toUpperCase());
- }
+ },
 });
 
 const transformedStream = stream.pipeThrough(transform);
@@ -266,7 +266,7 @@ const stream = new ReadableStream({
 const transform = new TransformStream({
  transform(chunk, controller) {
   controller.enqueue(chunk.toUpperCase());
- }
+ },
 });
 
 const transformedStream = stream.pipeThrough(transform);
@@ -467,11 +467,11 @@ data that avoids extraneous copying.
 
 ```mjs
 import {
- open
+ open,
 } from 'node:fs/promises';
 
 import {
- ReadableStream
+ ReadableStream,
 } from 'node:stream/web';
 
 import { Buffer } from 'node:buffer';
@@ -492,7 +492,7 @@ class Source {
   } = await this.file.read({
    buffer: view,
    offset: view.byteOffset,
-   length: view.byteLength
+   length: view.byteLength,
   });
 
   if (bytesRead === 0) {
@@ -753,13 +753,13 @@ The `WritableStream` is a destination to which stream data is sent.
 
 ```mjs
 import {
- WritableStream
+ WritableStream,
 } from 'node:stream/web';
 
 const stream = new WritableStream({
  write(chunk) {
   console.log(chunk);
- }
+ },
 });
 
 await stream.getWriter().write('Hello World');
@@ -989,13 +989,13 @@ queue.
 
 ```mjs
 import {
- TransformStream
+ TransformStream,
 } from 'node:stream/web';
 
 const transform = new TransformStream({
  transform(chunk, controller) {
   controller.enqueue(chunk.toUpperCase());
- }
+ },
 });
 
 await Promise.all([

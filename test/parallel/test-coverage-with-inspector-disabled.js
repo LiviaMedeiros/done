@@ -13,7 +13,7 @@ const childPath = fixtures.path('v8-coverage/subprocess');
 const { status, stderr } = spawnSync(
  process.execPath,
  [childPath],
- { env }
+ { env },
 );
 
 const warningMessage = 'The inspector is disabled, ' +
@@ -22,5 +22,5 @@ const warningMessage = 'The inspector is disabled, ' +
 assert.strictEqual(status, 0);
 assert.strictEqual(
  stderr.toString().includes(`Warning: ${warningMessage}`),
- true
+ true,
 );

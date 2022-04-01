@@ -36,8 +36,8 @@ function checkArgs(connected) {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "buffer" argument must be of type string or an instance ' +
-      'of Buffer, TypedArray, or DataView. Received undefined'
-  }
+      'of Buffer, TypedArray, or DataView. Received undefined',
+  },
  );
 
  // send(buf, offset, length, port, host)
@@ -47,8 +47,8 @@ function checkArgs(connected) {
    {
     code: 'ERR_SOCKET_DGRAM_IS_CONNECTED',
     name: 'Error',
-    message: 'Already connected'
-   }
+    message: 'Already connected',
+   },
   );
 
   assert.throws(
@@ -56,8 +56,8 @@ function checkArgs(connected) {
    {
     code: 'ERR_SOCKET_DGRAM_IS_CONNECTED',
     name: 'Error',
-    message: 'Already connected'
-   }
+    message: 'Already connected',
+   },
   );
 
   assert.throws(
@@ -65,8 +65,8 @@ function checkArgs(connected) {
    {
     code: 'ERR_SOCKET_DGRAM_IS_CONNECTED',
     name: 'Error',
-    message: 'Already connected'
-   }
+    message: 'Already connected',
+   },
   );
 
   assert.throws(
@@ -74,8 +74,8 @@ function checkArgs(connected) {
    {
     code: 'ERR_SOCKET_DGRAM_IS_CONNECTED',
     name: 'Error',
-    message: 'Already connected'
-   }
+    message: 'Already connected',
+   },
   );
 
   const longArray = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -97,7 +97,7 @@ function checkArgs(connected) {
      code: 'ERR_BUFFER_OUT_OF_BOUNDS',
      name: 'RangeError',
      message: '"offset" is outside of buffer bounds',
-    }
+    },
    );
 
    assert.throws(
@@ -106,7 +106,7 @@ function checkArgs(connected) {
      code: 'ERR_BUFFER_OUT_OF_BOUNDS',
      name: 'RangeError',
      message: '"length" is outside of buffer bounds',
-    }
+    },
    );
 
    assert.throws(
@@ -115,7 +115,7 @@ function checkArgs(connected) {
      code: 'ERR_BUFFER_OUT_OF_BOUNDS',
      name: 'RangeError',
      message: '"length" is outside of buffer bounds',
-    }
+    },
    );
   }
  } else {
@@ -131,8 +131,8 @@ function checkArgs(connected) {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "buffer" argument must be of type string or an instance ' +
-      'of Buffer, TypedArray, or DataView. Received type number (23)'
-  }
+      'of Buffer, TypedArray, or DataView. Received type number (23)',
+  },
  );
 
  // send([buf1, ..], port, host)
@@ -143,8 +143,8 @@ function checkArgs(connected) {
    name: 'TypeError',
    message: 'The "buffer list arguments" argument must be of type string ' +
       'or an instance of Buffer, TypedArray, or DataView. ' +
-      'Received an instance of Array'
-  }
+      'Received an instance of Array',
+  },
  );
 }
 

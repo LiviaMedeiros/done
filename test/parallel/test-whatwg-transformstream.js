@@ -171,7 +171,7 @@ class Source {
  const transform = new TransformStream({
   start(c) {
    controller = c;
-  }
+  },
  });
 
  assert.match(inspect(transform), /TransformStream/);

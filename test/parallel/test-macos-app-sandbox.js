@@ -60,7 +60,7 @@ if (process.stdin.isTTY) {
  // Run the sandboxed node instance with inherited tty stdin
  const spawnResult = child_process.spawnSync(
   appExecutablePath, ['-e', ''],
-  { stdio: 'inherit' }
+  { stdio: 'inherit' },
  );
 
  assert.strictEqual(spawnResult.signal, null);

@@ -9,13 +9,13 @@ const crypto = require('crypto');
 // 'should consider equal strings to be equal'
 assert.strictEqual(
  crypto.timingSafeEqual(Buffer.from('foo'), Buffer.from('foo')),
- true
+ true,
 );
 
 // 'should consider unequal strings to be unequal'
 assert.strictEqual(
  crypto.timingSafeEqual(Buffer.from('foo'), Buffer.from('bar')),
- false
+ false,
 );
 
 {
@@ -37,8 +37,8 @@ assert.throws(
  {
   code: 'ERR_CRYPTO_TIMING_SAFE_EQUAL_LENGTH',
   name: 'RangeError',
-  message: 'Input buffers must have the same byte length'
- }
+  message: 'Input buffers must have the same byte length',
+ },
 );
 
 assert.throws(
@@ -46,7 +46,7 @@ assert.throws(
  {
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
- }
+ },
 );
 
 assert.throws(
@@ -54,5 +54,5 @@ assert.throws(
  {
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
- }
+ },
 );

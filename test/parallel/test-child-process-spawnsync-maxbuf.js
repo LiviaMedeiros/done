@@ -53,6 +53,6 @@ const args = [
  assert.ifError(ret.error);
  assert.deepStrictEqual(
   ret.stdout.toString().trim(),
-  'a'.repeat(1024 * 1024 - 1)
+  'a'.repeat(1024 * 1024 - 1),
  );
 }

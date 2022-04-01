@@ -72,7 +72,7 @@ dns.lookup('::1', common.mustSucceed((result, addressType) => {
 
  assert.throws(
   () => dns.resolve('www.google.com', val),
-  err
+  err,
  );
 
  assert.throws(() => dnsPromises.resolve('www.google.com', val), err);

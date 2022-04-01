@@ -69,7 +69,7 @@ if (!common.hasIntl) {
  const dtf = new Intl.DateTimeFormat(['en'], {
   timeZone: GMT,
   month: 'short',
-  year: '2-digit'
+  year: '2-digit',
  });
 
  // If list is specified and doesn't contain 'en' then return.
@@ -146,7 +146,7 @@ if (!common.hasIntl) {
   execFile(
    process.execPath, ['-p', 'new Date().toLocaleString()'],
    { env },
-   common.mustSucceed()
+   common.mustSucceed(),
   );
  }
 
@@ -157,7 +157,7 @@ if (!common.hasIntl) {
    process.execPath,
    ['-p', 'new Intl.NumberFormat().resolvedOptions().locale'],
    { env },
-   common.mustSucceed()
+   common.mustSucceed(),
   );
  }
 }

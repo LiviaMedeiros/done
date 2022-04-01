@@ -17,16 +17,16 @@ function createBase64URL(mime, body) {
   assert.strictEqual(ns.default.a, 'aaa');
   const importerOfURL = createURL(
    'text/javascript',
-   `export {default as default} from ${JSON.stringify(plainESMURL)}`
+   `export {default as default} from ${JSON.stringify(plainESMURL)}`,
   );
   assert.strictEqual(
    (await import(importerOfURL)).default,
-   ns.default
+   ns.default,
   );
   const base64ESMURL = createBase64URL('text/javascript', body);
   assert.notStrictEqual(
    await import(base64ESMURL),
-   ns
+   ns,
   );
  }
  {
@@ -75,7 +75,7 @@ function createBase64URL(mime, body) {
    import('data:application/json;foo="test,",0',
     { assert: { type: 'json' } }), {
    name: 'SyntaxError',
-   message: /Unexpected end of JSON input/
+   message: /Unexpected end of JSON input/,
   });
  }
  {

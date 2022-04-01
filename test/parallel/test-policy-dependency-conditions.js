@@ -64,9 +64,9 @@ for (const totalDepth of [1, 2, 3]) {
      target,
      conditions: new Set(
       offsets.map(
-       (conditionOffset, depth) => tree[depth][conditionOffset]
-      )
-     )
+       (conditionOffset, depth) => tree[depth][conditionOffset],
+      ),
+     ),
     });
    } else {
     target = {};
@@ -80,10 +80,10 @@ for (const totalDepth of [1, 2, 3]) {
    resources: {
     'test:_': {
      dependencies: {
-      _: root
-     }
-    }
-   }
+      _: root,
+     },
+    },
+   },
   });
   const redirector = manifest.getDependencyMapper('test:_');
   for (const { target, conditions } of order) {
@@ -109,11 +109,11 @@ for (const totalDepth of [1, 2, 3]) {
               'no prior targets matched',
        root,
        order,
-       target
+       target,
       );
       // THIS WILL ALWAYS FAIL, but we want that error message
       assert.strictEqual(
-       result, target
+       result, target,
       );
      }
     }

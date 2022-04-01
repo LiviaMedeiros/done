@@ -9,5 +9,5 @@ assert.throws(function() {
 
 assert.strictEqual(
  require(fixtures.path('internal-modules')),
- 42
+ 42,
 );

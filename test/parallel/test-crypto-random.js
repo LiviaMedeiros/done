@@ -44,7 +44,7 @@ common.expectWarning('DeprecationWarning',
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "size" argument must be of type number.' +
-                 common.invalidArgTypeHelper(value)
+                 common.invalidArgTypeHelper(value),
    };
    assert.throws(() => f(value), errObj);
    assert.throws(() => f(value, common.mustNotCall()), errObj);
@@ -55,7 +55,7 @@ common.expectWarning('DeprecationWarning',
     code: 'ERR_OUT_OF_RANGE',
     name: 'RangeError',
     message: 'The value of "size" is out of range. It must be >= 0 && <= ' +
-                 `${kMaxPossibleLength}. Received ${value}`
+                 `${kMaxPossibleLength}. Received ${value}`,
    };
    assert.throws(() => f(value), errObj);
    assert.throws(() => f(value, common.mustNotCall()), errObj);
@@ -231,7 +231,7 @@ common.expectWarning('DeprecationWarning',
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "offset" argument must be of type number. ' +
-               "Received type string ('test')"
+               "Received type string ('test')",
   };
 
   assert.throws(() => crypto.randomFillSync(buf, 'test'), typeErrObj);
@@ -245,7 +245,7 @@ common.expectWarning('DeprecationWarning',
 
   assert.throws(
    () => crypto.randomFill(buf, 0, 'test', common.mustNotCall()),
-   typeErrObj
+   typeErrObj,
   );
 
   [NaN, kMaxPossibleLength + 1, -10, (-1 >>> 0) + 1].forEach((offsetSize) => {
@@ -253,7 +253,7 @@ common.expectWarning('DeprecationWarning',
     code: 'ERR_OUT_OF_RANGE',
     name: 'RangeError',
     message: 'The value of "offset" is out of range. ' +
-                 `It must be >= 0 && <= 10. Received ${offsetSize}`
+                 `It must be >= 0 && <= 10. Received ${offsetSize}`,
    };
 
    assert.throws(() => crypto.randomFillSync(buf, offsetSize), errObj);
@@ -268,7 +268,7 @@ common.expectWarning('DeprecationWarning',
 
    assert.throws(
     () => crypto.randomFill(buf, 1, offsetSize, common.mustNotCall()),
-    errObj
+    errObj,
    );
   });
 
@@ -276,13 +276,13 @@ common.expectWarning('DeprecationWarning',
    code: 'ERR_OUT_OF_RANGE',
    name: 'RangeError',
    message: 'The value of "size + offset" is out of range. ' +
-               'It must be <= 10. Received 11'
+               'It must be <= 10. Received 11',
   };
   assert.throws(() => crypto.randomFillSync(buf, 1, 10), rangeErrObj);
 
   assert.throws(
    () => crypto.randomFill(buf, 1, 10, common.mustNotCall()),
-   rangeErrObj
+   rangeErrObj,
   );
  });
 }
@@ -296,8 +296,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "size" is out of range. ' +
-             `It must be >= 0 && <= ${kMaxPossibleLength}. Received 4294967296`
- }
+             `It must be >= 0 && <= ${kMaxPossibleLength}. Received 4294967296`,
+ },
 );
 
 [1, true, NaN, null, undefined, {}, []].forEach((i) => {
@@ -306,15 +306,15 @@ assert.throws(
   () => crypto.randomFillSync(i),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
  assert.throws(
   () => crypto.randomFill(i, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
  assert.throws(
   () => crypto.randomFill(buf, 0, 10, i),
@@ -330,7 +330,7 @@ assert.throws(
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-  }
+  },
  );
 });
 
@@ -428,27 +428,27 @@ assert.throws(
 
   assert.throws(
    () => crypto.randomInt(i, 100),
-   invalidMinError
+   invalidMinError,
   );
   assert.throws(
    () => crypto.randomInt(i, 100, common.mustNotCall()),
-   invalidMinError
+   invalidMinError,
   );
   assert.throws(
    () => crypto.randomInt(i),
-   invalidMaxError
+   invalidMaxError,
   );
   assert.throws(
    () => crypto.randomInt(i, common.mustNotCall()),
-   invalidMaxError
+   invalidMaxError,
   );
   assert.throws(
    () => crypto.randomInt(0, i, common.mustNotCall()),
-   invalidMaxError
+   invalidMaxError,
   );
   assert.throws(
    () => crypto.randomInt(0, i),
-   invalidMaxError
+   invalidMaxError,
   );
  });
 
@@ -465,7 +465,7 @@ assert.throws(
    name: 'TypeError',
    message: 'The "min" argument must be a safe integer.' +
       `${common.invalidArgTypeHelper(minInt - 1)}`,
-  }
+  },
  );
 
  assert.throws(
@@ -475,7 +475,7 @@ assert.throws(
    name: 'TypeError',
    message: 'The "max" argument must be a safe integer.' +
       `${common.invalidArgTypeHelper(maxInt + 1)}`,
-  }
+  },
  );
 
  crypto.randomInt(1, common.mustSucceed());
@@ -486,7 +486,7 @@ assert.throws(
    name: 'RangeError',
    message: 'The value of "max" is out of range. It must be greater than ' +
       `the value of "min" (${arg[arg.length - 2] || 0}). ` +
-      `Received ${arg[arg.length - 1]}`
+      `Received ${arg[arg.length - 1]}`,
   });
  }
 
@@ -500,8 +500,8 @@ assert.throws(
    name: 'RangeError',
    message: 'The value of "max - min" is out of range. ' +
                `It must be <= ${MAX_RANGE}. ` +
-               'Received 281_474_976_710_656'
-  }
+               'Received 281_474_976_710_656',
+  },
  );
 
  assert.throws(() => crypto.randomInt(MAX_RANGE + 1, common.mustNotCall()), {
@@ -509,7 +509,7 @@ assert.throws(
   name: 'RangeError',
   message: 'The value of "max" is out of range. ' +
              `It must be <= ${MAX_RANGE}. ` +
-             'Received 281_474_976_710_656'
+             'Received 281_474_976_710_656',
  });
 
  [true, NaN, null, {}, [], 10].forEach((i) => {

@@ -11,11 +11,11 @@ const childProcess = require('child_process');
 const result = childProcess.spawnSync(
  process.execPath,
  [ '--use-bundled-ca', '--use-openssl-ca', '-p', 'process.version' ],
- { encoding: 'utf8' }
+ { encoding: 'utf8' },
 );
 
 assert.strictEqual(result.stderr, `${process.execPath
-}: either --use-openssl-ca or --use-bundled-ca can be used, not both${os.EOL}`
+}: either --use-openssl-ca or --use-bundled-ca can be used, not both${os.EOL}`,
 );
 assert.strictEqual(result.status, 9);
 

@@ -10,7 +10,7 @@ assert.throws(
   // should throw error
   finished({}, () => {});
  },
- { code: 'ERR_INVALID_ARG_TYPE' }
+ { code: 'ERR_INVALID_ARG_TYPE' },
 );
 
 const streamObj = new Duplex();

@@ -24,8 +24,8 @@ server.listen(0, common.mustCall(() => {
    name: 'RangeError',
    code: 'ERR_OUT_OF_RANGE',
    message: 'The value of "code" is out of range. It must be ' +
-               '>= 0 && <= 4294967295. Received 4294967296'
-  }
+               '>= 0 && <= 4294967295. Received 4294967296',
+  },
  );
  assert.strictEqual(req.closed, false);
 
@@ -35,7 +35,7 @@ server.listen(0, common.mustCall(() => {
    {
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_TYPE',
-   }
+   },
   );
   assert.strictEqual(req.closed, false);
  });
@@ -59,7 +59,7 @@ server.listen(0, common.mustCall(() => {
  req.on('error', common.expectsError({
   code: 'ERR_HTTP2_STREAM_ERROR',
   name: 'Error',
-  message: 'Stream closed with error code NGHTTP2_PROTOCOL_ERROR'
+  message: 'Stream closed with error code NGHTTP2_PROTOCOL_ERROR',
  }));
 
  // The `response` event should not fire as the server should receive the

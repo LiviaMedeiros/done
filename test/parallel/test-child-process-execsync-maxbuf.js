@@ -34,7 +34,7 @@ const args = [
 {
  const ret = execSync(
   `"${process.execPath}" ${args.join(' ')}`,
-  { maxBuffer: Infinity }
+  { maxBuffer: Infinity },
  );
 
  assert.deepStrictEqual(ret, msgOutBuf);
@@ -44,7 +44,7 @@ const args = [
 {
  assert.throws(() => {
   execSync(
-   `"${process.execPath}" -e "console.log('a'.repeat(1024 * 1024))"`
+   `"${process.execPath}" -e "console.log('a'.repeat(1024 * 1024))"`,
   );
  }, (e) => {
   assert.ok(e, 'maxBuffer should error');
@@ -57,11 +57,11 @@ const args = [
 // Default maxBuffer size is 1024 * 1024.
 {
  const ret = execSync(
-  `"${process.execPath}" -e "console.log('a'.repeat(1024 * 1024 - 1))"`
+  `"${process.execPath}" -e "console.log('a'.repeat(1024 * 1024 - 1))"`,
  );
 
  assert.deepStrictEqual(
   ret.toString().trim(),
-  'a'.repeat(1024 * 1024 - 1)
+  'a'.repeat(1024 * 1024 - 1),
  );
 }

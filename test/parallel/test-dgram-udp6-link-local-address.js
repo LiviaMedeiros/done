@@ -44,7 +44,7 @@ server.on('message', common.mustCall((buf, info) => {
  // including the link local scope identifier.
  assert.strictEqual(
   info.address,
-  isWindows ? `${iface.address}%${iface.scopeid}` : address
+  isWindows ? `${iface.address}%${iface.scopeid}` : address,
  );
  server.close();
  client.close();

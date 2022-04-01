@@ -9,12 +9,12 @@ if (cluster.isPrimary) {
   assert.strictEqual(
    code,
    0,
-   `Worker did not exit normally with code: ${code}`
+   `Worker did not exit normally with code: ${code}`,
   );
   assert.strictEqual(
    signal,
    null,
-   `Worker did not exit normally with signal: ${signal}`
+   `Worker did not exit normally with signal: ${signal}`,
   );
  }));
 } else {

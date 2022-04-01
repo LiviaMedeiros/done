@@ -33,7 +33,7 @@ const expectedHeaders = {
  'OPTIONS': ['host', 'connection'],
  'POST': ['host', 'connection', 'content-length'],
  'PUT': ['host', 'connection', 'content-length'],
- 'TRACE': ['host', 'connection']
+ 'TRACE': ['host', 'connection'],
 };
 
 const expectedMethods = Object.keys(expectedHeaders);
@@ -48,14 +48,14 @@ const server = http.createServer(common.mustCall((req, res) => {
  requestHeaders.forEach((header) => {
   assert.ok(
    expectedHeaders[req.method].includes(header.toLowerCase()),
-   `${header} should not exist for method ${req.method}`
+   `${header} should not exist for method ${req.method}`,
   );
  });
 
  assert.strictEqual(
   requestHeaders.length,
   expectedHeaders[req.method].length,
-  `some headers were missing for method: ${req.method}`
+  `some headers were missing for method: ${req.method}`,
  );
 }, expectedMethods.length));
 
@@ -63,7 +63,7 @@ server.listen(0, common.mustCall(() => {
  Promise.all(expectedMethods.map(async (method) => {
   const request = http.request({
    method: method,
-   port: server.address().port
+   port: server.address().port,
   }).end();
   return once(request, 'response');
  })).then(common.mustCall(() => { server.close(); }));

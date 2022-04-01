@@ -33,15 +33,15 @@ server.on(
 
   stream.respond({
    'content-type': 'text/html',
-   ':status': 200
+   ':status': 200,
   });
   stream.end('hello world');
- })
+ }),
 );
 
 server.on('session', (session) => {
  session.settings({
-  maxConcurrentStreams: 2
+  maxConcurrentStreams: 2,
  });
 });
 
@@ -51,8 +51,8 @@ server.listen(
   const client = h2.connect(`http://localhost:${server.address().port}`, {
    settings: {
     enablePush: false,
-    initialWindowSize: 123456
-   }
+    initialWindowSize: 123456,
+   },
   });
 
   client.on(
@@ -62,7 +62,7 @@ server.listen(
     assert.strictEqual(settings.enablePush, false);
     assert.strictEqual(settings.initialWindowSize, 123456);
     assert.strictEqual(settings.maxFrameSize, 16384);
-   }, 2)
+   }, 2),
   );
 
   let calledOnce = false;
@@ -72,10 +72,10 @@ server.listen(
     assert(settings);
     assert.strictEqual(
      settings.maxConcurrentStreams,
-     calledOnce ? 2 : (2 ** 32) - 1
+     calledOnce ? 2 : (2 ** 32) - 1,
     );
     calledOnce = true;
-   }, 2)
+   }, 2),
   );
 
   const headers = { ':path': '/' };
@@ -112,8 +112,8 @@ server.listen(
      {
       name: 'RangeError',
       code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-      message: `Invalid value for setting "${i[0]}": ${i[1]}`
-     }
+      message: `Invalid value for setting "${i[0]}": ${i[1]}`,
+     },
     );
    });
 
@@ -124,8 +124,8 @@ server.listen(
      {
       name: 'TypeError',
       code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-      message: `Invalid value for setting "enablePush": ${i}`
-     }
+      message: `Invalid value for setting "enablePush": ${i}`,
+     },
     );
    });
   }));
@@ -137,5 +137,5 @@ server.listen(
    client.close();
   }));
   req.end();
- })
+ }),
 );

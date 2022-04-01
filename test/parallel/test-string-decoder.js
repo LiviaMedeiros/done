@@ -49,7 +49,7 @@ test('utf-8', Buffer.from('𤭢', 'utf-8'), '𤭢');
 test(
  'utf-8',
  Buffer.from([0xCB, 0xA4, 0x64, 0xE1, 0x8B, 0xA4, 0x30, 0xE3, 0x81, 0x85]),
- '\u02e4\u0064\u12e4\u0030\u3045'
+ '\u02e4\u0064\u12e4\u0030\u3045',
 );
 
 // Some invalid input, known to have caused trouble with chunking
@@ -103,7 +103,7 @@ const inputBuffer = Buffer.from(arrayBufferViewStr.repeat(8), 'utf8');
 for (const expectView of common.getArrayBufferViews(inputBuffer)) {
  assert.strictEqual(
   decoder.write(expectView),
-  inputBuffer.toString('utf8')
+  inputBuffer.toString('utf8'),
  );
  assert.strictEqual(decoder.end(), '');
 }
@@ -178,8 +178,8 @@ assert.throws(
  {
   code: 'ERR_UNKNOWN_ENCODING',
   name: 'TypeError',
-  message: 'Unknown encoding: 1'
- }
+  message: 'Unknown encoding: 1',
+ },
 );
 
 assert.throws(
@@ -187,8 +187,8 @@ assert.throws(
  {
   code: 'ERR_UNKNOWN_ENCODING',
   name: 'TypeError',
-  message: 'Unknown encoding: test'
- }
+  message: 'Unknown encoding: test',
+ },
 );
 
 assert.throws(
@@ -197,8 +197,8 @@ assert.throws(
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "buf" argument must be an instance of Buffer, TypedArray,' +
-      ' or DataView. Received null'
- }
+      ' or DataView. Received null',
+ },
 );
 
 if (common.enoughTestMem) {
@@ -206,7 +206,7 @@ if (common.enoughTestMem) {
   () => new StringDecoder().write(Buffer.alloc(0x1fffffe8 + 1).fill('a')),
   {
    code: 'ERR_STRING_TOO_LONG',
-  }
+  },
  );
 }
 
@@ -214,7 +214,7 @@ assert.throws(
  () => new StringDecoder('utf8').__proto__.write(Buffer.from('abc')), // eslint-disable-line no-proto
  {
   code: 'ERR_INVALID_THIS',
- }
+ },
 );
 
 // Test verifies that StringDecoder will correctly decode the given input

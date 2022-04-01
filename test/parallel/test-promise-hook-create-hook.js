@@ -6,13 +6,13 @@ const { promiseHooks } = require('v8');
 for (const hook of ['init', 'before', 'after', 'settled']) {
  assert.throws(() => {
   promiseHooks.createHook({
-   [hook]: async function() { }
+   [hook]: async function() { },
   });
  }, new RegExp(`The "${hook}Hook" argument must be of type function`));
 
  assert.throws(() => {
   promiseHooks.createHook({
-   [hook]: async function*() { }
+   [hook]: async function*() { },
   });
  }, new RegExp(`The "${hook}Hook" argument must be of type function`));
 }
@@ -36,7 +36,7 @@ const stop = promiseHooks.createHook({
  }, 1),
  settled: common.mustCall((promise) => {
   settled = promise;
- }, 2)
+ }, 2),
 });
 
 // Clears state on each check so only the delta needs to be checked.

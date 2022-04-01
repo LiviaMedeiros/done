@@ -110,7 +110,7 @@ joinTests.push([
    [['c:.', 'file'], 'c:file'],
    [['c:', '/'], 'c:\\'],
    [['c:', 'file'], 'c:\\file'],
-  ]
+  ],
  ),
 ]);
 joinTests.forEach((test) => {

@@ -31,7 +31,7 @@ deepStrictEqual(Buffer.from(new MyString()), check);
 deepStrictEqual(Buffer.from(new MyPrimitive()), check);
 deepStrictEqual(
  Buffer.from(runInNewContext('new String(checkString)', { checkString })),
- check
+ check,
 );
 
 [
@@ -54,7 +54,7 @@ deepStrictEqual(
   name: 'TypeError',
   message: 'The first argument must be of type string or an instance of ' +
              'Buffer, ArrayBuffer, or Array or an Array-like Object.' +
-             common.invalidArgTypeHelper(input)
+             common.invalidArgTypeHelper(input),
  };
  throws(() => Buffer.from(input), errObj);
  throws(() => Buffer.from(input, 'hex'), errObj);

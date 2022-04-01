@@ -84,14 +84,14 @@ function nextdir() {
  assert.strictEqual(output.stderr.toString(), '');
  const sourceMap = getSourceMapFromCache(
   'disk-relative-path.js',
-  coverageDirectory
+  coverageDirectory,
  );
  // Source-map should have been loaded from disk and sources should have been
  // rewritten, such that they're absolute paths.
  assert.strictEqual(
   dirname(pathToFileURL(
    require.resolve('../fixtures/source-map/disk-relative-path')).href),
-  dirname(sourceMap.data.sources[0])
+  dirname(sourceMap.data.sources[0]),
  );
 }
 
@@ -105,14 +105,14 @@ function nextdir() {
  assert.strictEqual(output.stderr.toString(), '');
  const sourceMap = getSourceMapFromCache(
   'inline-base64.js',
-  coverageDirectory
+  coverageDirectory,
  );
  // base64 JSON should have been decoded, and paths to sources should have
  // been rewritten such that they're absolute:
  assert.strictEqual(
   dirname(pathToFileURL(
    require.resolve('../fixtures/source-map/inline-base64')).href),
-  dirname(sourceMap.data.sources[0])
+  dirname(sourceMap.data.sources[0]),
  );
 }
 
@@ -126,7 +126,7 @@ function nextdir() {
  assert.strictEqual(output.stderr.toString(), '');
  const sourceMap = getSourceMapFromCache(
   'inline-base64-type-error.js',
-  coverageDirectory
+  coverageDirectory,
  );
 
  assert.strictEqual(sourceMap.data, null);
@@ -142,7 +142,7 @@ function nextdir() {
  assert.strictEqual(output.stderr.toString(), '');
  const sourceMap = getSourceMapFromCache(
   'inline-base64-json-error.js',
-  coverageDirectory
+  coverageDirectory,
  );
 
  assert.strictEqual(sourceMap.data, null);
@@ -156,11 +156,11 @@ function nextdir() {
  ]);
  assert.strictEqual(
   output.stderr.toString().match(/.*uglify-throw-original\.js:5:9/),
-  null
+  null,
  );
  assert.strictEqual(
   output.stderr.toString().match(/.*uglify-throw-original\.js:9:3/),
-  null
+  null,
  );
 }
 
@@ -172,11 +172,11 @@ function nextdir() {
  ]);
  assert.match(
   output.stderr.toString(),
-  /.*uglify-throw-original\.js:5:9/
+  /.*uglify-throw-original\.js:5:9/,
  );
  assert.match(
   output.stderr.toString(),
-  /.*uglify-throw-original\.js:9:3/
+  /.*uglify-throw-original\.js:9:3/,
  );
  assert.match(output.stderr.toString(), /at Hello/);
 }
@@ -198,7 +198,7 @@ function nextdir() {
   require.resolve('../fixtures/source-map/babel-throw.js'),
  ]);
  assert.ok(
-  output.stderr.toString().match(/.*babel-throw-original\.js:18:31/)
+  output.stderr.toString().match(/.*babel-throw-original\.js:18:31/),
  );
 }
 
@@ -209,10 +209,10 @@ function nextdir() {
   require.resolve('../fixtures/source-map/istanbul-throw.js'),
  ]);
  assert.ok(
-  output.stderr.toString().match(/.*istanbul-throw-original\.js:5:9/)
+  output.stderr.toString().match(/.*istanbul-throw-original\.js:5:9/),
  );
  assert.ok(
-  output.stderr.toString().match(/.*istanbul-throw-original\.js:9:3/)
+  output.stderr.toString().match(/.*istanbul-throw-original\.js:9:3/),
  );
 }
 
@@ -223,7 +223,7 @@ function nextdir() {
   require.resolve('../fixtures/source-map/babel-esm.mjs'),
  ]);
  assert.ok(
-  output.stderr.toString().match(/.*babel-esm-original\.mjs:9:29/)
+  output.stderr.toString().match(/.*babel-esm-original\.mjs:9:29/),
  );
 }
 
@@ -235,7 +235,7 @@ function nextdir() {
  ], { env: { ...process.env, NODE_V8_COVERAGE: coverageDirectory } });
  const sourceMap = getSourceMapFromCache(
   'inline-base64.js',
-  coverageDirectory
+  coverageDirectory,
  );
  assert.strictEqual(sourceMap.url, null);
 }
@@ -248,7 +248,7 @@ function nextdir() {
  ], { env: { ...process.env, NODE_V8_COVERAGE: coverageDirectory } });
  const sourceMap = getSourceMapFromCache(
   'istanbul-throw.js',
-  coverageDirectory
+  coverageDirectory,
  );
  if (common.checkoutEOL === '\r\n') {
   assert.deepStrictEqual(sourceMap.lineLengths, [1086, 31, 185, 649, 0]);
@@ -265,7 +265,7 @@ function nextdir() {
  ]);
 
  assert.ok(
-  output.stderr.toString().match('emptyStackError')
+  output.stderr.toString().match('emptyStackError'),
  );
 }
 
@@ -281,7 +281,7 @@ function nextdir() {
  // Error in original context of source content:
  assert.match(
   output.stderr.toString(),
-  /throw new Error\('oh no!'\)\r?\n.*\^/
+  /throw new Error\('oh no!'\)\r?\n.*\^/,
  );
  // Rewritten stack trace:
  assert.match(output.stderr.toString(), /webpack:\/\/\/webpack\.js:14:9/);
@@ -299,7 +299,7 @@ function nextdir() {
  ], { env: { ...process.env, NODE_V8_COVERAGE: coverageDirectory } });
  const sourceMap = getSourceMapFromCache(
   'throw-on-require.js',
-  coverageDirectory
+  coverageDirectory,
  );
  // Rewritten stack trace.
  assert.match(output.stderr.toString(), /throw-on-require\.ts:9:9/);
@@ -316,7 +316,7 @@ function nextdir() {
  ], { env: { ...process.env, NODE_V8_COVERAGE: coverageDirectory } });
  const sourceMap = getSourceMapFromCache(
   'throw-string.js',
-  coverageDirectory
+  coverageDirectory,
  );
  // Original stack trace.
  assert.match(output.stderr.toString(), /goodbye/);
@@ -334,7 +334,7 @@ function nextdir() {
  ], { env: { ...process.env, NODE_V8_COVERAGE: coverageDirectory } });
  const sourceMap = getSourceMapFromCache(
   'esm-export-missing.mjs',
-  coverageDirectory
+  coverageDirectory,
  );
  // Module loader error displayed.
  assert.match(output.stderr.toString(),
@@ -349,7 +349,7 @@ function getSourceMapFromCache(fixtureFile, coverageDirectory) {
   let maybeSourceMapCache;
   try {
    maybeSourceMapCache = require(
-    path.join(coverageDirectory, jsonFile)
+    path.join(coverageDirectory, jsonFile),
    )['source-map-cache'] || {};
   } catch (err) {
    console.warn(err);

@@ -55,7 +55,7 @@ function check_mtime(resource, mtime, statSync) {
 function expect_errno(syscall, resource, err, errno) {
  assert(
   err && (err.code === errno || err.code === 'ENOSYS'),
-  `FAILED: expect_errno ${util.inspect(arguments)}`
+  `FAILED: expect_errno ${util.inspect(arguments)}`,
  );
 }
 
@@ -66,7 +66,7 @@ function expect_ok(syscall, resource, err, atime, mtime, statSync) {
   // Sub-second precision is OS and fs dependant.
   !err && (mtime_diff < 2) || err && err.code === 'ENOSYS',
   `FAILED: expect_ok ${util.inspect(arguments)}
-     check_mtime: ${mtime_diff}`
+     check_mtime: ${mtime_diff}`,
  );
 }
 
@@ -158,17 +158,17 @@ function runTests(iter) {
 
 const expectTypeError = {
  code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError'
+ name: 'TypeError',
 };
 // utimes-only error cases
 {
  assert.throws(
   () => fs.utimes(0, new Date(), new Date(), common.mustNotCall()),
-  expectTypeError
+  expectTypeError,
  );
  assert.throws(
   () => fs.utimesSync(0, new Date(), new Date()),
-  expectTypeError
+  expectTypeError,
  );
 }
 
@@ -176,19 +176,19 @@ const expectTypeError = {
 [false, {}, [], null, undefined].forEach((i) => {
  assert.throws(
   () => fs.utimes(i, new Date(), new Date(), common.mustNotCall()),
-  expectTypeError
+  expectTypeError,
  );
  assert.throws(
   () => fs.utimesSync(i, new Date(), new Date()),
-  expectTypeError
+  expectTypeError,
  );
  assert.throws(
   () => fs.futimes(i, new Date(), new Date(), common.mustNotCall()),
-  expectTypeError
+  expectTypeError,
  );
  assert.throws(
   () => fs.futimesSync(i, new Date(), new Date()),
-  expectTypeError
+  expectTypeError,
  );
 });
 
@@ -196,16 +196,16 @@ const expectRangeError = {
  code: 'ERR_OUT_OF_RANGE',
  name: 'RangeError',
  message: 'The value of "fd" is out of range. ' +
-           'It must be >= 0 && <= 2147483647. Received -1'
+           'It must be >= 0 && <= 2147483647. Received -1',
 };
 // futimes-only error cases
 {
  assert.throws(
   () => fs.futimes(-1, new Date(), new Date(), common.mustNotCall()),
-  expectRangeError
+  expectRangeError,
  );
  assert.throws(
   () => fs.futimesSync(-1, new Date(), new Date()),
-  expectRangeError
+  expectRangeError,
  );
 }

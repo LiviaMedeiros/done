@@ -87,8 +87,8 @@ assert.throws(
  () => a.notStrictEqual(2, 2),
  {
   message: 'Expected "actual" to be strictly unequal to: 2',
-  name: 'AssertionError'
- }
+  name: 'AssertionError',
+ },
 );
 
 assert.throws(
@@ -96,16 +96,16 @@ assert.throws(
  {
   message: 'Expected "actual" to be strictly unequal to:\n\n' +
              `'${'a '.repeat(30)}'`,
-  name: 'AssertionError'
- }
+  name: 'AssertionError',
+ },
 );
 
 assert.throws(
  () => a.notEqual(1, 1),
  {
   message: '1 != 1',
-  operator: '!='
- }
+  operator: '!=',
+ },
 );
 
 a.notStrictEqual(2, '2');
@@ -134,8 +134,8 @@ assert.throws(
   name: 'AssertionError',
   operator: 'throws',
   message: 'The error is expected to be an instance of "AssertionError". ' +
-             'Received "TypeError"\n\nError message:\n\n[object Object]'
- }
+             'Received "TypeError"\n\nError message:\n\n[object Object]',
+ },
 );
 
 // doesNotThrow should pass through all errors.
@@ -170,16 +170,16 @@ assert.throws(
   code: 'ERR_ASSERTION',
   operator: 'doesNotThrow',
   message: 'Got unwanted exception: user message\n' +
-             'Actual message: "[object Object]"'
- }
+             'Actual message: "[object Object]"',
+ },
 );
 
 assert.throws(
  () => a.doesNotThrow(() => thrower(Error)),
  {
   code: 'ERR_ASSERTION',
-  message: 'Got unwanted exception.\nActual message: "[object Object]"'
- }
+  message: 'Got unwanted exception.\nActual message: "[object Object]"',
+ },
 );
 
 assert.throws(
@@ -189,8 +189,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   operator: 'doesNotThrow',
   message: 'Got unwanted exception: user message\n' +
-             'Actual message: "[object Object]"'
- }
+             'Actual message: "[object Object]"',
+ },
 );
 
 // Make sure that validating using constructor really works.
@@ -201,7 +201,7 @@ assert.throws(
    () => {
     throw ({}); // eslint-disable-line no-throw-literal
    },
-   Array
+   Array,
   );
  } catch {
   threw = true;
@@ -228,7 +228,7 @@ assert.throws(
   code: 'ERR_ASSERTION',
   operator: 'throws',
   actual: symbol,
-  expected: /abc/
+  expected: /abc/,
  });
 }
 
@@ -256,11 +256,11 @@ a.throws(() => thrower(TypeError), (err) => {
    assert.strictEqual(
     err.message,
     'The error is expected to be an instance of "ES6Error". ' +
-          'Received "AnotherErrorType"\n\nError message:\n\nfoo'
+          'Received "AnotherErrorType"\n\nError message:\n\nfoo',
    );
    assert.strictEqual(err.actual, actual);
    return true;
-  }
+  },
  );
 }
 
@@ -274,7 +274,7 @@ a.throws(() => thrower(TypeError), (err) => {
    message: 'Missing expected exception.',
    operator: 'throws',
    actual: undefined,
-   expected: undefined
+   expected: undefined,
   });
 
  assert.throws(
@@ -283,7 +283,7 @@ a.throws(() => thrower(TypeError), (err) => {
    code: 'ERR_ASSERTION',
    message: 'Missing expected exception (TypeError).',
    actual: undefined,
-   expected: TypeError
+   expected: TypeError,
   });
 
  assert.throws(
@@ -292,7 +292,7 @@ a.throws(() => thrower(TypeError), (err) => {
    code: 'ERR_ASSERTION',
    message: 'Missing expected exception: fhqwhgads',
    actual: undefined,
-   expected: undefined
+   expected: undefined,
   });
 
  assert.throws(
@@ -301,7 +301,7 @@ a.throws(() => thrower(TypeError), (err) => {
    code: 'ERR_ASSERTION',
    message: 'Missing expected exception (TypeError): fhqwhgads',
    actual: undefined,
-   expected: TypeError
+   expected: TypeError,
   });
 
  let threw = false;
@@ -324,8 +324,8 @@ function testAssertionMessage(actual, expected, msg) {
   {
    generatedMessage: true,
    message: msg || strictEqualMessageStart +
-               `+ actual - expected\n\n+ ${expected}\n- ''`
-  }
+               `+ actual - expected\n\n+ ${expected}\n- ''`,
+  },
  );
 }
 
@@ -365,16 +365,16 @@ assert.throws(
  () => assert.strictEqual(1, 2),
  {
   message: `${strictEqualMessageStart}\n1 !== 2\n`,
-  generatedMessage: true
- }
+  generatedMessage: true,
+ },
 );
 
 assert.throws(
  () => assert.strictEqual(1, 2, 'oh no'),
  {
   message: 'oh no',
-  generatedMessage: false
- }
+  generatedMessage: false,
+ },
 );
 
 {
@@ -415,8 +415,8 @@ assert.throws(
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "fn" argument must be of type function.' +
-                 common.invalidArgTypeHelper(fn)
-   }
+                 common.invalidArgTypeHelper(fn),
+   },
   );
  };
 
@@ -485,7 +485,7 @@ assert.throws(() => {
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "options" argument must be of type object.' +
-                 common.invalidArgTypeHelper(input)
+                 common.invalidArgTypeHelper(input),
    });
  });
 }
@@ -497,14 +497,14 @@ assert.throws(
   name: 'AssertionError',
   message: 'Expected "actual" to be reference-equal to "expected":\n' +
              '+ actual - expected\n\n' +
-             '+ [Error: foo]\n- [Error: foobar]'
- }
+             '+ [Error: foo]\n- [Error: foobar]',
+ },
 );
 
 a.equal(NaN, NaN);
 a.throws(
  () => a.notEqual(NaN, NaN),
- a.AssertionError
+ a.AssertionError,
 );
 
 // Test strict assert.
@@ -528,15 +528,15 @@ a.throws(
   {
    message: 'No value argument passed to `assert.ok()`',
    name: 'AssertionError',
-   generatedMessage: true
-  }
+   generatedMessage: true,
+  },
  );
  assert.throws(
   () => a(),
   {
    message: 'No value argument passed to `assert.ok()`',
-   name: 'AssertionError'
-  }
+   name: 'AssertionError',
+  },
  );
 
  // Test setting the limit to zero and that assert.strict works properly.
@@ -545,15 +545,15 @@ a.throws(
  assert.throws(
   () => {
    assert.ok(
-    typeof 123 === 'string'
+    typeof 123 === 'string',
    );
   },
   {
    code: 'ERR_ASSERTION',
    constructor: assert.AssertionError,
    message: 'The expression evaluated to a falsy value:\n\n  ' +
-               "assert.ok(\n    typeof 123 === 'string'\n  )\n"
-  }
+               "assert.ok(\n    typeof 123 === 'string'\n  )\n",
+  },
  );
  Error.stackTraceLimit = tmpLimit;
 
@@ -695,7 +695,7 @@ a.throws(
     '- {\n' +
     '-   [Symbol(nodejs.util.inspect.custom)]: [Function (anonymous)],\n' +
     "-   loop: 'forever'\n" +
-    '- }'
+    '- }',
  });
 
  // notDeepEqual tests
@@ -703,8 +703,8 @@ a.throws(
   () => assert.notDeepEqual([1], [1]),
   {
    message: 'Expected "actual" not to be strictly deep-equal to:\n\n' +
-               '[\n  1\n]\n'
-  }
+               '[\n  1\n]\n',
+  },
  );
 
  message = 'Expected "actual" not to be strictly deep-equal to:' +
@@ -723,8 +723,8 @@ assert.throws(
   constructor: assert.AssertionError,
   generatedMessage: true,
   message: 'The expression evaluated to a falsy value:\n\n  ' +
-             'assert.ok(null)\n'
- }
+             'assert.ok(null)\n',
+ },
 );
 assert.throws(
  () => assert(typeof 123n === 'string'),
@@ -733,8 +733,8 @@ assert.throws(
   constructor: assert.AssertionError,
   generatedMessage: true,
   message: 'The expression evaluated to a falsy value:\n\n  ' +
-             "assert(typeof 123n === 'string')\n"
- }
+             "assert(typeof 123n === 'string')\n",
+ },
 );
 
 assert.throws(
@@ -743,8 +743,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
   generatedMessage: false,
-  message: 'Symbol(foo)'
- }
+  message: 'Symbol(foo)',
+ },
 );
 
 {
@@ -754,7 +754,7 @@ assert.throws(
  fs.close = common.mustCall(tmp, 1);
  function throwErr() {
   assert(
-   (Buffer.from('test') instanceof Error)
+   (Buffer.from('test') instanceof Error),
   );
  }
  assert.throws(
@@ -763,8 +763,8 @@ assert.throws(
    code: 'ERR_ASSERTION',
    constructor: assert.AssertionError,
    message: 'The expression evaluated to a falsy value:\n\n  ' +
-               "assert(\n    (Buffer.from('test') instanceof Error)\n  )\n"
-  }
+               "assert(\n    (Buffer.from('test') instanceof Error)\n  )\n",
+  },
  );
  assert.throws(
   () => throwErr(),
@@ -772,8 +772,8 @@ assert.throws(
    code: 'ERR_ASSERTION',
    constructor: assert.AssertionError,
    message: 'The expression evaluated to a falsy value:\n\n  ' +
-               "assert(\n    (Buffer.from('test') instanceof Error)\n  )\n"
-  }
+               "assert(\n    (Buffer.from('test') instanceof Error)\n  )\n",
+  },
  );
  fs.close = tmp;
 }
@@ -785,7 +785,7 @@ assert.throws(
       // eslint-disable-next-line operator-linebreak
       ===
       123 instanceof
-          Buffer
+          Buffer,
   );
  },
  {
@@ -798,8 +798,8 @@ assert.throws(
              '    ===\n' +
              '    123 instanceof\n' +
              '        Buffer\n' +
-             '  )\n'
- }
+             '  )\n',
+ },
 );
 
 assert.throws(
@@ -809,7 +809,7 @@ assert.throws(
       // eslint-disable-next-line operator-linebreak
       ===
   123 instanceof
-          Buffer
+          Buffer,
   );
  },
  {
@@ -822,8 +822,8 @@ assert.throws(
              '    ===\n' +
              '  123 instanceof\n' +
              '        Buffer\n' +
-             '  )\n'
- }
+             '  )\n',
+ },
 );
 
 /* eslint-disable indent */
@@ -831,7 +831,7 @@ assert.throws(() => {
 a((
   () => 'string')() ===
 123 instanceof
-Buffer
+Buffer,
 );
 }, {
   code: 'ERR_ASSERTION',
@@ -841,8 +841,8 @@ Buffer
            '    () => \'string\')() ===\n' +
            '  123 instanceof\n' +
            '  Buffer\n' +
-           '  )\n'
-  }
+           '  )\n',
+  },
 );
 /* eslint-enable indent */
 
@@ -854,8 +854,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
   message: 'The expression evaluated to a falsy value:\n\n  ' +
-             'assert(null, undefined)\n'
- }
+             'assert(null, undefined)\n',
+ },
 );
 
 assert.throws(
@@ -867,8 +867,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
   message: 'The expression evaluated to a falsy value:\n\n  ' +
-             'ok(null, undefined)\n'
- }
+             'ok(null, undefined)\n',
+ },
 );
 
 assert.throws(
@@ -878,8 +878,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
   message: 'The expression evaluated to a falsy value:\n\n  ' +
-             'assert[\'ok\']["apply"](null, [0])\n'
- }
+             'assert[\'ok\']["apply"](null, [0])\n',
+ },
 );
 
 assert.throws(
@@ -890,8 +890,8 @@ assert.throws(
  {
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
-  message: 'The expression evaluated to a falsy value:\n\n  fn(value)\n'
- }
+  message: 'The expression evaluated to a falsy value:\n\n  fn(value)\n',
+ },
 );
 
 assert.throws(
@@ -901,8 +901,8 @@ assert.throws(
   constructor: assert.AssertionError,
   message: 'The expression evaluated to a falsy value:\n\n  ' +
              'assert.ok.call(null, 0)\n',
-  generatedMessage: true
- }
+  generatedMessage: true,
+ },
 );
 
 assert.throws(
@@ -911,8 +911,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
   message: 'test',
-  generatedMessage: false
- }
+  generatedMessage: false,
+ },
 );
 
 // Works in eval.
@@ -921,15 +921,15 @@ assert.throws(
  {
   code: 'ERR_ASSERTION',
   constructor: assert.AssertionError,
-  message: 'The expression evaluated to a falsy value:\n\n  assert(1 === 2)\n'
- }
+  message: 'The expression evaluated to a falsy value:\n\n  assert(1 === 2)\n',
+ },
 );
 assert.throws(
  () => eval('console.log("FOO");\nassert.ok(1 === 2);'),
  {
   code: 'ERR_ASSERTION',
-  message: 'false == true'
- }
+  message: 'false == true',
+ },
 );
 
 assert.throws(
@@ -939,8 +939,8 @@ assert.throws(
   name: 'TypeError',
   message: 'The "error" argument must be of type function or ' +
              'an instance of Error, RegExp, or Object. Received type string ' +
-             "('Error message')"
- }
+             "('Error message')",
+ },
 );
 
 [
@@ -954,8 +954,8 @@ assert.throws(
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "error" argument must be of type function or ' +
                'an instance of Error, RegExp, or Object.' +
-               common.invalidArgTypeHelper(input)
-  }
+               common.invalidArgTypeHelper(input),
+  },
  );
 });
 
@@ -965,7 +965,7 @@ assert.throws(
   assert.ok((() => Boolean('' === false))());
  }, {
   message: 'The expression evaluated to a falsy value:\n\n' +
-             "  assert.ok((() => Boolean('\\u0001' === false))())\n"
+             "  assert.ok((() => Boolean('\\u0001' === false))())\n",
  });
 
  const errFn = () => {
@@ -975,7 +975,7 @@ assert.throws(
  };
  const errObj = {
   name: 'TypeError',
-  message: 'Wrong value'
+  message: 'Wrong value',
  };
  assert.throws(errFn, errObj);
 
@@ -996,8 +996,8 @@ assert.throws(
                '-   foo: undefined,\n' +
                "    message: 'Wrong value',\n" +
                "    name: 'TypeError'\n" +
-               '  }'
-  }
+               '  }',
+  },
  );
 
  // Show multiple wrong properties at the same time.
@@ -1014,8 +1014,8 @@ assert.throws(
                '-   foo: undefined,\n' +
                "    message: 'Wrong value',\n" +
                "    name: 'TypeError'\n" +
-               '  }'
-  }
+               '  }',
+  },
  );
 
  assert.throws(
@@ -1023,8 +1023,8 @@ assert.throws(
   {
    constructor: assert.AssertionError,
    code: 'ERR_ASSERTION',
-   message: 'foobar'
-  }
+   message: 'foobar',
+  },
  );
 
  assert.throws(
@@ -1033,8 +1033,8 @@ assert.throws(
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "expected" argument must be of type function or an ' +
-               'instance of RegExp. Received an instance of Object'
-  }
+               'instance of RegExp. Received an instance of Object',
+  },
  );
 
  assert.throws(() => { throw new Error('e'); }, new Error('e'));
@@ -1048,8 +1048,8 @@ assert.throws(
                "    message: 'e',\n" +
                "+   name: 'TypeError'\n" +
                "-   name: 'Error'\n" +
-               '  }'
-  }
+               '  }',
+  },
  );
  assert.throws(
   () => assert.throws(() => { throw new Error('foo'); }, new Error('')),
@@ -1062,8 +1062,8 @@ assert.throws(
                "+   message: 'foo',\n" +
                "-   message: '',\n" +
                "    name: 'Error'\n" +
-               '  }'
-  }
+               '  }',
+  },
  );
 
  // eslint-disable-next-line no-throw-literal
@@ -1074,8 +1074,8 @@ assert.throws(
   {
    name: 'AssertionError',
    code: 'ERR_ASSERTION',
-   message: 'Got unwanted exception.\nActual message: "undefined"'
-  }
+   message: 'Got unwanted exception.\nActual message: "undefined"',
+  },
  );
 }
 
@@ -1083,33 +1083,33 @@ assert.throws(
  () => assert.throws(() => { throw new Error(); }, {}),
  {
   message: "The argument 'error' may not be an empty object. Received {}",
-  code: 'ERR_INVALID_ARG_VALUE'
- }
+  code: 'ERR_INVALID_ARG_VALUE',
+ },
 );
 
 assert.throws(
  () => a.throws(
   // eslint-disable-next-line no-throw-literal
   () => { throw 'foo'; },
-  'foo'
+  'foo',
  ),
  {
   code: 'ERR_AMBIGUOUS_ARGUMENT',
   message: 'The "error/message" argument is ambiguous. ' +
-             'The error "foo" is identical to the message.'
- }
+             'The error "foo" is identical to the message.',
+ },
 );
 
 assert.throws(
  () => a.throws(
   () => { throw new TypeError('foo'); },
-  'foo'
+  'foo',
  ),
  {
   code: 'ERR_AMBIGUOUS_ARGUMENT',
   message: 'The "error/message" argument is ambiguous. ' +
-             'The error message "foo" is identical to the message.'
- }
+             'The error message "foo" is identical to the message.',
+ },
 );
 /* eslint-enable no-restricted-syntax */
 
@@ -1120,8 +1120,8 @@ assert.throws(() => { throw null; }, 'foo');
 assert.throws(
  () => assert.strictEqual([], []),
  {
-  message: 'Values have same structure but are not reference-equal:\n\n[]\n'
- }
+  message: 'Values have same structure but are not reference-equal:\n\n[]\n',
+ },
 );
 
 {
@@ -1131,8 +1131,8 @@ assert.throws(
   {
    message: 'Expected "actual" to be reference-equal to "expected":\n' +
                '+ actual - expected\n\n' +
-               "+ [Arguments] {\n- {\n    '0': 'a'\n  }"
-  }
+               "+ [Arguments] {\n- {\n    '0': 'a'\n  }",
+  },
  );
 }
 
@@ -1140,8 +1140,8 @@ assert.throws(
  () => { throw new TypeError('foobar'); },
  {
   message: /foo/,
-  name: /^TypeError$/
- }
+  name: /^TypeError$/,
+ },
 );
 
 assert.throws(
@@ -1149,8 +1149,8 @@ assert.throws(
   () => { throw new TypeError('foobar'); },
   {
    message: /fooa/,
-   name: /^TypeError$/
-  }
+   name: /^TypeError$/,
+  },
  ),
  {
   message: `${start}\n${actExp}\n\n` +
@@ -1158,8 +1158,8 @@ assert.throws(
              "+   message: 'foobar',\n" +
              '-   message: /fooa/,\n' +
              "    name: 'TypeError'\n" +
-             '  }'
- }
+             '  }',
+ },
 );
 
 {
@@ -1168,7 +1168,7 @@ assert.throws(
  assert.throws(
   () => assert.throws(
    () => { throw actual; },
-   expected
+   expected,
   ),
   {
    operator: 'throws',
@@ -1179,8 +1179,8 @@ assert.throws(
               '+ null\n' +
               '- {\n' +
               "-   message: 'foo'\n" +
-              '- }'
-  }
+              '- }',
+  },
  );
 
  actual = 'foobar';
@@ -1189,14 +1189,14 @@ assert.throws(
   () => assert.throws(
    () => { throw actual; },
    { message: 'foobar' },
-   message
+   message,
   ),
   {
    actual,
    message,
    operator: 'throws',
-   generatedMessage: false
-  }
+   generatedMessage: false,
+  },
  );
 }
 
@@ -1210,8 +1210,8 @@ assert.throws(
              '+ actual - expected\n\n' +
              "+ 'test test'\n" +
              "- 'test foobar'\n" +
-             '        ^'
- }
+             '        ^',
+ },
 );
 
 // Check for reference-equal objects in `notStrictEqual()`
@@ -1223,8 +1223,8 @@ assert.throws(
  {
   code: 'ERR_ASSERTION',
   name: 'AssertionError',
-  message: 'Expected "actual" not to be reference-equal to "expected": {}'
- }
+  message: 'Expected "actual" not to be reference-equal to "expected": {}',
+ },
 );
 
 assert.throws(
@@ -1236,8 +1236,8 @@ assert.throws(
   code: 'ERR_ASSERTION',
   name: 'AssertionError',
   message: 'Expected "actual" not to be reference-equal to "expected":\n\n' +
-             '{\n  a: true\n}\n'
- }
+             '{\n  a: true\n}\n',
+ },
 );
 
 {
@@ -1254,52 +1254,52 @@ assert.throws(
 
 assert.throws(
  () => a.equal(1),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.deepEqual(/a/),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.notEqual(null),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.notDeepEqual('test'),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.strictEqual({}),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.deepStrictEqual(Symbol()),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.notStrictEqual(5n), // eslint-disable-line no-restricted-syntax
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.notDeepStrictEqual(undefined),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.strictEqual(),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 assert.throws(
  () => a.deepStrictEqual(),
- { code: 'ERR_MISSING_ARGS' }
+ { code: 'ERR_MISSING_ARGS' },
 );
 
 // Verify that `stackStartFunction` works as alternative to `stackStartFn`.
@@ -1308,12 +1308,12 @@ assert.throws(
   const err = new assert.AssertionError({
    actual: 'foo',
    operator: 'strictEqual',
-   stackStartFunction: hidden
+   stackStartFunction: hidden,
   });
   const err2 = new assert.AssertionError({
    actual: 'foo',
    operator: 'strictEqual',
-   stackStartFn: hidden
+   stackStartFn: hidden,
   });
   assert(!err.stack.includes('hidden'));
   assert(!err2.stack.includes('hidden'));
@@ -1324,8 +1324,8 @@ assert.throws(
  () => assert.throws(() => { throw Symbol('foo'); }, RangeError),
  {
   message: 'The error is expected to be an instance of "RangeError". ' +
-             'Received "Symbol(foo)"'
- }
+             'Received "Symbol(foo)"',
+ },
 );
 
 assert.throws(
@@ -1333,8 +1333,8 @@ assert.throws(
  () => assert.throws(() => { throw [1, 2]; }, RangeError),
  {
   message: 'The error is expected to be an instance of "RangeError". ' +
-             'Received "[Array]"'
- }
+             'Received "[Array]"',
+ },
 );
 
 {
@@ -1351,7 +1351,7 @@ assert.throws(
    expected: validate,
    name: 'AssertionError',
    operator: 'throws',
-  }
+  },
  );
 }
 
@@ -1365,8 +1365,8 @@ assert.throws(
  {
   message: 'The error is expected to be an instance of "RangeError". ' +
              'Received an error with identical name but a different ' +
-             'prototype.\n\nError message:\n\nfoobar'
- }
+             'prototype.\n\nError message:\n\nfoobar',
+ },
 );
 
 // Multiple assert.match() tests.
@@ -1376,8 +1376,8 @@ assert.throws(
   {
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "regexp" argument must be an instance of RegExp. ' +
-               "Received type string ('string')"
-  }
+               "Received type string ('string')",
+  },
  );
  assert.throws(
   () => assert.match('string', /abc/),
@@ -1387,8 +1387,8 @@ assert.throws(
    operator: 'match',
    message: 'The input did not match the regular expression /abc/. ' +
                "Input:\n\n'string'\n",
-   generatedMessage: true
-  }
+   generatedMessage: true,
+  },
  );
  assert.throws(
   () => assert.match('string', /abc/, 'foobar'),
@@ -1397,13 +1397,13 @@ assert.throws(
    expected: /abc/,
    operator: 'match',
    message: 'foobar',
-   generatedMessage: false
-  }
+   generatedMessage: false,
+  },
  );
  const errorMessage = new RangeError('foobar');
  assert.throws(
   () => assert.match('string', /abc/, errorMessage),
-  errorMessage
+  errorMessage,
  );
  assert.throws(
   () => assert.match({ abc: 123 }, /abc/),
@@ -1413,8 +1413,8 @@ assert.throws(
    operator: 'match',
    message: 'The "string" argument must be of type string. ' +
                'Received type object ({ abc: 123 })',
-   generatedMessage: true
-  }
+   generatedMessage: true,
+  },
  );
  assert.match('I will pass', /pass$/);
 }
@@ -1426,8 +1426,8 @@ assert.throws(
   {
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "regexp" argument must be an instance of RegExp. ' +
-               "Received type string ('string')"
-  }
+               "Received type string ('string')",
+  },
  );
  assert.throws(
   () => assert.doesNotMatch('string', /string/),
@@ -1437,8 +1437,8 @@ assert.throws(
    operator: 'doesNotMatch',
    message: 'The input was expected to not match the regular expression ' +
                "/string/. Input:\n\n'string'\n",
-   generatedMessage: true
-  }
+   generatedMessage: true,
+  },
  );
  assert.throws(
   () => assert.doesNotMatch('string', /string/, 'foobar'),
@@ -1447,13 +1447,13 @@ assert.throws(
    expected: /string/,
    operator: 'doesNotMatch',
    message: 'foobar',
-   generatedMessage: false
-  }
+   generatedMessage: false,
+  },
  );
  const errorMessage = new RangeError('foobar');
  assert.throws(
   () => assert.doesNotMatch('string', /string/, errorMessage),
-  errorMessage
+  errorMessage,
  );
  assert.throws(
   () => assert.doesNotMatch({ abc: 123 }, /abc/),
@@ -1463,8 +1463,8 @@ assert.throws(
    operator: 'doesNotMatch',
    message: 'The "string" argument must be of type string. ' +
                'Received type object ({ abc: 123 })',
-   generatedMessage: true
-  }
+   generatedMessage: true,
+  },
  );
  assert.doesNotMatch('I will pass', /different$/);
 }

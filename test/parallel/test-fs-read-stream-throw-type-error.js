@@ -22,21 +22,21 @@ const createReadStreamErr = (path, opt, error) => {
 
 const typeError = {
  code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError'
+ name: 'TypeError',
 };
 
 const rangeError = {
  code: 'ERR_OUT_OF_RANGE',
- name: 'RangeError'
+ name: 'RangeError',
 };
 
 [123, 0, true, false].forEach((opts) =>
- createReadStreamErr(example, opts, typeError)
+ createReadStreamErr(example, opts, typeError),
 );
 
 // Case 0: Should not throw if either start or end is undefined
 [{}, { start: 0 }, { end: Infinity }].forEach((opts) =>
- fs.createReadStream(example, opts)
+ fs.createReadStream(example, opts),
 );
 
 // Case 1: Should throw TypeError if either start or end is not of type 'number'
@@ -48,17 +48,17 @@ const rangeError = {
 
 // Case 2: Should throw RangeError if either start or end is NaN
 [{ start: NaN }, { end: NaN }, { start: NaN, end: NaN }].forEach((opts) =>
- createReadStreamErr(example, opts, rangeError)
+ createReadStreamErr(example, opts, rangeError),
 );
 
 // Case 3: Should throw RangeError if either start or end is negative
 [{ start: -1 }, { end: -1 }, { start: -1, end: -1 }].forEach((opts) =>
- createReadStreamErr(example, opts, rangeError)
+ createReadStreamErr(example, opts, rangeError),
 );
 
 // Case 4: Should throw RangeError if either start or end is fractional
 [{ start: 0.1 }, { end: 0.1 }, { start: 0.1, end: 0.1 }].forEach((opts) =>
- createReadStreamErr(example, opts, rangeError)
+ createReadStreamErr(example, opts, rangeError),
 );
 
 // Case 5: Should not throw if both start and end are whole numbers
@@ -73,5 +73,5 @@ const NOT_SAFE_INTEGER = 2 ** 53;
  { start: NOT_SAFE_INTEGER, end: Infinity },
  { start: 0, end: NOT_SAFE_INTEGER },
 ].forEach((opts) =>
- createReadStreamErr(example, opts, rangeError)
+ createReadStreamErr(example, opts, rangeError),
 );

@@ -20,8 +20,8 @@ for (const invalidArg of ['--debug-brk', '--debug']) {
    assert.strictEqual(
     stderr.includes(expected),
     true,
-    `${stderr} should include '${expected}'`
+    `${stderr} should include '${expected}'`,
    );
-  })
+  }),
  );
 }

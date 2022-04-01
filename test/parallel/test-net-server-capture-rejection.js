@@ -20,7 +20,7 @@ const server = createServer(common.mustCall(async (sock) => {
 server.listen(0, common.mustCall(() => {
  const sock = connect(
   server.address().port,
-  server.address().host
+  server.address().host,
  );
 
  sock.on('close', common.mustCall());

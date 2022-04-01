@@ -11,7 +11,7 @@ if (!common.isMainThread)
 const selfRefModule = fixtures.path('self_ref_module');
 const child = spawn(process.execPath,
                     ['--interactive'],
-                    { cwd: selfRefModule }
+                    { cwd: selfRefModule },
 );
 let output = '';
 child.stdout.on('data', (chunk) => output += chunk);

@@ -31,5 +31,5 @@ setTimeout(
   assert.strictEqual(watcher2.listenerCount('change'), 1);
   watcher2.unref();
  }),
- common.platformTimeout(100)
+ common.platformTimeout(100),
 );

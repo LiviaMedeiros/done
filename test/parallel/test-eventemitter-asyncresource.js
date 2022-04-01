@@ -41,7 +41,7 @@ function makeHook(trackedTypes) {
 
   before(asyncId) { log(asyncId, 'before'); },
   after(asyncId) { log(asyncId, 'after'); },
-  destroy(asyncId) { log(asyncId, 'destroy'); }
+  destroy(asyncId) { log(asyncId, 'destroy'); },
  }).enable();
 
  return {
@@ -51,7 +51,7 @@ function makeHook(trackedTypes) {
   },
   ids() {
    return new Set(eventMap.keys());
-  }
+  },
  };
 }
 
@@ -135,25 +135,25 @@ function makeHook(trackedTypes) {
 // Member methods ERR_INVALID_THIS
 throws(
  () => EventEmitterAsyncResource.prototype.emit(),
- { code: 'ERR_INVALID_THIS' }
+ { code: 'ERR_INVALID_THIS' },
 );
 
 throws(
  () => EventEmitterAsyncResource.prototype.emitDestroy(),
- { code: 'ERR_INVALID_THIS' }
+ { code: 'ERR_INVALID_THIS' },
 );
 
 throws(
  () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncId', {}),
- { code: 'ERR_INVALID_THIS' }
+ { code: 'ERR_INVALID_THIS' },
 );
 
 throws(
  () => Reflect.get(EventEmitterAsyncResource.prototype, 'triggerAsyncId', {}),
- { code: 'ERR_INVALID_THIS' }
+ { code: 'ERR_INVALID_THIS' },
 );
 
 throws(
  () => Reflect.get(EventEmitterAsyncResource.prototype, 'asyncResource', {}),
- { code: 'ERR_INVALID_THIS' }
+ { code: 'ERR_INVALID_THIS' },
 );

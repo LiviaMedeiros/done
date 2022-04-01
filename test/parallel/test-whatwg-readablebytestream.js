@@ -87,7 +87,7 @@ class Source {
   } = await this.file.read({
    buffer: view,
    offset: view.byteOffset,
-   length: view.byteLength
+   length: view.byteLength,
   });
 
   if (bytesRead === 0) {
@@ -219,7 +219,7 @@ class Source {
  let controller;
  new ReadableStream({
   type: 'bytes',
-  start(c) { controller = c; }
+  start(c) { controller = c; },
  });
  assert.throws(() => controller.enqueue(1), {
   code: 'ERR_INVALID_ARG_TYPE',

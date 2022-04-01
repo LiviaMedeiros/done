@@ -16,7 +16,7 @@ assert.strictEqual(global.console, 42);
 
 assert.throws(
  () => console.log('foo'),
- { name: 'TypeError' }
+ { name: 'TypeError' },
 );
 
 global.console = 1;

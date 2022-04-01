@@ -25,7 +25,7 @@ const expectedEnv = { foo: 'bar' };
   assert.throws(() => fork(modulePath), {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: /^The "modulePath" argument must be of type string/
+   message: /^The "modulePath" argument must be of type string/,
   });
  });
 
@@ -34,7 +34,7 @@ const expectedEnv = { foo: 'bar' };
   'exit',
   common.mustCall((code) => {
    assert.strictEqual(code, 0);
-  })
+  }),
  );
 }
 
@@ -55,8 +55,8 @@ const expectedEnv = { foo: 'bar' };
    },
    {
     code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-   }
+    name: 'TypeError',
+   },
   );
  });
 
@@ -64,21 +64,21 @@ const expectedEnv = { foo: 'bar' };
 
  argsLists.forEach((args) => {
   const cp = fork(fixtures.path('child-process-echo-options.js'), args, {
-   env: { ...process.env, ...expectedEnv }
+   env: { ...process.env, ...expectedEnv },
   });
 
   cp.on(
    'message',
    common.mustCall(({ env }) => {
     assert.strictEqual(env.foo, expectedEnv.foo);
-   })
+   }),
   );
 
   cp.on(
    'exit',
    common.mustCall((code) => {
     assert.strictEqual(code, 0);
-   })
+   }),
   );
  });
 }
@@ -98,8 +98,8 @@ const expectedEnv = { foo: 'bar' };
    },
    {
     code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-   }
+    name: 'TypeError',
+   },
   );
  });
 }

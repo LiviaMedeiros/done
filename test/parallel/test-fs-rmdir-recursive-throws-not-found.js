@@ -13,7 +13,7 @@ tmpdir.refresh();
    fs.rmdirSync(path.join(tmpdir.path, 'noexist.txt'), { recursive: true }),
   {
    code: 'ENOENT',
-  }
+  },
  );
 }
 {
@@ -22,7 +22,7 @@ tmpdir.refresh();
   { recursive: true },
   common.mustCall((err) => {
    assert.strictEqual(err.code, 'ENOENT');
-  })
+  }),
  );
 }
 {
@@ -31,6 +31,6 @@ tmpdir.refresh();
                           { recursive: true }),
   {
    code: 'ENOENT',
-  }
+  },
  ).then(common.mustCall());
 }

@@ -8,7 +8,7 @@ const {
  Transform,
  Writable,
  finished,
- PassThrough
+ PassThrough,
 } = require('stream');
 const compose = require('internal/streams/compose');
 const assert = require('assert');
@@ -19,13 +19,13 @@ const assert = require('assert');
   new Transform({
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk + chunk);
-   })
+   }),
   }),
   new Transform({
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk.toString().toUpperCase());
-   })
-  })
+   }),
+  }),
  )
   .end('asd')
   .on('data', common.mustCall((buf) => {
@@ -48,7 +48,7 @@ const assert = require('assert');
    for await (const chunk of source) {
     yield chunk.toString().toUpperCase();
    }
-  }
+  },
  )
   .end('asd')
   .on('data', common.mustCall((buf) => {
@@ -66,7 +66,7 @@ const assert = require('assert');
    for await (const chunk of source) {
     yield chunk + chunk;
    }
-  }
+  },
  )
   .end('asd')
   .on('data', common.mustCall((buf) => {
@@ -84,8 +84,8 @@ const assert = require('assert');
   new Transform({
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk.toString().toUpperCase());
-   })
-  })
+   }),
+  }),
  )
   .on('data', common.mustCall((buf) => {
   	res += buf;
@@ -104,8 +104,8 @@ const assert = require('assert');
   new Transform({
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk.toString().toUpperCase());
-   })
-  })
+   }),
+  }),
  )
   .on('data', common.mustCall((buf) => {
   	res += buf;
@@ -121,7 +121,7 @@ const assert = require('assert');
   new Transform({
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk.toString().toUpperCase());
-   })
+   }),
   }),
   async function*(source) {
    for await (const chunk of source) {
@@ -132,8 +132,8 @@ const assert = require('assert');
    write: common.mustCall((chunk, encoding, callback) => {
     res += chunk;
     callback(null);
-   })
-  })
+   }),
+  }),
  )
   .end('asd')
   .on('finish', common.mustCall(() => {
@@ -147,7 +147,7 @@ const assert = require('assert');
   new Transform({
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk.toString().toUpperCase());
-   })
+   }),
   }),
   async function*(source) {
    for await (const chunk of source) {
@@ -158,7 +158,7 @@ const assert = require('assert');
    for await (const chunk of source) {
     res += chunk;
    }
-  }
+  },
  )
   .end('asd')
   .on('finish', common.mustCall(() => {
@@ -173,7 +173,7 @@ const assert = require('assert');
    objectMode: true,
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, { chunk });
-   })
+   }),
   }),
   async function*(source) {
    for await (const chunk of source) {
@@ -184,8 +184,8 @@ const assert = require('assert');
    objectMode: true,
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, { chunk });
-   })
-  })
+   }),
+  }),
  )
   .end(true)
   .on('data', common.mustCall((buf) => {
@@ -203,7 +203,7 @@ const assert = require('assert');
    objectMode: true,
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(_err);
-   })
+   }),
   }),
   async function*(source) {
    for await (const chunk of source) {
@@ -214,8 +214,8 @@ const assert = require('assert');
    objectMode: true,
    transform: common.mustNotCall((chunk, encoding, callback) => {
     callback(null, { chunk });
-   })
-  })
+   }),
+  }),
  )
   .end(true)
   .on('data', common.mustNotCall())
@@ -232,7 +232,7 @@ const assert = require('assert');
    objectMode: true,
    transform: common.mustCall((chunk, encoding, callback) => {
     callback(null, chunk);
-   })
+   }),
   }),
   async function*(source) { // eslint-disable-line require-yield
    let tmp = '';
@@ -246,8 +246,8 @@ const assert = require('assert');
    objectMode: true,
    transform: common.mustNotCall((chunk, encoding, callback) => {
     callback(null, { chunk });
-   })
-  })
+   }),
+  }),
  )
   .end(true)
   .on('data', common.mustNotCall())

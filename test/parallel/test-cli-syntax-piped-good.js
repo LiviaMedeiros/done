@@ -31,7 +31,7 @@ syntaxArgs.forEach(function(arg) {
  const c = spawnSync(
   node,
   ['--no-warnings', '--input-type=module', arg],
-  { encoding: 'utf8', input: stdin }
+  { encoding: 'utf8', input: stdin },
  );
 
  // No stdout or stderr should be produced

@@ -354,7 +354,7 @@ import { AsyncResource, executionAsyncId } from 'async_hooks';
 // new AsyncResource() also triggers init. If triggerAsyncId is omitted then
 // async_hook.executionAsyncId() is used.
 const asyncResource = new AsyncResource(
- type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false }
+ type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false },
 );
 
 // Run a function in the execution context of the resource. This will
@@ -382,7 +382,7 @@ const { AsyncResource, executionAsyncId } = require('async_hooks');
 // new AsyncResource() also triggers init. If triggerAsyncId is omitted then
 // async_hook.executionAsyncId() is used.
 const asyncResource = new AsyncResource(
- type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false }
+ type, { triggerAsyncId: executionAsyncId(), requireManualDestroy: false },
 );
 
 // Run a function in the execution context of the resource. This will

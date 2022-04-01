@@ -364,7 +364,7 @@ process.on('uncaughtException', (err, origin) => {
  fs.writeSync(
   process.stderr.fd,
   `Caught exception: ${err}\n` +
-    `Exception origin: ${origin}`
+    `Exception origin: ${origin}`,
  );
 });
 
@@ -384,7 +384,7 @@ process.on('uncaughtException', (err, origin) => {
  fs.writeSync(
   process.stderr.fd,
   `Caught exception: ${err}\n` +
-    `Exception origin: ${origin}`
+    `Exception origin: ${origin}`,
  );
 });
 
@@ -1298,7 +1298,7 @@ import { emitWarning } from 'process';
 // Emit a warning with a code and additional detail.
 emitWarning('Something happened!', {
  code: 'MY_WARNING',
- detail: 'This is some additional information'
+ detail: 'This is some additional information',
 });
 // Emits:
 // (node:56338) [MY_WARNING] Warning: Something happened!
@@ -1311,7 +1311,7 @@ const { emitWarning } = require('process');
 // Emit a warning with a code and additional detail.
 emitWarning('Something happened!', {
  code: 'MY_WARNING',
- detail: 'This is some additional information'
+ detail: 'This is some additional information',
 });
 // Emits:
 // (node:56338) [MY_WARNING] Warning: Something happened!
@@ -3672,7 +3672,7 @@ import { umask } from 'process';
 const newmask = 0o022;
 const oldmask = umask(newmask);
 console.log(
- `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`
+ `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`,
 );
 ```
 
@@ -3682,7 +3682,7 @@ const { umask } = require('process');
 const newmask = 0o022;
 const oldmask = umask(newmask);
 console.log(
- `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`
+ `Changed umask from ${oldmask.toString(8)} to ${newmask.toString(8)}`,
 );
 ```
 

@@ -56,7 +56,7 @@ async function prepareKeys() {
      Buffer.from(pkcs8, 'hex'),
      {
       name: 'ECDH',
-      namedCurve
+      namedCurve,
      },
      true,
      ['deriveKey', 'deriveBits']),
@@ -65,7 +65,7 @@ async function prepareKeys() {
      Buffer.from(spki, 'hex'),
      {
       name: 'ECDH',
-      namedCurve
+      namedCurve,
      },
      true,
      ['deriveKey', 'deriveBits']),
@@ -95,7 +95,7 @@ async function prepareKeys() {
     // Good parameters
     const key = await subtle.deriveKey({
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, ...otherArgs);
 
     const raw = await subtle.exportKey('raw', key);
@@ -107,11 +107,11 @@ async function prepareKeys() {
     // Case insensitivity
     const key = await subtle.deriveKey({
      name: 'eCdH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, {
      name: 'HmAc',
      hash: 'SHA-256',
-     length: 256
+     length: 256,
     }, true, ['sign', 'verify']);
 
     const raw = await subtle.exportKey('raw', key);
@@ -137,7 +137,7 @@ async function prepareKeys() {
    subtle.deriveKey(
     {
      name: 'ECDH',
-     public: { message: 'Not a CryptoKey' }
+     public: { message: 'Not a CryptoKey' },
     },
     keys['P-384'].privateKey,
     ...otherArgs),
@@ -150,7 +150,7 @@ async function prepareKeys() {
    subtle.deriveKey(
     {
      name: 'ECDH',
-     public: keys['P-384'].publicKey
+     public: keys['P-384'].publicKey,
     },
     keys['P-521'].privateKey,
     ...otherArgs),
@@ -162,7 +162,7 @@ async function prepareKeys() {
   const { publicKey } = await subtle.generateKey(
    {
     name: 'ECDSA',
-    namedCurve: 'P-521'
+    namedCurve: 'P-521',
    },
    false,
    ['verify']);
@@ -171,7 +171,7 @@ async function prepareKeys() {
    subtle.deriveKey(
     {
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     },
     keys['P-521'].privateKey,
     ...otherArgs),
@@ -185,7 +185,7 @@ async function prepareKeys() {
    Buffer.from(kTests[0].pkcs8, 'hex'),
    {
     name: 'ECDH',
-    namedCurve: 'P-521'
+    namedCurve: 'P-521',
    }, false, ['deriveBits']);
 
   await assert.rejects(
@@ -205,7 +205,7 @@ async function prepareKeys() {
    subtle.deriveKey(
     {
      name: 'ECDH',
-     public: keys['P-521'].publicKey
+     public: keys['P-521'].publicKey,
     },
     keys['P-521'].publicKey,
     ...otherArgs),
@@ -218,7 +218,7 @@ async function prepareKeys() {
    subtle.deriveKey(
     {
      name: 'ECDH',
-     public: keys['P-521'].privateKey
+     public: keys['P-521'].privateKey,
     },
     keys['P-521'].publicKey,
     ...otherArgs),
@@ -238,7 +238,7 @@ async function prepareKeys() {
    subtle.deriveKey(
     {
      name: 'ECDH',
-     public: key
+     public: key,
     },
     keys['P-521'].publicKey,
     ...otherArgs),

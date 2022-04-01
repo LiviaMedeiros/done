@@ -49,7 +49,7 @@ assert.strictEqual(source._readableState.pipes.length, 0);
   srcCheckEventNames.forEach((eventName) => {
    assert.strictEqual(
     source.listenerCount(eventName), 0,
-    `source's '${eventName}' event listeners not removed`
+    `source's '${eventName}' event listeners not removed`,
    );
   });
  });
@@ -62,14 +62,14 @@ assert.strictEqual(source._readableState.pipes.length, 0);
    assert.deepStrictEqual(
     dest.listeners('unpipe'), [unpipeChecker],
     `destination{${currentDestId}} should have a 'unpipe' event ` +
-        'listener which is `unpipeChecker`'
+        'listener which is `unpipeChecker`',
    );
    dest.removeListener('unpipe', unpipeChecker);
    destCheckEventNames.forEach((eventName) => {
     assert.strictEqual(
      dest.listenerCount(eventName), 0,
      `destination{${currentDestId}}'s '${eventName}' event ` +
-          'listeners not removed'
+          'listeners not removed',
     );
    });
 

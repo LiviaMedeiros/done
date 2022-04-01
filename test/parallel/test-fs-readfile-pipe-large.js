@@ -33,12 +33,12 @@ exec(cmd, { maxBuffer: 1000000 }, common.mustSucceed((stdout, stderr) => {
  assert.strictEqual(
   stdout,
   dataExpected,
-  `expect it reads the file and outputs 999999 'a' but got : ${stdout}`
+  `expect it reads the file and outputs 999999 'a' but got : ${stdout}`,
  );
  assert.strictEqual(
   stderr,
   '',
-  `expect that it does not write to stderr, but got : ${stderr}`
+  `expect that it does not write to stderr, but got : ${stderr}`,
  );
  console.log('ok');
 }));

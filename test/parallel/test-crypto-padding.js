@@ -91,11 +91,11 @@ assert.throws(function() {
     'data not multiple of block length',
  code: 'ERR_OSSL_EVP_DATA_NOT_MULTIPLE_OF_BLOCK_LENGTH',
  reason: 'data not multiple of block length',
-}
+},
 );
 
 assert.strictEqual(
- enc(EVEN_LENGTH_PLAIN, false), EVEN_LENGTH_ENCRYPTED_NOPAD
+ enc(EVEN_LENGTH_PLAIN, false), EVEN_LENGTH_ENCRYPTED_NOPAD,
 );
 
 // Test decryption.
@@ -122,5 +122,5 @@ assert.throws(function() {
 
 // No-pad encrypted string should return the same:
 assert.strictEqual(
- dec(EVEN_LENGTH_ENCRYPTED_NOPAD, false), EVEN_LENGTH_PLAIN
+ dec(EVEN_LENGTH_ENCRYPTED_NOPAD, false), EVEN_LENGTH_PLAIN,
 );

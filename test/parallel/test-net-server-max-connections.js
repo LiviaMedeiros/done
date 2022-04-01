@@ -61,7 +61,7 @@ function makeConnection(index) {
    if (closes < N / 2) {
     assert.ok(
      server.maxConnections <= index,
-     `${index} should not have been one of the first closed connections`
+     `${index} should not have been one of the first closed connections`,
     );
    }
 

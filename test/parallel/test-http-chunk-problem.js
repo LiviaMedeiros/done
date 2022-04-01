@@ -10,7 +10,7 @@ if (process.argv[2] === 'request') {
  const http = require('http');
  const options = {
   port: +process.argv[3],
-  path: '/'
+  path: '/',
  };
 
  http.get(options, (res) => {
@@ -59,7 +59,7 @@ function executeRequest(cb) {
           assert.strictEqual(stdout.slice(0, 40),
                              '8c206a1a87599f532ce68675536f0b1546900d7a');
           cb();
-         }
+         },
  );
 }
 

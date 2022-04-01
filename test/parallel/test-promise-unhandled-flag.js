@@ -8,7 +8,7 @@ const cp = require('child_process');
 // Therefore we do not need any special handling for the child process.
 const child = cp.spawnSync(
  process.execPath,
- ['--unhandled-rejections=foobar', __filename]
+ ['--unhandled-rejections=foobar', __filename],
 );
 
 assert.strictEqual(child.stdout.toString(), '');

@@ -83,7 +83,7 @@ if (process.argv[2] === 'child') {
      require(id);
     }, {
      code: 'MODULE_NOT_FOUND',
-     message: `Cannot find module '${id}'`
+     message: `Cannot find module '${id}'`,
     });
    } else {
     require(id);
@@ -95,14 +95,14 @@ if (process.argv[2] === 'child') {
   // require('module').builtinModules
   assert.deepStrictEqual(
    publicModules,
-   new Set(require('module').builtinModules)
+   new Set(require('module').builtinModules),
   );
   assert.deepStrictEqual(publicModules, expectedPublicModules);
  });
 } else {
  assert(process.execArgv.includes('--expose-internals'));
  const child = fork(__filename, ['child'], {
-  execArgv: []
+  execArgv: [],
  });
  const { builtinModules } = require('module');
  // When --expose-internals is on, require('module').builtinModules

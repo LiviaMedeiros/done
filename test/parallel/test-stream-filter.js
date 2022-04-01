@@ -157,7 +157,7 @@ const { setTimeout } = require('timers/promises');
  // Error cases
  assert.throws(() => Readable.from([1]).filter(1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).filter((x) => x, {
-  concurrency: 'Foo'
+  concurrency: 'Foo',
  }), /ERR_OUT_OF_RANGE/);
  assert.throws(() => Readable.from([1]).filter((x) => x, 1), /ERR_INVALID_ARG_TYPE/);
 }

@@ -11,7 +11,7 @@ const optionsIPv4 = {
  port: common.PORT,
  family: 4,
  localPort: common.PORT + 1,
- localAddress: common.localhostIPv4
+ localAddress: common.localhostIPv4,
 };
 
 const optionsIPv6 = {
@@ -30,7 +30,7 @@ function onError(err, options) {
  assert.strictEqual(
   err.message,
   `connect ${err.code} ${err.address}:${err.port} ` +
-    `- Local (${err.localAddress}:${err.localPort})`
+    `- Local (${err.localAddress}:${err.localPort})`,
  );
 }
 

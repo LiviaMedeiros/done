@@ -10,7 +10,7 @@ const corepackPathPackageJson = path.resolve(
  '..',
  'deps',
  'corepack',
- 'package.json'
+ 'package.json',
 );
 
 const pkg = require(corepackPathPackageJson);

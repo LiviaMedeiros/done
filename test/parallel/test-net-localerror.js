@@ -27,7 +27,7 @@ const net = require('net');
 const connect = (opts, code, type) => {
  assert.throws(
   () => net.connect(opts),
-  { code, name: type.name }
+  { code, name: type.name },
  );
 };
 

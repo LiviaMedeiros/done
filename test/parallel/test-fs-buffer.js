@@ -25,8 +25,8 @@ assert.throws(
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "path" argument must be of type string or an instance of ' +
-             'Buffer or URL. Received type boolean (true)'
- }
+             'Buffer or URL. Received type boolean (true)',
+ },
 );
 
 const dir = Buffer.from(fixtures.fixturesDir);
@@ -37,7 +37,7 @@ fs.readdir(dir, 'hex', common.mustSucceed((hexList) => {
    assert.strictEqual(
     fromHexList,
     val,
-    `expected ${val}, got ${fromHexList} by hex decoding ${hexList[idx]}`
+    `expected ${val}, got ${fromHexList} by hex decoding ${hexList[idx]}`,
    );
   });
  }));

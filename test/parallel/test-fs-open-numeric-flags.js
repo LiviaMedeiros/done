@@ -12,5 +12,5 @@ tmpdir.refresh();
 const pathNE = path.join(tmpdir.path, 'file-should-not-exist');
 assert.throws(
  () => fs.openSync(pathNE, fs.constants.O_WRONLY),
- (e) => e.code === 'ENOENT'
+ (e) => e.code === 'ENOENT',
 );

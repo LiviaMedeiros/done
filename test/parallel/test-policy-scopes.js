@@ -20,7 +20,7 @@ const { spawnSync } = require('child_process');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 0);
 }
@@ -34,7 +34,7 @@ const { spawnSync } = require('child_process');
   process.execPath,
   [
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
  assert.strictEqual(status, 0);
 }

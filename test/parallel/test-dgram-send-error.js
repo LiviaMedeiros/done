@@ -57,7 +57,7 @@ getSocket((socket) => {
    assert.strictEqual(err.port, port);
    assert.strictEqual(
     err.message,
-    `${err.syscall} ${err.code} ${err.address}:${err.port}`
+    `${err.syscall} ${err.code} ${err.address}:${err.port}`,
    );
   });
 

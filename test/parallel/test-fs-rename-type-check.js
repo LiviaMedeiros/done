@@ -12,31 +12,31 @@ const fs = require('fs');
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: `The "oldPath" argument must be ${type}`
-  }
+   message: `The "oldPath" argument must be ${type}`,
+  },
  );
  assert.throws(
   () => fs.rename('does-not-exist', input, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: `The "newPath" argument must be ${type}`
-  }
+   message: `The "newPath" argument must be ${type}`,
+  },
  );
  assert.throws(
   () => fs.renameSync(input, 'does-not-exist'),
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: `The "oldPath" argument must be ${type}`
-  }
+   message: `The "oldPath" argument must be ${type}`,
+  },
  );
  assert.throws(
   () => fs.renameSync('does-not-exist', input),
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: `The "newPath" argument must be ${type}`
-  }
+   message: `The "newPath" argument must be ${type}`,
+  },
  );
 });

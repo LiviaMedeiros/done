@@ -35,7 +35,7 @@ const assert = require('assert');
   assert.strictEqual(
    process.allowedNodeEnvironmentFlags.has(flag),
    true,
-   `flag should be in set: ${flag}`
+   `flag should be in set: ${flag}`,
   );
  });
 
@@ -43,7 +43,7 @@ const assert = require('assert');
   assert.strictEqual(
    process.allowedNodeEnvironmentFlags.has(flag),
    false,
-   `flag should not be in set: ${flag}`
+   `flag should not be in set: ${flag}`,
   );
  });
 }
@@ -72,7 +72,7 @@ const assert = require('assert');
    assert.strictEqual(this, thisArg);
    assert.strictEqual(set, process.allowedNodeEnvironmentFlags);
   }),
-  thisArg
+  thisArg,
  );
 
  for (const flag of process.allowedNodeEnvironmentFlags.keys()) {

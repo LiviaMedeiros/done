@@ -4,7 +4,7 @@ const {
  hasCrypto,
  mustCall,
  mustNotCall,
- skip
+ skip,
 } = require('../common');
 if (!hasCrypto)
  skip('missing crypto');
@@ -12,12 +12,12 @@ if (!hasCrypto)
 const {
  deepStrictEqual,
  strictEqual,
- throws
+ throws,
 } = require('assert');
 const {
  createSecureServer,
  createServer,
- connect
+ connect,
 } = require('http2');
 const Countdown = require('../common/countdown');
 
@@ -46,8 +46,8 @@ const ca = readKey('fake-startcom-root-cert.pem', 'binary');
     () => session.origin(input),
     {
      code: 'ERR_INVALID_ARG_TYPE',
-     name: 'TypeError'
-    }
+     name: 'TypeError',
+    },
    );
   });
 
@@ -56,8 +56,8 @@ const ca = readKey('fake-startcom-root-cert.pem', 'binary');
     () => session.origin(input),
     {
      code: 'ERR_HTTP2_INVALID_ORIGIN',
-     name: 'TypeError'
-    }
+     name: 'TypeError',
+    },
    );
   });
 
@@ -66,8 +66,8 @@ const ca = readKey('fake-startcom-root-cert.pem', 'binary');
     () => session.origin(input),
     {
      code: 'ERR_INVALID_URL',
-     name: 'TypeError'
-    }
+     name: 'TypeError',
+    },
    );
   });
   const longInput = `http://foo.bar${'a'.repeat(16383)}`;
@@ -75,8 +75,8 @@ const ca = readKey('fake-startcom-root-cert.pem', 'binary');
    () => session.origin(longInput),
    {
     code: 'ERR_HTTP2_ORIGIN_LENGTH',
-    name: 'TypeError'
-   }
+    name: 'TypeError',
+   },
   );
  }));
 

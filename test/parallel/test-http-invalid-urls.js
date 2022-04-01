@@ -17,12 +17,12 @@ function test(host) {
  ['get', 'request'].forEach((fn) => {
   Object.keys(modules).forEach((module) => {
    const doNotCall = common.mustNotCall(
-    `${module}.${fn} should not connect to ${host}`
+    `${module}.${fn} should not connect to ${host}`,
    );
    const throws = () => { modules[module][fn](host, doNotCall); };
    assert.throws(throws, {
     name: 'TypeError',
-    code: 'ERR_INVALID_URL'
+    code: 'ERR_INVALID_URL',
    });
   });
  });

@@ -61,7 +61,7 @@ async function prepareKeys() {
      Buffer.from(pkcs8, 'hex'),
      {
       name: 'ECDH',
-      namedCurve
+      namedCurve,
      },
      true,
      ['deriveKey', 'deriveBits']),
@@ -70,7 +70,7 @@ async function prepareKeys() {
      Buffer.from(spki, 'hex'),
      {
       name: 'ECDH',
-      namedCurve
+      namedCurve,
      },
      true,
      ['deriveKey', 'deriveBits']),
@@ -96,7 +96,7 @@ async function prepareKeys() {
     // Good parameters
     const bits = await subtle.deriveBits({
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, 8 * size);
 
     assert(bits instanceof ArrayBuffer);
@@ -107,7 +107,7 @@ async function prepareKeys() {
     // Case insensitivity
     const bits = await subtle.deriveBits({
      name: 'eCdH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, 8 * size);
 
     assert.strictEqual(Buffer.from(bits).toString('hex'), result);
@@ -117,7 +117,7 @@ async function prepareKeys() {
     // Null length
     const bits = await subtle.deriveBits({
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, null);
 
     assert.strictEqual(Buffer.from(bits).toString('hex'), result);
@@ -127,7 +127,7 @@ async function prepareKeys() {
     // Short Result
     const bits = await subtle.deriveBits({
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, 8 * size - 32);
 
     assert.strictEqual(
@@ -139,9 +139,9 @@ async function prepareKeys() {
     // Too long result
     await assert.rejects(subtle.deriveBits({
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, 8 * size + 8), {
-     message: /derived bit length is too small/
+     message: /derived bit length is too small/,
     });
    }
 
@@ -149,7 +149,7 @@ async function prepareKeys() {
     // Non-multiple of 8
     const bits = await subtle.deriveBits({
      name: 'ECDH',
-     public: publicKey
+     public: publicKey,
     }, privateKey, 8 * size - 11);
 
     assert.strictEqual(
@@ -175,7 +175,7 @@ async function prepareKeys() {
    subtle.deriveBits(
     {
      name: 'ECDH',
-     public: { message: 'Not a CryptoKey' }
+     public: { message: 'Not a CryptoKey' },
     },
     keys['P-384'].privateKey,
     8 * keys['P-384'].size),
@@ -188,7 +188,7 @@ async function prepareKeys() {
    subtle.deriveBits(
     {
      name: 'ECDH',
-     public: keys['P-384'].publicKey
+     public: keys['P-384'].publicKey,
     },
     keys['P-521'].privateKey,
     8 * keys['P-521'].size),
@@ -200,14 +200,14 @@ async function prepareKeys() {
   const { publicKey } = await subtle.generateKey(
    {
     name: 'ECDSA',
-    namedCurve: 'P-521'
+    namedCurve: 'P-521',
    }, false, ['verify']);
 
   await assert.rejects(subtle.deriveBits({
    name: 'ECDH',
-   public: publicKey
+   public: publicKey,
   }, keys['P-521'].privateKey, null), {
-   message: /Keys must be ECDH keys/
+   message: /Keys must be ECDH keys/,
   });
  }
 
@@ -218,14 +218,14 @@ async function prepareKeys() {
    Buffer.from(kTests[0].pkcs8, 'hex'),
    {
     name: 'ECDH',
-    namedCurve: 'P-521'
+    namedCurve: 'P-521',
    }, false, ['deriveKey']);
 
   await assert.rejects(subtle.deriveBits({
    name: 'ECDH',
    public: keys['P-521'].publicKey,
   }, privateKey, null), {
-   message: /baseKey does not have deriveBits usage/
+   message: /baseKey does not have deriveBits usage/,
   });
  }
 
@@ -233,9 +233,9 @@ async function prepareKeys() {
   // Base key is not a private key
   await assert.rejects(subtle.deriveBits({
    name: 'ECDH',
-   public: keys['P-521'].publicKey
+   public: keys['P-521'].publicKey,
   }, keys['P-521'].publicKey, null), {
-   message: /baseKey must be a private key/
+   message: /baseKey must be a private key/,
   });
  }
 
@@ -243,9 +243,9 @@ async function prepareKeys() {
   // Base key is not a private key
   await assert.rejects(subtle.deriveBits({
    name: 'ECDH',
-   public: keys['P-521'].privateKey
+   public: keys['P-521'].privateKey,
   }, keys['P-521'].publicKey, null), {
-   message: /algorithm\.public must be a public key/
+   message: /algorithm\.public must be a public key/,
   });
  }
 
@@ -260,9 +260,9 @@ async function prepareKeys() {
 
   await assert.rejects(subtle.deriveBits({
    name: 'ECDH',
-   public: key
+   public: key,
   }, keys['P-521'].publicKey, null), {
-   message: /algorithm\.public must be a public key/
+   message: /algorithm\.public must be a public key/,
   });
  }
 })().then(common.mustCall());

@@ -13,5 +13,5 @@ fs.readdir(
  { withFileTypes: true, encoding: 'buffer' },
  common.mustCall((e, d) => {
   assert.strictEqual(e, null);
- })
+ }),
 );

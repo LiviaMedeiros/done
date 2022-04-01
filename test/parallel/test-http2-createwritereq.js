@@ -24,7 +24,7 @@ const encodings = {
  'ucs-2': 'ucs2',
  'utf16le': 'ucs2',
  'utf-16le': 'ucs2',
- 'UTF8': 'utf8' // Should fall through to Buffer.from
+ 'UTF8': 'utf8', // Should fall through to Buffer.from
 };
 
 const testsToRun = Object.keys(encodings).length;
@@ -34,7 +34,7 @@ const server = http2.createServer(common.mustCall((req, res) => {
  const testEncoding = encodings[req.url.slice(1)];
 
  req.on('data', common.mustCall((chunk) => assert.ok(
-  Buffer.from(testString, testEncoding).equals(chunk)
+  Buffer.from(testString, testEncoding).equals(chunk),
  )));
 
  req.on('end', () => res.end());
@@ -45,13 +45,13 @@ server.listen(0, common.mustCall(function() {
   const client = http2.connect(`http://localhost:${this.address().port}`);
   const req = client.request({
    ':path': `/${writeEncoding}`,
-   ':method': 'POST'
+   ':method': 'POST',
   });
 
   assert.strictEqual(req._writableState.decodeStrings, false);
   req.write(
    writeEncoding !== 'buffer' ? testString : Buffer.from(testString),
-   writeEncoding !== 'buffer' ? writeEncoding : undefined
+   writeEncoding !== 'buffer' ? writeEncoding : undefined,
   );
   req.resume();
 

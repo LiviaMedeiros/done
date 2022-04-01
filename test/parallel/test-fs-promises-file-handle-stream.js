@@ -38,7 +38,7 @@ async function validateRead() {
  const fileHandle = await open(filePathForHandle);
  assert.deepStrictEqual(
   await buffer(fileHandle.createReadStream()),
-  buf
+  buf,
  );
 }
 

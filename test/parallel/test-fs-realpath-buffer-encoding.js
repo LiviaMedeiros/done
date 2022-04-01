@@ -56,7 +56,7 @@ for (encoding in expected) {
   { encoding },
   common.mustSucceed((res) => {
    assert.strictEqual(res, expected_value);
-  })
+  }),
  );
  fs.realpath(string_dir, encoding, common.mustSucceed((res) => {
   assert.strictEqual(res, expected_value);
@@ -66,7 +66,7 @@ for (encoding in expected) {
   { encoding },
   common.mustSucceed((res) => {
    assert.strictEqual(res, expected_value);
-  })
+  }),
  );
  fs.realpath(buffer_dir, encoding, common.mustSucceed((res) => {
   assert.strictEqual(res, expected_value);

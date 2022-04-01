@@ -64,7 +64,7 @@ import assert from 'assert';
  assert.strictEqual(Readable.prototype.asIndexedPairs.name, 'asIndexedPairs');
  const descriptor = Object.getOwnPropertyDescriptor(
   Readable.prototype,
-  'asIndexedPairs'
+  'asIndexedPairs',
  );
  assert.strictEqual(descriptor.enumerable, false);
  assert.strictEqual(descriptor.configurable, true);
@@ -75,7 +75,7 @@ import assert from 'assert';
  assert.strictEqual(Readable.prototype.drop.length, 1);
  const descriptor = Object.getOwnPropertyDescriptor(
   Readable.prototype,
-  'drop'
+  'drop',
  );
  assert.strictEqual(descriptor.enumerable, false);
  assert.strictEqual(descriptor.configurable, true);
@@ -98,7 +98,7 @@ import assert from 'assert';
   Readable.from([1]).drop({
    valueOf() {
     throw new Error('boom');
-   }
+   },
   });
  }, /boom/);
  // drop/limit-tointeger
@@ -160,7 +160,7 @@ import assert from 'assert';
  // every/propdesc
  const descriptor = Object.getOwnPropertyDescriptor(
   Readable.prototype,
-  'every'
+  'every',
  );
  assert.strictEqual(descriptor.enumerable, false);
  assert.strictEqual(descriptor.configurable, true);

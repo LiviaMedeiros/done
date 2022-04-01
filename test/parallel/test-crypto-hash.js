@@ -46,7 +46,7 @@ if (!common.hasFipsCrypto) {
  assert.strictEqual(
   a0,
   'h\u00ea\u00cb\u0097\u00d8o\fF!\u00fa+\u000e\u0017\u00ca\u00bd\u008c',
-  `${cryptoType} with ${digest} digest failed to evaluate to expected hash`
+  `${cryptoType} with ${digest} digest failed to evaluate to expected hash`,
  );
 }
 cryptoType = 'md5';
@@ -78,7 +78,7 @@ digest = 'hex';
 assert.deepStrictEqual(
  a4,
  Buffer.from('8308651804facb7b9af8ffc53a33a22d6a1c8ac2', 'hex'),
- `${cryptoType} with ${digest} digest failed to evaluate to expected hash`
+ `${cryptoType} with ${digest} digest failed to evaluate to expected hash`,
 );
 
 // Stream interface should produce the same result.
@@ -119,7 +119,7 @@ assert.throws(
  }),
  {
   name: 'Error',
-  message: 'boom'
+  message: 'boom',
  });
 
 // Issue https://github.com/nodejs/node/issues/25487: error message for invalid
@@ -149,14 +149,14 @@ assert.throws(
  () => h3.digest(),
  {
   code: 'ERR_CRYPTO_HASH_FINALIZED',
-  name: 'Error'
+  name: 'Error',
  });
 
 assert.throws(
  () => h3.update('foo'),
  {
   code: 'ERR_CRYPTO_HASH_FINALIZED',
-  name: 'Error'
+  name: 'Error',
  });
 
 assert.strictEqual(
@@ -169,8 +169,8 @@ assert.throws(
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "algorithm" argument must be of type string. ' +
-             'Received undefined'
- }
+             'Received undefined',
+ },
 );
 
 {
@@ -230,7 +230,7 @@ assert.throws(
                      'badfd6dfaac359a5efbb7bcc4b59d538' +
                      'df9a04302e10c8bc1cbf1a0b3a5120ea');
  const superLongHash = crypto.createHash('shake256', {
-  outputLength: 1024 * 1024
+  outputLength: 1024 * 1024,
  }).update('The message is shorter than the hash!')
     .digest('hex');
  assert.strictEqual(superLongHash.length, 2 * 1024 * 1024);
@@ -247,7 +247,7 @@ assert.throws(
  assert.throws(() => {
   crypto.createHash('sha256', { outputLength: 28 });
  }, {
-  code: 'ERR_OSSL_EVP_NOT_XOF_OR_INVALID_LENGTH'
+  code: 'ERR_OSSL_EVP_NOT_XOF_OR_INVALID_LENGTH',
  });
 
  for (const outputLength of [null, {}, 'foo', false]) {

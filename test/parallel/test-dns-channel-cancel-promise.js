@@ -31,8 +31,8 @@ server.bind(0, common.mustCall(async () => {
    {
     code: 'ECANCELLED',
     syscall: 'queryA',
-    hostname
-   }
+    hostname,
+   },
   );
  }
 
@@ -52,9 +52,9 @@ server.bind(0, common.mustCall(async () => {
      {
       code: 'ECANCELLED',
       syscall: 'queryA',
-      hostname: hostname
-     }
-    )
+      hostname: hostname,
+     },
+    ),
    );
   }
 

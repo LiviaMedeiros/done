@@ -14,13 +14,13 @@ async function validate() {
   copyFile(fixtures.path('baz.js'), dest, 'r'),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   message: /mode.*integer.*string/
-  }
+   message: /mode.*integer.*string/,
+  },
  );
  await copyFile(fixtures.path('baz.js'), dest);
  await assert.rejects(
   access(dest, 'r'),
-  { code: 'ERR_INVALID_ARG_TYPE', message: /mode/ }
+  { code: 'ERR_INVALID_ARG_TYPE', message: /mode/ },
  );
  await access(dest);
  const handle = await open(dest, 'r+');

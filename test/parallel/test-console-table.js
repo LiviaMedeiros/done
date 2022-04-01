@@ -19,7 +19,7 @@ function test(data, only, expected) {
  console.table(data, only);
  assert.deepStrictEqual(
   queue.shift().split('\n'),
-  expected.trimLeft().split('\n')
+  expected.trimLeft().split('\n'),
  );
 }
 

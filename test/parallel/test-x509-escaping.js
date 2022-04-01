@@ -275,52 +275,52 @@ const { hasOpenSSL3 } = common;
   {
    text: 'L=Somewhere\\0ACN=evil.example.com',
    legacy: {
-    L: 'Somewhere\nCN=evil.example.com'
+    L: 'Somewhere\nCN=evil.example.com',
    },
   },
   {
    text: 'L=Somewhere\\, CN = evil.example.com',
    legacy: {
-    L: 'Somewhere, CN = evil.example.com'
+    L: 'Somewhere, CN = evil.example.com',
    },
   },
   {
    text: 'L=Somewhere/CN=evil.example.com',
    legacy: {
-    L: 'Somewhere/CN=evil.example.com'
+    L: 'Somewhere/CN=evil.example.com',
    },
   },
   {
    text: 'L=München\\\\\\0ACN=evil.example.com',
    legacy: {
-    L: 'München\\\nCN=evil.example.com'
-   }
+    L: 'München\\\nCN=evil.example.com',
+   },
   },
   {
    text: 'L=Somewhere + CN=evil.example.com',
    legacy: {
     L: 'Somewhere',
     CN: 'evil.example.com',
-   }
+   },
   },
   {
    text: 'L=Somewhere \\+ CN=evil.example.com',
    legacy: {
-    L: 'Somewhere + CN=evil.example.com'
-   }
+    L: 'Somewhere + CN=evil.example.com',
+   },
   },
   // Observe that the legacy representation cannot properly distinguish
   // between multi-value RDNs and multiple single-value RDNs.
   {
    text: 'L=L1 + L=L2\nL=L3',
    legacy: {
-    L: ['L1', 'L2', 'L3']
+    L: ['L1', 'L2', 'L3'],
    },
   },
   {
    text: 'L=L1\nL=L2\nL=L3',
    legacy: {
-    L: ['L1', 'L2', 'L3']
+    L: ['L1', 'L2', 'L3'],
    },
   },
  ];
@@ -404,7 +404,7 @@ const { hasOpenSSL3 } = common;
    });
   }, {
    code: 'ERR_TLS_CERT_ALTNAME_FORMAT',
-   message: 'Invalid subject alternative name string'
+   message: 'Invalid subject alternative name string',
   });
  }
 }

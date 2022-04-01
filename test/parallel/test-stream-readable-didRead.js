@@ -42,7 +42,7 @@ function check(readable, data, fn) {
  const readable = new Readable({
   read() {
    this.push(null);
-  }
+  },
  });
  check(readable, 0, () => {
   readable.read();
@@ -53,7 +53,7 @@ function check(readable, data, fn) {
  const readable = new Readable({
   read() {
    this.push(null);
-  }
+  },
  });
  check(readable, 0, () => {
   readable.resume();
@@ -64,7 +64,7 @@ function check(readable, data, fn) {
  const readable = new Readable({
   read() {
    this.push(null);
-  }
+  },
  });
  check(readable, -2, () => {
   readable.destroy();
@@ -75,7 +75,7 @@ function check(readable, data, fn) {
  const readable = new Readable({
   read() {
    this.push(null);
-  }
+  },
  });
 
  check(readable, -1, () => {
@@ -88,7 +88,7 @@ function check(readable, data, fn) {
   read() {
    this.push('data');
    this.push(null);
-  }
+  },
  });
 
  check(readable, 1, () => {
@@ -101,7 +101,7 @@ function check(readable, data, fn) {
   read() {
    this.push('data');
    this.push(null);
-  }
+  },
  });
 
  check(readable, 1, () => {

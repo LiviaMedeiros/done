@@ -122,7 +122,7 @@ function oneTo5Async() {
    const ac = new AbortController();
    assert.rejects(Readable.from([1, 2, 3])[op](
     () => new Promise(() => { }),
-    { signal: ac.signal }
+    { signal: ac.signal },
    ), {
     name: 'AbortError',
    }, `${op} should abort correctly with sync abort`).then(common.mustCall());
@@ -132,7 +132,7 @@ function oneTo5Async() {
    // Support for pre-aborted AbortSignal
    assert.rejects(Readable.from([1, 2, 3])[op](
     () => new Promise(() => { }),
-    { signal: AbortSignal.abort() }
+    { signal: AbortSignal.abort() },
    ), {
     name: 'AbortError',
    }, `${op} should abort with pre-aborted abort controller`).then(common.mustCall());
@@ -147,7 +147,7 @@ function oneTo5Async() {
   }, /ERR_INVALID_ARG_TYPE/, `${op} should throw for invalid function`).then(common.mustCall());
   assert.rejects(async () => {
    await Readable.from([1])[op]((x) => x, {
-    concurrency: 'Foo'
+    concurrency: 'Foo',
    });
   }, /ERR_OUT_OF_RANGE/, `${op} should throw for invalid concurrency`).then(common.mustCall());
   assert.rejects(async () => {
@@ -155,7 +155,7 @@ function oneTo5Async() {
   }, /ERR_INVALID_ARG_TYPE/, `${op} should throw for invalid concurrency`).then(common.mustCall());
   assert.rejects(async () => {
    await Readable.from([1])[op]((x) => x, {
-    signal: true
+    signal: true,
    });
   }, /ERR_INVALID_ARG_TYPE/, `${op} should throw for invalid signal`).then(common.mustCall());
  }

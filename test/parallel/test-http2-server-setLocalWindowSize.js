@@ -21,7 +21,7 @@ server.on('session', common.mustCall((session) => {
  assert.strictEqual(session.state.localWindowSize, windowSize);
  assert.strictEqual(
   session.state.remoteWindowSize,
-  defaultSetting.initialWindowSize
+  defaultSetting.initialWindowSize,
  );
 }));
 

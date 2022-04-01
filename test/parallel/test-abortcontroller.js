@@ -88,7 +88,7 @@ const { setTimeout: sleep } = require('timers/promises');
  // Test that AbortController properties and methods validate the receiver
  const acSignalGet = Object.getOwnPropertyDescriptor(
   AbortController.prototype,
-  'signal'
+  'signal',
  ).get;
  const acAbort = AbortController.prototype.abort;
 
@@ -108,11 +108,11 @@ const { setTimeout: sleep } = require('timers/promises');
  for (const badController of badAbortControllers) {
   throws(
    () => acSignalGet.call(badController),
-   { code: 'ERR_INVALID_THIS', name: 'TypeError' }
+   { code: 'ERR_INVALID_THIS', name: 'TypeError' },
   );
   throws(
    () => acAbort.call(badController),
-   { code: 'ERR_INVALID_THIS', name: 'TypeError' }
+   { code: 'ERR_INVALID_THIS', name: 'TypeError' },
   );
  }
 }
@@ -121,7 +121,7 @@ const { setTimeout: sleep } = require('timers/promises');
  // Test that AbortSignal properties validate the receiver
  const signalAbortedGet = Object.getOwnPropertyDescriptor(
   AbortSignal.prototype,
-  'aborted'
+  'aborted',
  ).get;
 
  const goodSignal = new AbortController().signal;
@@ -139,7 +139,7 @@ const { setTimeout: sleep } = require('timers/promises');
  for (const badSignal of badAbortSignals) {
   throws(
    () => signalAbortedGet.call(badSignal),
-   { code: 'ERR_INVALID_THIS', name: 'TypeError' }
+   { code: 'ERR_INVALID_THIS', name: 'TypeError' },
   );
  }
 }

@@ -21,6 +21,6 @@ let error;
   (e) => {
    assert.strictEqual(error, e);
    return true;
-  }
+  },
  );
 })().then(common.mustCall());

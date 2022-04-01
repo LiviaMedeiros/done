@@ -172,7 +172,7 @@ import assert from 'assert';
 const { message } = new assert.AssertionError({
  actual: 1,
  expected: 2,
- operator: 'strictEqual'
+ operator: 'strictEqual',
 });
 
 // Verify error output:
@@ -197,7 +197,7 @@ const assert = require('assert');
 const { message } = new assert.AssertionError({
  actual: 1,
  expected: 2,
- operator: 'strictEqual'
+ operator: 'strictEqual',
 });
 
 // Verify error output:
@@ -568,18 +568,18 @@ import assert from 'assert';
 
 const obj1 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj2 = {
  a: {
-  b: 2
- }
+  b: 2,
+ },
 };
 const obj3 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj4 = Object.create(obj1);
 
@@ -603,18 +603,18 @@ const assert = require('assert');
 
 const obj1 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj2 = {
  a: {
-  b: 2
- }
+  b: 2,
+ },
 };
 const obj3 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj4 = Object.create(obj1);
 
@@ -983,7 +983,7 @@ await assert.doesNotReject(
  async () => {
   throw new TypeError('Wrong value');
  },
- SyntaxError
+ SyntaxError,
 );
 ```
 
@@ -995,7 +995,7 @@ const assert = require('assert/strict');
   async () => {
    throw new TypeError('Wrong value');
   },
-  SyntaxError
+  SyntaxError,
  );
 })();
 ```
@@ -1065,7 +1065,7 @@ assert.doesNotThrow(
  () => {
   throw new TypeError('Wrong value');
  },
- SyntaxError
+ SyntaxError,
 );
 ```
 
@@ -1076,7 +1076,7 @@ assert.doesNotThrow(
  () => {
   throw new TypeError('Wrong value');
  },
- SyntaxError
+ SyntaxError,
 );
 ```
 
@@ -1090,7 +1090,7 @@ assert.doesNotThrow(
  () => {
   throw new TypeError('Wrong value');
  },
- TypeError
+ TypeError,
 );
 ```
 
@@ -1101,7 +1101,7 @@ assert.doesNotThrow(
  () => {
   throw new TypeError('Wrong value');
  },
- TypeError
+ TypeError,
 );
 ```
 
@@ -1117,7 +1117,7 @@ assert.doesNotThrow(
   throw new TypeError('Wrong value');
  },
  /Wrong value/,
- 'Whoops'
+ 'Whoops',
 );
 // Throws: AssertionError: Got unwanted exception: Whoops
 ```
@@ -1130,7 +1130,7 @@ assert.doesNotThrow(
   throw new TypeError('Wrong value');
  },
  /Wrong value/,
- 'Whoops'
+ 'Whoops',
 );
 // Throws: AssertionError: Got unwanted exception: Whoops
 ```
@@ -1527,18 +1527,18 @@ import assert from 'assert';
 
 const obj1 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj2 = {
  a: {
-  b: 2
- }
+  b: 2,
+ },
 };
 const obj3 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj4 = Object.create(obj1);
 
@@ -1560,18 +1560,18 @@ const assert = require('assert');
 
 const obj1 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj2 = {
  a: {
-  b: 2
- }
+  b: 2,
+ },
 };
 const obj3 = {
  a: {
-  b: 1
- }
+  b: 1,
+ },
 };
 const obj4 = Object.create(obj1);
 
@@ -1929,8 +1929,8 @@ await assert.rejects(
  },
  {
   name: 'TypeError',
-  message: 'Wrong value'
- }
+  message: 'Wrong value',
+ },
 );
 ```
 
@@ -1944,8 +1944,8 @@ const assert = require('assert/strict');
   },
   {
    name: 'TypeError',
-   message: 'Wrong value'
-  }
+   message: 'Wrong value',
+  },
  );
 })();
 ```
@@ -1961,7 +1961,7 @@ await assert.rejects(
   assert.strictEqual(err.name, 'TypeError');
   assert.strictEqual(err.message, 'Wrong value');
   return true;
- }
+ },
 );
 ```
 
@@ -1977,7 +1977,7 @@ const assert = require('assert/strict');
    assert.strictEqual(err.name, 'TypeError');
    assert.strictEqual(err.message, 'Wrong value');
    return true;
-  }
+  },
  );
 })();
 ```
@@ -1987,7 +1987,7 @@ import assert from 'assert/strict';
 
 assert.rejects(
  Promise.reject(new Error('Wrong value')),
- Error
+ Error,
 ).then(() => {
  // ...
 });
@@ -1998,7 +1998,7 @@ const assert = require('assert/strict');
 
 assert.rejects(
  Promise.reject(new Error('Wrong value')),
- Error
+ Error,
 ).then(() => {
  // ...
 });
@@ -2133,7 +2133,7 @@ err.code = 404;
 err.foo = 'bar';
 err.info = {
  nested: true,
- baz: 'text'
+ baz: 'text',
 };
 err.reg = /abc/i;
 
@@ -2146,12 +2146,12 @@ assert.throws(
   message: 'Wrong value',
   info: {
    nested: true,
-   baz: 'text'
-  }
+   baz: 'text',
+  },
   // Only properties on the validation object will be tested for.
   // Using nested objects requires all properties to be present. Otherwise
   // the validation is going to fail.
- }
+ },
 );
 
 // Using regular expressions to validate error properties:
@@ -2169,13 +2169,13 @@ throws(
   info: {
    nested: true,
    // It is not possible to use regular expressions for nested properties!
-   baz: 'text'
+   baz: 'text',
   },
   // The `reg` property contains a regular expression and only if the
   // validation object contains an identical regular expression, it is going
   // to pass.
-  reg: /abc/i
- }
+  reg: /abc/i,
+ },
 );
 
 // Fails due to the different `message` and `name` properties:
@@ -2190,7 +2190,7 @@ throws(
  },
  // The error's `message` and `name` properties will also be checked when using
  // an error as validation object.
- err
+ err,
 );
 ```
 
@@ -2202,7 +2202,7 @@ err.code = 404;
 err.foo = 'bar';
 err.info = {
  nested: true,
- baz: 'text'
+ baz: 'text',
 };
 err.reg = /abc/i;
 
@@ -2215,12 +2215,12 @@ assert.throws(
   message: 'Wrong value',
   info: {
    nested: true,
-   baz: 'text'
-  }
+   baz: 'text',
+  },
   // Only properties on the validation object will be tested for.
   // Using nested objects requires all properties to be present. Otherwise
   // the validation is going to fail.
- }
+ },
 );
 
 // Using regular expressions to validate error properties:
@@ -2238,13 +2238,13 @@ throws(
   info: {
    nested: true,
    // It is not possible to use regular expressions for nested properties!
-   baz: 'text'
+   baz: 'text',
   },
   // The `reg` property contains a regular expression and only if the
   // validation object contains an identical regular expression, it is going
   // to pass.
-  reg: /abc/i
- }
+  reg: /abc/i,
+ },
 );
 
 // Fails due to the different `message` and `name` properties:
@@ -2259,7 +2259,7 @@ throws(
  },
  // The error's `message` and `name` properties will also be checked when using
  // an error as validation object.
- err
+ err,
 );
 ```
 
@@ -2272,7 +2272,7 @@ assert.throws(
  () => {
   throw new Error('Wrong value');
  },
- Error
+ Error,
 );
 ```
 
@@ -2283,7 +2283,7 @@ assert.throws(
  () => {
   throw new Error('Wrong value');
  },
- Error
+ Error,
 );
 ```
 
@@ -2299,7 +2299,7 @@ assert.throws(
  () => {
   throw new Error('Wrong value');
  },
- /^Error: Wrong value$/
+ /^Error: Wrong value$/,
 );
 ```
 
@@ -2310,7 +2310,7 @@ assert.throws(
  () => {
   throw new Error('Wrong value');
  },
- /^Error: Wrong value$/
+ /^Error: Wrong value$/,
 );
 ```
 
@@ -2336,7 +2336,7 @@ assert.throws(
   // possible.
   return true;
  },
- 'unexpected error'
+ 'unexpected error',
 );
 ```
 
@@ -2357,7 +2357,7 @@ assert.throws(
   // possible.
   return true;
  },
- 'unexpected error'
+ 'unexpected error',
 );
 ```
 

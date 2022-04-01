@@ -16,13 +16,13 @@ const url = require('url');
 
 if (!common.isMainThread) {
  common.skip(
-  'test-esm-resolve-type.js: process.chdir is not available in Workers'
+  'test-esm-resolve-type.js: process.chdir is not available in Workers',
  );
 }
 
 const assert = require('assert');
 const {
- defaultResolve: resolve
+ defaultResolve: resolve,
 } = require('internal/modules/esm/resolve');
 
 const rel = (file) => path.join(tmpdir.path, file);
@@ -83,7 +83,7 @@ try {
   createDir(subDir);
   const pkgJsonContent = {
    ...(moduleType !== undefined) && { type: moduleType },
-   main: `subdir/mainfile.${moduleExtenstion}`
+   main: `subdir/mainfile.${moduleExtenstion}`,
   };
   fs.writeFileSync(pkg, JSON.stringify(pkgJsonContent));
   fs.writeFileSync(script,
@@ -151,24 +151,24 @@ try {
     '.': {
      'require': './lib/index.js',
      'import': './es/index.js',
-     'default': './lib/index.js'
+     'default': './lib/index.js',
     },
     './package.json': './package.json',
-   }
+   },
   };
   const esmPkgJsonContent = {
-   type: 'module'
+   type: 'module',
   };
 
   fs.writeFileSync(pkg, JSON.stringify(mainPkgJsonContent));
   fs.writeFileSync(esmPkg, JSON.stringify(esmPkgJsonContent));
   fs.writeFileSync(
    esScript,
-   'export function esm-resolve-tester() {return 42}'
+   'export function esm-resolve-tester() {return 42}',
   );
   fs.writeFileSync(
    cjsScript,
-   'module.exports = {esm-resolve-tester: () => {return 42}}'
+   'module.exports = {esm-resolve-tester: () => {return 42}}',
   );
 
   // test the resolve
@@ -219,24 +219,24 @@ try {
     '.': {
      'require': `./subdir/${mainRequireScript}${mainSuffix}`,
      'import': `./subdir/${mainImportScript}${mainSuffix}`,
-     'default': `./subdir/${mainRequireScript}${mainSuffix}`
+     'default': `./subdir/${mainRequireScript}${mainSuffix}`,
     },
     './package.json': './package.json',
-   }
+   },
   };
   const subdirPkgJsonContent = {
-   type: `${subdirPackageType}`
+   type: `${subdirPackageType}`,
   };
 
   fs.writeFileSync(pkg, JSON.stringify(mainPkgJsonContent));
   fs.writeFileSync(subdirPkg, JSON.stringify(subdirPkgJsonContent));
   fs.writeFileSync(
    esScript,
-   'export function esm-resolve-tester() {return 42}'
+   'export function esm-resolve-tester() {return 42}',
   );
   fs.writeFileSync(
    cjsScript,
-   'module.exports = {esm-resolve-tester: () => {return 42}}'
+   'module.exports = {esm-resolve-tester: () => {return 42}}',
   );
 
   // test the resolve

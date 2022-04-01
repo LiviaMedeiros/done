@@ -48,7 +48,7 @@ const expectedResult = tmpdir.path.trim().toLowerCase();
      resolve(accumulatedData.toString().trim().toLowerCase());
     });
    });
-  })
+  }),
  );
 
  assert.deepStrictEqual([...new Set(results)], [expectedResult]);

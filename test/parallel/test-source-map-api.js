@@ -15,9 +15,9 @@ const { readFileSync } = require('fs');
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "payload" argument must be of type object.' +
-               common.invalidArgTypeHelper(invalidArg)
-   }
-  )
+               common.invalidArgTypeHelper(invalidArg),
+   },
+  ),
  );
 }
 
@@ -26,12 +26,12 @@ const { readFileSync } = require('fs');
 {
  require('../fixtures/source-map/disk-relative-path.js');
  const sourceMap = findSourceMap(
-  require.resolve('../fixtures/source-map/disk-relative-path.js')
+  require.resolve('../fixtures/source-map/disk-relative-path.js'),
  );
  const {
   originalLine,
   originalColumn,
-  originalSource
+  originalSource,
  } = sourceMap.findEntry(0, 29);
  assert.strictEqual(originalLine, 2);
  assert.strictEqual(originalColumn, 4);
@@ -64,10 +64,10 @@ const { readFileSync } = require('fs');
   generatedColumn,
   originalLine,
   originalColumn,
-  originalSource
+  originalSource,
  } = sourceMap.findEntry(
   callSite.getLineNumber() - 1,
-  callSite.getColumnNumber() - 1
+  callSite.getColumnNumber() - 1,
  );
 
  assert.strictEqual(generatedLine, 19);
@@ -81,13 +81,13 @@ const { readFileSync } = require('fs');
 // SourceMap can be instantiated with Source Map V3 object as payload.
 {
  const payload = JSON.parse(readFileSync(
-  require.resolve('../fixtures/source-map/disk.map'), 'utf8'
+  require.resolve('../fixtures/source-map/disk.map'), 'utf8',
  ));
  const sourceMap = new SourceMap(payload);
  const {
   originalLine,
   originalColumn,
-  originalSource
+  originalSource,
  } = sourceMap.findEntry(0, 29);
  assert.strictEqual(originalLine, 2);
  assert.strictEqual(originalColumn, 4);
@@ -150,7 +150,7 @@ const { readFileSync } = require('fs');
    // Mapping from the 0th line, ${g}th column of the output file to the 0th
    // source file, 0th line, ${column}th column.
    mappings: generatedColumns.map((g, i) => `${g}AA${originalColumns[i]}`)
-        .join(',')
+        .join(','),
   };
  }
  // U = 10
@@ -159,7 +159,7 @@ const { readFileSync } = require('fs');
  // E = 2
  const sourceMap = new SourceMap(makeMinimalMap(
   ['U', 'F', 'F'],
-  ['A', 'E', 'E']
+  ['A', 'E', 'E'],
  ));
  assert.strictEqual(sourceMap.findEntry(0, 6).originalColumn, 4);
  assert.strictEqual(sourceMap.findEntry(0, 8).originalColumn, 2);

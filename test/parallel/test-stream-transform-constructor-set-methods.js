@@ -13,8 +13,8 @@ assert.throws(
  {
   name: 'Error',
   code: 'ERR_METHOD_NOT_IMPLEMENTED',
-  message: 'The _transform() method is not implemented'
- }
+  message: 'The _transform() method is not implemented',
+ },
 );
 
 const _transform = common.mustCall((chunk, _, next) => {
@@ -32,7 +32,7 @@ const _flush = common.mustCall((next) => {
 const t2 = new Transform({
  transform: _transform,
  flush: _flush,
- final: _final
+ final: _final,
 });
 
 assert.strictEqual(t2._transform, _transform);

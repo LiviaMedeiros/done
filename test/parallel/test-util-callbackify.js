@@ -51,7 +51,7 @@ const values = [
    return {
     then(onRes, onRej) {
      onRes(value);
-    }
+    },
    };
   }
 
@@ -97,7 +97,7 @@ const values = [
    value: obj,
    writable: false,
    enumerable: false,
-   configurable: true
+   configurable: true,
   });
 
   const cbPromiseFn = callbackify(promiseFn);
@@ -122,7 +122,7 @@ const values = [
    return {
     then(onRes, onRej) {
      onRej(value);
-    }
+    },
    };
   }
 
@@ -156,7 +156,7 @@ const values = [
   assert.strictEqual(cbAsyncFn.length, 2);
   assert.notStrictEqual(
    Object.getPrototypeOf(cbAsyncFn),
-   Object.getPrototypeOf(asyncFn)
+   Object.getPrototypeOf(asyncFn),
   );
   assert.strictEqual(Object.getPrototypeOf(cbAsyncFn), Function.prototype);
   cbAsyncFn(value, common.mustSucceed((ret) => {
@@ -172,7 +172,7 @@ const values = [
    value: obj,
    writable: false,
    enumerable: false,
-   configurable: true
+   configurable: true,
   });
 
   const cbPromiseFn = callbackify(promiseFn);
@@ -225,7 +225,7 @@ const values = [
    const errLines = stderr.trim().split(/[\r\n]+/);
    const errLine = errLines.find((l) => /^Error/.exec(l));
    assert.strictEqual(errLine, `Error: ${fixture}`);
-  })
+  }),
  );
 }
 
@@ -240,7 +240,7 @@ const values = [
     stdout.trim(),
     `ifError got unwanted exception: ${fixture}`);
    assert.strictEqual(stderr, '');
-  })
+  }),
  );
 }
 
@@ -253,7 +253,7 @@ const values = [
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "original" argument must be of type function.' +
-               common.invalidArgTypeHelper(value)
+               common.invalidArgTypeHelper(value),
   });
  });
 }
@@ -275,7 +275,7 @@ const values = [
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The last argument must be of type function.' +
-               common.invalidArgTypeHelper(value)
+               common.invalidArgTypeHelper(value),
   });
  });
 }

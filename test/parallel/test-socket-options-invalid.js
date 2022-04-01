@@ -11,7 +11,7 @@ const net = require('net');
  ];
  invalidKeys.forEach((invalidKey) => {
   const option = {
-   [invalidKey]: true
+   [invalidKey]: true,
   };
   const message = `The property 'options.${invalidKey}' is not supported. Received true`;
 
@@ -21,7 +21,7 @@ const net = require('net');
   }, {
    code: 'ERR_INVALID_ARG_VALUE',
    name: 'TypeError',
-   message: new RegExp(message)
+   message: new RegExp(message),
   });
  });
 }

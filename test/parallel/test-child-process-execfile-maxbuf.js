@@ -16,7 +16,7 @@ function checkFactory(streamName) {
  execFile(
   process.execPath,
   ['-e', 'console.log("a".repeat(1024 * 1024))'],
-  checkFactory('stdout')
+  checkFactory('stdout'),
  );
 }
 
@@ -28,7 +28,7 @@ function checkFactory(streamName) {
   common.mustSucceed((stdout, stderr) => {
    assert.strictEqual(stdout.trim(), 'a'.repeat(1024 * 1024 - 1));
    assert.strictEqual(stderr, '');
-  })
+  }),
  );
 }
 
@@ -42,7 +42,7 @@ function checkFactory(streamName) {
   common.mustSucceed((stdout, stderr) => {
    assert.strictEqual(stdout.trim(), 'hello world');
    assert.strictEqual(stderr, '');
-  })
+  }),
  );
 }
 
@@ -65,7 +65,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   process.execPath,
   ['-e', `console.error('${unicode}');`],
   { maxBuffer: 10 },
-  checkFactory('stderr')
+  checkFactory('stderr'),
  );
 }
 
@@ -74,7 +74,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   process.execPath,
   ['-e', `console.log('${unicode}');`],
   { encoding: null, maxBuffer: 10 },
-  checkFactory('stdout')
+  checkFactory('stdout'),
  );
 
  child.stdout.setEncoding('utf-8');
@@ -85,7 +85,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   process.execPath,
   ['-e', `console.error('${unicode}');`],
   { encoding: null, maxBuffer: 10 },
-  checkFactory('stderr')
+  checkFactory('stderr'),
  );
 
  child.stderr.setEncoding('utf-8');

@@ -85,7 +85,7 @@ process.on('beforeExit', common.mustCall(() => {
  fs.open(file, 'w', common.mustSucceed((fd) => {
   fdsToCloseOnExit.push(fd);
   fs.writeFile(fd, 'World', { signal }, common.expectsError({
-   name: 'AbortError'
+   name: 'AbortError',
   }));
  }));
 

@@ -8,7 +8,7 @@ assert.throws(
  function() {
   process.binding('test');
  },
- /No such module: test/
+ /No such module: test/,
 );
 
 internalBinding('buffer');

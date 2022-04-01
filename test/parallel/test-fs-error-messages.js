@@ -51,7 +51,7 @@ const {
  UV_ENOENT,
  UV_ENOTDIR,
  UV_ENOTEMPTY,
- UV_EPERM
+ UV_EPERM,
 } = internalBinding('uv');
 
 // Template tag function for escaping special characters in strings so that:
@@ -83,7 +83,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.statSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -103,7 +103,7 @@ function re(literals, ...values) {
  fs.lstat(nonexistentFile, common.mustCall(validateError));
  assert.throws(
   () => fs.lstatSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -122,7 +122,7 @@ function re(literals, ...values) {
 
   assert.throws(
    () => fs.fstatSync(fd),
-   validateError
+   validateError,
   );
  });
 }
@@ -144,7 +144,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.realpathSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -165,7 +165,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.realpathSync.native(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -186,7 +186,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.readlinkSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -210,7 +210,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.linkSync(nonexistentFile, 'foo'),
-  validateError
+  validateError,
  );
 }
 
@@ -233,7 +233,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.linkSync(existingFile, existingFile2),
-  validateError
+  validateError,
  );
 }
 
@@ -256,7 +256,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.symlinkSync(existingFile, existingFile2),
-  validateError
+  validateError,
  );
 }
 
@@ -277,7 +277,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.unlinkSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -302,7 +302,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.renameSync(nonexistentFile, destFile),
-  validateError
+  validateError,
  );
 }
 
@@ -345,7 +345,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.renameSync(existingDir, existingDir2),
-  validateError
+  validateError,
  );
 }
 
@@ -366,7 +366,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.rmdirSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -394,7 +394,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.rmdirSync(existingFile),
-  validateError
+  validateError,
  );
 }
 
@@ -415,7 +415,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.mkdirSync(existingFile, 0o666),
-  validateError
+  validateError,
  );
 }
 
@@ -436,7 +436,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.chmodSync(nonexistentFile, 0o666),
-  validateError
+  validateError,
  );
 }
 
@@ -457,7 +457,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.openSync(nonexistentFile, 'r', 0o666),
-  validateError
+  validateError,
  );
 }
 
@@ -477,7 +477,7 @@ function re(literals, ...values) {
 
   assert.throws(
    () => fs.closeSync(fd),
-   validateError
+   validateError,
   );
  });
 }
@@ -499,7 +499,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.readFileSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -520,7 +520,7 @@ function re(literals, ...values) {
 
  assert.throws(
   () => fs.readdirSync(nonexistentFile),
-  validateError
+  validateError,
  );
 }
 
@@ -545,7 +545,7 @@ function re(literals, ...values) {
 
   assert.throws(
    () => fs.ftruncateSync(fd, 4),
-   validateError
+   validateError,
   );
  });
 }
@@ -565,7 +565,7 @@ function re(literals, ...values) {
 
   assert.throws(
    () => fs.fdatasyncSync(fd),
-   validateError
+   validateError,
   );
  });
 }
@@ -585,7 +585,7 @@ function re(literals, ...values) {
 
   assert.throws(
    () => fs.fsyncSync(fd),
-   validateError
+   validateError,
   );
  });
 }
@@ -609,7 +609,7 @@ if (!common.isWindows) {
  assert.throws(
   () => fs.chownSync(nonexistentFile,
                      process.getuid(), process.getgid()),
-  validateError
+  validateError,
  );
 }
 
@@ -631,7 +631,7 @@ if (!common.isAIX) {
 
  assert.throws(
   () => fs.utimesSync(nonexistentFile, new Date(), new Date()),
-  validateError
+  validateError,
  );
 }
 
@@ -655,7 +655,7 @@ if (!common.isAIX) {
 
  assert.throws(
   () => fs.mkdtempSync(nonexistentDir),
-  validateError
+  validateError,
  );
 }
 
@@ -663,16 +663,16 @@ if (!common.isAIX) {
 {
  const validateError = {
   message: /"mode".+must be an integer >= 0 && <= 7\. Received -1/,
-  code: 'ERR_OUT_OF_RANGE'
+  code: 'ERR_OUT_OF_RANGE',
  };
 
  assert.throws(
   () => fs.copyFile(existingFile, nonexistentFile, -1, () => {}),
-  validateError
+  validateError,
  );
  assert.throws(
   () => fs.copyFileSync(existingFile, nonexistentFile, -1),
-  validateError
+  validateError,
  );
 }
 
@@ -702,7 +702,7 @@ if (!common.isAIX) {
 
  assert.throws(
   () => fs.copyFileSync(existingFile, existingFile2, COPYFILE_EXCL),
-  validateError
+  validateError,
  );
 }
 
@@ -723,7 +723,7 @@ if (!common.isAIX) {
 
  assert.throws(
   () => fs.copyFileSync(nonexistentFile, existingFile2, COPYFILE_EXCL),
-  validateError
+  validateError,
  );
 }
 
@@ -743,7 +743,7 @@ if (!common.isAIX) {
 
   assert.throws(
    () => fs.readSync(fd, buf, 0, 1, 1),
-   validateError
+   validateError,
   );
  });
 }
@@ -763,7 +763,7 @@ if (!common.isAIX) {
 
   assert.throws(
    () => fs.fchmodSync(fd, 0o666),
-   validateError
+   validateError,
   );
  });
 }
@@ -784,7 +784,7 @@ if (!common.isWindows) {
 
   assert.throws(
    () => fs.fchownSync(fd, process.getuid(), process.getgid()),
-   validateError
+   validateError,
   );
  });
 }
@@ -805,7 +805,7 @@ if (!common.isWindows) {
 
   assert.throws(
    () => fs.writeSync(fd, buf, 0, 1, 1),
-   validateError
+   validateError,
   );
  });
 }
@@ -825,7 +825,7 @@ if (!common.isWindows) {
 
   assert.throws(
    () => fs.writeSync(fd, 'test', 1),
-   validateError
+   validateError,
   );
  });
 }
@@ -846,7 +846,7 @@ if (!common.isAIX) {
 
   assert.throws(
    () => fs.futimesSync(fd, new Date(), new Date()),
-   validateError
+   validateError,
   );
  });
 }

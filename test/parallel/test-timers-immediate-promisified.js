@@ -68,25 +68,25 @@ process.on('multipleResolves', common.mustNotCall());
  Promise.all(
   [1, '', false, Infinity].map(
    (i) => assert.rejects(setPromiseImmediate(10, i), {
-    code: 'ERR_INVALID_ARG_TYPE'
-   })
-  )
+    code: 'ERR_INVALID_ARG_TYPE',
+   }),
+  ),
  ).then(common.mustCall());
 
  Promise.all(
   [1, '', false, Infinity, null, {}].map(
    (signal) => assert.rejects(setPromiseImmediate(10, { signal }), {
-    code: 'ERR_INVALID_ARG_TYPE'
-   })
-  )
+    code: 'ERR_INVALID_ARG_TYPE',
+   }),
+  ),
  ).then(common.mustCall());
 
  Promise.all(
   [1, '', Infinity, null, {}].map(
    (ref) => assert.rejects(setPromiseImmediate(10, { ref }), {
-    code: 'ERR_INVALID_ARG_TYPE'
-   })
-  )
+    code: 'ERR_INVALID_ARG_TYPE',
+   }),
+  ),
  ).then(common.mustCall());
 }
 

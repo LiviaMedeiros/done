@@ -37,14 +37,14 @@ const opts = {
 };
 
 const optsInfo = {
- info: true
+ info: true,
 };
 
 for (const [type, expect] of [
  ['string', expectStr],
  ['Buffer', expectBuf],
  ...common.getBufferSources(expectBuf).map((obj) =>
-  [obj[Symbol.toStringTag], obj]
+  [obj[Symbol.toStringTag], obj],
  ),
 ]) {
  for (const method of [
@@ -128,6 +128,6 @@ assert.throws(
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "callback" argument must be of type function. ' +
-             'Received undefined'
- }
+             'Received undefined',
+ },
 );

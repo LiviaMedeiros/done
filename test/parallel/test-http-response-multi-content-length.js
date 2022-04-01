@@ -11,7 +11,7 @@ function test(server) {
  server.listen(0, common.mustCall(() => {
   http.get(
    { port: server.address().port },
-   () => { assert.fail('Client allowed multiple content-length headers.'); }
+   () => { assert.fail('Client allowed multiple content-length headers.'); },
   ).on('error', common.mustCall((err) => {
    assert.ok(err.message.startsWith('Parse Error'), err.message);
    assert.strictEqual(err.code, 'HPE_UNEXPECTED_CONTENT_LENGTH');

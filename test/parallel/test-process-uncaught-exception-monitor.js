@@ -18,7 +18,7 @@ const fixtures = require('../common/fixtures');
    const errLines = stderr.trim().split(/[\r\n]+/);
    const errLine = errLines.find((l) => /^Error/.exec(l));
    assert.strictEqual(errLine, 'Error: Shall exit');
-  })
+  }),
  );
 }
 
@@ -36,9 +36,9 @@ const fixtures = require('../common/fixtures');
    const errLine = errLines.find((l) => /^ReferenceError/.exec(l));
    assert.strictEqual(
     errLine,
-    'ReferenceError: missingFunction is not defined'
+    'ReferenceError: missingFunction is not defined',
    );
-  })
+  }),
  );
 }
 
@@ -49,7 +49,7 @@ process.on(
  common.mustCall((err, origin) => {
   assert.strictEqual(err, theErr);
   assert.strictEqual(origin, 'uncaughtException');
- }, 2)
+ }, 2),
 );
 
 process.on('uncaughtException', common.mustCall((err, origin) => {
@@ -59,7 +59,7 @@ process.on('uncaughtException', common.mustCall((err, origin) => {
  process.nextTick(common.mustCall(() => {
   // Test with uncaughtExceptionCaptureCallback installed
   process.setUncaughtExceptionCaptureCallback(common.mustCall(
-   (err) => assert.strictEqual(err, theErr))
+   (err) => assert.strictEqual(err, theErr)),
   );
 
   throw theErr;

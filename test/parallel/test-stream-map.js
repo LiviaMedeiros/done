@@ -60,7 +60,7 @@ const { setTimeout } = require('timers/promises');
    this.push(Uint8Array.from([1]));
    this.push(Uint8Array.from([2]));
    this.push(null);
-  }
+  },
  }).map(async ([x]) => {
   return x + x;
  }).map((x) => x + x);
@@ -79,7 +79,7 @@ const { setTimeout } = require('timers/promises');
    this.push(Uint8Array.from([1]));
    this.push(Uint8Array.from([2]));
    this.push(null);
-  }
+  },
  });
  setImmediate(() => stream.emit('data', Uint8Array.from([1])));
  const stream = source.map(async ([x]) => {
@@ -177,7 +177,7 @@ const { setTimeout } = require('timers/promises');
  // Error cases
  assert.throws(() => Readable.from([1]).map(1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).map((x) => x, {
-  concurrency: 'Foo'
+  concurrency: 'Foo',
  }), /ERR_OUT_OF_RANGE/);
  assert.throws(() => Readable.from([1]).map((x) => x, 1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).map((x) => x, { signal: true }), /ERR_INVALID_ARG_TYPE/);

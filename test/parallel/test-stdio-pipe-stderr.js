@@ -23,13 +23,13 @@ fs.writeFileSync(fakeModulePath, '', 'utf8');
 stream.on('open', () => {
  spawnSync(process.execPath, {
   input: `require("${fakeModulePath.replace(/\\/g, '/')}")`,
-  stdio: ['pipe', 'pipe', stream]
+  stdio: ['pipe', 'pipe', stream],
  });
  const stderr = fs.readFileSync(stderrOutputPath, 'utf8').trim();
  assert.strictEqual(
   stderr,
   '',
-  `piping stderr to file should not result in exception: ${stderr}`
+  `piping stderr to file should not result in exception: ${stderr}`,
  );
  stream.end();
  fs.unlinkSync(stderrOutputPath);

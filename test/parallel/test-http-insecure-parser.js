@@ -20,7 +20,7 @@ server.listen(0, common.mustCall(function() {
     'GET / HTTP/1.1\r\n' +
         'Content-Type: text/te\x08t\r\n' +
         'Connection: close\r\n\r\n');
-  }
+  },
  );
  client.on('data', function(chunk) {
   bufs.push(chunk);

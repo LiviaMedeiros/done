@@ -27,7 +27,7 @@ const certFixture = {
  const req = https.request({
   rejectUnauthorized: false,
   createConnection: common.mustCall(() => clientSide),
-  insecureHTTPParser: true
+  insecureHTTPParser: true,
  }, common.mustCall((res) => {
   assert.strictEqual(res.headers.hello, 'foo\x08foo');
   res.resume();  // We don’t actually care about contents.
@@ -48,7 +48,7 @@ const certFixture = {
 
  const req = https.request({
   rejectUnauthorized: false,
-  createConnection: common.mustCall(() => clientSide)
+  createConnection: common.mustCall(() => clientSide),
  }, common.mustNotCall());
  req.end();
  req.on('error', common.mustCall());
@@ -77,7 +77,7 @@ const certFixture = {
  server.listen(0, common.mustCall(() => {
   const client = tls.connect({
    port: server.address().port,
-   rejectUnauthorized: false
+   rejectUnauthorized: false,
   });
   client.write(
    'GET / HTTP/1.1\r\n' +
@@ -103,7 +103,7 @@ const certFixture = {
  server.listen(0, common.mustCall(() => {
   const client = tls.connect({
    port: server.address().port,
-   rejectUnauthorized: false
+   rejectUnauthorized: false,
   });
   client.write(
    'GET / HTTP/1.1\r\n' +
@@ -125,7 +125,7 @@ const certFixture = {
   common.expectsError({
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "options.insecureHTTPParser" property must be of' +
-      ' type boolean. Received type number (0)'
-  })
+      ' type boolean. Received type number (0)',
+  }),
  );
 }

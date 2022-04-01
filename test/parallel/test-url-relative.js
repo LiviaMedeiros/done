@@ -422,7 +422,7 @@ relativeTests2.forEach(function(relativeTest) {
  assert.deepStrictEqual(
   actual,
   expected,
-  `expected ${inspect(expected)} but got ${inspect(actual)}`
+  `expected ${inspect(expected)} but got ${inspect(actual)}`,
  );
 
  expected = url.format(relativeTest[2]);

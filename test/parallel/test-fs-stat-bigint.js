@@ -35,31 +35,31 @@ function verifyStats(bigintStats, numStats, allowableDelta) {
    assert.strictEqual(bigintStats[key], BigInt(val));
    assert.strictEqual(
     bigintStats.isBlockDevice(),
-    numStats.isBlockDevice()
+    numStats.isBlockDevice(),
    );
    assert.strictEqual(
     bigintStats.isCharacterDevice(),
-    numStats.isCharacterDevice()
+    numStats.isCharacterDevice(),
    );
    assert.strictEqual(
     bigintStats.isDirectory(),
-    numStats.isDirectory()
+    numStats.isDirectory(),
    );
    assert.strictEqual(
     bigintStats.isFIFO(),
-    numStats.isFIFO()
+    numStats.isFIFO(),
    );
    assert.strictEqual(
     bigintStats.isFile(),
-    numStats.isFile()
+    numStats.isFile(),
    );
    assert.strictEqual(
     bigintStats.isSocket(),
-    numStats.isSocket()
+    numStats.isSocket(),
    );
    assert.strictEqual(
     bigintStats.isSymbolicLink(),
-    numStats.isSymbolicLink()
+    numStats.isSymbolicLink(),
    );
   } else if (key.endsWith('Ms')) {
    const nsKey = key.replace('Ms', 'Ns');
@@ -83,7 +83,7 @@ function verifyStats(bigintStats, numStats, allowableDelta) {
    assert.strictEqual(
     bigintStats[key], BigInt(val),
     `${inspect(bigintStats[key])} !== ${inspect(BigInt(val))}\n` +
-        `key=${key}, val=${val}`
+        `key=${key}, val=${val}`,
    );
   } else {
    assert(

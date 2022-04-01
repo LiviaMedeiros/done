@@ -15,5 +15,5 @@ dnsPromises.lookupService('127.0.0.1', 22).then(common.mustCall((result) => {
 // Refs: https://tools.ietf.org/html/rfc5737
 assert.rejects(
  () => dnsPromises.lookupService('192.0.2.1', 22),
- { code: /^(?:ENOTFOUND|EAI_AGAIN)$/ }
+ { code: /^(?:ENOTFOUND|EAI_AGAIN)$/ },
 );

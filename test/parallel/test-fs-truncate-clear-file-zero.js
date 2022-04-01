@@ -51,6 +51,6 @@ tmpdir.refresh();
   5,
   common.mustSucceed(() => {
    assert.strictEqual(fs.readFileSync(filename).toString(), '01234');
-  })
+  }),
  );
 }

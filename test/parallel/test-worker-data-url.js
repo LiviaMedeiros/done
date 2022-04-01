@@ -21,5 +21,5 @@ new Worker(new URL('data:text/javascript,await Promise.reject()'))
 new Worker(new URL('data:text/javascript,await new Promise(()=>{})'))
   .on(
   	'exit',
-  	common.mustCall((exitCode) => { assert.strictEqual(exitCode, 13); })
+  	common.mustCall((exitCode) => { assert.strictEqual(exitCode, 13); }),
   );

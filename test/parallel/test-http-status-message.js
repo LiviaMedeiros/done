@@ -39,7 +39,7 @@ function test() {
   this.address().port,
   function() {
    client.write('GET / HTTP/1.1\r\nConnection: close\r\n\r\n');
-  }
+  },
  );
  client.on('data', function(chunk) {
   bufs.push(chunk);

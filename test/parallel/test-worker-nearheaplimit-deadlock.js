@@ -9,8 +9,8 @@ if (!process.env.HAS_STARTED_WORKER) {
  const opts = {
   resourceLimits: {
    maxYoungGenerationSizeMb: 0,
-   maxOldGenerationSizeMb: 0
-  }
+   maxOldGenerationSizeMb: 0,
+  },
  };
 
  const worker = new Worker(__filename, opts);

@@ -24,7 +24,7 @@ const {
   read() {
    readable.push('hello');
    readable.push(null);
-  }
+  },
  });
 
  readable.on('close', common.mustCall());
@@ -49,7 +49,7 @@ const {
   read() {
    readable.push('hello');
    readable.push(null);
-  }
+  },
  });
 
  const readableStream = newReadableStreamFromStreamReadable(readable);
@@ -79,7 +79,7 @@ const {
   read() {
    readable.push('hello');
    readable.push(null);
-  }
+  },
  });
 
  const readableStream = newReadableStreamFromStreamReadable(readable);
@@ -107,7 +107,7 @@ const {
   read() {
    readable.push('hello');
    readable.push(null);
-  }
+  },
  });
 
  const readableStream = newReadableStreamFromStreamReadable(readable);
@@ -136,7 +136,7 @@ const {
   read() {
    readable.push('hello');
    readable.push(null);
-  }
+  },
  });
 
  const readableStream = newReadableStreamFromStreamReadable(readable);
@@ -164,7 +164,7 @@ const {
   read() {
    readable.push(data);
    readable.push(null);
-  }
+  },
  });
 
  assert(readable.readableObjectMode);

@@ -15,7 +15,7 @@ a.end('foobar');
 const b = new Duplex({
  write(chunk, encoding, callback) {
   callback();
- }
+ },
 });
 pipeline(a, b, common.mustCall((error) => {
  if (error) {
@@ -51,7 +51,7 @@ const d = pipeline(
    assert.strictEqual(b.listenerCount('error'), 0);
    d.destroy(new Error('no way'));
   }, 100);
- })
+ }),
 );
 
 // If last stream is not readable, will not throw and remove listeners
@@ -60,7 +60,7 @@ e.end('foobar');
 const f = new Writable({
  write(chunk, encoding, callback) {
   callback();
- }
+ },
 });
 pipeline(e, f, common.mustCall((error) => {
  if (error) {

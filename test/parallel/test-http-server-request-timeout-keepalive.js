@@ -55,7 +55,7 @@ server.listen(0, common.mustCall(() => {
   if (!second && response.endsWith('\r\n\r\n')) {
    assert.strictEqual(
     response.split('\r\n')[0],
-    'HTTP/1.1 200 OK'
+    'HTTP/1.1 200 OK',
    );
 
    const defer = common.platformTimeout(server.requestTimeout * 1.5);
@@ -81,7 +81,7 @@ server.listen(0, common.mustCall(() => {
    response,
    // Empty because of https://github.com/nodejs/node/commit/e8d7fedf7cad6e612e4f2e0456e359af57608ac7
    // 'HTTP/1.1 408 Request Timeout\r\nConnection: close\r\n\r\n'
-   ''
+   '',
   );
   server.close();
  });

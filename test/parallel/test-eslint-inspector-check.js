@@ -27,7 +27,7 @@ new RuleTester().run('inspector-check', rule, {
    errors: [{ message }],
    output: 'require("common")\n' +
               'common.skipIfInspectorDisabled();\n' +
-              'require("inspector")'
+              'require("inspector")',
   },
- ]
+ ],
 });

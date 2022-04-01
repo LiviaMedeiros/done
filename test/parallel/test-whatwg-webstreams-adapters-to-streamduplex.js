@@ -79,7 +79,7 @@ const {
   transform(chunk, controller) {
    const text = dc.decode(chunk);
    controller.enqueue(ec.encode(text.toUpperCase()));
-  }
+  },
  });
  const duplex = new newStreamDuplexFromReadableWritablePair(transform, {
   encoding: 'utf8',
@@ -104,7 +104,7 @@ const {
   transform: common.mustCall((chunk, controller) => {
    const text = dc.decode(chunk);
    controller.enqueue(ec.encode(text.toUpperCase()));
-  })
+  }),
  });
  const duplex = new newStreamDuplexFromReadableWritablePair(transform, {
   encoding: 'utf8',
@@ -123,7 +123,7 @@ const {
   transform: common.mustCall((chunk, controller) => {
    const text = dc.decode(chunk);
    controller.enqueue(ec.encode(text.toUpperCase()));
-  })
+  }),
  });
  const duplex = new newStreamDuplexFromReadableWritablePair(transform, {
   encoding: 'utf8',
@@ -133,7 +133,7 @@ const {
   read() {
    readable.push(Buffer.from('hello'));
    readable.push(null);
-  }
+  },
  });
 
  const writable = new Writable({
@@ -141,7 +141,7 @@ const {
    assert.strictEqual(dc.decode(chunk), 'HELLO');
    assert.strictEqual(encoding, 'buffer');
    callback();
-  })
+  }),
  });
 
  finished(duplex, common.mustCall());

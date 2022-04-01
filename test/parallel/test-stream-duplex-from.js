@@ -11,8 +11,8 @@ const { Blob } = require('buffer');
    read() {
     this.push('asd');
     this.push(null);
-   }
-  })
+   },
+  }),
  });
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, false);
@@ -29,7 +29,7 @@ const { Blob } = require('buffer');
   read() {
    this.push('asd');
    this.push(null);
-  }
+  },
  }));
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, false);
@@ -47,7 +47,7 @@ const { Blob } = require('buffer');
   write(chunk, encoding, callback) {
    ret += chunk;
    callback();
-  }
+  },
  }));
  assert.strictEqual(d.readable, false);
  assert.strictEqual(d.writable, true);
@@ -65,8 +65,8 @@ const { Blob } = require('buffer');
    write(chunk, encoding, callback) {
     ret += chunk;
     callback();
-   }
-  })
+   },
+  }),
  });
  assert.strictEqual(d.readable, false);
  assert.strictEqual(d.writable, true);
@@ -84,14 +84,14 @@ const { Blob } = require('buffer');
    read() {
     this.push('asd');
     this.push(null);
-   }
+   },
   }),
   writable: new Writable({
    write(chunk, encoding, callback) {
     ret += chunk;
     callback();
-   }
-  })
+   },
+  }),
  });
  assert.strictEqual(d.readable, true);
  assert.strictEqual(d.writable, true);
@@ -199,8 +199,8 @@ const { Blob } = require('buffer');
    read() {
     this.push(msg);
     this.push(null);
-   }
-  })
+   },
+  }),
  }).on('data', common.mustCall((data) => {
   assert.strictEqual(data, msg);
  }));
@@ -215,8 +215,8 @@ const { Blob } = require('buffer');
   writable: Writable({
    write: common.mustCall((data) => {
     assert.strictEqual(data, msg);
-   })
-  })
+   }),
+  }),
  });
 
  duplex.write(msg);
@@ -232,13 +232,13 @@ const { Blob } = require('buffer');
    read() {
     this.push(msg);
     this.push(null);
-   }
+   },
   }),
   writable: Writable({
    write: common.mustCall((data) => {
     assert.strictEqual(data, msg);
-   })
-  })
+   }),
+  }),
  });
 
  duplex.pipe(duplex)
@@ -256,7 +256,7 @@ const { Blob } = require('buffer');
  const duplex = Duplex.from(Readable({
   read() {
    throw new Error(myErrorMessage);
-  }
+  },
  }));
  duplex.on('error', common.mustCall((msg) => {
   assert.strictEqual(msg.message, myErrorMessage);
@@ -269,7 +269,7 @@ const { Blob } = require('buffer');
  const duplex = Duplex.from(Writable({
   write(chunk, enc, cb) {
    cb(myErrorMessage);
-  }
+  },
  }));
 
  duplex.on('error', common.mustCall((msg) => {

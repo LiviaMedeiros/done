@@ -32,7 +32,7 @@ common.expectWarning(
  'Warning',
  'Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to \'0\' ' +
   'makes TLS connections and HTTPS requests insecure by disabling ' +
-  'certificate verification.'
+  'certificate verification.',
 );
 
 const assert = require('assert');
@@ -66,17 +66,17 @@ const agent3 = new https.Agent({ ca: [ca1, ca2] });
 
 const options1 = {
  key: key1,
- cert: cert1
+ cert: cert1,
 };
 
 const options2 = {
  key: key2,
- cert: cert2
+ cert: cert2,
 };
 
 const options3 = {
  key: key3,
- cert: cert3
+ cert: cert3,
 };
 
 const server1 = server(options1);

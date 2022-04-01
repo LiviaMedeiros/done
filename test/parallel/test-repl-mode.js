@@ -45,12 +45,12 @@ function testStrictModeTerminal() {
  }
  // Verify that ReferenceErrors are reported in strict mode previews.
  const cli = initRepl(repl.REPL_MODE_STRICT, {
-  terminal: true
+  terminal: true,
  });
 
  cli.input.emit('data', 'xyz ');
  assert.ok(
-  cli.output.accumulator.includes('\n// ReferenceError: xyz is not defined')
+  cli.output.accumulator.includes('\n// ReferenceError: xyz is not defined'),
  );
 }
 
@@ -83,6 +83,6 @@ function initRepl(mode, options) {
   useColors: false,
   terminal: false,
   replMode: mode,
-  ...options
+  ...options,
  });
 }

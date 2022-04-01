@@ -33,7 +33,7 @@
    themeToggleButton.addEventListener('click', function() {
     sessionStorage.setItem(
      kCustomPreference,
-     document.documentElement.classList.toggle('dark-mode')
+     document.documentElement.classList.toggle('dark-mode'),
     );
    });
   }
@@ -115,7 +115,7 @@
 
     header.classList.toggle('is-pinned', newStatus);
    },
-   { threshold: [1] }
+   { threshold: [1] },
   ).observe(header);
  }
 

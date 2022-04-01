@@ -67,7 +67,7 @@ for (let i = 0, s = buf.toString(); i < buf.length; ++i) {
   [buf.slice(i), Buffer.from(s.slice(i))],
   [buf.slice(0, i), Buffer.from(s.slice(0, i))],
   [buf.slice(-i), Buffer.from(s.slice(-i))],
-  [buf.slice(0, -i), Buffer.from(s.slice(0, -i))]
+  [buf.slice(0, -i), Buffer.from(s.slice(0, -i))],
  );
 }
 
@@ -96,7 +96,7 @@ assert.strictEqual(Buffer.from('hello', 'utf8').slice(0, 0).length, 0);
  assert.strictEqual(buf.slice(buf.length / 3).toString('utf8'), 'bcd');
  assert.strictEqual(
   buf.slice(buf.length / 3, buf.length).toString(),
-  'bcd'
+  'bcd',
  );
 }
 

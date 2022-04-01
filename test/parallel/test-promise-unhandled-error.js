@@ -13,13 +13,13 @@ const err2 = new Error(
  'This error originated either by throwing ' +
   'inside of an async function without a catch block, or by rejecting a ' +
   'promise which was not handled with .catch(). The promise rejected with the' +
-  ' reason "null".'
+  ' reason "null".',
 );
 err2.code = 'ERR_UNHANDLED_REJECTION';
 Object.defineProperty(err2, 'name', {
  value: 'UnhandledPromiseRejection',
  writable: true,
- configurable: true
+ configurable: true,
 });
 
 const errors = [err1, err2];

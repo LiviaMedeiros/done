@@ -25,7 +25,7 @@ const assert = require('assert');
  const bc = new BroadcastChannel('name');
  assert.strictEqual(
   inspect(bc),
-  "BroadcastChannel { name: 'name', active: true }"
+  "BroadcastChannel { name: 'name', active: true }",
  );
  bc.close();
 }
@@ -34,7 +34,7 @@ const assert = require('assert');
  const bc = new BroadcastChannel('name');
  assert.strictEqual(
   inspect(bc, { depth: null }),
-  "BroadcastChannel { name: 'name', active: true }"
+  "BroadcastChannel { name: 'name', active: true }",
  );
  bc.close();
 }

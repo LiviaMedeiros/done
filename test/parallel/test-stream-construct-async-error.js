@@ -20,7 +20,7 @@ const assert = require('assert');
  const foo = new Foo();
  foo.destroy();
  foo.on('error', common.expectsError({
-  message: 'boom'
+  message: 'boom',
  }));
  foo.on('close', common.mustCall(() => {
   assert(foo.destroyed);
@@ -125,7 +125,7 @@ const assert = require('assert');
  const foo = new Foo();
  foo.end('hello');
  foo.on('error', common.expectsError({
-  message: 'boom'
+  message: 'boom',
  }));
  foo.on('close', common.mustCall());
 }
@@ -183,7 +183,7 @@ const assert = require('assert');
  foo.end('hello');
  foo.on('data', common.mustCall());
  foo.on('error', common.expectsError({
-  message: 'boom'
+  message: 'boom',
  }));
  foo.on('close', common.mustCall());
 }
@@ -226,7 +226,7 @@ const assert = require('assert');
  const foo = new Foo();
  foo.end('hello');
  foo.on('error', common.expectsError({
-  message: 'boom'
+  message: 'boom',
  }));
  foo.on('close', common.mustCall());
 }

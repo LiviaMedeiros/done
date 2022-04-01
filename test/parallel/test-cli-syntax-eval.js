@@ -16,8 +16,8 @@ const node = process.execPath;
    assert.strictEqual(err.code, 9);
    assert(
     stderr.startsWith(
-     `${node}: either --check or --eval can be used, not both`
-    )
+     `${node}: either --check or --eval can be used, not both`,
+    ),
    );
   }));
  });

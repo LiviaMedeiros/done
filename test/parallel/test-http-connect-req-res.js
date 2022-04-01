@@ -15,7 +15,7 @@ server.on('connect', common.mustCall(function(req, socket, firstBodyChunk) {
   'HTTP/1.1 200 Connection established\r\n' +
     'Date: Tue, 15 Nov 1994 08:12:31 GMT\r\n' +
     '\r\n' +
-    'Head'
+    'Head',
  );
 
  let data = firstBodyChunk.toString();
@@ -30,7 +30,7 @@ server.listen(0, common.mustCall(function() {
  const req = http.request({
   port: this.address().port,
   method: 'CONNECT',
-  path: 'example.com:443'
+  path: 'example.com:443',
  }, common.mustNotCall());
 
  assert.strictEqual(req.destroyed, false);

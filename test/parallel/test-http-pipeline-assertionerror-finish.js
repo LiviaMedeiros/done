@@ -22,7 +22,7 @@ const server = http
   		setTimeout(function() {
   			res.end();
   		}, (Math.random() * 100) | 0);
-  	}, COUNT)
+  	}, COUNT),
   )
   .listen(0, function() {
   	const s = net.connect(this.address().port);

@@ -30,13 +30,13 @@ new RuleTester().run('documented-deprecation-codes', rule, {
    errors: [
     {
      message: `"${invalidCode}" does not match the expected pattern`,
-     line: 2
+     line: 2,
     },
     {
      message: `"${invalidCode}" is not documented in ${mdFile}`,
-     line: 2
+     line: 2,
     },
-   ]
+   ],
   },
- ]
+ ],
 });

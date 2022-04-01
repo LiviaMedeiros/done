@@ -18,7 +18,7 @@ for (const value of truthyValues) {
 
   const client = net.connect(
    { port, noDelay: value },
-   common.mustCall(() => client.end())
+   common.mustCall(() => client.end()),
   );
 
   client._handle.setNoDelay = common.mustCall(genSetNoDelay(true));
@@ -37,7 +37,7 @@ for (const value of falseyValues) {
 
   const client = net.connect(
    { port, noDelay: value },
-   common.mustCall(() => client.end())
+   common.mustCall(() => client.end()),
   );
 
   client._handle.setNoDelay = common.mustNotCall();

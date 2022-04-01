@@ -25,10 +25,10 @@ if (process.argv[2] === 'child') {
    write(chunk, _, next) {
     console.log(chunk.toString());
     next();
-   }
+   },
   }),
   useColors: false,
-  terminal: true
+  terminal: true,
  }).inputStream.run('xyz');
 } else {
  const assert = require('assert');
@@ -36,11 +36,11 @@ if (process.argv[2] === 'child') {
 
  const result = spawnSync(
   process.execPath,
-  ['--use-strict', `${__filename}`, 'child']
+  ['--use-strict', `${__filename}`, 'child'],
  );
 
  assert.match(
   result.stdout.toString(),
-  /\/\/ ReferenceError: xyz is not defined/
+  /\/\/ ReferenceError: xyz is not defined/,
  );
 }

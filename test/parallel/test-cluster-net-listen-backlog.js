@@ -25,7 +25,7 @@ if (cluster.isMaster) {
     assert(args[1], kExpectedBacklog);
    }
    return listen.call(this, ...args);
-  }
+  },
  );
 
  const worker = cluster.fork();

@@ -64,7 +64,7 @@ for (const ctor of intTypedConstructors) {
 
  if (kData !== undefined) {
   assert.throws(() => webcrypto.getRandomValues(kData), {
-   code: 22
+   code: 22,
   });
  }
 }

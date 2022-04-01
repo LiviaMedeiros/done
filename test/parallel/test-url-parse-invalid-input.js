@@ -22,7 +22,7 @@ const url = require('url');
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "url" argument must be of type string.' +
-             common.invalidArgTypeHelper(val)
+             common.invalidArgTypeHelper(val),
  });
 });
 
@@ -38,7 +38,7 @@ assert.throws(() => { url.parse('http://%E0%A4%A@fail'); },
               });
 
 assert.throws(() => { url.parse('http://[127.0.0.1\x00c8763]:8000/'); },
-              { code: 'ERR_INVALID_URL', input: 'http://[127.0.0.1\x00c8763]:8000/' }
+              { code: 'ERR_INVALID_URL', input: 'http://[127.0.0.1\x00c8763]:8000/' },
 );
 
 if (common.hasIntl) {

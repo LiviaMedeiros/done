@@ -13,8 +13,8 @@ server.listen(common.PIPE, common.mustCall(() =>
   server.getConnections(common.mustSucceed((conns) => {
    assert.strictEqual(conns, 1);
    server.close();
-  }))
- ))
+  })),
+ )),
 ));
 
 function asyncLoop(fn, times, cb) {
@@ -30,9 +30,9 @@ function asyncLoop(fn, times, cb) {
 function makeKeepAliveRequest(cb) {
  http.get({
   socketPath: common.PIPE,
-  headers: { connection: 'keep-alive' }
+  headers: { connection: 'keep-alive' },
  }, (res) => res.on('data', common.mustNotCall())
     .on('error', assert.fail)
-    .on('end', cb)
+    .on('end', cb),
  );
 }

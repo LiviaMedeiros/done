@@ -26,7 +26,7 @@ const path = require('path');
     .then(() => {
     	assert.ok(
     		cli.output.includes(`break in ${script}:2`),
-    		'steps to the 2nd line'
+    		'steps to the 2nd line',
     	);
     })
     .then(() => cli.command('cont'))

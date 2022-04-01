@@ -39,7 +39,7 @@ function testLeak(endFn, callback) {
   assert.strictEqual(
    openCount,
    0,
-   `no leaked file descriptors using ${endFn}() (got ${openCount})`
+   `no leaked file descriptors using ${endFn}() (got ${openCount})`,
   );
 
   openCount = 0;

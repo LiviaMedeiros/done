@@ -57,7 +57,7 @@ async function validateNonStringValuesWrite() {
  for (const nonStringValue of nonStringValues) {
   await assert.rejects(
    fileHandle.write(nonStringValue),
-   { message: /"buffer"/, code: 'ERR_INVALID_ARG_TYPE' }
+   { message: /"buffer"/, code: 'ERR_INVALID_ARG_TYPE' },
   );
  }
 

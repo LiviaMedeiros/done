@@ -40,14 +40,14 @@ function makeNonEmptyDirectory(depth, files, folders, dirname, createSymLinks) {
   fs.symlinkSync(
    `f-${depth}-1`,
    path.join(dirname, `link-${depth}-good`),
-   'file'
+   'file',
   );
 
   // Invalid symlink
   fs.symlinkSync(
    'does-not-exist',
    path.join(dirname, `link-${depth}-bad`),
-   'file'
+   'file',
   );
  }
 
@@ -62,14 +62,14 @@ function makeNonEmptyDirectory(depth, files, folders, dirname, createSymLinks) {
  for (let f = folders; f > 0; f--) {
   fs.mkdirSync(
    path.join(dirname, `folder-${depth}-${f}`),
-   { recursive: true }
+   { recursive: true },
   );
   makeNonEmptyDirectory(
    depth,
    files,
    folders,
    path.join(dirname, `d-${depth}-${f}`),
-   createSymLinks
+   createSymLinks,
   );
  }
 }
@@ -123,7 +123,7 @@ function removeAsync(dir) {
   { recursive: true },
   common.mustCall((err) => {
    assert.strictEqual(err.code, 'ENOENT');
-  })
+  }),
  );
 
  // Should delete a file
@@ -168,7 +168,7 @@ if (isGitPresent) {
  }, {
   code: 'ENOENT',
   name: 'Error',
-  message: /^ENOENT: no such file or directory, stat/
+  message: /^ENOENT: no such file or directory, stat/,
  });
 
  // Should delete a file
@@ -215,7 +215,7 @@ if (isGitPresent) {
  // Removal should fail without the recursive option set to true.
  await assert.rejects(fs.promises.rm(dir), { syscall: 'rm' });
  await assert.rejects(fs.promises.rm(dir, { recursive: false }), {
-  syscall: 'rm'
+  syscall: 'rm',
  });
 
  // Recursive removal should succeed.
@@ -227,11 +227,11 @@ if (isGitPresent) {
  // Should fail if target does not exist
  await assert.rejects(fs.promises.rm(
   path.join(tmpdir.path, 'noexist.txt'),
-  { recursive: true }
+  { recursive: true },
  ), {
   code: 'ENOENT',
   name: 'Error',
-  message: /^ENOENT: no such file or directory, stat/
+  message: /^ENOENT: no such file or directory, stat/,
  });
 
  // Should not fail if target does not exist and force option is true
@@ -280,25 +280,25 @@ if (isGitPresent) {
   retryDelay: 100,
   maxRetries: 0,
   recursive: false,
-  force: false
+  force: false,
  };
  const modified = {
   retryDelay: 953,
   maxRetries: 5,
   recursive: true,
-  force: false
+  force: false,
  };
 
  assert.deepStrictEqual(validateRmOptionsSync(filePath), defaults);
  assert.deepStrictEqual(validateRmOptionsSync(filePath, {}), defaults);
  assert.deepStrictEqual(validateRmOptionsSync(filePath, modified), modified);
  assert.deepStrictEqual(validateRmOptionsSync(filePath, {
-  maxRetries: 99
+  maxRetries: 99,
  }), {
   retryDelay: 100,
   maxRetries: 99,
   recursive: false,
-  force: false
+  force: false,
  });
 
  [null, 'foo', 5, NaN].forEach((bad) => {
@@ -307,7 +307,7 @@ if (isGitPresent) {
   }, {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: /^The "options" argument must be of type object\./
+   message: /^The "options" argument must be of type object\./,
   });
  });
 
@@ -317,7 +317,7 @@ if (isGitPresent) {
   }, {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: /^The "options\.recursive" property must be of type boolean\./
+   message: /^The "options\.recursive" property must be of type boolean\./,
   });
  });
 
@@ -327,7 +327,7 @@ if (isGitPresent) {
   }, {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-   message: /^The "options\.force" property must be of type boolean\./
+   message: /^The "options\.force" property must be of type boolean\./,
   });
  });
 
@@ -336,7 +336,7 @@ if (isGitPresent) {
  }, {
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
-  message: /^The value of "options\.retryDelay" is out of range\./
+  message: /^The value of "options\.retryDelay" is out of range\./,
  });
 
  assert.throws(() => {
@@ -344,7 +344,7 @@ if (isGitPresent) {
  }, {
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
-  message: /^The value of "options\.maxRetries" is out of range\./
+  message: /^The value of "options\.maxRetries" is out of range\./,
  });
 }
 

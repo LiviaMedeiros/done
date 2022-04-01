@@ -72,7 +72,7 @@ const interval = setInterval(common.mustCall(() => {
   assert.deepStrictEqual(
    ordering,
    expected,
-   `Non-integer delay ordering should be ${expected}, but got ${ordering}`
+   `Non-integer delay ordering should be ${expected}, but got ${ordering}`,
   );
 
   // 2 should always be last of these delays due to ordering guarantees by

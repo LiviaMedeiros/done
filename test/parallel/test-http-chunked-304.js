@@ -61,7 +61,7 @@ function test(statusCode) {
      // Make sure this doesn't end with 0\r\n\r\n
      assert.doesNotMatch(resp, /^0\r\n$/m);
     }));
-   })
+   }),
   );
  }));
 }

@@ -23,14 +23,14 @@ const watcher = fs.watch(root, { persistent: false, recursive: false });
 watcher.addListener('error', () => {
  setTimeout(
   () => { watcher.close(); },  // Should not crash if it's invoked
-  common.platformTimeout(10)
+  common.platformTimeout(10),
  );
 });
 
 watcher.addListener('change', () => {
  setTimeout(
   () => { watcher.close(); },
-  common.platformTimeout(10)
+  common.platformTimeout(10),
  );
 });
 
@@ -38,5 +38,5 @@ fs.rmdirSync(root);
 // Wait for the listener to hit
 setTimeout(
  common.mustCall(() => {}),
- common.platformTimeout(100)
+ common.platformTimeout(100),
 );

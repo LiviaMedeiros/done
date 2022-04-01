@@ -42,7 +42,7 @@ const args = [
  assert.throws(() => {
   execFileSync(
    process.execPath,
-   ['-e', "console.log('a'.repeat(1024 * 1024))"]
+   ['-e', "console.log('a'.repeat(1024 * 1024))"],
   );
  }, (e) => {
   assert.ok(e, 'maxBuffer should error');

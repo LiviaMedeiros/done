@@ -153,7 +153,7 @@ class MySource {
 {
  const readableStream = new ReadableStream(new MySource());
  const readable = newStreamReadableFromReadableStream(readableStream, {
-  objectMode: true
+  objectMode: true,
  });
 
  readable.on('data', common.mustCall((chunk) => {
@@ -173,7 +173,7 @@ class MySource {
     controller.enqueue(ec.encode('there'));
     controller.close();
    });
-  }
+  },
  });
  const streamReadable = newStreamReadableFromReadableStream(readable);
 
@@ -191,7 +191,7 @@ class MySource {
     controller.enqueue(ec.encode('there'));
     controller.close();
    });
-  }
+  },
  });
  const streamReadable = newStreamReadableFromReadableStream(readable);
 
@@ -211,7 +211,7 @@ class MySource {
     controller.enqueue(ec.encode('there'));
     controller.close();
    });
-  }
+  },
  });
  const writable = new Writable({
   write: common.mustCall((chunk, encoding, callback) => {

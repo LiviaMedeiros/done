@@ -14,13 +14,13 @@ common.expectWarning(
  'DeprecationWarning',
  'Setting the TLS ServerName to an IP address is not permitted by ' +
   'RFC 6066. This will be ignored in a future version.',
- 'DEP0123'
+ 'DEP0123',
 );
 
 {
  const options = {
   key: fixtures.readKey('agent1-key.pem'),
-  cert: fixtures.readKey('agent1-cert.pem')
+  cert: fixtures.readKey('agent1-cert.pem'),
  };
 
  const server = tls.createServer(options, function(s) {

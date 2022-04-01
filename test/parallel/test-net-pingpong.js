@@ -32,7 +32,7 @@ function pingPongTest(port, host) {
 
  const server = net.createServer(
   { allowHalfOpen: true },
-  common.mustCall(onSocket)
+  common.mustCall(onSocket),
  );
 
  function onSocket(socket) {
@@ -41,7 +41,7 @@ function pingPongTest(port, host) {
    server,
    server.getConnections(common.mustSucceed((connections) => {
     assert.strictEqual(connections, 1);
-   }))
+   })),
   );
 
   socket.setNoDelay();

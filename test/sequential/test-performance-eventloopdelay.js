@@ -4,7 +4,7 @@
 const common = require('../common');
 const assert = require('assert');
 const {
- monitorEventLoopDelay
+ monitorEventLoopDelay,
 } = require('perf_hooks');
 const { sleep } = require('internal/util');
 
@@ -24,8 +24,8 @@ const { sleep } = require('internal/util');
    () => monitorEventLoopDelay(i),
    {
     name: 'TypeError',
-    code: 'ERR_INVALID_ARG_TYPE'
-   }
+    code: 'ERR_INVALID_ARG_TYPE',
+   },
   );
  });
 
@@ -34,8 +34,8 @@ const { sleep } = require('internal/util');
    () => monitorEventLoopDelay({ resolution: i }),
    {
     name: 'TypeError',
-    code: 'ERR_INVALID_ARG_TYPE'
-   }
+    code: 'ERR_INVALID_ARG_TYPE',
+   },
   );
  });
 
@@ -44,8 +44,8 @@ const { sleep } = require('internal/util');
    () => monitorEventLoopDelay({ resolution: i }),
    {
     name: 'RangeError',
-    code: 'ERR_OUT_OF_RANGE'
-   }
+    code: 'ERR_OUT_OF_RANGE',
+   },
   );
  });
 }
@@ -82,8 +82,8 @@ const { sleep } = require('internal/util');
      () => histogram.percentile(i),
      {
       name: 'TypeError',
-      code: 'ERR_INVALID_ARG_TYPE'
-     }
+      code: 'ERR_INVALID_ARG_TYPE',
+     },
     );
    });
    [-1, 0, 101, NaN].forEach((i) => {
@@ -91,8 +91,8 @@ const { sleep } = require('internal/util');
      () => histogram.percentile(i),
      {
       name: 'RangeError',
-      code: 'ERR_INVALID_ARG_VALUE'
-     }
+      code: 'ERR_INVALID_ARG_VALUE',
+     },
     );
    });
   }

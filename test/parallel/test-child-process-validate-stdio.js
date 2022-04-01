@@ -26,14 +26,14 @@ assert.throws(() => getValidStdio(600), expectedError);
 // Should throw if stdio has ipc and sync is true
 const stdio2 = ['ipc', 'ipc', 'ipc'];
 assert.throws(() => getValidStdio(stdio2, true),
-              { code: 'ERR_IPC_SYNC_FORK', name: 'Error' }
+              { code: 'ERR_IPC_SYNC_FORK', name: 'Error' },
 );
 
 // Should throw if stdio is not a valid input
 {
  const stdio = ['foo'];
  assert.throws(() => getValidStdio(stdio, false),
-               { code: 'ERR_INVALID_SYNC_FORK_INPUT', name: 'TypeError' }
+               { code: 'ERR_INVALID_SYNC_FORK_INPUT', name: 'TypeError' },
  );
 }
 
@@ -53,7 +53,7 @@ if (common.isMainThread) {
    { type: 'fd', fd: 2 },
   ],
   ipc: undefined,
-  ipcFd: undefined
+  ipcFd: undefined,
  });
 } else {
  common.printSkipMessage(

@@ -33,7 +33,7 @@ const harnessMock = {
  assert_array_equals: assert.deepStrictEqual,
  assert_unreached(desc) {
   assert.fail(`Reached unreachable code: ${desc}`);
- }
+ },
 };
 
 class ResourceLoader {
@@ -45,7 +45,7 @@ class ResourceLoader {
   // We need to patch this to load the WebIDL parser
   url = url.replace(
    '/resources/WebIDLParser.js',
-   '/resources/webidl2/lib/webidl2.js'
+   '/resources/webidl2/lib/webidl2.js',
   );
   const base = path.dirname(from);
   return url.startsWith('/') ?
@@ -69,7 +69,7 @@ class ResourceLoader {
         	return {
         		ok: true,
         		json() { return JSON.parse(data.toString()); },
-        		text() { return data.toString(); }
+        		text() { return data.toString(); },
         	};
         });
   }
@@ -294,7 +294,7 @@ class WPTRunner {
   this.status = new StatusLoader(path);
   this.status.load();
   this.specMap = new Map(
-   this.status.specs.map((item) => [item.filename, item])
+   this.status.specs.map((item) => [item.filename, item]),
   );
 
   this.results = {};
@@ -399,7 +399,7 @@ class WPTRunner {
     for (const script of meta.script) {
      const obj = {
       filename: this.resource.toRealFilePath(relativePath, script),
-      code: this.resource.read(relativePath, script, false)
+      code: this.resource.read(relativePath, script, false),
      };
      this.scriptsModifier?.(obj);
      scriptsToRun.push(obj);
@@ -408,7 +408,7 @@ class WPTRunner {
    // The actual test
    const obj = {
     code: content,
-    filename: absolutePath
+    filename: absolutePath,
    };
    this.scriptsModifier?.(obj);
    scriptsToRun.push(obj);
@@ -453,9 +453,9 @@ class WPTRunner {
       status: NODE_UNCAUGHT,
       name: 'evaluation in WPTRunner.runJsTests()',
       message: err.message,
-      stack: inspect(err)
+      stack: inspect(err),
      },
-     kUncaught
+     kUncaught,
     );
     this.inProgress.delete(testFileName);
    });
@@ -606,7 +606,7 @@ class WPTRunner {
   this.addTestResult(filename, {
    expected,
    status: kFail,
-   reason: test.message || status
+   reason: test.message || status,
   });
  }
 
@@ -617,7 +617,7 @@ class WPTRunner {
   console.log(`[SKIPPED] ${joinedReasons}`);
   this.addTestResult(filename, {
    status: kSkip,
-   reason: joinedReasons
+   reason: joinedReasons,
   });
  }
 
@@ -668,5 +668,5 @@ class WPTRunner {
 module.exports = {
  harness: harnessMock,
  ResourceLoader,
- WPTRunner
+ WPTRunner,
 };

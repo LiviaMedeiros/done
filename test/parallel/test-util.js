@@ -157,25 +157,25 @@ assert.strictEqual(util.toUSVString('string\ud801'), 'string\ufffd');
  assert.strictEqual(util.types.isNativeError(new (context('Error'))()), true);
  assert.strictEqual(
   util.types.isNativeError(new (context('TypeError'))()),
-  true
+  true,
  );
  assert.strictEqual(
   util.types.isNativeError(new (context('SyntaxError'))()),
-  true
+  true,
  );
  assert.strictEqual(util.types.isNativeError({}), false);
  assert.strictEqual(
   util.types.isNativeError({ name: 'Error', message: '' }),
-  false
+  false,
  );
  assert.strictEqual(util.types.isNativeError([]), false);
  assert.strictEqual(
   util.types.isNativeError(Object.create(Error.prototype)),
-  false
+  false,
  );
  assert.strictEqual(
   util.types.isNativeError(new errors.codes.ERR_IPC_CHANNEL_CLOSED()),
-  true
+  true,
  );
 }
 
@@ -184,5 +184,5 @@ assert.throws(() => {
 }, {
  code: 'ERR_INVALID_ARG_TYPE',
  message: 'The "str" argument must be of type string.' +
-           common.invalidArgTypeHelper({})
+           common.invalidArgTypeHelper({}),
 });

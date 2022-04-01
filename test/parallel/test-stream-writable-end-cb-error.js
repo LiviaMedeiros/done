@@ -55,7 +55,7 @@ const stream = require('stream');
   },
   finish(callback) {
    setImmediate(callback);
-  }
+  },
  });
  w.end('testing ended state', common.mustCall((err) => {
   assert.strictEqual(err.code, 'ERR_STREAM_WRITE_AFTER_END');

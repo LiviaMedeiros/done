@@ -30,7 +30,7 @@ const expectedStatObject = new BigIntStats(
  0n,                                        // atimeNs
  0n,                                        // mtimeNs
  0n,                                        // ctimeNs
- 0n                                         // birthtimeNs
+ 0n,                                         // birthtimeNs
 );
 
 tmpdir.refresh();

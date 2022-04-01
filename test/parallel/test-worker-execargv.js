@@ -16,7 +16,7 @@ if (!process.env.HAS_STARTED_WORKER) {
  w.stderr.on('data', common.mustCall((chunk) => {
   const error = decoder.write(chunk);
   assert.ok(
-   /Warning: some warning[\s\S]*at Object\.<anonymous>/.test(error)
+   /Warning: some warning[\s\S]*at Object\.<anonymous>/.test(error),
   );
  }));
 

@@ -12,7 +12,7 @@ crypto.subtle.importKey(
  'raw',
  new Uint8Array(32),
  {
-  name: 'AES-GCM'
+  name: 'AES-GCM',
  },
  false,
  [ 'encrypt', 'decrypt' ])

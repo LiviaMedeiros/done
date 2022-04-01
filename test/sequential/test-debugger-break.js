@@ -80,7 +80,7 @@ const path = require('path');
     	assert.match(
     		cli.output,
     		/>10 debugger;/,
-    		'prints and marks current line'
+    		'prints and marks current line',
     	);
     	assert.deepStrictEqual(
     		cli.parseSourceLines(),
@@ -92,7 +92,7 @@ const path = require('path');
     	assert.match(
     		cli.output,
     		/>10 debugger;/,
-    		'prints and marks current line'
+    		'prints and marks current line',
     	);
     	assert.deepStrictEqual(
     		cli.parseSourceLines(),

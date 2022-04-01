@@ -89,15 +89,15 @@ function nextdir() {
   () => fs.mkdir(i, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
  assert.throws(
   () => fs.mkdirSync(i),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
 });
 
@@ -148,7 +148,7 @@ function nextdir() {
    message: /EEXIST: .*mkdir/,
    name: 'Error',
    syscall: 'mkdir',
-  }
+  },
  );
 }
 
@@ -167,8 +167,8 @@ function nextdir() {
    message: /ENOTDIR: .*mkdir/,
    name: 'Error',
    syscall: 'mkdir',
-   path: pathname // See: https://github.com/nodejs/node/issues/28015
-  }
+   path: pathname, // See: https://github.com/nodejs/node/issues/28015
+  },
  );
 }
 
@@ -229,7 +229,7 @@ if (common.isMainThread && (common.isLinux || common.isOSX)) {
    message: /ENOENT: .*mkdir/,
    name: 'Error',
    syscall: 'mkdir',
-  }
+  },
  );
  fs.mkdir('X', { recursive: true }, (err) => {
   assert.strictEqual(err.code, 'ENOENT');
@@ -249,8 +249,8 @@ if (common.isMainThread && (common.isLinux || common.isOSX)) {
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "options.recursive" property must be of type boolean.' +
-          received
-   }
+          received,
+   },
   );
   assert.throws(
    () => fs.mkdirSync(pathname, { recursive }),
@@ -258,8 +258,8 @@ if (common.isMainThread && (common.isLinux || common.isOSX)) {
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "options.recursive" property must be of type boolean.' +
-          received
-   }
+          received,
+   },
   );
  });
 }

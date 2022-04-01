@@ -87,7 +87,7 @@ const assert = require('assert');
 
  assert.rejects(async () => {
   await Readable.from([1]).toArray({
-   signal: true
+   signal: true,
   });
  }, /ERR_INVALID_ARG_TYPE/).then(common.mustCall());
 }

@@ -18,15 +18,15 @@ function oneTo5() {
  (async () => {
   assert.deepStrictEqual(
    await oneTo5().flatMap((x) => [x + x]).toArray(),
-   [2, 4, 6, 8, 10]
+   [2, 4, 6, 8, 10],
   );
   assert.deepStrictEqual(
    await oneTo5().flatMap(() => []).toArray(),
-   []
+   [],
   );
   assert.deepStrictEqual(
    await oneTo5().flatMap((x) => [x, x]).toArray(),
-   [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+   [1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
   );
  })().then(common.mustCall());
 }
@@ -37,12 +37,12 @@ function oneTo5() {
  (async () => {
   assert.deepStrictEqual(
    await oneTo5().flatMap(async (x) => [x, x]).toArray(),
-   [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+   [1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
   );
   const asyncOneTo5 = oneTo5().map(async (x) => x);
   assert.deepStrictEqual(
    await asyncOneTo5.flatMap(async (x) => [x, x]).toArray(),
-   [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+   [1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
   );
  })().then(common.mustCall());
 }
@@ -63,7 +63,7 @@ function oneTo5() {
   assert.strictEqual(result.length, 5);
   assert.deepStrictEqual(
    Buffer.concat(result).toString(),
-   'xyz\n'.repeat(5)
+   'xyz\n'.repeat(5),
   );
 
  })().then(common.mustCall());
@@ -111,7 +111,7 @@ function oneTo5() {
  // Error cases
  assert.throws(() => Readable.from([1]).flatMap(1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).flatMap((x) => x, {
-  concurrency: 'Foo'
+  concurrency: 'Foo',
  }), /ERR_OUT_OF_RANGE/);
  assert.throws(() => Readable.from([1]).flatMap((x) => x, 1), /ERR_INVALID_ARG_TYPE/);
  assert.throws(() => Readable.from([1]).flatMap((x) => x, { signal: true }), /ERR_INVALID_ARG_TYPE/);

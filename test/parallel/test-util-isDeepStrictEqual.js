@@ -111,7 +111,7 @@ utilIsDeepStrict(new Set([[1, 2], [3, 4]]), new Set([[3, 4], [1, 2]]));
 
  utilIsDeepStrict(
   { a: a, b: b, s: new Set([a, b]) },
-  { a: c, b: d, s: new Set([d, c]) }
+  { a: c, b: d, s: new Set([d, c]) },
  );
 }
 
@@ -120,7 +120,7 @@ utilIsDeepStrict(new Map([[1, 1], [2, 2]]), new Map([[2, 2], [1, 1]]));
 notUtilIsDeepStrict(new Map([[1, 1], [2, 2]]), new Map([[1, 2], [2, 1]]));
 notUtilIsDeepStrict(
  new Map([[[1], 1], [{}, 2]]),
- new Map([[[1], 2], [{}, 1]])
+ new Map([[[1], 2], [{}, 1]]),
 );
 
 notUtilIsDeepStrict(new Set([1]), [1]);
@@ -142,15 +142,15 @@ utilIsDeepStrict(new Set([{}]), new Set([{}]));
 // Ref: https://github.com/nodejs/node/issues/13347
 notUtilIsDeepStrict(
  new Set([{ a: 1 }, { a: 1 }]),
- new Set([{ a: 1 }, { a: 2 }])
+ new Set([{ a: 1 }, { a: 2 }]),
 );
 notUtilIsDeepStrict(
  new Set([{ a: 1 }, { a: 1 }, { a: 2 }]),
- new Set([{ a: 1 }, { a: 2 }, { a: 2 }])
+ new Set([{ a: 1 }, { a: 2 }, { a: 2 }]),
 );
 notUtilIsDeepStrict(
  new Map([[{ x: 1 }, 5], [{ x: 1 }, 5]]),
- new Map([[{ x: 1 }, 5], [{ x: 2 }, 5]])
+ new Map([[{ x: 1 }, 5], [{ x: 2 }, 5]]),
 );
 
 notUtilIsDeepStrict(new Set([3, '3']), new Set([3, 4]));
@@ -158,95 +158,95 @@ notUtilIsDeepStrict(new Map([[3, 0], ['3', 0]]), new Map([[3, 0], [4, 0]]));
 
 notUtilIsDeepStrict(
  new Set([{ a: 1 }, { a: 1 }, { a: 2 }]),
- new Set([{ a: 1 }, { a: 2 }, { a: 2 }])
+ new Set([{ a: 1 }, { a: 2 }, { a: 2 }]),
 );
 
 // Mixed primitive and object keys
 utilIsDeepStrict(
  new Map([[1, 'a'], [{}, 'a']]),
- new Map([[1, 'a'], [{}, 'a']])
+ new Map([[1, 'a'], [{}, 'a']]),
 );
 utilIsDeepStrict(
  new Set([1, 'a', [{}, 'a']]),
- new Set([1, 'a', [{}, 'a']])
+ new Set([1, 'a', [{}, 'a']]),
 );
 
 // This is an awful case, where a map contains multiple equivalent keys:
 notUtilIsDeepStrict(
  new Map([[1, 'a'], ['1', 'b']]),
- new Map([['1', 'a'], [true, 'b']])
+ new Map([['1', 'a'], [true, 'b']]),
 );
 notUtilIsDeepStrict(
  new Set(['a']),
- new Set(['b'])
+ new Set(['b']),
 );
 utilIsDeepStrict(
  new Map([[{}, 'a'], [{}, 'b']]),
- new Map([[{}, 'b'], [{}, 'a']])
+ new Map([[{}, 'b'], [{}, 'a']]),
 );
 notUtilIsDeepStrict(
  new Map([[true, 'a'], ['1', 'b'], [1, 'a']]),
- new Map([['1', 'a'], [1, 'b'], [true, 'a']])
+ new Map([['1', 'a'], [1, 'b'], [true, 'a']]),
 );
 notUtilIsDeepStrict(
  new Map([[true, 'a'], ['1', 'b'], [1, 'c']]),
- new Map([['1', 'a'], [1, 'b'], [true, 'a']])
+ new Map([['1', 'a'], [1, 'b'], [true, 'a']]),
 );
 
 // Similar object keys
 notUtilIsDeepStrict(
  new Set([{}, {}]),
- new Set([{}, 1])
+ new Set([{}, 1]),
 );
 notUtilIsDeepStrict(
  new Set([[{}, 1], [{}, 1]]),
- new Set([[{}, 1], [1, 1]])
+ new Set([[{}, 1], [1, 1]]),
 );
 notUtilIsDeepStrict(
  new Map([[{}, 1], [{}, 1]]),
- new Map([[{}, 1], [1, 1]])
+ new Map([[{}, 1], [1, 1]]),
 );
 notUtilIsDeepStrict(
  new Map([[{}, 1], [true, 1]]),
- new Map([[{}, 1], [1, 1]])
+ new Map([[{}, 1], [1, 1]]),
 );
 
 // Similar primitive key / values
 notUtilIsDeepStrict(
  new Set([1, true, false]),
- new Set(['1', 0, '0'])
+ new Set(['1', 0, '0']),
 );
 notUtilIsDeepStrict(
  new Map([[1, 5], [true, 5], [false, 5]]),
- new Map([['1', 5], [0, 5], ['0', 5]])
+ new Map([['1', 5], [0, 5], ['0', 5]]),
 );
 
 // Undefined value in Map
 utilIsDeepStrict(
  new Map([[1, undefined]]),
- new Map([[1, undefined]])
+ new Map([[1, undefined]]),
 );
 notUtilIsDeepStrict(
  new Map([[1, null]]),
- new Map([['1', undefined]])
+ new Map([['1', undefined]]),
 );
 notUtilIsDeepStrict(
  new Map([[1, undefined]]),
- new Map([[2, undefined]])
+ new Map([[2, undefined]]),
 );
 
 // null as key
 utilIsDeepStrict(
  new Map([[null, 3]]),
- new Map([[null, 3]])
+ new Map([[null, 3]]),
 );
 notUtilIsDeepStrict(
  new Map([[null, undefined]]),
- new Map([[undefined, null]])
+ new Map([[undefined, null]]),
 );
 notUtilIsDeepStrict(
  new Set([null]),
- new Set([undefined])
+ new Set([undefined]),
 );
 
 // GH-6416. Make sure circular refs don't throw.
@@ -429,7 +429,7 @@ assert.strictEqual(util.isDeepStrictEqual(NaN, NaN), true);
 assert.strictEqual(util.isDeepStrictEqual({ a: NaN }, { a: NaN }), true);
 assert.strictEqual(
  util.isDeepStrictEqual([ 1, 2, NaN, 4 ], [ 1, 2, NaN, 4 ]),
- true
+ true,
 );
 
 // Handle boxed primitives

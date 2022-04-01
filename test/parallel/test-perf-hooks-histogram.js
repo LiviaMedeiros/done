@@ -37,11 +37,11 @@ const { inspect } = require('util');
 
  [false, '', {}, undefined, null].forEach((i) => {
   throws(() => h.record(i), {
-   code: 'ERR_INVALID_ARG_TYPE'
+   code: 'ERR_INVALID_ARG_TYPE',
   });
  });
  throws(() => h.record(0, Number.MAX_SAFE_INTEGER + 1), {
-  code: 'ERR_OUT_OF_RANGE'
+  code: 'ERR_OUT_OF_RANGE',
  });
 
  strictEqual(h.min, 1);

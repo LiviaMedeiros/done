@@ -53,7 +53,7 @@ if (availableCurves.has('prime256v1') && availableCurves.has('secp256k1')) {
   {
    code: 'ERR_CRYPTO_ECDH_INVALID_FORMAT',
    name: 'TypeError',
-   message: 'Invalid ECDH format: 10'
+   message: 'Invalid ECDH format: 10',
   });
 
  // ECDH should check that point is on curve
@@ -65,7 +65,7 @@ if (availableCurves.has('prime256v1') && availableCurves.has('secp256k1')) {
   {
    code: 'ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY',
    name: 'Error',
-   message: 'Public key is not valid for specified curve'
+   message: 'Public key is not valid for specified curve',
   });
 
  // ECDH should allow .setPrivateKey()/.setPublicKey()
@@ -130,13 +130,13 @@ if (availableCurves.has('prime256v1') && availableCurves.has('secp256k1')) {
  assert.strictEqual(ecdh5.getPublicKey('hex'), cafebabePubPtUnComp);
  assert.strictEqual(
   ecdh5.getPublicKey('hex', 'compressed'),
-  cafebabePubPtComp
+  cafebabePubPtComp,
  );
  ecdh5.setPublicKey(cafebabePubPtUnComp, 'hex');
  assert.strictEqual(ecdh5.getPublicKey('hex'), cafebabePubPtUnComp);
  assert.strictEqual(
   ecdh5.getPublicKey('hex', 'compressed'),
-  cafebabePubPtComp
+  cafebabePubPtComp,
  );
 
  // Show why allowing the public key to be set on this type
@@ -178,7 +178,7 @@ if (availableCurves.has('prime256v1') && availableHashes.has('sha256')) {
   {
    code: 'ERR_CRYPTO_ECDH_INVALID_PUBLIC_KEY',
    name: 'Error',
-   message: 'Public key is not valid for specified curve'
+   message: 'Public key is not valid for specified curve',
   });
  // Check that signing operations are not impacted by the above error.
  const ecPrivateKey =

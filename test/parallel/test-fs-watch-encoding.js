@@ -50,7 +50,7 @@ function unregisterWatcher(watcher) {
   (event, filename) => {
    if (['e696b0e5bbbae69687e5a4b9e4bbb62e747874', null].includes(filename))
     done(watcher);
-  }
+  },
  );
  registerWatcher(watcher);
 }
@@ -62,7 +62,7 @@ function unregisterWatcher(watcher) {
   (event, filename) => {
    if ([fn, null].includes(filename))
     done(watcher);
-  }
+  },
  );
  registerWatcher(watcher);
 }
@@ -77,7 +77,7 @@ function unregisterWatcher(watcher) {
     done(watcher);
    else if (filename === null)
     done(watcher);
-  }
+  },
  );
  registerWatcher(watcher);
 }

@@ -100,7 +100,7 @@ function expectBody(expected) {
 
  assert.throws(
   () => { parser.execute(request, 0, request.length); },
-  { name: 'Error', message: 'hello world' }
+  { name: 'Error', message: 'hello world' },
  );
 }
 
@@ -114,7 +114,7 @@ function expectBody(expected) {
     'Content-Type: text/plain\r\n' +
     'Content-Length: 4\r\n' +
     '\r\n' +
-    'pong'
+    'pong',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -174,7 +174,7 @@ function expectBody(expected) {
     '0\r\n' +
     'Vary: *\r\n' +
     'Content-Type: text/plain\r\n' +
-    '\r\n'
+    '\r\n',
  );
 
  let seen_body = false;
@@ -217,7 +217,7 @@ function expectBody(expected) {
     'X-Filler: 1337\r\n' +
     'X-Filler:   42\r\n' +
     'X-Filler2:  42\r\n' +
-    '\r\n'
+    '\r\n',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -246,7 +246,7 @@ function expectBody(expected) {
  const request = Buffer.from(
   'GET /foo/bar/baz?quux=42#1337 HTTP/1.0\r\n' +
     lots_of_headers +
-    '\r\n'
+    '\r\n',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -280,7 +280,7 @@ function expectBody(expected) {
     'Content-Type: application/x-www-form-urlencoded\r\n' +
     'Content-Length: 15\r\n' +
     '\r\n' +
-    'foo=42&bar=1337'
+    'foo=42&bar=1337',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -318,7 +318,7 @@ function expectBody(expected) {
     '123456\r\n' +
     'A\r\n' +
     '1234567890\r\n' +
-    '0\r\n'
+    '0\r\n',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -356,7 +356,7 @@ function expectBody(expected) {
     '3\r\n' +
     '123\r\n' +
     '6\r\n' +
-    '123456\r\n'
+    '123456\r\n',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -388,7 +388,7 @@ function expectBody(expected) {
     '123456789ABC\r\n' +
     'F\r\n' +
     '123456789ABCDEF\r\n' +
-    '0\r\n'
+    '0\r\n',
  );
 
  parser.execute(request, 0, request.length);
@@ -414,7 +414,7 @@ function expectBody(expected) {
     '123456789ABC\r\n' +
     'F\r\n' +
     '123456789ABCDEF\r\n' +
-    '0\r\n'
+    '0\r\n',
  );
 
  function test(a, b) {
@@ -472,7 +472,7 @@ function expectBody(expected) {
     '123456789ABC\r\n' +
     'F\r\n' +
     '123456789ABCDEF\r\n' +
-    '0\r\n'
+    '0\r\n',
  );
 
  const onHeadersComplete = (versionMajor, versionMinor, headers,
@@ -517,7 +517,7 @@ function expectBody(expected) {
     '\r\n' +
     '4\r\n' +
     'ping\r\n' +
-    '0\r\n'
+    '0\r\n',
  );
 
  const req2 = Buffer.from(
@@ -525,7 +525,7 @@ function expectBody(expected) {
     'Content-Type: text/plain\r\n' +
     'Content-Length: 4\r\n' +
     '\r\n' +
-    'pong'
+    'pong',
  );
 
  const onHeadersComplete1 = (versionMajor, versionMinor, headers,
@@ -547,7 +547,7 @@ function expectBody(expected) {
   assert.strictEqual(versionMinor, 0);
   assert.deepStrictEqual(
    headers,
-   ['Content-Type', 'text/plain', 'Content-Length', '4']
+   ['Content-Type', 'text/plain', 'Content-Length', '4'],
   );
  };
 

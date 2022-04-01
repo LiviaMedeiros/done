@@ -28,7 +28,7 @@ const {
  hijackStdout,
  hijackStderr,
  restoreStdout,
- restoreStderr
+ restoreStderr,
 } = require('../common/hijackstdio');
 
 assert.ok(process.stdout.writable);
@@ -50,7 +50,7 @@ common.expectWarning(
   ['No such label \'default\' for console.timeEnd()'],
   ['Label \'default\' already exists for console.time()'],
   ['Label \'test\' already exists for console.time()'],
- ]
+ ],
 );
 
 console.countReset('noLabel');
@@ -139,7 +139,7 @@ console.dirxml(custom_inspect, custom_inspect);
 console.dirxml(
  { foo: { bar: { baz: true } } },
  { foo: { bar: { quux: false } } },
- { foo: { bar: { quux: true } } }
+ { foo: { bar: { quux: true } } },
 );
 
 // Test console.trace()

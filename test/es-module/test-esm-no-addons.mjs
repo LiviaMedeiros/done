@@ -21,7 +21,7 @@ if (isMainThread) {
     } else {
      assert.strictEqual(message, 'not using native addons');
     }
-   })
+   }),
   );
  });
 }

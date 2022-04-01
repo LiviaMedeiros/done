@@ -105,7 +105,7 @@ async function testInvalidimportModuleDynamically() {
   () => new Script(
    'import("foo")',
    { importModuleDynamically: false }),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 }
 

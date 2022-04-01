@@ -37,7 +37,7 @@ const { setUnrefTimeout } = require('internal/timers');
    () => setUnrefTimeout(cb),
    {
     code: 'ERR_INVALID_ARG_TYPE',
-   }
+   },
   );
  });
 }

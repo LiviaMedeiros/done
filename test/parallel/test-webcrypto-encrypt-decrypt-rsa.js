@@ -9,7 +9,7 @@ const assert = require('assert');
 const { subtle } = require('crypto').webcrypto;
 
 const {
- passing
+ passing,
 } = require('../fixtures/crypto/rsa')();
 
 async function importVectorKey(
@@ -39,7 +39,7 @@ async function testDecryption({ ciphertext,
   return;
 
  const {
-  privateKey
+  privateKey,
  } = await importVectorKey(
   publicKeyBuffer,
   privateKeyBuffer,
@@ -73,12 +73,12 @@ async function testEncryption(
   plaintext,
   hash,
   publicKeyBuffer,
-  privateKeyBuffer
+  privateKeyBuffer,
  },
  modify = false) {
  const {
   publicKey,
-  privateKey
+  privateKey,
  } = await importVectorKey(
   publicKeyBuffer,
   privateKeyBuffer,
@@ -127,7 +127,7 @@ async function testEncryptionLongPlaintext({ algorithm,
 
  return assert.rejects(
   subtle.encrypt(algorithm, publicKey, newplaintext), {
-   message: /data too large/
+   message: /data too large/,
   });
 }
 
@@ -147,7 +147,7 @@ async function testEncryptionWrongKey({ algorithm,
   ['decrypt']);
  return assert.rejects(
   subtle.encrypt(algorithm, privateKey, plaintext), {
-   message: /The requested operation is not valid/
+   message: /The requested operation is not valid/,
   });
 }
 
@@ -167,7 +167,7 @@ async function testEncryptionBadUsage({ algorithm,
   ['decrypt']);
  return assert.rejects(
   subtle.encrypt(algorithm, publicKey, plaintext), {
-   message: /The requested operation is not valid/
+   message: /The requested operation is not valid/,
   });
 }
 
@@ -180,7 +180,7 @@ async function testDecryptionWrongKey({ ciphertext,
   return;
 
  const {
-  publicKey
+  publicKey,
  } = await importVectorKey(
   publicKeyBuffer,
   privateKeyBuffer,
@@ -191,7 +191,7 @@ async function testDecryptionWrongKey({ ciphertext,
 
  return assert.rejects(
   subtle.decrypt(algorithm, publicKey, ciphertext), {
-   message: /The requested operation is not valid/
+   message: /The requested operation is not valid/,
   });
 }
 
@@ -204,7 +204,7 @@ async function testDecryptionBadUsage({ ciphertext,
   return;
 
  const {
-  publicKey
+  publicKey,
  } = await importVectorKey(
   publicKeyBuffer,
   privateKeyBuffer,
@@ -215,7 +215,7 @@ async function testDecryptionBadUsage({ ciphertext,
 
  return assert.rejects(
   subtle.decrypt(algorithm, publicKey, ciphertext), {
-   message: /The requested operation is not valid/
+   message: /The requested operation is not valid/,
   });
 }
 

@@ -87,8 +87,8 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
   assert.throws(
    () => fs.writev(fd, i, null, common.mustNotCall()), {
     code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-   }
+    name: 'TypeError',
+   },
   );
  });
 
@@ -101,7 +101,7 @@ const getFileName = (i) => path.join(tmpdir.path, `writev_${i}.txt`);
   () => fs.writev(i, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
 });

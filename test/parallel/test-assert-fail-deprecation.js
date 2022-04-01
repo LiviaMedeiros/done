@@ -7,7 +7,7 @@ common.expectWarning(
  'DeprecationWarning',
  'assert.fail() with more than one argument is deprecated. ' +
     'Please use assert.strictEqual() instead or only pass a message.',
- 'DEP0094'
+ 'DEP0094',
 );
 
 // Two args only, operator defaults to '!='
@@ -20,7 +20,7 @@ assert.throws(() => {
  operator: '!=',
  actual: 'first',
  expected: 'second',
- generatedMessage: true
+ generatedMessage: true,
 });
 
 // Three args
@@ -33,7 +33,7 @@ assert.throws(() => {
  operator: 'fail',
  actual: 'ignored',
  expected: 'ignored',
- generatedMessage: false
+ generatedMessage: false,
 });
 
 // Three args with custom Error
@@ -41,7 +41,7 @@ assert.throws(() => {
  assert.fail(typeof 1, 'object', new TypeError('another custom message'));
 }, {
  name: 'TypeError',
- message: 'another custom message'
+ message: 'another custom message',
 });
 
 // No third arg (but a fourth arg)
@@ -53,11 +53,11 @@ assert.throws(() => {
  message: '\'first\' operator \'second\'',
  operator: 'operator',
  actual: 'first',
- expected: 'second'
+ expected: 'second',
 });
 
 // The stackFrameFunction should exclude the foo frame
 assert.throws(
  function foo() { assert.fail('first', 'second', 'message', '!==', foo); },
- (err) => !/^\s*at\sfoo\b/m.test(err.stack)
+ (err) => !/^\s*at\sfoo\b/m.test(err.stack),
 );

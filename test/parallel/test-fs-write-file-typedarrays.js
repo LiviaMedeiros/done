@@ -26,7 +26,7 @@ for (const expectView of common.getArrayBufferViews(inputBuffer)) {
  fs.writeFileSync(filename, expectView);
  assert.strictEqual(
   fs.readFileSync(filename, 'utf8'),
-  inputBuffer.toString('utf8')
+  inputBuffer.toString('utf8'),
  );
 }
 

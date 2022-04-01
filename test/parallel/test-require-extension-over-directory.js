@@ -12,7 +12,7 @@ assert.strictEqual(
  fixturesRequire,
  require(fixtures.path('module-extension-over-directory', 'inner.js')),
  'test-require-extension-over-directory failed to import fixture' +
-  ' requirements'
+  ' requirements',
 );
 
 const fakePath = [
@@ -26,5 +26,5 @@ assert.strictEqual(
  fixturesRequireDir,
  require(fixtures.path('module-extension-over-directory', 'inner/')),
  'test-require-extension-over-directory failed to import fixture' +
-  ' requirements'
+  ' requirements',
 );

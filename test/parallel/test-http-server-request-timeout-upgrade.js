@@ -41,7 +41,7 @@ server.listen(0, common.mustCall(() => {
    'HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
       'Upgrade: WebSocket\r\n' +
       'Connection: Upgrade\r\n\r\n' +
-      '12345678901234567890'
+      '12345678901234567890',
   );
 
   server.close();

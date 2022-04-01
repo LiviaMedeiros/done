@@ -7,7 +7,7 @@ const { Writable } = require('stream');
 {
  const writable = new Writable({
   write() {
-  }
+  },
  });
  assert.strictEqual(writable.writableAborted, false);
  writable.destroy();
@@ -17,7 +17,7 @@ const { Writable } = require('stream');
 {
  const writable = new Writable({
   write() {
-  }
+  },
  });
  assert.strictEqual(writable.writableAborted, false);
  writable.end();

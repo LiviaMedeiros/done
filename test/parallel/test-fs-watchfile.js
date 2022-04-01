@@ -14,7 +14,7 @@ assert.throws(
  },
  {
   code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError'
+  name: 'TypeError',
  });
 
 assert.throws(
@@ -23,7 +23,7 @@ assert.throws(
  },
  {
   code: 'ERR_INVALID_ARG_TYPE',
-  name: 'TypeError'
+  name: 'TypeError',
  });
 
 assert.throws(() => {
@@ -45,7 +45,7 @@ const expectedStatObject = new fs.Stats(
  Date.UTC(1970, 0, 1, 0, 0, 0),            // atime
  Date.UTC(1970, 0, 1, 0, 0, 0),            // mtime
  Date.UTC(1970, 0, 1, 0, 0, 0),            // ctime
- Date.UTC(1970, 0, 1, 0, 0, 0)             // birthtime
+ Date.UTC(1970, 0, 1, 0, 0, 0),             // birthtime
 );
 
 tmpdir.refresh();

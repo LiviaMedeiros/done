@@ -14,8 +14,8 @@ assert.throws(
   actual: undefined,
   expected: undefined,
   generatedMessage: true,
-  stack: /Failed/
- }
+  stack: /Failed/,
+ },
 );
 
 // One arg = message
@@ -28,7 +28,7 @@ assert.throws(() => {
  operator: 'fail',
  actual: undefined,
  expected: undefined,
- generatedMessage: false
+ generatedMessage: false,
 });
 
 // One arg = Error
@@ -36,5 +36,5 @@ assert.throws(() => {
  assert.fail(new TypeError('custom message'));
 }, {
  name: 'TypeError',
- message: 'custom message'
+ message: 'custom message',
 });

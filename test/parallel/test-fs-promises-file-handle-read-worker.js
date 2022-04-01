@@ -16,7 +16,7 @@ if (isMainThread || !workerData) {
   handle.on('close', common.mustNotCall());
   new Worker(__filename, {
    workerData: { handle },
-   transferList: [handle]
+   transferList: [handle],
   });
  });
  fs.promises.open(file, 'r').then(async (handle) => {
@@ -25,7 +25,7 @@ if (isMainThread || !workerData) {
    assert.throws(() => {
     new Worker(__filename, {
      workerData: { handle },
-     transferList: [handle]
+     transferList: [handle],
     });
    }, {
     code: 25,

@@ -25,7 +25,7 @@ child.on('exit', common.mustCall(() => {
    // x\n
    '> Foobar',
    '> ',
-  ]
+  ],
  );
 }));
 

@@ -14,34 +14,34 @@ const promiseResolver = new dns.promises.Resolver();
   Number(addresses.DNS4_SERVER),
   addresses.DNS4_SERVER,
   {
-   address: addresses.DNS4_SERVER
+   address: addresses.DNS4_SERVER,
   },
  ].forEach((val) => {
   const errObj = {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "servers" argument must be an instance of Array.' +
-               common.invalidArgTypeHelper(val)
+               common.invalidArgTypeHelper(val),
   };
   assert.throws(
    () => {
     dns.setServers(val);
-   }, errObj
+   }, errObj,
   );
   assert.throws(
    () => {
     resolver.setServers(val);
-   }, errObj
+   }, errObj,
   );
   assert.throws(
    () => {
     dnsPromises.setServers(val);
-   }, errObj
+   }, errObj,
   );
   assert.throws(
    () => {
     promiseResolver.setServers(val);
-   }, errObj
+   }, errObj,
   );
  });
 }
@@ -53,7 +53,7 @@ const promiseResolver = new dns.promises.Resolver();
   [Number(addresses.DNS4_SERVER)],
   [
    {
-    address: addresses.DNS4_SERVER
+    address: addresses.DNS4_SERVER,
    },
   ],
  ].forEach((val) => {
@@ -61,27 +61,27 @@ const promiseResolver = new dns.promises.Resolver();
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "servers[0]" argument must be of type string.' +
-               common.invalidArgTypeHelper(val[0])
+               common.invalidArgTypeHelper(val[0]),
   };
   assert.throws(
    () => {
     dns.setServers(val);
-   }, errObj
+   }, errObj,
   );
   assert.throws(
    () => {
     resolver.setServers(val);
-   }, errObj
+   }, errObj,
   );
   assert.throws(
    () => {
     dnsPromises.setServers(val);
-   }, errObj
+   }, errObj,
   );
   assert.throws(
    () => {
     promiseResolver.setServers(val);
-   }, errObj
+   }, errObj,
   );
  });
 }
@@ -89,7 +89,7 @@ const promiseResolver = new dns.promises.Resolver();
 // This test for 'dns/promises'
 {
  const {
-  setServers
+  setServers,
  } = require('dns/promises');
 
  // This should not throw any error.
@@ -103,7 +103,7 @@ const promiseResolver = new dns.promises.Resolver();
   [Number(addresses.DNS4_SERVER)],
   [
    {
-    address: addresses.DNS4_SERVER
+    address: addresses.DNS4_SERVER,
    },
   ],
  ].forEach((val) => {
@@ -111,7 +111,7 @@ const promiseResolver = new dns.promises.Resolver();
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
    message: 'The "servers[0]" argument must be of type string.' +
-              common.invalidArgTypeHelper(val[0])
+              common.invalidArgTypeHelper(val[0]),
   };
   assert.throws(() => {
    setServers(val);

@@ -17,7 +17,7 @@ async_hooks.createHook({
    init: true,
    before: false,
    after: false,
-   promiseResolve: false
+   promiseResolve: false,
   });
  },
  before(asyncId) {
@@ -34,14 +34,14 @@ async_hooks.createHook({
   if (layers.has(asyncId)) {
    layers.get(asyncId).promiseResolve = true;
   }
- }
+ },
 }).enable();
 
 // With destroy, this should switch to native
 // and disable context - based promise hook
 async_hooks.createHook({
  init() { },
- destroy() { }
+ destroy() { },
 }).enable();
 
 async function main() {
@@ -57,21 +57,21 @@ process.on('exit', () => {
    init: true,
    before: true,
    after: true,
-   promiseResolve: true
+   promiseResolve: true,
   },
   {
    type: 'PROMISE',
    init: true,
    before: false,
    after: false,
-   promiseResolve: true
+   promiseResolve: true,
   },
   {
    type: 'PROMISE',
    init: true,
    before: true,
    after: true,
-   promiseResolve: true
+   promiseResolve: true,
   },
  ]);
 });

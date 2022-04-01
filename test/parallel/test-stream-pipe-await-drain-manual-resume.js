@@ -7,7 +7,7 @@ const assert = require('assert');
 // where it buffers the chunk it receives rather than indicating that they
 // have been consumed.
 const writable = new stream.Writable({
- highWaterMark: 5
+ highWaterMark: 5,
 });
 
 let isCurrentlyBufferingWrites = true;
@@ -21,7 +21,7 @@ writable._write = (chunk, encoding, cb) => {
 };
 
 const readable = new stream.Readable({
- read() {}
+ read() {},
 });
 
 readable.pipe(writable);
@@ -31,7 +31,7 @@ readable.once('pause', common.mustCall(() => {
   readable._readableState.awaitDrainWriters,
   writable,
   'Expected awaitDrainWriters to be a Writable but instead got ' +
-    `${readable._readableState.awaitDrainWriters}`
+    `${readable._readableState.awaitDrainWriters}`,
  );
  // First pause, resume manually. The next write() to writable will still
  // return false, because chunks are still being buffered, so it will increase
@@ -46,7 +46,7 @@ readable.once('pause', common.mustCall(() => {
    readable._readableState.awaitDrainWriters,
    writable,
    '.resume() should not reset the awaitDrainWriters, but instead got ' +
-      `${readable._readableState.awaitDrainWriters}`
+      `${readable._readableState.awaitDrainWriters}`,
   );
   // Second pause, handle all chunks from now on. Once all callbacks that
   // are currently queued up are handled, the awaitDrain drain counter should
@@ -69,7 +69,7 @@ writable.on('finish', common.mustCall(() => {
   null,
   `awaitDrainWriters should be reset to null
     after all chunks are written but instead got
-    ${readable._readableState.awaitDrainWriters}`
+    ${readable._readableState.awaitDrainWriters}`,
  );
  // Everything okay, all chunks were written.
 }));

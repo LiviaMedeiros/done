@@ -33,5 +33,5 @@ exec(
   assert.strictEqual(stdout, dataExpected);
   assert.strictEqual(stderr, '');
   console.log('ok');
- })
+ }),
 );

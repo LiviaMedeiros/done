@@ -28,7 +28,7 @@ console.error('beginning');
 try {
  vm.runInThisContext('var 5;', {
   filename: 'test.vm',
-  displayErrors: false
+  displayErrors: false,
  });
 } catch {
  // Continue regardless of error.
@@ -38,7 +38,7 @@ console.error('middle');
 
 vm.runInThisContext('var 5;', {
  filename: 'test.vm',
- displayErrors: false
+ displayErrors: false,
 });
 
 console.error('end');

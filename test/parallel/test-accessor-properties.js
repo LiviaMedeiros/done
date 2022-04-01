@@ -33,7 +33,7 @@ const UDP = internalBinding('udp_wrap').UDP;
   assert.strictEqual(
    typeof Object.getOwnPropertyDescriptor(StreamWrapProto, property),
    'object',
-   'typeof property descriptor ' + property + ' is not \'object\''
+   'typeof property descriptor ' + property + ' is not \'object\'',
   );
  });
 
@@ -49,7 +49,7 @@ const UDP = internalBinding('udp_wrap').UDP;
   assert.strictEqual(
    typeof Object.getOwnPropertyDescriptor(
     crypto.SecureContext.prototype, '_external'),
-   'object'
+   'object',
   );
  }
 }

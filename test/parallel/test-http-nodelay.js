@@ -23,7 +23,7 @@ server.listen(0, common.mustCall(() => {
 
  const req = http.request({
   method: 'GET',
-  port: server.address().port
+  port: server.address().port,
  }, common.mustCall((res) => {
   res.on('end', () => {
    server.close();

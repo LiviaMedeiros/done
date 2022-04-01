@@ -26,7 +26,7 @@ switch (process.argv[2]) {
  case 'switch':
   assert.strictEqual(
    getOptionValue('--pending-deprecation'),
-   true
+   true,
   );
   break;
  default: {
@@ -34,13 +34,13 @@ switch (process.argv[2]) {
   const envvar = process.env.NODE_PENDING_DEPRECATION;
   assert.strictEqual(
    getOptionValue('--pending-deprecation'),
-   !!(envvar && envvar[0] === '1')
+   !!(envvar && envvar[0] === '1'),
   );
 
   // Test the --pending-deprecation command line switch.
   fork(__filename, ['switch'], {
    execArgv: ['--pending-deprecation', '--expose-internals'],
-   silent: true
+   silent: true,
   }).on('exit', common.mustCall((code) => {
    assert.strictEqual(code, 0, message('--pending-deprecation'));
   }));
@@ -48,7 +48,7 @@ switch (process.argv[2]) {
   // Test the --pending_deprecation command line switch.
   fork(__filename, ['switch'], {
    execArgv: ['--pending_deprecation', '--expose-internals'],
-   silent: true
+   silent: true,
   }).on('exit', common.mustCall((code) => {
    assert.strictEqual(code, 0, message('--pending_deprecation'));
   }));
@@ -57,7 +57,7 @@ switch (process.argv[2]) {
   fork(__filename, ['env'], {
    env: { ...process.env, NODE_PENDING_DEPRECATION: 1 },
    execArgv: ['--expose-internals'],
-   silent: true
+   silent: true,
   }).on('exit', common.mustCall((code) => {
    assert.strictEqual(code, 0, message('NODE_PENDING_DEPRECATION'));
   }));

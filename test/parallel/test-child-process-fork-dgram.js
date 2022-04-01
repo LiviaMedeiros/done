@@ -94,7 +94,7 @@ if (process.argv[2] === 'child') {
      '127.0.0.1',
      (err) => {
       assert.ifError(err);
-     }
+     },
     );
    }
   }, 1);

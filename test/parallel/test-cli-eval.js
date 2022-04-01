@@ -122,7 +122,7 @@ child.exec(`${nodejs} -p "\\-42"`, common.mustSucceed((stdout, stderr) => {
 child.exec(`${nodejs} --use-strict -p process.execArgv`,
            common.mustSucceed((stdout, stderr) => {
             assert.strictEqual(
-             stdout, "[ '--use-strict', '-p', 'process.execArgv' ]\n"
+             stdout, "[ '--use-strict', '-p', 'process.execArgv' ]\n",
             );
             assert.strictEqual(stderr, '');
            }));

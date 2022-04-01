@@ -3,7 +3,7 @@
 const common = require('../common');
 const {
  pipeline,
- PassThrough
+ PassThrough,
 } = require('stream');
 
 
@@ -11,7 +11,7 @@ async function runTest() {
  await pipeline(
   '',
   new PassThrough({ objectMode: true }),
-  common.mustCall(() => { })
+  common.mustCall(() => { }),
  );
 }
 

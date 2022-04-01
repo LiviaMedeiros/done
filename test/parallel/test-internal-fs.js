@@ -11,7 +11,7 @@ fs.assertEncoding('utf8');
 
 assert.throws(
  () => fs.assertEncoding('foo'),
- { code: 'ERR_INVALID_ARG_VALUE', name: 'TypeError' }
+ { code: 'ERR_INVALID_ARG_VALUE', name: 'TypeError' },
 );
 
 // Test junction symlinks
@@ -22,7 +22,7 @@ assert.throws(
  const preprocessSymlinkDestination = fs.preprocessSymlinkDestination(
   pathString,
   'junction',
-  linkPathString
+  linkPathString,
  );
 
  if (process.platform === 'win32') {
@@ -40,7 +40,7 @@ assert.throws(
  const preprocessSymlinkDestination = fs.preprocessSymlinkDestination(
   pathString,
   undefined,
-  linkPathString
+  linkPathString,
  );
 
  if (process.platform === 'win32') {

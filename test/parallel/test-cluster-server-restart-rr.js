@@ -13,12 +13,12 @@ if (cluster.isPrimary) {
    assert.strictEqual(
     code,
     0,
-    `worker${worker2.id} did not exit normally. Exit with code: ${code}`
+    `worker${worker2.id} did not exit normally. Exit with code: ${code}`,
    );
    assert.strictEqual(
     signal,
     null,
-    `worker${worker2.id} did not exit normally. Exit with signal: ${signal}`
+    `worker${worker2.id} did not exit normally. Exit with signal: ${signal}`,
    );
    worker1.disconnect();
   });
@@ -28,12 +28,12 @@ if (cluster.isPrimary) {
   assert.strictEqual(
    code,
    0,
-   `worker${worker1.id} did not exit normally. Exit with code: ${code}`
+   `worker${worker1.id} did not exit normally. Exit with code: ${code}`,
   );
   assert.strictEqual(
    signal,
    null,
-   `worker${worker1.id} did not exit normally. Exit with code: ${signal}`
+   `worker${worker1.id} did not exit normally. Exit with code: ${signal}`,
   );
  }));
 } else {

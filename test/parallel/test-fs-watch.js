@@ -27,14 +27,14 @@ const cases = [
   common.isLinux || common.isOSX || common.isWindows || common.isAIX,
   'watch1',
   'foo',
-  'filePath'
+  'filePath',
  ),
  // Watch on a directory should callback with a filename on supported systems
  new WatchTestCase(
   common.isLinux || common.isOSX || common.isWindows,
   'watch2',
   'bar',
-  'dirPath'
+  'dirPath',
  ),
 ];
 
@@ -92,7 +92,7 @@ for (const testCase of cases) {
   () => fs.watch(input, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
 });

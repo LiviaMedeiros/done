@@ -9,12 +9,12 @@ const path = require('path');
 const requiringCjsAsEsm = path.resolve(fixtures.path('/es-modules/cjs-esm.js'));
 const requiringEsm = path.resolve(fixtures.path('/es-modules/cjs-esm-esm.js'));
 const pjson = path.resolve(
- fixtures.path('/es-modules/package-type-module/package.json')
+ fixtures.path('/es-modules/package-type-module/package.json'),
 );
 
 {
  const required = path.resolve(
-  fixtures.path('/es-modules/package-type-module/cjs.js')
+  fixtures.path('/es-modules/package-type-module/cjs.js'),
  );
  const basename = 'cjs.js';
  const child = spawn(process.execPath, [requiringCjsAsEsm]);
@@ -41,7 +41,7 @@ const pjson = path.resolve(
 
 {
  const required = path.resolve(
-  fixtures.path('/es-modules/package-type-module/esm.js')
+  fixtures.path('/es-modules/package-type-module/esm.js'),
  );
  const basename = 'esm.js';
  const child = spawn(process.execPath, [requiringEsm]);

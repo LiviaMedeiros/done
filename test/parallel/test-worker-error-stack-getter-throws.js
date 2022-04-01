@@ -12,7 +12,7 @@ const w = new Worker(
   Error.prepareStackTrace = fn;
   throw new Error('fhqwhgads');
   `,
- { eval: true }
+ { eval: true },
 );
 w.on('message', common.mustNotCall());
 w.on('error', common.mustCall((err) => {

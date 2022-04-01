@@ -15,7 +15,7 @@ server.listen(0, common.mustCall(() => {
  // Setting the maxSendHeaderBlockLength > nghttp2 threshold
  // cause a 'sessionError' and no memory leak when session destroy
  const options = {
-  maxSendHeaderBlockLength: 100000
+  maxSendHeaderBlockLength: 100000,
  };
 
  const client = h2.connect(`http://localhost:${server.address().port}`,
@@ -23,12 +23,12 @@ server.listen(0, common.mustCall(() => {
  client.on('error', common.expectsError({
   code: 'ERR_HTTP2_SESSION_ERROR',
   name: 'Error',
-  message: 'Session closed with error code 9'
+  message: 'Session closed with error code 9',
  }));
 
  const req = client.request({
   // Greater than 65536 bytes
-  'test-header': 'A'.repeat(90000)
+  'test-header': 'A'.repeat(90000),
  });
  req.on('response', common.mustNotCall());
 
@@ -40,7 +40,7 @@ server.listen(0, common.mustCall(() => {
  req.on('error', common.expectsError({
   code: 'ERR_HTTP2_SESSION_ERROR',
   name: 'Error',
-  message: 'Session closed with error code 9'
+  message: 'Session closed with error code 9',
  }));
  req.end();
 }));

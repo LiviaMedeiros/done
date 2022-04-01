@@ -10,7 +10,7 @@ const echoFixture = fixtures.path('echo.js');
 const promisified = promisify(execFile);
 const invalidArgTypeError = {
  code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError'
+ name: 'TypeError',
 };
 
 {
@@ -23,7 +23,7 @@ const invalidArgTypeError = {
 
  assert.rejects(
   promise,
-  { name: 'AbortError' }
+  { name: 'AbortError' },
  ).then(common.mustCall());
 }
 
@@ -33,7 +33,7 @@ const invalidArgTypeError = {
 
  assert.rejects(
   promisified(process.execPath, [echoFixture, 0], { signal }),
-  { name: 'AbortError' }
+  { name: 'AbortError' },
  ).then(common.mustCall());
 }
 

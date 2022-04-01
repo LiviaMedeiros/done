@@ -24,7 +24,7 @@ fs.promises.open(file, 'w+').then((handle) => {
  let calls = 0;
  const {
   write: originalWriteFunction,
-  writev: originalWritevFunction
+  writev: originalWritevFunction,
  } = handle;
  handle.write = function write() {
   calls++;

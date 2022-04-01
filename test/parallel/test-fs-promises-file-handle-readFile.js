@@ -61,7 +61,7 @@ async function doReadAndCancel() {
    fs.writeFileSync(filePathForHandle, buffer);
    const signal = AbortSignal.abort();
    await assert.rejects(readFile(fileHandle, { signal }), {
-    name: 'AbortError'
+    name: 'AbortError',
    });
   } finally {
    await fileHandle.close();
@@ -78,7 +78,7 @@ async function doReadAndCancel() {
   const { signal } = controller;
   process.nextTick(() => controller.abort());
   await assert.rejects(readFile(fileHandle, { signal }), {
-   name: 'AbortError'
+   name: 'AbortError',
   }, 'tick-0');
   await fileHandle.close();
  }
@@ -95,7 +95,7 @@ async function doReadAndCancel() {
   const { signal } = controller;
   tick(1, () => controller.abort());
   await assert.rejects(fileHandle.readFile({ signal, encoding: 'utf8' }), {
-   name: 'AbortError'
+   name: 'AbortError',
   }, 'tick-1');
 
   await fileHandle.close();
@@ -114,7 +114,7 @@ async function doReadAndCancel() {
 
   await assert.rejects(fileHandle.readFile(), {
    name: 'RangeError',
-   code: 'ERR_FS_FILE_TOO_LARGE'
+   code: 'ERR_FS_FILE_TOO_LARGE',
   });
   await fileHandle.close();
  }

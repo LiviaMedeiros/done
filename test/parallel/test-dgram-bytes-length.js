@@ -35,5 +35,5 @@ client.send(
  function(err, bytes) {
   assert.strictEqual(bytes, message.length);
   client.close();
- }
+ },
 );

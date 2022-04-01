@@ -43,9 +43,9 @@ server.listen(0, common.mustCall(() => {
    () => client.settings({ [name]: value }),
    {
     code: 'ERR_HTTP2_INVALID_SETTING_VALUE',
-    name: errorType.name
-   }
-  )
+    name: errorType.name,
+   },
+  ),
  );
 
  [1, true, {}, []].forEach((invalidCallback) =>
@@ -54,8 +54,8 @@ server.listen(0, common.mustCall(() => {
    {
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_TYPE',
-   }
-  )
+   },
+  ),
  );
 
  client.settings({ maxFrameSize: 1234567 });

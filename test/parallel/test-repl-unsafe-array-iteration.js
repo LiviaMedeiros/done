@@ -25,7 +25,7 @@ const replReadyState = (async function* () {
  });
 
  const processCrashed = new Promise((resolve, reject) =>
-  replProcess.on('exit', reject)
+  replProcess.on('exit', reject),
  );
  while (true) {
   await Promise.race([new Promise(setImmediate), processCrashed]);
@@ -39,26 +39,26 @@ async function writeLn(data, expectedOutput) {
  await replReadyState.next();
  if (expectedOutput) {
   replProcess.stdout.once('data', common.mustCall((data) =>
-   assert.match(data.toString('utf8'), expectedOutput)
+   assert.match(data.toString('utf8'), expectedOutput),
   ));
  }
  await new Promise((resolve, reject) => replProcess.stdin.write(
   `${data}\n`,
-  (err) => (err ? reject(err) : resolve())
+  (err) => (err ? reject(err) : resolve()),
  ));
 }
 
 async function main() {
  await writeLn(
   'const ArrayIteratorPrototype =' +
-      '  Object.getPrototypeOf(Array.prototype[Symbol.iterator]());'
+      '  Object.getPrototypeOf(Array.prototype[Symbol.iterator]());',
  );
  await writeLn('delete Array.prototype[Symbol.iterator];');
  await writeLn('delete ArrayIteratorPrototype.next;');
 
  await writeLn(
   'for(const x of [3, 2, 1]);',
-  /Uncaught TypeError: \[3,2,1\] is not iterable/
+  /Uncaught TypeError: \[3,2,1\] is not iterable/,
  );
  await writeLn('.exit');
 

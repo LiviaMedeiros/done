@@ -81,10 +81,10 @@ for (const [ value, _method ] of [
  assert(types.isUint8Array(vm.runInNewContext('new Uint8Array')));
 
  assert(!types.isUint8ClampedArray({
-  [Symbol.toStringTag]: 'Uint8ClampedArray'
+  [Symbol.toStringTag]: 'Uint8ClampedArray',
  }));
  assert(types.isUint8ClampedArray(
-  vm.runInNewContext('new Uint8ClampedArray')
+  vm.runInNewContext('new Uint8ClampedArray'),
  ));
 
  assert(!types.isUint16Array({ [Symbol.toStringTag]: 'Uint16Array' }));
@@ -152,7 +152,7 @@ for (const [ value, _method ] of [
     Object.setPrototypeOf(new Uint8Array(arrayBuffer), ArrayBuffer.prototype);
  const stealthyUint8ClampedArray =
     Object.setPrototypeOf(
-    	new Uint8ClampedArray(arrayBuffer), ArrayBuffer.prototype
+    	new Uint8ClampedArray(arrayBuffer), ArrayBuffer.prototype,
     );
  const stealthyUint16Array =
     Object.setPrototypeOf(new Uint16Array(arrayBuffer), Uint16Array.prototype);
@@ -166,19 +166,19 @@ for (const [ value, _method ] of [
     Object.setPrototypeOf(new Int32Array(arrayBuffer), Int32Array.prototype);
  const stealthyFloat32Array =
     Object.setPrototypeOf(
-    	new Float32Array(arrayBuffer), Float32Array.prototype
+    	new Float32Array(arrayBuffer), Float32Array.prototype,
     );
  const stealthyFloat64Array =
     Object.setPrototypeOf(
-    	new Float64Array(arrayBuffer), Float64Array.prototype
+    	new Float64Array(arrayBuffer), Float64Array.prototype,
     );
  const stealthyBigInt64Array =
     Object.setPrototypeOf(
-    	new BigInt64Array(arrayBuffer), BigInt64Array.prototype
+    	new BigInt64Array(arrayBuffer), BigInt64Array.prototype,
     );
  const stealthyBigUint64Array =
     Object.setPrototypeOf(
-    	new BigUint64Array(arrayBuffer), BigUint64Array.prototype
+    	new BigUint64Array(arrayBuffer), BigUint64Array.prototype,
     );
 
  const all = [
@@ -259,7 +259,7 @@ for (const [ value, _method ] of [
   ],
   isBigUint64Array: [
    bigUint64Array, stealthyBigUint64Array,
-  ]
+  ],
  };
 
  for (const testedFunc of Object.keys(expected)) {

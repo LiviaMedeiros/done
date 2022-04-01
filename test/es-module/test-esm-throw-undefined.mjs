@@ -6,7 +6,7 @@ async function doTest() {
   async () => {
    await import('../fixtures/es-module-loaders/throw-undefined.mjs');
   },
-  (e) => e === undefined
+  (e) => e === undefined,
  );
 }
 

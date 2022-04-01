@@ -9,7 +9,7 @@ const { internalBinding } = require('internal/test/binding');
 const {
  constants,
  Http2Stream,
- nghttp2ErrorString
+ nghttp2ErrorString,
 } = internalBinding('http2');
 const { NghttpError } = require('internal/http2/util');
 
@@ -30,9 +30,9 @@ const genericTests = Object.getOwnPropertyNames(constants)
   		code: 'ERR_HTTP2_ERROR',
   		constructor: NghttpError,
   		name: 'Error',
-  		message: nghttp2ErrorString(constants[key])
+  		message: nghttp2ErrorString(constants[key]),
   	},
-  	type: 'stream'
+  	type: 'stream',
   }));
 
 
@@ -47,7 +47,7 @@ const server = http2.createServer();
 server.on('stream', common.mustCall((stream, headers) => {
  const errorMustCall = common.expectsError(currentError.error);
  const errorMustNotCall = common.mustNotCall(
-  `${currentError.error.code} should emit on ${currentError.type}`
+  `${currentError.error.code} should emit on ${currentError.type}`,
  );
 
  if (currentError.type === 'stream') {
@@ -73,7 +73,7 @@ function runTest(test) {
   ':path': '/',
   ':method': 'POST',
   ':scheme': 'http',
-  ':authority': `localhost:${port}`
+  ':authority': `localhost:${port}`,
  };
 
  const client = http2.connect(url);
@@ -81,7 +81,7 @@ function runTest(test) {
  req.on('error', common.expectsError({
   code: 'ERR_HTTP2_STREAM_ERROR',
   name: 'Error',
-  message: 'Stream closed with error code NGHTTP2_INTERNAL_ERROR'
+  message: 'Stream closed with error code NGHTTP2_INTERNAL_ERROR',
  }));
  req.on('end', common.mustNotCall());
 

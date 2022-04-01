@@ -9,7 +9,7 @@ const { AsyncLocalStorage } = require('async_hooks');
 
 const context = vm.createContext({
  AsyncLocalStorage,
- assert
+ assert,
 });
 
 vm.runInContext(`

@@ -25,7 +25,7 @@ const common = require('../common');
 const ArrayStream = require('../common/arraystream');
 const {
  hijackStderr,
- restoreStderr
+ restoreStderr,
 } = require('../common/hijackstdio');
 const assert = require('assert');
 const path = require('path');
@@ -57,7 +57,7 @@ const testMe = repl.start({
  prompt: '',
  input: putIn,
  output: process.stdout,
- allowBlockingCompletions: true
+ allowBlockingCompletions: true,
 });
 
 // Some errors are passed to the domain, but do not callback
@@ -244,7 +244,7 @@ testMe.complete('require(\'', common.mustCall(function(error, data) {
  publicModules.forEach((lib) => {
   assert(
    data[0].includes(lib) && data[0].includes(`node:${lib}`),
-   `${lib} not found`
+   `${lib} not found`,
   );
  });
  const newModule = 'foobar';
@@ -478,21 +478,21 @@ testMe.complete('obj.', common.mustCall(function(error, data) {
                     assert.strictEqual(err, null);
                     assert.ok(data[0][0].includes('hellorandom.txt'));
                     assert.ok(data[0][1].includes('helloworld.js'));
-                   })
+                   }),
    );
 
    testMe.complete(`${fixturePath}/.h`,
                    common.mustCall((err, data) => {
                     assert.strictEqual(err, null);
                     assert.ok(data[0][0].includes('.hiddenfiles'));
-                   })
+                   }),
    );
 
    testMe.complete(`${readFileSync}./xxxRandom/random`,
                    common.mustCall((err, data) => {
                     assert.strictEqual(err, null);
                     assert.strictEqual(data[0].length, 0);
-                   })
+                   }),
    );
 
    const testPath = fixturePath.slice(0, -1);
@@ -501,7 +501,7 @@ testMe.complete('obj.', common.mustCall(function(error, data) {
     assert.ok(data[0][0].includes('test-repl-tab-completion'));
     assert.strictEqual(
      data[1],
-     path.basename(testPath)
+     path.basename(testPath),
     );
    }));
   });
@@ -585,7 +585,7 @@ testMe.complete('{}.a', common.mustCall((err, data) => {
 const testNonGlobal = repl.start({
  input: putIn,
  output: putIn,
- useGlobal: false
+ useGlobal: false,
 });
 
 const builtins = [['Infinity', 'Int16Array', 'Int32Array',
@@ -609,7 +609,7 @@ const testCustomCompleterSyncMode = repl.start({
   const hits = customCompletions.filter((c) => c.startsWith(line));
   // Show all completions if none found.
   return [hits.length ? hits : customCompletions, line];
- }
+ },
 });
 
 // On empty line should output all the custom completions
@@ -639,7 +639,7 @@ const testCustomCompleterAsyncMode = repl.start({
   const hits = customCompletions.filter((c) => c.startsWith(line));
   // Show all completions if none found.
   callback(null, [hits.length ? hits : customCompletions, line]);
- }
+ },
 });
 
 // On empty line should output all the custom completions
@@ -664,7 +664,7 @@ const editorStream = new ArrayStream();
 const editor = repl.start({
  stream: editorStream,
  terminal: true,
- useColors: false
+ useColors: false,
 });
 
 editorStream.run(['.clear']);

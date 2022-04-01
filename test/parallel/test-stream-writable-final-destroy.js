@@ -10,7 +10,7 @@ const { Writable } = require('stream');
   },
   final(callback) {
    queueMicrotask(callback);
-  }
+  },
  });
  w.end();
  w.destroy();

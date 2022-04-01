@@ -4,7 +4,7 @@ const {
  hijackStdout,
  hijackStderr,
  restoreStdout,
- restoreStderr
+ restoreStderr,
 } = require('../common/hijackstdio');
 
 const assert = require('assert');
@@ -202,8 +202,8 @@ function teardown() {
    },
    {
     code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-   }
+    name: 'TypeError',
+   },
   );
  });
 
@@ -219,7 +219,7 @@ function teardown() {
     code: 'ERR_OUT_OF_RANGE',
     name: 'RangeError',
     message: /an integer/,
-   }
+   },
   );
  });
 
@@ -235,7 +235,7 @@ function teardown() {
     code: 'ERR_OUT_OF_RANGE',
     name: 'RangeError',
     message: />= 0 && <= 1000/,
-   }
+   },
   );
  });
 }

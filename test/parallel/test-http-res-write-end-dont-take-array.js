@@ -45,7 +45,7 @@ server.once('request', common.mustCall((req, res) => {
   () => {
    res.write(['array']);
   },
-  expectedError
+  expectedError,
  );
 
  // `res.end()` should not accept an Array.
@@ -53,7 +53,7 @@ server.once('request', common.mustCall((req, res) => {
   () => {
    res.end(['moo']);
   },
-  expectedError
+  expectedError,
  );
 
  // `res.end()` should accept `string`.

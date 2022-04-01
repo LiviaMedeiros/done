@@ -40,7 +40,7 @@ syntaxArgs.forEach(function(arg) {
  const c = spawnSync(
   node,
   ['--input-type=module', '--no-warnings', arg],
-  { encoding: 'utf8', input: stdin }
+  { encoding: 'utf8', input: stdin },
  );
 
  // stderr should include '[stdin]' as the filename

@@ -11,7 +11,7 @@ const http = require('http');
    assert.strictEqual(req.url, '/testpath');
    res.end();
    server.close();
-  })
+  }),
  );
  server.listen(
   0,
@@ -21,8 +21,8 @@ const http = require('http');
     { hostname: 'localhost', port: server.address().port },
     common.mustCall((res) => {
      res.resume();
-    })
+    }),
    );
-  })
+  }),
  );
 }

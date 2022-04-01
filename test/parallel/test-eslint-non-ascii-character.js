@@ -14,7 +14,7 @@ new RuleTester().run('non-ascii-characters', rule, {
  valid: [
   {
    code: 'console.log("fhqwhgads")',
-   options: []
+   options: [],
   },
  ],
  invalid: [
@@ -23,5 +23,5 @@ new RuleTester().run('non-ascii-characters', rule, {
    options: [],
    errors: [{ message: "Non-ASCII character 'μ' detected." }],
   },
- ]
+ ],
 });

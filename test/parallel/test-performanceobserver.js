@@ -5,12 +5,12 @@ const common = require('../common');
 const assert = require('assert');
 const { internalBinding } = require('internal/test/binding');
 const {
- observerCounts: counts
+ observerCounts: counts,
 } = internalBinding('performance');
 const {
  performance,
  PerformanceObserver,
- constants
+ constants,
 } = require('perf_hooks');
 
 const {
@@ -28,7 +28,7 @@ assert.strictEqual(counts[NODE_PERFORMANCE_ENTRY_TYPE_HTTP2], 0);
    {
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
-   }
+   },
   );
  });
  const observer = new PerformanceObserver(common.mustNotCall());
@@ -40,7 +40,7 @@ assert.strictEqual(counts[NODE_PERFORMANCE_ENTRY_TYPE_HTTP2], 0);
     code: 'ERR_INVALID_ARG_TYPE',
     name: 'TypeError',
     message: 'The "options" argument must be of type object.' +
-                 common.invalidArgTypeHelper(input)
+                 common.invalidArgTypeHelper(input),
    });
  });
 
@@ -48,7 +48,7 @@ assert.strictEqual(counts[NODE_PERFORMANCE_ENTRY_TYPE_HTTP2], 0);
   assert.throws(() => observer.observe({ entryTypes: i }),
                 {
                  code: 'ERR_INVALID_ARG_TYPE',
-                 name: 'TypeError'
+                 name: 'TypeError',
                 });
  });
 

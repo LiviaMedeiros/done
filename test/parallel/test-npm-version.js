@@ -10,7 +10,7 @@ const npmPathPackageJson = path.resolve(
  '..',
  'deps',
  'npm',
- 'package.json'
+ 'package.json',
 );
 
 const pkg = require(npmPathPackageJson);

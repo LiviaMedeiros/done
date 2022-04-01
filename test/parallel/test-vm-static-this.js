@@ -61,5 +61,5 @@ common.allowGlobals(
  global.hello,
  global.foo,
  global.obj,
- global.f
+ global.f,
 );

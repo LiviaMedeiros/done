@@ -28,14 +28,14 @@ const tsp = require('timers/promises');
  ];
 
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  const write = new Writable({
   write(data, enc, cb) {
    processed.push(data);
    cb();
-  }
+  },
  });
 
  write.on('finish', () => {
@@ -55,7 +55,7 @@ const tsp = require('timers/promises');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  assert.throws(() => {
@@ -71,13 +71,13 @@ const tsp = require('timers/promises');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  const write = new Writable({
   write(data, enc, cb) {
    cb();
-  }
+  },
  });
 
  read.push('data');
@@ -90,13 +90,13 @@ const tsp = require('timers/promises');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  const write = new Writable({
   write(data, enc, cb) {
    cb();
-  }
+  },
  });
 
  read.push('data');
@@ -111,19 +111,19 @@ const tsp = require('timers/promises');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  const transform = new Transform({
   transform(data, enc, cb) {
    cb(new Error('kaboom'));
-  }
+  },
  });
 
  const write = new Writable({
   write(data, enc, cb) {
    cb();
-  }
+  },
  });
 
  read.on('close', common.mustCall());
@@ -151,7 +151,7 @@ const tsp = require('timers/promises');
    read() {
     rs.push('hello');
     rs.push(null);
-   }
+   },
   });
 
   pipeline(rs, res, () => {});
@@ -159,7 +159,7 @@ const tsp = require('timers/promises');
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   req.end();
@@ -169,7 +169,7 @@ const tsp = require('timers/promises');
    res.on('end', common.mustCall(() => {
     assert.deepStrictEqual(
      Buffer.concat(buf),
-     Buffer.from('hello')
+     Buffer.from('hello'),
     );
     server.close();
    }));
@@ -191,7 +191,7 @@ const tsp = require('timers/promises');
    destroy: common.mustCall((err, cb) => {
     // Prevents fd leaks by destroying http pipelines
     cb();
-   })
+   }),
   });
 
   pipeline(rs, res, () => {});
@@ -199,7 +199,7 @@ const tsp = require('timers/promises');
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   req.end();
@@ -224,7 +224,7 @@ const tsp = require('timers/promises');
    },
    destroy: common.mustCall((err, cb) => {
     cb();
-   })
+   }),
   });
 
   pipeline(rs, res, () => {});
@@ -237,12 +237,12 @@ const tsp = require('timers/promises');
    cnt--;
    if (cnt === 0) cb(new Error('kaboom'));
    else cb();
-  }
+  },
  });
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   req.end();
@@ -262,7 +262,7 @@ const tsp = require('timers/promises');
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   let sent = 0;
@@ -272,7 +272,7 @@ const tsp = require('timers/promises');
      return;
     }
     rs.push('hello');
-   }
+   },
   });
 
   pipeline(rs, req, common.mustCall(() => {
@@ -294,7 +294,7 @@ const tsp = require('timers/promises');
   const tr = new Transform({
    transform(data, enc, cb) {
     cb(null, data);
-   }
+   },
   });
 
   tr.on('close', common.mustCall());
@@ -304,7 +304,7 @@ const tsp = require('timers/promises');
  const rs = new Readable({
   read() {
    rs.push('hello');
-  }
+  },
  });
 
  let cnt = 10;
@@ -314,7 +314,7 @@ const tsp = require('timers/promises');
    cnt--;
    if (cnt === 0) return cb(new Error('kaboom'));
    cb();
-  }
+  },
  });
 
  rs.on('close', common.mustCall());
@@ -331,7 +331,7 @@ const tsp = require('timers/promises');
   ws,
   common.mustCall((err) => {
    assert.deepStrictEqual(err, new Error('kaboom'));
-  })
+  }),
  );
 }
 
@@ -358,14 +358,14 @@ const tsp = require('timers/promises');
     rs.push(expected[i]);
    }
    rs.push(null);
-  }
+  },
  });
 
  const ws = new Writable({
   write(data, enc, cb) {
    assert.deepStrictEqual(data, expected.shift());
    cb();
-  }
+  },
  });
 
  let finished = false;
@@ -380,7 +380,7 @@ const tsp = require('timers/promises');
   ws,
   common.mustSucceed(() => {
    assert(finished, 'last stream finished');
-  })
+  }),
  );
 }
 
@@ -413,13 +413,13 @@ const tsp = require('timers/promises');
  const rs = new Readable({
   read() {
    rs.destroy(new Error('stop'));
-  }
+  },
  });
 
  const ws = new Writable({
   write(data, enc, cb) {
    cb();
-  }
+  },
  });
 
  let finished = false;
@@ -436,7 +436,7 @@ const tsp = require('timers/promises');
   common.mustCall((err) => {
    assert.deepStrictEqual(err, new Error('stop'));
    assert(!finished, 'should not finish');
-  })
+  }),
  );
 }
 
@@ -445,13 +445,13 @@ const tsp = require('timers/promises');
 
  async function run() {
   const read = new Readable({
-   read() {}
+   read() {},
   });
 
   const write = new Writable({
    write(data, enc, cb) {
     cb();
-   }
+   },
   });
 
   read.push('data');
@@ -486,7 +486,7 @@ const tsp = require('timers/promises');
   const w = new Writable({
    write(chunk, encoding, callback) {
     callback();
-   }
+   },
   });
   await pipelinePromise(producer, w, { signal });
  }
@@ -511,7 +511,7 @@ const tsp = require('timers/promises');
   const w = new Writable({
    write(chunk, encoding, callback) {
     callback();
-   }
+   },
   });
   await pipelinePromise(producer, w, { signal });
  }
@@ -533,7 +533,7 @@ const tsp = require('timers/promises');
   const w = new Writable({
    write(chunk, encoding, callback) {
     callback();
-   }
+   },
   });
   await pipelinePromise(producer, w, { signal });
  }
@@ -543,24 +543,24 @@ const tsp = require('timers/promises');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  const transform = new Transform({
   transform(data, enc, cb) {
    cb(new Error('kaboom'));
-  }
+  },
  });
 
  const write = new Writable({
   write(data, enc, cb) {
    cb();
-  }
+  },
  });
 
  assert.throws(
   () => pipeline(read, transform, write),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 }
 
@@ -580,7 +580,7 @@ const tsp = require('timers/promises');
     common.mustCall((err) => {
      assert.strictEqual(err.message, 'oh no');
      server.close();
-    })
+    }),
    );
 
    stream.destroy(new Error('oh no'));
@@ -594,7 +594,7 @@ const tsp = require('timers/promises');
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
-  }
+  },
  });
  pipeline(function*() {
   yield 'hello';
@@ -610,7 +610,7 @@ const tsp = require('timers/promises');
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
-  }
+  },
  });
  pipeline(async function*() {
   await Promise.resolve();
@@ -627,7 +627,7 @@ const tsp = require('timers/promises');
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
-  }
+  },
  });
  pipeline(function*() {
   yield 'hello';
@@ -643,7 +643,7 @@ const tsp = require('timers/promises');
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
-  }
+  },
  });
  pipeline(async function*() {
   await Promise.resolve();
@@ -908,7 +908,7 @@ const tsp = require('timers/promises');
  }, new Transform({
   transform(chunk, encoding, cb) {
    cb(new Error('kaboom'));
-  }
+  },
  }), async function(source) {
   for await (const chunk of source) {
    res += chunk;
@@ -928,7 +928,7 @@ const tsp = require('timers/promises');
  }, new Transform({
   transform(chunk, encoding, cb) {
    process.nextTick(cb, new Error('kaboom'));
-  }
+  },
  }), async function(source) {
   for await (const chunk of source) {
    res += chunk;
@@ -949,7 +949,7 @@ const tsp = require('timers/promises');
   decodeStrings: false,
   transform(chunk, encoding, cb) {
    cb(null, chunk.toUpperCase());
-  }
+  },
  }), async function(source) {
   for await (const chunk of source) {
    res += chunk;
@@ -989,7 +989,7 @@ const tsp = require('timers/promises');
  const w = new Writable({
   write(chunk, encoding, cb) {
    cb();
-  }
+  },
  });
  pipeline(r, w, (err) => {
   assert.strictEqual(err, undefined);
@@ -1005,7 +1005,7 @@ const tsp = require('timers/promises');
 
  server.listen(0, () => {
   const req = http.request({
-   port: server.address().port
+   port: server.address().port,
   });
 
   const body = new PassThrough();
@@ -1017,7 +1017,7 @@ const tsp = require('timers/promises');
     assert(!req.aborted);
     req.abort();
     server.close();
-   })
+   }),
   );
   body.end();
  });
@@ -1049,10 +1049,10 @@ const tsp = require('timers/promises');
    setImmediate(() => {
     rs.push('hello');
    });
-  }
+  },
  });
  const ws = new Writable({
-  write: common.mustNotCall()
+  write: common.mustNotCall(),
  });
  pipeline(rs, async function*(stream) { // eslint-disable-line require-yield
   for await (const chunk of stream) { // eslint-disable-line no-unused-vars
@@ -1081,7 +1081,7 @@ const tsp = require('timers/promises');
  server.listen(0, () => {
   const req = http.request({
    method: 'PUT',
-   port: server.address().port
+   port: server.address().port,
   });
   req.end('asd123');
   req.on('response', common.mustCall());
@@ -1116,7 +1116,7 @@ const tsp = require('timers/promises');
   },
   common.mustCall((err) => {
    assert.strictEqual(err.code, 'ERR_STREAM_PREMATURE_CLOSE');
-  })
+  }),
  );
  src.push('asd');
  dst.destroy();
@@ -1138,12 +1138,12 @@ const tsp = require('timers/promises');
   read() {},
   destroy(err, cb) {
    process.nextTick(cb);
-  }
+  },
  });
  const dst = new Writable({
   write(chunk, encoding, callback) {
    callback();
-  }
+  },
  });
  src.on('close', () => {
   closed = true;
@@ -1160,7 +1160,7 @@ const tsp = require('timers/promises');
   read() {},
   destroy(err, cb) {
    process.nextTick(cb);
-  }
+  },
  });
  const dst = new Duplex({});
  src.on('close', common.mustCall(() => {
@@ -1202,13 +1202,13 @@ const tsp = require('timers/promises');
     cb();
    }, 1000);
   }),
-  destroy: common.mustNotCall()
+  destroy: common.mustNotCall(),
  });
 
  const sink = new Writable({
   write: common.mustCall((data, enc, cb) => {
    cb();
-  })
+  }),
  });
 
  pipeline(d, sink, common.mustSucceed());
@@ -1249,13 +1249,13 @@ const tsp = require('timers/promises');
   // `destroy()` won't be invoked by pipeline since
   // the writable side has not completed when
   // the pipeline has completed.
-  destroy: common.mustNotCall()
+  destroy: common.mustNotCall(),
  });
 
  const sink = new Writable({
   write: common.mustCall((data, enc, cb) => {
    cb();
-  })
+  }),
  });
 
  pipeline(d, sink, common.mustSucceed());
@@ -1266,7 +1266,7 @@ const tsp = require('timers/promises');
 
 {
  const r = new Readable({
-  read() {}
+  read() {},
  });
  r.push('hello');
  r.push('world');
@@ -1276,7 +1276,7 @@ const tsp = require('timers/promises');
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
-  }
+  },
  });
  pipeline([r, w], common.mustSucceed(() => {
   assert.strictEqual(res, 'helloworld');
@@ -1345,7 +1345,7 @@ const tsp = require('timers/promises');
   write(chunk, encoding, callback) {
    res += chunk;
    callback();
-  }
+  },
  });
  const cb = common.mustCall((err) => {
   assert.strictEqual(err.name, 'AbortError');
@@ -1399,7 +1399,7 @@ const tsp = require('timers/promises');
   async function(source) {
 
   },
-  { signal }
+  { signal },
  ).catch(common.mustCall((err) => {
   assert.strictEqual(err.name, 'AbortError');
  }));
@@ -1414,7 +1414,7 @@ const tsp = require('timers/promises');
    write(data, enc, cb) {
     text += data;
     cb();
-   }
+   },
   });
   write.on('finish', () => {
    finished = true;
@@ -1435,7 +1435,7 @@ const tsp = require('timers/promises');
   write(data, enc, cb) {
    text += data;
    cb();
-  }
+  },
  });
  write.on('finish', () => {
   finished = true;
@@ -1452,7 +1452,7 @@ const tsp = require('timers/promises');
 
  async function run() {
   const read = new Readable({
-   read() {}
+   read() {},
   });
 
   const duplex = new PassThrough();
@@ -1472,7 +1472,7 @@ const tsp = require('timers/promises');
 
  async function run() {
   const read = new Readable({
-   read() {}
+   read() {},
   });
 
   const duplex = new PassThrough();

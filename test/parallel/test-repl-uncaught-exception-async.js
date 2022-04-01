@@ -20,19 +20,19 @@ const r = repl.start({
  output,
  terminal: false,
  useColors: false,
- global: false
+ global: false,
 });
 
 r.write(
  'process.nextTick(() => {\n' +
   '  process.on("uncaughtException", () => console.log("Foo"));\n' +
   '  throw new TypeError("foobar");\n' +
-  '});\n'
+  '});\n',
 );
 r.write(
  'setTimeout(() => {\n' +
   '  throw new RangeError("abc");\n' +
-  '}, 1);console.log()\n'
+  '}, 1);console.log()\n',
 );
 r.close();
 

@@ -9,5 +9,5 @@ assert.strictEqual(
  fixturesRequire,
  '',
  'test-require-extensions-main failed to import fixture requirements: ' +
-    fixturesRequire
+    fixturesRequire,
 );

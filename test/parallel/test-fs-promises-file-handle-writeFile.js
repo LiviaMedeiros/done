@@ -39,7 +39,7 @@ async function doWriteAndCancel() {
   const { signal } = controller;
   process.nextTick(() => controller.abort());
   await assert.rejects(writeFile(fileHandle, buffer, { signal }), {
-   name: 'AbortError'
+   name: 'AbortError',
   });
  } finally {
   await fileHandle.close();
@@ -56,13 +56,13 @@ const iterable = {
   yield 'a';
   yield 'b';
   yield 'c';
- }
+ },
 };
 function iterableWith(value) {
  return {
   *[Symbol.iterator]() {
    yield value;
-  }
+  },
  };
 }
 const bufferIterable = {
@@ -71,7 +71,7 @@ const bufferIterable = {
   yield Buffer.from('a');
   yield Buffer.from('b');
   yield Buffer.from('c');
- }
+ },
 };
 const asyncIterable = {
  expected: 'abc',
@@ -79,7 +79,7 @@ const asyncIterable = {
   yield 'a';
   yield 'b';
   yield 'c';
- }
+ },
 };
 
 async function doWriteStream() {
@@ -102,7 +102,7 @@ async function doWriteStreamWithCancel() {
  try {
   await assert.rejects(
    fileHandle.writeFile(stream, { signal }),
-   { name: 'AbortError' }
+   { name: 'AbortError' },
   );
  } finally {
   await fileHandle.close();
@@ -127,9 +127,9 @@ async function doWriteInvalidIterable() {
    [42, 42n, {}, Symbol('42'), true, undefined, null, NaN].map((value) =>
     assert.rejects(
      fileHandle.writeFile(iterableWith(value)),
-     { code: 'ERR_INVALID_ARG_TYPE' }
-    )
-   )
+     { code: 'ERR_INVALID_ARG_TYPE' },
+    ),
+   ),
   );
  } finally {
   await fileHandle.close();
@@ -177,9 +177,9 @@ async function doWriteInvalidValues() {
    [42, 42n, {}, Symbol('42'), true, undefined, null, NaN].map((value) =>
     assert.rejects(
      fileHandle.writeFile(value),
-     { code: 'ERR_INVALID_ARG_TYPE' }
-    )
-   )
+     { code: 'ERR_INVALID_ARG_TYPE' },
+    ),
+   ),
   );
  } finally {
   await fileHandle.close();

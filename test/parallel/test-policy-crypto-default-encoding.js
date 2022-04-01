@@ -26,9 +26,9 @@ for (const encoding of encodings) {
   {
    env: {
     ...process.env,
-    DEFAULT_ENCODING: encoding
-   }
-  }
+    DEFAULT_ENCODING: encoding,
+   },
+  },
  );
  assert.strictEqual(status, 0);
 }

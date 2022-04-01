@@ -18,7 +18,7 @@ const h2 = require('http2');
     ':method': 'GET',
     ':scheme': 'http',
     ':authority': `localhost:${port}`,
-    'foo-bar': 'abc123'
+    'foo-bar': 'abc123',
    };
 
    assert.strictEqual(request.path, undefined);
@@ -51,8 +51,8 @@ const h2 = require('http2');
     {
      code: 'ERR_INVALID_ARG_VALUE',
      name: 'TypeError',
-     message: "The argument 'method' is invalid. Received '   '"
-    }
+     message: "The argument 'method' is invalid. Received '   '",
+    },
    );
    assert.throws(
     () => request.method = true,
@@ -60,8 +60,8 @@ const h2 = require('http2');
      code: 'ERR_INVALID_ARG_TYPE',
      name: 'TypeError',
      message: 'The "method" argument must be of type string. ' +
-                  'Received type boolean (true)'
-    }
+                  'Received type boolean (true)',
+    },
    );
 
    response.on('finish', common.mustCall(function() {
@@ -77,7 +77,7 @@ const h2 = require('http2');
     ':method': 'GET',
     ':scheme': 'http',
     ':authority': `localhost:${port}`,
-    'foo-bar': 'abc123'
+    'foo-bar': 'abc123',
    };
    const request = client.request(headers);
    request.on('end', common.mustCall(function() {
@@ -103,7 +103,7 @@ const h2 = require('http2');
     ':scheme': 'http',
     ':authority': `localhost:${port}`,
     'foo1': 'abc1',
-    'foo2': 'abc2'
+    'foo2': 'abc2',
    };
 
    assert.strictEqual(request.path, undefined);
@@ -140,7 +140,7 @@ const h2 = require('http2');
     'foo1': 'abc1',
     ':scheme': 'http',
     'foo2': 'abc2',
-    ':authority': `localhost:${port}`
+    ':authority': `localhost:${port}`,
    };
    const request = client.request(headers);
    request.on('end', common.mustCall(function() {

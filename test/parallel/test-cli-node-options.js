@@ -42,7 +42,7 @@ expectNoWorker('--trace-event-categories node', 'B\n');
 expectNoWorker(
  // eslint-disable-next-line no-template-curly-in-string
  '--trace-event-file-pattern {pid}-${rotation}.trace_events',
- 'B\n'
+ 'B\n',
 );
 // eslint-disable-next-line no-template-curly-in-string
 expectNoWorker('--trace-event-file-pattern {pid}-${rotation}.trace_events ' +
@@ -89,7 +89,7 @@ function expectNoWorker(opt, want, command, wantsError) {
 }
 
 function expect(
- opt, want, command = 'console.log("B")', wantsError = false, testWorker = true
+ opt, want, command = 'console.log("B")', wantsError = false, testWorker = true,
 ) {
  const argv = ['-e', command];
  const opts = {
@@ -111,7 +111,7 @@ function expect(
   if (want.test(stdout)) return;
 
   assert.fail(
-   `${type}: for ${o}, failed to find ${want} in: <\n${stdout}\n>`
+   `${type}: for ${o}, failed to find ${want} in: <\n${stdout}\n>`,
   );
  });
 
@@ -136,7 +136,7 @@ function workerTest(opts, command, wantsError, test) {
   execArgv: [],
   eval: true,
   stdout: true,
-  stderr: true
+  stderr: true,
  });
  worker.on('error', (err) => {
   workerError = err;

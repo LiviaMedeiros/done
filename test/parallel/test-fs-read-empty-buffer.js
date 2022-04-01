@@ -15,8 +15,8 @@ assert.throws(
  {
   code: 'ERR_INVALID_ARG_VALUE',
   message: 'The argument \'buffer\' is empty and cannot be written. ' +
-    'Received Uint8Array(0) []'
- }
+    'Received Uint8Array(0) []',
+ },
 );
 
 assert.throws(
@@ -24,8 +24,8 @@ assert.throws(
  {
   code: 'ERR_INVALID_ARG_VALUE',
   message: 'The argument \'buffer\' is empty and cannot be written. ' +
-    'Received Uint8Array(0) []'
- }
+    'Received Uint8Array(0) []',
+ },
 );
 
 (async () => {
@@ -35,7 +35,7 @@ assert.throws(
   {
    code: 'ERR_INVALID_ARG_VALUE',
    message: 'The argument \'buffer\' is empty and cannot be written. ' +
-               'Received Uint8Array(0) []'
-  }
+               'Received Uint8Array(0) []',
+  },
  );
 })().then(common.mustCall());

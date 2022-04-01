@@ -22,7 +22,7 @@ const procEnabled = cp.spawn(
    '--no-warnings',
    '--expose-internals',
    '-e', CODE ],
- { cwd: tmpdir.path }
+ { cwd: tmpdir.path },
 );
 let procEnabledOutput = '';
 
@@ -40,7 +40,7 @@ const procDisabled = cp.spawn(
    '--no-warnings',
    '--expose-internals',
    '-e', CODE ],
- { cwd: tmpdir.path }
+ { cwd: tmpdir.path },
 );
 let procDisabledOutput = '';
 

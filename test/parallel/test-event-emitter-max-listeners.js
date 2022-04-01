@@ -40,8 +40,8 @@ for (const obj of throwsObjs) {
    code: 'ERR_OUT_OF_RANGE',
    name: 'RangeError',
    message: 'The value of "n" is out of range. ' +
-               `It must be a non-negative number. Received ${inspect(obj)}`
-  }
+               `It must be a non-negative number. Received ${inspect(obj)}`,
+  },
  );
 
  assert.throws(
@@ -50,8 +50,8 @@ for (const obj of throwsObjs) {
    code: 'ERR_OUT_OF_RANGE',
    name: 'RangeError',
    message: 'The value of "defaultMaxListeners" is out of range. ' +
-               `It must be a non-negative number. Received ${inspect(obj)}`
-  }
+               `It must be a non-negative number. Received ${inspect(obj)}`,
+  },
  );
 }
 
@@ -67,6 +67,6 @@ e.emit('maxListeners');
 
  assert.throws(
   () => EventEmitter.setMaxListeners(defaultMaxListeners, 'INVALID_EMITTER'),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 }

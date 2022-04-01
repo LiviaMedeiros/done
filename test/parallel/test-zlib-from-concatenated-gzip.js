@@ -69,7 +69,7 @@ fs.createReadStream(pmmFileGz)
     	assert.strictEqual(
     		Buffer.concat(resultBuffers).toString(),
     		'abcdef',
-    		`result should match original input (offset = ${offset})`
+    		`result should match original input (offset = ${offset})`,
     	);
     }));
 

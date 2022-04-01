@@ -36,7 +36,7 @@ const invalidThenableFunc = () => {
  const errObj = {
   code: 'ERR_ASSERTION',
   name: 'AssertionError',
-  message: 'Failed'
+  message: 'Failed',
  };
 
  // `assert.rejects` accepts a function or a promise
@@ -48,7 +48,7 @@ const invalidThenableFunc = () => {
   then: (fulfill, reject) => {
    reject({ code: 'FAIL' });
   },
-  catch: () => {}
+  catch: () => {},
  };
  promises.push(assert.rejects(validRejectingThenable, { code: 'FAIL' }));
 
@@ -57,14 +57,14 @@ const invalidThenableFunc = () => {
  promises.push(assert.rejects(
   assert.rejects(invalidThenable, {}),
   {
-   code: 'ERR_INVALID_ARG_TYPE'
-  })
+   code: 'ERR_INVALID_ARG_TYPE',
+  }),
  );
  promises.push(assert.rejects(
   assert.rejects(invalidThenableFunc, {}),
   {
-   code: 'ERR_INVALID_RETURN_VALUE'
-  })
+   code: 'ERR_INVALID_RETURN_VALUE',
+  }),
  );
 
  const err = new Error('foobar');
@@ -80,7 +80,7 @@ const invalidThenableFunc = () => {
    expected: validate,
    name: 'AssertionError',
    operator: 'rejects',
-  }
+  },
  ));
 }
 
@@ -104,7 +104,7 @@ const invalidThenableFunc = () => {
   name: 'TypeError',
   code: 'ERR_INVALID_RETURN_VALUE',
   message: 'Expected instance of Promise to be returned ' +
-             'from the "promiseFn" function but got type undefined.'
+             'from the "promiseFn" function but got type undefined.',
  }));
 
  promise = assert.rejects(Promise.resolve(), common.mustNotCall());
@@ -126,8 +126,8 @@ promises.push(assert.rejects(
  {
   code: 'ERR_INVALID_ARG_TYPE',
   message: 'The "promiseFn" argument must be of type function or an ' +
-             "instance of Promise. Received type string ('fail')"
- }
+             "instance of Promise. Received type string ('fail')",
+ },
 ));
 
 {
@@ -142,15 +142,15 @@ promises.push(assert.rejects(
  const err = new Error();
  promises.push(assert.rejects(
   assert.rejects(Promise.reject(null), { code: 'FOO' }),
-  handler.bind(null, true, null)
+  handler.bind(null, true, null),
  ));
  promises.push(assert.rejects(
   assert.rejects(Promise.reject(5), { code: 'FOO' }, 'AAAAA'),
-  handler.bind(null, false, 5)
+  handler.bind(null, false, 5),
  ));
  promises.push(assert.rejects(
   assert.rejects(Promise.reject(err), { code: 'FOO' }, 'AAAAA'),
-  handler.bind(null, false, err)
+  handler.bind(null, false, err),
  ));
 }
 
@@ -164,7 +164,7 @@ promises.push(assert.rejects(
   message: 'Expected instance of Promise to be returned ' +
              'from the "promiseFn" function but got instance of Map.',
   code: 'ERR_INVALID_RETURN_VALUE',
-  name: 'TypeError'
+  name: 'TypeError',
  }));
  promises.push(assert.doesNotReject(async () => {}));
  promises.push(assert.doesNotReject(Promise.resolve()));
@@ -175,20 +175,20 @@ promises.push(assert.rejects(
   then: (fulfill, reject) => {
    fulfill();
   },
-  catch: () => {}
+  catch: () => {},
  };
  promises.push(assert.doesNotReject(validFulfillingThenable));
  promises.push(assert.rejects(
   assert.doesNotReject(invalidThenable),
   {
-   code: 'ERR_INVALID_ARG_TYPE'
-  })
+   code: 'ERR_INVALID_ARG_TYPE',
+  }),
  );
  promises.push(assert.rejects(
   assert.doesNotReject(invalidThenableFunc),
   {
-   code: 'ERR_INVALID_RETURN_VALUE'
-  })
+   code: 'ERR_INVALID_RETURN_VALUE',
+  }),
  );
 
  const handler1 = (err) => {
@@ -226,8 +226,8 @@ promises.push(assert.rejects(
   {
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "promiseFn" argument must be of type ' +
-               'function or an instance of Promise. Received type number (123)'
-  }
+               'function or an instance of Promise. Received type number (123)',
+  },
  ));
  /* eslint-enable no-restricted-syntax */
 }

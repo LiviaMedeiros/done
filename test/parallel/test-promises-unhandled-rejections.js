@@ -47,7 +47,7 @@ const asyncTest = (function() {
   asyncTestQueue.push({
    action: fn,
    stack,
-   description
+   description,
   });
   if (!asyncTestsEnabled) {
    asyncTestsEnabled = true;
@@ -242,7 +242,7 @@ asyncTest(
   const e = new Error();
   onUnhandledFail(done);
   Promise.reject(e).then(assert.fail, function() {});
- }
+ },
 );
 
 asyncTest(
@@ -254,7 +254,7 @@ asyncTest(
   new Promise(function(_, reject) {
    reject(e);
   }).then(assert.fail, function() {});
- }
+ },
 );
 
 asyncTest('Attaching a promise catch in a process.nextTick is soon enough to' +
@@ -375,7 +375,7 @@ asyncTest(
   const _promise = Promise.resolve().then(function() {
    return Promise.reject(e);
   });
- }
+ },
 );
 
 // Combinations with Promise.all
@@ -401,7 +401,7 @@ asyncTest(
   process.nextTick(function() {
    p.then(assert.fail, function() {});
   });
- }
+ },
 );
 
 asyncTest('Failing to catch the Promise.all() of a collection that includes' +
@@ -539,7 +539,7 @@ asyncTest(
     });
    });
   });
- }
+ },
 );
 
 asyncTest('Waiting for some combination of promise microtasks +' +
@@ -701,5 +701,5 @@ asyncTest(
   });
   Promise.reject('1');
   Promise.reject('2').catch(function() {});
- }
+ },
 );

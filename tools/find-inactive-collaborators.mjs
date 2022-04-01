@@ -20,7 +20,7 @@ async function runGitCommand(cmd, mapFn) {
   input: childProcess.stdout,
  });
  const errorHandler = new Promise(
-  (_, reject) => childProcess.on('error', reject)
+  (_, reject) => childProcess.on('error', reject),
  );
  let returnValue = mapFn ? new Set() : '';
  await Promise.race([errorHandler, Promise.resolve()]);
@@ -43,13 +43,13 @@ async function runGitCommand(cmd, mapFn) {
 // Get all commit authors during the time period.
 const authors = await runGitCommand(
  `git shortlog -n -s --email --since="${SINCE}" HEAD`,
- (line) => line.trim().split('\t', 2)[1]
+ (line) => line.trim().split('\t', 2)[1],
 );
 
 // Get all approving reviewers of landed commits during the time period.
 const approvingReviewers = await runGitCommand(
  `git log --since="${SINCE}" | egrep "^    Reviewed-By: "`,
- (line) => /^ {4}Reviewed-By: ([^<]+)/.exec(line)[1].trim()
+ (line) => /^ {4}Reviewed-By: ([^<]+)/.exec(line)[1].trim(),
 );
 
 async function getCollaboratorsFromReadme() {
@@ -74,7 +74,7 @@ async function getCollaboratorsFromReadme() {
   if (line.startsWith('  **') && isCollaborator) {
    const [, name, email] = /^ {2}\*\*([^*]+)\*\* <<(.+)>>/.exec(line);
    const mailmap = await runGitCommand(
-    `git check-mailmap '${name} <${email}>'`
+    `git check-mailmap '${name} <${email}>'`,
    );
    if (mailmap !== `${name} <${email}>`) {
     console.log(`README entry for Collaborator does not match mailmap:\n  ${name} <${email}> => ${mailmap}`);
@@ -183,7 +183,7 @@ console.log(`* ${collaborators.length.toLocaleString()} collaborators currently 
 
 const inactive = collaborators.filter((collaborator) =>
  !authors.has(collaborator.mailmap) &&
-  !approvingReviewers.has(collaborator.name)
+  !approvingReviewers.has(collaborator.name),
 );
 
 if (inactive.length) {

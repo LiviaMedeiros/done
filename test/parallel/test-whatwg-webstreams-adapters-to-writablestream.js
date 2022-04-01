@@ -92,7 +92,7 @@ class TestWritable extends Writable {
  const writableStream = newWritableStreamFromStreamWritable(writable);
 
  assert.rejects(writableStream.close(), {
-  code: 'ABORT_ERR'
+  code: 'ABORT_ERR',
  });
 
  writable.end();
@@ -109,7 +109,7 @@ class TestWritable extends Writable {
    writable.chunks[0],
    {
     chunk: Buffer.from('hello'),
-    encoding: 'buffer'
+    encoding: 'buffer',
    });
  }));
 }
@@ -130,7 +130,7 @@ class TestWritable extends Writable {
    writable.chunks[0],
    {
     chunk: Buffer.from('hello'),
-    encoding: 'buffer'
+    encoding: 'buffer',
    });
   writer.close().then(common.mustCall());
  }));

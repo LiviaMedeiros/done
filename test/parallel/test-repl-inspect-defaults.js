@@ -19,7 +19,7 @@ child.on('exit', common.mustCall(() => {
    '1',
    '[ 42, ... 1 more item ]',
    '',
-  ]
+  ],
  );
 }));
 

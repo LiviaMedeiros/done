@@ -36,7 +36,7 @@ const results = testCases.map((testCase) => {
  const { stdout, stderr, error } = spawnSync(
   command,
   testCase,
-  options
+  options,
  );
 
  assert.ifError(error);

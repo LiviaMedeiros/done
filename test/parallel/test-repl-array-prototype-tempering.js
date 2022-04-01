@@ -25,7 +25,7 @@ const replReadyState = (async function* () {
  });
 
  const processCrashed = new Promise((resolve, reject) =>
-  replProcess.on('exit', reject)
+  replProcess.on('exit', reject),
  );
  while (true) {
   await Promise.race([new Promise(setImmediate), processCrashed]);
@@ -39,24 +39,24 @@ async function writeLn(data, expectedOutput) {
  await replReadyState.next();
  if (expectedOutput) {
   replProcess.stdout.once('data', common.mustCall((data) =>
-   assert.match(data.toString('utf8'), expectedOutput)
+   assert.match(data.toString('utf8'), expectedOutput),
   ));
  }
  await new Promise((resolve, reject) => replProcess.stdin.write(
   `${data}\n`,
-  (err) => (err ? reject(err) : resolve())
+  (err) => (err ? reject(err) : resolve()),
  ));
 }
 
 async function main() {
  await writeLn(
   'Object.defineProperty(Array.prototype, "-1", ' +
-        '{ get() { return this[this.length - 1]; } });'
+        '{ get() { return this[this.length - 1]; } });',
  );
 
  await writeLn(
   '[3, 2, 1][-1];',
-  /^1\n(>\s)?$/
+  /^1\n(>\s)?$/,
  );
  await writeLn('.exit');
 

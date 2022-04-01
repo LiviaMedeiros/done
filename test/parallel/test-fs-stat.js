@@ -113,8 +113,8 @@ fs.stat(__filename, common.mustSucceed((s) => {
    () => fs[fnName](input),
    {
     code: 'ERR_INVALID_ARG_TYPE',
-    name: 'TypeError'
-   }
+    name: 'TypeError',
+   },
   );
  });
 });
@@ -124,29 +124,29 @@ fs.stat(__filename, common.mustSucceed((s) => {
   () => fs.lstat(input, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
  assert.throws(
   () => fs.lstatSync(input),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
  assert.throws(
   () => fs.stat(input, common.mustNotCall()),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
  assert.throws(
   () => fs.statSync(input),
   {
    code: 'ERR_INVALID_ARG_TYPE',
-   name: 'TypeError'
-  }
+   name: 'TypeError',
+  },
  );
 });
 

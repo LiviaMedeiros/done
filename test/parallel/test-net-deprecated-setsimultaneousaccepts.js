@@ -4,10 +4,10 @@
 // Test that DEP0121 is emitted on the first call of _setSimultaneousAccepts().
 
 const {
- expectWarning
+ expectWarning,
 } = require('../common');
 const {
- _setSimultaneousAccepts
+ _setSimultaneousAccepts,
 } = require('net');
 
 expectWarning(

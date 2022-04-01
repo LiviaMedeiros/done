@@ -16,8 +16,8 @@ invalidOptions.forEach((invalidOption) => {
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "options" argument must be of type object.' +
-               common.invalidArgTypeHelper(invalidOption)
-  }
+               common.invalidArgTypeHelper(invalidOption),
+  },
  );
 });
 
@@ -29,8 +29,8 @@ invalidOptions.forEach((invalidSettingsOption) => {
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_TYPE',
    message: 'The "options.settings" property must be of type object.' +
-               common.invalidArgTypeHelper(invalidSettingsOption)
-  }
+               common.invalidArgTypeHelper(invalidSettingsOption),
+  },
  );
 });
 
@@ -72,7 +72,7 @@ Object.entries({
  tests.forEach(({ val, err }) => {
   assert.throws(
    () => http2.createSecureServer({ [opt]: val }),
-   err
+   err,
   );
  });
 });

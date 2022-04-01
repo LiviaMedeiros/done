@@ -44,7 +44,7 @@ const errMessages = {
  state: / state/,
  FIPS: /not supported in FIPS mode/,
  length: /Invalid initialization vector/,
- authTagLength: /Invalid authentication tag length/
+ authTagLength: /Invalid authentication tag length/,
 };
 
 const ciphers = crypto.getCiphers();
@@ -80,7 +80,7 @@ const expectedDeprecationWarnings = [
 
 common.expectWarning({
  Warning: expectedWarnings,
- DeprecationWarning: expectedDeprecationWarnings
+ DeprecationWarning: expectedDeprecationWarnings,
 });
 
 for (const test of TEST_CASES) {
@@ -106,7 +106,7 @@ for (const test of TEST_CASES) {
  let aadOptions;
  if (isCCM) {
   aadOptions = {
-   plaintextLength: Buffer.from(test.plain, inputEncoding).length
+   plaintextLength: Buffer.from(test.plain, inputEncoding).length,
   };
  }
 
@@ -215,7 +215,7 @@ for (const test of TEST_CASES) {
    crypto.createCipheriv(
     test.algo,
     Buffer.from(test.key, 'hex'),
-    Buffer.alloc(0)
+    Buffer.alloc(0),
    );
   }, errMessages.length);
  }
@@ -245,7 +245,7 @@ for (const test of TEST_CASES) {
    decrypt.setAuthTag(Buffer.from('1'.repeat(length)));
   }, {
    name: 'TypeError',
-   message: /Invalid authentication tag length/
+   message: /Invalid authentication tag length/,
   });
 
   assert.throws(() => {
@@ -253,11 +253,11 @@ for (const test of TEST_CASES) {
                          'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                          'qkuZpJWCewa6Szih',
                          {
-                          authTagLength: length
+                          authTagLength: length,
                          });
   }, {
    name: 'TypeError',
-   message: /Invalid authentication tag length/
+   message: /Invalid authentication tag length/,
   });
 
   assert.throws(() => {
@@ -265,11 +265,11 @@ for (const test of TEST_CASES) {
                            'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                            'qkuZpJWCewa6Szih',
                            {
-                            authTagLength: length
+                            authTagLength: length,
                            });
   }, {
    name: 'TypeError',
-   message: /Invalid authentication tag length/
+   message: /Invalid authentication tag length/,
   });
  }
 }
@@ -281,7 +281,7 @@ for (const test of TEST_CASES) {
   const cipher = crypto.createCipheriv('aes-256-gcm',
                                        'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                                        'qkuZpJWCewa6Szih', {
-                                        authTagLength
+                                        authTagLength,
                                        });
   cipher.setAAD(Buffer.from('abcd'));
   cipher.update('01234567', 'hex');
@@ -296,7 +296,7 @@ for (const test of TEST_CASES) {
  const decipher = crypto.createDecipheriv('aes-256-gcm',
                                           'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                                           'qkuZpJWCewa6Szih', {
-                                           authTagLength: 8
+                                           authTagLength: 8,
                                           });
 
  assert.throws(() => {
@@ -304,7 +304,7 @@ for (const test of TEST_CASES) {
   decipher.setAuthTag(Buffer.from('1'.repeat(12)));
  }, {
   name: 'TypeError',
-  message: /Invalid authentication tag length/
+  message: /Invalid authentication tag length/,
  });
 
  // The Decipher object should be left intact.
@@ -325,13 +325,13 @@ for (const test of TEST_CASES) {
                          'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                          'qkuZpJWCewa6S',
                          {
-                          authTagLength
+                          authTagLength,
                          });
   }, {
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_VALUE',
    message: "The property 'options.authTagLength' is invalid. " +
-               `Received ${inspect(authTagLength)}`
+               `Received ${inspect(authTagLength)}`,
   });
 
   assert.throws(() => {
@@ -339,13 +339,13 @@ for (const test of TEST_CASES) {
                            'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                            'qkuZpJWCewa6S',
                            {
-                            authTagLength
+                            authTagLength,
                            });
   }, {
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_VALUE',
    message: "The property 'options.authTagLength' is invalid. " +
-        `Received ${inspect(authTagLength)}`
+        `Received ${inspect(authTagLength)}`,
   });
 
   if (!common.hasFipsCrypto) {
@@ -355,7 +355,7 @@ for (const test of TEST_CASES) {
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_VALUE',
     message: "The property 'options.authTagLength' is invalid. " +
-          `Received ${inspect(authTagLength)}`
+          `Received ${inspect(authTagLength)}`,
    });
 
    assert.throws(() => {
@@ -364,7 +364,7 @@ for (const test of TEST_CASES) {
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_VALUE',
     message: "The property 'options.authTagLength' is invalid. " +
-          `Received ${inspect(authTagLength)}`
+          `Received ${inspect(authTagLength)}`,
    });
   }
  }
@@ -377,7 +377,7 @@ for (const test of TEST_CASES) {
                          'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                          'qkuZpJWCewa6S',
                          {
-                          authTagLength
+                          authTagLength,
                          });
   }, errMessages.authTagLength);
 
@@ -387,7 +387,7 @@ for (const test of TEST_CASES) {
                             'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                             'qkuZpJWCewa6S',
                             {
-                             authTagLength
+                             authTagLength,
                             });
    }, errMessages.authTagLength);
 
@@ -411,7 +411,7 @@ for (const test of TEST_CASES) {
                          'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                          'qkuZpJWCewa6S');
   }, {
-   message: `authTagLength required for aes-256-${mode}`
+   message: `authTagLength required for aes-256-${mode}`,
   });
 
   // CCM decryption and create(De|C)ipher are unsupported in FIPS mode.
@@ -421,19 +421,19 @@ for (const test of TEST_CASES) {
                             'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                             'qkuZpJWCewa6S');
    }, {
-    message: `authTagLength required for aes-256-${mode}`
+    message: `authTagLength required for aes-256-${mode}`,
    });
 
    assert.throws(() => {
     crypto.createCipher(`aes-256-${mode}`, 'very bad password');
    }, {
-    message: `authTagLength required for aes-256-${mode}`
+    message: `authTagLength required for aes-256-${mode}`,
    });
 
    assert.throws(() => {
     crypto.createDecipher(`aes-256-${mode}`, 'very bad password');
    }, {
-    message: `authTagLength required for aes-256-${mode}`
+    message: `authTagLength required for aes-256-${mode}`,
    });
   }
  }
@@ -445,7 +445,7 @@ for (const test of TEST_CASES) {
                                       'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                                       'qkuZpJWCewa6S',
                                       {
-                                       authTagLength: 10
+                                       authTagLength: 10,
                                       });
 
  for (const plaintextLength of [-1, true, false, NaN, 5.5]) {
@@ -455,7 +455,7 @@ for (const test of TEST_CASES) {
    name: 'TypeError',
    code: 'ERR_INVALID_ARG_VALUE',
    message: "The property 'options.plaintextLength' is invalid. " +
-        `Received ${inspect(plaintextLength)}`
+        `Received ${inspect(plaintextLength)}`,
   });
  }
 }
@@ -468,12 +468,12 @@ for (const test of TEST_CASES) {
   const cipher = () => crypto.createCipheriv('aes-256-ccm', key,
                                              '0'.repeat(ivLength),
                                              {
-                                              authTagLength: 10
+                                              authTagLength: 10,
                                              });
 
   assert.throws(() => {
    cipher().setAAD(Buffer.alloc(0), {
-    plaintextLength: maxMessageSize + 1
+    plaintextLength: maxMessageSize + 1,
    });
   }, /Invalid message length$/);
 
@@ -484,7 +484,7 @@ for (const test of TEST_CASES) {
 
   const c = cipher();
   c.setAAD(Buffer.alloc(0), {
-   plaintextLength: maxMessageSize
+   plaintextLength: maxMessageSize,
   });
   c.update(msg.slice(1));
  }
@@ -498,7 +498,7 @@ for (const test of TEST_CASES) {
                                        'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                                        'qkuZpJWCewa6S',
                                        {
-                                        authTagLength: 10
+                                        authTagLength: 10,
                                        });
   cipher.setAAD(Buffer.from('0123456789', 'hex'));
  }, /options\.plaintextLength required for CCM mode with AAD/);
@@ -509,7 +509,7 @@ for (const test of TEST_CASES) {
                                           'FxLKsqdmv0E9xrQhp0b1ZgI0K7JFZJM8',
                                           'qkuZpJWCewa6S',
                                           {
-                                           authTagLength: 10
+                                           authTagLength: 10,
                                           });
    cipher.setAAD(Buffer.from('0123456789', 'hex'));
   }, /options\.plaintextLength required for CCM mode with AAD/);
@@ -523,13 +523,13 @@ for (const test of TEST_CASES) {
   const iv = Buffer.from('7305220bca40d4c90e1791e9', 'hex');
   const ct = Buffer.from('8beba09d4d4d861f957d51c0794f4abf8030848e', 'hex');
   const decrypt = crypto.createDecipheriv('aes-128-ccm', key, iv, {
-   authTagLength: 10
+   authTagLength: 10,
   });
   // Normally, we would do this:
   // decrypt.setAuthTag(Buffer.from('0d9bcd142a94caf3d1dd', 'hex'));
   assert.throws(() => {
    decrypt.setAAD(Buffer.from('63616c76696e', 'hex'), {
-    plaintextLength: ct.length
+    plaintextLength: ct.length,
    });
    decrypt.update(ct);
    decrypt.final();
@@ -568,14 +568,14 @@ for (const test of TEST_CASES) {
  for (const mode of ['gcm', 'ocb']) {
   for (const authTagLength of mode === 'gcm' ? [undefined, 8] : [8]) {
    const cipher = crypto.createCipheriv(`aes-128-${mode}`, key, iv, {
-    authTagLength
+    authTagLength,
    });
    const ciphertext = Buffer.concat([cipher.update(plain), cipher.final()]);
    const authTag = cipher.getAuthTag();
 
    for (const authTagBeforeUpdate of [true, false]) {
     const decipher = crypto.createDecipheriv(`aes-128-${mode}`, key, iv, {
-     authTagLength
+     authTagLength,
     });
     if (authTagBeforeUpdate) {
      decipher.setAuthTag(authTag);
@@ -658,7 +658,7 @@ for (const test of TEST_CASES) {
   assert.throws(() => crypto.createCipheriv(
    valid.algo,
    Buffer.from(valid.key, 'hex'),
-   Buffer.from(H(prefix) + valid.iv, 'hex')
+   Buffer.from(H(prefix) + valid.iv, 'hex'),
   ), errMessages.length, `iv length ${ivLength} was not rejected`);
 
   function H(length) { return '00'.repeat(length); }
@@ -679,9 +679,9 @@ for (const test of TEST_CASES) {
   assert.throws(() => {
    cipher.final();
   }, common.hasOpenSSL3 ? {
-   code: 'ERR_OSSL_TAG_NOT_SET'
+   code: 'ERR_OSSL_TAG_NOT_SET',
   } : {
-   message: /Unsupported state/
+   message: /Unsupported state/,
   });
  }
 }
@@ -695,7 +695,7 @@ for (const test of TEST_CASES) {
    crypto.createCipheriv('chacha20-poly1305', key, iv, { authTagLength });
   }, {
    code: 'ERR_CRYPTO_INVALID_AUTH_TAG',
-   message: errMessages.authTagLength
+   message: errMessages.authTagLength,
   });
  }
 }
@@ -717,7 +717,7 @@ for (const test of TEST_CASES) {
   // that of the expected length.
   for (let other = 1; other <= 16; other++) {
    const decipher = crypto.createDecipheriv('chacha20-poly1305', key, iv, {
-    authTagLength: other
+    authTagLength: other,
    });
    // ChaCha20 is a stream cipher so we do not need to call final() to obtain
    // the full plaintext.
@@ -737,7 +737,7 @@ for (const test of TEST_CASES) {
      decipher.setAuthTag(authTag);
     }, {
      code: 'ERR_CRYPTO_INVALID_AUTH_TAG',
-     message: `Invalid authentication tag length: ${authTagLength}`
+     message: `Invalid authentication tag length: ${authTagLength}`,
     });
    }
   }

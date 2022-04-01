@@ -6,7 +6,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
  read.resume();
 
@@ -19,7 +19,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
  read.resume();
 
@@ -38,7 +38,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  read._destroy = common.mustCall(function(err, cb) {
@@ -64,7 +64,7 @@ const assert = require('assert');
   destroy: common.mustCall(function(err, cb) {
    assert.strictEqual(err, expected);
    cb();
-  })
+  }),
  });
 
  const expected = new Error('kaboom');
@@ -81,7 +81,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  read._destroy = common.mustCall(function(err, cb) {
@@ -95,7 +95,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
  read.resume();
 
@@ -121,7 +121,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  const expected = new Error('kaboom');
@@ -149,7 +149,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
  read.resume();
 
@@ -177,7 +177,7 @@ const assert = require('assert');
 {
  // Destroy and destroy callback
  const read = new Readable({
-  read() {}
+  read() {},
  });
  read.resume();
 
@@ -209,7 +209,7 @@ const assert = require('assert');
   destroy: common.mustCall(function(err, cb) {
    process.nextTick(cb, new Error('kaboom 1'));
   }),
-  read() {}
+  read() {},
  });
 
  let ticked = false;
@@ -239,7 +239,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read() {}
+  read() {},
  });
 
  read.destroy();
@@ -249,7 +249,7 @@ const assert = require('assert');
 
 {
  const read = new Readable({
-  read: common.mustNotCall(function() {})
+  read: common.mustNotCall(function() {}),
  });
  read.destroy();
  assert.strictEqual(read.destroyed, true);
@@ -262,7 +262,7 @@ const assert = require('assert');
   read() {
    this.push(null);
    this.push('asd');
-  }
+  },
  });
 
  read.on('error', common.mustCall(() => {
@@ -308,7 +308,7 @@ const assert = require('assert');
   objectMode: true,
   read() {
    return false;
-  }
+  },
  }));
  read.push('asd');
 

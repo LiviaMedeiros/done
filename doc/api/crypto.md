@@ -326,7 +326,7 @@ Example: Using `Cipher` objects as streams:
 const {
  scrypt,
  randomFill,
- createCipheriv
+ createCipheriv,
 } = await import('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -359,7 +359,7 @@ scrypt(password, 'salt', 24, (err, key) => {
 const {
  scrypt,
  randomFill,
- createCipheriv
+ createCipheriv,
 } = require('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -397,13 +397,13 @@ import {
 } from 'fs';
 
 import {
- pipeline
+ pipeline,
 } from 'stream';
 
 const {
  scrypt,
  randomFill,
- createCipheriv
+ createCipheriv,
 } = await import('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -436,7 +436,7 @@ const {
 } = require('fs');
 
 const {
- pipeline
+ pipeline,
 } = require('stream');
 
 const {
@@ -474,7 +474,7 @@ Example: Using the [`cipher.update()`][] and [`cipher.final()`][] methods:
 const {
  scrypt,
  randomFill,
- createCipheriv
+ createCipheriv,
 } = await import('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -658,7 +658,7 @@ Example: Using `Decipher` objects as streams:
 import { Buffer } from 'buffer';
 const {
  scryptSync,
- createDecipheriv
+ createDecipheriv,
 } = await import('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -736,7 +736,7 @@ import {
 import { Buffer } from 'buffer';
 const {
  scryptSync,
- createDecipheriv
+ createDecipheriv,
 } = await import('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -786,7 +786,7 @@ Example: Using the [`decipher.update()`][] and [`decipher.final()`][] methods:
 import { Buffer } from 'buffer';
 const {
  scryptSync,
- createDecipheriv
+ createDecipheriv,
 } = await import('crypto');
 
 const algorithm = 'aes-192-cbc';
@@ -984,7 +984,7 @@ Instances of the `DiffieHellman` class can be created using the
 import assert from 'assert';
 
 const {
- createDiffieHellman
+ createDiffieHellman,
 } = await import('crypto');
 
 // Generate Alice's keys...
@@ -1212,7 +1212,7 @@ Instances of the `ECDH` class can be created using the
 import assert from 'assert';
 
 const {
- createECDH
+ createECDH,
 } = await import('crypto');
 
 // Generate Alice's keys...
@@ -1288,7 +1288,7 @@ Example (uncompressing a key):
 ```mjs
 const {
  createECDH,
- ECDH
+ ECDH,
 } = await import('crypto');
 
 const ecdh = createECDH('secp256k1');
@@ -1460,7 +1460,7 @@ Example (obtaining a shared secret):
 ```mjs
 const {
  createECDH,
- createHash
+ createHash,
 } = await import('crypto');
 
 const alice = createECDH('secp256k1');
@@ -1470,7 +1470,7 @@ const bob = createECDH('secp256k1');
 // keys. It would be unwise to use such a predictable private key in a real
 // application.
 alice.setPrivateKey(
- createHash('sha256').update('alice', 'utf8').digest()
+ createHash('sha256').update('alice', 'utf8').digest(),
 );
 
 // Bob uses a newly generated cryptographically strong
@@ -1497,7 +1497,7 @@ const bob = createECDH('secp256k1');
 // keys. It would be unwise to use such a predictable private key in a real
 // application.
 alice.setPrivateKey(
- createHash('sha256').update('alice', 'utf8').digest()
+ createHash('sha256').update('alice', 'utf8').digest(),
 );
 
 // Bob uses a newly generated cryptographically strong
@@ -1534,7 +1534,7 @@ Example: Using `Hash` objects as streams:
 
 ```mjs
 const {
- createHash
+ createHash,
 } = await import('crypto');
 
 const hash = createHash('sha256');
@@ -1604,7 +1604,7 @@ Example: Using the [`hash.update()`][] and [`hash.digest()`][] methods:
 
 ```mjs
 const {
- createHash
+ createHash,
 } = await import('crypto');
 
 const hash = createHash('sha256');
@@ -1650,7 +1650,7 @@ its [`hash.digest()`][] method has been called.
 ```mjs
 // Calculate a rolling hash.
 const {
- createHash
+ createHash,
 } = await import('crypto');
 
 const hash = createHash('sha256');
@@ -1748,7 +1748,7 @@ Example: Using `Hmac` objects as streams:
 
 ```mjs
 const {
- createHmac
+ createHmac,
 } = await import('crypto');
 
 const hmac = createHmac('sha256', 'a secret');
@@ -1796,7 +1796,7 @@ Example: Using `Hmac` and piped streams:
 import { createReadStream } from 'fs';
 import { stdout } from 'process';
 const {
- createHmac
+ createHmac,
 } = await import('crypto');
 
 const hmac = createHmac('sha256', 'a secret');
@@ -1824,7 +1824,7 @@ Example: Using the [`hmac.update()`][] and [`hmac.digest()`][] methods:
 
 ```mjs
 const {
- createHmac
+ createHmac,
 } = await import('crypto');
 
 const hmac = createHmac('sha256', 'a secret');
@@ -1933,7 +1933,7 @@ const { subtle } = webcrypto;
 const key = await subtle.generateKey({
  name: 'HMAC',
  hash: 'SHA-256',
- length: 256
+ length: 256,
 }, true, ['sign', 'verify']);
 
 const keyObject = KeyObject.from(key);
@@ -1953,7 +1953,7 @@ const {
  const key = await subtle.generateKey({
   name: 'HMAC',
   hash: 'SHA-256',
-  length: 256
+  length: 256,
  }, true, ['sign', 'verify']);
 
  const keyObject = KeyObject.from(key);
@@ -2150,11 +2150,11 @@ Example: Using `Sign` and [`Verify`][] objects as streams:
 const {
  generateKeyPairSync,
  createSign,
- createVerify
+ createVerify,
 } = await import('crypto');
 
 const { privateKey, publicKey } = generateKeyPairSync('ec', {
- namedCurve: 'sect239k1'
+ namedCurve: 'sect239k1',
 });
 
 const sign = createSign('SHA256');
@@ -2177,7 +2177,7 @@ const {
 } = require('crypto');
 
 const { privateKey, publicKey } = generateKeyPairSync('ec', {
- namedCurve: 'sect239k1'
+ namedCurve: 'sect239k1',
 });
 
 const sign = createSign('SHA256');
@@ -2198,7 +2198,7 @@ Example: Using the [`sign.update()`][] and [`verify.update()`][] methods:
 const {
  generateKeyPairSync,
  createSign,
- createVerify
+ createVerify,
 } = await import('crypto');
 
 const { privateKey, publicKey } = generateKeyPairSync('rsa', {
@@ -3294,11 +3294,11 @@ Example: generating the sha256 sum of a file
 
 ```mjs
 import {
- createReadStream
+ createReadStream,
 } from 'fs';
 import { argv } from 'process';
 const {
- createHash
+ createHash,
 } = await import('crypto');
 
 const filename = argv[2];
@@ -3380,11 +3380,11 @@ Example: generating the sha256 HMAC of a file
 
 ```mjs
 import {
- createReadStream
+ createReadStream,
 } from 'fs';
 import { argv } from 'process';
 const {
- createHmac
+ createHmac,
 } = await import('crypto');
 
 const filename = argv[2];
@@ -3623,7 +3623,7 @@ Asynchronously generates a new random secret key of the given `length`. The
 
 ```mjs
 const {
- generateKey
+ generateKey,
 } = await import('crypto');
 
 generateKey('hmac', { length: 64 }, (err, key) => {
@@ -3712,21 +3712,21 @@ It is recommended to encode public keys as `'spki'` and private keys as
 
 ```mjs
 const {
- generateKeyPair
+ generateKeyPair,
 } = await import('crypto');
 
 generateKeyPair('rsa', {
  modulusLength: 4096,
  publicKeyEncoding: {
   type: 'spki',
-  format: 'pem'
+  format: 'pem',
  },
  privateKeyEncoding: {
   type: 'pkcs8',
   format: 'pem',
   cipher: 'aes-256-cbc',
-  passphrase: 'top secret'
- }
+  passphrase: 'top secret',
+ },
 }, (err, publicKey, privateKey) => {
  // Handle errors and use the generated key pair.
 });
@@ -3741,14 +3741,14 @@ generateKeyPair('rsa', {
  modulusLength: 4096,
  publicKeyEncoding: {
   type: 'spki',
-  format: 'pem'
+  format: 'pem',
  },
  privateKeyEncoding: {
   type: 'pkcs8',
   format: 'pem',
   cipher: 'aes-256-cbc',
-  passphrase: 'top secret'
- }
+  passphrase: 'top secret',
+ },
 }, (err, publicKey, privateKey) => {
  // Handle errors and use the generated key pair.
 });
@@ -3824,7 +3824,7 @@ and to keep the passphrase confidential.
 
 ```mjs
 const {
- generateKeyPairSync
+ generateKeyPairSync,
 } = await import('crypto');
 
 const {
@@ -3834,14 +3834,14 @@ const {
  modulusLength: 4096,
  publicKeyEncoding: {
   type: 'spki',
-  format: 'pem'
+  format: 'pem',
  },
  privateKeyEncoding: {
   type: 'pkcs8',
   format: 'pem',
   cipher: 'aes-256-cbc',
-  passphrase: 'top secret'
- }
+  passphrase: 'top secret',
+ },
 });
 ```
 
@@ -3857,14 +3857,14 @@ const {
  modulusLength: 4096,
  publicKeyEncoding: {
   type: 'spki',
-  format: 'pem'
+  format: 'pem',
  },
  privateKeyEncoding: {
   type: 'pkcs8',
   format: 'pem',
   cipher: 'aes-256-cbc',
-  passphrase: 'top secret'
- }
+  passphrase: 'top secret',
+ },
 });
 ```
 
@@ -3893,7 +3893,7 @@ Synchronously generates a new random secret key of the given `length`. The
 
 ```mjs
 const {
- generateKeySync
+ generateKeySync,
 } = await import('crypto');
 
 const key = generateKeySync('hmac', { length: 64 });
@@ -4040,7 +4040,7 @@ added: v0.9.3
 
 ```mjs
 const {
- getCiphers
+ getCiphers,
 } = await import('crypto');
 
 console.log(getCiphers()); // ['aes-128-cbc', 'aes-128-ccm', ...]
@@ -4064,7 +4064,7 @@ added: v2.3.0
 
 ```mjs
 const {
- getCurves
+ getCurves,
 } = await import('crypto');
 
 console.log(getCurves()); // ['Oakley-EC2N-3', 'Oakley-EC2N-4', ...]
@@ -4102,7 +4102,7 @@ Example (obtaining a shared secret):
 
 ```mjs
 const {
- getDiffieHellman
+ getDiffieHellman,
 } = await import('crypto');
 const alice = getDiffieHellman('modp14');
 const bob = getDiffieHellman('modp14');
@@ -4156,7 +4156,7 @@ added: v0.9.3
 
 ```mjs
 const {
- getHashes
+ getHashes,
 } = await import('crypto');
 
 console.log(getHashes()); // ['DSA', 'DSA-SHA', 'DSA-SHA1', ...]
@@ -4222,7 +4222,7 @@ of the input arguments specify invalid values or types.
 ```mjs
 import { Buffer } from 'buffer';
 const {
- hkdf
+ hkdf,
 } = await import('crypto');
 
 hkdf('sha512', 'key', 'salt', 'info', 64, (err, derivedKey) => {
@@ -4274,7 +4274,7 @@ types, or if the derived key cannot be generated.
 ```mjs
 import { Buffer } from 'buffer';
 const {
- hkdfSync
+ hkdfSync,
 } = await import('crypto');
 
 const derivedKey = hkdfSync('sha512', 'key', 'salt', 'info', 64);
@@ -4357,7 +4357,7 @@ When passing strings for `password` or `salt`, please consider
 
 ```mjs
 const {
- pbkdf2
+ pbkdf2,
 } = await import('crypto');
 
 pbkdf2('secret', 'salt', 100000, 64, 'sha512', (err, derivedKey) => {
@@ -4455,7 +4455,7 @@ When passing strings for `password` or `salt`, please consider
 
 ```mjs
 const {
- pbkdf2Sync
+ pbkdf2Sync,
 } = await import('crypto');
 
 const key = pbkdf2Sync('secret', 'salt', 100000, 64, 'sha512');
@@ -4711,7 +4711,7 @@ If an error occurs, `err` will be an `Error` object; otherwise it is `null`. The
 ```mjs
 // Asynchronous
 const {
- randomBytes
+ randomBytes,
 } = await import('crypto');
 
 randomBytes(256, (err, buf) => {
@@ -4739,7 +4739,7 @@ there is a problem generating the bytes.
 ```mjs
 // Synchronous
 const {
- randomBytes
+ randomBytes,
 } = await import('crypto');
 
 const buf = randomBytes(256);
@@ -5032,7 +5032,7 @@ generated synchronously.
 ```mjs
 // Asynchronous
 const {
- randomInt
+ randomInt,
 } = await import('crypto');
 
 randomInt(3, (err, n) => {
@@ -5056,7 +5056,7 @@ randomInt(3, (err, n) => {
 ```mjs
 // Synchronous
 const {
- randomInt
+ randomInt,
 } = await import('crypto');
 
 const n = randomInt(3);
@@ -5076,7 +5076,7 @@ console.log(`Random number chosen from (0, 1, 2): ${n}`);
 ```mjs
 // With `min` argument
 const {
- randomInt
+ randomInt,
 } = await import('crypto');
 
 const n = randomInt(1, 7);
@@ -5173,7 +5173,7 @@ or types.
 
 ```mjs
 const {
- scrypt
+ scrypt,
 } = await import('crypto');
 
 // Using the factory defaults.
@@ -5254,7 +5254,7 @@ or types.
 
 ```mjs
 const {
- scryptSync
+ scryptSync,
 } = await import('crypto');
 // Using the factory defaults.
 
@@ -5637,7 +5637,7 @@ import { Buffer } from 'buffer';
 const {
  createCipheriv,
  createDecipheriv,
- randomBytes
+ randomBytes,
 } = await import('crypto');
 
 const key = 'keykeykeykeykeykeykeykey';
@@ -5646,11 +5646,11 @@ const nonce = randomBytes(12);
 const aad = Buffer.from('0123456789', 'hex');
 
 const cipher = createCipheriv('aes-192-ccm', key, nonce, {
- authTagLength: 16
+ authTagLength: 16,
 });
 const plaintext = 'Hello world';
 cipher.setAAD(aad, {
- plaintextLength: Buffer.byteLength(plaintext)
+ plaintextLength: Buffer.byteLength(plaintext),
 });
 const ciphertext = cipher.update(plaintext, 'utf8');
 cipher.final();
@@ -5659,11 +5659,11 @@ const tag = cipher.getAuthTag();
 // Now transmit { ciphertext, nonce, tag }.
 
 const decipher = createDecipheriv('aes-192-ccm', key, nonce, {
- authTagLength: 16
+ authTagLength: 16,
 });
 decipher.setAuthTag(tag);
 decipher.setAAD(aad, {
- plaintextLength: ciphertext.length
+ plaintextLength: ciphertext.length,
 });
 const receivedPlaintext = decipher.update(ciphertext, null, 'utf8');
 
@@ -5690,11 +5690,11 @@ const nonce = randomBytes(12);
 const aad = Buffer.from('0123456789', 'hex');
 
 const cipher = createCipheriv('aes-192-ccm', key, nonce, {
- authTagLength: 16
+ authTagLength: 16,
 });
 const plaintext = 'Hello world';
 cipher.setAAD(aad, {
- plaintextLength: Buffer.byteLength(plaintext)
+ plaintextLength: Buffer.byteLength(plaintext),
 });
 const ciphertext = cipher.update(plaintext, 'utf8');
 cipher.final();
@@ -5703,11 +5703,11 @@ const tag = cipher.getAuthTag();
 // Now transmit { ciphertext, nonce, tag }.
 
 const decipher = createDecipheriv('aes-192-ccm', key, nonce, {
- authTagLength: 16
+ authTagLength: 16,
 });
 decipher.setAuthTag(tag);
 decipher.setAAD(aad, {
- plaintextLength: ciphertext.length
+ plaintextLength: ciphertext.length,
 });
 const receivedPlaintext = decipher.update(ciphertext, null, 'utf8');
 

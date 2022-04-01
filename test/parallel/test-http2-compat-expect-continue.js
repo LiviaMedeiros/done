@@ -30,7 +30,7 @@ const http2 = require('http2');
   const client = http2.connect(`http://localhost:${server.address().port}`);
   const req = client.request({
    ':method': 'POST',
-   'expect': '100-continue'
+   'expect': '100-continue',
   });
 
   let gotContinue = false;
@@ -71,7 +71,7 @@ const http2 = require('http2');
   const client = http2.connect(`http://localhost:${server.address().port}`);
   const req = client.request({
    ':path': '/',
-   'expect': '100-continue'
+   'expect': '100-continue',
   });
 
   let gotContinue = false;

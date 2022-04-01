@@ -18,7 +18,7 @@ zlib.gunzip(data, common.mustSucceed((result) => {
  assert.strictEqual(
   result.toString(),
   'abcdef',
-  `result '${result.toString()}' should match original string`
+  `result '${result.toString()}' should match original string`,
  );
 }));
 
@@ -33,14 +33,14 @@ data = Buffer.concat([
 
 assert.throws(
  () => zlib.gunzipSync(data),
- /^Error: unknown compression method$/
+ /^Error: unknown compression method$/,
 );
 
 zlib.gunzip(data, common.mustCall((err, result) => {
  common.expectsError({
   code: 'Z_DATA_ERROR',
   name: 'Error',
-  message: 'unknown compression method'
+  message: 'unknown compression method',
  })(err);
  assert.strictEqual(result, undefined);
 }));
@@ -55,7 +55,7 @@ data = Buffer.concat([
 
 assert.throws(
  () => zlib.gunzipSync(data),
- /^Error: unknown compression method$/
+ /^Error: unknown compression method$/,
 );
 
 zlib.gunzip(data, common.mustCall((err, result) => {

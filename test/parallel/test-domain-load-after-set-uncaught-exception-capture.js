@@ -9,8 +9,8 @@ assert.throws(
  {
   code: 'ERR_DOMAIN_CALLBACK_NOT_AVAILABLE',
   name: 'Error',
-  message: /^A callback was registered.*with using the `domain` module/
- }
+  message: /^A callback was registered.*with using the `domain` module/,
+ },
 );
 
 process.setUncaughtExceptionCaptureCallback(null);

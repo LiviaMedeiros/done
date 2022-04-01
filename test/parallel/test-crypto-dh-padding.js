@@ -105,5 +105,5 @@ p.setPrivateKey(apriv, 'hex');
 
 assert.strictEqual(
  p.computeSecret(bpub, 'hex', 'hex').toString('hex'),
- secret
+ secret,
 );

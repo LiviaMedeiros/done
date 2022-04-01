@@ -102,7 +102,7 @@ function nextdir() {
     .forEach((verbatimSymlinks) => {
     	assert.throws(
     		() => cpSync(src, src, { verbatimSymlinks }),
-    		{ code: 'ERR_INVALID_ARG_TYPE' }
+    		{ code: 'ERR_INVALID_ARG_TYPE' },
     	);
     });
 }
@@ -113,7 +113,7 @@ function nextdir() {
  const src = './test/fixtures/copy/kitchen-sink';
  assert.throws(
   () => cpSync(src, src, { dereference: true, verbatimSymlinks: true }),
-  { code: 'ERR_INCOMPATIBLE_OPTION_PAIR' }
+  { code: 'ERR_INCOMPATIBLE_OPTION_PAIR' },
  );
 }
 
@@ -171,7 +171,7 @@ function nextdir() {
  const src = './test/fixtures/copy/kitchen-sink';
  assert.throws(
   () => cpSync(src, src),
-  { code: 'ERR_FS_CP_EINVAL' }
+  { code: 'ERR_FS_CP_EINVAL' },
  );
 }
 
@@ -186,8 +186,8 @@ function nextdir() {
  assert.throws(
   () => cpSync(src, dest, { recursive: true }),
   {
-   code: 'ERR_FS_CP_EINVAL'
-  }
+   code: 'ERR_FS_CP_EINVAL',
+  },
  );
 }
 
@@ -202,7 +202,7 @@ function nextdir() {
  symlinkSync(src, join(dest, 'a', 'c'));
  assert.throws(
   () => cpSync(src, dest, { recursive: true }),
-  { code: 'ERR_FS_CP_SYMLINK_TO_SUBDIRECTORY' }
+  { code: 'ERR_FS_CP_SYMLINK_TO_SUBDIRECTORY' },
  );
 }
 
@@ -217,7 +217,7 @@ function nextdir() {
  symlinkSync(src, destLink);
  assert.throws(
   () => cpSync(src, join(dest, 'b', 'c')),
-  { code: 'ERR_FS_CP_EINVAL' }
+  { code: 'ERR_FS_CP_EINVAL' },
  );
 }
 
@@ -228,7 +228,7 @@ function nextdir() {
  const dest = './test/fixtures/copy/kitchen-sink/README.md';
  assert.throws(
   () => cpSync(src, dest),
-  { code: 'ERR_FS_CP_DIR_TO_NON_DIR' }
+  { code: 'ERR_FS_CP_DIR_TO_NON_DIR' },
  );
 }
 
@@ -247,7 +247,7 @@ function nextdir() {
  const dest = nextdir();
  assert.throws(
   () => cpSync(src, dest),
-  { code: 'ERR_FS_EISDIR' }
+  { code: 'ERR_FS_EISDIR' },
  );
 }
 
@@ -259,7 +259,7 @@ function nextdir() {
  mkdirSync(dest, { recursive: true });
  assert.throws(
   () => cpSync(src, dest),
-  { code: 'ERR_FS_CP_NON_DIR_TO_DIR' }
+  { code: 'ERR_FS_CP_NON_DIR_TO_DIR' },
  );
 }
 
@@ -269,7 +269,7 @@ function nextdir() {
  const dest = './test/fixtures/copy/kitchen-sink/a';
  assert.throws(
   () => cpSync(src, dest),
-  { code: 'ERR_FS_CP_EINVAL' }
+  { code: 'ERR_FS_CP_EINVAL' },
  );
 }
 
@@ -281,7 +281,7 @@ if (!isWindows) {
  server.listen(sock);
  assert.throws(
   () => cpSync(sock, dest),
-  { code: 'ERR_FS_CP_SOCKET' }
+  { code: 'ERR_FS_CP_SOCKET' },
  );
  server.close();
 }
@@ -314,7 +314,7 @@ if (!isWindows) {
  for (const entry of destEntries) {
   assert.strictEqual(
    entry.isDirectory() || entry.name.endsWith('.js'),
-   true
+   true,
   );
  }
 }
@@ -349,7 +349,7 @@ if (!isWindows) {
    force: false,
    recursive: true,
   }),
-  { code: 'ERR_FS_CP_EEXIST' }
+  { code: 'ERR_FS_CP_EEXIST' },
  );
 }
 
@@ -364,7 +364,7 @@ if (!isWindows) {
  writeFileSync(join(dest, 'a', 'c'), 'hello', 'utf8');
  assert.throws(
   () => cpSync(src, dest, { recursive: true }),
-  { code: 'EEXIST' }
+  { code: 'EEXIST' },
  );
 }
 
@@ -407,7 +407,7 @@ if (!isWindows) {
 {
  assert.throws(
   () => cpSync('a', 'b', () => {}),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 }
 
@@ -468,7 +468,7 @@ if (!isWindows) {
  cpSync(src, dest, { dereference: true, recursive: true });
  cp(src, dest, {
   dereference: true,
-  recursive: true
+  recursive: true,
  }, mustCall((err) => {
   assert.strictEqual(err, null);
   const stat = lstatSync(destFile);
@@ -492,7 +492,7 @@ if (!isWindows) {
      assert.strictEqual(err, null);
      const stat = lstatSync(destFile);
      assert(stat.isFile());
-    })
+    }),
  );
 }
 
@@ -612,7 +612,7 @@ if (!isWindows) {
  const dest = nextdir();
  cp(src, dest, {
   preserveTimestamps: true,
-  recursive: true
+  recursive: true,
  }, mustCall((err) => {
   assert.strictEqual(err, null);
   assertDirEquivalent(src, dest);
@@ -640,7 +640,7 @@ if (!isWindows) {
   for (const entry of destEntries) {
    assert.strictEqual(
     entry.isDirectory() || entry.name.endsWith('.js'),
-    true
+    true,
    );
   }
  }));
@@ -665,7 +665,7 @@ if (!isWindows) {
   for (const entry of destEntries) {
    assert.strictEqual(
     entry.isDirectory() || entry.name.endsWith('.js'),
-    true
+    true,
    );
   }
  }));
@@ -750,7 +750,7 @@ if (!isWindows) {
 {
  assert.throws(
   () => cp('a', 'b', 'hello', () => {}),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 }
 
@@ -772,7 +772,7 @@ if (!isWindows) {
  const p = await fs.promises.cp(
   pathToFileURL(src),
   pathToFileURL(dest),
-  { recursive: true }
+  { recursive: true },
  );
  assert.strictEqual(p, undefined);
  assertDirEquivalent(src, dest);
@@ -790,7 +790,7 @@ if (!isWindows) {
    force: false,
    recursive: true,
   }),
-  { code: 'ERR_FS_CP_EEXIST' }
+  { code: 'ERR_FS_CP_EEXIST' },
  );
 }
 
@@ -798,7 +798,7 @@ if (!isWindows) {
 {
  await assert.rejects(
   fs.promises.cp('a', 'b', () => {}),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
 }
 

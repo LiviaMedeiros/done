@@ -13,8 +13,8 @@ assert.throws(
    {
     code: 'ERR_DOMAIN_CANNOT_SET_UNCAUGHT_EXCEPTION_CAPTURE',
     name: 'Error',
-    message: /^The `domain` module is in use, which is mutually/
-   }
+    message: /^The `domain` module is in use, which is mutually/,
+   },
   )(err);
 
   assert(err.stack.includes('-'.repeat(40)),
@@ -24,5 +24,5 @@ assert.throws(
   assert(err.stack.includes(location),
          `expected ${err.stack} to contain ${location}`);
   return true;
- }
+ },
 );

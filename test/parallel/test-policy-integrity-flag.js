@@ -35,7 +35,7 @@ const depPolicySRI = `${nixPolicySRI} ${windowsPolicySRI}`;
   [
    '--policy-integrity', emptySRI,
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
 
  assert.ok(stderr.includes('ERR_MANIFEST_ASSERT_INTEGRITY'));
@@ -47,7 +47,7 @@ const depPolicySRI = `${nixPolicySRI} ${windowsPolicySRI}`;
   [
    '--policy-integrity', '',
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
 
  assert.ok(stderr.includes('--policy-integrity'));
@@ -59,7 +59,7 @@ const depPolicySRI = `${nixPolicySRI} ${windowsPolicySRI}`;
   [
    '--policy-integrity', depPolicySRI,
    '--experimental-policy', depPolicy, dep,
-  ]
+  ],
  );
 
  assert.strictEqual(status, 0, `status: ${status}\nstderr: ${stderr}`);

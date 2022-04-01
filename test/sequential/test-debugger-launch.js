@@ -30,14 +30,14 @@ const assert = require('assert');
     	assert.match(
     		cli.output,
     		/hello world/,
-    		'repeats the last command on <enter>'
+    		'repeats the last command on <enter>',
     	);
     })
     .then(() => cli.command('version'))
     .then(() => {
     	assert.ok(
     		cli.output.includes(process.versions.v8),
-    		'version prints the v8 version'
+    		'version prints the v8 version',
     	);
     })
     .then(() => cli.quit())

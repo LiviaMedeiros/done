@@ -13,7 +13,7 @@ if (process.argv[2] === 'child') {
 } else {
  const child = child_process.spawn(process.execPath, [__filename, 'child'], {
   stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
-  serialization: 'advanced'
+  serialization: 'advanced',
  });
  const received = [];
  child.on('message', common.mustCall((chunk) => {

@@ -14,7 +14,7 @@ const fn = path.join(tmpdir.path, 'large-file');
 const largeBuffer = Buffer.from(
  Array.apply(null, { length: 16834 * 2 })
     .map(Math.random)
-    .map((number) => (number * (1 << 8)))
+    .map((number) => (number * (1 << 8))),
 );
 
 async function createLargeFile() {
@@ -45,7 +45,7 @@ async function validateReadFileProc() {
 function validateReadFileAbortLogicBefore() {
  const signal = AbortSignal.abort();
  assert.rejects(readFile(fn, { signal }), {
-  name: 'AbortError'
+  name: 'AbortError',
  });
 }
 
@@ -54,7 +54,7 @@ function validateReadFileAbortLogicDuring() {
  const signal = controller.signal;
  process.nextTick(() => controller.abort());
  assert.rejects(readFile(fn, { signal }), {
-  name: 'AbortError'
+  name: 'AbortError',
  });
 }
 

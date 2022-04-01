@@ -17,7 +17,7 @@ const verifyCallbacks = (server) => {
    {
     name: 'TypeError',
     code: 'ERR_INVALID_ARG_TYPE',
-   }
+   },
   );
  });
 

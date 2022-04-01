@@ -70,8 +70,8 @@ assert.throws(
  () => {
   spawn(
    ...common.pwdCommand,
-   { stdio: ['pipe', 'pipe', 'pipe', 'ipc', 'ipc'] }
+   { stdio: ['pipe', 'pipe', 'pipe', 'ipc', 'ipc'] },
   );
  },
- { code: 'ERR_IPC_ONE_PIPE', name: 'Error' }
+ { code: 'ERR_IPC_ONE_PIPE', name: 'Error' },
 );

@@ -44,6 +44,6 @@ process.on('exit', function() {
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-  }
+  },
  );
 });

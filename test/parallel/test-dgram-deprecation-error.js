@@ -29,7 +29,7 @@ const propertyCases = propertiesToTest.map((propName) => {
    common.expectWarning(
     'DeprecationWarning',
     `Socket.prototype.${propName} is deprecated`,
-    'DEP0112'
+    'DEP0112',
    );
    sock[propName]; // eslint-disable-line no-unused-expressions
   },
@@ -38,7 +38,7 @@ const propertyCases = propertiesToTest.map((propName) => {
    common.expectWarning(
     'DeprecationWarning',
     `Socket.prototype.${propName} is deprecated`,
-    'DEP0112'
+    'DEP0112',
    );
    sock[propName] = null;
   },
@@ -50,7 +50,7 @@ const methodCases = methodsToTest.map((propName) => {
   common.expectWarning(
    'DeprecationWarning',
    `Socket.prototype.${propName}() is deprecated`,
-   'DEP0112'
+   'DEP0112',
   );
   sock[propName]();
  };
@@ -58,7 +58,7 @@ const methodCases = methodsToTest.map((propName) => {
 
 const cases = [].concat(
  ...propertyCases,
- ...methodCases
+ ...methodCases,
 );
 
 // If we weren't passed a test ID then we need to spawn all of the cases.

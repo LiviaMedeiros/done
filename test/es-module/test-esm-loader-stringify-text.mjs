@@ -6,7 +6,7 @@ import('test:Array').then(
  mustNotCall('Should not accept Arrays'),
  mustCall((e) => {
   assert.strictEqual(e.code, 'ERR_INVALID_RETURN_PROPERTY_VALUE');
- })
+ }),
 );
 import('test:ArrayBuffer').then(
  mustCall(),
@@ -44,13 +44,13 @@ import('test:null').then(
  mustNotCall('Should not accept null'),
  mustCall((e) => {
   assert.strictEqual(e.code, 'ERR_INVALID_RETURN_PROPERTY_VALUE');
- })
+ }),
 );
 import('test:Object').then(
  mustNotCall('Should not stringify or valueOf Objects'),
  mustCall((e) => {
   assert.strictEqual(e.code, 'ERR_INVALID_RETURN_PROPERTY_VALUE');
- })
+ }),
 );
 import('test:SharedArrayBuffer').then(
  mustCall(),
@@ -64,7 +64,7 @@ import('test:String').then(
  mustNotCall('Should not accept wrapper Strings'),
  mustCall((e) => {
   assert.strictEqual(e.code, 'ERR_INVALID_RETURN_PROPERTY_VALUE');
- })
+ }),
 );
 import('test:Uint8ClampedArray').then(
  mustCall(),
@@ -86,5 +86,5 @@ import('test:undefined').then(
  mustNotCall('Should not accept undefined'),
  mustCall((e) => {
   assert.strictEqual(e.code, 'ERR_INVALID_RETURN_PROPERTY_VALUE');
- })
+ }),
 );

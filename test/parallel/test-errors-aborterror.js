@@ -23,9 +23,9 @@ const { AbortError } = require('internal/errors');
 
 {
  throws(() => new AbortError('', false), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
  throws(() => new AbortError('', ''), {
-  code: 'ERR_INVALID_ARG_TYPE'
+  code: 'ERR_INVALID_ARG_TYPE',
  });
 }

@@ -27,14 +27,14 @@ const kCases = [
   common.isLinux || common.isOSX || common.isWindows || common.isAIX,
   'watch1',
   'foo',
-  'filePath'
+  'filePath',
  ),
  // Watch on a file should callback with a filename on supported systems
  new WatchTestCase(
   common.isLinux || common.isOSX || common.isWindows,
   'watch2',
   'bar',
-  'dirPath'
+  'dirPath',
  ),
 ];
 

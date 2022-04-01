@@ -6,7 +6,7 @@ const {
  Readable,
  Transform,
  PassThrough,
- pipeline
+ pipeline,
 } = require('stream');
 const assert = require('assert');
 const http = require('http');
@@ -87,7 +87,7 @@ async function tests() {
   const max = 5;
   const readable = new Readable({
    objectMode: true,
-   read() {}
+   read() {},
   });
 
   const iter = readable[Symbol.asyncIterator]();
@@ -116,7 +116,7 @@ async function tests() {
   console.log('read without for..await deferred');
   const readable = new Readable({
    objectMode: true,
-   read() {}
+   read() {},
   });
 
   const iter = readable[Symbol.asyncIterator]();
@@ -157,7 +157,7 @@ async function tests() {
   const max = 3;
   const readable = new Readable({
    objectMode: true,
-   read() {}
+   read() {},
   });
 
   const iter = readable[Symbol.asyncIterator]();
@@ -200,7 +200,7 @@ async function tests() {
  {
   console.log('call next() after error');
   const readable = new Readable({
-   read() {}
+   read() {},
   });
   const iterator = readable[Symbol.asyncIterator]();
 
@@ -221,7 +221,7 @@ async function tests() {
     if (++readed === max) {
      this.push(null);
     }
-   }
+   },
   });
 
   for await (const k of readable) {
@@ -238,7 +238,7 @@ async function tests() {
    objectMode: true,
    read() {
     this.destroy(new Error('kaboom from read'));
-   }
+   },
   });
 
   let err;
@@ -264,7 +264,7 @@ async function tests() {
       this.destroy(new Error('kaboom'));
      });
     }
-   }
+   },
   });
 
   let received = 0;
@@ -289,7 +289,7 @@ async function tests() {
    objectMode: true,
    read() {
     this.push('hello');
-   }
+   },
   });
 
   let err = null;
@@ -313,7 +313,7 @@ async function tests() {
    read() {
     this.push('hello');
     this.destroy(new Error('kaboom'));
-   }
+   },
   });
 
   let received = 0;
@@ -368,7 +368,7 @@ async function tests() {
       this.push(null);
      }
     });
-   }
+   },
   });
 
   for await (const k of readable) {
@@ -391,7 +391,7 @@ async function tests() {
       this.push(null);
      }
     });
-   }
+   },
   });
 
   let expected = '';
@@ -414,7 +414,7 @@ async function tests() {
   const readable = new Readable({
    read() {
     // no-op
-   }
+   },
   });
 
   readable.destroy();
@@ -433,7 +433,7 @@ async function tests() {
   const readable = new Readable({
    read() {
     // no-op
-   }
+   },
   });
 
   const passthrough = new PassThrough();
@@ -447,7 +447,7 @@ async function tests() {
    (e) => {
     assert.strictEqual(e, err);
     return true;
-   }
+   },
   );
  }
 
@@ -459,7 +459,7 @@ async function tests() {
     this.push('asdf');
     this.push('hehe');
     this.push(null);
-   }
+   },
   });
   // eslint-disable-next-line no-unused-vars, no-empty
   for await (const a of r) { }
@@ -474,7 +474,7 @@ async function tests() {
    read() {
     this.push('asdf');
     this.push('hehe');
-   }
+   },
   });
 
   let err = null;
@@ -493,7 +493,7 @@ async function tests() {
   console.log('readable side of a transform stream pushes null');
   const transform = new Transform({
    objectMode: true,
-   transform: (chunk, enc, cb) => { cb(null, chunk); }
+   transform: (chunk, enc, cb) => { cb(null, chunk); },
   });
   transform.push(0);
   transform.push(1);
@@ -518,7 +518,7 @@ async function tests() {
   const r = new Readable({
    objectMode: true,
    read() {
-   }
+   },
   });
 
   const b = r[Symbol.asyncIterator]();
@@ -534,7 +534,7 @@ async function tests() {
   const r = new Readable({
    objectMode: true,
    read() {
-   }
+   },
   });
 
   const b = r[Symbol.asyncIterator]();
@@ -554,7 +554,7 @@ async function tests() {
   const r = new Readable({
    objectMode: true,
    read() {
-   }
+   },
   });
 
   const b = r[Symbol.asyncIterator]();
@@ -592,7 +592,7 @@ async function tests() {
    },
    destroy(err, callback) {
     setTimeout(() => callback(_err), 1);
-   }
+   },
   });
 
   r.destroy();
@@ -611,7 +611,7 @@ async function tests() {
    read() {
     this.push('asd');
     this.push(null);
-   }
+   },
   });
 
   for await (const chunk of r) { } // eslint-disable-line no-unused-vars, no-empty
@@ -626,7 +626,7 @@ async function tests() {
    autoDestroy: false,
    read() {
     this.push('asd');
-   }
+   },
   });
 
   for await (const chunk of r) { // eslint-disable-line no-unused-vars
@@ -642,7 +642,7 @@ async function tests() {
    read() {
     this.push('asd');
     this.push(null);
-   }
+   },
   }).on('end', () => {
    assert.strictEqual(r.destroyed, false);
   });
@@ -659,7 +659,7 @@ async function tests() {
  const r = new Readable({
   objectMode: true,
   read() {
-  }
+  },
  });
 
  const originalDestroy = r.destroy;
@@ -680,7 +680,7 @@ async function tests() {
  const r = new Readable({
   objectMode: true,
   read() {
-  }
+  },
  });
 
  const originalDestroy = r.destroy;
@@ -699,7 +699,7 @@ async function tests() {
  const r = new Readable({
   objectMode: true,
   read() {
-  }
+  },
  });
 
  r.destroy();
@@ -786,7 +786,7 @@ async function tests() {
     name: 'TypeError',
     message: 'The "options" argument must be of type object. Received ' +
                  'type number (42)',
-   }
+   },
   );
  }
 

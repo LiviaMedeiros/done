@@ -26,15 +26,15 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'file:///': {
-     dependencies: true
-    }
-   }
+     dependencies: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
    assert.strictEqual(
     manifest.getDependencyMapper(href).resolve('fs'),
-    true
+    true,
    );
   }
  }
@@ -42,15 +42,15 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     '': {
-     dependencies: true
-    }
-   }
+     dependencies: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
    assert.strictEqual(
     manifest.getDependencyMapper(href).resolve('fs'),
-    true
+    true,
    );
   }
  }
@@ -58,18 +58,18 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     '': {
-     dependencies: true
+     dependencies: true,
     },
     'file:': {
-     cascade: true
-    }
-   }
+     cascade: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
    assert.strictEqual(
     manifest.getDependencyMapper(href).resolve('fs'),
-    true
+    true,
    );
   }
  }
@@ -77,9 +77,9 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'file:': {
-     dependencies: true
-    }
-   }
+     dependencies: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
@@ -101,23 +101,23 @@ const assert = require('assert');
    resources: {
     'file:///root/dir1': {
      dependencies: {
-      fs: 'test:fs1'
-     }
+      fs: 'test:fs1',
+     },
     },
     'file:///root/dir1/isolated': {},
     'file:///root/dir1/cascade': {
-     cascade: true
-    }
+     cascade: true,
+    },
    },
    scopes: {
     'file:///root/dir1/': {
      dependencies: {
-      fs: 'test:fs2'
-     }
+      fs: 'test:fs2',
+     },
     },
     'file:///root/dir1/censor/': {
     },
-   }
+   },
   });
 
   for (const href of baseURLs) {
@@ -125,12 +125,12 @@ const assert = require('assert');
    if (href.startsWith('file:///root/dir1/')) {
     assert.strictEqual(
      redirector.resolve('fs').href,
-     'test:fs2'
+     'test:fs2',
     );
    } else if (href === 'file:///root/dir1') {
     assert.strictEqual(
      redirector.resolve('fs').href,
-     'test:fs1'
+     'test:fs1',
     );
    } else {
     assert.strictEqual(redirector.resolve('fs'), null);
@@ -141,19 +141,19 @@ const assert = require('assert');
    manifest
         .getDependencyMapper('file:///root/dir1/isolated')
         .resolve('fs'),
-   null
+   null,
   );
   assert.strictEqual(
    manifest
         .getDependencyMapper('file:///root/dir1/cascade')
         .resolve('fs').href,
-   'test:fs2'
+   'test:fs2',
   );
   assert.strictEqual(
    manifest
         .getDependencyMapper('file:///root/dir1/censor/foo')
         .resolve('fs'),
-   null
+   null,
   );
  }
 }
@@ -170,10 +170,10 @@ const assert = require('assert');
    scopes: {
     'data:text/': {
      dependencies: {
-      fs: true
-     }
-    }
-   }
+      fs: true,
+     },
+    },
+   },
   });
 
   for (const href of baseURLs) {
@@ -187,10 +187,10 @@ const assert = require('assert');
    scopes: {
     'data:/': {
      dependencies: {
-      fs: true
-     }
-    }
-   }
+      fs: true,
+     },
+    },
+   },
   });
 
   for (const href of baseURLs) {
@@ -203,15 +203,15 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'data:': {
-     dependencies: true
-    }
-   }
+     dependencies: true,
+    },
+   },
   });
 
   for (const href of baseURLs) {
    assert.strictEqual(
     manifest.getDependencyMapper(href).resolve('fs'),
-    true
+    true,
    );
   }
  }
@@ -220,10 +220,10 @@ const assert = require('assert');
    scopes: {
     'data:text/javascript,0/': {
      dependencies: {
-      fs: 'test:fs1'
-     }
+      fs: 'test:fs1',
+     },
     },
-   }
+   },
   });
 
   for (const href of baseURLs) {
@@ -240,38 +240,38 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'https://example.com/': {
-     dependencies: true
-    }
-   }
+     dependencies: true,
+    },
+   },
   });
 
   assert.strictEqual(
    manifest
           .getDependencyMapper('blob:https://example.com/has-origin')
           .resolve('fs'),
-   true
+   true,
   );
  }
  {
   const manifest = new Manifest({
    scopes: {
     'https://example.com': {
-     dependencies: true
-    }
-   }
+     dependencies: true,
+    },
+   },
   });
 
   assert.strictEqual(
    manifest
           .getDependencyMapper('blob:https://example.com/has-origin')
           .resolve('fs'),
-   true
+   true,
   );
  }
  {
   const manifest = new Manifest({
    scopes: {
-   }
+   },
   });
 
   assert.strictEqual(
@@ -284,9 +284,9 @@ const assert = require('assert');
   const manifest = new Manifest({
    scopes: {
     'blob:https://example.com/has-origin': {
-     cascade: true
-    }
-   }
+     cascade: true,
+    },
+   },
   });
 
   assert.strictEqual(
@@ -300,31 +300,31 @@ const assert = require('assert');
    scopes: {
     // FIXME
     'https://example.com/': {
-     dependencies: true
+     dependencies: true,
     },
     'blob:https://example.com/has-origin': {
-     cascade: true
-    }
-   }
+     cascade: true,
+    },
+   },
   });
 
   assert.strictEqual(
    manifest
         .getDependencyMapper('blob:https://example.com/has-origin')
         .resolve('fs'),
-   true
+   true,
   );
  }
  {
   const manifest = new Manifest({
    scopes: {
     'blob:': {
-     dependencies: true
+     dependencies: true,
     },
     'blob:https://example.com/has-origin': {
-     cascade: true
-    }
-   }
+     cascade: true,
+    },
+   },
   });
 
   assert.strictEqual(
@@ -335,7 +335,7 @@ const assert = require('assert');
   assert.strictEqual(
    manifest
         .getDependencyMapper('blob:foo').resolve('fs'),
-   true
+   true,
   );
  }
 }

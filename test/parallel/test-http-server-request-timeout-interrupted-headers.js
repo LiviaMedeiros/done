@@ -33,7 +33,7 @@ server.listen(0, common.mustCall(() => {
   console.log(err);
   assert.strictEqual(
    response,
-   'HTTP/1.1 408 Request Timeout\r\nConnection: close\r\n\r\n'
+   'HTTP/1.1 408 Request Timeout\r\nConnection: close\r\n\r\n',
   );
   server.close();
  });

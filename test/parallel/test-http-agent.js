@@ -35,7 +35,7 @@ const server = http.Server(common.mustCall(function(req, res) {
 function makeRequests(outCount, inCount, shouldFail) {
  const countdown = new Countdown(
   outCount * inCount,
-  common.mustCall(() => server.close())
+  common.mustCall(() => server.close()),
  );
  let onRequest = common.mustNotCall(); // Temporary
  const p = new Promise((resolve) => {
@@ -84,5 +84,5 @@ test1
   	// This is currently the way to fail a test with a Promise.
   	console.error(e);
   	process.exit(1);
-  }
+  },
   );

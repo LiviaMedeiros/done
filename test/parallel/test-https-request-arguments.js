@@ -10,7 +10,7 @@ const https = require('https');
 const options = {
  key: fixtures.readKey('agent1-key.pem'),
  cert: fixtures.readKey('agent1-cert.pem'),
- ca: fixtures.readKey('ca1-cert.pem')
+ ca: fixtures.readKey('ca1-cert.pem'),
 };
 
 // Test providing both a url and options, with the options partially
@@ -22,7 +22,7 @@ const options = {
    assert.strictEqual(req.url, '/testpath');
    res.end();
    server.close();
-  })
+  }),
  );
 
  server.listen(
@@ -34,13 +34,13 @@ const options = {
     {
      hostname: 'localhost',
      port: server.address().port,
-     rejectUnauthorized: false
+     rejectUnauthorized: false,
     },
 
     common.mustCall((res) => {
      res.resume();
-    })
+    }),
    );
-  })
+  }),
  );
 }

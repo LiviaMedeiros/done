@@ -16,5 +16,5 @@ setTimeout(
   watcher.ref();
   watcher.unref();
  }),
- common.platformTimeout(100)
+ common.platformTimeout(100),
 );

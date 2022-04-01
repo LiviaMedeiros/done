@@ -96,5 +96,5 @@ common.allowGlobals(
  global.hello,
  global.code,
  global.foo,
- global.obj
+ global.obj,
 );

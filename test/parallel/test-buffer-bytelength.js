@@ -18,8 +18,8 @@ const vm = require('vm');
    name: 'TypeError',
    message: 'The "string" argument must be of type string or an instance ' +
                'of Buffer or ArrayBuffer.' +
-               common.invalidArgTypeHelper(args[0])
-  }
+               common.invalidArgTypeHelper(args[0]),
+  },
  );
 });
 
@@ -87,7 +87,7 @@ assert.strictEqual(Buffer.byteLength('aGVsbG8gd29ybGQ=', 'BASE64'), 11);
 assert.strictEqual(Buffer.byteLength('bm9kZS5qcyByb2NrcyE=', 'base64'), 14);
 assert.strictEqual(Buffer.byteLength('aGkk', 'base64'), 3);
 assert.strictEqual(
- Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw==', 'base64'), 25
+ Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw==', 'base64'), 25,
 );
 // base64url
 assert.strictEqual(Buffer.byteLength('aGVsbG8gd29ybGQ', 'base64url'), 11);
@@ -95,7 +95,7 @@ assert.strictEqual(Buffer.byteLength('aGVsbG8gd29ybGQ', 'BASE64URL'), 11);
 assert.strictEqual(Buffer.byteLength('bm9kZS5qcyByb2NrcyE', 'base64url'), 14);
 assert.strictEqual(Buffer.byteLength('aGkk', 'base64url'), 3);
 assert.strictEqual(
- Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw', 'base64url'), 25
+ Buffer.byteLength('bHNrZGZsa3NqZmtsc2xrZmFqc2RsZmtqcw', 'base64url'), 25,
 );
 // special padding
 assert.strictEqual(Buffer.byteLength('aaa=', 'base64'), 2);

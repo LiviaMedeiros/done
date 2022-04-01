@@ -183,7 +183,7 @@ class TestSource {
  const writable =
     newStreamWritableFromWritableStream(
     	writableStream, {
-    		objectMode: true
+    		objectMode: true,
     	});
  assert(writable.writableObjectMode);
 
@@ -227,7 +227,7 @@ class TestSource {
    readable.push(Buffer.from('hello'));
    readable.push(Buffer.from('world'));
    readable.push(null);
-  }
+  },
  });
 
  pipeline(readable, writable, common.mustCall());

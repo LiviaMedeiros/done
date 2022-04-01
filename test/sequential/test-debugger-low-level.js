@@ -23,7 +23,7 @@ const assert = require('assert');
     .then(() => {
     	const [, scriptId] = cli.output.match(scriptPattern);
     	return cli.command(
-    		`Debugger.getScriptSource({ scriptId: '${scriptId}' })`
+    		`Debugger.getScriptSource({ scriptId: '${scriptId}' })`,
     	);
     })
     .then(() => {

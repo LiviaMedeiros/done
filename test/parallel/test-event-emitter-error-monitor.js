@@ -10,12 +10,12 @@ EE.on(
  EventEmitter.errorMonitor,
  common.mustCall(function onErrorMonitor(e) {
   assert.strictEqual(e, theErr);
- }, 3)
+ }, 3),
 );
 
 // Verify with no error listener
 assert.throws(
- () => EE.emit('error', theErr), theErr
+ () => EE.emit('error', theErr), theErr,
 );
 
 // Verify with error listener

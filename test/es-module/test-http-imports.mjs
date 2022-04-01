@@ -19,7 +19,7 @@ const createHTTPServer = http.createServer;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const options = {
  key: readKey('agent1-key.pem'),
- cert: readKey('agent1-cert.pem')
+ cert: readKey('agent1-cert.pem'),
 };
 
 const createHTTPSServer = https.createServer.bind(null, options);
@@ -29,21 +29,21 @@ const testListeningOptions = [
  {
   hostname: 'localhost',
   listenOptions: {
-   host: '127.0.0.1'
-  }
+   host: '127.0.0.1',
+  },
  },
 ];
 
 const internalInterfaces = Object.values(os.networkInterfaces()).flat().filter(
- (iface) => iface?.internal && iface.address && !iface.scopeid
+ (iface) => iface?.internal && iface.address && !iface.scopeid,
 );
 for (const iface of internalInterfaces) {
  testListeningOptions.push({
   hostname: iface?.family === 'IPv6' ? `[${iface?.address}]` : iface?.address,
   listenOptions: {
    host: iface?.address,
-   ipv6Only: iface?.family === 'IPv6'
-  }
+   ipv6Only: iface?.family === 'IPv6',
+  },
  });
 }
 
@@ -76,13 +76,13 @@ for (const { protocol, createServer } of [
    if (redirect) {
     const { status, location } = JSON.parse(redirect);
     res.writeHead(status, {
-     location
+     location,
     });
     res.end();
     return;
    }
    res.writeHead(200, {
-    'content-type': url.searchParams.get('mime') || 'text/javascript'
+    'content-type': url.searchParams.get('mime') || 'text/javascript',
    });
    res.end(url.searchParams.get('body') || body);
   });
@@ -90,7 +90,7 @@ for (const { protocol, createServer } of [
   const listen = util.promisify(server.listen.bind(server));
   await listen({
    ...listenOptions,
-   port: 0
+   port: 0,
   });
   const url = new URL(host);
   url.port = server?.address()?.port;
@@ -106,12 +106,12 @@ for (const { protocol, createServer } of [
   const redirect = new URL(url.href);
   redirect.searchParams.set('redirect', JSON.stringify({
    status: 302,
-   location: url.href
+   location: url.href,
   }));
   const redirectedNS = await import(redirect.href);
   assert.strict.deepStrictEqual(
    Object.keys(redirectedNS),
-   ['default', 'url']
+   ['default', 'url'],
   );
   assert.strict.notEqual(redirectedNS.default, ns.default);
   assert.strict.equal(redirectedNS.url, url.href);
@@ -123,22 +123,22 @@ for (const { protocol, createServer } of [
   redirected.searchParams.set('body', 'export let relativeDepURL = (await import("./baz.js")).url');
   relativeAfterRedirect.searchParams.set('redirect', JSON.stringify({
    status: 302,
-   location: redirected.href
+   location: redirected.href,
   }));
   const relativeAfterRedirectedNS = await import(relativeAfterRedirect.href);
   assert.strict.equal(
    relativeAfterRedirectedNS.relativeDepURL,
-   url.href + 'bar/baz.js'
+   url.href + 'bar/baz.js',
   );
 
   const crossProtocolRedirect = new URL(url.href);
   crossProtocolRedirect.searchParams.set('redirect', JSON.stringify({
    status: 302,
-   location: 'data:text/javascript,'
+   location: 'data:text/javascript,',
   }));
   await assert.rejects(
    import(crossProtocolRedirect.href),
-   { code: 'ERR_NETWORK_IMPORT_DISALLOWED' }
+   { code: 'ERR_NETWORK_IMPORT_DISALLOWED' },
   );
 
   const deps = new URL(url.href);
@@ -167,7 +167,7 @@ for (const { protocol, createServer } of [
       export default 1;`);
   await assert.rejects(
    import(fileDep.href),
-   { code: 'ERR_INVALID_URL_SCHEME' }
+   { code: 'ERR_INVALID_URL_SCHEME' },
   );
 
   const builtinDep = new URL(url.href);
@@ -177,7 +177,7 @@ for (const { protocol, createServer } of [
     `);
   await assert.rejects(
    import(builtinDep.href),
-   { code: 'ERR_INVALID_URL_SCHEME' }
+   { code: 'ERR_INVALID_URL_SCHEME' },
   );
 
   const unprefixedBuiltinDep = new URL(url.href);
@@ -187,7 +187,7 @@ for (const { protocol, createServer } of [
     `);
   await assert.rejects(
    import(unprefixedBuiltinDep.href),
-   { code: 'ERR_INVALID_URL_SCHEME' }
+   { code: 'ERR_INVALID_URL_SCHEME' },
   );
 
   const unsupportedMIME = new URL(url.href);
@@ -195,7 +195,7 @@ for (const { protocol, createServer } of [
   unsupportedMIME.searchParams.set('body', '');
   await assert.rejects(
    import(unsupportedMIME.href),
-   { code: 'ERR_UNKNOWN_MODULE_FORMAT' }
+   { code: 'ERR_UNKNOWN_MODULE_FORMAT' },
   );
   const notFound = new URL(url.href);
   notFound.pathname = '/not-found';

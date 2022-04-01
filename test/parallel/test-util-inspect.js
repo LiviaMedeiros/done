@@ -39,7 +39,7 @@ assert.strictEqual(util.inspect(function abc() {}), '[Function: abc]');
 assert.strictEqual(util.inspect(() => {}), '[Function (anonymous)]');
 assert.strictEqual(
  util.inspect(async function() {}),
- '[AsyncFunction (anonymous)]'
+ '[AsyncFunction (anonymous)]',
 );
 assert.strictEqual(util.inspect(async () => {}), '[AsyncFunction (anonymous)]');
 
@@ -48,39 +48,39 @@ assert.strictEqual(util.inspect(async () => {}), '[AsyncFunction (anonymous)]');
  const fn = (() => function*() {})();
  assert.strictEqual(
   util.inspect(fn),
-  '[GeneratorFunction (anonymous)]'
+  '[GeneratorFunction (anonymous)]',
  );
  assert.strictEqual(
   util.inspect(async function* abc() {}),
-  '[AsyncGeneratorFunction: abc]'
+  '[AsyncGeneratorFunction: abc]',
  );
  Object.setPrototypeOf(fn, Object.getPrototypeOf(async () => {}));
  assert.strictEqual(
   util.inspect(fn),
-  '[GeneratorFunction (anonymous)] AsyncFunction'
+  '[GeneratorFunction (anonymous)] AsyncFunction',
  );
  Object.defineProperty(fn, 'name', { value: 5, configurable: true });
  assert.strictEqual(
   util.inspect(fn),
-  '[GeneratorFunction: 5] AsyncFunction'
+  '[GeneratorFunction: 5] AsyncFunction',
  );
  Object.defineProperty(fn, Symbol.toStringTag, {
   value: 'Foobar',
-  configurable: true
+  configurable: true,
  });
  assert.strictEqual(
   util.inspect({ ['5']: fn }),
-  "{ '5': [GeneratorFunction: 5] AsyncFunction [Foobar] }"
+  "{ '5': [GeneratorFunction: 5] AsyncFunction [Foobar] }",
  );
  Object.defineProperty(fn, 'name', { value: '5', configurable: true });
  Object.setPrototypeOf(fn, null);
  assert.strictEqual(
   util.inspect(fn),
-  '[GeneratorFunction (null prototype): 5] [Foobar]'
+  '[GeneratorFunction (null prototype): 5] [Foobar]',
  );
  assert.strictEqual(
   util.inspect({ ['5']: fn }),
-  "{ '5': [GeneratorFunction (null prototype): 5] [Foobar] }"
+  "{ '5': [GeneratorFunction (null prototype): 5] [Foobar] }",
  );
 }
 
@@ -89,14 +89,14 @@ assert.strictEqual(util.inspect(null), 'null');
 assert.strictEqual(util.inspect(/foo(bar\n)?/gi), '/foo(bar\\n)?/gi');
 assert.strictEqual(
  util.inspect(new Date('Sun, 14 Feb 2010 11:48:40 GMT')),
- new Date('2010-02-14T12:48:40+01:00').toISOString()
+ new Date('2010-02-14T12:48:40+01:00').toISOString(),
 );
 assert.strictEqual(util.inspect(new Date('')), (new Date('')).toString());
 assert.strictEqual(util.inspect('\n\x01'), "'\\n\\x01'");
 assert.strictEqual(
  util.inspect(`${Array(75).fill(1)}'\n\x1d\n\x03\x85\x7f\x7e\x9f\xa0`),
  // eslint-disable-next-line no-irregular-whitespace
- `"${Array(75).fill(1)}'\\n" +\n  '\\x1D\\n' +\n  '\\x03\\x85\\x7F~\\x9F '`
+ `"${Array(75).fill(1)}'\\n" +\n  '\\x1D\\n' +\n  '\\x03\\x85\\x7F~\\x9F '`,
 );
 assert.strictEqual(util.inspect([]), '[]');
 assert.strictEqual(util.inspect(Object.create([])), 'Array {}');
@@ -134,17 +134,17 @@ assert.strictEqual(
  util.inspect(
   Object.create(
    {},
-   { visible: { value: 1, enumerable: true }, hidden: { value: 2 } }
-  )
+   { visible: { value: 1, enumerable: true }, hidden: { value: 2 } },
+  ),
  ),
- '{ visible: 1 }'
+ '{ visible: 1 }',
 );
 assert.strictEqual(
  util.inspect(
   Object.assign(new String('hello'), { [Symbol('foo')]: 123 }),
-  { showHidden: true }
+  { showHidden: true },
  ),
- "[String: 'hello'] { [length]: 5, [Symbol(foo)]: 123 }"
+ "[String: 'hello'] { [length]: 5, [Symbol(foo)]: 123 }",
 );
 
 assert.match(util.inspect((new JSStream())._externalStream),
@@ -158,11 +158,11 @@ assert.match(util.inspect((new JSStream())._externalStream),
 
 assert.match(
  util.inspect({ a: { a: { a: { a: {} } } } }, undefined, undefined, true),
- /Object/
+ /Object/,
 );
 assert.doesNotMatch(
  util.inspect({ a: { a: { a: { a: {} } } } }, undefined, null, true),
- /Object/
+ /Object/,
 );
 
 {
@@ -171,7 +171,7 @@ assert.doesNotMatch(
  const dv = new DataView(ab, 1, 2);
  assert.strictEqual(
   util.inspect(ab, showHidden),
-  'ArrayBuffer { [Uint8Contents]: <01 02 03 04>, byteLength: 4 }'
+  'ArrayBuffer { [Uint8Contents]: <01 02 03 04>, byteLength: 4 }',
  );
  assert.strictEqual(util.inspect(new DataView(ab, 1, 2), showHidden),
                     'DataView {\n' +
@@ -181,7 +181,7 @@ assert.doesNotMatch(
                       ' [Uint8Contents]: <01 02 03 04>, byteLength: 4 }\n}');
  assert.strictEqual(
   util.inspect(ab, showHidden),
-  'ArrayBuffer { [Uint8Contents]: <01 02 03 04>, byteLength: 4 }'
+  'ArrayBuffer { [Uint8Contents]: <01 02 03 04>, byteLength: 4 }',
  );
  assert.strictEqual(util.inspect(dv, showHidden),
                     'DataView {\n' +
@@ -230,7 +230,7 @@ assert.doesNotMatch(
  const dv = vm.runInNewContext('new DataView(ab, 1, 2)', { ab });
  assert.strictEqual(
   util.inspect(ab, showHidden),
-  'ArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }'
+  'ArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }',
  );
  assert.strictEqual(util.inspect(new DataView(ab, 1, 2), showHidden),
                     'DataView {\n' +
@@ -240,7 +240,7 @@ assert.doesNotMatch(
                        ' byteLength: 4 }\n}');
  assert.strictEqual(
   util.inspect(ab, showHidden),
-  'ArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }'
+  'ArrayBuffer { [Uint8Contents]: <00 00 00 00>, byteLength: 4 }',
  );
  assert.strictEqual(util.inspect(dv, showHidden),
                     'DataView {\n' +
@@ -288,7 +288,7 @@ assert.doesNotMatch(
       `  [buffer]: ArrayBuffer { byteLength: ${byteLength} }\n]`);
  assert.strictEqual(
   util.inspect(array, false),
-  `${constructor.name}(${length}) [ 65, 97 ]`
+  `${constructor.name}(${length}) [ 65, 97 ]`,
  );
 });
 
@@ -306,7 +306,7 @@ assert.doesNotMatch(
  const byteLength = length * constructor.BYTES_PER_ELEMENT;
  const array = vm.runInNewContext(
   'new constructor(new ArrayBuffer(byteLength), 0, length)',
-  { constructor, byteLength, length }
+  { constructor, byteLength, length },
  );
  array[0] = 65;
  array[1] = 97;
@@ -322,7 +322,7 @@ assert.doesNotMatch(
       `  [buffer]: ArrayBuffer { byteLength: ${byteLength} }\n]`);
  assert.strictEqual(
   util.inspect(array, false),
-  `${constructor.name}(${length}) [ 65, 97 ]`
+  `${constructor.name}(${length}) [ 65, 97 ]`,
  );
 });
 
@@ -335,25 +335,25 @@ assert.doesNotMatch(
 assert.strictEqual(
  util.inspect(Object.create({}, {
   visible: { value: 1, enumerable: true },
-  hidden: { value: 2 }
+  hidden: { value: 2 },
  }), { showHidden: true }),
- '{ visible: 1, [hidden]: 2 }'
+ '{ visible: 1, [hidden]: 2 }',
 );
 // Objects without prototype.
 assert.strictEqual(
  util.inspect(Object.create(null, {
   name: { value: 'Tim', enumerable: true },
-  hidden: { value: 'secret' }
+  hidden: { value: 'secret' },
  }), { showHidden: true }),
- "[Object: null prototype] { name: 'Tim', [hidden]: 'secret' }"
+ "[Object: null prototype] { name: 'Tim', [hidden]: 'secret' }",
 );
 
 assert.strictEqual(
  util.inspect(Object.create(null, {
   name: { value: 'Tim', enumerable: true },
-  hidden: { value: 'secret' }
+  hidden: { value: 'secret' },
  })),
- "[Object: null prototype] { name: 'Tim' }"
+ "[Object: null prototype] { name: 'Tim' }",
 );
 
 // Dynamic properties.
@@ -377,11 +377,11 @@ assert.strictEqual(
  const getterFn = {
   get one() {
    return null;
-  }
+  },
  };
  assert.strictEqual(
   util.inspect(getterFn, { getters: true }),
-  '{ one: [Getter: null] }'
+  '{ one: [Getter: null] }',
  );
 }
 
@@ -393,16 +393,16 @@ assert.strictEqual(
   'growingLength',
   {
    enumerable: true,
-   get: function() { this.push(true); return this.length; }
-  }
+   get: function() { this.push(true); return this.length; },
+  },
  );
  Object.defineProperty(
   value,
   '-1',
   {
    enumerable: true,
-   value: -1
-  }
+   value: -1,
+  },
  );
  assert.strictEqual(util.inspect(value),
                     "[ 1, 2, 3, growingLength: [Getter], '-1': -1 ]");
@@ -418,7 +418,7 @@ assert.strictEqual(
  arr[49] = 'I win';
  assert.strictEqual(
   util.inspect(arr),
-  "CustomArray(50) [ <49 empty items>, 'I win' ]"
+  "CustomArray(50) [ <49 empty items>, 'I win' ]",
  );
  assert.strictEqual(
   util.inspect(arr, { showHidden: true }),
@@ -428,7 +428,7 @@ assert.strictEqual(
     '  [length]: 50,\n' +
     "  '5': 'foo',\n" +
     '  foo: true\n' +
-    ']'
+    ']',
  );
 }
 
@@ -469,7 +469,7 @@ assert.strictEqual(
  arr2[2 ** 32 - 1] = 'too far';
  assert.strictEqual(
   util.inspect(arr2),
-  "[ 0, <4294967293 empty items>, 'max', '4294967295': 'too far' ]"
+  "[ 0, <4294967293 empty items>, 'max', '4294967295': 'too far' ]",
  );
 
  const arr3 = [];
@@ -514,7 +514,7 @@ assert.strictEqual(
  value.aprop = 42;
  assert.strictEqual(
   util.inspect(value),
-  '[Function (anonymous)] { aprop: 42 }'
+  '[Function (anonymous)] { aprop: 42 }',
  );
 }
 
@@ -557,23 +557,23 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
  assert.strictEqual(util.inspect(a), "[ 'foo', <1 empty item>, 'baz' ]");
  assert.strictEqual(
   util.inspect(a, true),
-  "[ 'foo', <1 empty item>, 'baz', [length]: 3 ]"
+  "[ 'foo', <1 empty item>, 'baz', [length]: 3 ]",
  );
  assert.strictEqual(util.inspect(new Array(5)), '[ <5 empty items> ]');
  a[3] = 'bar';
  a[100] = 'qux';
  assert.strictEqual(
   util.inspect(a, { breakLength: Infinity }),
-  "[ 'foo', <1 empty item>, 'baz', 'bar', <96 empty items>, 'qux' ]"
+  "[ 'foo', <1 empty item>, 'baz', 'bar', <96 empty items>, 'qux' ]",
  );
  delete a[3];
  assert.strictEqual(
   util.inspect(a, { maxArrayLength: 4 }),
-  "[ 'foo', <1 empty item>, 'baz', <97 empty items>, ... 1 more item ]"
+  "[ 'foo', <1 empty item>, 'baz', <97 empty items>, ... 1 more item ]",
  );
  // test 4 special case
  assert.strictEqual(util.inspect(a, {
-  maxArrayLength: 2
+  maxArrayLength: 2,
  }), "[ 'foo', <1 empty item>, ... 99 more items ]");
 }
 
@@ -608,31 +608,31 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
 {
  const getter = Object.create(null, {
   a: {
-   get: function() { return 'aaa'; }
-  }
+   get: function() { return 'aaa'; },
+  },
  });
  const setter = Object.create(null, {
   b: { // eslint-disable-line accessor-pairs
-   set: function() {}
-  }
+   set: function() {},
+  },
  });
  const getterAndSetter = Object.create(null, {
   c: {
    get: function() { return 'ccc'; },
-   set: function() {}
-  }
+   set: function() {},
+  },
  });
  assert.strictEqual(
   util.inspect(getter, true),
-  '[Object: null prototype] { [a]: [Getter] }'
+  '[Object: null prototype] { [a]: [Getter] }',
  );
  assert.strictEqual(
   util.inspect(setter, true),
-  '[Object: null prototype] { [b]: [Setter] }'
+  '[Object: null prototype] { [b]: [Setter] }',
  );
  assert.strictEqual(
   util.inspect(getterAndSetter, true),
-  '[Object: null prototype] { [c]: [Getter/Setter] }'
+  '[Object: null prototype] { [c]: [Getter/Setter] }',
  );
 }
 
@@ -651,7 +651,7 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
   (e) => {
    assert.strictEqual(util.inspect(e), e.stack);
    return true;
-  }
+  },
  );
 
  const ex = util.inspect(new Error('FAIL'), true);
@@ -672,7 +672,7 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
  assert.strictEqual(util.inspect(falsyCause2), '[Error] { [cause]: null }');
  assert.strictEqual(
   util.inspect(undefinedCause),
-  '[Error] { [cause]: undefined }'
+  '[Error] { [cause]: undefined }',
  );
 }
 
@@ -688,7 +688,7 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
  assert.strictEqual(util.inspect(err, { compact: true }), '[Error: foo]');
  assert.strictEqual(
   util.inspect(err2, { compact: true }),
-  '[Error: foo\nbar]'
+  '[Error: foo\nbar]',
  );
 
  err.bar = true;
@@ -696,31 +696,31 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
 
  assert.strictEqual(
   util.inspect(err, { compact: true }),
-  '{ [Error: foo] bar: true }'
+  '{ [Error: foo] bar: true }',
  );
  assert.strictEqual(
   util.inspect(err2, { compact: true }),
-  '{ [Error: foo\nbar]\n  bar: true }'
+  '{ [Error: foo\nbar]\n  bar: true }',
  );
  assert.strictEqual(
   util.inspect(err, { compact: true, breakLength: 5 }),
-  '{ [Error: foo]\n  bar: true }'
+  '{ [Error: foo]\n  bar: true }',
  );
  assert.strictEqual(
   util.inspect(err, { compact: true, breakLength: 1 }),
-  '{ [Error: foo]\n  bar:\n   true }'
+  '{ [Error: foo]\n  bar:\n   true }',
  );
  assert.strictEqual(
   util.inspect(err2, { compact: true, breakLength: 5 }),
-  '{ [Error: foo\nbar]\n  bar: true }'
+  '{ [Error: foo\nbar]\n  bar: true }',
  );
  assert.strictEqual(
   util.inspect(err, { compact: false }),
-  '[Error: foo] {\n  bar: true\n}'
+  '[Error: foo] {\n  bar: true\n}',
  );
  assert.strictEqual(
   util.inspect(err2, { compact: false }),
-  '[Error: foo\nbar] {\n  bar: true\n}'
+  '[Error: foo\nbar] {\n  bar: true\n}',
  );
 
  Error.stackTraceLimit = tmp;
@@ -761,7 +761,7 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
  Object.setPrototypeOf(BadCustomError, Error);
  assert.strictEqual(
   util.inspect(new BadCustomError('foo')),
-  '[BadCustomError: foo]'
+  '[BadCustomError: foo]',
  );
 }
 
@@ -785,8 +785,8 @@ assert.strictEqual(util.inspect(-5e-324), '-5e-324');
   util.format(
    'The name set to %o did not result in the expected output "%s"',
    value,
-   outputStart
-  )
+   outputStart,
+  ),
  );
 
  err = new RangeError('foo');
@@ -833,7 +833,7 @@ assert.strictEqual(util.inspect(Object.create(Date.prototype)), 'Date {}');
   '\\\\\\': 3,
   '\\\\\\\\': 4,
   '\n': 5,
-  '\r': 6
+  '\r': 6,
  };
 
  const y = ['a', 'b', 'c'];
@@ -844,12 +844,12 @@ assert.strictEqual(util.inspect(Object.create(Date.prototype)), 'Date {}');
  assert.strictEqual(
   util.inspect(w),
   "{ '\\\\': 1, '\\\\\\\\': 2, '\\\\\\\\\\\\': 3, " +
-    "'\\\\\\\\\\\\\\\\': 4, '\\n': 5, '\\r': 6 }"
+    "'\\\\\\\\\\\\\\\\': 4, '\\n': 5, '\\r': 6 }",
  );
  assert.strictEqual(
   util.inspect(y),
   "[ 'a', 'b', 'c', '\\\\\\\\': 'd', " +
-    "'\\n': 'e', '\\r': 'f' ]"
+    "'\\n': 'e', '\\r': 'f' ]",
  );
 }
 
@@ -862,34 +862,34 @@ assert.strictEqual(util.inspect(Object.create(Date.prototype)), 'Date {}');
 
   assert.strictEqual(
    util.inspect(surrogate),
-   `'\\u${charCode.toString(16)}'`
+   `'\\u${charCode.toString(16)}'`,
   );
   assert.strictEqual(
    util.inspect(`${'a'.repeat(200)}${surrogate}`),
-   `'${'a'.repeat(200)}\\u${charCode.toString(16)}'`
+   `'${'a'.repeat(200)}\\u${charCode.toString(16)}'`,
   );
   assert.strictEqual(
    util.inspect(`${surrogate}${'a'.repeat(200)}`),
-   `'\\u${charCode.toString(16)}${'a'.repeat(200)}'`
+   `'\\u${charCode.toString(16)}${'a'.repeat(200)}'`,
   );
   if (charCode < 0xdc00) {
    const highSurrogate = surrogate;
    const lowSurrogate = String.fromCharCode(charCode + 1024);
    assert(
     !util.inspect(
-     `${edgeChar}${highSurrogate}${lowSurrogate}${edgeChar}`
-    ).includes('\\u')
+     `${edgeChar}${highSurrogate}${lowSurrogate}${edgeChar}`,
+    ).includes('\\u'),
    );
    assert.strictEqual(
     (util.inspect(
-     `${highSurrogate}${highSurrogate}${lowSurrogate}`
+     `${highSurrogate}${highSurrogate}${lowSurrogate}`,
     ).match(/\\u/g) ?? []).length,
-    1
+    1,
    );
   } else {
    assert.strictEqual(
     util.inspect(`${edgeChar}${surrogate}${edgeChar}`),
-    `'${edgeChar}\\u${charCode.toString(16)}${edgeChar}'`
+    `'${edgeChar}\\u${charCode.toString(16)}${edgeChar}'`,
    );
   }
  }
@@ -932,35 +932,35 @@ util.inspect({ hasOwnProperty: null });
 
  assert.strictEqual(
   util.inspect(subject, { showHidden: false }).includes('hidden'),
-  false
+  false,
  );
  assert.strictEqual(
   util.inspect(subject, { showHidden: true }).includes('hidden'),
-  true
+  true,
  );
  assert.strictEqual(
   util.inspect(subject, { colors: false }).includes('\u001b[32m'),
-  false
+  false,
  );
  assert.strictEqual(
   util.inspect(subject, { colors: true }).includes('\u001b[32m'),
-  true
+  true,
  );
  assert.strictEqual(
   util.inspect(subject, { depth: 2 }).includes('c: [Object]'),
-  true
+  true,
  );
  assert.strictEqual(
   util.inspect(subject, { depth: 0 }).includes('a: [Object]'),
-  true
+  true,
  );
  assert.strictEqual(
   util.inspect(subject, { depth: null }).includes('{ d: 0 }'),
-  true
+  true,
  );
  assert.strictEqual(
   util.inspect(subject, { depth: undefined }).includes('{ d: 0 }'),
-  true
+  true,
  );
 }
 
@@ -970,19 +970,19 @@ util.inspect({ hasOwnProperty: null });
 
  assert.strictEqual(
   util.inspect(subject, { customInspect: true }).includes('123'),
-  true
+  true,
  );
  assert.strictEqual(
   util.inspect(subject, { customInspect: true }).includes('inspect'),
-  false
+  false,
  );
  assert.strictEqual(
   util.inspect(subject, { customInspect: false }).includes('123'),
-  false
+  false,
  );
  assert.strictEqual(
   util.inspect(subject, { customInspect: false }).includes('inspect'),
-  true
+  true,
  );
 
  // A custom [util.inspect.custom]() should be able to return other Objects.
@@ -1003,7 +1003,7 @@ util.inspect({ hasOwnProperty: null });
   assert.strictEqual(inspect, util.inspect);
   assert.deepStrictEqual(
    new Set(Object.keys(inspect.defaultOptions).concat(['stylize'])),
-   new Set(Object.keys(opts))
+   new Set(Object.keys(opts)),
   );
   opts.showHidden = true;
   return { [inspect.custom]: common.mustCall((depth, opts2) => {
@@ -1044,14 +1044,14 @@ util.inspect({ hasOwnProperty: null });
  const UIC = 'nodejs.util.inspect.custom';
  assert.strictEqual(
   util.inspect(subject),
-  `{\n  a: 123,\n  [Symbol(${UIC})]: [Function: [${UIC}]]\n}`
+  `{\n  a: 123,\n  [Symbol(${UIC})]: [Function: [${UIC}]]\n}`,
  );
 }
 
 // Verify that it's possible to use the stylize function to manipulate input.
 assert.strictEqual(
  util.inspect([1, 2, 3], { stylize() { return 'x'; } }),
- '[ x, x, x ]'
+ '[ x, x, x ]',
 );
 
 // Using `util.inspect` with "colors" option should produce as many lines as
@@ -1075,7 +1075,7 @@ assert.strictEqual(
   baz: 35,
   b: { a: 35 },
   veryLongKey: 'very long value',
-  evenLongerKey: ['with even longer value in array']
+  evenLongerKey: ['with even longer value in array'],
  });
 }
 
@@ -1083,16 +1083,16 @@ assert.strictEqual(
 assert.strictEqual(util.inspect(new String('test')), "[String: 'test']");
 assert.strictEqual(
  util.inspect(new String('test'), { colors: true }),
- "\u001b[32m[String: 'test']\u001b[39m"
+ "\u001b[32m[String: 'test']\u001b[39m",
 );
 assert.strictEqual(
  util.inspect(Object(Symbol('test'))),
- '[Symbol: Symbol(test)]'
+ '[Symbol: Symbol(test)]',
 );
 assert.strictEqual(util.inspect(new Boolean(false)), '[Boolean: false]');
 assert.strictEqual(
  util.inspect(Object.setPrototypeOf(new Boolean(true), null)),
- '[Boolean (null prototype): true]'
+ '[Boolean (null prototype): true]',
 );
 assert.strictEqual(util.inspect(new Number(0)), '[Number: 0]');
 assert.strictEqual(
@@ -1100,10 +1100,10 @@ assert.strictEqual(
   Object.defineProperty(
    Object.setPrototypeOf(new Number(-0), Array.prototype),
    Symbol.toStringTag,
-   { value: 'Foobar' }
-  )
+   { value: 'Foobar' },
+  ),
  ),
- '[Number (Array): -0] [Foobar]'
+ '[Number (Array): -0] [Foobar]',
 );
 assert.strictEqual(util.inspect(new Number(-1.1)), '[Number: -1.1]');
 assert.strictEqual(util.inspect(new Number(13.37)), '[Number: 13.37]');
@@ -1147,7 +1147,7 @@ if (typeof Symbol !== 'undefined') {
  assert.strictEqual(util.inspect(subject), '{ [Symbol(sym\\nbol)]: 42 }');
  assert.strictEqual(
   util.inspect(subject, options),
-  '{ [Symbol(sym\\nbol)]: 42 }'
+  '{ [Symbol(sym\\nbol)]: 42 }',
  );
 
  Object.defineProperty(
@@ -1157,7 +1157,7 @@ if (typeof Symbol !== 'undefined') {
  assert.strictEqual(util.inspect(subject), '{ [Symbol(sym\\nbol)]: 42 }');
  assert.strictEqual(
   util.inspect(subject, options),
-  "{ [Symbol(sym\\nbol)]: 42, [Symbol()]: 'non-enum' }"
+  "{ [Symbol(sym\\nbol)]: 42, [Symbol()]: 'non-enum' }",
  );
 
  subject = [1, 2, 3];
@@ -1175,7 +1175,7 @@ if (typeof Symbol !== 'undefined') {
  set.bar = 42;
  assert.strictEqual(
   util.inspect(set, { showHidden: true }),
-  "Set(1) { 'foo', bar: 42 }"
+  "Set(1) { 'foo', bar: 42 }",
  );
 }
 
@@ -1203,18 +1203,18 @@ if (typeof Symbol !== 'undefined') {
  map.set(map, 'map');
  assert.strictEqual(
   inspect(map),
-  "<ref *1> Map(1) { [Circular *1] => 'map' }"
+  "<ref *1> Map(1) { [Circular *1] => 'map' }",
  );
  map.set(map, map);
  assert.strictEqual(
   inspect(map),
-  '<ref *1> Map(1) { [Circular *1] => [Circular *1] }'
+  '<ref *1> Map(1) { [Circular *1] => [Circular *1] }',
  );
  map.delete(map);
  map.set('map', map);
  assert.strictEqual(
   inspect(map),
-  "<ref *1> Map(1) { 'map' => [Circular *1] }"
+  "<ref *1> Map(1) { 'map' => [Circular *1] }",
  );
 }
 
@@ -1231,7 +1231,7 @@ if (typeof Symbol !== 'undefined') {
   '<ref *1> {\n' +
     '  a: [ [Circular *1] ],\n' +
     '  b: <ref *2> { inner: [Circular *2], obj: [Circular *1] }\n' +
-    '}'
+    '}',
  );
 }
 
@@ -1272,7 +1272,7 @@ if (typeof Symbol !== 'undefined') {
  Object.defineProperty(mapValues, Symbol.toStringTag, { value: 'Foo' });
  assert.strictEqual(
   util.inspect(mapValues),
-  '[Foo] [Map Iterator] { \'bar\' }'
+  '[Foo] [Map Iterator] { \'bar\' }',
  );
  map.set('A', 'B!');
  assert.strictEqual(util.inspect(map.entries(), { maxArrayLength: 1 }),
@@ -1325,7 +1325,7 @@ if (typeof Symbol !== 'undefined') {
  Object.defineProperty(a, Symbol.toStringTag, {
   value: 'Foo',
   configurable: true,
-  writable: true
+  writable: true,
  });
  assert.strictEqual(inspect(a, { depth: -1 }), '[Foo]');
  delete a[Symbol.toStringTag];
@@ -1335,19 +1335,19 @@ if (typeof Symbol !== 'undefined') {
  assert.strictEqual(inspect(a, { depth: -1 }), '[Foo: null prototype] {}');
  Object.defineProperty(a, Symbol.toStringTag, {
   value: 'ABC',
-  configurable: true
+  configurable: true,
  });
  assert.strictEqual(
   inspect(a, { depth: -1 }),
-  '[Foo: null prototype] [ABC] {}'
+  '[Foo: null prototype] [ABC] {}',
  );
  Object.defineProperty(a, Symbol.toStringTag, {
   value: 'Foo',
-  configurable: true
+  configurable: true,
  });
  assert.strictEqual(
   inspect(a, { depth: -1 }),
-  '[Object: null prototype] [Foo] {}'
+  '[Object: null prototype] [Foo] {}',
  );
 }
 
@@ -1384,7 +1384,7 @@ if (typeof Symbol !== 'undefined') {
  checkAlignment(new Set(bigArray), 'Set(100) {', '  X', '}');
  checkAlignment(
   new Map(bigArray.map((number) => [number, null])),
-  'Map(100) {', '  X => null', '}'
+  'Map(100) {', '  X => null', '}',
  );
 }
 
@@ -1411,11 +1411,11 @@ if (typeof Symbol !== 'undefined') {
                     'PromiseSubclass [Promise] { <pending> }');
  assert.strictEqual(
   util.inspect({ a: { b: new ArraySubclass([1, [2], 3]) } }, { depth: 1 }),
-  '{ a: { b: [ArraySubclass] } }'
+  '{ a: { b: [ArraySubclass] } }',
  );
  assert.strictEqual(
   util.inspect(Object.setPrototypeOf(x, null)),
-  '[ObjectSubclass: null prototype] { foo: 42 }'
+  '[ObjectSubclass: null prototype] { foo: 42 }',
  );
 }
 
@@ -1447,7 +1447,7 @@ if (typeof Symbol !== 'undefined') {
   get: function() {
    throw new Error('should not access constructor');
   },
-  enumerable: true
+  enumerable: true,
  });
  assert.strictEqual(util.inspect(x), '{ constructor: [Getter] }');
 }
@@ -1477,7 +1477,7 @@ if (typeof Symbol !== 'undefined') {
  assert(!util.inspect(x, { maxArrayLength: 101 }).endsWith('1 more item\n]'));
  assert.strictEqual(
   util.inspect(x, { maxArrayLength: -1 }),
-  '[ ... 101 more items ]'
+  '[ ... 101 more items ]',
  );
  assert.strictEqual(util.inspect(x, { maxArrayLength: 0 }),
                     '[ ... 101 more items ]');
@@ -1489,7 +1489,7 @@ if (typeof Symbol !== 'undefined') {
                     '[ ... 101 more items ]');
  assert(!util.inspect(x, { maxArrayLength: null }).endsWith('1 more item\n]'));
  assert(!util.inspect(
-  x, { maxArrayLength: Infinity }
+  x, { maxArrayLength: Infinity },
  ).endsWith('1 more item ]'));
 }
 
@@ -1514,7 +1514,7 @@ if (typeof Symbol !== 'undefined') {
  assert.strictEqual(oneLine, "{ foo: 'abc', bar: 'xyz' }");
  assert.strictEqual(
   util.inspect(obj, { breakLength: breakpoint + 1 }),
-  twoLines
+  twoLines,
  );
  assert.strictEqual(twoLines, "{\n  foo: 'abc',\n  bar: 'xyz'\n}");
 }
@@ -1537,7 +1537,7 @@ if (typeof Symbol !== 'undefined') {
  assert.match(util.inspect(obj), /Object/);
  assert.strictEqual(
   JSON.stringify(util.inspect.defaultOptions),
-  JSON.stringify(oldOptions)
+  JSON.stringify(oldOptions),
  );
 
  // Set multiple options through object assignment.
@@ -1549,7 +1549,7 @@ if (typeof Symbol !== 'undefined') {
  assert.match(util.inspect(obj), /Object/);
  assert.strictEqual(
   JSON.stringify(util.inspect.defaultOptions),
-  JSON.stringify(oldOptions)
+  JSON.stringify(oldOptions),
  );
 
  assert.throws(() => {
@@ -1558,8 +1558,8 @@ if (typeof Symbol !== 'undefined') {
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "options" argument must be of type object. ' +
-             'Received null'
- }
+             'Received null',
+ },
  );
 
  assert.throws(() => {
@@ -1568,8 +1568,8 @@ if (typeof Symbol !== 'undefined') {
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "options" argument must be of type object. ' +
-             "Received type string ('bad')"
- }
+             "Received type string ('bad')",
+ },
  );
 }
 
@@ -1580,7 +1580,7 @@ util.inspect(process);
  const obj = { [util.inspect.custom]: 'fhqwhgads' };
  assert.strictEqual(
   util.inspect(obj),
-  "{ [Symbol(nodejs.util.inspect.custom)]: 'fhqwhgads' }"
+  "{ [Symbol(nodejs.util.inspect.custom)]: 'fhqwhgads' }",
  );
 }
 
@@ -1589,16 +1589,16 @@ util.inspect(process);
  const obj = { [Symbol.toStringTag]: 'a' };
  assert.strictEqual(
   util.inspect(obj),
-  "{ [Symbol(Symbol.toStringTag)]: 'a' }"
+  "{ [Symbol(Symbol.toStringTag)]: 'a' }",
  );
  Object.defineProperty(obj, Symbol.toStringTag, {
   value: 'a',
-  enumerable: false
+  enumerable: false,
  });
  assert.strictEqual(util.inspect(obj), 'Object [a] {}');
  assert.strictEqual(
   util.inspect(obj, { showHidden: true }),
-  "{ [Symbol(Symbol.toStringTag)]: 'a' }"
+  "{ [Symbol(Symbol.toStringTag)]: 'a' }",
  );
 
  class Foo {
@@ -1623,7 +1623,7 @@ util.inspect(process);
 
  assert.strictEqual(
   util.inspect(Object.create(Object.create(Foo.prototype), {
-   foo: { value: 'bar', enumerable: true }
+   foo: { value: 'bar', enumerable: true },
   })),
   "Foo [bar] { foo: 'bar' }");
 
@@ -1652,7 +1652,7 @@ util.inspect(process);
         'eiusmod tempor incididunt ut labore et dolore magna aliqua.',
    'test',
    'foo']], 4],
-  b: new Map([['za', 1], ['zb', 'test']])
+  b: new Map([['za', 1], ['zb', 'test']]),
  };
 
  let out = util.inspect(o, { compact: true, depth: 5, breakLength: 80 });
@@ -1858,7 +1858,7 @@ util.inspect(process);
  assert.strict.equal(out, expected);
 
  out = util.inspect(map, {
-  showHidden: true, depth: 9, breakLength: 4, compact: true
+  showHidden: true, depth: 9, breakLength: 4, compact: true,
  });
  expected = [
   'Map(2) {',
@@ -1966,7 +1966,7 @@ util.inspect(process);
   head = head.next = {};
  assert.strictEqual(
   util.inspect(list),
-  '{ next: { next: { next: [Object] } } }'
+  '{ next: { next: { next: [Object] } } }',
  );
  const longList = util.inspect(list, { depth: Infinity });
  const match = longList.match(/next/g);
@@ -2000,48 +2000,48 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  assert(
   util.inspect(foo).startsWith(
    `${Class.name}${extra}${message ? `: ${message}` : '\n'}`),
-  util.inspect(foo)
+  util.inspect(foo),
  );
  Object.defineProperty(foo, Symbol.toStringTag, {
   value: 'WOW',
   writable: true,
-  configurable: true
+  configurable: true,
  });
  const stack = foo.stack;
  foo.stack = 'This is a stack';
  assert.strictEqual(
   util.inspect(foo),
-  '[This is a stack]'
+  '[This is a stack]',
  );
  foo.stack = stack;
  assert(
   util.inspect(foo).startsWith(
    `${Class.name} [WOW]${extra}${message ? `: ${message}` : '\n'}`),
-  util.inspect(foo)
+  util.inspect(foo),
  );
  Object.setPrototypeOf(foo, null);
  assert(
   util.inspect(foo).startsWith(
-   `[${name}: null prototype] [WOW]${message ? `: ${message}` : '\n'}`
+   `[${name}: null prototype] [WOW]${message ? `: ${message}` : '\n'}`,
   ),
-  util.inspect(foo)
+  util.inspect(foo),
  );
  foo.bar = true;
  delete foo[Symbol.toStringTag];
  assert(
   util.inspect(foo).startsWith(
    `[${name}: null prototype]${message ? `: ${message}` : '\n'}`),
-  util.inspect(foo)
+  util.inspect(foo),
  );
  foo.stack = 'This is a stack';
  assert.strictEqual(
   util.inspect(foo),
-  '[[Error: null prototype]: This is a stack] { bar: true }'
+  '[[Error: null prototype]: This is a stack] { bar: true }',
  );
  foo.stack = stack.split('\n')[0];
  assert.strictEqual(
   util.inspect(foo),
-  `[[${name}: null prototype]${message ? `: ${message}` : ''}] { bar: true }`
+  `[[${name}: null prototype]${message ? `: ${message}` : ''}] { bar: true }`,
  );
 });
 
@@ -2067,7 +2067,7 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  const inspected = util.inspect(clazz);
  assert.strictEqual(inspected, string);
  Object.defineProperty(clazz, Symbol.toStringTag, {
-  value: 'Woohoo'
+  value: 'Woohoo',
  });
  const parts = inspected.slice(0, -1).split(' ');
  const [, name, ...rest] = parts;
@@ -2077,7 +2077,7 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  }
  assert.strictEqual(
   util.inspect(clazz),
-  ['[class', name, ...rest].join(' ')
+  ['[class', name, ...rest].join(' '),
  );
  if (rest.length) {
   rest[rest.length - 1] = rest[rest.length - 1].slice(0, -1);
@@ -2086,12 +2086,12 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  Object.setPrototypeOf(clazz, Map.prototype);
  assert.strictEqual(
   util.inspect(clazz),
-  ['[class', name, '[Map]', ...rest].join(' ') + ']'
+  ['[class', name, '[Map]', ...rest].join(' ') + ']',
  );
  Object.setPrototypeOf(clazz, null);
  assert.strictEqual(
   util.inspect(clazz),
-  ['[class', name, ...rest, 'extends [null prototype]]'].join(' ')
+  ['[class', name, ...rest, 'extends [null prototype]]'].join(' '),
  );
  Object.defineProperty(clazz, 'name', { value: 'Foo' });
  const res = ['[class', 'Foo', ...rest, 'extends [null prototype]]'].join(' ');
@@ -2106,29 +2106,29 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  let obj = { class () {} };
  assert.strictEqual(
   util.inspect(obj),
-  '{ class: [Function: class] }'
+  '{ class: [Function: class] }',
  );
  obj = { class: () => {} };
  assert.strictEqual(
   util.inspect(obj),
-  '{ class: [Function: class] }'
+  '{ class: [Function: class] }',
  );
  obj = { ['class Foo {}']() {} };
  assert.strictEqual(
   util.inspect(obj),
-  "{ 'class Foo {}': [Function: class Foo {}] }"
+  "{ 'class Foo {}': [Function: class Foo {}] }",
  );
  function Foo() {}
  Object.defineProperty(Foo, 'toString', { value: () => 'class Foo {}' });
  assert.strictEqual(
   util.inspect(Foo),
-  '[Function: Foo]'
+  '[Function: Foo]',
  );
  function fn() {}
  Object.defineProperty(fn, 'name', { value: 'class Foo {}' });
  assert.strictEqual(
   util.inspect(fn),
-  '[Function: class Foo {}]'
+  '[Function: class Foo {}]',
  );
 }
 
@@ -2159,12 +2159,12 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  Object.defineProperty(value, 'valueOf', {
   get() {
    throw new Error('valueOf');
-  }
+  },
  });
  Object.defineProperty(value, 'toString', {
   get() {
    throw new Error('toString');
-  }
+  },
  });
  assert.strictEqual(util.inspect(value), expected);
  value.foo = 'bar';
@@ -2207,7 +2207,7 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
 ].forEach(([value, expected]) => {
  assert.strictEqual(
   util.inspect(Object.setPrototypeOf(value, null)),
-  expected
+  expected,
  );
  value.foo = 'bar';
  assert.notStrictEqual(util.inspect(value), expected);
@@ -2240,7 +2240,7 @@ assert.strictEqual(util.inspect('"\'${a}'), "'\"\\'${a}'");
  delete value.foo;
  assert.strictEqual(
   util.inspect(Object.setPrototypeOf(value, null)),
-  expectedWithoutProto
+  expectedWithoutProto,
  );
  value.foo = 'bar';
  let res = util.inspect(value);
@@ -2266,7 +2266,7 @@ assert.strictEqual(
  Object.defineProperty(obj, 'Non\nenumerable\tkey', { value: true });
  assert.strictEqual(
   util.inspect(obj, { showHidden: true }),
-  '{ [Non\\nenumerable\\tkey]: true }'
+  '{ [Non\\nenumerable\\tkey]: true }',
  );
 }
 
@@ -2277,22 +2277,22 @@ assert.strictEqual(
 
  assert.strictEqual(
   inspect(new WeakSet(), { colors: true }),
-  `WeakSet { \u001b[${special[0]}m<items unknown>\u001b[${special[1]}m }`
+  `WeakSet { \u001b[${special[0]}m<items unknown>\u001b[${special[1]}m }`,
  );
  assert.strictEqual(
   inspect(new WeakMap(), { colors: true }),
-  `WeakMap { \u001b[${special[0]}m<items unknown>\u001b[${special[1]}m }`
+  `WeakMap { \u001b[${special[0]}m<items unknown>\u001b[${special[1]}m }`,
  );
  assert.strictEqual(
   inspect(new Promise(() => {}), { colors: true }),
-  `Promise { \u001b[${special[0]}m<pending>\u001b[${special[1]}m }`
+  `Promise { \u001b[${special[0]}m<pending>\u001b[${special[1]}m }`,
  );
 
  const rejection = Promise.reject('Oh no!');
  assert.strictEqual(
   inspect(rejection, { colors: true }),
   `Promise { \u001b[${special[0]}m<rejected>\u001b[${special[1]}m ` +
-    `\u001b[${string[0]}m'Oh no!'\u001b[${string[1]}m }`
+    `\u001b[${string[0]}m'Oh no!'\u001b[${string[1]}m }`,
  );
  rejection.catch(() => {});
 
@@ -2333,18 +2333,18 @@ assert.strictEqual(
 
 assert.strictEqual(
  inspect([1, 3, 2], { sorted: true }),
- inspect([1, 3, 2])
+ inspect([1, 3, 2]),
 );
 assert.strictEqual(
  inspect({ c: 3, a: 1, b: 2 }, { sorted: true }),
- '{ a: 1, b: 2, c: 3 }'
+ '{ a: 1, b: 2, c: 3 }',
 );
 assert.strictEqual(
  inspect(
   { a200: 4, a100: 1, a102: 3, a101: 2 },
-  { sorted(a, b) { return b.localeCompare(a); } }
+  { sorted(a, b) { return b.localeCompare(a); } },
  ),
- '{ a200: 4, a102: 3, a101: 2, a100: 1 }'
+ '{ a200: 4, a102: 3, a101: 2, a100: 1 }',
 );
 
 // Non-indices array properties are sorted as well.
@@ -2357,7 +2357,7 @@ assert.strictEqual(
  arr[Symbol('a')] = false;
  assert.strictEqual(
   inspect(arr, { sorted: true }),
-  '[ 3, 2, 1, [Symbol(a)]: false, [Symbol(b)]: true, a: 1, b: 2, c: 3 ]'
+  '[ 3, 2, 1, [Symbol(a)]: false, [Symbol(b)]: true, a: 1, b: 2, c: 3 ]',
  );
 }
 
@@ -2369,12 +2369,12 @@ assert.strictEqual(
  Object.setPrototypeOf(obj, value);
  assert.strictEqual(
   util.inspect(obj),
-  'Object <[Function (null prototype) (anonymous)]> { a: true }'
+  'Object <[Function (null prototype) (anonymous)]> { a: true }',
  );
  assert.strictEqual(
   util.inspect(obj, { colors: true }),
   'Object <\u001b[36m[Function (null prototype) (anonymous)]\u001b[39m> ' +
-      '{ a: \u001b[33mtrue\u001b[39m }'
+      '{ a: \u001b[33mtrue\u001b[39m }',
  );
 
  obj = { a: true };
@@ -2383,14 +2383,14 @@ assert.strictEqual(
  Object.setPrototypeOf(obj, value);
  assert.strictEqual(
   util.inspect(obj),
-  'Object <[Array(0): null prototype] []> { a: true }'
+  'Object <[Array(0): null prototype] []> { a: true }',
  );
 
  function StorageObject() {}
  StorageObject.prototype = Object.create(null);
  assert.strictEqual(
   util.inspect(new StorageObject()),
-  'StorageObject <[Object: null prototype] {}> {}'
+  'StorageObject <[Object: null prototype] {}> {}',
  );
 
  obj = [1, 2, 3];
@@ -2400,22 +2400,22 @@ assert.strictEqual(
  Object.setPrototypeOf(obj, Object.create(null));
  assert.strictEqual(
   inspect(obj),
-  "Array <[Object: null prototype] {}> { '0': 1, '1': 2, '2': 3 }"
+  "Array <[Object: null prototype] {}> { '0': 1, '1': 2, '2': 3 }",
  );
 
  StorageObject.prototype = Object.create(null);
  Object.setPrototypeOf(StorageObject.prototype, Object.create(null));
  Object.setPrototypeOf(
   Object.getPrototypeOf(StorageObject.prototype),
-  Object.create(null)
+  Object.create(null),
  );
  assert.strictEqual(
   util.inspect(new StorageObject()),
-  'StorageObject <Object <Object <[Object: null prototype] {}>>> {}'
+  'StorageObject <Object <Object <[Object: null prototype] {}>>> {}',
  );
  assert.strictEqual(
   util.inspect(new StorageObject(), { depth: 1 }),
-  'StorageObject <Object <Object <Complex prototype>>> {}'
+  'StorageObject <Object <Object <Complex prototype>>> {}',
  );
 }
 
@@ -2426,21 +2426,21 @@ assert.strictEqual(
  Object.setPrototypeOf(obj, null);
  Object.defineProperty(obj, Symbol.iterator, {
   value: iterator,
-  configurable: true
+  configurable: true,
  });
  assert.strictEqual(util.inspect(obj), '[Set(2): null prototype] { 1, 2 }');
  Object.defineProperty(obj, Symbol.iterator, {
   value: true,
-  configurable: true
+  configurable: true,
  });
  Object.defineProperty(obj, 'size', {
   value: NaN,
   configurable: true,
-  enumerable: true
+  enumerable: true,
  });
  assert.strictEqual(
   util.inspect(obj),
-  '[Set(2): null prototype] { 1, 2, size: NaN }'
+  '[Set(2): null prototype] { 1, 2, size: NaN }',
  );
 }
 
@@ -2451,7 +2451,7 @@ assert.strictEqual(
  const getset = {
   get foo() { return foo; },
   set foo(val) { foo = val; },
-  get inc() { return ++foo; }
+  get inc() { return ++foo; },
  };
  const thrower = { get foo() { throw new Error('Oops'); } };
  assert.strictEqual(
@@ -2486,9 +2486,9 @@ assert.strictEqual(
     c: {
      x: '10000000000000000 00000000000000000 '.repeat(1e1),
      d: 2,
-     e: 3
-    }
-   }
+     e: 3,
+    },
+   },
   },
   b: [
    1,
@@ -2503,7 +2503,7 @@ assert.strictEqual(
   f: Array(9).fill('foobar'),
   g: Array(21).fill('foobar baz'),
   h: [100].concat(Array.from({ length: 9 }).map((e, n) => (n))),
-  long: Array(9).fill('This text is too long for grouping!')
+  long: Array(9).fill('This text is too long for grouping!'),
  };
 
  let out = util.inspect(obj, { compact: 3, depth: 10, breakLength: 60 });
@@ -2657,13 +2657,13 @@ assert.strictEqual(
     x: 5,
     c: {
      d: 2,
-     e: 3
-    }
-   }
+     e: 3,
+    },
+   },
   },
   b: Array.from({ length: 9 }).map((e, n) => {
    return n % 2 === 0 ? 'foobar' : 'baz';
-  })
+  }),
  };
 
  out = util.inspect(obj, { compact: 1, breakLength: Infinity, colors: true });
@@ -2758,7 +2758,7 @@ assert.strictEqual(
 
  out = util.inspect(
   obj,
-  { compact: 3, breakLength: 80, maxArrayLength: 250 }
+  { compact: 3, breakLength: 80, maxArrayLength: 250 },
  );
  expected = [
   '[',
@@ -2854,7 +2854,7 @@ assert.strictEqual(
   const actualDepth1 = util.inspect({ trace }, { depth: 1 });
   assert.strictEqual(
    actualDepth1,
-   "{ trace: Tracing { enabled: false, categories: 'fo' } }"
+   "{ trace: Tracing { enabled: false, categories: 'fo' } }",
   );
  } catch (err) {
   if (err.code !== 'ERR_TRACE_EVENTS_UNAVAILABLE')
@@ -2898,7 +2898,7 @@ assert.strictEqual(
 
  assert.strictEqual(
   inspect(bar),
-  'Bar(0) [Map] { prop: true, prop2: true, abc: true }'
+  'Bar(0) [Map] { prop: true, prop2: true, abc: true }',
  );
  assert.strictEqual(
   inspect(bar, { showHidden: true, getters: true, colors: false }),
@@ -2908,7 +2908,7 @@ assert.strictEqual(
     '  abc: true,\n' +
     "  [xyz]: [Getter: 'YES!'],\n" +
     '  [def]: [Getter/Setter: false]\n' +
-    '}'
+    '}',
  );
  assert.strictEqual(
   inspect(bar, { showHidden: true, getters: false, colors: true }),
@@ -2918,14 +2918,14 @@ assert.strictEqual(
     '  abc: \x1B[33mtrue\x1B[39m,\n' +
     '  \x1B[2m[xyz]: \x1B[36m[Getter]\x1B[39m\x1B[22m,\n' +
     '  \x1B[2m[def]: \x1B[36m[Getter/Setter]\x1B[39m\x1B[22m\n' +
-    '}'
+    '}',
  );
 
  const obj = Object.create({ abc: true, def: 5, toString() {} });
  assert.strictEqual(
   inspect(obj, { showHidden: true, colors: true }),
   '{ \x1B[2mabc: \x1B[33mtrue\x1B[39m\x1B[22m, ' +
-      '\x1B[2mdef: \x1B[33m5\x1B[39m\x1B[22m }'
+      '\x1B[2mdef: \x1B[33m5\x1B[39m\x1B[22m }',
  );
 
  assert.strictEqual(
@@ -2946,17 +2946,17 @@ assert.strictEqual(
     '    },\n' +
     '    [abc]: [Getter: true],\n' +
     '    [def]: [Getter/Setter: false]\n' +
-    '  }'
+    '  }',
  );
 
  assert.strictEqual(
   inspect(Object.getPrototypeOf(bar)),
-  'Foo [Map] {}'
+  'Foo [Map] {}',
  );
 
  assert.strictEqual(
   inspect(Object.getPrototypeOf(new Foo())),
-  'Map {}'
+  'Map {}',
  );
 }
 
@@ -3015,7 +3015,7 @@ assert.strictEqual(
  assert(util.inspect(x).endsWith('... 990000 more characters'));
  assert.strictEqual(
   util.inspect(x, { maxStringLength: 4 }),
-  "'aaaa'... 999996 more characters"
+  "'aaaa'... 999996 more characters",
  );
  assert.match(util.inspect(x, { maxStringLength: null }), /a'$/);
 }
@@ -3054,7 +3054,7 @@ assert.strictEqual(
   const output = util.inspect(target, {
    stylize: common.mustCall((str) => {
     return {};
-   })
+   }),
   });
   assert.strictEqual(output, '[object Object]');
   assert.strictEqual(typeof target.ctx, 'object');
@@ -3068,7 +3068,7 @@ assert.strictEqual(
   const output = util.inspect(target, {
    stylize: common.mustCall((str) => {
     throw new Error('oops');
-   })
+   }),
   });
   assert.strictEqual(output, '🐈');
   assert.strictEqual(typeof target.ctx, 'object');
@@ -3119,7 +3119,7 @@ assert.strictEqual(
       "    [name]: 'Fhqwhgads',\n" +
       '    [prototype]: { [constructor]: [Circular *1] }\n' +
       '  }\n' +
-      '}'
+      '}',
  );
 }
 
@@ -3147,7 +3147,7 @@ assert.strictEqual(
     "  [name]: 'generator',\n" +
     "  [prototype]: Object [Generator] { [Symbol(Symbol.toStringTag)]: 'Generator' },\n" + // eslint-disable-line max-len
     "  [Symbol(Symbol.toStringTag)]: 'GeneratorFunction'\n" +
-    '}'
+    '}',
  );
 
  // Reset so we don't pollute other tests
@@ -3170,14 +3170,14 @@ assert.strictEqual(
     "  'fhqwhgadshgnsdhjsdbkhsdabkfabkveybvf',\n" +
     "  'fhqwhgadshgnsdhjsdbkhsdabkfabkveybvf',\n" +
     "  'fhqwhgadshgnsdhjsdbkhsdabkfabkveybvf'\n" +
-    ']'
+    ']',
  );
 }
 
 {
  assert.strictEqual(
   util.inspect({ ['__proto__']: { a: 1 } }),
-  "{ ['__proto__']: { a: 1 } }"
+  "{ ['__proto__']: { a: 1 } }",
  );
 }
 
@@ -3188,11 +3188,11 @@ assert.strictEqual(
  assert.strictEqual(
   // eslint-disable-next-line no-loss-of-precision
   util.inspect(1234567891234567891234),
-  '1.234567891234568e+21'
+  '1.234567891234568e+21',
  );
  assert.strictEqual(
   util.inspect(123456789.12345678),
-  '123_456_789.123_456_78'
+  '123_456_789.123_456_78',
  );
 
  assert.strictEqual(util.inspect(10_000_000), '10_000_000');
@@ -3207,31 +3207,31 @@ assert.strictEqual(
 
  assert.strictEqual(
   util.inspect(new Float64Array([100_000_000])),
-  'Float64Array(1) [ 100_000_000 ]'
+  'Float64Array(1) [ 100_000_000 ]',
  );
  assert.strictEqual(
   util.inspect(new BigInt64Array([9_100_000_100n])),
-  'BigInt64Array(1) [ 9_100_000_100n ]'
+  'BigInt64Array(1) [ 9_100_000_100n ]',
  );
 
  assert.strictEqual(
   util.inspect(123456789),
-  '123_456_789'
+  '123_456_789',
  );
  assert.strictEqual(
   util.inspect(123456789n),
-  '123_456_789n'
+  '123_456_789n',
  );
 
  util.inspect.defaultOptions.numericSeparator = numericSeparator;
 
  assert.strictEqual(
   util.inspect(123456789.12345678, { numericSeparator: true }),
-  '123_456_789.123_456_78'
+  '123_456_789.123_456_78',
  );
 
  assert.strictEqual(
   util.inspect(-123456789.12345678, { numericSeparator: true }),
-  '-123_456_789.123_456_78'
+  '-123_456_789.123_456_78',
  );
 }

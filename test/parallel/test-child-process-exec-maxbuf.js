@@ -51,7 +51,7 @@ function runChecks(err, stdio, streamName, expected) {
   { maxBuffer: 5 },
   common.mustCall((err, stdout, stderr) => {
    runChecks(err, { stdout, stderr }, 'stdout', 'hello');
-  })
+  }),
  );
 }
 
@@ -67,9 +67,9 @@ function runChecks(err, stdio, streamName, expected) {
     err,
     { stdout, stderr },
     'stdout',
-    'a'.repeat(1024 * 1024)
+    'a'.repeat(1024 * 1024),
    );
-  })
+  }),
  );
 }
 
@@ -94,7 +94,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   { maxBuffer: 10 },
   common.mustCall((err, stdout, stderr) => {
    runChecks(err, { stdout, stderr }, 'stdout', '中文测试\n');
-  })
+  }),
  );
 }
 
@@ -106,7 +106,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   { maxBuffer: 3 },
   common.mustCall((err, stdout, stderr) => {
    runChecks(err, { stdout, stderr }, 'stderr', '中文测');
-  })
+  }),
  );
 }
 
@@ -118,7 +118,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   { encoding: null, maxBuffer: 10 },
   common.mustCall((err, stdout, stderr) => {
    runChecks(err, { stdout, stderr }, 'stdout', '中文测试\n');
-  })
+  }),
  );
 
  child.stdout.setEncoding('utf-8');
@@ -132,7 +132,7 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   { encoding: null, maxBuffer: 3 },
   common.mustCall((err, stdout, stderr) => {
    runChecks(err, { stdout, stderr }, 'stderr', '中文测');
-  })
+  }),
  );
 
  child.stderr.setEncoding('utf-8');
@@ -147,6 +147,6 @@ const unicode = '中文测试'; // length = 4, byte length = 12
   common.mustCall((err, stdout, stderr) => {
    const buf = Buffer.from(unicode).slice(0, 5);
    runChecks(err, { stdout, stderr }, 'stderr', buf);
-  })
+  }),
  );
 }

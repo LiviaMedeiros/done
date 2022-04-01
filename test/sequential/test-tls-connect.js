@@ -41,7 +41,7 @@ const tls = require('tls');
 
  conn.on(
   'error',
-  common.mustCall((e) => { assert.strictEqual(e.code, 'ECONNREFUSED'); })
+  common.mustCall((e) => { assert.strictEqual(e.code, 'ECONNREFUSED'); }),
  );
 }
 
@@ -55,7 +55,7 @@ const tls = require('tls');
    cert: cert,
    key: key,
    port: common.PORT,
-   ciphers: 'rick-128-roll'
+   ciphers: 'rick-128-roll',
   }, common.mustNotCall());
  }, /no cipher match/i);
 }

@@ -8,7 +8,7 @@ const {
  isPromise,
 } = require('util/types');
 const {
- setImmediate: delay
+ setImmediate: delay,
 } = require('timers/promises');
 
 const {
@@ -35,7 +35,7 @@ const {
 } = require('internal/webstreams/readablestream');
 
 const {
- kState
+ kState,
 } = require('internal/webstreams/util');
 
 const {
@@ -99,7 +99,7 @@ const {
  const r2 = new ReadableStream({
   cancel() {
    throw new Error('Cancel Error');
-  }
+  },
  });
  r2.cancel().finally(common.mustCall(() => {
   const controllerState = r2[kState].controller[kState];
@@ -254,7 +254,7 @@ const {
  const r = new ReadableStream({
   async start() {
    throw new Error('boom');
-  }
+  },
  });
 
  setImmediate(() => {
@@ -299,9 +299,9 @@ const {
 
 assert.throws(() => {
  new ReadableStream({
-  get start() { throw new Error('boom1'); }
+  get start() { throw new Error('boom1'); },
  }, {
-  get size() { throw new Error('boom2'); }
+  get size() { throw new Error('boom2'); },
  });
 }, /boom2/);
 
@@ -330,13 +330,13 @@ assert.throws(() => {
  // The stream is empty so the read will never settle.
  read1.then(
   common.mustNotCall(),
-  common.mustNotCall()
+  common.mustNotCall(),
  );
 
  // The stream is empty so the read will never settle.
  read2.then(
   common.mustNotCall(),
-  common.mustNotCall()
+  common.mustNotCall(),
  );
 
  assert.notStrictEqual(read1, read2);
@@ -375,7 +375,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    controller.enqueue(Buffer.from('hello'));
-  }
+  },
  });
 
  const reader = stream.getReader();
@@ -396,7 +396,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    controller.close();
-  }
+  },
  });
  assert(!stream.locked);
 
@@ -414,7 +414,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    controller.close();
-  }
+  },
  });
 
  stream.getReader().releaseLock();
@@ -426,7 +426,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    controller.close();
-  }
+  },
  });
 
  stream.getReader();
@@ -566,7 +566,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    controller.error(error);
-  }
+  },
  });
  stream.getReader().releaseLock();
  const reader = stream.getReader();
@@ -580,7 +580,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    controller.error(error);
-  }
+  },
  });
  const reader = stream.getReader();
  const cancel1 = reader.cancel();
@@ -595,7 +595,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   async start(controller) {
    throw error;
-  }
+  },
  });
  stream.getReader().releaseLock();
  const reader = stream.getReader();
@@ -613,7 +613,7 @@ assert.throws(() => {
    controller.enqueue(buf1);
    controller.enqueue(buf2);
    doClose = controller.close.bind(controller);
-  }
+  },
  });
  const reader = stream.getReader();
  doClose();
@@ -638,7 +638,7 @@ assert.throws(() => {
   start(controller) {
    controller.enqueue(buf1);
    controller.enqueue(buf2);
-  }
+  },
  });
  const reader = stream.getReader();
  reader.read().then(common.mustCall(({ value, done }) => {
@@ -659,7 +659,7 @@ assert.throws(() => {
    controller.enqueue('a');
    controller.enqueue('b');
    controller.close();
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -690,7 +690,7 @@ assert.throws(() => {
    controller.enqueue('a');
    controller.enqueue('b');
   },
-  pull() { throw error; }
+  pull() { throw error; },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -718,7 +718,7 @@ assert.throws(() => {
    controller.enqueue('a');
    controller.enqueue('b');
    controller.close();
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -753,7 +753,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   cancel(reason) {
    assert.deepStrictEqual(reason, [error1, error2]);
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -768,7 +768,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   cancel(reason) {
    assert.deepStrictEqual(reason, [error1, error2]);
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -782,7 +782,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   cancel() {
    throw error;
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -797,7 +797,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    c = controller;
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -813,7 +813,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    c = controller;
-  }
+  },
  });
 
  const { 0: s1, 1: s2 } = stream.tee();
@@ -929,7 +929,7 @@ assert.throws(() => {
    controller.enqueue(++calls);
    promise = new Promise((resolve) => res = resolve);
    return promise;
-  }
+  },
  });
 
  const reader = stream.getReader();
@@ -955,7 +955,7 @@ assert.throws(() => {
   pull: common.mustCall(4),
  }, {
   highWaterMark: Infinity,
-  size() { return 1; }
+  size() { return 1; },
  });
 
  const reader = stream.getReader();
@@ -978,7 +978,7 @@ assert.throws(() => {
   pull: common.mustNotCall(),
  }, {
   highWaterMark: Infinity,
-  size() { return 1; }
+  size() { return 1; },
  });
 
  const reader = stream.getReader();
@@ -1000,10 +1000,10 @@ assert.throws(() => {
    controller.enqueue(++calls);
    if (calls === 4)
     res();
-  }
+  },
  }, {
   size() { return 1; },
-  highWaterMark: 4
+  highWaterMark: 4,
  });
 
  ready.then(common.mustCall(() => {
@@ -1013,7 +1013,7 @@ assert.throws(() => {
 
 {
  const stream = new ReadableStream({
-  pull: common.mustCall((controller) => controller.close())
+  pull: common.mustCall((controller) => controller.close()),
  });
 
  const reader = stream.getReader();
@@ -1024,7 +1024,7 @@ assert.throws(() => {
 {
  const error = new Error('boom');
  const stream = new ReadableStream({
-  pull: common.mustCall((controller) => controller.error(error))
+  pull: common.mustCall((controller) => controller.error(error)),
  });
 
  const reader = stream.getReader();
@@ -1039,7 +1039,7 @@ assert.throws(() => {
   pull: common.mustCall((controller) => {
    controller.error(error);
    throw error2;
-  })
+  }),
  });
 
  const reader = stream.getReader();
@@ -1054,10 +1054,10 @@ assert.throws(() => {
    controller.enqueue('a');
    controller.close();
    assert.throws(() => controller.enqueue('b'), {
-    code: 'ERR_INVALID_STATE'
+    code: 'ERR_INVALID_STATE',
    });
    startCalled = true;
-  })
+  }),
  });
  assert(startCalled);
 }
@@ -1068,10 +1068,10 @@ assert.throws(() => {
   start: common.mustCall((controller) => {
    controller.close();
    assert.throws(() => controller.enqueue('b'), {
-    code: 'ERR_INVALID_STATE'
+    code: 'ERR_INVALID_STATE',
    });
    startCalled = true;
-  })
+  }),
  });
  assert(startCalled);
 }
@@ -1122,9 +1122,9 @@ assert.throws(() => {
    controller.close();
    assert.strictEqual(controller.desiredSize, 0);
    startCalled = true;
-  }
+  },
  }, {
-  highWaterMark: 10
+  highWaterMark: 10,
  });
  assert(startCalled);
 }
@@ -1137,9 +1137,9 @@ assert.throws(() => {
    controller.error();
    assert.strictEqual(controller.desiredSize, null);
    startCalled = true;
-  }
+  },
  }, {
-  highWaterMark: 10
+  highWaterMark: 10,
  });
  assert(startCalled);
 }
@@ -1164,7 +1164,7 @@ assert.throws(() => {
    controller.enqueue('a');
    assert.strictEqual(controller.desiredSize, -3);
    startCalled = true;
-  }
+  },
  });
  assert(startCalled);
 }
@@ -1174,7 +1174,7 @@ assert.throws(() => {
  const stream = new ReadableStream({
   start(controller) {
    c = controller;
-  }
+  },
  });
 
  const reader = stream.getReader();
@@ -1200,7 +1200,7 @@ assert.throws(() => {
  new ReadableStream({
   start(controller) {
    c = controller;
-  }
+  },
  });
  assert(c instanceof ReadableStreamDefaultController);
  assert.strictEqual(typeof c.desiredSize, 'number');
@@ -1435,7 +1435,7 @@ class Source {
 {
  let controller;
  const readable = new ReadableStream({
-  start(c) { controller = c; }
+  start(c) { controller = c; },
  });
 
  assert.strictEqual(
@@ -1511,7 +1511,7 @@ class Source {
  const readable = new ReadableStream({
   start(controller) {
    controller.enqueue('hello');
-  }
+  },
  });
  const [r1, r2] = readableStreamTee(readable, true);
  r1.getReader().read().then(
@@ -1524,7 +1524,7 @@ class Source {
  assert.throws(() => {
   readableByteStreamControllerConvertPullIntoDescriptor({
    bytesFilled: 10,
-   byteLength: 5
+   byteLength: 5,
   });
  }, {
   code: 'ERR_INVALID_STATE',
@@ -1534,7 +1534,7 @@ class Source {
 {
  let controller;
  const readable = new ReadableStream({
-  start(c) { controller = c; }
+  start(c) { controller = c; },
  });
 
  controller[kState].pendingPullIntos = [{}];
@@ -1638,7 +1638,7 @@ class Source {
   type: 'bytes',
   start(controller) {
    controller.close();
-  }
+  },
  });
 
  const buffer = new ArrayBuffer(1024);

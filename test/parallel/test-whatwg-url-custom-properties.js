@@ -44,7 +44,7 @@ assert.strictEqual(url.searchParams, oldParams);  // [SameObject]
 // Note: this error message is subject to change in V8 updates
 assert.throws(
  () => url.origin = 'http://foo.bar.com:22',
- /^TypeError: Cannot set property origin of \[object URL\] which has only a getter$/
+ /^TypeError: Cannot set property origin of \[object URL\] which has only a getter$/,
 );
 assert.strictEqual(url.origin, 'http://foo.bar.com:21');
 assert.strictEqual(url.toString(),
@@ -121,7 +121,7 @@ assert.strictEqual(url.hash, '#abcd');
 // Note: this error message is subject to change in V8 updates
 assert.throws(
  () => url.searchParams = '?k=88',
- /^TypeError: Cannot set property searchParams of \[object URL\] which has only a getter$/
+ /^TypeError: Cannot set property searchParams of \[object URL\] which has only a getter$/,
 );
 assert.strictEqual(url.searchParams, oldParams);
 assert.strictEqual(url.toString(),

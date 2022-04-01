@@ -27,7 +27,7 @@ for (let i = 1; i <= 5; i++) {
  testStream.write(i, common.mustCall(() => {
   assert.strictEqual(
    testStream._writableState.bufferedRequestCount,
-   testStream._writableState.getBuffer().length
+   testStream._writableState.getBuffer().length,
   );
  }));
 }

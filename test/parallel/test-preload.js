@@ -54,7 +54,7 @@ childProcess.exec(
  function(err, stdout, stderr) {
   assert.ifError(err);
   assert.strictEqual(stdout, 'A\nB\nC\n');
- }
+ },
 );
 
 // Test that preloading a throwing module aborts
@@ -66,7 +66,7 @@ childProcess.exec(
   } else {
    throw new Error('Preload should have failed');
   }
- }
+ },
 );
 
 // Test that preload can be used with --eval
@@ -75,7 +75,7 @@ childProcess.exec(
  function(err, stdout, stderr) {
   assert.ifError(err);
   assert.strictEqual(stdout, 'A\nhello\n');
- }
+ },
 );
 
 // Test that preload can be used with --frozen-intrinsics
@@ -88,7 +88,7 @@ childProcess.exec(
  function(err, stdout) {
   assert.ifError(err);
   assert.strictEqual(stdout, 'smoosh\n');
- }
+ },
 );
 childProcess.exec(
  `"${
@@ -101,14 +101,14 @@ childProcess.exec(
  function(err, stdout) {
   assert.ifError(err);
   assert.strictEqual(stdout, 'smoosh\n');
- }
+ },
 );
 
 // Test that preload can be used with stdin
 const stdinProc = childProcess.spawn(
  nodeBinary,
  ['--require', fixtureA],
- { stdio: 'pipe' }
+ { stdio: 'pipe' },
 );
 stdinProc.stdin.end("console.log('hello');");
 let stdinStdout = '';
@@ -124,7 +124,7 @@ stdinProc.on('close', function(code) {
 const replProc = childProcess.spawn(
  nodeBinary,
  ['-i', '--require', fixtureA],
- { stdio: 'pipe' }
+ { stdio: 'pipe' },
 );
 replProc.stdin.end('.exit\n');
 let replStdout = '';
@@ -149,7 +149,7 @@ childProcess.exec(
  function(err, stdout, stderr) {
   assert.ifError(err);
   assert.strictEqual(stdout, 'A\nB\nhello\n');
- }
+ },
 );
 
 // Test that preload works with -i
@@ -157,7 +157,7 @@ const interactive = childProcess.exec(
  `"${nodeBinary}" ${preloadOption([fixtureD])}-i`,
  common.mustSucceed((stdout, stderr) => {
   assert.ok(stdout.endsWith("> 'test'\n> "));
- })
+ }),
 );
 
 interactive.stdin.write('a\n');
@@ -169,7 +169,7 @@ childProcess.exec(
  function(err, stdout, stderr) {
   assert.ifError(err);
   assert.match(stdout, /worker terminated with code 43/);
- }
+ },
 );
 
 // Test that preloading with a relative path works
@@ -178,7 +178,7 @@ childProcess.exec(
  { cwd: fixtures.fixturesDir },
  common.mustSucceed((stdout, stderr) => {
   assert.strictEqual(stdout, 'A\nB\n');
- })
+ }),
 );
 if (common.isWindows) {
  // https://github.com/nodejs/node/issues/21918
@@ -187,7 +187,7 @@ if (common.isWindows) {
   { cwd: fixtures.fixturesDir },
   common.mustSucceed((stdout, stderr) => {
    assert.strictEqual(stdout, 'A\nB\n');
-  })
+  }),
  );
 }
 
@@ -199,5 +199,5 @@ childProcess.exec(
  function(err, stdout, stderr) {
   assert.ifError(err);
   assert.match(stdout, /worker terminated with code 43/);
- }
+ },
 );

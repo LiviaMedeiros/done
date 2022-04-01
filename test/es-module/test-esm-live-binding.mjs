@@ -157,5 +157,5 @@ syncBuiltinESMExports();
 
 assert.throws(
  () => Object.defineProperty(events, 'defaultMaxListeners', { value: 3 }),
- /TypeError: Cannot redefine/
+ /TypeError: Cannot redefine/,
 );

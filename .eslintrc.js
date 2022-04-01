@@ -68,7 +68,7 @@ module.exports = {
    files: ['**/*.md/*.cjs', '**/*.md/*.js'],
    parserOptions: {
     sourceType: 'script',
-    ecmaFeatures: { impliedStrict: true }
+    ecmaFeatures: { impliedStrict: true },
    },
    rules: { strict: 'off' },
   },
@@ -103,11 +103,11 @@ module.exports = {
     },
     {
      name: 'Buffer',
-     message: 'Import Buffer instead of using the global'
+     message: 'Import Buffer instead of using the global',
     },
     {
      name: 'process',
-     message: 'Import process instead of using the global'
+     message: 'Import process instead of using the global',
     },
    ] },
   },
@@ -137,10 +137,10 @@ module.exports = {
   }],
   'comma-dangle': ['error', {
    arrays: 'always-multiline',
-   exports: 'only-multiline',
-   functions: 'only-multiline',
-   imports: 'only-multiline',
-   objects: 'only-multiline',
+   exports: 'always-multiline',
+   functions: 'always-multiline',
+   imports: 'always-multiline',
+   objects: 'always-multiline',
   }],
   'comma-spacing': 'error',
   'comma-style': 'error',

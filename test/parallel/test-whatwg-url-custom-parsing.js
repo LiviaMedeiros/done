@@ -12,7 +12,7 @@ const assert = require('assert');
 const fixtures = require('../common/fixtures');
 
 const tests = require(
- fixtures.path('wpt', 'url', 'resources', 'urltestdata.json')
+ fixtures.path('wpt', 'url', 'resources', 'urltestdata.json'),
 );
 
 const originalFailures = tests.filter((test) => test.failure);
@@ -41,7 +41,7 @@ const aboutBlankFailures = originalFailures
   .map((test) => ({
   	input: 'about:blank',
   	base: test.input,
-  	failure: true
+  	failure: true,
   }));
 
 const failureTests = originalFailures

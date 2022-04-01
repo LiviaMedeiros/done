@@ -7,7 +7,7 @@ const { Readable, Duplex } = require('stream');
 {
  const readable = new Readable({
   read() {
-  }
+  },
  });
  assert.strictEqual(readable.readableAborted, false);
  readable.destroy();
@@ -17,7 +17,7 @@ const { Readable, Duplex } = require('stream');
 {
  const readable = new Readable({
   read() {
-  }
+  },
  });
  assert.strictEqual(readable.readableAborted, false);
  readable.push(null);
@@ -28,7 +28,7 @@ const { Readable, Duplex } = require('stream');
 {
  const readable = new Readable({
   read() {
-  }
+  },
  });
  assert.strictEqual(readable.readableAborted, false);
  readable.push('asd');
@@ -39,7 +39,7 @@ const { Readable, Duplex } = require('stream');
 {
  const readable = new Readable({
   read() {
-  }
+  },
  });
  assert.strictEqual(readable.readableAborted, false);
  readable.push('asd');
@@ -59,7 +59,7 @@ const { Readable, Duplex } = require('stream');
 {
  const duplex = new Duplex({
   readable: false,
-  write() {}
+  write() {},
  });
  duplex.destroy();
  assert.strictEqual(duplex.readableAborted, false);

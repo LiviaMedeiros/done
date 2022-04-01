@@ -6,7 +6,7 @@ const assert = require('assert');
 
 {
  const duplex = new Duplex({
-  readable: false
+  readable: false,
  });
  assert.strictEqual(duplex.readable, false);
  duplex.push('asd');
@@ -20,7 +20,7 @@ const assert = require('assert');
 {
  const duplex = new Duplex({
   writable: false,
-  write: common.mustNotCall()
+  write: common.mustNotCall(),
  });
  assert.strictEqual(duplex.writable, false);
  duplex.write('asd');
@@ -32,7 +32,7 @@ const assert = require('assert');
 
 {
  const duplex = new Duplex({
-  readable: false
+  readable: false,
  });
  assert.strictEqual(duplex.readable, false);
  duplex.on('data', common.mustNotCall());

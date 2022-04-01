@@ -23,22 +23,22 @@ server.on('stream', common.mustCall((stream) => {
    name: 'TypeError',
    message:
         'The "msecs" argument must be of type number. Received type string' +
-        " ('100')"
-  }
+        " ('100')",
+  },
  );
  assert.throws(
   () => stream.setTimeout(0, Symbol('test')),
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-  }
+  },
  );
  assert.throws(
   () => stream.setTimeout(100, {}),
   {
    code: 'ERR_INVALID_ARG_TYPE',
    name: 'TypeError',
-  }
+  },
  );
 }));
 server.listen(0);

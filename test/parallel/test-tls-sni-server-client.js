@@ -35,32 +35,32 @@ function loadPEM(n) {
 
 const serverOptions = {
  key: loadPEM('agent2-key'),
- cert: loadPEM('agent2-cert')
+ cert: loadPEM('agent2-cert'),
 };
 
 const SNIContexts = {
  'a.example.com': {
   key: loadPEM('agent1-key'),
-  cert: loadPEM('agent1-cert')
+  cert: loadPEM('agent1-cert'),
  },
  'asterisk.test.com': {
   key: loadPEM('agent3-key'),
-  cert: loadPEM('agent3-cert')
+  cert: loadPEM('agent3-cert'),
  },
  'chain.example.com': {
   key: loadPEM('agent6-key'),
   // NOTE: Contains ca3 chain cert
-  cert: loadPEM('agent6-cert')
- }
+  cert: loadPEM('agent6-cert'),
+ },
 };
 
 test(
  {
   ca: [loadPEM('ca1-cert')],
-  servername: 'a.example.com'
+  servername: 'a.example.com',
  },
  true,
- 'a.example.com'
+ 'a.example.com',
 );
 
 test(
@@ -69,7 +69,7 @@ test(
   servername: 'b.test.com',
  },
  true,
- 'b.test.com'
+ 'b.test.com',
 );
 
 test(
@@ -78,7 +78,7 @@ test(
   servername: 'a.b.test.com',
  },
  false,
- 'a.b.test.com'
+ 'a.b.test.com',
 );
 
 test(
@@ -87,7 +87,7 @@ test(
   servername: 'c.wrong.com',
  },
  false,
- 'c.wrong.com'
+ 'c.wrong.com',
 );
 
 test(
@@ -96,7 +96,7 @@ test(
   servername: 'chain.example.com',
  },
  true,
- 'chain.example.com'
+ 'chain.example.com',
 );
 
 function test(options, clientResult, serverResult) {
@@ -115,7 +115,7 @@ function test(options, clientResult, serverResult) {
   const client = tls.connect({
    ...options,
    port: server.address().port,
-   rejectUnauthorized: false
+   rejectUnauthorized: false,
   }, () => {
    const result = client.authorizationError &&
         (client.authorizationError === 'ERR_TLS_CERT_ALTNAME_INVALID');

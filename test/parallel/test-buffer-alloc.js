@@ -10,7 +10,7 @@ const SlowBuffer = require('buffer').SlowBuffer;
 // internal limits should be updated if this fails.
 assert.throws(
  () => new Uint8Array(2 ** 32 + 1),
- { message: 'Invalid typed array length: 4294967297' }
+ { message: 'Invalid typed array length: 4294967297' },
 );
 
 const b = Buffer.allocUnsafe(1024);
@@ -82,7 +82,7 @@ Buffer(0);
 
 const outOfRangeError = {
  code: 'ERR_OUT_OF_RANGE',
- name: 'RangeError'
+ name: 'RangeError',
 };
 
 // Try to write a 0-length string beyond the end of b
@@ -113,7 +113,7 @@ b.copy(Buffer.alloc(1), 0, 2048, 2048);
  writeTest.write('n', 'ascii');
  assert.throws(
   () => writeTest.write('o', '1', 'ascii'),
-  { code: 'ERR_INVALID_ARG_TYPE' }
+  { code: 'ERR_INVALID_ARG_TYPE' },
  );
  writeTest.write('o', 1, 'ascii');
  writeTest.write('d', 2, 'ascii');
@@ -259,7 +259,7 @@ Buffer.alloc(1).write('', 1, 0);
   // Length should be 12
   const f = Buffer.from('привет', encoding);
   assert.deepStrictEqual(
-   f, Buffer.from([63, 4, 64, 4, 56, 4, 50, 4, 53, 4, 66, 4])
+   f, Buffer.from([63, 4, 64, 4, 56, 4, 50, 4, 53, 4, 66, 4]),
   );
   assert.strictEqual(f.toString(encoding), 'привет');
  }
@@ -346,7 +346,7 @@ const base64flavors = ['base64', 'base64url'];
  assert.strictEqual(Buffer.from(quote).toString('base64'), expected);
  assert.strictEqual(
   Buffer.from(quote).toString('base64url'),
-  expected.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '')
+  expected.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', ''),
  );
 
  base64flavors.forEach((encoding) => {
@@ -468,56 +468,56 @@ base64flavors.forEach((encoding) => {
 // Handle padding graciously, multiple-of-4 or not
 assert.strictEqual(
  Buffer.from('72INjkR5fchcxk9+VgdGPFJDxUBFR5/rMFsghgxADiw==', 'base64').length,
- 32
+ 32,
 );
 assert.strictEqual(
  Buffer.from('72INjkR5fchcxk9-VgdGPFJDxUBFR5_rMFsghgxADiw==', 'base64url')
     .length,
- 32
+ 32,
 );
 assert.strictEqual(
  Buffer.from('72INjkR5fchcxk9+VgdGPFJDxUBFR5/rMFsghgxADiw=', 'base64').length,
- 32
+ 32,
 );
 assert.strictEqual(
  Buffer.from('72INjkR5fchcxk9-VgdGPFJDxUBFR5_rMFsghgxADiw=', 'base64url')
     .length,
- 32
+ 32,
 );
 assert.strictEqual(
  Buffer.from('72INjkR5fchcxk9+VgdGPFJDxUBFR5/rMFsghgxADiw', 'base64').length,
- 32
+ 32,
 );
 assert.strictEqual(
  Buffer.from('72INjkR5fchcxk9-VgdGPFJDxUBFR5_rMFsghgxADiw', 'base64url')
     .length,
- 32
+ 32,
 );
 assert.strictEqual(
  Buffer.from('w69jACy6BgZmaFvv96HG6MYksWytuZu3T1FvGnulPg==', 'base64').length,
- 31
+ 31,
 );
 assert.strictEqual(
  Buffer.from('w69jACy6BgZmaFvv96HG6MYksWytuZu3T1FvGnulPg==', 'base64url')
     .length,
- 31
+ 31,
 );
 assert.strictEqual(
  Buffer.from('w69jACy6BgZmaFvv96HG6MYksWytuZu3T1FvGnulPg=', 'base64').length,
- 31
+ 31,
 );
 assert.strictEqual(
  Buffer.from('w69jACy6BgZmaFvv96HG6MYksWytuZu3T1FvGnulPg=', 'base64url')
     .length,
- 31
+ 31,
 );
 assert.strictEqual(
  Buffer.from('w69jACy6BgZmaFvv96HG6MYksWytuZu3T1FvGnulPg', 'base64').length,
- 31
+ 31,
 );
 assert.strictEqual(
  Buffer.from('w69jACy6BgZmaFvv96HG6MYksWytuZu3T1FvGnulPg', 'base64url').length,
- 31
+ 31,
 );
 
 {
@@ -892,31 +892,31 @@ Buffer.from(Buffer.allocUnsafe(0), 0, 0);
 // issue GH-5587
 assert.throws(
  () => Buffer.alloc(8).writeFloatLE(0, 5),
- outOfRangeError
+ outOfRangeError,
 );
 assert.throws(
  () => Buffer.alloc(16).writeDoubleLE(0, 9),
- outOfRangeError
+ outOfRangeError,
 );
 
 // Attempt to overflow buffers, similar to previous bug in array buffers
 assert.throws(
  () => Buffer.allocUnsafe(8).writeFloatLE(0.0, 0xffffffff),
- outOfRangeError
+ outOfRangeError,
 );
 assert.throws(
  () => Buffer.allocUnsafe(8).writeFloatLE(0.0, 0xffffffff),
- outOfRangeError
+ outOfRangeError,
 );
 
 // Ensure negative values can't get past offset
 assert.throws(
  () => Buffer.allocUnsafe(8).writeFloatLE(0.0, -1),
- outOfRangeError
+ outOfRangeError,
 );
 assert.throws(
  () => Buffer.allocUnsafe(8).writeFloatLE(0.0, -1),
- outOfRangeError
+ outOfRangeError,
 );
 
 // Test for common write(U)IntLE/BE
@@ -1019,8 +1019,8 @@ assert.throws(
  {
   code: 'ERR_UNKNOWN_ENCODING',
   name: 'TypeError',
-  message: 'Unknown encoding: buffer'
- }
+  message: 'Unknown encoding: buffer',
+ },
 );
 
 // Regression test for https://github.com/nodejs/node-v0.x-archive/issues/6111.
@@ -1048,7 +1048,7 @@ if (common.hasCrypto) { // eslint-disable-line node-core/crypto-check
 
  assert.strictEqual(
   crypto.createHash('sha1').update(b1).digest('hex'),
-  crypto.createHash('sha1').update(b2).digest('hex')
+  crypto.createHash('sha1').update(b2).digest('hex'),
  );
 } else {
  common.printSkipMessage('missing crypto');
@@ -1065,18 +1065,18 @@ assert.throws(
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
   message: 'The "target" argument must be an instance of Buffer or ' +
-             'Uint8Array. Received undefined'
+             'Uint8Array. Received undefined',
  });
 
 assert.throws(() => Buffer.from(), {
  name: 'TypeError',
  message: 'The first argument must be of type string or an instance of ' +
-  'Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined'
+  'Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined',
 });
 assert.throws(() => Buffer.from(null), {
  name: 'TypeError',
  message: 'The first argument must be of type string or an instance of ' +
-  'Buffer, ArrayBuffer, or Array or an Array-like Object. Received null'
+  'Buffer, ArrayBuffer, or Array or an Array-like Object. Received null',
 });
 
 // Test prototype getters don't throw
@@ -1105,7 +1105,7 @@ assert.strictEqual(SlowBuffer.prototype.offset, undefined);
  const errMsg = common.expectsError({
   code: 'ERR_BUFFER_OUT_OF_BOUNDS',
   name: 'RangeError',
-  message: '"offset" is outside of buffer bounds'
+  message: '"offset" is outside of buffer bounds',
  });
  assert.throws(() => Buffer.from(new ArrayBuffer(0), -1 >>> 0), errMsg);
 }
@@ -1148,26 +1148,26 @@ assert.throws(() => {
  Buffer.alloc(0x1000, 'This is not correctly encoded', 'hex');
 }, {
  code: 'ERR_INVALID_ARG_VALUE',
- name: 'TypeError'
+ name: 'TypeError',
 });
 
 assert.throws(() => {
  Buffer.alloc(0x1000, 'c', 'hex');
 }, {
  code: 'ERR_INVALID_ARG_VALUE',
- name: 'TypeError'
+ name: 'TypeError',
 });
 
 assert.throws(() => {
  Buffer.alloc(1, Buffer.alloc(0));
 }, {
  code: 'ERR_INVALID_ARG_VALUE',
- name: 'TypeError'
+ name: 'TypeError',
 });
 
 assert.throws(() => {
  Buffer.alloc(40, 'x', 20);
 }, {
  code: 'ERR_INVALID_ARG_TYPE',
- name: 'TypeError'
+ name: 'TypeError',
 });

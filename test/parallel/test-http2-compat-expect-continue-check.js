@@ -13,7 +13,7 @@ const testResBody = 'other stuff!\n';
 // writing the rest of the request to finally the client receiving to.
 
 const server = http2.createServer(
- common.mustNotCall('Full request received before 100 Continue')
+ common.mustNotCall('Full request received before 100 Continue'),
 );
 
 server.on('checkContinue', common.mustCall((req, res) => {
@@ -23,7 +23,7 @@ server.on('checkContinue', common.mustCall((req, res) => {
  // Should simply return false if already too late to write
  assert.strictEqual(res.writeContinue(), false);
  res.on('finish', common.mustCall(
-  () => process.nextTick(() => assert.strictEqual(res.writeContinue(), false))
+  () => process.nextTick(() => assert.strictEqual(res.writeContinue(), false)),
  ));
 }));
 
@@ -33,7 +33,7 @@ server.listen(0, common.mustCall(() => {
  const client = http2.connect(`http://localhost:${server.address().port}`);
  const req = client.request({
   ':method': 'POST',
-  'expect': '100-continue'
+  'expect': '100-continue',
  });
 
  let gotContinue = false;

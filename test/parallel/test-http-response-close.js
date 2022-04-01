@@ -29,7 +29,7 @@ const assert = require('assert');
   common.mustCall((req, res) => {
    res.writeHead(200);
    res.write('a');
-  })
+  }),
  );
  server.listen(
   0,
@@ -45,9 +45,9 @@ const assert = require('assert');
       assert.strictEqual(res.destroyed, true);
       server.close();
      }));
-    })
+    }),
    );
-  })
+  }),
  );
 }
 
@@ -56,7 +56,7 @@ const assert = require('assert');
   common.mustCall((req, res) => {
    res.writeHead(200);
    res.end('a');
-  })
+  }),
  );
  server.listen(
   0,
@@ -73,9 +73,9 @@ const assert = require('assert');
       server.close();
      }));
      res.resume();
-    })
+    }),
    );
-  })
+  }),
  );
 }
 
@@ -84,7 +84,7 @@ const assert = require('assert');
   common.mustCall((req, res) => {
    res.on('close', common.mustCall());
    res.destroy();
-  })
+  }),
  );
 
  server.listen(
@@ -92,11 +92,11 @@ const assert = require('assert');
   common.mustCall(() => {
    http.get(
     { port: server.address().port },
-    common.mustNotCall()
+    common.mustNotCall(),
    )
       .on('error', common.mustCall(() => {
       	server.close();
       }));
-  })
+  }),
  );
 }

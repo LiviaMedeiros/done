@@ -15,6 +15,6 @@ const { inspect } = require('util');
  await m.evaluate();
  assert.strictEqual(
   inspect(m.namespace),
-  '[Module: null prototype] { a: 1, b: 2 }'
+  '[Module: null prototype] { a: 1, b: 2 }',
  );
 })().then(common.mustCall());

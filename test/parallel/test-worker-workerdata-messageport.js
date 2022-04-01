@@ -4,7 +4,7 @@ require('../common');
 const assert = require('assert');
 
 const {
- Worker, MessageChannel
+ Worker, MessageChannel,
 } = require('worker_threads');
 
 const channel = new MessageChannel();
@@ -35,11 +35,11 @@ const meowScript = () => 'meow';
     `, {
   eval: true,
   workerData: uint8Array,
-  transferList: [uint8Array.buffer]
+  transferList: [uint8Array.buffer],
  }).on(
   'message',
   (message) =>
-   assert.deepStrictEqual(message, Uint8Array.of(1, 2, 3, 4))
+   assert.deepStrictEqual(message, Uint8Array.of(1, 2, 3, 4)),
  );
  assert.strictEqual(uint8Array.length, 0);
 }
@@ -52,10 +52,10 @@ const meowScript = () => 'meow';
  assert.throws(() => new Worker(`${meowScript}`, {
   eval: true,
   workerData,
-  transferList: []
+  transferList: [],
  }), {
   code: 'ERR_MISSING_TRANSFERABLE_IN_TRANSFER_LIST',
   message: 'Object that needs transfer was found in message but not ' +
-             'listed in transferList'
+             'listed in transferList',
  });
 }

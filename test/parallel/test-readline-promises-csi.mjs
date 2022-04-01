@@ -30,7 +30,7 @@ class TestWritable extends Writable {
  '', '1',
  [], {}, () => {},
 ].forEach((arg) =>
- assert.throws(() => new Readline(arg), INVALID_ARG)
+ assert.throws(() => new Readline(arg), INVALID_ARG),
 );
 
 {
@@ -95,7 +95,7 @@ class TestWritable extends Writable {
   '', '1',
   [], {}, () => {},
  ].forEach((arg) =>
-  assert.throws(() => readline.cursorTo(arg), INVALID_ARG)
+  assert.throws(() => readline.cursorTo(arg), INVALID_ARG),
  );
  assert.strictEqual(writable.data, '');
 

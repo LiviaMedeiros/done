@@ -17,7 +17,7 @@ const lineCount = modelData.match(/\n/g).length;
 
 // Ensure both without-bom and with-bom test files are textwise equal.
 assert.strictEqual(fixtures.readSync('file-to-read-with-bom.txt', 'utf8'),
-                   `${BOM}${modelData}`
+                   `${BOM}${modelData}`,
 );
 
 // An unjustified BOM stripping with a non-BOM character unshifted to a stream.

@@ -67,7 +67,7 @@ const server = net
   			// Otherwise the crash on `channel.fd` access may happen
   			assert.strictEqual(worker.process.channel, null);
   			server.close();
-  		})
+  		}),
   	);
 
   	worker.on('online', function() {

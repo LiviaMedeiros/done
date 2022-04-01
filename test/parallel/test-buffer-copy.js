@@ -135,7 +135,7 @@ assert.throws(
  {
   code: 'ERR_INVALID_ARG_TYPE',
   name: 'TypeError',
- }
+ },
 );
 
 // Copy throws at negative targetStart
@@ -145,8 +145,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "targetStart" is out of range. ' +
-             'It must be >= 0. Received -1'
- }
+             'It must be >= 0. Received -1',
+ },
 );
 
 // Copy throws at negative sourceStart
@@ -156,8 +156,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "sourceStart" is out of range. ' +
-             'It must be >= 0. Received -1'
- }
+             'It must be >= 0. Received -1',
+ },
 );
 
 {
@@ -177,8 +177,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "sourceEnd" is out of range. ' +
-             'It must be >= 0. Received -1'
- }
+             'It must be >= 0. Received -1',
+ },
 );
 
 // When sourceStart is greater than sourceEnd, zero copied

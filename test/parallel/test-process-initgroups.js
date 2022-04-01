@@ -21,8 +21,8 @@ if (!common.isMainThread)
    message:
         'The "user" argument must be ' +
         'one of type number or string.' +
-        common.invalidArgTypeHelper(val)
-  }
+        common.invalidArgTypeHelper(val),
+  },
  );
 });
 
@@ -37,8 +37,8 @@ if (!common.isMainThread)
    message:
         'The "extraGroup" argument must be ' +
         'one of type number or string.' +
-        common.invalidArgTypeHelper(val)
-  }
+        common.invalidArgTypeHelper(val),
+  },
  );
 });
 
@@ -46,12 +46,12 @@ assert.throws(
  () => {
   process.initgroups(
    'fhqwhgadshgnsdhjsdbkhsdabkfabkveyb',
-   'fhqwhgadshgnsdhjsdbkhsdabkfabkveyb'
+   'fhqwhgadshgnsdhjsdbkhsdabkfabkveyb',
   );
  },
  {
   code: 'ERR_UNKNOWN_CREDENTIAL',
   message:
-      'Group identifier does not exist: fhqwhgadshgnsdhjsdbkhsdabkfabkveyb'
- }
+      'Group identifier does not exist: fhqwhgadshgnsdhjsdbkhsdabkfabkveyb',
+ },
 );

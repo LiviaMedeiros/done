@@ -53,7 +53,7 @@ server.listen(0, function() {
     });
 
     res.resume();
-   }
+   },
   );
 
   req.setTimeout(1000, callback);

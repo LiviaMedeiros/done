@@ -16,31 +16,31 @@ const err = {
 assert.throws(() => {
  const callsbar = tracker.calls(bar, '1');
  callsbar();
-}, err
+}, err,
 );
 
 assert.throws(() => {
  const callsbar = tracker.calls(bar, 0.1);
  callsbar();
-}, { code: 'ERR_OUT_OF_RANGE' }
+}, { code: 'ERR_OUT_OF_RANGE' },
 );
 
 assert.throws(() => {
  const callsbar = tracker.calls(bar, true);
  callsbar();
-}, err
+}, err,
 );
 
 assert.throws(() => {
  const callsbar = tracker.calls(bar, () => {});
  callsbar();
-}, err
+}, err,
 );
 
 assert.throws(() => {
  const callsbar = tracker.calls(bar, null);
  callsbar();
-}, err
+}, err,
 );
 
 // Expects an error as tracker.calls() cannot be called within a process exit
@@ -62,7 +62,7 @@ const callsfunc = tracker.calls(func, 1);
 // Expects callsfunc() to call func() which throws an error.
 assert.throws(
  () => callsfunc(),
- { message: msg }
+ { message: msg },
 );
 
 {

@@ -27,7 +27,7 @@ function onRequest(request, response) {
  response.writeHead(200, { 'content-type': 'application/json' });
  response.end(JSON.stringify({
   alpnProtocol,
-  httpVersion: request.httpVersion
+  httpVersion: request.httpVersion,
  }));
 }
 
@@ -36,7 +36,7 @@ function onSession(session, next) {
   ':path': '/',
   ':method': 'GET',
   ':scheme': 'https',
-  ':authority': `localhost:${this.server.address().port}`
+  ':authority': `localhost:${this.server.address().port}`,
  };
 
  const request = session.request(headers);
@@ -66,7 +66,7 @@ function onSession(session, next) {
 {
  const server = createSecureServer(
   { cert, key, allowHTTP1: true },
-  common.mustCall(onRequest, 2)
+  common.mustCall(onRequest, 2),
  );
 
  server.listen(0);
@@ -81,7 +81,7 @@ function onSession(session, next) {
   connect(
    origin,
    clientOptions,
-   common.mustCall(onSession.bind({ cleanup, server }))
+   common.mustCall(onSession.bind({ cleanup, server })),
   );
 
   // HTTP/1.1 client
@@ -102,7 +102,7 @@ function onSession(session, next) {
 
      cleanup();
     }));
-   })
+   }),
   );
  }));
 }
@@ -111,7 +111,7 @@ function onSession(session, next) {
 {
  const server = createSecureServer(
   { cert, key },
-  common.mustCall(onRequest)
+  common.mustCall(onRequest),
  );
 
  server.once('unknownProtocol', common.mustCall((socket) => {
@@ -134,7 +134,7 @@ function onSession(session, next) {
     onSession.call({ cleanup, server },
                    session,
                    common.mustCall(testNoTls));
-   })
+   }),
   );
 
   function testNoTls() {

@@ -11,8 +11,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "options.chunkSize" is out of range. It must ' +
-             'be >= 64. Received 0'
- }
+             'be >= 64. Received 0',
+ },
 );
 
 assert.throws(
@@ -21,8 +21,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "options.windowBits" is out of range. It must ' +
-             'be >= 9 and <= 15. Received 0'
- }
+             'be >= 9 and <= 15. Received 0',
+ },
 );
 
 assert.throws(
@@ -31,8 +31,8 @@ assert.throws(
   code: 'ERR_OUT_OF_RANGE',
   name: 'RangeError',
   message: 'The value of "options.memLevel" is out of range. It must ' +
-             'be >= 1 and <= 9. Received 0'
- }
+             'be >= 1 and <= 9. Received 0',
+ },
 );
 
 {

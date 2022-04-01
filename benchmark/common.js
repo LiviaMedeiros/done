@@ -96,7 +96,7 @@ class Benchmark {
      cliOptions[key] = [];
     cliOptions[key].push(
      // Infer the type from the config object and parse accordingly
-     typeof configs[key][0] === 'number' ? +value : value
+     typeof configs[key][0] === 'number' ? +value : value,
     );
    } else {
     extraOptions[key] = value;
@@ -162,7 +162,7 @@ class Benchmark {
     }
     this.config.benchmarker = used_benchmarker;
     this.report(result, elapsed);
-   }
+   },
   );
  }
 

@@ -959,11 +959,11 @@ export function resolve(specifier, context, defaultResolve) {
  // passed along to the later hooks below.
  if (specifier.startsWith('https://')) {
   return {
-   url: specifier
+   url: specifier,
   };
  } else if (parentURL && parentURL.startsWith('https://')) {
   return {
-   url: new URL(specifier, parentURL).href
+   url: new URL(specifier, parentURL).href,
   };
  }
 
@@ -1037,7 +1037,7 @@ export async function resolve(specifier, context, defaultResolve) {
  // specifiers ending in the CoffeeScript file extensions.
  if (extensionsRegex.test(specifier)) {
   return {
-   url: new URL(specifier, parentURL).href
+   url: new URL(specifier, parentURL).href,
   };
  }
 
